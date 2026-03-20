@@ -25,3 +25,38 @@ subscriptions:
     stage: A
     diff_threshold_pct: 15
   keyword_recall_mode: or
+  intent_profiles:
+    - tag: PMSM
+      description: 三相及双三相永磁同步电机相关研究检索
+      enabled: true
+      keywords:
+        - keyword: model-free
+          keyword_cn: 无模型预测控制
+          query: m
+        - keyword: speed control
+          keyword_cn: 转速控制
+          query: s
+        - keyword: fault tolerant
+          keyword_cn: 容错控制
+          query: f
+        - keyword: PMSM
+          keyword_cn: 永磁同步电机
+          query: Permanent Magnet Synchronous Motor research
+        - keyword: dual three-phase PMSM
+          keyword_cn: 双三相永磁同步电机
+          query: dual three-phase permanent magnet synchronous motor control and design
+        - keyword: fault tolerance
+          keyword_cn: 容错控制
+          query: fault-tolerant control of multi-phase motors
+      intent_queries:
+        - query: recent advances in dual three phase permanent magnet synchronous motor control
+          query_cn: 双三相永磁同步电机控制技术的最新进展
+          enabled: true
+          source: manual
+          note: ''
+        - query: fault tolerant strategies for multi phase permanent magnet synchronous motors
+          query_cn: 多相永磁同步电机的容错策略研究
+          enabled: true
+          source: manual
+          note: ''
+      updated_at: '2026-03-20T02:27:34.210Z'
