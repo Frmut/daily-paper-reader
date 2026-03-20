@@ -1,0 +1,1423 @@
+Title: Distributed Adaptive Control for DC Power Distribution in Hybrid-Electric Aircraft: Design and Experimental Validation
+
+URL Source: https://arxiv.org/pdf/2603.17518v1
+
+Published Time: Thu, 19 Mar 2026 01:02:30 GMT
+
+Number of Pages: 14
+
+Markdown Content:
+> 1
+
+# Distributed Adaptive Control for DC Power Distribution in Hybrid-Electric Aircraft: Design and Experimental Validation ∗
+
+Wasif H. Syed 1, Juan E. Machado 1, Hans W¨ urfel 2, Ekrem Hanli 3 and Johannes Schiffer 1,4
+
+Abstract —To reduce CO 2 emissions and tackle increasing fuel costs, the aviation industry is swiftly moving towards the electrification of aircraft. From the viewpoint of systems and control, a key challenge brought by this transition corresponds to the management and safe operation of the propulsion system’s onboard electrical power distribution network. In this work, for a series-hybrid-electric propulsion system, we propose a distributed adaptive controller for regulating the voltage of a DC bus that energizes the electricity-based propulsion system. The proposed controller—whose design is based on principles of back-stepping, adaptive, and passivity-based control techniques—also enables the proportional sharing of the electric load among multiple converter-interfaced sources, which reduces the likelihood of over-stressing individual sources. Compared to existing control strategies, our method ensures stable, convergent, and accurate voltage regulation and load-sharing even if the effects of power lines of unknown resistances and inductances are considered. The performance of the proposed control scheme is experimentally validated and compared to state-of-the-art controllers in a power hardware-in-the-loop (PHIL) environment. 
+
+Index Terms —Distributed control, adaptive control, DC mi-crogrid control, passivity-based control, Lyapunov methods, and experimental validation. 
+
+I. I NTRODUCTION 
+
+A. Motivation 
+
+Currently, the propulsion systems of commercial aircraft are predominantly powered by fossil fuels [2]. Opportunely, the transition towards a more sustainable aviation sector is underway. On the one hand, this is motivated by the urgency of reducing CO 2 emissions to the atmosphere, as commercial aircraft operations are currently liable for 2.5% of global  
+
+> ∗
+
+An abridged version of this article was presented at the 2024 American Control Conference (ACC), Toronto, CA, July 2024. (See [1].) This work is partially supported by the Bundesministerium f¨ ur Wirtschaft und Klimaschutz (BMWK), Germany, under LuFo VI - 2 joint project “Safe and reliable electrical and thermal networks for hybrid-electric drive systems (ETHAN, project number: 20L2103F1”. This research also received funding from the German Federal Government, the Federal Ministry of Education and Research, and the State of Brandenburg within the framework of the joint project EIZ: Energy Innovation Center (project numbers 85056897 and 03SF0693A).  
+
+> 1
+
+Chair of Control Systems and Network Control Technology, Brandenburg University of Technology Cottbus-Senftenberg, 03046, Germany, 
+
+syed@b-tu.de (Wasif H. Syed) , machadom@b-tu.de (Juan E. Machado) , schiffer@b-tu.de (Johannes Schiffer).  
+
+> 2
+
+Potsdam Institute for Climate Impact Research, Germany, 
+
+wuerfel@pik-potsdam.de (Hans W¨ urfel).  
+
+> 3
+
+Rolls-Royce Deutschland Ltd & Co, 
+
+ekrem.hanli@rolls-royce.com (Ekrem Hanli).  
+
+> 4
+
+Fraunhofer Research Institution for Energy Infrastructures and Geotech-nologies, Cottbus, 03046, Germany. 
+
+emissions [2]. On the other hand, the costs of aviation fuels are expected to increase due to regulatory measures [3]. The transition towards a more sustainable aviation sector entails further electrification of aircraft and their propulsion systems, as it would substantially increase the capabilities to utilize renewable sources either indirectly, i.e., by storing their energy in onboard batteries, or directly, e.g., via the co-operation of both conventional and varied sustainable sources, such as fuel cells in hybrid propulsion configurations [4]. In this work, the focus is on series-hybrid-electric propul-sion systems, which are considered to be well-suited for larger aircraft [4], [5] and for multi-rotor aircraft [5]. Unlike conventional setups, this type of aircraft propulsion system is based on both electrical and mechanical energy. In particular, the system realizing electric propulsion consists of multiple converter-interfaced sources, which are connected in parallel to a common DC bus from which the electric propulsion unit (EPU) (i.e., an inverter-interfaced electric motor) is then energized [5]. The correct operation of the propulsion load strongly depends on the DC bus having a voltage near a prespecified nominal value [6]. Critically, load changes or the connection or disconnection of electric sources to the DC bus may lead to undesired voltage variations. Moreover, to prevent the over-stressing of any given source beyond its capacity, the total electric load is desired to be proportionally shared among the participating sources [7]. Consequently, the central research problem addressed in this paper is the design of a reliable and robust control system (i.e., robust to system pa-rameter uncertainties) that simultaneously guarantees voltage regulation at the DC bus and proportional load sharing among sources. 
+
+B. Literature Review 
+
+The electrical power distribution system (EPDS) of hybrid-electric propulsion systems comprise an islanded power system with generation units, power converters, and electric loads; thus, it can be modeled as an onboard DC microgrid (MG) [8]. In this context, numerous solutions have been proposed in the DC microgrid literature to address voltage regulation tasks while achieving proportional load sharing among the generation units; see, e.g., the references reviewed in [9]. In particular, in [10], proportional current sharing and aver-age voltage regulation (i.e., voltage balancing) are achieved based on the presumption that the parasitic resistances as-sociated with power converters at the generation side are 
+
+> arXiv:2603.17518v1 [eess.SY] 18 Mar 2026 2
+
+either insignificant or accurately known, such that their effect is mitigated through feedforward compensation. Nonetheless, in aeronautic applications, the use of relatively long cables introduces non-negligible inductive and resistive effects, which have to be considered in the stability analysis [11]. Voltage balancing and proportional current sharing are addressed in [12] for the case of non-negligible parasitic resistances via a passivity-based control scheme. Notably, the controller’s implementation requires knowledge of a lower bound on the resistances but not necessarily their exact value. In [13], a distributed control scheme for a multi-bus DC MG is proposed, which simultaneously addresses approximate current sharing and voltage regulation through a trade-off factor. Additionally, sufficient conditions for closed-loop stability are provided. However, in the present work, the focus is to regulate the voltage of a common DC bus that energizes the EPU of a series-hybrid-electric propulsion system. As a result, there is no need for a trade-off between current sharing accuracy and voltage regulation since these objectives are not in conflict in this case. To achieve the objective of current sharing in DC MGs, a centralized model predictive control-based consensus algorithm is proposed in [7]. The controller also guarantees that the voltage of the DC buses stays within the predefined constraints. However, the scheme requires accurate knowledge of system parameters for proper operation. A decentralized control scheme for DC MGs is proposed in [14] to achieve voltage stabilization with plug-and-play capability for DGUs. Importantly, the controller design does not require knowledge of the power-line parameters. Closed-loop stability is estab-lished using a Lyapunov function and LaSalle’s invariance principle. However, the approach does not address the problem of proportional load sharing among DGUs. While the DC microgrid literature provides valuable in-sights into voltage regulation and proportional load shar-ing in networked DC systems, analogous control challenges have also been investigated in the aircraft EPDS literature. Accordingly, the control of hybrid or all-electric propulsion system EPDS has been explored in [15]–[18]. In [15], a power management system is proposed for an unmanned aerial vehicle’s hybrid propulsion system driven by a fuel cell and battery. It considers the goal of managing dynamic power requirements during various flight phases, which is addressed by employing a fuzzy logic controller that regulates the power flow between the fuel cell and the battery. The fuzzy logic controller monitors the system’s load demand and the battery’s state-of-charge to adjust the power distribution between the sources. While this approach successfully adapts the power flow to varying operational demands, it does not explicitly address the voltage regulation problem. In [16], a control strategy for hybrid-electric aircraft is presented, which manages a system composed of a fuel cell and a battery that energizes a DC bus from which propulsion is fed. This approach ensures voltage regulation and safe battery charging in various operation modes. In [17], also in the context of a hybrid-electric propulsion system, a PI controller for a DC–DC converter is proposed to regulate the power flow between an energy storage system (ESS) and a common DC-link to which the power sources (i.e., the ESS and a generator) as well as the EPU are connected. In this case, the proposed scheme ensures stable voltage regulation of the common DC bus. In [18], a power management solution, also based on a PI control, is presented. The scheme achieves power flow management between a fuel cell, a battery, and the propulsion unit while maintaining precise voltage regulation across a potential flight profile. While the works [16]–[18] address the problem of voltage regulation within the EPDS of hybrid-electric propulsion systems, they are limited to coordinating load-sharing between only two energy sources. Moreover, these works do not explicitly seek to establish consensus on the current injections of the energy sources, i.e., proportional load-sharing. The lack of such coordination is undesirable, as it may lead to over-stressing one or more energy sources. The work in [19] proposes an MPC-based energy management strategy for hybrid-electric aircraft to optimally allocate power between propulsion components. However, it does not address the control of the EPDS, including DC-bus voltage regulation, proportional load sharing among sources, or stability of the underlying electrical network. 
+
+C. Contributions 
+
+In this work, inspired by [10], [12], [20], we propose a distributed controller for voltage regulation and proportional load-sharing in a DC power distribution network representing the propulsion system of a series-hybrid-electric aircraft. The controller combines elements of back-stepping, adaptive, and passivity-based control, and guarantees local convergence of the closed-loop trajectories to an equilibrium satisfying the control objectives. Compared to [10], [12], [20], the network topology considered here is structurally different, as multiple electric sources are connected to a single non-actuated load bus representing the main DC link of the propulsion system. Consequently, existing convergence analyses for multi-PCC microgrids are not directly applicable. This work, therefore, develops a control framework and corresponding convergence analysis tailored to this architecture. The main contributions are summarized as follows:  
+
+> •
+
+Control design for a single-load-bus architecture. We develop a distributed adaptive control framework for DC power distribution networks where multiple DGUs are connected to a single non-actuated load bus. This topology is representative of the EPDS of series-hybrid-electric aircraft.  
+
+> •
+
+Reduced parameter knowledge with adaptive resis-tance estimation. Unlike our preliminary work [1] and [20], which require exact knowledge of the line induc-tances, the proposed controller does not require prior knowledge of either the power-line resistances or induc-tances. Instead, it incorporates an adaptive mechanism that estimates the line resistances online and compensates for uncertain inductive dynamics.  
+
+> •
+
+Stability and convergence analysis for the considered topology. We develop a convergence analysis tailored to the considered system architecture. Compared to our preliminary work [1], the analysis is extended to accom-modate the reduced parameter knowledge. 3 
+
+> •
+
+Experimental validation in a power hardware-in-the-loop (PHIL) environment. The proposed control framework is validated through laboratory experiments using a PHIL testing setup. The experiments demonstrate robust performance under practical electrical disturbances inherent to PHIL environments, such as noise, delays, and parameter uncertainties. This validation study extends our preliminary work [1]. 
+
+D. Organization of the Paper 
+
+The paper is structured as follows. In Section II, we discuss the typical architecture of a series-hybrid-electric propulsion system and its electrical components. In Section III, we derive an analytical model of an EPDS of a series-hybrid-electric propulsion system and formalize the control objectives. In Section IV, we present the proposed control scheme and an asymptotic stability proof of the closed-loop system’s desired equilibrium. Experimental and comparative results are presented in Section V. Finally, in Section VI, we summarize our key findings and identify potential research directions for future work. 
+
+E. Notation 
+
+The following notation is adopted in the paper: the symbol 
+
+R denotes the set of real numbers; x = col (xi) is a column vector with entries xi, where xi can be either a scalar or a vector; diag (xi) is a diagonal matrix with diagonal entries xi;
+
+1n ∈ Rn is the vector with all entries being equal to one, 
+
+0n ∈ Rn is the vector with all entries being equal to zero and 
+
+0n×m ∈ Rn×m is the matrix with all entries being equal to zero; In denotes the n × n identity matrix; the expression 
+
+x⊤M x is equivalently represented as ∥x∥2 
+
+> M
+
+, where M is any positive definite, symmetric matrix and x is a column vector. Moreover, in Tables I and II, we summarize the main abbreviations and symbols, respectively, used throughout the paper. TABLE I: List of Abbreviations           
+
+> Abbreviation Definition DGU Distributed generation unit EPDS Electrical power distribution system EPU Electric propulsion unit ESS Energy storage system MG Microgrid PCC Point of common coupling PHIL Power hardware-in-the-loop PMS Power management system TGS Turbo generator system
+
+II. S YSTEM SETUP 
+
+In this section, we describe the architecture and the op-erational features of the EPDS of an aircraft’s series-hybrid-electric propulsion system. In Fig. 1, we show a schematic diagram with the main components of the considered propulsion system. The main power source is a turbo generator system (TGS), whereas an ESS acts as a secondary power source. The propulsion TABLE II: List of Symbols                      
+
+> Notation Definition
+> Cdc Capacitance of PCC
+> GConnected graph to represent the EPDS topology
+> Gcom Connected graph representing communication network among the DGUs
+> ESet containing the power lines
+> Ecom Set containing communication lines among the DGUs
+> Eeq Set containing equilibrium point of the closed-loop dynamics
+> NSet containing the electric buses in the EPDS
+> ILElectrical load of the EPU
+> Iτ,i The electric current generated by the i-th DGU
+> Lτ,i Line inductance of the i-th power line
+> Rτ,i Line resistance of the i-th power line
+> uControl law
+> Vdc Voltage across PCC
+> ξiController states of the i-th DGU
+> wiWeight specified for the i-th DGU
+
+system is energized via two distinct lanes, each with its own EPU: the collective power of each source is injected into each lane’s point of common coupling (PCC), which we will also refer to as the main DC load bus. Since, in nominal operating conditions, there is no power transfer between the lanes, in this work, we will focus exclusively on the operation of an individual lane and will neglect the effect that another lane may exert on it. Nonetheless, as we will see in Section 3, we generalize the system setup to accommodate for multiple energy sources. With the objective of stating a number of simplifying modeling assumptions, below we provide further details about the main components of the propulsion system:  
+
+> •
+
+The TGS comprises a gas turbine that drives a generator to produce AC electrical power. This AC power is con-verted to DC power using a rectifier. The TGS is equipped with a low-level controller that accurately tracks desired voltage references, allowing the TGS to serve as a voltage source.  
+
+> •
+
+The ESS comprises a battery unit and a bi-directional DC-DC converter. Before a flight, the battery unit is charged, e.g., using renewable energy sources. Battery charging can also occur during a flight, using a scheme known as wind-milling, where the airflow over a free-spinning propeller generates electrical power. However, we assume that the battery operates exclusively in discharge mode all the time, with the converter functioning as a boost converter (see Remark 1). Similar to the TGS, the ESS is also equipped with a low-level controller that tracks de-sired voltage references. For more details on the voltage control of converter-interfaced sources, we refer to [21] and the references therein.  
+
+> •
+
+The EPU consists of an inverter interfaced with a perma-nent magnet synchronous motor. The inverter converts the DC power drawn from the PCC into AC power supplied to the motor. The mechanical power required by the propulsion system varies across flight segments (e.g., take-off, climb, and cruise). However, these variations occur on a much slower time scale than the electrical dynamics of the EPDS. Therefore, over the time scale relevant for the voltage regulation problem considered in 4
+
+this work, the demanded power can be treated as constant. Moreover, the EPDS is to be controlled to regulate the DC voltage at the PCC. Under such regulated-voltage operation, the inverter of the EPU can operate in current-controlled mode. Consequently, since the PCC voltage is maintained approximately constant, a constant power demand can be approximated as a constant current drawn from the DC network. 
+
+Remark 1: The assumption that the battery operates only in discharge mode does not undermine the motivation for adopting a hybrid-electric propulsion architecture. In a series-hybrid-electric propulsion system, the battery fulfills several important roles beyond supplying average power. In particular, it provides peak power support during high-demand phases such as takeoff and climb, delivers fast transient response due to its superior power dynamics compared to the gas-turbine-driven generator, enhances redundancy and system reliability, and enables generator downsizing, thereby improving overall efficiency and weight distribution [22]. Hence, the primary motivation for hybridization lies in performance, efficiency, and reliability considerations, rather than in the necessity of bidirectional battery operation during every flight phase. HV Battery System 
+
+> Motor
+> TGS
+
+# G
+
+> Power dist. unit
+> (PCC)
+> Inverter
+> Rectifier DC-DC Converter
+> EPU
+> Power dist. unit
+> (PCC)
+> Rectifier
+> AC Power
+> DC Power
+> DC-DC Converter
+> EPU
+> Motor
+> Inverter
+
+Fig. 1: Exemplary series-hybrid-electric propulsion system. III. MODEL, OBJECTIVES AND SOLUTION APPROACH Having described the system setup, in this section, we pro-ceed to derive an ordinary differential equation-based system model. Furthermore, we outline the key control objectives and summarize the considered approach to address them. 
+
+A. Modeling EPDS of a Hybrid-Electric Propulsion System 
+
+Let us consider a single lane of the propulsion system, as shown in Fig. 2a. An equivalent electrical diagram of this lane is presented in Fig. 2b. To account for the presence of multiple power sources, which are commonly used in certain aircraft propulsion systems (e.g., electric vertical take-off and landing (eVTOL)), we extend the propulsion architecture to a multi-source configuration to broaden the scope of this work. Since the EPDS can be viewed as an onboard DC MG, we adopt a modeling approach used in [7], [23]. Accordingly, the EPDS is represented as a connected graph G(N , E), where the set of nodes N = {1, 2, . . . , n } corresponds to electrical buses, and the set of edges E = {1, 2, . . . , n τ } represents the power lines. Since we are considering that there is a unique load bus (from which the EPU is energized), we split the set of vertices 
+
+N as N = Ns ∪ N ℓ, where Ns is comprised of the ns > 1
+
+generation buses and Nℓ of the unique load bus; the number of power lines is denoted by nτ .Each distributed generation unit (DGU) (i.e., converter-interfaced generator or battery) is modeled as a controllable voltage source whose voltage ui(t) is treated as a control variable. Each power line is modeled as a series connection of an inductor and a resistor [7], [10], [12], [23], [20]. The line inductance, resistance, and electric current are denoted by 
+
+Lτ,i > 0, Rτ,i > 0 and Iτ,i (t) ∈ R, respectively. The load bus is modeled as a capacitor of capacitance Cdc > 0, and its voltage (w.r.t. ground) is denoted by Vdc (t) ∈ R. The EPU’s electrical load is denoted by IL(t) ∈ R.Based on the above description, we use Kirchhoff’s laws to obtain the dynamics of the current Iτ,i injected by the i-th DGU as follows: 
+
+Lτ,i ˙Iτ,i = −Vdc − Rτ,i Iτ,i + ui i = 1 , 2, ..., n s. (1) Similarly, the dynamics of the voltage Vdc at the PCC can be obtained as follows: 
+
+Cdc ˙Vdc =
+
+> ns
+
+X
+
+> i=1
+
+Iτ,i − IL. (2) By combining (1) and (2), we obtain the model for the entire EPDS in vector form as follows: 
+
+Lτ ˙Iτ = −1ns Vdc − Rτ Iτ + u, Cdc ˙Vdc = 1⊤ 
+
+> ns
+
+Iτ − IL, (3) where Lτ = diag (Lτ,i ), Rτ = diag (Rτ,i ), Iτ = col (Iτ,i ), and 
+
+u = col (ui).The following are modeling and measurement assumptions for the EPDS model (3). 
+
+Assumption 1: (i) The internal dynamics of each DGU is an input-output stable subsystem capable of tracking desired reference signals. Consequently, the output DC voltage is our control signal ui, for all i ∈ N s (c.f., [24]). 
+
+(ii) For each DGU, the generated current Iτ,i is locally measured and available for control design purposes. Moreover, the voltage across the main DC bus (PCC) 
+
+Vdc is also measured, and its measurement is transmitted 5G 
+
+> Inverter
+> Motor
+> EPU
+> PCC
+> DC-DC Converter
+> Rectifier
+> AC Power
+> DC Power
+> HV Battery System
+> TGS
+> (a) Hybrid-electric propulsion system architecture. (b) Electrical representation of a hybrid-electric propulsion system.
+
+Fig. 2: Series-hybrid-electric propulsion system and its electrical representation. to each DGU. Thus, we define the output of each DGU as yi = Iτ,i Vdc 
+
+⊤ (c.f., [12], [24], [25]). 
+
+(iii) For each power line i ∈ N s, the resistance Rτ,i > 0 is unknown, but constant (see Remark 2). 
+
+(iv) For each power line i ∈ N s, the inductance Lτ,i >
+
+0 is unknown, but belongs to the known open interval 
+
+]Lmin  
+
+> τ,i
+
+, L max  
+
+> τ,i
+
+[ (see Remark 2). 
+
+(v) The controlled EPU is modeled as a ZI-load, i.e., a parallel connection of a constant current load and a constant impedance, i.e., IL(Vdc ) = Iℓ + Y V dc , where 
+
+Iℓ > 0 and Y > 0 are unknown but constant load parameters (c.f., [20]). 
+
+Remark 2: The EPDS model parameters are treated as constant. From a time-scale perspective, the closed-loop elec-trical dynamics evolve significantly faster than environmental variations caused by changes in altitude, pressure, and temper-ature. Therefore, these parameters can reasonably be assumed constant for control design purposes, which is standard prac-tice in related literature; see, e.g., [17], [18], [26]. Moreover, although some parameters (e.g., line resistances) may vary with temperature, significant deviations from nominal values are not expected in hybrid-electric aircraft due to the use of thermal management systems that maintain components within prescribed operating ranges [27], [28]. In addition, pressure variations associated with altitude changes are not expected to meaningfully affect electrical parameters, as sensitive com-ponents such as converters are typically placed in protected compartments designed to prevent environmental damage and humidity exposure [29]. 
+
+Remark 3: Assumption 1.(v) is consistent with the earlier discussion in the Section II regarding the operation of the EPU. In particular, since the EPDS is to be controlled to regulate the DC voltage at the PCC and the propulsion power demand varies on a slower time scale than the electrical dynamics of the EPDS, the inverter of the EPU can be operated in current-controlled mode. Consequently, the EPU can be modeled as drawing an approximately constant current from the DC network. In the model (3), this is represented as a constant current load Iℓ, while the internal losses of the EPU are captured by a shunt constant impedance ( 1/Y ). 
+
+B. Objectives 
+
+In this article, we pursue the following two objectives: 
+
+Objective 1 (Voltage regulation): 
+
+lim  
+
+> t→∞
+
+Vdc (t) = V ∗
+
+> dc
+
+, (4) where V ∗ 
+
+> dc
+
+∈ R is the desired voltage value at the PCC. 
+
+Objective 2 (Current sharing): 
+
+lim  
+
+> t→∞
+
+Iτ (t) = ¯Iτ , (5) where, 
+
+wi ¯Iτ,i = wj ¯Iτ,j , for all i, j ϵ Ns,
+
+with wi > 0 being weights specified for each DGU. On the one hand, the achievement of Objective 1 will ensure the effective operation of the EPU, which has a specific operational voltage range, i.e., it is needed to accurately regulate the voltage at the PCC to a prescribed nominal value. On the other hand, the achievement of Objective 2 will ensure that, at equilibrium, there exists a predefined proportionality relationship among the DGUs’ injected currents, thereby con-tributing to preventing over-stressing them. 
+
+C. Solution Approach 
+
+To summarize our approach, we introduce the assumption that there exists a connected communication graph Gcom (Ns, Ecom )
+
+among the DGUs, with Ns representing the set of all DGUs and Ecom the set of communication links among the DGUs. Moreover, for any i ∈ Gcom , we introduce the vector zi
+
+grouping the output signals from all the DGUs in Gcom which are adjacent to i. Then, our approach is to design, for each input ui, a dynamic and distributed feedback law of the form 
+
+ui = γi(yi, z i, ξ i), (6a) 
+
+˙ξi = ρi(yi, z i, ξ i), (6b) where ξi ∈ Rsi denotes the state of the i-th controller, si
+
+is a natural number, and γi and ρi are continuous functions. The vector yi ∈ R2 collects the measurable outputs of 6
+
+the i-th DGU. The design of the controller is motivated by the fact that the model (3) admits a port-Hamiltonian representation. This observation motivates the use of the Inter-connection and Damping Assignment Passivity-Based Control (IDA-PBC) methodology with dynamic extension [30] for the controller synthesis (see Appendix for details). In addition, a backstepping-inspired change of variables is employed to introduce an integral action that compensates for unknown disturbances. Moreover, the feedback law (6) aims to address parametric uncertainty. While the structural form of the EPDS dynamics is assumed to be known, the exact parameter values need not be available for controller implementation. Instead, unknown parameters are compensated through the adaptive mechanism introduced in a subsequent section. Accordingly, the controller is designed such that the closed-loop dynam-ics obtained by interconnecting (3) with (6) admit a port-Hamiltonian structure with a stable equilibrium encoding the desired control objectives. IV. A DISTRIBUTED CONTROL LAW FOR CURRENT SHARING AND VOLTAGE REGULATION In this section, we present a controller of the form (6) tailored to meet Objectives 1 and 2 for the model (3) subject to Assumption 1. Subsequently, the achievement of Objectives 1 and 2 is implied from the proof that the trajectories of the resulting closed-loop system locally converge to an equilib-rium point that encodes both voltage regulation and current sharing. 
+
+A. Proposed Distributed Control Law 
+
+Consider the system (3). Then, we propose to meet Objec-tives 1 and 2 via the following distributed controller:                                                                 
+
+> Tφτ,i ˙φτ,i =−(Vdc −V∗
+> dc )−wi
+> X
+> j∈N com i
+> (θτ,i −θτ,j ),Tθτ,i
+> ˙θτ,i =X
+> j∈N com i
+> (wiIτ,i −wjIτ,j ),Tˆrτ,i
+> ˙ˆrτ,i =−Iτ,i (Iτ,i −φτ,i ),Tητ,i ˙ητ,i =−T−1
+> φτ,i
+> −(Vdc −V∗
+> dc )−wi
+> X
+> j∈N com i
+> (θτ,i −θτ,j )
+> (Iτ,i −φτ,i ),ui=−Kzτ,i (Iτ,i −φτ,i ) + ˆ rτ,i Iτ,i +V∗
+> dc
+> +T−1
+> φτ,i
+> −(Vdc −V∗
+> dc )−wi
+> X
+> j∈N com i
+> (θτ,i −θτ,j )
+> ητ,i
+> −wi
+> X
+> j∈N com i
+> (θτ,i −θτ,j ).
+
+(7) where Kzτ,i , Tθτ,i , Tφτ,i , Tˆrτ,i , Tητ,i ∈ R are con-trol parameters to tune the transient response, and ξi =
+
+col (Tφτ,i φτ,i , T θτ,i θτ,i , T ˆrτ,i ˆrτ,i , T ητ,i ητ,i ) are the controller’s states. The set N com  
+
+> i
+
+is the set of DGUs adjacent to the i-th DGU within the communication network Gcom .Note that for implementing the controller (7), it is necessary that the PCC’s voltage measurement is communicated to all the DGUs. Additionally, measurements of the currents Iτ,i 
+
+and the controller states θτ,i need to be communicated among neighboring nodes within the communication network Gcom .This feature of the controller inherently makes it distributed in nature. A detailed explanation of the controller and the intuition be-hind its structure will be provided subsequently. At this stage, we find it convenient to represent the distributed controller in vector form for compactness and clarity. The distributed controller (7) for all the DGUs can be written in vector form as follows: 
+
+Tφτ ˙φτ = −(Vdc − V ∗
+
+> dc
+
+)1ns − W Lcom θτ ,Tθτ
+
+˙θτ = Lcom W I τ ,Tˆrτ
+
+˙ˆrτ = −diag (Iτ )( Iτ − φτ ),Tητ ˙ητ = −diag  T −1 
+
+> φτ
+
+(−(Vdc − V ∗
+
+> dc
+
+)1ns − W Lcom θτ ) (Iτ − φτ ),u = −Kzτ (Iτ − φτ ) + diag (ˆ rτ )Iτ + 1ns V ∗
+
+> dc
+
++ diag  T −1 
+
+> φτ
+
+(−(Vdc − V ∗
+
+> dc
+
+)1ns − W Lcom θτ ) ητ
+
+− W Lcom θτ ,
+
+(8) where Kzτ = diag (Kzτ,i ) ∈ Rns×ns , Tθτ = diag (Tθτ,i )
+
+∈ Rns×ns , Tφτ = diag (Tφτ,i ) ∈ Rns×ns , Tˆrτ = diag (Tˆrτ,i )
+
+∈ Rns×ns , Tητ = diag (Tητ,i ) ∈ Rns×ns are positive-definite diagonal matrices of control parameters, and Lcom ∈ Rns×ns
+
+is the Laplacian matrix of the communication graph Gcom .Additionally, W = diag (wi) ∈ Rns×ns denotes a diagonal weighting matrix. The controller structure incorporates the additional state variables ( φτ , θτ , ˆrτ , ητ ) to achieve the desired objectives. First, the dynamic extension adopted from [12], introduced through the variable φτ , plays a role analogous to the integral action used in classical output regulation. In particular, it accumulates the voltage regulation error and ensures that, at steady-state, Vdc = V ∗ 
+
+> dc
+
+(Objective 1), thereby eliminating steady-state voltage deviation. Then, the consensus-driven term Lcom W I τ , adopted from [10], [12], is included in the 
+
+˙θτ dynamics to enforce weighted proportional current sharing among the DGUs (Objective 2). Then, the variables ˆrτ and 
+
+ητ are introduced to compensate for the uncertainty in the resistances and inductances of the lines. The controller does not require prior knowledge of these parameters; instead, adaptation mechanisms are employed to ensure voltage reg-ulation and proportional current-sharing despite parametric uncertainty. In particular, ˆrτ is introduced as an estimate of the unknown line resistances that converge to the actual line resistance at steady-state, and its update law follows the gradient-based adaptive structure [31]. Some additional bene-fits of resistance estimation are highlighted in the Remark 4. In contrast, ητ does not necessarily converge to the true line inductance. Rather, it evolves toward a bounded constant value that is sufficient to guarantee the desired closed-loop behavior. The role of ητ is not parameter identification but dynamic compensation of uncertain inductive effects while preserving the passivity structure of the closed-loop system, which is essential for ensuring closed-loop stability. As shown in Section IV-C, steady-state objective satisfaction is achieved without requiring convergence of ητ to the physical induc-tance, while Section IV-D establishes that such convergence is likewise unnecessary for stability. Finally, the control law for u is designed such that the desired closed-loop equilibrium is stable. For that, we have fol-7
+
+lowed the nonlinear control design methodology known as In-terconnection and Damping Assignment Passivity-Based Con-trol (IDA-PBC) with dynamic extension [30]. This controller renders the plant’s closed-loop dynamics a port-Hamiltonian system [32] with a stable or asymptotically stable equilibrium. Details of the methodology are provided in the appendix. For further reading on port-Hamiltonian systems and IDA-PBC design, interested readers are referred to [33] and [34]. 
+
+Remark 4: Knowledge of the estimated resistances provides additional benefits beyond improving voltage regulation and current-sharing performance. In particular, they enable the computation of resistive power losses, which can support supervisory monitoring of network efficiency and operat-ing conditions. Moreover, deviations of the estimates from nominal values may indicate abnormal conditions such as line degradation, loose connections, or developing faults. Early detection of such anomalies is particularly important in aircraft applications due to stringent reliability and safety requirements. Finally, the availability of these estimates can facilitate future extensions toward optimization-based power flow coordination that explicitly accounts for network losses. 
+
+B. Closed-loop Dynamics 
+
+Moving forward, we introduce a new variable zτ as follows: 
+
+zτ := Iτ − φτ , (9) where φτ evolves according to (8). This change of vari-able—motivated by backstepping control design [35]—intro-duces an integral action in the Vdc dynamics, which is essential for compensating the unknown constant disturbance Iℓ. The change of variable is then employed in the subsequent propo-sition to derive an equivalent representation of the closed-loop system obtained by combining (3) and (8). 
+
+Proposition 1: Consider the aircraft EPDS model (3), sub-ject to Assumption 1 and in closed-loop with the distributed controller (8). Consider the change of variables (9) and define the following vectors: 
+
+rτ := Rτ 1ns , (10a) 
+
+lτ := Lτ 1ns . (10b) Then, the closed-loop system can be equivalently represented as follows: 
+
+Lτ ˙zτ = −Kzτ zτ + diag (φτ + zτ )(ˆ rτ − rτ )
+
+− (Vdc − V ∗
+
+> dc
+
+)1ns − W Lcom θτ
+
++ diag  T −1 
+
+> φτ
+
+(−(Vdc − V ∗
+
+> dc
+
+)1ns − W Lcom θτ ) (ητ − lτ ),Cdc ˙Vdc = 1⊤ 
+
+> ns
+
+(zτ + φτ ) − Iℓ − Y V dc ,Tφτ ˙φτ = −(Vdc − V ∗
+
+> dc
+
+)1ns − W Lcom θτ ,Tθτ
+
+˙θτ = Lcom W (zτ + φτ ),Tˆrτ
+
+˙ˆrτ = −diag (φτ + zτ )zτ
+
+Tητ ˙ητ = −diag  T −1 
+
+> φτ
+
+(−(Vdc − V ∗
+
+> dc
+
+)1ns − W Lcom θτ ) zτ .
+
+(11) 
+
+Proof 1: In view of (9) the time-derivative of zτ satisfies: 
+
+Lτ ˙zτ = Lτ ˙Iτ − Lτ ˙φτ . (12) By substituting the expression for Lτ ˙Iτ from (3) and ˙φτ from (8) in (12), we get: 
+
+Lτ ˙zτ = ( −1ns Vdc − Rτ Iτ + u)−
+
+Lτ T −1 
+
+> φτ
+
+(−(Vdc − V ∗
+
+> dc
+
+)1ns − W Lcom θτ ). (13) By substituting u from (8) in (13) we obtain: 
+
+Lτ ˙zτ = −1ns (Vdc − V ∗
+
+> dc
+
+) − Rτ (zτ + φτ )
+
+− Kzτ zτ + diag (ˆ rτ )( zτ + φτ ) − W Lcom θτ
+
++ diag  T −1 
+
+> φτ
+
+(−(Vdc − V ∗
+
+> dc
+
+)1ns − W Lcom θτ ) ητ
+
+− Lτ
+
+ T −1 
+
+> φτ
+
+(−(Vdc − V ∗
+
+> dc
+
+)1ns − W Lcom θτ ) .
+
+(14) By considering the identities 
+
+(diag (ˆ rτ ) − Rτ )( zτ + φτ ) = diag (zτ + φτ )(ˆ rτ − Rτ 1ns ),
+
+(15a) diag  T −1 
+
+> φτ
+
+(−(Vdc − V ∗
+
+> dc
+
+)1ns − W Lcom θτ ) lτ
+
+= Lτ T −1 
+
+> φτ
+
+(−(Vdc − V ∗
+
+> dc
+
+)1ns − W Lcom θτ ) , (15b) then (14) can be equivalently written as: 
+
+Lτ ˙zτ = −Kzτ zτ + diag (φτ + zτ )(ˆ rτ − rτ )
+
+− (Vdc − V ∗
+
+> dc
+
+)1ns − W Lcom θτ
+
++ diag  T −1 
+
+> φτ
+
+(−(Vdc − V ∗
+
+> dc
+
+)1ns − W Lcom θτ ) (ητ − lτ ).
+
+(16) By incorporating the Vdc -dynamics, zτ -dynamics, and the controller from the model (3), (16), and (8), respectively, and propagating the change of variable (9), we can establish that the closed-loop system is equivalent to (11). ■
+
+Remark 5: Consider the closed-loop system (11). Multiply-ing both sides of the θτ -dynamics from the left by 1⊤ 
+
+> ns
+
+we get that 1⊤ 
+
+> ns
+
+Tθτ
+
+˙θτ = 0 for all time. Then, the solutions of (11) evolve in the following invariant set: 
+
+I = {(zτ , V dc , φ τ , θ τ , ˆrτ , η τ ) ∈ R5ns+1 : 1⊤ 
+
+> ns
+
+Tθτ θτ = c},
+
+(17) where c = 1⊤ 
+
+> ns
+
+Tθτ θτ (0) . This set is a hyperplane in the full state space that constrains only the weighted sum of θτ , while all remaining state variables are unconstrained. Consequently, the weighted average of θτ is preserved by the closed-loop dynamics, and the trajectories remain in the corresponding level set for all time. This fact is key in showing later the convergence to an equilibrium. Importantly, this dependence on θτ (0) does not affect the control objectives. As will be shown later, the equilibrium values of Vdc and Iτ , which encode voltage regulation and proportional current sharing, are independent of θτ (0) . The initial condition only determines a constant offset of θτ within the invariant set and does not restrict feasibility nor degrade closed-loop performance. 
+
+C. Closed-loop System Equilibria Analysis 
+
+The following proposition establishes that, for any given 
+
+θτ (0) , the closed-loop system (11) admits an equilibrium set apt to meet Objectives 1 and 2. Before proceeding further, we find it convenient to represent the closed-loop system’s state vector in the following form: 
+
+x = ( Lτ zτ , C dc Vdc , T φτ φτ , T θτ θτ , T ˆrτ ˆrτ , T ητ ητ ). (18) 8
+
+Proposition 2: Subject to Assumption 1, for any given 
+
+θτ (0) ∈ Rns , the closed-loop dynamics (11) admits a non-empty equilibrium set Eeq , every point of which is of the form 
+
+(0ns , C dc V ∗
+
+> dc
+
+, αT φτ W −11ns , βT θτ 1ns , T ˆrτ rτ , T ητ ¯ητ ), (19) where, 
+
+α = Iℓ + Y V ∗
+
+> dc
+
+1⊤ 
+
+> ns
+
+W −11ns
+
+, β = 1⊤ 
+
+> ns
+
+Tθτ θτ (0) 
+
+1⊤ 
+
+> ns
+
+Tθτ 1ns
+
+, (20) and ¯ητ ∈ Rns is any constant vector. Moreover, the vector of equilibrium currents, ¯Iτ , is such that 
+
+wi ¯Iτ,i = wj ¯Iτ,j , for all i, j ϵ Ns. (21) 
+
+Proof 2: Consider (11) at steady-state. The equilibrium condition ˙φτ = 0 holds if and only if −( ¯Vdc − V ∗
+
+> dc
+
+)1ns −
+
+W Lcom ¯θτ = 0 . By multiplying both sides of this equation by 
+
+1ns W −1 we get that ( ¯Vdc −V ∗
+
+> dc
+
+)1⊤ 
+
+> ns
+
+W −11ns = 0 . Since W is a diagonal, positive-definite matrix, it follows that ¯Vdc = V ∗
+
+> dc
+
+.Now, ˙θτ = 0 holds if and only if 
+
+W (¯ zτ + ¯ φτ ) = a1ns , (22) for some a ∈ R. To verify that a = α, with α defined in (20), we use the equilibrium condition ˙Vdc = 0 , from which we get that 
+
+1⊤ 
+
+> ns
+
+(¯ zτ + ¯ φτ ) = Iℓ + Y ¯Vdc . (23) Clearing ¯zτ + ¯ φτ from (22) and substituting it into (23) results in 
+
+1⊤
+
+> ns
+
+ aW −11ns
+
+ = Iℓ + Y ¯Vdc 
+
+⇔
+
+a = Iℓ + Y ¯Vdc 
+
+1⊤ 
+
+> ns
+
+W −11ns
+
+> 0, (24) we note that a > 0 due to Assumption 1.(v). Observe now from (22) and (24) that ¯zτ,i + ¯ φτ,i > 0 for all 
+
+i ∈ N s. Then, the equilibrium condition ˙ˆrτ = 0 in (11) holds if and only if ¯zτ = 0ns . Having established this, we can see from (22) that ¯φτ satisfies (19). Now let us verify that ¯ˆrτ = rτ . Simultaneously considering the equilibrium conditions ˙zτ = 0 and ˙φτ = 0 it is possible to obtain the following identity: 
+
+0 = −Kzτ ¯zτ + diag (¯ zτ + ¯ φτ )( ¯ˆrτ − rτ ). (25) Since ¯zτ = 0ns and ¯φτ,i > 0 for all i ∈ N s, then (25) holds if and only if ¯ˆrτ = rτ .Moving forward, consider again the equilibrium condition 
+
+˙φτ = 0 . Having established that ¯Vdc = V ∗
+
+> dc
+
+, it follows that 
+
+˙φτ = 0 if and only if 
+
+0 = −W Lcom ¯θτ ⇔ ¯θτ = b1ns , (26) for some b ∈ R. In view of Remark 5, ¯θτ satisfying (26) is a feasible equilibrium value if and only if 1⊤ 
+
+> ns
+
+Tθτ
+
+¯θτ =
+
+1⊤ 
+
+> ns
+
+Tθτ θτ (0) , which holds if b = β, where β is given in (20). Having proved that ¯zτ , ¯Vdc , ¯φτ , ¯θτ and ¯ˆrτ are as in (19), it is direct to see that ˙ητ = 0 and ˙zτ = 0 hold for any constant 
+
+¯ητ , as stated. Finally, the satisfaction of (21) directly follows from (9) and (22), and from the fact that ¯zτ = 0ns . ■
+
+D. Closed-loop System Stability and Convergence Analysis 
+
+The following proposition establishes the technical condi-tions under which Objectives 1 and 2 are satisfied. On the one hand, note from (19) that any closed-loop equilibrium satisfies 
+
+¯ˆrτ = rτ , which implies that the proposed controller offers the possibility of accurately estimating the line resistance matrix 
+
+Rτ , whose main diagonal entries have been arranged in the vector rτ (see (10a)). This feature is central for the satisfaction of Objective 1. On the other hand, note that ¯η is not necessarily equal to lτ ; in fact ¯η can be any constant vector. We show in the sequel that this is not needed for the satisfaction of Objectives 1 and 2 (see, e.g., [35, Example 4.10]). 
+
+Proposition 3: Consider the closed-loop system (11) with Assumption 1. Choose 
+
+Tφτ,i > L max  
+
+> τ,i
+
+− Lmin  
+
+> τ,i
+
+, i = 1 , 2, . . . , n s. (27) Then, all solutions starting sufficiently close to the equilibrium point 
+
+¯x = ( 0ns , C dc V ∗
+
+> dc
+
+, αT φτ W −11ns , β ′Tθτ 1ns , T ˆrτ rτ , T ητ lτ ),
+
+(28) with α as in (20) and β′ ∈ R being an arbitrary constant, converge to the equilibrium set Eeq characterized by (19). Moreover, (4) and (5) hold. 
+
+Proof 3: Consider the following Lyapunov function candi-date for ¯x:
+
+S(x, ¯x) = 12 ∥zτ ∥2 
+
+> Lτ
+
++ 12 ∥Vdc − ¯Vdc ∥2
+
+> Cdc
+
++ 12 ∥φτ − ¯φτ ∥2 
+
+> Tφτ
+
++ 12 ∥θτ − ¯θτ ∥2
+
+> Tθτ
+
++ 12 ∥ˆrτ − ¯ˆrτ ∥2 
+
+> Tˆrτ
+
++ 12 ∥ητ − lτ ∥2 
+
+> Tητ
+
+.
+
+(29) 
+
+S is globally positive-definite with respect to ¯x and its time-derivative along trajectories of (11) is given by 
+
+˙S(x, ¯x) = z⊤ 
+
+> τ
+
+Lτ ˙zτ + ( Vdc − ¯Vdc )⊤Cdc ˙Vdc 
+
++ ( φτ − ¯φτ )⊤Tφτ ˙φτ + ( θτ − ¯θτ )Tθτ
+
+˙θτ
+
++ (ˆ rτ − ¯ˆrτ )⊤Tˆrτ
+
+˙ˆrτ + ( ητ − lτ )⊤Tητ ˙ητ .
+
+(30) To further develop (30), we shift the right-hand side vector field of (11) with respect to its value at ¯x, obtaining that 
+
+Lτ ˙zτ = −Kzτ zτ + diag (φτ + zτ )(ˆ rτ − ¯ˆrτ )
+
+− (Vdc − ¯Vdc )1ns − W Lcom (θτ − ¯θτ )+ diag  T −1 
+
+> φτ
+
+(−(Vdc − V ∗
+
+> dc
+
+)1ns − W Lcom θτ ) (ητ − lτ ),Cdc ˙Vdc = 1⊤ 
+
+> ns
+
+zτ + 1⊤ 
+
+> ns
+
+(φτ − ¯φτ ) − Y (Vdc − ¯Vdc ),Tφτ ˙φτ = −(Vdc − ¯Vdc )1ns − W Lcom (θτ − ¯θτ ),Tθτ
+
+˙θτ = Lcom W z τ + Lcom W (φτ − ¯φτ ),Tˆrτ
+
+˙ˆrτ = −diag (φτ + zτ )zτ ,Tητ ˙ητ = −diag  T −1 
+
+> φτ
+
+(−(Vdc − V ∗
+
+> dc
+
+)1ns − W Lcom θτ ) zτ .
+
+(31) Then, ˙S satisfies the identity 
+
+˙S(x, ¯x) = −z⊤ 
+
+> τ
+
+Kzτ zτ − (Vdc − ¯Vdc )⊤Y (Vdc − ¯Vdc ). (32) Note that ˙S(x, ¯x) ≤ 0 and hence ¯x is stable. To demonstrate our claim about the convergence of the closed-loop system’s trajectories, we base the following analysis on 9
+
+LaSalle’s invariance principle [35, Ch.4] (see also Example 4.10 therein). First, we introduce the following sublevel set of the Lyapunov function S:
+
+Rκ = {x : S(x, ¯x) ≤ κ}, (33) We will show that lim t→∞ x = ¯ x′ for a sufficiently small κ
+
+and for some equilibrium ¯x′ ∈ E eq ∩ R κ.Moving forward, we introduce the following set: 
+
+Z = {x : ˙S(x, ¯x) = 0 }, (34) which in view of (32) is characterized by 
+
+Z = {x : zτ = 0ns ∧ Vdc = V ∗
+
+> dc
+
+}. (35) Due to the positive invariance of Rκ, it is possible to choose 
+
+κ > 0 small enough so that the following two conditions are met simultaneously: Proj φτ (Rκ) ⊂ Rns
+
+> >0
+
+, (36a) Proj ητ (Rκ) ⊂ [ηmin  
+
+> τ, 1
+
+, η max  
+
+> τ, 1
+
+] × [ηmin  
+
+> τ, 2
+
+, η max  
+
+> τ, 2
+
+]×· · · × [ηmin  
+
+> τ,n s
+
+, η max  
+
+> τ,n s
+
+] ⊂ Rns . (36b) We note that (36a) is feasible due to the fact that ¯φτ,i > 0 for all i ∈ N s (see (28)). Also, due to (27) and Assumption 1.(iv), there always exist constants ηmax  
+
+> τ,i
+
+≥ Lmax  
+
+> τ,i
+
+and ηmin  
+
+> τ,i
+
+≤ Lmin 
+
+> τ,i
+
+with Tφτ,i > η max  
+
+> τ,i
+
+− ηmin  
+
+> τ,i
+
+, such that (36b) is feasible. We continue then under the assumption that κ > 0 is such that (36) holds. Let [t0, ∞) 7 → x(t) be an arbitrary solution of (31) restricted to the set 
+
+A := Z ∩ R κ ∩ I , (37) where we have included I, defined in (17), to recall that all solutions of (31) evolve in this invariant set (see Remark 5). Then, zτ = ¯ zτ = 0ns and Vdc = ¯Vdc = V ∗
+
+> dc
+
+. Consequently the closed-loop dynamics (11) is as follows, 
+
+0 = diag (φτ )(ˆ rτ − rτ ) − W Lcom θτ
+
+− diag  T −1 
+
+> φτ
+
+(W Lcom θτ ) (ητ − lτ ), (38a) 
+
+0 = 1⊤ 
+
+> ns
+
+φτ − Iℓ − Y ¯Vdc , (38b) 
+
+Tφτ ˙φτ = −W Lcom θτ , (38c) 
+
+Tθτ
+
+˙θτ = Lcom W φ τ , (38d) 
+
+Tˆrτ
+
+˙ˆrτ = 0 , (38e) 
+
+Tητ ˙ητ = 0 . (38f) From (38e) and (38f) it follows directly that ˆrτ = ¯ˆr′ 
+
+> τ
+
+and 
+
+ητ = ¯ η′ 
+
+> τ
+
+for all t ≥ t0, for constant ¯ˆr′ 
+
+> τ
+
+and ¯η′ 
+
+> τ
+
+, respectively. We show next that ¯ˆr′ 
+
+> τ
+
+= rτ . By combining (38a) and (38c) we obtain that 
+
+0 = diag (φτ )( ¯ˆr′ 
+
+> τ
+
+− rτ ) + Tφτ ˙φτ + diag ( ˙ φτ )(¯ η′ 
+
+> τ
+
+− lτ ). (39) Consider the identity diag ( ˙ φτ )(¯ η′ 
+
+> τ
+
+− lτ ) = diag (¯ η′ 
+
+> τ
+
+− lτ ) ˙ φτ
+
+and let us introduce the constant diagonal matrix 
+
+T lφτ := Tφτ + diag (¯ η′ 
+
+> τ
+
+− lτ ). (40) We can rewrite (40) element-wise as: 
+
+T lφτ,i := Tφτ,i + ¯ η′ 
+
+> τ,i
+
+− Lτ,i , ∀i ∈ N s, (41) Due to Assumption 1.(iv), the choice Tφτ,i > η max  
+
+> τ,i
+
+− ηmin  
+
+> τ,i
+
+,and since we analyze the closed-loop behavior within the set A (see (37)), where ¯η′ 
+
+> τ,i
+
+∈ [ηmin  
+
+> τ,i
+
+, η max  
+
+> τ,i
+
+], it follows that 
+
+T lφτ,i remains strictly positive for all i ∈ N s. Consequently, the matrix T lφτ is positive definite. Now using (40) we can reformulate (39) as: 
+
+T lφτ ˙φτ = −diag (¯ˆr′ 
+
+> τ
+
+− rτ )φτ , (42a) 
+
+⇔
+
+T lφτ,i ˙φτ,i = −(¯ˆr′ 
+
+> τ,i
+
+− rτ,i )φτ,i , ∀i ∈ N s, (42b) 
+
+⇔
+
+φτ,i = φτ,i (t0)e− ¯ˆr′
+
+> τ,i −rτ,i T lφτ,i
+> t
+
+, ∀i ∈ N s, (42c) where φτ,i (t0) denotes an initial value. Since x(t) ∈ A for all 
+
+t ≥ t0 (see (37)), it holds that φτ,i (t0) > 0 for all i ∈ N s. In view of (42c) and since Rκ is compact, then ¯ˆr′ 
+
+> τ,i
+
+−rτ,i ≥ 0 for all i ∈ N s, or otherwise x(t) would be unbounded, entailing a contradiction. Furthermore, if we consider (38b) and use φτ,i 
+
+from (42c), it is possible to write that 
+
+> ns
+
+X
+
+> i=1
+
+φτ,i (t0)e− ¯ˆr′
+
+> τ,i −rτ,i T lφτ,i
+> t
+
+= Iℓ + Y ¯Vdc . (43) However, this equation would be rendered invalid if ¯ˆr′ 
+
+> τ,i
+
+−
+
+rτ,i > 0 for some i ∈ N s. Therefore, ¯ˆr′ 
+
+> τ,i
+
+= rτ,i . Having established this, we now proceed to show that for all t ≥ t0,the trajectories of θτ and φτ coincide with their corresponding equilibrium values in the set Eeq .Since ˆrτ = rτ for all t ≥ t0, as established, it follows from (42a) that ˙φτ = 0 , which in turn implies, from (38c), that 
+
+θτ = s(t)1ns , (44) for some s(t) ∈ R. Given that in particular x(t) ∈ I for all 
+
+t ≥ t0 (see (37) and recall I from (17)), then 
+
+1⊤ 
+
+> ns
+
+Tθτ θτ = 1⊤ 
+
+> ns
+
+Tθτ θτ (0) 
+
+⇒
+
+1⊤ 
+
+> ns
+
+Tθτ (s(t)1ns ) = 1⊤ 
+
+> ns
+
+Tθτ θτ (0) 
+
+⇒
+
+s(t) = 1⊤ 
+
+> ns
+
+Tθτ θτ (0) 
+
+1⊤ 
+
+> ns
+
+Tθτ 1ns
+
+∀t ≥ t0,
+
+where we have used the fact that 1⊤ 
+
+> ns
+
+Tθτ
+
+¯θτ = 1⊤ 
+
+> ns
+
+Tθτ θτ (0) 
+
+(due to x(t) ∈ I ). Hence, θτ = β1ns for all t ≥ t0.Having established that θτ = β1ns for all t ≥ t0 (which implies that ˙θτ = 0 ), then from (38d) it follows that 
+
+φτ = ˆ s(t)W −11ns ,
+
+for some ˆs(t) ∈ R. From (38b) we get that 
+
+1⊤ 
+
+> ns
+
+φτ = 1⊤
+
+> ns
+
+ ˆs(t)W −11ns
+
+ = Iℓ + Y ¯Vdc 
+
+⇒
+
+ˆs(t) = Iℓ + Y ¯Vdc 
+
+1⊤ 
+
+> ns
+
+W −11ns
+
+∀t ≥ t0.
+
+Consequently, φτ = αW −11ns for all t ≥ t0. The above analysis shows that the largest invariant set of the closed-loop 10 
+
+dynamics, restricted to Rκ ∩ I and for a sufficiently small 
+
+κ > 0, is given by some equilibrium of the form 
+
+¯x′ = ( 0ns , C dc V ∗
+
+> dc
+
+, αT φτ W −11ns , βT θτ 1ns , T ˆrτ rτ , T ητ ¯η′ 
+
+> τ
+
+),
+
+(45) where α and β are as in (20), and ¯η′ is some constant vector. Such an equilibrium is in agreement with Proposition 2. Consequently, by virtue of LaSalle’s invariance principle [35, Ch.4], all closed-loop trajectories starting sufficiently close to 
+
+¯x in (28) will converge to an equilibrium ¯x′ ∈ E eq , implying the satisfaction of Objectives 1 and 2. ■
+
+V. E XPERIMENTAL RESULTS 
+
+In this section, we experimentally evaluate the performance of the proposed controller at a PHIL laboratory setup emu-lating the EPDS level of a hybrid-electric propulsion system. The objective is to test the controller capabilities under realistic electrical disturbances (e.g., measurement noise, communica-tion delays, and parameter uncertainties), thereby demonstrat-ing the robustness of the control strategy. This subsystem-level validation provides a foundation for future investigations under more comprehensive aero-thermal conditions. The proposed controller is benchmarked against the state-of-the-art droop control method commonly employed in MG control, as well as against the controller presented in [10]. It is important to note that the controller in [10] was developed for a different setup. In [10], multiple DGUs are connected to corresponding PCCs, whereas in our work, multiple electric sources are connected to a single non-actuated load bus representing the main DC link of the propulsion system. Moreover, [10] targets average voltage regulation among generation buses rather than voltage regulation at the load bus. The comparison is included because the controller in [10] has a similar distributed structure and can be implemented in the considered EPDS setting when line parameters are known and DGU inductor currents are interpreted as line currents. Under these assumptions, the controller in [10] can be tuned to achieve voltage regulation in the considered setup. It therefore serves as a representative parameter-dependent benchmark against which the proposed adaptive controller can be compared. 
+
+A. Experimental Setup 
+
+To experimentally validate the controller design, we per-formed a series of tests in the PHIL Laboratory at BTU Cottbus-Senftenberg [36]. Next we introduce some local nota-tion to help us represent the dynamics of parts of the system setup that were neglected or simplified earlier. We have used four converters with a power rating of 
+
+15 kW each, and each of which is programmable through an independent real-time computer (RTC). Converters 1-3 are equipped with an LC output filter, while Converter-4 is equipped with an LCL output filter. The experimental setup is shown in Fig. 3 and a schematic overview is provided in Fig.4. Converters 1-3 are operated in voltage control mode, with the output voltage of the i-th converter given by the voltage ui
+
+across the capacitor of the LC filter. The voltage setpoint u∗
+
+> i
+
+is provided by the controller (7), where we find it convenient to recall that an underlying assumption behind model (3) is that DGUs’ internal dynamics are negligible. In addition, Converter-4 is operated in current-control mode to represent the electrical load. The three voltage source converters are connected via power lines to the main DC bus (i.e., PCC). Each power line consists of two capacitors located at both ends, with an inductor and a resistor positioned between them. The capacitor of the power line connected to the voltage source converter can be considered combined with the capacitor of the converter’s LC filter, effectively treating them as a single lumped component. Additionally, the capacitors of the power lines connected to the PCC can be combined into a single equivalent capacitor with capacitance Cdc . The current-controlled converter is directly connected to the PCC. In this setup, the voltage-controlled converters mimic the DGUs in a series-hybrid-electric propul-sion system, while the current-controlled converter mimics the behavior of the EPU. This approach ensures that the experimental setup closely mimics the model (3). Each converter can access local measurements of filter currents if
+
+> i
+
+, Iτ,i , and filter voltage ui. Then, we have set up a communication network Gcom : the current-controlled Converter-4 measures the main bus voltage Vdc and broadcasts this measurement to converters 1-3; Converters 1-3 share their respective output current measurement Iτ and control variable 
+
+θτ with their neighbor(s) in the communication network Gcom .We note that each communication link introduces a delay of approximately 2 ms .
+
+B. Results 
+
+We assess the performance of the proposed control scheme using the PHIL setup described in Section V-A. Its per-formance is quantitatively compared to that of the droop controller and the controller presented in [10]. For the sake of brevity, we refer to the proposed controller as C1, the droop controller as C2, and the controller from [10] as C3. The system parameters are given in Table III. The controller gains for C1 are Tφτ = I3, Tθτ = I3, Tˆrτ = 10 I3, Tητ = 10 6I3
+
+and Kzτ = 2 I3. Without loss of generality, we take W =
+
+I3, ensuring equal current from the three DGUs at a steady-state to clearly show the accomplishment of Objective 2. The controller gains are also chosen for C2 and C3 using trial and error for a suitable transient response. C3 requires the power line resistances Rτ to be known. To account for realistic conditions, the resistances are set to their actual values but with a 10% error, reflecting the fact that, in real scenarios, power line resistances may not be exactly known and have to be estimated. In Table IV, we display the scaled propulsion load current demand ( Iℓ) associated with selective flight segments within a regional mission profile for a series-hybrid-electric aircraft. Three flight segments are considered to demonstrate that the controller can achieve its objectives at different power levels. Each flight segment time has been scaled for better visualiza-tion, but notably, the controller’s response remains unscaled. 11 
+
+Fig. 3: Experimental setup for the PHIL testing.         
+
+> if1
+> u1
+> Voltage Control
+> PWM
+> if1,u1
+> if2
+> u2
+> Voltage Control
+> PWM
+> if2,u2
+> if3
+> u3
+> Voltage Control
+> PWM
+> if3,u3
+> Iτ, 1
+> Iτ, 2
+> Iτ, 3
+> main bus (PCC) Vdc
+> Iℓif
+> ℓ
+> uℓ
+> Current Control
+> PWM
+> Load Profile I∗
+> ℓ
+> Iℓ,if
+> ℓ,uℓ
+> Bus Voltage Control
+> u∗
+> 1Vdc
+> Iτ, 1
+> Iτ, 2, θ τ, 2
+> Bus Voltage Control
+> u∗
+> 2Vdc
+> Iτ, 2
+> Iτ, 1, θ τ, 1
+> Iτ, 3, θ τ, 3
+> Bus Voltage Control
+> u∗
+> 3Vdc
+> Iτ, 3
+> Iτ, 2, θ τ, 2
+
+non-ideal voltage sources power lines current load distributed controller Fig. 4: Schematic overview of the experimental setup for the PHIL testing. Furthermore, due to the limited power-handling capacity of our experimental setup, we scaled down the power require-ments for each flight segment accordingly. Since the controller design and stability analysis do not rely on the numerical value of Iℓ, but only on its positivity and boundedness, this scaling does not affect the qualitative stability and performance conclusions. The base voltage of the main DC bus and base propulsion load current are V base dc = 200V and Ibase  
+
+> l
+
+= 6 .7A ,respectively. TABLE III: System Parameters. 
+
+Model Parameters Values Line inductances, Lτ,i , i = 1 , 2, 3. [900, 550, 350] μ H
+
+Line resistances, Rτ,i , i = 1 , 2, 3. [1.33, 0.78, 0.71] Ω
+
+Main bus capacitance Cdc 0.318 μ F
+
+TABLE IV: Scaled Regional Mission Profile for HEA. 
+
+Segment Duration (sec) Iℓ (p.u.) Takeoff 35 2.98 Cruise 25 2.3 Landing 25 1.7 
+
+The results of our experimental test for C1 are displayed in Fig. 5. The evolution of the load bus voltage Vdc , the DGUs’ injected currents Iτ , the variable ˆrτ used to estimate the line resistance matrix Rτ are illustrated in Fig.5a, Fig.5b, Fig.5c, respectively. It can be observed in Fig.5a and Fig.5b that despite the changes in the load current demand, the control Objectives 1 and 2 are satisfied. The controller C1 also estimates the power line resistances with reasonable accuracy, as shown in Fig.5c. The performance of the proposed controller, C1, was com-pared against the controllers C2 and C3 from the literature. In particular, we compared the capacity to achieve voltage regulation and load-sharing. The results are respectively shown in Fig. 6. In particular 6a shows the absolute voltage deviation (in %) from the reference voltage V ∗ 
+
+> dc
+
+for the three controllers. Note that C1 exhibits minimal deviation from the reference voltage, while C2 displays the largest deviation. Fig. 6b illustrates the deviation from the expected consensus in load-sharing for the three controllers. To be 12 
+
+precise, the Euclidean norm of the sum of current differences (Iτ,i −Iτ,j ∀ i, j ϵ Ns) is plotted over time. Note that C1 and C3 demonstrate good performance in achieving Objective 2, exhibiting comparable results. In contrast, C2 shows the largest deviation from the expected consensus in load-sharing In summary, C1 demonstrates superior overall performance compared to C2 and C3. The controller C2 neglects power line resistance entirely, while C3 relies on precise prior knowledge of it. In contrast, C1 adaptively estimates power line resistance in real-time, which is particularly advantageous in practical systems where full system parameters are often unknown. This adaptability allows C1 to better accommodate system uncertainties, resulting in improved overall performance. 0 10 20 30 40 50 60 70 80                          
+
+> 0.96
+> 0.98
+> 1
+> 1.02
+> Time(s)
+> Voltage (p.u.)
+> Vdc V∗
+> dc
+> (a) Voltage across the PCC. 010 20 30 40 50 60 70 80
+> 0
+> 0.5
+> 1
+> Time(s)
+> Current (p.u.)
+> Iτ, 1Iτ, 2Iτ, 3
+> (b) Currents generated by the DGUs. 010 20 30 40 50 60 70 80
+> 0
+> 0.5
+> 1
+> 1.5
+> Time(s)
+> Resistance (Ω)
+> Rτ, 1ˆRτ, 1Rτ, 2ˆRτ, 2Rτ, 3ˆRτ, 3
+> (c) Comparison of power line resistance estimations to measured values.
+
+Fig. 5: Experimental validation of the proposed controller. VI. CONCLUSIONS In this paper, a distributed control algorithm has been proposed to achieve voltage regulation and load-sharing for 0 10 20 30 40 50 60 70 80             
+
+> 0
+> 2
+> 4
+> 6
+> 8
+> Time(s)
+> Voltage error (%)
+> C1 C2 C3
+> (a) Comparison of voltage regulation performance. 010 20 30 40 50 60 70 80
+> 0
+> 1
+> 2
+> 3
+> Time(s)
+> Current (p.u.)
+> C1 C2 C3
+> (b) Comparison of current sharing performance.
+
+Fig. 6: Performance comparison for the controllers C1, C2 and C3. an EPDS of a series-hybrid-electric propulsion system. The considered on-board EPDS model includes non-negligible, unknown power line resistances and unknown but bounded inductances. These factors hinder the application of existing control algorithms developed for similar objectives in DC MGs. Our controller suitably combines the principles of back-stepping, adaptive control, and passivity-based control meth-ods. Notably, the adaptive feature of the controller allows us to mitigate the challenges brought by the presence of non-negligible power line resistances and inductances, and eases the stability and convergence analysis of the resulting closed-loop system. Additionally, we evaluated the performance of the proposed control scheme through an experimental PHIL setup, showing a superior performance against two state-of-the-art controllers. As future research, we plan to incorporate the bilinear internal dynamics of the power converters into the considered model and investigate stability and convergence under scenar-ios involving connection and disconnection of DGUs. This will require accounting for the resulting switching communication topologies, thereby enabling rigorous plug-and-play operation of electrical sources. Furthermore, building on the foundation provided by the PHIL experiments, future work will include validating the controller under representative aerothermal con-ditions at the Center for Hybrid Electric Systems Cottbus (CHESCO) facility. 13 
+
+APPENDIX 
+
+In this Appendix, we provide further details behind the conception of the proposed controller (8), which as mentioned in Section IV-A, is based on the general design methodology IDA-PBC with dynamic extension [30]. In our particular case, the design of the vector fields defining the dynamic extension is based on proportional consensus dynamics and back-stepping. Consider the following general non-linear control system: 
+
+˙xp = f (xp) + g(xp)u, (46) where xp ∈ Rn, f (x) ∈ Rn, g(x) ∈ Rn×m and u ∈ Rm. In a nutshell, the design idea of IDA-PBC with dynamic extension is to develop a dynamic feedback law of the form 
+
+u = γ(xp, ξ ),
+
+˙ξ = ρ(xp, ξ ), (47) where ξ ∈ Rs are the controller’s states, and γ and ρ are continuous functions, such that the closed-loop system has a port-Hamiltonian structure [32]: col ( ˙ xp, ˙ξ) = ( Jd(xp, ξ ) − R d(xp, ξ )) ∇Hd(xp, ξ ), (48) where Jd is skew-symmetric, Rd is symmetric positive semi-definite, and Hd : Rn × Rs → R represents a Hamiltonian function. Here, ∇Hd denotes the transposed gradient of Hd
+
+with respect to col (xp, ξ ). A sufficient condition for (48) to admit a stable equilibrium is that Hd has a local minimum at it. Consider then the system model (3) in open-loop, along with the dynamic extension proposed in (8), and propagate the change of variables (9). This results in the following dynamics: 
+
+Lτ ˙zτ = −Rτ (φτ + zτ ) − 1ns Vdc + u
+
+− Lτ T −1 
+
+> φτ
+
+(−(Vdc − V ∗
+
+> dc
+
+)1ns − W Lcom θτ ),Cdc ˙Vdc = 1⊤ 
+
+> ns
+
+(zτ + φτ ) − Iℓ − Y V dc ,Tφτ ˙φτ = −(Vdc − V ∗
+
+> dc
+
+)1ns − W Lcom θτ ,Tθτ
+
+˙θτ = Lcom W (zτ + φτ ),Tˆrτ
+
+˙ˆrτ = −diag (φτ + zτ )zτ ,Tητ ˙ητ = −diag  T −1 
+
+> φτ
+
+(−(Vdc − V ∗
+
+> dc
+
+)1ns − W Lcom θτ ) zτ ,
+
+(49) In order to compute the feedback law for u that would render a closed-loop system as in (48), we assign Jd, Rd and Hd as follows: 
+
+Jd =
+
+"
+
+J (1 ,1) d J (1 ,2) d
+
+−(J (1 ,2) d )⊤ 03ns×3ns
+
+#
+
+,
+
+Rd = diag (Kzτ , Y, 04ns×4ns )
+
+Hd(xp, ξ ) = 12 ∥col (xp, ξ ) − col (¯ xp, ¯ξ)∥2 
+
+> Md
+
+,
+
+where 
+
+J (1 ,1) d =
+
+
+
+0ns×ns −1ns 0ns×ns
+
+1⊤ 
+
+> ns
+
+0 1⊤
+
+> ns
+
+0ns×ns −1ns 0ns×ns
+
+ ,
+
+J (1 ,2) d =
+
+
+
+−W Lcom diag (φτ + zτ ) diag (F)0⊤ 
+
+> ns
+
+0⊤ 
+
+> ns
+
+0⊤
+
+> ns
+
+−W Lcom 0ns×ns 0ns×ns
+
+ ,
+
+Md = diag −1 (Lτ , C dc , T φτ , T θτ , T ˆrτ , T ητ ) ,
+
+with 
+
+F = T −1 
+
+> φτ
+
+(−(Vdc − V ∗
+
+> dc
+
+)1ns − W Lcom θτ ).
+
+Via direct computations it can be verified that the above choices of Jd, Rd and Hd satisfy the extended matching equation [30, Equation (5)]. Therefore, it is possible to use the formula in [30, Equation (6)] to compute the feedback law for 
+
+u shown in (7). Note that (local) stability of the equilibrium ¯x
+
+in (28) follows from the fact that ¯x represents a critical point of Hd and from the fact that ˙Hd = −(∇Hd)⊤Rd∇Hd ≤ 0
+
+along system trajectories. ACKNOWLEDGEMENT 
+
+The ChatGPT tool [37] was used to improve the syntax and grammar of certain paragraphs in the manuscript. The ChatGPT tool [37] was also employed to assist in identifying relevant references related to the power control of hybrid-electric aircraft. REFERENCES [1] W. H. Syed, J. E. Machado, and J. Schiffer, “Distributed adaptive control for a dc power distribution system of a series-hybrid-electric propulsion system of a commuter aircraft,” in 2024 American Control Conference (ACC) , 2024, pp. 2598–2603. [2] H. Ritchie, “Cars, planes, trains: Where do CO2 emissions from trans-port come from?” Our World in Data. , 2022. [3] S. Kelly and D. K. Kumar, “Jet fuel costs could rise from new rules to improve air quality,” 2019, reuters. [4] H. Schefer, L. Fauth, T. H. Kopp, R. Mallwitz, J. Friebe, and M. Kurrat, “Discussion on electric power supply systems for all electric aircraft,” 
+
+IEEE Access , vol. 8, pp. 84 188–84 216, 2020. [5] X. Ye, A. Savvarisal, A. Tsourdos, D. Zhang, and G. Jason, “Review of hybrid electric powered aircraft, its conceptual design and energy management methodologies,” Chinese Journal of Aeronautics , vol. 34, no. 4, pp. 432–450, 2021. [6] H. Zhang, C. Saudemont, B. Robyns, and M. Petit, “Comparison of technical features between a more electric aircraft and a hybrid electric vehicle,” in 2008 IEEE Vehicle Power and Propulsion Conference .IEEE, 2008, pp. 1–6. [7] N. Noroozi, S. Trip, and R. Geiselhart, “Model predictive control of DC microgrids: current sharing and voltage regulation,” IFAC-PapersOnLine ,vol. 51, no. 23, pp. 124–129, 2018. [8] A. Braitor, A. Mills, V. Kadirkamanathan, G. Konstantopoulos, P. Nor-man, and C. Jones, “Control of dc power distribution system of a hybrid electric aircraft with inherent overcurrent protection,” in 2018 IEEE International Conference on Electrical Systems for Aircraft, Railway, Ship Propulsion and Road Vehicles & International Transportation Electrification Conference (ESARS-ITEC) . IEEE, 2018, pp. 1–6. [9] L. Meng, Q. Shafiee, G. F. Trecate, H. Karimi, D. Fulwani, X. Lu, and J. M. Guerrero, “Review on control of DC microgrids and multiple microgrid clusters,” IEEE Journal of Emerging and Selected Topics in Power Electronics , vol. 5, no. 3, pp. 928–948, 2017. [10] S. Trip, M. Cucuzzella, X. Cheng, and J. Scherpen, “Distributed averag-ing control for voltage regulation and current sharing in DC microgrids,” 
+
+IEEE Control Systems Letters , vol. 3, no. 1, pp. 174–179, 2018. 14 
+
+[11] P. Magne, B. Nahid-Mobarakeh, and S. Pierfederici, “Active stabilization of DC microgrids without remote sensors for more electric aircraft,” 
+
+IEEE Transactions on Industry Applications , vol. 49, no. 5, pp. 2352– 2360, 2013. [12] P. Nahata and G. Ferrari-Trecate, “On existence of equilibria, voltage balancing, and current sharing in consensus-based DC microgrids,” in 
+
+2020 ECC . IEEE, 2020, pp. 1216–1223. [13] H. Bai, H. Zhang, H. Cai, and J. Schiffer, “Voltage regulation and current sharing for multi-bus dc microgrids: A compromised design approach,” 
+
+Automatica , vol. 142, p. 110340, 2022. [14] M. Tucci, S. Riverso, and G. Ferrari-Trecate, “Line-independent plug-and-play controllers for voltage stabilization in dc microgrids,” IEEE Transactions on Control Systems Technology , vol. 26, no. 3, pp. 1115– 1123, 2018. [15] L. Karunarathne, J. T. Economou, and K. Knowles, “Fuzzy logic control strategy for fuel cell/battery aerospace propulsion system,” in 2008 IEEE Vehicle Power and Propulsion Conference , 2008, pp. 1–5. [16] P. Hoenicke, D. Ghosh, A. Muhandes, S. Bhattacharya, C. Bauer, J. Kallo, and C. Willich, “Power management control and delivery module for a hybrid electric aircraft using fuel cell and battery,” Energy Conversion and Management , vol. 244, p. 114445, 2021. [17] M. E. S. Bastos, S. O. Nascimento, V. C. Torres, M. S. Almeida, M. A. Rend´ on, M. C. Rodrigues, P. S. Almeida, and J. G. Oliveira, “Control strategy for an interleaved bidirectional dc–dc converter applied to battery management in a hybrid aircraft propulsion system,” Journal of Control, Automation and Electrical Systems , vol. 33, no. 3, pp. 965– 973, 2022. [18] A. H. Ahmed Adam, J. Chen, S. Kamel, and J. L. Dom´ ınguez-Garc´ ıa, “Power management control for hybrid electric aircraft propulsion drive based on triple active bridge dc-dc converter,” in 2024 International Conference on Artificial Intelligence, Computer, Data Sciences and Applications (ACDSA) , 2024, pp. 1–6. [19] M. Doff-Sotta, M. Cannon, and M. Bacic, “Predictive energy manage-ment for hybrid electric aircraft propulsion systems,” IEEE Transactions on Control Systems Technology , vol. 31, no. 2, pp. 602–614, 2023. [20] J. E. Machado, G. Rinaldi, M. Cucuzzella, P. P. Menon, J. M. Scherpen, and A. Ferrara, “Online parameters estimation schemes to enhance control performance in DC microgrids,” European Journal of Control ,p. 100860, 2023. [21] M. N. Monfared, Y. Kawano, and M. Cucuzzella, “Decentralized voltage control of boost converters in dc microgrids: Feasibility guarantees,” 
+
+IEEE Transactions on Control Systems Technology , pp. 1–0, 2024. [22] B. J. Brelje and J. R. Martins, “Electric, hybrid, and turboelectric fixed-wing aircraft: A review of concepts, models, and design approaches,” 
+
+Progress in Aerospace Sciences , vol. 104, pp. 1–19, 2019. [23] J. E. Machado and J. Schiffer, “A passivity-inspired design of power-voltage droop controllers for DC microgrids with electrical network dynamics,” in 2020 59th IEEE CDC . IEEE, 2020, pp. 3060–3065. [24] H. Bai, H. Zhang, H. Cai, and J. Schiffer, “Voltage regulation and current sharing for multi-bus dc microgrids: A compromised design approach,” 
+
+Automatica , vol. 142, p. 110340, 2022. [25] J. M. Guerrero, J. C. Vasquez, J. Matas, L. G. de Vicuna, and M. Castilla, “Hierarchical control of droop-controlled ac and dc microgrids—a gen-eral approach toward standardization,” IEEE Transactions on Industrial Electronics , vol. 58, no. 1, pp. 158–172, 2011. [26] Y. Che, J. Xu, K. Shi, H. Liu, W. Chen, and D. Yu, “Stability analysis of aircraft power systems based on a unified large signal model,” Energies ,vol. 10, no. 11, 2017. [27] M. Potamiti, V. Gkoutzamanis, and A. Kalfas, “Thermal management system design for a series hybrid-electric propulsion architecture,” The Aeronautical Journal , vol. 128, no. 1325, p. 1532–1555, 2024. [28] Z. Ouyang, T. Nikolaidis, S. Jafari, and E. Pontika, “Integrated power and thermal management system in a parallel hybrid-electric aircraft: An exploration of passive and active cooling and temperature control,” 
+
+Engineering Proceedings , vol. 90, no. 1, 2025. [29] “Aircraft,” in ASHRAE Handbook—HVAC Applications . Ameri-can Society of Heating, Refrigerating and Air-Conditioning Engineers (ASHRAE), 2019, ch. 13. [30] A. Astolfi and R. Ortega, “Dynamic extension is unnecessary for stabilization via interconnection and damping assignment passivity-based control,” Systems & Control Letters , vol. 58, no. 2, pp. 133–135, 2009. [31] J.-J. E. Slotine, W. Li et al. , Applied nonlinear control . Prentice hall Englewood Cliffs, NJ, 1991, vol. 199, no. 1. [32] A. Van Der Schaft, D. Jeltsema et al. , “Port-hamiltonian systems theory: An introductory overview,” Foundations and Trends® in Systems and Control , vol. 1, no. 2-3, pp. 173–378, 2014. [33] A. Van der Schaft, L2-gain and passivity techniques in nonlinear control .Springer, 2017. [34] R. Ortega and E. Garcia-Canseco, “Interconnection and damping assign-ment passivity-based control: A survey,” European Journal of Control ,vol. 10, no. 5, pp. 432–450, 2004. [35] H. K. Khalil and J. W. Grizzle, Nonlinear systems . Prentice hall Upper Saddle River, NJ, 2002, vol. 3. [36] A. Krishna, I. Jaramillo-Cajica, S. Auer, and J. Schiffer, “A power-hardware-in-the-loop testbed for intelligent operation and control of low-inertia power systems,” at - Automatisierungstechnik , vol. 70, no. 12, pp. 1084–1095, Dec. 2022, publisher: De Gruyter (O). [37] OpenAI, “ChatGPT: Language model (gpt-4),” 2024.

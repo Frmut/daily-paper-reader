@@ -1,6 +1,9 @@
 * <a class="dpr-sidebar-root-link" href="#/">首页</a>
 * <a class="dpr-sidebar-root-link dpr-sidebar-noactive-link" href="javascript:void(0)" data-dpr-hash="#/tutorial/README">使用教程</a>
 * Daily Papers
+  * 2026-03-20 <!--dpr-date:20260320-->
+    * 速读区
+      * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202603/20/2603.17518v1-distributed-adaptive-control-for-dc-power-distribution-in-hybrid-electric-aircraft-design-and-experimental-validation" data-sidebar-item="{&quot;title&quot;: &quot;Distributed Adaptive Control for DC Power Distribution in Hybrid-Electric Aircraft: Design and Experimental Validation&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2603.17518v1-distributed-adaptive-control-for-dc-power-distribution-in-hybrid-electric-aircraft-design-and-experimental-validation&quot;, &quot;score&quot;: &quot;6.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;pmsm&quot;}], &quot;evidence&quot;: &quot;飞机配电系统的分布式自适应控制&quot;}">Distributed Adaptive Control for DC Power Distribution in Hybrid-Electric Aircraft: Design and Experimental Validation</a>
   * 2026-02-19 ~ 2026-03-20 <!--dpr-date:20260219-20260320-->
     * 精读区
       * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/20260219-20260320/2603.08816v1-neural-network-tuning-of-fsmpc-for-drives" data-sidebar-item="{&quot;title&quot;: &quot;Neural Network Tuning of FSMPC for Drives&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2603.08816v1-neural-network-tuning-of-fsmpc-for-drives&quot;, &quot;score&quot;: &quot;8.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;pmsm&quot;}], &quot;evidence&quot;: &quot;五相电机模型预测控制的神经网络调优&quot;}">Neural Network Tuning of FSMPC for Drives</a>

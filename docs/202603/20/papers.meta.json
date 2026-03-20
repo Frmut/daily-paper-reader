@@ -1,0 +1,23 @@
+{
+  "label": "2026-03-20",
+  "date": "2026-03-20",
+  "generated_at": "2026-03-20T19:57:59",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202603/20/2603.17518v1-distributed-adaptive-control-for-dc-power-distribution-in-hybrid-electric-aircraft-design-and-experimental-validation",
+      "section": "quick",
+      "title_en": "Distributed Adaptive Control for DC Power Distribution in Hybrid-Electric Aircraft: Design and Experimental Validation",
+      "authors": "Wasif H. Syed, Juan E. Machado, Hans Würfel, Ekrem Hanli, Johannes Schiffer",
+      "date": "2026-03-18",
+      "pdf": "https://arxiv.org/pdf/2603.17518v1",
+      "score": "6.0",
+      "evidence": "飞机配电系统的分布式自适应控制",
+      "tldr": "针对混合动力飞机电气化转型中的配电管理难题，本文提出一种分布式自适应控制方案。该方案结合反步法、自适应及基于钝性的控制技术，旨在调节直流母线电压并实现多能源转换器间的负载比例分配。相比现有策略，该方法在考虑未知线路阻抗的情况下仍能保证系统的稳定性和调节精度。通过功率硬件在环（PHIL）实验验证，该控制器有效提升了推进系统配电网的运行安全与效率。",
+      "tags": "query:pmsm",
+      "abstract_en": "To reduce CO2 emissions and tackle increasing fuel costs, the aviation industry is swiftly moving towards the electrification of aircraft. From the viewpoint of systems and control, a key challenge brought by this transition corresponds to the management and safe operation of the propulsion system's onboard electrical power distribution network. In this work, for a series-hybrid-electric propulsion system, we propose a distributed adaptive controller for regulating the voltage of a DC bus that energizes the electricity-based propulsion system. The proposed controller -- whose design is based on principles of back-stepping, adaptive, and passivity-based control techniques -- also enables the proportional sharing of the electric load among multiple converter-interfaced sources, which reduces the likelihood of over-stressing individual sources. Compared to existing control strategies, our method ensures stable, convergent, and accurate voltage regulation and load-sharing even if the effects of power lines of unknown resistances and inductances are considered. The performance of the proposed control scheme is experimentally validated and compared to state-of-the-art controllers in a power hardware-in-the-loop (PHIL) environment.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

@@ -1,0 +1,55 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-03-20T19:57:34.803996+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 1,
+    "quick_skim_target": 11,
+    "quick_selected": 1
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2603.17518v1",
+      "title": "Distributed Adaptive Control for DC Power Distribution in Hybrid-Electric Aircraft: Design and Experimental Validation",
+      "abstract": "To reduce CO2 emissions and tackle increasing fuel costs, the aviation industry is swiftly moving towards the electrification of aircraft. From the viewpoint of systems and control, a key challenge brought by this transition corresponds to the management and safe operation of the propulsion system's onboard electrical power distribution network. In this work, for a series-hybrid-electric propulsion system, we propose a distributed adaptive controller for regulating the voltage of a DC bus that energizes the electricity-based propulsion system. The proposed controller -- whose design is based on principles of back-stepping, adaptive, and passivity-based control techniques -- also enables the proportional sharing of the electric load among multiple converter-interfaced sources, which reduces the likelihood of over-stressing individual sources. Compared to existing control strategies, our method ensures stable, convergent, and accurate voltage regulation and load-sharing even if the effects of power lines of unknown resistances and inductances are considered. The performance of the proposed control scheme is experimentally validated and compared to state-of-the-art controllers in a power hardware-in-the-loop (PHIL) environment.",
+      "authors": [
+        "Wasif H. Syed",
+        "Juan E. Machado",
+        "Hans Würfel",
+        "Ekrem Hanli",
+        "Johannes Schiffer"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY"
+      ],
+      "published": "2026-03-18T09:25:53+00:00",
+      "link": "https://arxiv.org/pdf/2603.17518v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "distributed adaptive control for electrical power distribution in aircraft",
+      "llm_evidence_cn": "飞机配电系统的分布式自适应控制",
+      "llm_evidence": "飞机配电系统的分布式自适应控制",
+      "canonical_evidence": "飞机配电系统的分布式自适应控制",
+      "llm_tldr_en": "Validates a distributed adaptive controller for DC bus voltage regulation in hybrid-electric aircraft.",
+      "llm_tldr_cn": "验证了用于混合动力飞机直流母线电压调节的分布式自适应控制器。",
+      "llm_tldr": "验证了用于混合动力飞机直流母线电压调节的分布式自适应控制器。",
+      "llm_tags": [
+        "query:pmsm:composite"
+      ],
+      "matched_query_tag": "query:pmsm:composite",
+      "matched_query_text": "Papers central to 三相及双三相永磁同步电机相关研究检索, especially work that connects or combines: m; s; f; Permanent Magnet Synchronous Motor research; dual three-phase permanent magnet synchronous motor control and design; fault-tolerant control of multi-phase motors; recent advances in dual three phase permanent magnet synchronous motor control; fault tolerant strategies for multi phase permanent magnet synchronous motors.",
+      "matched_requirement_id": "req-composite-pmsm",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
