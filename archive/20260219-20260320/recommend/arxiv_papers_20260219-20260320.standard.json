@@ -1,0 +1,239 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-03-20T02:33:11.413316+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 2,
+    "deep_cap": 6,
+    "deep_selected": 2,
+    "quick_candidates": 4,
+    "quick_skim_target": 11,
+    "quick_selected": 4
+  },
+  "deep_dive": [
+    {
+      "id": "2603.08816v1",
+      "title": "Neural Network Tuning of FSMPC for Drives",
+      "abstract": "This preprint presents a neural network tuner for the finite state model predictive control of an induction motor. The tuner deals with the parameters of the controllers in the speed loop and in the stator current loop. The results are assessed using a five phase machine in an experimental setup. Data for the neural network training is obtained from the experiments using step tests.",
+      "authors": [
+        "Juana M. Martínez-Heredia",
+        "José L. Mora"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY"
+      ],
+      "published": "2026-03-09T18:17:17+00:00",
+      "link": "https://arxiv.org/pdf/2603.08816v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "neural network tuning for model predictive control of a five phase machine",
+      "llm_evidence_cn": "五相电机模型预测控制的神经网络调优",
+      "llm_evidence": "五相电机模型预测控制的神经网络调优",
+      "canonical_evidence": "五相电机模型预测控制的神经网络调优",
+      "llm_tldr_en": "Presents a neural network tuner for finite state model predictive control of multi-phase motor drives.",
+      "llm_tldr_cn": "提出了一种用于多相电机驱动有限状态模型预测控制的神经网络调优器。",
+      "llm_tldr": "提出了一种用于多相电机驱动有限状态模型预测控制的神经网络调优器。",
+      "llm_tags": [
+        "query:pmsm"
+      ],
+      "matched_query_tag": "query:pmsm",
+      "matched_query_text": "fault-tolerant control of multi-phase motors",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2603.14509v1",
+      "title": "Bayesian and Classical Feature Ranking for Interpretable BLDC Fault Diagnosis",
+      "abstract": "This paper compares Bayesian and classical feature ranking methods for interpretable fault diagnosis of brushless DC (BLDC) motors. Two Bayesian approaches, spike-and-slab and ARD logistic ranking, are evaluated against three classical baselines on a public BLDC benchmark in binary and multiclass settings using current-based, rotational-speed-based, and combined feature sets. The strongest overall results are obtained for the combined representation. In binary classification, ReliefF achieves the highest balanced accuracy of 0.923, while ARD logistic and spike-and-slab remain very close at 0.919 and 0.920 with much smaller subsets ($k=5$). In multiclass classification, ARD logistic performs best for the combined variant with balanced accuracy 0.914, followed closely by LASSO (0.913) and spike-and-slab (0.912). The results show that Bayesian ranking is particularly competitive for current-only and combined descriptors, while ReliefF remains especially effective for speed-based ranking. Because the benchmark consists of short segmented observations from a limited number of experimental conditions, the findings are interpreted primarily as benchmark-specific evidence rather than strong claims of fault generalization.",
+      "authors": [
+        "Waldemar Bauer",
+        "Jerzy Baranowski"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY"
+      ],
+      "published": "2026-03-15T17:43:15+00:00",
+      "link": "https://arxiv.org/pdf/2603.14509v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Fault diagnosis for BLDC motors using feature ranking",
+      "llm_evidence_cn": "基于特征排序的无刷直流电机故障诊断",
+      "llm_evidence": "基于特征排序的无刷直流电机故障诊断",
+      "canonical_evidence": "基于特征排序的无刷直流电机故障诊断",
+      "llm_tldr_en": "Evaluates Bayesian and classical feature ranking for interpretable fault diagnosis in BLDC motors.",
+      "llm_tldr_cn": "评估了用于无刷直流电机可解释故障诊断的贝叶斯和经典特征排序方法。",
+      "llm_tldr": "评估了用于无刷直流电机可解释故障诊断的贝叶斯和经典特征排序方法。",
+      "llm_tags": [
+        "query:pmsm"
+      ],
+      "matched_query_tag": "query:pmsm",
+      "matched_query_text": "fault-tolerant control of multi-phase motors",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2603.00981v1",
+      "title": "Observer-Based Active Fault/Disturbance Compensation Control for Fully Actuated Systems",
+      "abstract": "This paper is concerned with fault/disturbance compensation control for fully actuated systems. In particular, we explore observer-based control, incorporating an active compensation mechanism. First, we propose a novel observer with enhanced design flexibility for the fully actuated system model, enabling simultaneous estimation of system states and exogenous unknown signals, such as faults or disturbances. Then, a nonlinear controller is developed with an active fault or disturbance compensation term, leveraging the fully actuated system approach. The asymptotic stability of both the state estimation error and the closed-loop control system is systematically established. Finally, the feasibility and merits of the proposed method are validated through comparative simulations and experiments.",
+      "authors": [
+        "Weijie Ren",
+        "Guang-Ren Duan",
+        "Ping Li",
+        "He Kong"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY"
+      ],
+      "published": "2026-03-01T08:20:46+00:00",
+      "link": "https://arxiv.org/pdf/2603.00981v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Observer-based active fault compensation control for fully actuated systems",
+      "llm_evidence_cn": "全驱动系统的基于观测器的主动故障补偿控制",
+      "llm_evidence": "全驱动系统的基于观测器的主动故障补偿控制",
+      "canonical_evidence": "全驱动系统的基于观测器的主动故障补偿控制",
+      "llm_tldr_en": "Develops an observer-based nonlinear controller for active fault and disturbance compensation in actuated systems.",
+      "llm_tldr_cn": "为全驱动系统开发了一种基于观测器的非线性控制器，用于主动故障和扰动补偿。",
+      "llm_tldr": "为全驱动系统开发了一种基于观测器的非线性控制器，用于主动故障和扰动补偿。",
+      "llm_tags": [
+        "query:pmsm"
+      ],
+      "matched_query_tag": "query:pmsm",
+      "matched_query_text": "fault-tolerant control of multi-phase motors",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2603.07054v1",
+      "title": "Bi-directional digital twin prototype anchoring with multi-periodicity learning for few-shot fault diagnosis",
+      "abstract": "Intelligent fault diagnosis (IFD) has emerged as a powerful paradigm for ensuring the safety and reliability of industrial machinery. However, traditional IFD methods rely heavily on abundant labeled data for training, which is often difficult to obtain in practical industrial environments. Constructing a digital twin (DT) of the physical asset to obtain simulation data has therefore become a promising alternative. Nevertheless, existing DT-assisted diagnosis methods mainly transfer diagnostic knowledge through domain adaptation techniques, which still require a considerable amount of unlabeled data from the target asset. To address the challenges in few-shot scenarios where only extremely limited samples are available, a bi-directional DT prototype anchoring method with multi-periodicity learning is proposed. Specifically, a framework involving meta-training in the DT virtual space and test-time adaptation in the physical space is constructed for reliable few-shot model adaptation for the target asset. A bi-directional twin-domain prototype anchoring strategy with covariance-guided augmentation for adaptation is further developed to improve the robustness of prototype estimation. In addition, a multi-periodicity feature learning module is designed to capture the intrinsic periodic characteristics within current signals. A DT of an asynchronous motor is built based on finite element method, and experiments are conducted under multiple few-shot settings and three working conditions. Comparative and ablation studies demonstrate the superiority and effectiveness of the proposed method for few-shot fault diagnosis.",
+      "authors": [
+        "Pengcheng Xia",
+        "Zhichao Dong",
+        "Yixiang Huang",
+        "Chengjin Qin",
+        "Qun Chao",
+        "Chengliang Liu"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI",
+        "eess.SP"
+      ],
+      "published": "2026-03-07T06:20:45+00:00",
+      "link": "https://arxiv.org/pdf/2603.07054v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "digital twin for few-shot fault diagnosis of industrial machinery",
+      "llm_evidence_cn": "工业机械少样本故障诊断的数字孪生",
+      "llm_evidence": "工业机械少样本故障诊断的数字孪生",
+      "canonical_evidence": "工业机械少样本故障诊断的数字孪生",
+      "llm_tldr_en": "Proposes a digital twin prototype anchoring method for few-shot fault diagnosis in industrial assets.",
+      "llm_tldr_cn": "提出了一种用于工业资产少样本故障诊断的数字孪生原型锚定方法。",
+      "llm_tldr": "提出了一种用于工业资产少样本故障诊断的数字孪生原型锚定方法。",
+      "llm_tags": [
+        "query:pmsm:composite"
+      ],
+      "matched_query_tag": "query:pmsm:composite",
+      "matched_query_text": "Papers central to 三相及双三相永磁同步电机相关研究检索, especially work that connects or combines: m; s; f; Permanent Magnet Synchronous Motor research; dual three-phase permanent magnet synchronous motor control and design; fault-tolerant control of multi-phase motors; recent advances in dual three phase permanent magnet synchronous motor control; fault tolerant strategies for multi phase permanent magnet synchronous motors.",
+      "matched_requirement_id": "req-composite-pmsm",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2603.03929v1",
+      "title": "Harmonic Modeling and Control under Variable-Frequency",
+      "abstract": "This paper develops a harmonic-domain framework for systems with variable fundamental frequency. A variable-frequency sliding Fourier decomposition is introduced in the phase domain, together with necessary and sufficient conditions for time- domain realizability. An exact harmonic-domain differential model is derived for general nonlinear systems under variable frequency, without assumptions on the frequency variation. An explicit parameter-varying approximation is then obtained, along with a tight error bound expressed in terms of local relative frequency variation, providing a non-conservative validity criterion and clarifying the limitations of classical heuristics. A main result shows that, for linear phase-periodic systems with affine frequency dependence, stability analysis and control synthesis can be carried out without approximation and without assumptions on the frequency variation, provided the frequency evolves within a prescribed interval. As a consequence, both problems reduce to harmonic Lyapunov inequalities evaluated at the two extreme frequency values, yielding a convex LMI characterization. The framework is illustrated on a variable-speed permanent magnet synchronous motor.",
+      "authors": [
+        "Maxime Grosso",
+        "Pierre Riedinger",
+        "Jamal Daafouz",
+        "Serge Pierfederici",
+        "Hicham Janati Idrissi",
+        "Blaise Lapôtre"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY"
+      ],
+      "published": "2026-03-04T10:38:40+00:00",
+      "link": "https://arxiv.org/pdf/2603.03929v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Harmonic modeling and control for phase-periodic systems with variable frequency",
+      "llm_evidence_cn": "变频相周期系统的谐波建模与控制",
+      "llm_evidence": "变频相周期系统的谐波建模与控制",
+      "canonical_evidence": "变频相周期系统的谐波建模与控制",
+      "llm_tldr_en": "Develops a harmonic-domain framework for variable-frequency systems, applicable to motor phase control.",
+      "llm_tldr_cn": "开发了变频系统谐波域框架，可应用于电机相位控制。",
+      "llm_tldr": "开发了变频系统谐波域框架，可应用于电机相位控制。",
+      "llm_tags": [
+        "query:pmsm:composite"
+      ],
+      "matched_query_tag": "query:pmsm:composite",
+      "matched_query_text": "Papers central to 三相及双三相永磁同步电机相关研究检索, especially work that connects or combines: m; s; f; Permanent Magnet Synchronous Motor research; dual three-phase permanent magnet synchronous motor control and design; fault-tolerant control of multi-phase motors; recent advances in dual three phase permanent magnet synchronous motor control; fault tolerant strategies for multi phase permanent magnet synchronous motors.",
+      "matched_requirement_id": "req-composite-pmsm",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2603.14990v1",
+      "title": "Chattering Reduction for a Second-Order Actuator via Dynamic Sliding Manifolds",
+      "abstract": "We analyze actuator chattering in a scalar integrator system subject to second-order actuator dynamics with an unknown time constant and first-order sliding-mode control, using both a conventional static sliding manifold and a dynamic sliding manifold. Using the harmonic balance method we proof that it is possible to adjust the parameters of the dynamic sliding manifold so as to reduce the amplitude of the chattering in comparison to the static manifold. The proof of concept is illustrated with an example.",
+      "authors": [
+        "Patricia Nöther",
+        "Lars Watermann",
+        "Johann Reger"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY",
+        "math.OC"
+      ],
+      "published": "2026-03-16T08:56:22+00:00",
+      "link": "https://arxiv.org/pdf/2603.14990v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Chattering reduction for actuators using dynamic sliding manifolds",
+      "llm_evidence_cn": "使用动态滑模流形减少执行器抖振",
+      "llm_evidence": "使用动态滑模流形减少执行器抖振",
+      "canonical_evidence": "使用动态滑模流形减少执行器抖振",
+      "llm_tldr_en": "Analyzes and reduces chattering in sliding-mode control, a common technique in motor drives.",
+      "llm_tldr_cn": "分析并减少滑模控制中的抖振，这是电机驱动中的常用技术。",
+      "llm_tldr": "分析并减少滑模控制中的抖振，这是电机驱动中的常用技术。",
+      "llm_tags": [
+        "query:pmsm:composite"
+      ],
+      "matched_query_tag": "query:pmsm:composite",
+      "matched_query_text": "Papers central to 三相及双三相永磁同步电机相关研究检索, especially work that connects or combines: m; s; f; Permanent Magnet Synchronous Motor research; dual three-phase permanent magnet synchronous motor control and design; fault-tolerant control of multi-phase motors; recent advances in dual three phase permanent magnet synchronous motor control; fault tolerant strategies for multi phase permanent magnet synchronous motors.",
+      "matched_requirement_id": "req-composite-pmsm",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

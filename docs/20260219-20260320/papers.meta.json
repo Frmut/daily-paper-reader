@@ -1,0 +1,93 @@
+{
+  "label": "2026-02-19 ~ 2026-03-20",
+  "date": "2026-02-19 ~ 2026-03-20",
+  "generated_at": "2026-03-20T02:34:09",
+  "count": 6,
+  "papers": [
+    {
+      "paper_id": "20260219-20260320/2603.08816v1-neural-network-tuning-of-fsmpc-for-drives",
+      "section": "deep",
+      "title_en": "Neural Network Tuning of FSMPC for Drives",
+      "authors": "Juana M. Martínez-Heredia, José L. Mora",
+      "date": "2026-03-09",
+      "pdf": "https://arxiv.org/pdf/2603.08816v1",
+      "score": "8.0",
+      "evidence": "五相电机模型预测控制的神经网络调优",
+      "tldr": "本研究针对感应电机的有限状态模型预测控制（FSMPC），提出了一种基于神经网络的参数整定器。该整定器能够自动调节速度环和定子电流环的控制器参数。研究通过五相电机的实验平台验证了该方法的有效性，并利用实验中的阶跃测试数据对神经网络进行训练，显著提升了驱动系统的调参效率和性能。",
+      "tags": "query:pmsm",
+      "abstract_en": "This preprint presents a neural network tuner for the finite state model predictive control of an induction motor. The tuner deals with the parameters of the controllers in the speed loop and in the stator current loop. The results are assessed using a five phase machine in an experimental setup. Data for the neural network training is obtained from the experiments using step tests.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "20260219-20260320/2603.14509v1-bayesian-and-classical-feature-ranking-for-interpretable-bldc-fault-diagnosis",
+      "section": "deep",
+      "title_en": "Bayesian and Classical Feature Ranking for Interpretable BLDC Fault Diagnosis",
+      "authors": "Waldemar Bauer, Jerzy Baranowski",
+      "date": "2026-03-15",
+      "pdf": "https://arxiv.org/pdf/2603.14509v1",
+      "score": "8.0",
+      "evidence": "基于特征排序的无刷直流电机故障诊断",
+      "tldr": "本研究针对无刷直流电机（BLDC）的可解释故障诊断，对比了贝叶斯（Spike-and-Slab、ARD逻辑回归）与经典特征排序方法。通过在公开基准数据集上对电流、转速及组合特征进行评估，发现贝叶斯方法在二分类和多分类任务中均表现优异。其主要贡献在于证明了贝叶斯排序能在显著减少特征数量的同时保持高准确率，为电机故障诊断提供了更具可解释性的特征选择方案。",
+      "tags": "query:pmsm",
+      "abstract_en": "This paper compares Bayesian and classical feature ranking methods for interpretable fault diagnosis of brushless DC (BLDC) motors. Two Bayesian approaches, spike-and-slab and ARD logistic ranking, are evaluated against three classical baselines on a public BLDC benchmark in binary and multiclass settings using current-based, rotational-speed-based, and combined feature sets. The strongest overall results are obtained for the combined representation. In binary classification, ReliefF achieves the highest balanced accuracy of 0.923, while ARD logistic and spike-and-slab remain very close at 0.919 and 0.920 with much smaller subsets ($k=5$). In multiclass classification, ARD logistic performs best for the combined variant with balanced accuracy 0.914, followed closely by LASSO (0.913) and spike-and-slab (0.912). The results show that Bayesian ranking is particularly competitive for current-only and combined descriptors, while ReliefF remains especially effective for speed-based ranking. Because the benchmark consists of short segmented observations from a limited number of experimental conditions, the findings are interpreted primarily as benchmark-specific evidence rather than strong claims of fault generalization.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "20260219-20260320/2603.00981v1-observer-based-active-faultdisturbance-compensation-control-for-fully-actuated-systems",
+      "section": "quick",
+      "title_en": "Observer-Based Active Fault/Disturbance Compensation Control for Fully Actuated Systems",
+      "authors": "Weijie Ren, Guang-Ren Duan, Ping Li, He Kong",
+      "date": "2026-03-01",
+      "pdf": "https://arxiv.org/pdf/2603.00981v1",
+      "score": "7.0",
+      "evidence": "全驱动系统的基于观测器的主动故障补偿控制",
+      "tldr": "本研究针对全驱动系统（FAS）的故障与扰动补偿控制问题，提出了一种基于观测器的主动补偿控制方案。首先，设计了一种具有高设计灵活性的新型观测器，能够同时估计系统状态和外部未知信号（如故障或扰动）。随后，利用全驱动系统方法开发了包含主动补偿项的非线性控制器。理论证明了状态估计误差和闭环系统的渐近稳定性，并通过仿真和实验验证了该方法在提升系统鲁棒性和控制精度方面的优越性。",
+      "tags": "query:pmsm",
+      "abstract_en": "This paper is concerned with fault/disturbance compensation control for fully actuated systems. In particular, we explore observer-based control, incorporating an active compensation mechanism. First, we propose a novel observer with enhanced design flexibility for the fully actuated system model, enabling simultaneous estimation of system states and exogenous unknown signals, such as faults or disturbances. Then, a nonlinear controller is developed with an active fault or disturbance compensation term, leveraging the fully actuated system approach. The asymptotic stability of both the state estimation error and the closed-loop control system is systematically established. Finally, the feasibility and merits of the proposed method are validated through comparative simulations and experiments.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "20260219-20260320/2603.03929v1-harmonic-modeling-and-control-under-variable-frequency",
+      "section": "quick",
+      "title_en": "Harmonic Modeling and Control under Variable-Frequency",
+      "authors": "Maxime Grosso, Pierre Riedinger, Jamal Daafouz, Serge Pierfederici, Hicham Janati Idrissi, Blaise Lapôtre",
+      "date": "2026-03-04",
+      "pdf": "https://arxiv.org/pdf/2603.03929v1",
+      "score": "7.0",
+      "evidence": "变频相周期系统的谐波建模与控制",
+      "tldr": "本研究针对变频系统提出了一种谐波域建模与控制框架。通过引入相位域的变频滑动傅里叶分解，推导出了非线性系统在变频条件下的精确微分模型。研究给出了参数时变近似及其误差界限，并证明了对于具有仿射频率依赖性的线性相位周期系统，其稳定性分析和控制合成可转化为极值频率下的凸线性矩阵不等式（LMI）问题。该框架在永磁同步电机上得到了验证。",
+      "tags": "query:pmsm",
+      "abstract_en": "This paper develops a harmonic-domain framework for systems with variable fundamental frequency. A variable-frequency sliding Fourier decomposition is introduced in the phase domain, together with necessary and sufficient conditions for time- domain realizability. An exact harmonic-domain differential model is derived for general nonlinear systems under variable frequency, without assumptions on the frequency variation. An explicit parameter-varying approximation is then obtained, along with a tight error bound expressed in terms of local relative frequency variation, providing a non-conservative validity criterion and clarifying the limitations of classical heuristics. A main result shows that, for linear phase-periodic systems with affine frequency dependence, stability analysis and control synthesis can be carried out without approximation and without assumptions on the frequency variation, provided the frequency evolves within a prescribed interval. As a consequence, both problems reduce to harmonic Lyapunov inequalities evaluated at the two extreme frequency values, yielding a convex LMI characterization. The framework is illustrated on a variable-speed permanent magnet synchronous motor.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "20260219-20260320/2603.07054v1-bi-directional-digital-twin-prototype-anchoring-with-multi-periodicity-learning-for-few-shot-fault-diagnosis",
+      "section": "quick",
+      "title_en": "Bi-directional digital twin prototype anchoring with multi-periodicity learning for few-shot fault diagnosis",
+      "authors": "Pengcheng Xia, Zhichao Dong, Yixiang Huang, Chengjin Qin, Qun Chao, Chengliang Liu",
+      "date": "2026-03-07",
+      "pdf": "https://arxiv.org/pdf/2603.07054v1",
+      "score": "6.0",
+      "evidence": "工业机械少样本故障诊断的数字孪生",
+      "tldr": "针对工业设备故障诊断中标记数据稀缺的问题，本文提出一种结合数字孪生（DT）与多周期学习的双向原型锚定方法。该方法通过在DT虚拟空间进行元训练并在物理空间进行测试时自适应，利用协方差引导的增强策略和多周期特征提取，实现了在极少样本情况下的可靠诊断，显著提升了模型在目标资产上的鲁棒性与泛化能力。",
+      "tags": "query:pmsm",
+      "abstract_en": "Intelligent fault diagnosis (IFD) has emerged as a powerful paradigm for ensuring the safety and reliability of industrial machinery. However, traditional IFD methods rely heavily on abundant labeled data for training, which is often difficult to obtain in practical industrial environments. Constructing a digital twin (DT) of the physical asset to obtain simulation data has therefore become a promising alternative. Nevertheless, existing DT-assisted diagnosis methods mainly transfer diagnostic knowledge through domain adaptation techniques, which still require a considerable amount of unlabeled data from the target asset. To address the challenges in few-shot scenarios where only extremely limited samples are available, a bi-directional DT prototype anchoring method with multi-periodicity learning is proposed. Specifically, a framework involving meta-training in the DT virtual space and test-time adaptation in the physical space is constructed for reliable few-shot model adaptation for the target asset. A bi-directional twin-domain prototype anchoring strategy with covariance-guided augmentation for adaptation is further developed to improve the robustness of prototype estimation. In addition, a multi-periodicity feature learning module is designed to capture the intrinsic periodic characteristics within current signals. A DT of an asynchronous motor is built based on finite element method, and experiments are conducted under multiple few-shot settings and three working conditions. Comparative and ablation studies demonstrate the superiority and effectiveness of the proposed method for few-shot fault diagnosis.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "20260219-20260320/2603.14990v1-chattering-reduction-for-a-second-order-actuator-via-dynamic-sliding-manifolds",
+      "section": "quick",
+      "title_en": "Chattering Reduction for a Second-Order Actuator via Dynamic Sliding Manifolds",
+      "authors": "Patricia Nöther, Lars Watermann, Johann Reger",
+      "date": "2026-03-16",
+      "pdf": "https://arxiv.org/pdf/2603.14990v1",
+      "score": "6.0",
+      "evidence": "使用动态滑模流形减少执行器抖振",
+      "tldr": "针对具有二阶执行器动力学和未知时间常数的标量积分器系统，本文研究了滑模控制中的抖振问题。通过对比传统的静态滑模流形与动态滑模流形，利用谐波平衡法证明了调整动态滑模流形参数能有效降低执行器抖振幅度。该研究为减少控制系统中的非线性振荡提供了理论依据和实现方案。",
+      "tags": "query:pmsm",
+      "abstract_en": "We analyze actuator chattering in a scalar integrator system subject to second-order actuator dynamics with an unknown time constant and first-order sliding-mode control, using both a conventional static sliding manifold and a dynamic sliding manifold. Using the harmonic balance method we proof that it is possible to adjust the parameters of the dynamic sliding manifold so as to reduce the amplitude of the chattering in comparison to the static manifold. The proof of concept is illustrated with an example.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

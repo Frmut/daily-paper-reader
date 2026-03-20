@@ -1,0 +1,2308 @@
+Title: Observer-Based Active Fault/Disturbance Compensation Control for Fully Actuated Systems
+
+URL Source: https://arxiv.org/pdf/2603.00981v1
+
+Published Time: Tue, 03 Mar 2026 02:15:24 GMT
+
+Number of Pages: 18
+
+Markdown Content:
+# SCIENCE CHINA 
+
+# Information Sciences 
+
+# . RESEARCH PAPER .Observer-Based Active Fault/Disturbance Compensation Control for Fully Actuated Systems 
+
+Weijie REN 1, Guang-Ren DUAN 1,2* , Ping LI 1 & He KONG 1     
+
+> 1Guangdong Provincial Key Laboratory of Fully Actuated System Control Theory and Technology, Southern University of Science and Technology, Shenzhen 518055, China
+> 2Center for Control Theory and Guidance Technology, Harbin Institute of Technology, Harbin 150001, China
+> Abstract This paper is concerned with fault/disturbance compensation control for fully actuated systems. In particular, we explore observer-based control, incorporating an active compensation mechanism. First, we propose a novel observer with enhanced design flexibility for the fully actuated system model, enabling simultaneous estimation of system states and exogenous unknown signals, such as faults or disturbances. Then, a nonlinear controller is developed with an active fault or disturbance compensation term, leveraging the fully actuated system approach. The asymptotic stability of both the state estimation error and the closed-loop control system is systematically established. Finally, the feasibility and merits of the proposed method are validated through comparative simulations and experiments.
+> Keywords Fault-tolerant control, fully actuated system approach, fault estimation, nonlinear system, observer
+> Citation Title for citation. Sci China Inf Sci, for review
+
+1 Introduction 
+
+In industrial processes, actuators and sensors are crucial components that ensure the precise operation of automated systems. However, faults or disturbances in these elements can severely disrupt their oper-ation, leading to degraded performance, product quality issues, safety hazards, and significant economic losses [1]. To mitigate these risks, fault detection and fault-compensation control strategies are vital. De-tection and compensation algorithms can dynamically adjust the control actions, ensuring continuity and resilience in the face of faults. This not only safeguards the process but also enhances the overall efficiency and reliability of industrial operations [2]. In previous studies, numerous strategies have been proposed to manage faults or disturbances, including passive or active methods [3,4], observer-based or filter-based schemes [5, 6], etc. For instance, Shen et al. [7, 8] proposed fault detection methods based on iterative interval estimation for a specific class of discrete-time nonlinear and linear systems. Gu et al. [9] de-signed an effective dynamic guaranteed cost control method that is event-triggered and anti-disturbance, specifically targeting fuzzy systems, and demonstrated its application to wind turbine models. Since the introduction of the state-space method [10, 11], most linear and nonlinear control problems have followed a ‘standard’ processing flow: first, transforming the system dynamic equations into a state-space model, which consists of several first-order differential equations, and then proceeding to controller design [12]. The state-space method has been popular and widely used for over half a century, with the exception of a few scholars in the field of robotics who directly employ high-order dynamic models. However, the state-space framework has inherent limitations, particularly due to its focus on system states. While it simplifies the study of state responses, estimation, and prediction, addressing control issues, especially for nonlinear systems, remains challenging. In many cases, designing control laws that achieve global stabilization is not possible, let alone assigning the expected closed-loop eigenstructure. As highlighted in [13], control methods based on first-order state-space models for networked nonlinear multi-agent systems are inherently restrictive. These methods often find it hard to realize global stabilization and consensus among agents, even in the absence of communication constraints.  
+
+> * Corresponding author (email: g.r.duan@hit.edu.cn, duangr@sustech.edu.cn)
+> arXiv:2603.00981v1 [eess.SY] 1 Mar 2026 Sci China Inf Sci 2
+
+In contrast to the state-space method, Duan proposed the fully actuated system (FAS) approach [14], a high-order method for addressing control problems. The FAS approach fundamentally differs by transforming the dynamical model into a higher-order one through variable elimination. The resulting FAS model is centered on the control input rather than the state, which simplifies the design of control laws and a linear constant closed-loop system can be ultimately attained. The advantages of the FAS approach significantly simplify controller design for nonlinear systems [15–19]. As a result, the FAS approach has garnered much attention, leading to the investigation of various problems using this method, e.g., robust adaptive control [20], generalized PID [21], optimal control [22], time-delay [23], event-triggered [24], and fault-tolerant control [25, 26]. Recently, researchers have begun developing control strategies to address faults and disturbances using the FAS approach [27–32]. In [28], adaptive stabilizing and tracking controllers are proposed, capable of estimating model uncertainties within the system and compensating for them through the designed controller. The robust version of this work is presented in [20], which extends the capabilities of [28] to include disturbance attenuation. [29] introduces an intermediate observer-based adaptive fault-tolerant control framework for high-order FAS (HOFAS), effectively addressing the issue of unmet observation matching conditions. In [30], a novel active fault tolerance framework for uncertain HOFASs is proposed. This work innovatively employs Lie derivatives to highlight the advantages of the uncertain faulty HOFAS model with nonlinear measurements, while also incorporating a dynamic data model into the active fault-tolerant control scheme. The integration of an adaptive observer and controller within the HOFAS framework ensures uniformly bounded stability, both theoretically and experimentally. Furthermore, [31] addresses the tracking control problem under full-state constraints by handling actuator faults using a nonlinear transformation function. Additionally, [25] leverages a proportional-integral (PI) observer to achieve control objectives for general mixed-order FAS, showing improved estimation and control performance. Almost all related literature, including the aforementioned works, primarily addresses faults or distur-bances in actuators, assuming sensor data to be consistently healthy and accurate [20,25,28–31]. Such an assumption limits the practicality of fault-tolerance frameworks for FASs. To address this gap, this paper proposes an observer-based active fault/disturbance compensation control framework for continuous-time nonlinear systems, which are described by general mixed-order FASs. The proposed framework not only handles unexpected signals in actuators but also compensates for invasive or faulty signals in sensors. The contributions of this paper are summarized as follows: 1. Different from existing observers [25,29,30] in the FAS framework, a novel observer with additional design parameters is proposed for mixed-order FAS models, offering greater design flexibility. The proposed observer can effectively estimate both system states and unexpected signals, such as faults and disturbances, in actuators and sensors. 2. An active observer-based compensation control framework is developed, ensuring strict guarantees for the exponential convergence of the observer error and the closed-loop control system, represent-ing an advancement beyond the work in [25]. The remainder of this paper is organized as follows. Section 2 introduces the essential notations, presents the mixed-order FAS model, and formulates the design problems. Section 3 focuses on the design of the observer and observer-based compensation controller utilizing the FAS approach. Section 4 details the validation through comparative simulation and experimental results. Section 5 summarizes the findings and suggests directions for future research. 
+
+2 Preliminaries 
+
+2.1 Necessary notations 
+
+In the paper, Rn, Cn, and Nn represent the n-dimensional Euclidean, complex, and natural number spaces, respectively. For a vector or matrix A, AT denotes its transpose. Define sym (A) = A + AT.The symbols 0 and I represent the all-zero and identity matrices, respectively, of appropriate dimensions. For a complex scalar x, Re( x) provides its real part. For a matrix A ∈ Rn×n, λi(A) represents its i-th eigenvalue, i = 1 , 2, . . . , n , and λmin (A) denotes the minimum eigenvalue of A. The operator exp( t)Sci China Inf Sci 3
+
+signifies Euler’s number raised to the power of the scalar t. The elements in ∗ of a matrix inequality can be inferred from the property of symmetry. For Bi ∈ R, i = 1 , 2, . . . , n , we denote a new math operator blockdiag( Bi) = 
+
+
+
+B1 0 · · · 00 B2 · · · 0... ... . . . ...0 0 · · · Bn
+
+
+
+.
+
+For Ai ∈ Rm×m, i = 1 , 2, . . . , n , n1 ⩽ n2, n1, n 2 ∈ N, and j ⩽ k, some frequently employed notations in the FAS approach are introduced as follows: A0∼n =
+
+h
+
+A0 A1 . . . A n
+
+i
+
+,xn1∼n2 =
+
+
+
+xn1
+
+xn1+1 
+
+...
+
+xn2
+
+
+
+, x (n1∼n2) =
+
+
+
+x(n1)
+
+x(n1+1) 
+
+...
+
+x(n2)
+
+
+
+, x (ni) 
+
+> i
+
+|i=j∼k =
+
+
+
+x(nj )
+
+> j
+
+x(nj+1 )
+
+> j+1
+
+...
+
+x(nk )
+
+> k
+
+
+
+, x (n0∼ni) 
+
+> i
+
+|i=j∼k =
+
+
+
+x(n0∼nj )
+
+> j
+
+x(n0∼nj+1 )
+
+> j+1
+
+...
+
+x(n0∼nk )
+
+> k
+
+
+
+.
+
+2.2 System description and problem formulation 
+
+Consider the following general mixed-order FAS model: 
+
+
+
+x(m1)1
+
+x(m2)2
+
+...
+
+x(mξ )
+
+> ξ
+
+ =
+
+
+
+f1
+
+
+
+x(0 ∼mi−1)  
+
+> i
+
+|i=1 ∼ξ , ζ, t 
+
+
+
+f2
+
+
+
+x(0 ∼mi−1)  
+
+> i
+
+|i=1 ∼ξ , ζ, t 
+
+
+
+...
+
+fξ
+
+
+
+x(0 ∼mi−1)  
+
+> i
+
+|i=1 ∼ξ , ζ, t 
+
+
+
++ B (y, ζ, t ) u + D1(y)dy = Cx (0 ∼mi−1)  
+
+> i
+
+|i=1 ∼ξ + D2d, 
+
+(1) where xi ∈ Rri for i = 1 , 2, . . . , ξ represents the system state, and x(0 ∼mi−1)  
+
+> i
+
+∈ Rmiri and x(mi) 
+
+> i
+
+∈ Rri for 
+
+i = 1 , 2, . . . , ξ correspond to the derivatives of orders 0 through mi − 1 and mi, respectively. Since (1) contains mixed-order ordinary differential equations, we introduce two new symbols as follows: 
+
+s =
+
+> ξ
+
+X
+
+> i=1
+
+miri, r =
+
+> ξ
+
+X
+
+> i=1
+
+ri.
+
+In the system, u ∈ Rr represents the control input, y ∈ Rp is the measured output, and d ∈ Rq appears in both the state and output equations, representing unknown time-varying faults or disturbances occurring in actuator and sensor components, respectively. The variable ζ ∈ Rnζ denotes external factors, and 
+
+t is the continuous time variable. The function fi
+
+
+
+x(0 ∼m−1)  
+
+> i
+
+, ζ, t 
+
+
+
+∈ Rri is a sufficiently differentiable nonlinear vector function, B (y, ζ, t ) ∈ Rr×r is a matrix function, C ∈ Rp×s is the output matrix, and 
+
+D1(y) ∈ Rr×q and D2 ∈ Rp×q are full-column rank coefficient matrices. The mixed-order FAS (1) can be rewritten in a compact form: 
+
+
+
+x(mi) 
+
+> i
+
+|i=1 ∼ξ = f
+
+
+
+x(0 ∼mi−1)  
+
+> i
+
+|i=1 ∼ξ , ζ, t 
+
+
+
++ B (y, ζ, t ) u + D1(y)dy = Cx (0 ∼mi−1)  
+
+> i
+
+|i=1 ∼ξ + D2d, (2) where x(0 ∼mi−1)  
+
+> i
+
+|i=1 ∼ξ ∈ Rs, and 
+
+f
+
+
+
+x(0 ∼mi−1)  
+
+> i
+
+|i=1 ∼ξ , ζ, t 
+
+
+
+=
+
+
+
+f1
+
+
+
+x(0 ∼mi−1)  
+
+> i
+
+|i=1 ∼ξ , ζ, t 
+
+
+
+f2
+
+
+
+x(0 ∼mi−1)  
+
+> i
+
+|i=1 ∼ξ , ζ, t 
+
+
+
+...
+
+fξ
+
+
+
+x(0 ∼mi−1)  
+
+> i
+
+|i=1 ∼ξ , ζ, t 
+
+
+
+.Sci China Inf Sci 4
+
+Remark 1. It should be noted that in (2), the input matrix function B is assumed to depend on the system output y, rather than directly on the state vector x(mi) 
+
+> i
+
+|i=1 ∼ξ . Addressing the case where 
+
+B(x(0 ∼mi−1)  
+
+> i
+
+|i=1 ∼ξ , ζ, t ) presents more complex procedures in observer design and stability analysis, which will be discussed elsewhere. For the FAS model, the following full-actuation assumption naturally holds. 
+
+Assumption 1. The system (1) and (2) satisfies the full-actuation condition, i.e., for all y ∈ Rp, ζ ∈ Rnζ ,and t ⩾ 0, det ( B (y, ζ, t )) ̸ = 0 or ∞.The state-space representation of FAS (2) is given by ˙x(0 ∼mi−1)  
+
+> i
+
+= Φ i (0 0∼mi−1) x(0 ∼mi−1)  
+
+> i
+
++ Mir fi
+
+
+
+x(0 ∼mi−1)  
+
+> i
+
+, ζ, t 
+
+
+
++ Mir B (y, ζ, t ) u + Mir D1(y)d, i = 1 , 2, ..., ξ, 
+
+where Φi (0 0∼mi−1) = 
+
+
+
+0 Iri · · · 00 0 . . . ...... ... · · · Iri
+
+0 0 · · · 0
+
+
+
+∈ Rmiri×miri , M ir =
+
+" 0(mi−1) ri×ri
+
+Iri
+
+#
+
+∈ Rmiri×ri .
+
+We can also express this in a compact form: 
+
+
+
+˙x(0 ∼mi−1)  
+
+> i
+
+|i=1 ∼ξ = Φ E (0) x(0 ∼mi−1)  
+
+> i
+
+|i=1 ∼ξ + ME f
+
+
+
+x(0 ∼mi−1)  
+
+> i
+
+|i=1 ∼ξ , ζ, t 
+
+
+
++ME B (y, ζ, t ) u + ME D1(y)dy = Cx (0 ∼mi−1)  
+
+> i
+
+|i=1 ∼ξ + D2d, 
+
+(3) where Φ E (0) = blockdiag (Φ i (0 0∼mi−1)) ∈ Rs×s, ME = blockdiag ( Mir ) ∈ Rs×r , i = 1 , 2, ..., ξ .To facilitate the development of an observer-based control framework, we make the following assump-tions. 
+
+Assumption 2. The matrix pair (Φ E (0) , C ) is observable, or at least, detectable. Assume that the dimension of the fault/disturbance vector d is less than or equal to the dimension of the system output vector y. That is, q ⩽ p.
+
+Assumption 3. The nonlinear function in system (2) is sufficiently differentiable and the condition 
+
+∥f
+
+
+
+x(0 ∼mi−1)  
+
+> i
+
+|i=1 ∼ξ , ζ, t 
+
+
+
+− f
+
+
+
+ˆx(0 ∼mi−1)  
+
+> i
+
+|i=1 ∼ξ , ζ, t 
+
+
+
+∥
+
+⩽ γf ∥x(0 ∼mi−1)  
+
+> i
+
+|i=1 ∼ξ − ˆx(0 ∼mi−1)  
+
+> i
+
+|i=1 ∼ξ ∥
+
+holds, where γf > 0 is the Lipschitz constant. Specifically, each nonlinear sub-function is Lipschitz continuous with a constant coefficient γfi > 0, 
+
+∥fi
+
+
+
+x(0 ∼mi−1)  
+
+> i
+
+|i=1 ∼ξ , ζ, t 
+
+
+
+− fi
+
+
+
+ˆx(0 ∼mi−1)  
+
+> i
+
+|i=1 ∼ξ , ζ, t 
+
+
+
+∥
+
+⩽ γfi ∥x(0 ∼mi−1)  
+
+> i
+
+|i=1 ∼ξ − ˆx(0 ∼mi−1)  
+
+> i
+
+|i=1 ∼ξ ∥, i = 1 , 2, ..., ξ. 
+
+Remark 2. Assumption 1 may seem restrictive, but it is actually rational because many systems have been rigorously proven equivalent to FASs based on the FAS approach. More details can be found in [14,33] and other sources. Assumptions 2 and 3 are also reasonable and are often necessary in observer-based fault estimation and the analysis of nonlinear systems. In order to handle the fault/disturbance signal d, the system (3) can be equivalently transformed into a descriptor system [5, 6], as 
+
+
+
+E ˙˜x(0 ∼mi−1)  
+
+> i
+
+|i=1 ∼ξ = ˜P ˜x(0 ∼mi−1)  
+
+> i
+
+|i=1 ∼ξ + ˜ME f
+
+
+
+x(0 ∼mi−1)  
+
+> i
+
+|i=1 ∼ξ , ζ, t 
+
+
+
++ ˜ME B (y, ζ, t ) uy = ˜C ˜x(0 ∼mi−1)  
+
+> i
+
+|i=1 ∼ξ , (4) Sci China Inf Sci 5
+
+where the new variables and matrices are defined by ˜x(0 ∼mi−1)  
+
+> i
+
+|i=1 ∼ξ =
+
+" x(0 ∼mi−1)  
+
+> i
+
+|i=1 ∼ξ
+
+d
+
+#
+
+∈ Rs+q , E =
+
+"Is 00 0 
+
+#
+
+∈ R(s+q)×(s+q),
+
+˜P =
+
+"ΦE (0) ME D1(y)0 0
+
+#
+
+∈ R(s+q)×(s+q), ˜C =
+
+h
+
+C D 2
+
+i
+
+∈ Rp×(s+q), ˜ME = [ M T 
+
+> E
+
+0T 
+
+> q×r
+
+]T.
+
+The observability of the constructed descriptor system (4) is consistent with the original system (3), which can be easily proven via Assumption 2. By introducing an equality constraint, the descriptor state-space form of FAS (4) can be equivalently transformed into ˙˜x(0 ∼mi−1)  
+
+> i
+
+|i=1 ∼ξ = T ˜P ˜x(0 ∼mi−1)  
+
+> i
+
+|i=1 ∼ξ + T ˜ME f
+
+
+
+x(0 ∼mi−1)  
+
+> i
+
+|i=1 ∼ξ , ζ, t 
+
+
+
++ T ˜ME B (y, ζ, t ) u + N ˙y
+
+subject to T E + N ˜C = I, (5) where T ∈ R(s+q)×(s+q) and N ∈ R(s+q)×p are two additional design parameters to be determined later. The following lemmas will be instrumental in the subsequent design process. 
+
+Lemma 1. [34] Let A, B, and Y be matrices of appropriate dimensions. The matrix equation 
+
+AX B = Y
+
+is consistent if and only if there exist matrices A† and B† such that 
+
+AA †X B †B = Y.
+
+The general form of the solution is expressed by 
+
+X = A†YB † + S − A †ASBB †,
+
+where S is an arbitrary matrix of compatible dimension and the superscript † refers to the Moore-Penrose pseudoinverse, defined as A† = ( ATA)−1AT.
+
+Lemma 2. [35] Let A ∈ Rn×n be a matrix such that Re λi(A) ⩽ −μ, i = 1 , 2, . . . , n, 
+
+where μ is a positive scalar. Then, there exists a positive definite matrix P ∈ Rn×n that satisfies 
+
+ATP + P A ⩽ −2μP. 
+
+Lemma 3. [36] Let i ∈ { 1, 2, . . . , ξ }. For any arbitrarily chosen matrix Fi ∈ Rmiri×miri , the matrices 
+
+Ai 
+
+> 0∼mi−1
+
+and Vi ∈ Rmiri×miri that fulfill the condition det( Vi)̸ = 0 and Φi
+
+ Ai
+
+> 0∼mi−1
+
+ = ViFiV −1
+
+> i
+
+are determined by 
+
+Ai 
+
+> 0∼mi−1
+
+= −ZiF mi 
+
+> i
+
+V −1 
+
+> i
+
+(Zi, F i) ,
+
+and 
+
+Vi = Vi (Zi, F i) = 
+
+
+
+Zi
+
+ZiFi
+
+...
+
+ZiF mi−1
+
+> i
+
+
+
+where Zi ∈ Rri×miri is a parameter matrix that must satisfy det Vi (Zi, F i)̸ = 0 .
+
+Lemma 4. [37] The inequality 2xTP y ⩽ δx TP x + 1
+
+δ yTP y 
+
+holds, where vector x, y ∈ Rn, scalar δ > 0, and matrix P ∈ Rn×n > 0. Sci China Inf Sci 6
+
+3 Active fault/disturbance compensation control 
+
+3.1 Nonlinear observer design for FAS 
+
+For the transformed system described by (5), we propose the following nonlinear observer for FAS (2), which facilitates the simultaneous estimation of both the system state and faults/disturbances: 
+
+
+
+˙ς = T ˜P ˆ˜x(0 ∼mi−1)  
+
+> i
+
+|i=1 ∼ξ + T ˜ME f
+
+
+
+ˆx(0 ∼mi−1)  
+
+> i
+
+|i=1 ∼ξ , ζ, t 
+
+
+
++T ˜ME B (y, ζ, t ) u + L
+
+
+
+y − ˜C ˆ˜x(0 ∼mi−1)  
+
+> i
+
+|i=1 ∼ξ
+
+
+
+ˆ˜x(0 ∼mi−1)  
+
+> i
+
+|i=1 ∼ξ = ς + N y 
+
+ˆx(0 ∼mi−1)  
+
+> i
+
+|i=1 ∼ξ = H1 ˆ˜x(0 ∼mi−1)  
+
+> i
+
+|i=1 ∼ξ
+
+ˆd = H2 ˆ˜x(0 ∼mi−1)  
+
+> i
+
+|i=1 ∼ξ ,
+
+(6) where ς is an intermediate variable, ˆ ˜x(0 ∼mi−1)  
+
+> i
+
+|i=1 ∼ξ , ˆ x(0 ∼mi−1)  
+
+> i
+
+|i=1 ∼ξ , and ˆd correspondingly represent the estimated values. The nonlinear observer (6) operates with three key parameters: in addition to the previously introduced matrices T and N in (5), the observer gain matrix L ∈ R(s+q)×p will also be specified later. The decoupling matrices H1 and H2 are given by 
+
+H1 =
+
+h
+
+Is 0s×q
+
+i
+
+, H 2 =
+
+h
+
+0q×s Iq
+
+i
+
+.
+
+The last two equations in the proposed observer (6) are responsible for reconstructing the system state ˆx(0 ∼mi−1)  
+
+> i
+
+|i=1 ∼ξ and the fault/disturbance signal d, respectively. Similarly, corresponding relationships are also present in (4) where they are defined as follows: 
+
+x(0 ∼mi−1)  
+
+> i
+
+|i=1 ∼ξ = H1 ˜x(0 ∼mi−1)  
+
+> i
+
+|i=1 ∼ξ , d = H2 ˜x(0 ∼mi−1)  
+
+> i
+
+|i=1 ∼ξ .
+
+Define the estimation error as 
+
+e = ˜ x(0 ∼mi−1)  
+
+> i
+
+|i=1 ∼ξ − ˆ˜x(0 ∼mi−1)  
+
+> i
+
+|i=1 ∼ξ . (7) Taking the derivative of the estimation error yields ˙e = ˙ ˜x(0 ∼mi−1)  
+
+> i
+
+|i=1 ∼ξ − ˙ˆ˜x(0 ∼mi−1)  
+
+> i
+
+|i=1 ∼ξ
+
+=T ˜P ˜x(0 ∼mi−1)  
+
+> i
+
+|i=1 ∼ξ + T ˜ME f
+
+
+
+x(0 ∼mi−1)  
+
+> i
+
+|i=1 ∼ξ , ζ, t 
+
+
+
++ T ˜ME B (y, ζ, t ) u − T ˜P ˆ˜x(0 ∼mi−1)  
+
+> i
+
+|i=1 ∼ξ − T ˜ME f
+
+
+
+ˆx(0 ∼mi−1)  
+
+> i
+
+|i=1 ∼ξ , ζ, t 
+
+
+
+− T ˜ME B (y, ζ, t ) u − L
+
+
+
+y − ˜C ˆ˜x(0 ∼mi−1)  
+
+> i
+
+|i=1 ∼ξ
+
+
+
+,
+
+i.e., ˙e =
+
+
+
+T ˜P − L ˜C
+
+
+
+e + T ˜ME ∆f, (8) 
+
+∆f = f
+
+
+
+x(0 ∼mi−1)  
+
+> i
+
+|i=1 ∼ξ , ζ, t 
+
+
+
+− f
+
+
+
+ˆx(0 ∼mi−1)  
+
+> i
+
+|i=1 ∼ξ , ζ, t 
+
+
+
+.
+
+Unlike conventional observers, the proposed observer requires not only a suitable gain matrix L to stabilize the error system (8), but also must satisfy the equality constraint specified in (5). Applying standard observer gain design methods directly could violate this equality constraint and lead to divergent error dynamics. To address this, we utilize generalized matrix inverse techniques as outlined in Lemma 1. Consequently, the observer parameters T and N can be determined by 
+
+T = Θ†H3 + SH 3 − SΘΘ †H3, (9) 
+
+N = Θ†H4 + SH 4 − SΘΘ †H4, (10) where S ∈ R(s+q)×(s+q+p) is a free matrix, and 
+
+Θ =
+
+" E
+
+˜C
+
+#
+
+, H 3 =
+
+" Is+q
+
+0p×(s+q)
+
+#
+
+, H 4 =
+
+" 0(s+q)×p
+
+Ip
+
+#
+
+.Sci China Inf Sci 7
+
+Assumption 4. For the sake of stability analysis, it is assumed that ∥D1 (y)∥ ⩽ ¯D1.Hence, we introduce the following theorem to design observer parameters and ensure asymptotic sta-bility of the error system (8). 
+
+Theorem 1. Suppose there exist a positive definite matrix Pe ∈ R(s+q)×(s+q), full matrices Q ∈
+
+R(s+q)×p and W ∈ R(s+q)×(s+q+p), a scalar variable η > 0, and a prescribed scalar μe > 0, such that the following matrix inequality constraint holds: 
+
+"Λ11 Λ12 
+
+∗ −ηI 
+
+#
+
+< 0, (11) 
+
+Λ11 =sym 
+
+
+
+PeΘ†H3 ˜P + W H 3 ˜P − W ΘΘ †H3 ˜P
+
+
+
+− sym 
+
+
+
+Q ˜C
+
+
+
++ 2 μePe + ηγ 2 
+
+> f
+
+HT1 H1,Λ12 =PeΘ†H3 ˜ME + W H 3 ˜ME − W ΘΘ †H3 ˜ME ,
+
+the poles of the proposed observer (6) will be placed at Re( λi) < −μe, i = 1 , 2, . . . , s + q, and the error dynamics (8) is asymptotically stable as guaranteed by the following exponential decay rate 
+
+∥e∥2 ⩽ λ−1min (Pe) Ve (0) exp( −c1t), (12) where c1 = μe − μ−1 
+
+> e
+
+γ2 
+
+> f
+
+λ−1min (Pe) ∥Pe∥∥ T ˜ME ∥2∥H1∥2 and Ve(0) represents the initial value of the selected Lyapunov function. The observer parameters T , N , and L can be determined by 
+
+L = P −1 
+
+> e
+
+Q, S = P −1 
+
+> e
+
+W, T = Θ†H3 + SH 3 − SΘΘ †H3,N = Θ†H4 + SH 4 − SΘΘ †H4.
+
+(13) 
+
+Proof. The proof is divided into two parts. First, we demonstrate that the design condition (11) is satisfied, and then we analyze the estimation performance. Assuming the inequality constraint (11) is met, and by substituting Q = PeL and W = PeS, along with the expressions for T and N provided in (9) and (10), respectively, we obtain 
+
+"Λ′ 
+
+> 11
+
+PeT ˜ME
+
+∗ −ηI 
+
+#
+
+< 0,Λ′ 
+
+> 11
+
+= sym 
+
+
+
+Pe
+
+
+
+T ˜P − L ˜C
+
+ 
+
++ 2 μePe + ηγ 2 
+
+> f
+
+HT1 H1.
+
+Pre- and post-multiplying eT ∆f T and eT ∆f TT, respectively, yields 
+
+eTsym 
+
+
+
+Pe
+
+
+
+T ˜P − L ˜C
+
+ 
+
+e + 2 μePe + 2 eTPeT ˜ME ∆f + ηγ 2 
+
+> f
+
+eTHT1 H1e − η∆f T∆f < 0.
+
+According to Assumption 3, we have the inequality relationship ∥∆f ∥ ⩽ γf ∥H1 ˜x(0 ∼mi−1)  
+
+> i
+
+|i=1 ∼ξ −
+
+H1 ˆ˜x(0 ∼mi−1)  
+
+> i
+
+|i=1 ∼ξ ∥, which can be further written as 
+
+∥∆f ∥ ⩽ γf ∥H1e∥ ⩽ γf ∥H1∥∥ e∥,
+
+indicating that ηγ 2 
+
+> f
+
+eTHT1 H1e − η∆f T∆f ⩾ 0, with a scalar coefficient η > 0. Besides, we know that 2μePe > 0. Then, we have 
+
+eTsym 
+
+
+
+Pe
+
+
+
+T ˜P − L ˜C
+
+ 
+
+e + 2 eTPeT ˜ME ∆f < 0.
+
+By taking the Lyapunov function Ve = eTPee, we arrive at ˙Ve = ˙ eTPee + eTPe ˙e < 0.
+
+Thus, the error system in (8) is proven to be stable. Sci China Inf Sci 8
+
+Given that the design condition in (11) holds, analyzing the Lyapunov function yields ˙Ve = ˙ eTPee + eTPe ˙e = eTsym 
+
+
+
+Pe
+
+
+
+T ˜P − L ˜C
+
+ 
+
+e + 2 eTPeT ˜ME ∆f. 
+
+Based on Lemma 2, we obtain ˙Ve ⩽ −2μeVe + 2 eTPeT ˜ME ∆f. 
+
+Using Lemma 4, it comes to ˙Ve ⩽ −2μeVe + μeeTPee + μ−1
+
+> e
+
+
+
+T ˜ME ∆f 
+
+T
+
+PeT ˜ME ∆f 
+
+⩽ −μeVe + μ−1 
+
+> e
+
+∥Pe∥∥ T ˜ME ∥2∥∆f ∥2.
+
+Hence, ˙Ve ⩽ −μeVe + μ−1 
+
+> e
+
+γ2 
+
+> f
+
+∥Pe∥∥ T ˜ME ∥2∥H1∥2∥e∥2
+
+⩽ −μeVe + μ−1 
+
+> e
+
+γ2 
+
+> f
+
+∥Pe∥∥ T ˜ME ∥2∥H1∥2λ−1min (Pe) Ve.
+
+We have the following ordinary differential inequality, ˙Ve ⩽ −
+
+
+
+μe − μ−1 
+
+> e
+
+γ2 
+
+> f
+
+λ−1min (Pe) ∥Pe∥∥ T ˜ME ∥2∥H1∥2
+
+Ve,
+
+and according to the comparison theorem [38], the solution is given by 
+
+Ve (t) ⩽ Ve (0) exp( −c1t),
+
+where Ve(0) is the initial value of Lyapunov function and c1 = μe − μ−1 
+
+> e
+
+γ2 
+
+> f
+
+λ−1min (Pe) ∥Pe∥∥ T ˜ME ∥2∥H1∥2.Finally, the estimation performance (12) is obtained, indicating that the error vector will asymptotically converge to the origin. 
+
+3.2 Observer-based control with active compensation 
+
+Taking advantage of the estimation results from the proposed observer (6) and inspired by the general FAS controller structure [14, 20, 28, 33], the control law with active fault/disturbance compensation is formulated as 
+
+
+
+u = −B−1 (y, ζ, t )
+
+
+
+K ˆx(0 ∼mi−1)  
+
+> i
+
+|i=1 ∼ξ + u∗
+
+
+
+u∗ = f
+
+
+
+ˆx(0 ∼mi−1)  
+
+> i
+
+|i=1 ∼ξ , ζ, t 
+
+
+
++ D1(y) ˆd, (14) where K = blockdiag  Ai
+
+> 0∼mi−1
+
+, i = 1 , 2, ..., ξ . The individual controller gain matrix, i.e., Ai
+
+> 0∼mi−1
+
+,can be determined using the parametric design approach outlined in Lemma 3, which ultimately yields a linear, constant, closed-loop control system with prescribed pole locations. The term ˆd serves as a compensation element to counteract fault/disturbance in the actuators. Consequently, the combination of the proposed observer (6) and control law (14) ensures the asymptotic convergence of the system, as stated in the following theorem. 
+
+Theorem 2. The FAS, described by either (2) or (1), is asymptotically stable under the proposed observer-based controller (14). Meanwhile, the state of the closed-loop control system exhibits the sub-sequent performance characteristics: 
+
+∥x(0 ∼mi−1)  
+
+> i
+
+|i=1 ∼ξ ∥2 ⩽ λ−1min (Px)
+
+
+
+Vx (0) − c3
+
+μx − c1
+
+
+
+exp( −μxt) + λ−1min (Px) c3
+
+μx − c1
+
+exp( −c1t), (15) where c2 = μ−1 
+
+> x
+
+∥Px∥ ∥ΦE (A) H1∥2 + γ2 
+
+> f
+
+∥ME ∥2∥H1∥2 + ∥ME ¯D1H2∥2, c3 = c2λ−1min (Pe) Ve (0), and Vx(0) represents the value of the chosen Lyapunov function at the starting time. Sci China Inf Sci 9
+
+Proof. Based on the proposed controller (14), the closed-loop system can be obtained by 
+
+x(mi) 
+
+> i
+
+|i=1 ∼ξ = − K ˆx(0 ∼mi−1)  
+
+> i
+
+|i=1 ∼ξ + ∆f + D1(y)
+
+
+
+d − ˆd
+
+
+
+= − K ˆx(0 ∼mi−1)  
+
+> i
+
+|i=1 ∼ξ + ∆f + D1(y)H2
+
+
+
+˜x(0 ∼mi−1)  
+
+> i
+
+|i=1 ∼ξ − ˆ˜x(0 ∼mi−1)  
+
+> i
+
+|i=1 ∼ξ
+
+
+
+= − K ˆx(0 ∼mi−1)  
+
+> i
+
+|i=1 ∼ξ + ∆f + D1(y)H2e. 
+
+The state-space representation of the closed-loop system is ˙x(0 ∼mi−1)  
+
+> i
+
+= Φ  Ai
+
+> 0∼mi−1
+
+ ˆx(0 ∼mi−1)  
+
+> i
+
++ Mir ∆f i + Mir D1(y)H2e, i = 1 , 2, . . . , ξ, 
+
+which can be rewritten into a compact form ˙x(0 ∼mi−1)  
+
+> i
+
+|i=1 ∼ξ = Φ E (A) ˆ x(0 ∼mi−1)  
+
+> i
+
+|i=1 ∼ξ + ˜ME ∆f + ˜ME D1(y)H2e. 
+
+Taking the Lyapunov function 
+
+Vx =
+
+
+
+x(0 ∼mi−1)  
+
+> i
+
+|i=1 ∼ξ
+
+T
+
+Pxx(0 ∼mi−1)  
+
+> i
+
+|i=1 ∼ξ ,
+
+where Px is a positive definite matrix obtained from Lemma 2. The derivative of the selected Lyapunov function can be written as the sum of two terms, that is ˙Vx = ˙V I 
+
+> x
+
++ ˙V II  
+
+> x
+
+,
+
+where ˙V I 
+
+> x
+
+=
+
+
+
+ˆx(0 ∼mi−1)  
+
+> i
+
+|i=1 ∼ξ
+
+T
+
+ΦE (A)T Pxx(0 ∼mi−1)  
+
+> i
+
+|i=1 ∼ξ +
+
+
+
+x(0 ∼mi−1)  
+
+> i
+
+|i=1 ∼ξ
+
+T
+
+PxΦE (A) ˆ x(0 ∼mi−1)  
+
+> i
+
+|i=1 ∼ξ ,
+
+˙V II  
+
+> x
+
+=2 
+
+
+
+x(0 ∼mi−1)  
+
+> i
+
+|i=1 ∼ξ
+
+T
+
+Px ˜ME ∆f + 2 
+
+
+
+x(0 ∼mi−1)  
+
+> i
+
+|i=1 ∼ξ
+
+T
+
+Px ˜ME D1(y)H2e. 
+
+Considering the estimation error defined in (7) and construction equation of ˆ x(0 ∼mi−1)  
+
+> i
+
+|i=1 ∼ξ in (6), the following relationship holds ˆx(0 ∼mi−1)  
+
+> i
+
+|i=1 ∼ξ = x(0 ∼mi−1)  
+
+> i
+
+|i=1 ∼ξ − H1e. (16) We then derive the first part in ˙Vx:˙V I 
+
+> x
+
+=
+
+
+
+H1 ˆ˜x(0 ∼mi−1)  
+
+> i
+
+|i=1 ∼ξ
+
+T
+
+ΦE (A)T Pxx(0 ∼mi−1)  
+
+> i
+
+|i=1 ∼ξ
+
++
+
+
+
+x(0 ∼mi−1)  
+
+> i
+
+|i=1 ∼ξ
+
+T
+
+PxΦE (A) H1 ˆ˜x(0 ∼mi−1)  
+
+> i
+
+|i=1 ∼ξ
+
+=
+
+
+
+H1
+
+
+
+˜x(0 ∼mi−1)  
+
+> i
+
+|i=1 ∼ξ − e
+
+ T
+
+ΦE (A)T Pxx(0 ∼mi−1)  
+
+> i
+
+|i=1 ∼ξ
+
++
+
+
+
+x(0 ∼mi−1)  
+
+> i
+
+|i=1 ∼ξ
+
+T
+
+PxΦE (A) H1
+
+
+
+˜x(0 ∼mi−1)  
+
+> i
+
+|i=1 ∼ξ − e
+
+
+
+=
+
+
+
+x(0 ∼mi−1)  
+
+> i
+
+|i=1 ∼ξ − H1e
+
+T
+
+ΦE (A)T Pxx(0 ∼mi−1)  
+
+> i
+
+|i=1 ∼ξ
+
++
+
+
+
+x(0 ∼mi−1)  
+
+> i
+
+|i=1 ∼ξ
+
+T
+
+PxΦE (A)
+
+
+
+x(0 ∼mi−1)  
+
+> i
+
+|i=1 ∼ξ − H1e
+
+
+
+=
+
+
+
+x(0 ∼mi−1)  
+
+> i
+
+|i=1 ∼ξ
+
+T
+
+sym (PxΦE (A)) x(0 ∼mi−1)  
+
+> i
+
+|i=1 ∼ξ − 2
+
+
+
+x(0 ∼mi−1)  
+
+> i
+
+|i=1 ∼ξ
+
+T
+
+PxΦE (A) H1e. 
+
+In light of Lemmas 2 and 4, the upper bound of ˙V I 
+
+> x
+
+can be derived by ˙V I 
+
+> x
+
+⩽ − 2μxVx − 2
+
+
+
+x(0 ∼mi−1)  
+
+> i
+
+|i=1 ∼ξ
+
+T
+
+PxΦE (A) H1e
+
+⩽ − 2μxVx − μx
+
+
+
+x(0 ∼mi−1)  
+
+> i
+
+|i=1 ∼ξ
+
+T
+
+Pxx(0 ∼mi−1)  
+
+> i
+
+|i=1 ∼ξ − μ−1 
+
+> x
+
+(Φ E (A) H1e)T PxΦE (A) H1eSci China Inf Sci 10 
+
+⩽ − 3μxVx − μ−1 
+
+> x
+
+(Φ E (A) H1e)T PxΦE (A) H1e. 
+
+Then, some necessary derivations should be conducted on ˙V II  
+
+> x
+
+.˙V II  
+
+> x
+
+⩽μx
+
+
+
+x(0 ∼mi−1)  
+
+> i
+
+|i=1 ∼ξ
+
+T
+
+Pxx(0 ∼mi−1)  
+
+> i
+
+|i=1 ∼ξ + μ−1
+
+> x
+
+ ˜ME ∆f 
+
+T
+
+Px ˜ME ∆f 
+
++ μx
+
+
+
+x(0 ∼mi−1)  
+
+> i
+
+|i=1 ∼ξ
+
+T
+
+Pxx(0 ∼mi−1)  
+
+> i
+
+|i=1 ∼ξ + μ−1
+
+> x
+
+ ˜ME D1(y)H2e
+
+T
+
+Px ˜ME D1(y)H2e
+
+=2 μxVx + μ−1
+
+> x
+
+ ˜ME ∆f 
+
+T
+
+Px ˜ME ∆f + μ−1
+
+> x
+
+ ˜ME D1(y)H2e
+
+T
+
+Px ˜ME D1(y)H2e. 
+
+Add both of ˙V I 
+
+> x
+
+and ˙V II  
+
+> x
+
+and use Assumption 4, resulting in ˙Vx = ˙V I 
+
+> x
+
++ ˙V II 
+
+> x
+
+⩽ − μxVx + μ−1 
+
+> x
+
+∥ΦE (A) H1∥2∥Px∥∥ e∥2 + μ−1 
+
+> x
+
+γ2 
+
+> f
+
+∥Px∥∥ ME ∥2∥H1∥2∥e∥2 + μ−1 
+
+> x
+
+∥Px∥∥ ME ¯D1H2∥2∥e∥2
+
+= − μxVx + c2∥e∥2,
+
+where c2 = μ−1 
+
+> x
+
+∥Px∥ ∥ΦE (A) H1∥2 + γ2 
+
+> f
+
+∥ME ∥2∥H1∥2 + ∥ME ¯D1H2∥2. Substituting (12) into the above yields ˙Vx ⩽ −μxVx + c3 exp( −c1t),
+
+where c3 = c2λ−1min (Pe) Ve (0). Finally, we get the result shown in (15) and validate that the closed-loop system is asymptotically stable, i.e., x → 0 when t → ∞ . This completes the proof. To enhance clarity, the flow of signals and control actions in the proposed active fault/disturbance compensation control scheme is summarized in Figure 1.  
+
+> Figure 1 Block diagram of the proposed observer-based fault/disturbance compensation control.
+
+4 Illustrative examples 
+
+This section demonstrates the feasibility, superiority, and practicality of the proposed method through a simulation using an electromechanical system and an actual experiment with a Quanser Ball and Beam system. Sci China Inf Sci 11 
+
+4.1 Comparative simulation for electromechanical system 
+
+This subsection demonstrates both the feasibility and advantage of the proposed observer-based active fault/disturbance compensation control using an electromechanical system. To provide a more compelling validation, the estimation and control outcomes are compared with those presented in [25]. The dynamics of the electromechanical system can be characterized by the following equations: 
+
+( Me ¨q + Be ˙q + Ne sin ( q) = ILe ˙I + ReI + KB ˙q = Ve + d, (17) where 
+
+Me = Je
+
+Kτ
+
++ meL2
+
+> o
+
+3Kτ
+
++ MoL2
+
+> o
+
+Kτ
+
++ 2MoR2
+
+> o
+
+5Kτ
+
+, Ne = meLog
+
+2Kτ
+
++ MoLogKτ
+
+, B e = Bo
+
+Kτ
+
+.
+
+In (17), q denotes the angular position of the link, I is the motor armature current, and Ve represents the voltage input. The variable d accounts for faults or disturbances. The system parameters are described as follows: Le = 0 .025 H is the armature inductance, Re = 5 .0 Ω is the armature resistance, KB =0.90 N · m/A is the back-emf coefficient, Je = 1 .625 × 10 −3 kg · m2 is the rotor inertia, me = 0 .506 kg is the link mass, Mo = 0 .434 kg is the load mass, Lo = 0 .305 m is the link length, Ro = 0 .023 m is the radius of load, g = 9 .8 m /s2 is the gravitational constant, Bo = 16 .25 ×10 −3 N · m · s/rad is the coefficient of viscous friction at the joint, Kτ = 0 .90 N · m/A is the conversion coefficient of armature current to torque. For details on transforming dynamics (17) into the form of (2) using the FAS approach, one can refer to the foundational work in [14, 33], or the example section of [25]. The final result yields the following FAS model: 
+
+( ... 
+
+q = f  q(0 ∼2)  + 1 
+
+> MeLe
+
+Ve + D1(y)dy = Cq (0 ∼2) + D2d, (18) where 
+
+f
+
+
+
+x(0 ∼2) 
+
+= − BeLe + MeRe
+
+MeLe
+
+¨q − ReBe + KB
+
+MeLe
+
+˙q − Ne
+
+Me
+
+˙q cos ( q) − ReNe
+
+MeLe
+
+sin ( q) ,C =
+
+"1 0 00 Be Me
+
+#
+
+, D 1(y) = 1
+
+MeLe
+
+, D 2 = [0 0 .1] T.
+
+According to Theorem 1, setting μe = 40 and γf = 1, we solve the linear matrix inequality (11) to obtain η = 0 .9501 and the following observer parameters: 
+
+T =
+
+
+
+7.6805 0 0 0
+
+−42 .5471 1 0 0
+
+−16 .3500 0 1 0
+
+−0.1066 −0.1806 −1.6642 0 
+
+ , N =
+
+
+
+−6.6805 042 .5471 016 .3500 00.1066 10 
+
+ , L =
+
+
+
+41 .0012 −1.3840 7.7106 −88 .9603 
+
+−2.1243 1443 .4586 4.0560 −1994 .0520 
+
+ .
+
+In the following simulation, we set the initial system values to [ q I ˙q]T = [1 1 1] T and the initial observer values to ˆ ˜x(0 ∼2) = [ˆ q ˙ˆq ¨ˆq ˆd]T = [6 .6805 − 42 .5471 − 16 .3500 9 .0924] T. To demonstrate the feasibility and superiority of the proposed observer, firstly, we evaluate the estimation performance by simulating system (17) with the control input Ve set to identically zero. We compare the proposed observer (6) with PI observer presented in [25]. The resulting estimation curves for both state and fault are shown in Figure 2. The comparison confirms the feasibility and advantage of the proposed observer, highlighting its accurate state and fault estimation capability and faster convergence speed. Then, Lemma 3 is used to design the controller gain. We specify the desired closed-loop system poles as [ −2 − 3 − 4] and select the free matrix Z = [1 1 1]. This produces the controller gain K = [24 26 9]. Based on the proposed observer-based active fault/disturbance compensation control framework (14) with (6), we assess the control performance by comparing it with the method in [25]. The results are Sci China Inf Sci 12 0 5 10 15 20 
+
+Time (s) 
+
+-0.5 00.5 1
+
+> Value
+
+7 80.05 0.1 
+
+(a) 0 5 10 15 20 
+
+Time (s) 
+
+-3 -2 -1 0123
+
+> Value
+
+12 13 14 -0.05 00.05 0.1 0 0.5 -2 02 (b) 0 5 10 15 20 
+
+Time (s) 
+
+-15 -10 -5 05
+
+> Value
+
+10 15 -0.1 00.1 0.1 0.2 -15 -10 -5 0
+
+(c) 0 5 10 15 20 
+
+Time (s) 
+
+-2 -1 0123
+
+> Value
+
+0.2 0.4 0.6 -0.5 00.5 14 15 0.8 1 (d) 
+
+Figure 2 Comparative state estimation results of the states (a) q, (b) ˙q, (c) ¨ q, and (d) the fault/disturbance d for FAS model (18) when the control input u ≡ 0. The black solid line represents the actual signal, the blue dotted line indicates the estimation by the proposed observer (6), and the red dash-dot line corresponds to the estimation by the PI observer from [25]. 0 5 10 15 20     
+
+> Time (s)
+> -3 -2 -1 012
+> State
+> 0510 15 20
+> Time (s)
+> -10 -5 05
+> Input
+
+(a) 0 5 10 15 20      
+
+> Time (s)
+> -1 012
+> State
+> 0510 15 20
+> Time (s)
+> -5 0510
+> Input
+
+(b) 
+
+Figure 3 The comparative control performance of the state response and control input of (a) the proposed method and (b) the method of [25]. Note that the ‘state’ presented in this figure is the original system (17)’s state, i.e., [ q I ˙q]T, instead of the FAS state [ q ˙q ¨q]T that was presented in Figure 2. Sci China Inf Sci 13 
+
+depicted in Figure 3. The comparison demonstrates that the active fault and disturbance compensation for the FAS model effectively stabilizes the system state. In contrast, the control performance of the method from [25] is less effective, exhibiting oscillatory behavior in the state. A quantitative comparison of the proposed method and the existing method [25] is presented in Table 1 to highlight their performance in estimation and control. For estimation performance, the proposed observer (6) demonstrates superior accuracy. While the Root Mean Squared Error (RMSE) for position estimation error ( e1) is comparable, the proposed method achieves lower RMSE, Mean Absolute Error (MAE), and Maximum Absolute Error (Max AE) for the velocity ( e2), acceleration ( e3), and lumped disturbance estimation errors ( ed). This indicates a more precise and reliable estimation of the system dynamic states and unknown inputs. The advantages in control performance are even more pronounced. The proposed controller reduces both the Integral of Absolute Error (IAE) and the Integral of Time-weighted Absolute Error (ITAE) for almost all state variables. In particular, the ITAE values are reduced by over 98% for variables q and I. The lower ITAE signifies that the proposed fault/disturbance com-pensation controller enhances tracking precision and ensures a much faster transient response, settling, and suppressed oscillations after a fault or disturbance occurs.  
+
+> Table 1 Quantitative analysis of estimation and control performances
+
+Estimation Control Proposed Existing [25] Proposed Existing [25] Variable RMSE MAE Max AE RMSE MAE Max AE Variable IAE ITAE IAE ITAE 
+
+e1 0.0529 0.0036 1.0000 0.0525 0.0058 1.0000 q 0.6162 0.4671 3.3909 23.7725 
+
+e2 0.0492 0.0038 1.0000 0.1676 0.0770 2.7266 I 1.4645 0.9434 3.3920 23.6701 
+
+e3 0.2984 0.0203 5.6552 0.5939 0.4017 8.6748 ˙q 5.8474 2.4436 4.8802 25.4165 
+
+ed 0.0493 0.0050 0.9786 0.3560 0.3096 1.8890                        
+
+> Note 1: e1,e2,e3, and edare the corresponding estimation errors and are defined by e1=q−ˆq,e2= ˙ q−˙ˆq,e3= ¨ q−¨ˆq, and ed=d−ˆd.Note 2: RMSE, MAE, and Max AE represent the Root Mean Squared Error, Mean Absolute Error, and Maximum Absolute Error, respectively. IAE and ITAE denote the Integral of Absolute Error and Integral of Time-weighted Absolute Error, respectively. Note 3: Since the variable-step solver is used in the simulation, we employ the high-precision numerical integration methods, such as the trapezoidal integration, to calculate the indices IAE and ITAE.
+
+4.2 Experiment validation using Ball and Beam system 
+
+The experiment is carried out using the Quanser Ball and Beam system [39, 40]. The device is shown in Figure 4. The overall experimental system consists of a Ball and Beam module, a Q8-USB data acquisition board, a VoltPAQ-X2 linear voltage-based power amplifier, and a lab computer.  
+
+> Figure 4 Quanser Ball and Beam system, motion data acquisition card, and power amplifier.
+
+The second-order dynamic model of the Ball and Beam system with actuator fault/disturbance can be Sci China Inf Sci 14  
+
+> Table 2 Parameter descriptions of Ball and Beam module
+
+Parameter Description Value 
+
+mb Mass of ball 0.064kg 
+
+rb Radius of ball 0.0127m 
+
+rarm 
+
+Distance between servo output gear shaft and coupled joint 0.0254m 
+
+Lb Beam length 0.4255m 
+
+Ks Steady-state gain of rotary servo base unit 1.5rad /s/V
+
+τ Time constant of rotary servo base unit 0.025s 
+
+g Gravitational constant 9.8m /s2
+
+characterized by 
+
+( ¨z = Kbb sin θl
+
+¨θl = − 1
+
+> τs
+
+˙θl + Ks 
+
+> τs
+
+(vm + d), (19) which falls under the framework of second-order Type III underactuated systems, as generalized in the work of [41]. The variables z and θl represent the ball displacement and servo angle, respectively, vm is the motor input voltage. The model gain is given by Kbb = mbgr brarm   
+
+> mbr2
+> bLb+JbLb
+
+, where the moment of inertia of a solid sphere is Jb = 25 mbr2 
+
+> b
+
+. Other parameters with corresponding descriptions and values are detailed in Table 2. In this system, two outputs, z and θl, are measured using an analog potentiometer sensor and an optical encoder, respectively. To simulate challenging external conditions, a fault signal is deliberately injected into the analog potentiometer sensor, indicating that the collected ball position data is inaccurate or even messed up. The measurement equations are given by y1 = z + 0 .1d and y2 = θl.In the literature of the modern control field, the dynamics model (19) is frequently transformed into a state-space representation to facilitate the application of control or estimation techniques. However, rather than using the state-space framework, we address the observation and control objectives through the FAS approach. The following procedures provide details about converting (19) into a FAS model. For the sake of simplicity in the subsequent derivations, we denote ϵ1 = Kbb , ϵ2 = − 1 
+
+> τs
+
+, ϵ3 = Ks 
+
+> τs
+
+, and 
+
+u = vm. According to the standard framework of Type III underactuated systems defined in [41], (19) can be written into ( ¨z = g (θl, t )¨θl = ˜ u, 
+
+where g (θl, t ) = ϵ1 sin θl, ˜ u = ϵ2 ˙θl + ϵ3(u + d), and a standard transformation is provided as follows: 
+
+Lemma 5. [41] Consider the second-order Type III underactuated system (UAS) 
+
+(¨q1 = u
+
+¨q2 = g
+
+
+
+q1, q (0 ∼1) 2 , t 
+
+
+
+. (20) Under the following mapping 
+
+q1 = h1
+
+ q(0 ∼3) , t 
+
+˙q1 = h2
+
+ q(0 ∼3) , t 
+
+q2 = q, 
+
+the UAS (20) can be transformed into a FAS as 
+
+q(4) = f
+
+
+
+q(0 ∼3) , t 
+
+
+
++ B
+
+
+
+q(0 ∼3) , t 
+
+
+
+u, 
+
+where 
+
+f
+
+
+
+q(0 ∼3) , t 
+
+
+
+= f0
+
+
+
+h1 (·) , h 2 (·) , q (0 ∼3) , t 
+
+
+
+,Sci China Inf Sci 15 
+
+B
+
+
+
+q(0 ∼3) , t 
+
+
+
+= B0
+
+
+
+h1 (·) , h 2 (·) , q (0 ∼3) , t 
+
+
+
+,f0
+
+
+
+h1 (·) , h 2 (·) , q (0 ∼3) , t 
+
+
+
+=
+
+(
+
+∂2g∂q 21
+
+˙q1 + ∂2g∂q 1∂q (0 ∼1) 2
+
+q(1 ∼2) 2 + ddt∂g ∂q 1
+
+)
+
+˙q1 +
+
+(
+
+∂2g∂q 2∂q 1
+
+˙q1 + ∂2g∂q 2∂q (0 ∼1) 2
+
+q(1 ∼2) 2 + ddt∂g ∂q 2
+
+)
+
+˙q2
+
++
+
+(
+
+∂2g∂ ˙q2∂q 1
+
+˙q1 + ∂2g∂ ˙q2∂q (0 ∼1) 2
+
+q(1 ∼2) 2 + ddt∂g ∂ ˙q2
+
+)
+
+¨q2 + ∂g ∂q 2
+
+¨q2 + ∂g ∂ ˙q2
+
+... 
+
+q 2 + ∂2g∂t 2
+
+= f0
+
+
+
+q(0 ∼1) 1 , q (0 ∼3) 2 , t 
+
+
+
+,
+
+and 
+
+B0
+
+
+
+h1 (·) , h 2 (·) , q (0 ∼3) , t 
+
+
+
+= ∂g ∂q 1
+
+u = B0
+
+
+
+q(0 ∼1) 1 , q (0 ∼3) 2 , t 
+
+
+
+.
+
+Therefore, following the standard framework for Type III UASs in Lemma 5, we finally achieve the FAS model of the Ball and Beam system (19) below, as outlined earlier in (1) or (2): 
+
+( x(4) = f  x(0 ∼3)  + B (y) u + D1(y)dy = Cx (0 ∼3) + D2d, (21) where 
+
+f
+
+
+
+x(0 ∼3) 
+
+= ϵ2
+
+... 
+
+x −
+
+... 
+
+x 2 ¨x
+
+1 − ¨x2 , B (y) = D1(y) = ϵ3
+
+p1 − ¨x2, C =
+
+"1 0 0 0 0 0 1 0 
+
+#
+
+, D 2 =
+
+" 0.10
+
+#
+
+,
+
+under the introduced diffeomorphism transformation: 
+
+
+
+z = ϵ1x
+
+˙z = ϵ1 ˙xθl = arcsin (¨ x)˙θl = ( √1 − ¨x2)−1 ... 
+
+x . 
+
+(22) The sensors provide measurement information of the ball position z and the servo angle θl. Since we can obtain x and ¨ x (x = z and ¨ x = ϵ1 sin θl) from sensors, as given in (22), the measurement equation for the FAS model can be formulated accordingly in (21). The controller for the Ball and Beam system (19) can be easily designed based on the obtained FAS model (21) as designed in (14), as long as det B(y)̸ = 0 or ∞, i.e., servo angle θl must operate within the specified constrained region θl ∈ [− π 
+
+> 2
+
+, π 
+
+> 2
+
+](rad) , to ensure system stability, prevent mechanical failure, and maintain optimal performance. Exceeding the bound could lead to undesirable behavior, such as changes in the model and deviations from the intended control objectives. Therefore, as stated in [41], sometimes a pre-controller is needed to drive the system trajectory back to the safety region or region of exponential attraction. According to Theorem 1, by letting μe = 8, γf = 5 and solving LMI (11), we obtain η = 0 .5305 and the following observer parameters 
+
+T =
+
+
+
+1 0 14 .1890 0 0 0 1 116 .3720 0 0 0 0 −1.6509 0 0 0 0 −91 .8945 1 0 
+
+−10 0 −124 .5768 0 0 
+
+
+
+, N =
+
+
+
+0 −14 .1890 0 −116 .3720 0 2.6509 0 91 .8945 10 124 .5768 
+
+
+
+, L =
+
+
+
+9.4393 1.4323 
+
+−9.2283 16 .2255 0.2110 10 .5871 13 .4029 −14 .0984 11 .2714 −16 .4543 
+
+
+
+.Sci China Inf Sci 16 
+
+Then, the FAS controller parameter can be calculated by utilizing Lemma 3. With the prescribed poles [−3 − 4 − 0.8 − 0.9] and the free matrix Z = [1 1 1 1], we obtain the control gain 
+
+K =
+
+h
+
+8.64 25 .44 24 .62 8 .7
+
+i
+
+.
+
+The initial values for the observer (6) are set to 0 .6667 × [1 1 1 1 1] T. The experiment considers two scenarios, each involving a different type of signal d. In scenario 1, a sinusoidal fault/disturbance signal 
+
+d = 6 sin( t) is injected into the servo motor input Vm and the analog potentiometer sensor (ball position sensor) with corresponding coefficients. In scenario 2, a rapidly varying d, composed of a sine wave with magnitude 6 and fast time-varying frequency, combined with a square wave with magnitude 2, is applied. For each scenario, we observe the state responses of ball position z and servo angle θl to determine if the states stabilize to zero, and simultaneously assess the practicability of fault/disturbance estimation using the proposed observer (6). To be more convincing, results without active compensation, where the term ˆd is removed from FAS controller (14), are also presented. The overall experiment results are shown in Figure 5. The experimental data clearly demonstrate that the proposed active compensation control for the FAS model is practically feasible and maintains good performance, even under severe faults or disturbances in actuators and core sensors (i.e., ball position sensor in an underactuated mechanical structure). In contrast, the control without compensation fails completely, leading to divergent system states, let alone achieving good control performance. The esti-mation results validate the ability of the proposed observer to reconstruct signals rapidly and accurately, even when the fault or disturbance signal varies quickly. 0 5 10 15 20 t (s)                         
+
+> -20 -10 010 Value
+> Fault/disturbance estimation
+> 0510 15 20 t (s)
+> -20 -10 0Ball position (cm)  Compensated
+> 0510 15 20 t (s)
+> -40 -20 020 Servo angle (deg)
+> 0510 15 20 t (s)
+> -2 02Input voltage (V)
+> 0510 15 20 t (s)
+> -10 010 20 Ball position (cm)  Uncompensated
+> 0510 15 20 t (s)
+> -50 050 Servo angle (deg)
+> 0510 15 20 t (s)
+> -2 02Input voltage (V)
+
+(a) 0 5 10 15 20 t (s)                          
+
+> -20 -10 010 Value
+> Fault/disturbance estimation
+> 0510 15 20 t (s)
+> -20 -10 0Ball position (cm)  Compensated
+> 0510 15 20 t (s)
+> -40 -20 020 40 Servo angle (deg)
+> 0510 15 20 t (s)
+> -2 02Input voltage (V)
+> 0510 15 20 t (s)
+> -20 -10 0Ball position (cm)  Uncompensated
+> 0510 15 20 t (s)
+> -50 050 Servo angle (deg)
+> 0510 15 20 t (s)
+> -2 02Input voltage (V)
+
+(b)        
+
+> Figure 5 Experimental results. (a) Scenario 1; (b) Scenario 2. Each subfigure contains: state responses for ball position z, servo angle θl, and control input Vmusing the proposed method with active compensation (top left); corresponding results without active compensation (top right); and the estimation of the fault/disturbance signal d(bottom).
+
+5 Conclusion 
+
+In this paper, we developed the observer-based active fault/disturbance compensation control for continuous-time nonlinear FASs. By introducing an observer with enhanced design flexibility, we achieved a precise estimation of system states and fault/disturbance signals. The comparative experimental results con-firmed the feasibility and superiority of the method, demonstrating its potential for real-world applica-tions in nonlinear system control. In future work, we intend to extend the proposed method to the uni-directionally connected FASs [42]. Another future research direction involves exploring set-membership Sci China Inf Sci 17 
+
+estimation techniques [43] and interval observers [26, 44] within the FAS framework for advanced fault diagnosis purposes. 
+
+Acknowledgements The authors express gratitude to Dr. Ruirui Yang for useful comments and discussions, and also thank Mr. Yifan Wang and Mr. Jianpeng Zou for their proofreading assistance. This work was supported in part by the National Natural Science Foundation of China (NSFC) under Grant 623B2045 and the Science Center Program of NSFC under Grant 62188101, in part by the Guangdong Science and Technology Program under Grant 2024B1212010002, in part by the Shenzhen Science and Technology Program under Grant KQTD20221101093557010. This work was also supported in part by the NSFC under Grants 62203206, 62573221, and 62550003, in part by the Guangdong Provincial Natural Science Foundation under Grant 2024A1515011648, in part by the Shenzhen Science and Technology Program under Grants JCYJ20240813094403005 and JCYJ20240813094212017, and in part by the Key Program of Special Funds for the Cultivation of Guangdong College Students Scientific and Technological Innovation (“Climbing Program” Special Funds) under funding pdjh2025ak186. 
+
+References 
+
+1 Isermann R. Process fault detection based on modeling and estimation methods—a survey. Automatica, 1984, 20: 387-404 2 Isermann R. Fault-diagnosis systems: an introduction from fault detection to fault tolerance. Springer Science & Business Media, 2006 3 Ding S X. Model-based fault diagnosis techniques: design schemes, algorithms, and tools. Springer Science & Business Media, 2008 4 Xu F. Minimal detectable and isolable faults of active fault diagnosis. IEEE Transactions on Automatic Control, 2022, 68: 1138-1145 5 Ren W, Guo S, Ahn C K. Guaranteed set-membership estimation for local nonlinear uncertain fuzzy systems subject to partially decouplable unknown inputs. IEEE Transactions on Fuzzy Systems, 2023, 31: 4336-4349 6 Wang Z, Lian D, Puig V, et al. Fault detection for brushless direct-current motor using descriptor system-based set-membership estimation. IEEE Transactions on Control Systems Technology, 2025, DOI: 10.1109/TCST.2025.3547257 7 Shen M, Zhang T, Wu Z G, et al. Iterative interval estimation-based fault detection for discrete time T-S fuzzy systems. IEEE Transactions on Systems, Man, and Cybernetics: Systems, 2023, 53: 6966-6974 8 Shen M, Zhang T, Park J H, et al. Iterative proportional-integral interval estimation of linear discrete-time systems. IEEE Transactions on Automatic Control, 2023, 68: 4249-4256 9 Gu Y, Shen M, Park J H, et al. Dynamic guaranteed cost event-triggered-based anti-disturbance control of T-S fuzzy wind-turbine systems subject to external disturbances. IEEE Transactions on Fuzzy Systems, 2024, 32: 7063-7072 10 Kalman R E. On the general theory of control systems. In: Proceedings first international conference on automatic control, Moscow, USSR, 1960. 481-492 11 Kalman R E. A new approach to linear filtering and prediction problems. Journal of Basic Engineering, 1960, 82: 35-45 12 Freeman R, Kokotovic P V. Robust nonlinear control design: state-space and Lyapunov techniques. Springer Science & Business Media, 2008 13 Liu G P. Coordination of networked nonlinear multi-agents using a high-order fully actuated predictive control strategy. IEEE/CAA Journal of Automatica Sinica, 2022, 9: 615-623 14 Duan G. High-order fully actuated system approaches: Part I. Models and basic procedure. International Journal of Systems Science, 2021, 52: 422-435 15 Cui Y, Duan G, Liu X, et al. Adaptive fuzzy fault-tolerant control of high-order nonlinear systems: A fully actuated system approach. International Journal of Fuzzy Systems, 2023, 25: 1895-1906 16 Zhang S, Duan G. Fully actuated system approach to robust control of uncertain multi-order sub-fully actuated systems. International Journal of Robust and Nonlinear Control, 2024, 34: 9697-9715 17 Chen Z, Duan G. A fully actuated system approach: Desired compensation adaptive robust control for uncertain nonlinear systems. Journal of the Franklin Institute, 2024, 361: 106855 18 Yao F, Tian G, Wu A, et al. A high-order fully actuated system approach to control of overhead cranes. IEEE/ASME Transactions on Mechatronics, 2024, 30: 2485-2496 19 Zhao T, Duan G R. Fully actuated system approach to attitude control of flexible spacecraft with nonlinear time-varying inertia. Science China Information Sciences, 2022, 65: 212201 20 Duan G. High-order fully actuated system approaches: Part V. Robust adaptive control. International Journal of Systems Science, 2021, 52: 2129-2143 21 Duan G. High-order fully-actuated system approaches: Part IX. Generalised PID control and model reference tracking. Inter-national Journal of Systems Science, 2022, 53: 652-674 22 Duan G. High-order fully actuated system approaches: Part VIII. Optimal control with application in spacecraft attitude stabilisation. International Journal of Systems Science, 2022, 53: 54-73 23 Wang X, Duan G. Fully actuated system approaches: Predictive elimination control for discrete-time nonlinear time-varying systems with full state constraints and time-varying delays. IEEE Transactions on Circuits and Systems I: Regular Papers, 2024, 71: 383-396 24 Wang Y, Duan G, Li P. Event-triggered adaptive sliding mode control of uncertain nonlinear systems based on fully actuated system approach. IEEE Transactions on Circuits and Systems II: Express Briefs, 2024, 71: 2749-2753 25 Jiang H, Duan G, Hou M. State and disturbance observer-based controller design for fully actuated systems. IEEE Transactions on Circuits and Systems I: Regular Papers, 2024, 71: 5261-5270 26 Ren W, Duan G R, Li P, et al. Set-based fault-tolerant control for continuous-time nonlinear systems: A fully actuated system approach. IEEE/ASME Transactions on Mechatronics, 2025, DOI: 10.1109/TMECH.2025.3565876 27 Liu Z, Yao F, Sun L, et al. A high-order fully actuated system approach to attitude control of 3D cubli. IEEE Transactions on Aerospace and Electronic Systems, 2025, DOI: 10.1109/TAES.2025.3567962 28 Duan G. High-order fully actuated system approaches: Part IV. Adaptive control and high-order backstepping. International Journal of Systems Science, 2021, 52: 972-989 29 Liu X, Chen M, Sheng L, et al. Adaptive fault-tolerant control for nonlinear high-order fully-actuated systems. Neurocom-puting, 2022, 495: 75-85 30 Cai M, He X, Zhou D. An active fault tolerance framework for uncertain nonlinear high-order fully-actuated systems. Auto-matica, 2023, 152: 110969 31 Dong R, Hua C, Li K, et al. Adaptive fault-tolerant control for high-order fully actuated system with full-state constraints. Journal of the Franklin Institute, 2023, 360: 8062-8074 32 Li P, Duan G, Zhang B, et al. High-order fully actuated approach for output tracking control of flexible servo systems subject to uncertainties and disturbances. IEEE Transactions on Industrial Electronics, 2025, 72: 9433-9443 33 Duan G. High-order fully actuated system approaches: Part II. Generalized strict-feedback systems. International Journal of Systems Science, 2021, 52: 437-454 34 Ben-Israel A, Greville T N. Generalized inverses: theory and applications. Springer Science & Business Media, 2003 Sci China Inf Sci 18 35 Duan G. High-order fully actuated system approaches: Part III. Robust control and high-order backstepping. International Journal of Systems Science, 2021, 52: 952-971 36 Duan G. High-order fully actuated system approaches: part VII. Controllability, stabilisability and parametric designs. In-ternational Journal of Systems Science, 2021, 52: 3091-3114 37 Duan G, Yu H. LMIs in Control Systems: Analysis, Design and Applications. CRC Press, 2013 38 Ames W F, Pachpatte B. Inequalities for differential and integral equations, volume 197. Elsevier, 1997 39 Rotary Servo Base Unit - Quanser – quanser.com. https://www.quanser.com/products/rotary-servo-base-unit/. [Accessed 12-08-2025] 40 Ball and Beam - Quanser – quanser.com. https://www.quanser.com/products/ball-and-beam/. [Accessed 12-08-2025] 41 Duan G R. Stabilisation of four types of underactuated systems: a FAS approach. International Journal of Systems Science, 55: 2421-2441 42 Duan G R. Constrained unidirectionally connected FASs: part I. Models. International Journal of Systems Science, 2025, DOI: 10.1080/00207721.2025.2466806 43 Ren W, Duan G R, Fu M, Kong H. A zonotopic disturbance observer and fully actuated system framework for fault-tolerant control of discrete-time uncertain nonlinear systems. IEEE Transactions on Aerospace and Electronic Systems, 2026, DOI: 10.1109/TAES.2026.3660803. 44 Ren W, Duan G R, Kong H. A fully actuated system approach to interval observer design with applications in fault detection. In: 2024 3rd Conference on Fully Actuated System Theory and Applications (FASTA). 571-576

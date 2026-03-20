@@ -1,0 +1,1552 @@
+Title: 2603.03929v1.pdf
+
+URL Source: https://arxiv.org/pdf/2603.03929v1
+
+Published Time: Thu, 05 Mar 2026 01:51:25 GMT
+
+Number of Pages: 16
+
+Markdown Content:
+# Harmonic Modeling and Control under Variable-Frequency 
+
+# Maxime Grosso a,c, Pierre Riedinger a, Jamal Daafouz a,d, Serge Pierfederici b,Hicham Janati-Idrissi c, Blaise Lapôtre c
+
+> a
+
+Université de Lorraine, CNRS, CRAN, F-54000 Nancy, France 
+
+> b
+
+Université de Lorraine, CNRS, LEMTA, F-54000 Nancy, France 
+
+> c
+
+Safran Electronics & Defense, F-91344 Massy, France. 
+
+> d
+
+Institut Universitaire de France, F-75000 Paris, France. 
+
+Abstract 
+
+This paper develops a harmonic-domain framework for systems with variable fundamental frequency. A variable-frequency sliding Fourier decomposition is introduced in the phase domain, together with necessary and sufficient conditions for time-domain realizability. An exact harmonic-domain differential model is derived for general nonlinear systems under variable frequency, without assumptions on the frequency variation. An explicit parameter-varying approximation is then obtained, along with a tight error bound expressed in terms of local relative frequency variation, providing a non-conservative validity criterion and clarifying the limitations of classical heuristics. A main result shows that, for linear phase-periodic systems with affine frequency dependence, stability analysis and control synthesis can be carried out without approximation and without assumptions on the frequency variation, provided the frequency evolves within a prescribed interval. As a consequence, both problems reduce to harmonic Lyapunov inequalities evaluated at the two extreme frequency values, yielding a convex LMI characterization. The framework is illustrated on a variable-speed permanent magnet synchronous motor. 
+
+Key words: Harmonic Modeling, variable-frequency, Dynamic Phasor, Parameter-Varying Systems, Toeplitz Operators. 
+
+1 Introduction 
+
+Periodic signals can be naturally decomposed into har-monic components, each associated with an integer mul-tiple of a fundamental frequency. This harmonic struc-ture provides a useful lens for analyzing and model-ing systems subject to periodic excitations or exhibiting periodic steady-state behavior. Over the past decades, two main classes of approaches have emerged to address such phenomena. The first class, rooted in control the-ory, focuses on the synthesis of control laws ensuring asymptotic tracking or rejection of periodic signals. It includes output regulation schemes based on the internal model principle, repetitive control, and their adaptive or robust extensions [1–5]. The second class, historically developed within electrical engineering, adopts a har-monic or frequency-domain viewpoint. Seminal contri-butions include harmonic state-space representations [6, 7] and dynamic phasors [8–11] which have demonstrated their effectiveness in applications such as power elec-tronics, electrical drives, and grid-connected convert-ers [12,13], where rich harmonic content challenges clas-sical time-domain modeling. By representing periodic behaviors through the evolution of harmonic compo-nents, these approaches recast time-periodic dynamics into time-invariant (LTI) models in the harmonic do-main, enabling the systematic use of standard LTI tools. Most existing harmonic modeling and control frame-works rely on the assumption of a constant fundamen-tal frequency [14–18]. This assumption is violated in many emerging applications where the fundamental frequency varies with operating conditions or is itself a control variable. Representative examples include variable-speed motor drives, aircraft electrical systems, renewable energy generation, and autonomous power systems. In such settings, frequency variations directly affect harmonic interactions, rendering fixed-frequency harmonic models inaccurate and potentially destabi-lizing when used for control design. Early attempts to address variable-frequency effects introduced dynamic phasors with time-varying frequency [6, 19]. These ap-proaches typically relied on heuristic slowly-varying assumptions, introduced nonlinear or delayed terms, and lacked rigorous guarantees regarding time-domain realizability and control-oriented model validity. More 
+
+Preprint submitted to Automatica March 5, 2026 
+
+> arXiv:2603.03929v1 [eess.SY] 4 Mar 2026
+
+recent contributions have clarified fundamental aspects of harmonic modeling, including the coincidence con-dition for time-domain realizability [18] and compu-tational tools for harmonic Lyapunov and LMI-based analysis [20]. However, these advances remain largely restricted to the constant-frequency case, and a rigorous framework for harmonic modeling and control under time-varying frequency is still lacking. To address this gap, we start from a sliding Fourier analysis formulated in the phase domain and introduce a variable-frequency harmonic decomposition, together with necessary and sufficient conditions for time-domain realizability. Building on this representation, we derive an exact harmonic-domain differential model that cap-tures the true dynamics of harmonic components under frequency variation, without relying on slowly-varying frequency assumptions. This exact formulation serves as the foundation for a systematic parameter-varying ap-proximation, together with a precise and computable er-ror bound that quantifies its accuracy in terms of local relative frequency variation. Within the proposed ap-proach, we further show that for a broad and practically relevant class of linear phase-periodic systems whose harmonic representation depends affinely on the instan-taneous frequency, stability and state-feedback synthe-sis can be addressed exactly in the harmonic domain. In particular, we establish a Lyapunov stability condi-tion that can be certified by evaluating harmonic Lya-punov inequalities at a finite number of frequency ver-tices, without imposing assumptions on the frequency variation. This result bridges harmonic modeling with LMI-based control design enabling stability guarantees over a prescribed frequency interval. A preliminary ver-sion of this work appeared in [21]. Here, we significantly extend that study by removing restrictive assumptions, deriving the harmonic formulation from first principles, and establishing precise conditions under which an ex-act and well-posed parameter-varying control framework can be obtained. The remainder of the paper is organized as follows. Section 2 recalls the foundations of harmonic model-ing under the classical constant-frequency assumption. Section 3 introduces the proposed variable-frequency sliding Fourier decomposition and establishes its funda-mental properties. Section 4 derives the exact harmonic-domain dynamical model governing the evolution of variable-frequency harmonic components. Section 5develops a parameter-varying approximation together with a quantitative and non-conservative validity cri-terion. Section 6 establishes exact Lyapunov stability and control synthesis results for phase–periodic systems with affine frequency dependence. Finally, Section 7 illustrates the proposed framework on a variable-speed permanent magnet synchronous motor. 
+
+Notations: The transpose of a matrix A is denoted 
+
+A⊺ and A∗ denotes the complex conjugate transpose 
+
+A∗ = ¯A⊺. The n-dimensional identity matrix is denoted 
+
+Id n. The infinite identity matrix is denoted I. Ca de-notes the space of absolutely continuous functions, 
+
+Lp([ a, b ], Cn) (resp. ℓp(Cn)) denotes the Lebesgue spaces of p-integrable functions on [a, b ] with values in 
+
+Cn (resp. p-summable sequences of Cn) for 1 ≤ p ≤ ∞.
+
+Lploc is the set of locally p-integrable functions. Finally, 
+
+⊗ denotes the Kronecker product. 
+
+2 Fixed-Frequency Harmonic Modeling 
+
+Before introducing the proposed framework for variable-frequency systems, we briefly recall the fundamental principles of harmonic modeling under the classical assumption of a constant fundamental frequency [18]. 
+
+Definition 1 For a time-signal x ∈ L2
+
+> loc
+
+(R, C) and a fixed period T0 = 2π/ω0, its sliding Fourier decomposition (SFD) is the mapping FT0 ∶ x ↦ X ∈ Ca(R, ℓ 2(Cn)) 
+
+where for every t, the components of the sequence X(t) =
+
+(Xk(t)) k∈Z, are given by: 
+
+Xk(t) = 1
+
+T0 ∫
+
+> tt−T0
+
+x(τ )e−jkω 0τ dτ. (1) 
+
+Xk are called the k-th dynamic phasors. For a time vector-valued function x ∈ L2
+
+> loc
+
+(R, Cn) (or matrix-valued), this extends to 
+
+X = F(x) = (F(x1), . . . , F(xn)) . (2) Conversely, the arrival space, denoted by HT0 and com-monly referred to as the harmonic domain [18], is char-acterized as follows. 
+
+Theorem 1 For a given X ∈ Ca(R, ℓ 2(Cn)) , there ex-ists x ∈ L2
+
+> loc
+
+(R, Cn) such that X = FT0 (x) if and only if 
+
+˙Xk(t) = ˙X0(t)e−jkω 0t, a.e. for all k ∈ Z. (3) 
+
+This condition defines a subspace of Ca(R, ℓ 2(Cn)) called the harmonic domain HT0 . The inverse mapping F−1 
+
+> T0
+
+∶
+
+HT0 → L2 
+
+> loc
+
+is given for a continuous signal x by: 
+
+x(t) = ∑
+
+> k∈Z
+
+Xk(t)ejkω 0t + T0
+
+2 ˙X0(t). (4) This theorem is commonly referred to as the coincidence condition . It characterizes the compatibility between the time evolution of the harmonic coefficients and an un-derlying time-domain signal, and guarantees that the harmonic representation admits a unique time-domain realization. We now recall the following result [18]. 
+
+Theorem 2 Consider a general dynamical system 
+
+˙x(t) = f (t, x (t)) (5) 2If x is a Carathéodory solution of (5) then, for any T0 > 0,
+
+X = FT0 (x) ∈ HT0 and is a solution of: 
+
+˙X(t) = FT0 (f (t, x (t))) − ω0N X(t), (6) 
+
+where N = Id n ⊗ diag (jZ). Conversely, if X is a solution of (6) that belongs to HT0 , its representative x(t) is a solution of (5) .
+
+This theorem is particularly useful for T0-periodic sys-tems (i.e., f (t, x ) = f (t + T0, x )), since in this case the harmonic representation (6) reduces to a time-invariant system. A key advantage is that FT0 (f (t, x (t))) can then be computed explicitly when f is polynomial in x with periodic coefficients, using the following property [18]. 
+
+Property 1 Let x ∈ L2loc and let A and B be L∞-matrix valued functions. Then, the following properties hold: 
+
+FT0 (Ax ) = TT0 (A) FT0 (x) = AX, (7a) 
+
+TT0 (AB ) = TT0 (A) TT0 (B) = A B , (7b) 
+
+where TT0 is the Toeplitz transformation. For a scalar function a ∈ L∞ with Fourier coefficients (ak)k∈Z, the corresponding infinite-dimensional Toeplitz operator, bounded on ℓ2, is defined as: 
+
+TT0 (a) =
+
+⎡⎢⎢⎢⎢⎢⎢⎢⎢⎢⎢⎢⎢⎢⎣
+
+⋱ ⋮ ⋮ ⋮⋯ a0 a−1 a−2 ⋯⋯ a1 a0 a−1 ⋯⋯ a2 a1 a0 ⋯⋮ ⋮ ⋮ ⋱
+
+⎤⎥⎥⎥⎥⎥⎥⎥⎥⎥⎥⎥⎥⎥⎦
+
+. (8) 
+
+For a matrix-valued function A = (aij )1≤i≤n, 1≤j≤m, the Toeplitz-block operator is A = (TT0 (aij )) 1≤i≤n, 1≤j≤m.Moreover, the ℓ2-norm of A satisfies ∥A∥ℓ2 = ∥A∥L∞ .
+
+For illustration, consider an LTP system of the form 
+
+˙x = A(t)x + B(t)u (9) where A(t) and B(t) are T0-periodic, L∞-matrix valued functions. The harmonic representation (6) reduces to an infinite-dimensional LTI system: 
+
+˙X(t) = (A − ω0N )X(t) + BU (t). (10) This LTP-to-LTI transformation enables the application of classical LTI analysis and synthesis tools to periodic systems [22,23]. The challenge is to extend this powerful and rigorous framework to systems in which the funda-mental frequency, ω0, is no longer constant. 
+
+3 The variable-frequency SFD 
+
+We now relax the constant-frequency assumption and consider a time-varying fundamental frequency, denoted 
+
+ω(t). The central idea is to replace the fixed period T0
+
+with a time-varying “pseudo-period” T (t), following the approach originally proposed in [6, 19]. In the following, we distinguish between time-domain variables t, phase-domain variables ϕ, and the phase function θ(t) that maps time to phase. 
+
+Definition 2 Let ω ∈ C0(R, R+) be a strictly positive, continuous function. The associated phase function θ is a C1 diffeomorphism defined by 
+
+θ(t) ≜ θ(0) + ∫
+
+> t
+> 0
+
+ω(s) ds. (11) 
+
+Its inverse, called the phase-to-time mapping , is denoted by p(ϕ) = θ−1(ϕ) and satisfies ddϕ p(ϕ) = 1 
+
+> ω(p(ϕ))
+
+.
+
+This diffeomorphism provides a natural way to express any time-domain signal in terms of its phase. 
+
+Definition 3 Let x ∈ L2loc (R, Cn). Its phase-domain representation is the mapping 
+
+ϕ ↦ xθ (ϕ) ≜ x(p(ϕ)) ,
+
+so that for ϕ = θ(t), we have: x(t) = xθ (θ(t)) .
+
+Importantly, this transformation is not a mere time repa-rameterization: it enables the definition of a fixed-length sliding Fourier window in the phase domain, which is essential for extending harmonic analysis to variable-frequency signals. The definition of the sliding Fourier decomposition for variable-frequency signals is recalled below [6, Appendix A]. 
+
+Definition 4 Let θ be a phase function as defined in (11) . The SFD of a time-domain signal x is denoted by Fθ and defined by t ↦ X(t) ∶= Xθ (θ(t)) , where 
+
+Xθ (φ) = F2π (xθ )( φ) and F2π is the standard SFD, in-troduced in Definition 1, over a window of length 2π.The resulting Xθ (φ) is called the phase-domain phasor .
+
+From this definition, we have the following property. 
+
+Property 2 The k-th phasor of x is given by 
+
+Xk(t) = 12π ∫
+
+> θ(t)
+> θ(t)−2π
+
+xθ (ϕ) e−jkϕ dϕ (12) 
+
+= 12π ∫ 
+
+> tt−T(t)
+
+x(τ ) e−jkθ (τ ) ω(τ ) dτ, (13) 
+
+where the time-varying pseudo-period T (t) is defined as the unique positive solution to 
+
+θ(t) − θ(t − T (t)) = 2π, ∀t ∈ R. (14) 3Moreover, if ω is continuous ( ω ∈ C0), then T (t) is a C1
+
+function satisfying 
+
+˙T (t) = 1 − ω(t)
+
+ω(t − T (t)) . (15) 
+
+PROOF. Applying Definition 1 to F2π (xθ )( φ) yields 
+
+Xk(φ) = 12π ∫
+
+> φφ−2π
+
+xθ (ϕ) e−jkϕ dϕ, 
+
+noting that in (1) we have ω0 = 1 when T0 = 2π. Equa-tion (12) follows directly by substituting φ = θ(t).Equations (13) and (14) are obtained by performing the change of variables ϕ = θ(τ ). Finally, differentiating (14) with respect to t concludes the proof. ◻
+
+Remark 1 When ω is constant, (13) reduces to the clas-sical fixed-frequency Fourier decomposition (1) . If ω(t)
+
+is phase-periodic , the right-hand side of (15) vanishes, implying that the pseudo-period T (t) is constant; de-note this constant by Tc. Differentiating (14) then shows that ω(t) is also Tc-periodic. Since Tc generally differs from 2π/ω(t), the constant phasor associated with ω(t)
+
+through (13) should not be confused with the constant phasor obtained from the classical Fourier decomposi-tion (1) with T0 = Tc. These quantities are defined with respect to different referentials, namely the phase and the time domains, and therefore represent fundamentally distinct objects. 
+
+The following theorem generalizes the classical coinci-dence condition of Theorem 1 to the variable-frequency setting and establishes a necessary and sufficient condi-tion for time-domain realizability. 
+
+Theorem 3 Let X ∈ Ca(R, ℓ 2(Cn)) . There exists a sig-nal x ∈ L2loc (R, Cn) such that X = Fθ (x) if and only if 
+
+˙Xk(t) = ˙X0(t) e−jkθ (t), for a.e. t and all k ∈ Z. (16) 
+
+The subspace of Ca(R, ℓ 2(Cn)) satisfying this condition is called the variable-frequency harmonic domain and denoted Hθ . The inverse mapping F−1 
+
+> θ
+
+∶ Hθ → L2loc is given, for a continuous signal x, by 
+
+x(t) = ∑
+
+> k∈Z
+
+Xk(t) ejkθ (t) + πω(t) ˙X0(t). (17) 
+
+PROOF. By definition, for every t we have X(t) ∶=
+
+Xθ (θ(t)) . Setting φ = θ(t) gives t = p(φ), so that 
+
+X(p(φ)) = Xθ (φ), which expresses the phasor sequence as a function of the phase φ. Since Xθ (φ) = F2π (xθ )( φ),its phasor-derivative with respect to φ satisfies, for every k ∈ Z (see Theorem 1): 
+
+ddφ Xθ,k (φ) = ddφ Xθ, 0(φ) e−jkφ . (18) On the other hand, the chain rule gives, for every k ∈ Z,
+
+˙Xk(t) = ω(t) ddφ Xθ,k (φ)∣ φ=θ(t).
+
+Combining this with (18) immediately yields Eq. (16). Similarly, for a continuous phase-domain signal xθ , we have (see (4) with T0 = 2π and ω0 = 1): 
+
+xθ (φ) = ∑
+
+> k∈Z
+
+Xθ,k (φ) ejkφ + π ddφ Xθ, 0(φ),
+
+which directly yields the formula (17). ◻
+
+4 Exact Variable-Frequency Harmonic Model 
+
+Building on the variable-frequency harmonic representa-tion introduced in the previous section, we now derive an exact and compact harmonic-domain differential model describing the evolution of variable-frequency phasors for general nonlinear, time-varying systems. This result provides a rigorous foundation for both approximation and control synthesis developed in the sequel. Consider a general nonlinear time-varying system 
+
+˙x(t) = f (t, x (t)) , (19) where x(t) ∈ Rn and f satisfies the Carathéodory con-ditions ensuring existence of solutions. Using the phase-domain representation xθ (ϕ) = x(p(ϕ)) , system (19) can be equivalently expressed in the phase domain as 
+
+ddϕ xθ (ϕ) = f (p(ϕ), x θ (ϕ)) 
+
+ω(p(ϕ)) . (20) Applying Theorem 2 to the phase-domain system yields the infinite-dimensional phasor dynamics 
+
+ddϕ Xθ (ϕ) = F2π ( fθ (⋅, x θ (⋅)) 
+
+ωθ (⋅) ) ( ϕ) − N Xθ (ϕ), (21) where fθ (ϕ, x θ (ϕ)) = f (p(ϕ), x θ (ϕ)) and ωθ (ϕ) =
+
+ω(p(ϕ)) . We now translate this phase-domain for-mulation back to the time domain, yielding an exact variable-frequency harmonic model. 
+
+Theorem 4 The exact dynamics of the variable-frequency phasor X(t) = Fθ (x)( t) associated with (19) 
+
+are given by 
+
+˙X(t) = G(ω(t)) Fθ(f (t, x (t))) − ω(t) N X(t), (22) 
+
+where G(ω(t)) = Id n ⊗ ω(t) T −1 
+
+> θ
+
+(ω)( t), and N = Id n ⊗
+
+diag k∈Z(jk).
+
+4PROOF. By definition, X(t) = Xθ (θ(t)) . Applying the chain rule yields ˙X(t) = ω(t) ddϕ Xθ (ϕ)∣ ϕ=θ(t). Substi-tuting (21) gives 
+
+˙X(t) = ω(t)F2π ( fθ
+
+ωθ
+
+) ( θ(t)) − ω(t)N X(t).
+
+Since F2π ( fθ 
+
+> ωθ
+
+) ( θ(t)) = Fθ ( f (t,x (t))  
+
+> ω(t)
+
+) , Property 1 yields 
+
+Fθ ( fω ) = Tθ (Id n/ω) Fθ (f ) = (Id n ⊗ T −1 
+
+> θ
+
+(ω)) Fθ (f ).
+
+The result follows by linearity and noting that 
+
+ω(t)N Xθ (θ(t)) = ω(t)N X(t). ◻
+
+When ω(t) ≡ ω0, Tθ (ω) = ω0I and (22) reduces exactly to the classical fixed-frequency harmonic model. We con-clude this section by relating (22) to existing exact for-mulations of variable-frequency dynamic phasors. In [6, Appendix A], the evolution of the phasors are given by 
+
+˙X(t) = x(t − T (t)ω(t − T (t)) ˙T (t)) e−N θ(t)
+
++ Fθ (f (t, x (t))) + (Tθ ( ˙ωω ) − N T θ (ω)) X. (23) Although (23) is equivalent to (22) under suitable reg-ularity assumptions, it involves explicit delays, nonlin-ear couplings, and dependence on ˙ω(t). In contrast, (22) concentrates all variable-frequency effects into the single operator G(ω(t)) , avoids explicit delays and frequency derivatives, and requires only C1 regularity of the phase 
+
+θ(t), making it particularly amenable to control design. 
+
+5 Parameter-Varying (PV) Approximation 
+
+While the exact model of Theorem 4 provides a com-plete description of variable-frequency harmonic dynam-ics, its direct use in control synthesis is generally imprac-tical due to the time-varying operator G(ω(t)) , which depends non-linearly on the frequency signal ω. This sec-tion derives a tractable parameter-varying approxima-tion and establishes a precise and computable bound on the resulting modeling error. 
+
+5.1 An approximated PV harmonic model 
+
+Starting from the exact model (22), the dynamics can be decomposed as 
+
+˙X(t) = (Fθ (f (t, x )) − ω(t)N X(t)) ´¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¸¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¹¶ 
+
+> Nominal part
+
++E(t), (24) where the error term E(t) is given by 
+
+E(t) = (Id n ⊗ ∆ω (t)) Fθ (f (t, x )) , (25) with ∆ω (t) = ω(t)T −1 
+
+> θ
+
+(ω)( t) − I. The nominal part of (24) has the structure of a parameter-varying system whereas E(t) captures the deviation with respect to the exact model (22). In order to quantify this deviation, we introduce the following notion. 
+
+Definition 5 For a given time t and τ ∈ [t − T (t), t ],the relative variation of the frequency ω at time τ with respect to its value at time t is defined as 
+
+δω (τ, t ) ≜ ω(t) − ω(τ )
+
+ω(τ ) . (26) The following theorem establishes a direct link between the Toeplitz operator ∆ω (t) and the relative frequency variation over the sliding pseudo-period, and provides a simple characterization of its induced ℓ2-norm. 
+
+Theorem 5 For every t,
+
+∆ω (t) = Tθ (δω (⋅, t ))( t), (27) 
+
+and its induced ℓ2-operator norm satisfies 
+
+ϵ(t) ∶= ∥∆ω (t)∥ ℓ2 = sup   
+
+> τ∈[t−T(t),t ]
+
+∣ ω(t) − ω(τ )
+
+ω(τ ) ∣ . (28) 
+
+PROOF. Using the linearity of the Toeplitz operator and as ω(t) is constant with respect to the integration variable τ in the Fourier decomposition, we have: 
+
+Tθ (δω (⋅, t ))( t) = Tθ ( ω(t)
+
+ω(⋅) − 1) ( t)
+
+= ω(t) T −1 
+
+> θ
+
+(ω)( t) − I = ∆ω (t).
+
+Finally, (28) follows from the relation (see Property 1 or [24]): ∆ω (t)∥ ℓ2 = ∥δω (⋅, t )∥ L∞ . ◻
+
+The quantity ϵ(t), given by (28), measures the maxi-mal relative frequency variation over one pseudo-period. When ϵ(t) is small, the system locally behaves as if the frequency were constant. Motivated by this observation, the following simplified model is obtained from the exact model (22) by applying the approximation 
+
+ω(t) T −1 
+
+> θ
+
+(ω)( t) ≈ I. (29) 
+
+Definition 6 Under the condition ϵ(t) < ε for some pos-itive ε, the approximated PV harmonic model is given by 
+
+˙X(t) ≈ Fθ (f (t, x )) − ω(t)N X(t), (30) 
+
+with ω(t) treated as a time-varying parameter. 
+
+5Theorem 6 The relative modeling error induced by the PV approximation satisfies 
+
+∥E(t)∥ ℓ2
+
+∥Fθ (f (t, x ))∥ ℓ2
+
+≤ ϵ(t), (31) 
+
+with ϵ(t) = 0 in the constant-frequency case. 
+
+PROOF. The result follows directly from (25) and 
+
+∥Id n ⊗ ∆ω (t)∥ ℓ2 = ∥∆ω (t)∥ ℓ2 . ◻
+
+5.2 Analysis and comparison with classical heuristics 
+
+We now analyze the behavior of the error measure ϵ(t)
+
+introduced in Section 5 and clarify its relationship with the heuristic assumptions commonly used to justify PV approximations in the literature. Our objective is to show that ϵ(t) provides a precise and non-conservative quantification of approximation accuracy. Existing jus-tifications of PV approximations of model (23) typically rely on an informal “slowly varying ω” assumption [6,19], leading to: (1) ˙T (t) ≈ 0,(2) ω(t) ≈ ω(t − T (t)) ,(3) ˙ω(t)/ ω(t) ≈ 0.The precise implications of these assumptions for the modeling error are rarely made explicit. From (15), the condition ˙T (t) ≈ 0 implies ω(t) ≈ ω(t − T (t)) , which in turn corresponds to δω (t − T (t), t ) ≈ 0. This reason-ing, however, only constrains the frequency mismatch at the boundary of the pseudo-period. It does not con-trol the frequency variations occurring inside the inter-val [t − T (t), t ]. In contrast, the proposed quantity ϵ(t)
+
+uniformly bounds the relative frequency variation over the entire pseudo-period. As such, ϵ(t) ≈ 0 constitutes a non-conservative condition for the validity of the PV approximation. To make this distinction explicit, consider a linearly in-creasing frequency profile ω(t) = at + ω0, with a = ˙ω > 0.In this case, the error admits the closed-form expression 
+
+ϵ(t) = (1 − 4πa ω(t)2 ) 
+
+> −12
+
+− 1 ≈ 2π ˙ω(t)
+
+ω(t)2 . (32) This expression shows that ϵ(t) decreases monotonically with ω(t). Hence, for a constant acceleration, the PV approximation becomes increasingly accurate at higher frequencies. For a prescribed admissible modeling error ε, solving 
+
+ϵ(t) = ε in (32) yields the maximum allowable frequency rate 
+
+amax = ω(t)2
+
+4π (1 − 1
+
+(1 + ε)2 ) . (33) 0 0.5 1 1.5 2 2.5 3                    
+
+> 020 40 60 80 100
+> ω(t)
+> 00.5 11.5 22.5 3
+> -20 -10 010 20 ˙ω(t)/ω (t)
+> time (s)
+> 00.5 11.5 22.5 3
+> -2000 -1000 01000 2000 ˙ω(t)
+> 00.5 11.5 22.5 3time (s)
+> 10 -1
+> 10 0
+> ǫ(t)
+
+Figure 1. ϵ(t) provides an accurate measure of the modeling error, whereas the heuristic ∣ ˙ω/ω∣ and ˙ω are poor indicators. 
+
+This relation makes explicit how the admissible rate of frequency variation scales with ω(t), a dependence that is not captured by classical heuristics. Enforcing ϵ(t) = ε
+
+for all t leads to the differential equation 
+
+˙ω(t) = Kω (t)2, K = 14π (1 − 1
+
+(1 + ε)2 ) , (34) whose solution ω(t) = (ω0−1 − Kt )−1 exhibits finite-time blow-up. In this case, ˙ω(t) 
+
+> ω(t)
+
+= Kω (t), which grows un-boundedly with ω(t), even though ϵ(t) is held constant by construction. This example demonstrates that the heuristic condition ˙ω/ω ≈ 0 does not reliably character-ize model validity. Figure 1 provides simulations with more complex frequency profiles to confirm this observa-tion: both ∣ ˙ω∣ and ∣ ˙ω/ω∣ may take large values while ϵ(t)
+
+decreases, indicating improved approximation accuracy. Overall, these results demonstrate that ϵ(t) provides a rigorous and non-conservative characterization of the 
+
+small local relative frequency variation assumption un-derlying the PV harmonic framework. Unlike classical heuristics, it directly quantifies the modeling error in-duced by frequency variations over the pseudo-period. 
+
+6 Affine Linear phase-periodic Systems 
+
+This section shows that, for a practically relevant class of phase-periodic systems, variable-frequency effects can be handled exactly in the harmonic domain. In contrast to the approximation-based approach of Section 5, we focus on linear phase-periodic systems whose harmonic representation depends affinely on the instantaneous fre-quency. Such a structure naturally arises in applications such as electrical drives, aircraft power systems, and modulated converters. For this class, we establish an ex-act Lyapunov stability condition for the autonomous dy-namics, which then serves as the foundation for state-feedback controller synthesis via an appropriate system augmentation. 66.1 Exact Lyapunov stability condition 
+
+We consider linear systems whose coefficients are pe-riodic in the phase and depend affinely on the instan-taneous frequency. These systems are described by the following affinely frequency-modulated phase-periodic (AFM-LPP) model. 
+
+Definition 7 AFM-LPP systems are described by 
+
+˙x(t) =(A0(θ(t)) + ω(t)A1(θ(t))) x(t)
+
++ (B0(θ(t)) + ω(t)B1(θ(t))) u(t), (35) 
+
+where Ai(⋅) and Bi(⋅) are L∞ matrix-valued functions that are 2π-periodic in θ, and θ denotes a phase function as defined in Definition 2. 
+
+When A1 ≡ 0 and B1 ≡ 0, the model reduces to a classical linear phase-periodic system. The AFM-LPP structure therefore strictly generalizes the fixed-frequency case while preserving a form that admits exact harmonic-domain analysis. Applying the variable-frequency SFD to (35) and invok-ing Theorem 4 yields the exact harmonic representation 
+
+˙X(t) =G(ω(t))( A0X(t) + B0U (t)) 
+
++ ω(t)( A1X(t) + B1U (t) − N X(t)) , (36) where the Toeplitz block operators Ai = Tθ (Ai) and Bi =
+
+Tθ (Bi), i = 0, 1, are constant and bounded on ℓ2.We first focus on the autonomous dynamics 
+
+˙x(t) = (A0(θ(t)) + ω(t)A1(θ(t))) x(t), (37) with associated harmonic model 
+
+˙X(t) = (G(ω(t)) A0 + ω(t)( A1 − N )) X(t). (38) The following theorem provides an exact Lyapunov sta-bility condition for these dynamics. Its key feature is that stability under arbitrary admissible frequency tra-jectories can be certified by enforcing Lyapunov inequal-ities at a finite number of frequency vertices only. This is made possible by two structural properties induced by affine frequency dependence: convexity with respect to 
+
+ω, and commutativity of Toeplitz operators generated by scalar phase functions. 
+
+Theorem 7 Consider the constant Toeplitz block opera-tors A0 and A1, bounded on ℓ2. Assume that there exists a Toeplitz block operator P = P∗ ≻ 0, bounded on ℓ2, such that 
+
+P(A0 + ωi(A1 − N )) + (A0 + ωi(A1 − N )) ∗P ≺ 0, (39) 
+
+for all ωi ∈ {ωmin , ω max }. Let ω(t) be any time-varying frequency of the form 
+
+ω(t) = α(t) ωmin + (1 − α(t)) ωmax , α(t) ∈ (0, 1).
+
+Then the harmonic Lyapunov inequality 
+
+P(G(ω(t)) A0 + ω(t)( A1 − N )) + (⋅)∗ ≺ 0 (40) 
+
+holds for all t. Moreover, since P, A0, and A1 admit 2π-periodic and L∞ representatives, (40) is equivalent to the following differential Lyapunov inequality, which holds almost everywhere: 
+
+˙P (θ) + P (θ)( A0(θ) + ω(t)A1(θ)) + (⋅)⊺ ≺ 0, (41) 
+
+with P (θ) = P (θ)⊺ ≻ 0 and ˙θ(t) = ω(t).
+
+PROOF. Consider the Toeplitz transformation: 
+
+Tθ (ω) = Tθ (α) ωmin + (I − Tθ (α)) ωmax .
+
+Recall that the product of two positive definite oper-ators remains positive definite if these operators com-mute. Since α(t) ∈ (0, 1), both operators Tθ (α) and 
+
+I − Tθ (α) are positive definite. Moreover, as α is a scalar function, Tθ (α) commutes with any Toeplitz operator and Tθ (α) = Tθ (α)∗. Using these properties, we multi-ply (39) on the left by Id n ⊗ Tθ (α) for ωi = ωmin , and by 
+
+Id n ⊗ (I − Tθ (α)) for ωi = ωmax . Summing the resulting inequalities preserves negative definiteness and yields 
+
+P(A0 + (Id n ⊗ Tθ (ω))( A1 − N )) + (⋅)∗ ≺ 0. (42) Multiplying (42) on the left by 
+
+G(ω(t)) = ω(t)( Id n ⊗ Tθ (ω)) −1,
+
+which is positive definite, self-adjoint and commutes with the involved operators, directly gives (40). Finally, since A0, A1, and P admit 2π-periodic representatives, multiplying (42) on the left by (Id n ⊗ Tθ (ω)) −1 leads to 
+
+P [T2π ( A0(ϕ)
+
+ω(p(ϕ)) + A1(ϕ)) − N ] + (⋅)∗ ≺ 0.
+
+This Lyapunov inequality admits an equivalent differen-tial formulation in the phase domain [20]: 
+
+P (ϕ)( A0(ϕ)
+
+ω(p(ϕ)) + A1(ϕ)) + (⋅)⊺ + dP (ϕ)
+
+dϕ ≺ 0.
+
+The inequality (41) follows by multiplication by ω(t)
+
+and application of the chain rule ˙P = ω dP dϕ . ◻
+
+7Corollary 1 Let P and P (θ) satisfy the conditions of Theorem 7. Then the Lyapunov functions V(X(t)) =
+
+X(t)∗PX(t) and v(t, x ) = x(t)⊺P (θ(t)) x(t) guarantee asymptotic stability of the systems (38) and (37) , respec-tively, for any frequency function ω(t) taking values in 
+
+[ωmin , ω max ].6.2 Harmonic control design 
+
+We now extend the stability result of Theorem 7 to con-trol design. To this end, we introduce an augmented sys-tem representation that incorporates the controller dy-namics while preserving the AFM-LPP structure. As a result, the vertex-based Lyapunov conditions of Theo-rem 7 remain applicable to the closed-loop system. The guiding idea is to incorporate integral action and har-monic cancellation systematically while remaining fully compatible with the Toeplitz operator structure. To this end, we introduce a forwarding variable z, whose dynam-ics implement an internal-model principle: 
+
+˙z(t) = ω(t)( J(θ(t)) z(t) + L(θ(t)) C(θ(t)) x(t)) ,
+
+where J, L, C are given 2π–periodic phase functions. In general, the matrix C defines the regulated outputs, while J and L are design choices selected to satisfy specific performance objectives. For instance, choosing 
+
+J = 0 and L = I yields a pure integral action, ensur-ing steady–state tracking of the desired outputs. In the application section, we illustrate how appropriate selec-tions of J, L, and C can be used to selectively target and attenuate specific harmonic components. In harmonic variables, we have 
+
+˙Z(t) = ω(t) (( J − N )Z(t) + LC X(t)) (43) where the operators J = Tθ (J), L = Tθ (L), C = Tθ (C)
+
+are assumed constant and bounded on ℓ2. Stacking ̃ X =
+
+(X, Z ) gives the augmented harmonic system 
+
+˙̃X(t) = (̃ A(ω(t)) − ω(t)N )̃ X(t) +̃ B(ω(t)) U (t), (44) with ̃
+
+A(ω) =
+
+⎡⎢⎢⎢⎢⎣
+
+G(ω)A0 + ωA1 0
+
+ωLC ωJ
+
+⎤⎥⎥⎥⎥⎦
+
+,̃ B(ω) =
+
+⎡⎢⎢⎢⎢⎣
+
+G(ω)B0 + ωB1
+
+0
+
+⎤⎥⎥⎥⎥⎦
+
+.
+
+Let U (t) = −K̃ X(t) where K is a state-feedback operator to be designed. Applying Theorem 7 to the closed-loop operator ̃ Acl (ω) = (̃ A(ω) − ωN ) −̃ B(ω)K yields, at each frequency vertex, a quadratic Lyapunov inequality in 
+
+P and K. Introducing the standard change of variables 
+
+Y = KS , where Y and S = P−1 are bounded Toeplitz block operators, yields the following set of linear matrix inequalities, which are convex in the decision variables: 
+
+(̃ Aωi −ωiN )S +S(̃ Aωi − ωiN )∗ −̃ Bωi Y −Y∗̃ B∗ 
+
+> ωi
+
+≺ 0, (45) and where ̃ Aωi =̃ A(ωi),̃ Bωi =̃ B(ωi) with ωi ∈
+
+{ωmin , ω max } and G(ωi) = I. The LMIs (45) are there-fore a direct convex reformulation of the Lyapunov conditions of Theorem 7 applied to the augmented closed-loop AFM-LPP system. The feasibility of these LMIs guarantees closed-loop stability for all admissi-ble time-varying frequencies and provides a quadratic Lyapunov function given by ̃ X∗P̃ X. The resulting design yields a bounded Toeplitz state-feedback gain 
+
+K = YS −1 = [Kx, Kz ], admitting a time domain phase-periodic representation, 
+
+K(θ(t)) = ∑
+
+> h∈Z
+
+Kh ejhθ (t). (46) By introducing Toeplitz block weighting operators R
+
+and Q, the LMIs (45) can be interpreted in an LQR-like framework as classically done in the finite dimension LTI setting [25]. The resulting controller is a guaranteed-cost state-feedback law that ensures closed-loop stability under time-varying frequency and is obtained by solving the following optimization problem: 
+
+min  
+
+> S,Y,
+
+Tr 0(M), s.t. (47) 
+
+⎛⎜⎜⎜⎝
+
+Ξ(ωi) ⋆ ⋆
+
+R 12 Y −I ⋆
+
+Q 12 S 0 −I
+
+⎞⎟⎟⎟⎠
+
+⪯ 0 ⎛⎝
+
+M I I S
+
+⎞⎠ ≻ 0
+
+with 
+
+Ξ(ωi) = (̃ Aωi − ωiN )S + S(̃ Aωi − ωiN )∗ −̃ Bωi Y − Y∗̃ B∗
+
+> ωi
+
+where Tr 0 is the average-trace operator defined in [20], and M is a Toeplitz block operator bounded on ℓ2.
+
+Remark 2 The stability and synthesis results estab-lished in this section are exact at the infinite-dimensional harmonic level and do not rely on frequency-rate bounds or operator approximation. In practice, numerical im-plementation requires finite-dimensional truncations of the Toeplitz operators, for which feasibility-preserving convergence properties are well known and do not alter the theoretical guarantees [20]. The open-source Phaso-rArray Toolbox [26, 27] automates the construction of truncated Toeplitz operators and provides routines for harmonic Lyapunov, Riccati, and LMI problems, making implementation straightforward. 6.3 Classical harmonic controllers as special cases 
+
+The harmonic-domain controller structure introduced above is designed to preserve the AFM-LPP property of the closed-loop system and thereby admit an exact Lyapunov-based analysis under variable-frequency con-ditions. In this section, it is shown that this formulation 8encompasses several classical harmonic control strate-gies, including proportional-resonant [28, 29], repetitive controllers [30] and modulation-based control strate-gies [31] as special cases. This observation establishes a direct connection between the proposed approach and well-known designs, and provides further insight into its practical relevance. For instance, the ideal repetitive controller given by C(s) = e−sT 0 
+
+> 1−e−sT 0
+
+possesses infinite gain at integer multiples of the fundamental frequency. Trun-cating its Fourier expansion yields a bank of resonant oscillators, each associated with a specific harmonic. Indeed, with H the number of harmonics retained one has C(s) ≈ ∑Hh=1 Khss2+(hω 0)2 . Each harmonic therefore introduces a resonant subsystem of the form: 
+
+˙zh =
+
+⎡⎢⎢⎢⎢⎣
+
+0 hω 0
+
+−hω 0 0
+
+⎤⎥⎥⎥⎥⎦
+
+zh +
+
+⎡⎢⎢⎢⎢⎣
+
+10
+
+⎤⎥⎥⎥⎥⎦
+
+e. (48) Note that, under the rotating-frame change of variables 
+
+wh = R(hθ )zh, this formulation is equivalent to [31] 
+
+˙wh =
+
+⎡⎢⎢⎢⎢⎣
+
+cos (hθ )
+
+sin (hθ )⎤⎥⎥⎥⎥⎦
+
+e, (49) which corresponds to the integral structure used in modulation-based control schemes. When ω(t) = ω0(t)
+
+is time-varying and the system dynamics are phase-periodic, the situation differs, as the targeted harmonics are defined in the phase domain rather than in time, leading to index-based harmonic resonance matrix: 
+
+∂∂φ zθ h (φ) =
+
+⎡⎢⎢⎢⎢⎣
+
+0 h
+
+−h 0
+
+⎤⎥⎥⎥⎥⎦
+
+zθ (φ) +
+
+⎡⎢⎢⎢⎢⎣
+
+10
+
+⎤⎥⎥⎥⎥⎦
+
+eθ (φ). (50) Consequently, within the proposed framework, the cor-responding phase-domain realization is: 
+
+˙Zh(t) = ω(t) ⎛⎝⎡⎢⎢⎢⎢⎣
+
+−N hI
+
+−hI −N
+
+⎤⎥⎥⎥⎥⎦
+
+Zh(t) +
+
+⎡⎢⎢⎢⎢⎣
+
+I
+
+0
+
+⎤⎥⎥⎥⎥⎦
+
+E(t)⎞⎠ , (51) which is directly compatible with the forwarding struc-ture previously introduced. Stacking these oscillators for all selected harmonics produces a harmonic predictor that can be tuned via the same methodology used for the main controller. This viewpoint clarifies that PR and repetitive controllers are not separate design philoso-phies, but rather structured instances of the general internal-model construction enabled by the AFM-LPP harmonic representation. Moreover, it extends their ap-plicability to systems with time-varying frequency. 
+
+7 Application to Variable-Speed Motor Drives 
+
+To illustrate the relevance of the proposed AFM-LPP framework, we apply it to a permanent magnet syn-chronous motor (PMSM) operating under variable-speed conditions. We show that the harmonic represen-tation of the PMSM naturally fits into the AFM-LPP class introduced in Section 6, which enables the direct application of the exact stability and synthesis results developed in that section. This allows the construction of harmonic controllers ensuring tracking, harmonic mitigation, and closed-loop stability over a prescribed speed range. Throughout the remainder of this section, we assume that rotor speed ωm(t) is measurable .
+
+7.1 PMSM as a phase-periodic system 
+
+Consider a surface-mounted PMSM with p pole pairs. Let the state vector be x = (iabc , ω m), where iabc =
+
+(ia, i b, i c)⊺ denotes the stator phase currents and ωm the rotor mechanical speed. The control input is the applied stator voltage u = vabc , and the external disturbance is the load torque w = ΓL. The PMSM dynamics can then be written in state-space form as 
+
+˙x(t) = A(θ(t)) x(t) + Buu(t) + Bww(t), (52) where the system matrices are given by 
+
+A(θ) =
+
+⎡⎢⎢⎢⎢⎢⎣
+
+− rL I3 pψ f 
+
+> L
+
+Φabc (pθ )
+
+− pψ f 
+
+> J
+
+Φabc (pθ )⊺ − Bf
+
+> J
+
+⎤⎥⎥⎥⎥⎥⎦
+
+,Bu =
+
+⎡⎢⎢⎢⎢⎢⎣ 
+
+> 1
+> L
+
+I3
+
+01×3
+
+⎤⎥⎥⎥⎥⎥⎦
+
+, Bw =
+
+⎡⎢⎢⎢⎢⎢⎣
+
+03×1
+
+− 1
+
+> J
+
+⎤⎥⎥⎥⎥⎥⎦
+
+.
+
+The machine parameters are the stator phase induc-tance L, phase resistance r, rotor inertia J, viscous fric-tion coefficient Bf , and permanent magnet flux link-age ψf . The vector Φabc (pθ ) represents the back-EMF waveform, which is 2π-periodic in the electrical angle pθ .For an ideal surface-mounted PMSM, this waveform is purely sinusoidal and given by 
+
+Φabc (pθ ) =
+
+⎡⎢⎢⎢⎢⎢⎢⎢⎣
+
+sin (pθ )
+
+sin (pθ − 2π/3)
+
+sin (pθ + 2π/3)⎤⎥⎥⎥⎥⎥⎥⎥⎦
+
+(53) The state matrix A(θ) depends periodically on the elec-trical angle through Φabc (pθ ), which makes the PMSM dynamics phase-periodic. Consequently, the PMSM pro-vides a canonical example of an AFM-LPP system and is therefore directly compatible with the harmonic mod-eling and control framework developed in Section 6. Ap-plying the variable-frequency Fourier decomposition Fθ
+
+9to the state-space model (52), where the phase variable θ
+
+satisfies ˙θ = ω with ω a time-varying parameter, leads to the following AFM-LPP harmonic representation which matches the exact harmonic PMSM model when ω = ωm:
+
+˙X(t) =(G(ω(t)) A − ω(t)N )X(t)
+
++ G(ω(t))( BuU (t) + BwW (t)) (54) where X = Fθ (x) = (Iabc , Ω), U = Vabc = Fθ (u) and W =
+
+Fθ (w) and where the constant Toeplitz-block operators 
+
+A, Bu, and Bw are given by: 
+
+A =
+
+⎡⎢⎢⎢⎢⎢⎣
+
+− rL I3 ψf pL Tθ (Φabc )
+
+− pψ f 
+
+> J
+
+Tθ (Φabc )∗ − Bf 
+
+> J
+
+I1
+
+⎤⎥⎥⎥⎥⎥⎦
+
+, (55a) 
+
+Bu =
+
+⎡⎢⎢⎢⎢⎢⎣ 
+
+> 1
+> L
+
+I3
+
+01×3
+
+⎤⎥⎥⎥⎥⎥⎦
+
+, Bw =
+
+⎡⎢⎢⎢⎢⎢⎣
+
+03×1
+
+− 1 
+
+> J
+
+I1
+
+⎤⎥⎥⎥⎥⎥⎦
+
+(55b) where In = Tθ (Id n), and Tθ (Φabc ) represents the back-EMF harmonics. For the ideal sinusoidal back-EMF (53), the Toeplitz operators Tθ (Φabc ) exhibit a sparse structure. For example, since Φa(θ) = sin (pθ ) = 
+
+> 12j
+
+(ejpθ −e−jpθ ), the Toeplitz matrix Tθ (Φa) has only two nonzero diagonals, at offsets ±p, and each of their diago-nal elements are equal to ± j 
+
+> 2
+
+. The harmonic model (54) is affine in the frequency ω and Toeplitz structured, and therefore satisfies the AFM-LPP assumptions required by the analysis and synthesis results of Section 6.2. 
+
+7.2 Control objectives and synthesis 
+
+The control design aims to enforce phase-periodic steady-state behavior and harmonic mitigation, while preserving stability under variable-frequency operation. In particular, the following objectives are considered: (1) Speed regulation: accurate tracking of the mechan-ical speed x4(t) = ωm(t) to a given reference ωref 
+
+> m, 0
+
+in the presence of load torque disturbances ΓL.(2) Power factor optimization: regulation of the d-axis current to zero (or to a prescribed reference) in or-der to maximize efficiency. (3) Harmonic mitigation: rejection of phase-periodic current harmonics induced by torque ripple at 2ωm,which generates current harmonics in iabc of order 
+
+p ± 2k, k = 1, 2, . . . .These objectives are addressed by enforcing zero steady-state values of selected phase-domain output compo-nents using integral action in the harmonic domain. Speed regulation is achieved by integrating the error between the DC component Ω0(t) of the mechanical speed phasor and the reference ωref 
+
+> m, 0
+
+.Power factor optimization is achieved by regulating the DC component of the d-axis current id in the rotating 
+
+dq frame where idq = Tp(θ)( iabc ) and vdq = Tp(θ)( vabc )
+
+and where the generalized Park transformation [32] is provided by (here, for k = p)
+
+ik 
+
+> dq
+
+= Tk(θ)iabc (56) 
+
+= 23
+
+⎡⎢⎢⎢⎢⎣
+
+cos (kθ ) cos (kθ − 2π 
+
+> 3
+
+) cos (kθ + 2π 
+
+> 3
+
+)
+
+− sin (kθ ) − sin (kθ − 2π 
+
+> 3
+
+) − sin (kθ + 2π 
+
+> 3
+
+)⎤⎥⎥⎥⎥⎦
+
+iabc .
+
+This corresponds to enforcing Id, 0 = 0, where Id = Fθ (id)
+
+is the harmonic representation of the d-axis current. Harmonic mitigation is implemented by exploiting gen-eralized Park transformations Tk(θ) for k ≠ p which map the k-th harmonic components of the three-phase cur-rents into DC signals in the rotating frame. Integral ac-tion on these quantities enforces rejection of the corre-sponding harmonics in phase-periodic steady state. The resulting control output operator is defined as 
+
+C(θ) =
+
+⎡⎢⎢⎢⎢⎢⎢⎢⎣
+
+0 1
+
+[1 0 ]Tp(θ) 0stack k=0,2,6,8(Tk(θ) 0)⎤⎥⎥⎥⎥⎥⎥⎥⎦
+
+, (57) which selects the relevant speed, d-axis, and harmonic components to be regulated. In the harmonic-domain framework, tracking of phase-periodic operating trajectories requires shifting the ori-gin to the harmonic equilibrium associated with the ref-erence speed and disturbance. The phase-periodic steady state dynamics can be characterized from the definition of an equilibrium in phase domain: 
+
+Definition 8 In phase-domain, an equilibrium (Xref , U ref )
+
+for a phase-periodic disturbance W satisfies the non-linear equation: 
+
+0 = (A − Tθ (ωref  
+
+> m
+
+)N )Xref + BuU ref + BuW, (58) 
+
+where the phase frequency ωref  
+
+> m
+
+corresponds to the speed rotor reference. 
+
+Assuming a known phase-periodic disturbance W and the reference speed trajectory ωref  
+
+> m
+
+(t) takes values in the interval [ωmin , ω max ], the full derivation of the equilib-rium (Xref , U ref ) = Fθ (xref , u ref ) is given in Appendix. Note that, when the phase function ω differs from the reference ωref  
+
+> m
+
+, the corresponding equilibrium quantities evolve according to the harmonic dynamics associated with the actual phase trajectory 
+
+˙Xref (t) =(G(ω(t)) A − ω(t)N )Xref (t)
+
++ G(ω(t))( BuU ref (t) + BwW ). (59) 10 We now rewrite the system around the phase-periodic equilibrium in order to synthesize a stabilizing con-troller for the deviation dynamics. Let the state and input errors be given by E = X − Xref and ̃ U = U − U ref ,where (Xref , U ref ) satisfies the harmonic equilibrium equation (59). The resulting error dynamics are given by 
+
+˙E(t) = (G(ω(t)) A − ω(t)N )E(t) + G(ω(t)) Bũ U (t)
+
+Using the control output as defined by (57), the har-monic forwarding dynamics are introduced according to (43) by choosing J = 0 and L = I, yielding 
+
+˙Z(t) = ω(t)( − N Z(t) + CE(t)) . (60) The corresponding harmonic-augmented system then reads with ̃ E = (E, Z )
+
+˙̃E(t) =(̃ A(ω(t)) − ω(t)N )̃ E(t) +̃ Bv (ω(t))̃ U (t) (61) where ̃
+
+A(ω) =
+
+⎡⎢⎢⎢⎢⎣
+
+G(ω)A 0
+
+ωC 0
+
+⎤⎥⎥⎥⎥⎦
+
+,̃ Bv (ω) =
+
+⎡⎢⎢⎢⎢⎣
+
+G(ω)Bu
+
+0
+
+⎤⎥⎥⎥⎥⎦
+
+. (62) The augmented deviation system (61) is an AFM-LPP system. The synthesis results of Section 6 therefore yield a Toeplitz-block feedback gain K = [Kx Kz ] obtained by solving the harmonic synthesis problem (47) and using the reconstruction procedure (17). The corresponding time-domain control law is 
+
+u(t) = Kx(θ(t))( x(t) − xref (t)) 
+
++ Kz (θ(t)) z(t) + uref (t). (63) This controller guarantees asymptotic convergence 
+
+E(t) = X(t)−Xref (t) → 0 provided that ω ∈ [ωmin , ω max ].However, for the PMSM, ω is not a free variable but is constrained by the mechanical speed, i.e., ω = ωm and 
+
+θ = θm. Therefore, the parameter ω coincides with a state variable, and the stability guarantee holds as long as the state trajectory remains inside the admissible domain [ωmin , ω max ]. Proposition 1, given and proved in the appendix, provides a sufficient condition ensuring this property. This result ensures that the frequency admissibility condition required by the AFM-LPP sta-bility theorem is preserved along closed-loop trajecto-ries. It is obtained by determining the largest quadratic Lyapunov level set contained inside the admissible do-main. The admissible level is uniquely determined by the minimum distance between the DC component 
+
+ωref  
+
+> m, 0
+
+of the rotor speed reference and the bounds ωmin 
+
+and ωmax . More specifically, let the Lyapunov function 
+
+V(̃ E) =̃ E∗ P̃ E, where ̃ E is the augmented state defined in (61) and P = S−1, where S is the solution of (47). Let 
+
+S be the representative of S in time domain and denote by s44 the fourth diagonal entry of S and by S44 ,0 the zero-order phasor of S44 = Fθ (s44 ). For a given step reference ωref 
+
+> m, 0
+
+(t0), if the initial augmented state ̃ E(t0)
+
+satisfies 
+
+V(̃ E(t0)) < Lmax (ωref 
+
+> m, 0
+
+(t0)) , (64) where 
+
+Lmax (ωref 
+
+> m, 0
+
+) = δ2(ωref 
+
+> m, 0
+
+)
+
+S44 ,0
+
+,
+
+with 
+
+δ(ωref 
+
+> m, 0
+
+) = min (∣ ωmin − ωref 
+
+> m, 0
+
+∣, ∣ωmax − ωref 
+
+> m, 0
+
+∣) ,
+
+then the closed-loop trajectory satisfies 
+
+E(t) → 0 and ωm(t) ∈ [ωmin , ω max ]
+
+for all t ≥ t0. Moreover, any subsequent step change of the reference ωref 
+
+> m, 0
+
+(tk) k = 1, 2, ⋯ preserving (64) is ad-missible and does not affect stability. 
+
+7.3 Simulation results 
+
+To validate the proposed harmonic control framework, numerical simulations are performed on the PMSM operating under variable-speed conditions and phase-periodic load torque disturbances. The harmonic syn-thesis problem (47) is solved using the weighting matri-ces Q = I and R = 100 I. The operating speed range is chosen as [ωmin , ω max ] = [10 , 200 ] rad/s (approximately 100–2000 rpm), representative of low-to-medium speed operation. Using a 10 th-order truncation scheme, the computation time required to obtain a sufficiently ac-curate solution is 114 s. The PMSM parameters used in simulation are reported in Table 1.               
+
+> Table 1 PMSM parameters
+> Parameter Symbol Value
+> Stator resistance r0.5 Ω
+> Phase inductance L1.5 mH
+> Flux linkage ψf0.14 Wb
+> Rotor inertia J0.03 kg m 2
+> Viscous friction coefficient Bf0.02 N m s /rad
+> Number of pole pairs p4
+
+Figure 2 shows the closed-loop time-domain responses obtained with the synthesized harmonic controller, in-cluding the phase currents iabc , dq -currents, rotor speed 
+
+ωm, load torque ΓL and the applied control voltages vabc .The corresponding harmonic spectra are displayed in Figure 3. For comparison, Figures 4 and 5 report the sys-tem response obtained when harmonic mitigation is not 11 Figure 2. Phase currents iabc , current idq , rotor speed ωm                          
+
+> (blue), ωref
+> m(yellow) and ωref
+> m, 0(red), load torque ΓLand the applied control u=vabc .
+> Figure 3. Magnitude of harmonics illustrating targeted suppression in iaand id. Top to bottom: Ia,k ,Id,k ,Ωm,k
+> Γkand Va,k ,k=0,1, . . . , 8.
+
+included in the control objectives, while keeping identi-cal speed references and torque disturbances. The sim-ulation results highlight the following key properties: 
+
+● Speed regulation: The rotor speed ωm accurately tracks its time-varying reference ωref  
+
+> m
+
+, defined in (66c) (Appendix) and computed from ωref 
+
+> m, 0
+
+, over the entire operating range, as illustrated in the zoom of Figure 2. This supports the mechanical filtering assumption underlying its construction. 
+
+● d-axis current regulation: the mean value of the direct-axis current id is maintained close to zero, ensuring power factor optimization. 
+
+● Harmonic mitigation: when harmonic rejection is en-abled, the steady-state phase currents iabc exhibit no harmonic components other than the fundamental p-th harmonic, independently of the reference speed, as shown in Figure 3. In particular, this implies id = 0
+
+and iq = const in phase-periodic steady state. Figure 2 includes two zoomed views: one at quasi-constant rotor speed and one under time-varying speed. These plots highlight that phase-periodicity with respect to the electrical angle θ should not be confused with periodicity in the time domain, as the latter is gener-ally non-sinusoidal under variable-speed operation (see the zoomed area around t = 8 s). Finally, the level-set guarantee is illustrated in Figure 6, which compares the theoretical maximum admissible Lyapunov level Lmax 
+
+with the closed-loop Lyapunov trajectory. The results show that the Lyapunov function remains strictly below the admissible bound during reference step changes, confirming closed-loop stability is preserved. 
+
+Conclusion 
+
+This paper establishes a unified and rigorous framework for harmonic modeling and control of systems under variable-frequency. An exact harmonic-domain formula-tion is derived, providing a principled basis for analysis and systematic approximation, together with a quanti-tative validity criterion that characterizes the modeling error induced by frequency variations. For linear phase-periodic systems with affine dependence on the instanta-neous frequency, stability and state-feedback synthesis are shown to be certified exactly by enforcing Lyapunov inequalities at a finite number of frequency vertices. This result bridges harmonic modeling and LMI-based control design, enabling tractable certification over con-tinuous frequency intervals. The approach is illustrated through harmonic mitigation in variable-speed electri-cal drives, demonstrating both practical relevance and effectiveness for systems operating under nonstation-ary frequency conditions. Beyond electrical applications, the proposed framework provides a general harmonic-domain methodology for stability analysis and control of phase-periodic systems with time-varying frequency. 12 Figure 4. Simulation results without harmonic mitiga-tion: the phase currents iabc , the dq currents idq , the rotor speed ωm and the applied control vabc , for the same load torque and reference speed profile as in the previous case. 
+
+Figure 5. Magnitude of harmonics without harmonic mitigation objective. Top to bottom: Ia,k , Id,k , Ωm,k and 
+
+Va,k , k = 0, 1, . . . , 8.
+
+Figure 6. Admissible level Lmax (red) and Lyapunov function 
+
+V(̃ E) (blue) for the reference ωref  
+
+> m, 0
+
+of Fig. 2. 
+
+8 Appendix 
+
+This appendix provides technical details supporting the application section. First, the phase–periodic equilib-rium of the PMSM is derived in the harmonic domain. Then, the maximum admissible Lyapunov level ensuring frequency admissibility is characterized. 
+
+8.1 PMSM Phase-periodic equilibrium 
+
+Given a known phase-periodic disturbance W , the har-monic equilibrium (Xref , U ref ) = Fθ (xref , u ref ) is ob-tained from the dq -frame PMSM model derived using the Park transform Tp defined in (56). The correspond-ing phase-periodic harmonic model is given by 
+
+L ˙Id =G(ω(t))( −rI d + Vd) + ω(t)L(pI q − N Id)
+
+L ˙Iq =G(ω(t))( − rI q + Vq ) − ω(t)( pψ I + pLI d + LN Iq )
+
+J ˙Ω =G(ω(t))( 32 pψI q − W − bf Ω) − ω(t)JN Ω
+
+where Idq = Fθ (idq ) and Vdq = Fθ (vdq ) denote the har-monic representations of the dq currents and voltages. Since the physical PMSM satisfies ω = ωm, and under phase-periodic steady-state operation (i.e., when Ω =
+
+Fθ (ωm) is constant), the equilibrium equation is ob-tained by left-multiplying by G−1(ω):
+
+0 = 1
+
+L (−rI d + Vd) + Tθ (ωm)( pI q − N Id)
+
+0 = 1
+
+L (−rI q + Vq ) − Tθ (ωm)( pψ L I + pI d + N Iq )
+
+0 = 1
+
+J ( 32 pψI q − W − bf Ω) − Tθ (ωm)N Ω
+
+13 Under the selected integral actions, Ω0 = ωref 
+
+> m, 0
+
+, Id,k = 0
+
+for all k ∈ Z, and Iq,k = 0 for all k ≠ 0, the k-th harmonic component of the last equation with k ≠ 0 yields the nonlinear harmonic recursion 
+
+Ωk = H(jkω ref 
+
+> m, 0
+
+)( 1
+
+J Wk +
+
+> +∞
+
+∑
+
+> p=−∞ ,p ≠k
+
+Ωk−pΩp(jp)) (65) where 
+
+H(jkω ) = −1 
+
+> bf
+> J
+
++ jkω .
+
+Equation (65) defines a nonlinear harmonic fixed-point relation. The equilibrium can therefore be computed us-ing a fixed-point iteration initialized from the fundamen-tal component. For k = 0, using the symmetry property 
+
+Ω−p = Ω∗
+
+> p
+
+, the classical steady-state relation is recovered: 
+
+Iq, 0 = 23pψ (W0 + bf ωref 
+
+> m, 0
+
+), Ω0 = ωref 
+
+> m, 0
+
+.
+
+In particular, if Wk = 0 for all k ≠ 0, then Ωk = 0 for all 
+
+k ≠ 0. The recursion (65) reveals that higher-order me-chanical harmonics arise from nonlinear harmonic cou-pling. However, due to the low-pass filtering effect of the mechanical dynamics, higher-order components are strongly attenuated, which justifies truncating the re-cursion in practice. As an illustration, consider a dis-turbance containing only a second harmonic component 
+
+W2. Starting from the initialization Ωk = 0 for all k ≠ 0,the first iteration yields 
+
+Ω2 = H(2j ωref 
+
+> m, 0
+
+) 1
+
+J W2 and Ω−2 = ¯Ω2
+
+Higher-order components are generated through har-monic coupling, for example, at second iteration ap-pears: 
+
+Ω4 = H(4j ωref 
+
+> m, 0
+
+)Ω22(2j ).
+
+Because of mechanical filtering, these higher-order terms are typically negligible, leading to the approximation 
+
+Ω±4 ≈ 0. Under this approximation, the diffusion effect vanishes and the harmonic equilibrium is given by 
+
+Iref  
+
+> q, 0
+
+= 23pψ f
+
+(W0 + Bf ωref 
+
+> m, 0
+
+),
+
+Ωref 0 = ωref 
+
+> m, 0
+
+,
+
+Ωref 2 = 1
+
+J H(2jωref 
+
+> m, 0
+
+) W2,
+
+Ωref  
+
+> k
+
+= 0, k ≠ 0, ±2,
+
+These harmonic-domain equilibrium quantities uniquely define the corresponding phase-periodic time-domain reference trajectories: 
+
+iref  
+
+> d
+
+(t) = 0, (66a) 
+
+iref  
+
+> q
+
+(t) = 23pψ f
+
+(W0 + Bf ωref 
+
+> m, 0
+
+), (66b) 
+
+ωref  
+
+> m
+
+(t) = ωref  
+
+> m, 0
+
++ 2∣Ω2∣ cos (2θ(t) − φ), (66c) where φ = ∠Ω2. The control reference U ref is then ob-tained from the electrical equilibrium equations: 
+
+V ref  
+
+> d
+
+= −Tθ (ωref  
+
+> m
+
+) pL I ref  
+
+> q
+
+, V ref  
+
+> q
+
+= rI ref  
+
+> q
+
++ Tθ (ωref  
+
+> m
+
+) pψ f ,
+
+or, equivalently, in the time domain, 
+
+vref  
+
+> d
+
+(t) = −ωref  
+
+> m
+
+(t) pL i ref  
+
+> q
+
+(t),vref  
+
+> q
+
+(t) = r i ref  
+
+> q
+
+(t) + ωref  
+
+> m
+
+(t) pψ f .
+
+Finally, the corresponding phase-periodic equilibrium 
+
+(xref , u ref ) is obtained via the inverse Park transforma-tion, iref  
+
+> abc
+
+= T −1 
+
+> p
+
+(iref  
+
+> dq
+
+) and vref  
+
+> abc
+
+= T −1 
+
+> p
+
+(vref  
+
+> dq
+
+).
+
+8.2 Maximum Admissible Lyapunov Level 
+
+The following proposition provides the largest Lyapunov level set ensuring that the rotor speed trajectory re-mains inside the admissible interval [ωmin , ω max ]. Geo-metrically, this corresponds to determining the largest ellipsoidal level set of the Lyapunov function that is fully contained inside the admissible speed domain. Since the Lyapunov function is quadratic and radially un-bounded, the maximal admissible level is necessarily at-tained when the speed trajectory reaches one of the admissible boundaries. The proof therefore reduces to characterizing the Lyapunov level associated with these boundary conditions. 
+
+Proposition 1 Consider, at time t0, a speed refer-ence ωref 
+
+> m, 0
+
+(t0) and the corresponding equilibrium pair 
+
+(Xref , U ref ). Define the Lyapunov function 
+
+V(̃ E) =̃ E∗ P̃ E, 
+
+where ̃ E is the augmented state defined in (61) , and P =
+
+S−1 with S is the solution of problem (47) . If the initial condition satisfies 
+
+V(̃ E(t0)) < Lmax (ωref 
+
+> m, 0
+
+), (68) 
+
+where Lmax denotes the largest Lyapunov level set for which the rotor speed component x4 = ωm remains inside the admissible interval ωm(t) ∈ [ωmin , ω max ], then the error state satisfies E(t) → 0 as t → ∞. Furthermore, any subsequent step change in the reference ωref 
+
+> m, 0
+
+(tk),
+
+k = 1, 2, . . . , that preserves condition (68) is admissible 
+
+14 Figure 7. Projection of the maximum level set on the sub-space Ω ∖ Ω0 × Ω0
+
+and does not affect stability. The admissible level Lmax 
+
+is given by 
+
+Lmax (ωref 
+
+> m, 0
+
+) = δ2(ωref 
+
+> m, 0
+
+)
+
+S44 ,0
+
+, (69) 
+
+where δ(ωref 
+
+> m, 0
+
+) = min (∣ ωmin − ωref 
+
+> m, 0
+
+∣, ∣ωmax − ωref 
+
+> m, 0
+
+∣) , and 
+
+S44 ,0 denotes the zero-order phasor of S44 = Fθ (s44 ), with 
+
+s44 being the fourth diagonal entry of the time-domain realization S.
+
+PROOF. Consider a reference ωref  
+
+> m, 0
+
+∈ [ωmin , ω max ] and the associated equilibrium (Xref , U ref ). Assume that the corresponding rotor speed reference ωref  
+
+> m
+
+remains inside the admissible interval [ωmin , ω max ]. The objective is to determine the largest Lyapunov level set Lmax for which the rotor speed component x4 = ωm remains inside this interval. Since ω(t) > 0 if and only if Tθ (ω)( t) ≻ 0, admissibility of the rotor speed is equivalent to the harmonic constraints 
+
+ωmin I ⪯ Tθ (ωm)( t) ⪯ ωmax I.
+
+Because the Lyapunov function is radially unbounded, the maximal admissible level set is necessarily attained on the boundary of these constraints. Considering, for instance, the lower bound, there exists X ∈ ℓ2, X ≠ 0,such that 
+
+(Tθ (ωm) − ωmin I)X = 0.
+
+In the time domain, this condition implies (ωm(t) −
+
+ωmin )x(t) = 0 almost everywhere on [t − T (t), t ]. Since 
+
+x is not identically zero and ωm is continuous, it follows that ωm(t) = ωmin on this interval. Therefore, the max-imal level set is obtained by considering boundary tra-jectories satisfying ωm(t) = ωmin or ωm(t) = ωmax .Because the Lyapunov function defines convex ellip-soidal level sets centered at the equilibrium, the active constraint is necessarily the boundary closest to the equilibrium speed Ωref (see Fig. 7). Therefore, the admissible level is determined by 
+
+δ(ωref 
+
+> m, 0
+
+) = min (∣ ωmin − ωref 
+
+> m, 0
+
+∣, ∣ωmax − ωref 
+
+> m, 0
+
+∣) .
+
+Without loss of generality, assume that the minimum is attained at ωmin .Let Ω = Fθ (ωm). Since ωm is constant on the constraint boundary, we set Ωk = 0 for all k ≠ 0 in the augmented state ̃ E. The computation of the maximal level set then reduces to the quadratic optimization problem 
+
+max  
+
+> X,Z
+
+V(̃ E)
+
+subject to the constraint C0(Ω0) = Ω0 − ωmin ≥ 0. Using the KKT optimality conditions, there exists a Lagrange multiplier α such that ̃
+
+E = 12 αS∇[X,Z ]C0(Ω0),
+
+where S = P−1 and ∇[X,Z ]C0(Ωm, 0) denotes the gradient of the constraint with respect to (X, Z ). Considering the zero-order phasor associated with Ω (i.e., the central row of the fourth Toeplitz block), we obtain 
+
+Ω0 − ωref  
+
+> m, 0
+
+= 12 α(S∇[X,Z ]C0(Ω0)) 4,0.
+
+Since ∇[X,Z ]C0(Ω0) is zero everywhere except for the component associated with Ω0, which is equal to 1, the Toeplitz structure of S yields 
+
+(S∇[X,Z ]C0(Ω0)) 4 = S44 = Fθ (s44 ).
+
+Therefore, 
+
+Ω0 − ωref  
+
+> m, 0
+
+= 12 α S 44 ,0.
+
+Enforcing the boundary condition Ω0 = ωmin gives 
+
+α = 2 ωmin − ωref 
+
+> m, 0
+
+S44 ,0
+
+.
+
+Substituting the corresponding expression of ̃ E into the Lyapunov function yields (69), which concludes the proof. ◻
+
+References             
+
+> [1] H. Muramatsu and S. Katsura. An adaptive periodic disturbance observer for periodic disturbance suppression.
+> IEEE Trans. on Industrial Informatics , 14(10), 2018. [2] Q. Han, L. Wang, L. Marconi, Z. Liu, and H. Su. Adaptive control of nonlinear systems with sinusoidal uncertainties via internal model principle. In IFAC PapersOnLine , 2023. [3] D. Astolfi, L. Praly, and L. Marconi. Harmonic internal models for structurally robust periodic output regulation.
+> Systems & Control Letters , 161:105154, 2022.
+
+15 [4] A. Cecilia, D. Astolfi, M. Bin, and R. Costa-Castelló. Canceling output disturbances in observer design through internal model filters. Automatica , 162:111529, 2024. [5] C.H. Chung and M.S. Chen. A robust adaptive feedforward control in repetitive control design for linear systems. 
+
+Automatica , 48(1):183–190, 2012. [6] S.R. Sanders, J.M. Noworolski, X.Z. Liu, and G.C. Verghese. Generalized Averaging Method for Power Conversion Circuits. IEEE Trans. on Power Electronics , 6(2), 1991. [7] X. Kwon, J.and Wang, F. Blaabjerg, and C.L. Bak. Frequency-Domain Modeling and Simulation of DC Power Electronic Systems Using Harmonic State Space Method. 
+
+IEEE Trans. on Power Electronics , 32(2):1044–1055, 2017. [8] P. Mattavelli, G.C. Verghese, and A.M. Stankovic. Phasor dynamics of thyristor-controlled series capacitor systems. 
+
+IEEE Trans. on Power Systems , 12(3):1259–1267, 1997. [9] A.M. Stankovic, B.C. Lesieutre, and T. Aydin. Modeling and analysis of single-phase induction machines with dynamic phasors. IEEE Trans. on Power Systems , 14(1):9–14, February 1999. [10] Y. Levron and J. Belikov. Modeling power networks using dynamic phasors in the dq0 reference frame. Electric Power Systems Research , 144:233–242, March 2017. [11] E. Karami, G.B. Gharehpetian, M. Madrigal, and J.J. Chavez. Dynamic phasor-based analysis of unbalanced three-phase systems in presence of harmonic distortion. IEEE Trans. on Power Systems , 33(6):6642–6654, 2018. [12] Y. Cai, Y. He, H. Du, and J. Liu. Harmonic state-space modeling and system characteristic analysis of grid-connected inverter parallel-operation system considering asynchronous carriers. IEEE Trans. on Power Electronics , 39(7):8645– 8666, July 2024. [13] R. Kong, S. Sahoo, S. Ou, X. Meng, G. Gao, and F. Blaabjerg. Data-light oscillation mode identification for fast stability assessment of grid-tied converters. IEEE Trans. on Power Electronics , 40(8):11170–11181, August 2025. [14] J. B. Kwon. Harmonic State Space (HSS) Modeling for Power Electronic Based Power Systems . PhD thesis, Aalborg Universitetsforlag, 2017. [15] J.E. Ormrod. Harmonic State Space Modelling of Voltage Source Converters . PhD thesis, University of Canterbury, Christchurch, New Zealand, 2013. [16] Y. Cai, Y. He, H. Zhang, H. Zhou, and J. Liu. Research on harmonic state-space modeling and calculation analysis of low-switching-frequency grid-connected inverter considering the impact of digitization. IEEE Trans. on Power Electronics , 38(1):1003–1021, 2023. [17] J. Lyu, X. Zhang, X. Cai, and M. Molinas. Harmonic State-Space Based Small-Signal Impedance Modeling of a Modular Multilevel Converter With Consideration of Internal Harmonic Dynamics. IEEE Trans. on Power Electronics ,34(3):2134–2148, 2019. [18] N. Blin, P. Riedinger, J. Daafouz, L. Grimaud, and P. Feyel. Necessary and Sufficient Conditions for Harmonic Control in Continuous Time. IEEE Trans. on Automatic Control ,67(8):4013–4028, 2022. [19] T. Yang, S. Bozhko, J.M. Le-Peuvedic, G. Asher, and C.I. Hill. Dynamic Phasor Modeling of Multi-Generator Variable Frequency Electrical Power Systems. IEEE Trans. on Power Systems , 31(1):563–571, 2016. [20] F. Vernerey, P. Riedinger, and J. Daafouz. A TBLMI Framework for Harmonic Robust Control. IEEE Trans. on Automatic Control , 70(4):2537–2551, 2025. [21] M. Grosso, P. Riedinger, J. Daafouz, S. Pierfederici, H. Janati-Idrissi, and B. Lapôtre. Frequency-varying harmonic domain control for PMSMs with current harmonic mitigation. In IEEE Energy Conversion Conference Congress and Exposition (ECCE) , 2025. [22] M. Grosso, P. Riedinger, J. Daafouz, S. Pierfederici, H. Janati-Idrissi, and B. Lapôtre. Control of three-phase PWM rectifier using multiple frame dq transform and harmonic modeling. In 50th Annual Conference of the IEEE Industrial Electronics Society, IECON , 2024. [23] M. Grosso, P. Riedinger, J. Daafouz, S. Pierfederici, H. Janati-Idrissi, and B. Lapôtre. Harmonic Control of Three-Phase AC/DC Converter With Time-Domain Guarantees. 
+
+IEEE Trans. on Control Systems Technology , 33(3), 2025. [24] A. Böttcher and B. Silbermann. Introduction to Large Truncated Toeplitz Matrices . Universitext. Springer New York, New York, NY, 1999. [25] S. Boyd, L. El Ghaoui, E. Feron, and V. Balakrishnan. Linear Matrix Inequalities in System and Control Theory . Society for Industrial and Applied Mathematics, 1994. [26] M. Grosso, P. Riedinger, and J. Daafouz. The PhasorArray Toolbox. In openly available on GitHub at github.com/mxmGrss/phasorArray_Toolbox , 2025. [27] M. Grosso, P. Riedinger, and J. Daafouz. The phasorarray toolbox for harmonic analysis and control design. In 
+
+submitted to European Control Conference, 2026 Island , 2026. [28] R. Teodorescu, F. Blaabjerg, M. Liserre, and P.C. Loh. Proportional-resonant controllers and filters for grid-connected voltage-source converters. IEE Proceedings-Electric Power Applications , 153(5):750–762, 2006. [29] M. Liserre, R. Teodorescu, and F. Blaabjerg. Multiple harmonics control for three-phase grid converter systems with the use of PI-RES current controller in a rotating frame. 
+
+IEEE Trans. on Power Electronics , 21(3):836–841, May 2006. [30] G. Weiss and M. Häfele. Repetitive control of MIMO systems using H∞ design. Automatica , 35(7):1185–1199, 1999. [31] M. Bodson, A. Sacks, and P. Khosla. Harmonic generation in adaptive feedforward cancellation schemes. IEEE Trans. on Automatic Control , 39(9):1939–1944, 1994. [32] Mitra Mirhosseini. Modified park transformation of three-phase signals for harmonic extraction with frequency-adaptive capability. International Journal of Electrical Power & Energy Systems , 150:109069, 2023. 
+
+16
