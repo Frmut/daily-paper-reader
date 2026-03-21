@@ -1,0 +1,1707 @@
+Title: Adaptive Tube MPC: Beyond a Common Quadratically Stabilizing Feedback Gain
+
+URL Source: https://arxiv.org/pdf/2603.15912v1
+
+Published Time: Wed, 18 Mar 2026 00:19:29 GMT
+
+Number of Pages: 12
+
+Markdown Content:
+# Adaptive Tube MPC: Beyond a Common Quadratically Stabilizing Feedback Gain ⋆
+
+# Anchita Dey, Shubhendu Bhasin 
+
+Electrical Engineering Department, Indian Institute of Technology Delhi, Hauz Khas, New Delhi, Delhi 110016, India 
+
+Abstract 
+
+This paper proposes an adaptive tube framework for model predictive control (MPC) of discrete-time linear time-invariant systems subject to parametric uncertainty and additive disturbances. In contrast to conventional tube-based MPC schemes that employ fixed tube geometry and constraint tightening designed for worst-case uncertainty, the proposed approach incorporates online parameter learning to progressively refine the parametric uncertainty set and update the parameter estimates. These updates are used to adapt the components of the MPC optimization problem, including the prediction model, feedback gain, terminal set, and tube cross-sections. As the uncertainty set contracts, the required amount of constraint tightening reduces and the tube shrinks accordingly, yielding less conservative control actions. Recursive feasibility, robust constraint satisfaction, and closed-loop stability are formally established. Furthermore, the framework does not require the existence of a common quadratically stabilizing linear feedback gain for the entire parametric uncertainty set, thereby relaxing a standard assumption in existing tube-based MPC formulations. Numerical examples illustrate the effectiveness of the proposed approach. 
+
+Key words: Model predictive control, Adaptive control, Control of constrained systems, Optimization under uncertainties. 
+
+1 Introduction 
+
+Model predictive control (MPC) is an optimization-based control strategy that uses a system model to predict future system behavior and computes an op-timal sequence of control inputs by minimizing a cost function of predicted states and inputs, subject to hard constraints. In the standard MPC formulation, the con-strained optimal control problem (COCP) relies on an accurate model of the system dynamics for state predic-tion [17]. In the presence of modeling errors or distur-bances, however, the true system evolution may deviate from the predicted trajectories, potentially leading to constraint violations and loss of recursive feasibility or stability. Since exact model knowledge is rarely avail-able in practice, the problem of designing MPC schemes for systems affected by parametric uncertainty and ad-ditive disturbances has received considerable attention in the literature. Robust MPC methods are mostly based on either min-max optimization or tube-based approaches and have 
+
+⋆ Corresponding author A. Dey. 
+
+Email addresses: anchitadey.ee.india@gmail.com 
+
+(Anchita Dey), sbhasin@ee.iitd.ac.in (Shubhendu Bhasin). 
+
+been extensively studied in the literature. These meth-ods are typically designed for systems with known pa-rameters subject to unknown additive disturbances [4, 20,27], or for systems with parametric uncertainty, with or without additive disturbances [3, 10, 16]. In the lat-ter case, however, the uncertain parameters are typically treated as unknown but fixed, and no mechanism is em-ployed to learn or refine their estimates online. To reduce conservatism and improve performance, adaptive MPC schemes have recently been proposed [9, 13, 19, 21, 23], where the system parameters, the sets containing them, or both are updated using online data, while prediction errors are handled through robust tubes. Among robust MPC formulations, homothetic tube MPC [20, 27] provides a convenient parametrized struc-ture for bounding prediction errors and formulating the COCP. Consequently, recent research has focused on reducing the conservatism associated with fixed tube constructions. For instance, [22] proposes a flexible tube structure based on zonotopes, where the parameters defining the tube cross-sections are optimized online. The framework in [18] considers systems with addi-tive disturbances only and constructs tubes through an online-optimized blending of offline-computed invari-ant sets corresponding to different stabilizing feedback gains. Self-tuning tubes are proposed in [30] for sys-
+
+Preprint submitted to Automatica 18 March 2026 
+
+> arXiv:2603.15912v1 [eess.SY] 16 Mar 2026
+
+tems with both parametric uncertainty and additive disturbances. For systems with parametric uncertainty and constraints imposed on all states, most existing approaches [3, 7– 9, 13, 19, 21–23, 30] assume the existence of a common quadratically stabilizing linear state feedback gain for the entire uncertainty set [14]. Specifically, it is assumed that there exists a common linear feedback gain that stabilizes the origin of a linear time-invariant (LTI) sys-tem whose state and input matrices correspond to any element of the parametric uncertainty set. This assump-tion, however, significantly restricts the class of admissi-ble uncertainty sets [1, 11]. In general, a parametric un-certainty set may not admit quadratic stabilization, and even when quadratic stability can be established, a lin-ear feedback gain that stabilizes every element of the set may not exist [25]. Even in cases where such a common stabilizing gain exists, the construction of a common ter-minal set satisfying the state and input constraints for all admissible systems may still be infeasible or highly conservative, further restricting the practical applicabil-ity of such approaches. Data-driven predictive control frameworks [2,5] provide an alternative that avoids the need for a common stabi-lizing feedback gain. However, since these methods rely on an offline-constructed Hankel matrix derived from previously collected data, their performance may de-grade if the system dynamics changes during online op-eration. In this work, we propose the notion of adaptive tubes 
+
+for MPC of discrete-time LTI systems subject to both parametric uncertainty and additive disturbances. Specifically, we construct homothetic tubes whose cross-sectional geometry is updated online based on the evolving parameter point estimate and the refined parametric uncertainty set. The resulting adaptive tube framework avoids the common but restrictive assump-tion of the existence of a single quadratically stabi-lizing linear feedback gain for the entire uncertainty set [3, 7–9, 13, 19, 21–23, 30], thereby reducing conser-vatism. To achieve this, the system matrices are decomposed into an estimated component and an unknown component, with the latter treated as part of a lumped additive dis-turbance. This representation enables the formulation of a tube-based COCP with a structure similar to that of standard homothetic tube MPC [20, 27], while yielding improved constraint tightening through the use of sepa-rate forward reachable disturbance sets [4] rather than a single worst-case disturbance bound. The available state and input data are used to update both the parametric uncertainty set [15] and the parameter point estimate through a projection-modified normalized gradient de-scent law [12]. The resulting reduction in parametric uncertainty leads to online recomputation of the tight-ened constraints, the tube cross-sectional shape, and the terminal set. Furthermore, the terminal ingredients are constructed using a feedback gain associated with the current parameter estimate rather than requiring a com-mon gain for all elements of the uncertainty set. Al-though this adaptation modifies the underlying COCP and may affect feasibility, recursive feasibility is ensured by a backup formulation invoked when necessary. The proposed scheme also guarantees robust exponential sta-bility [24, Def. 2] and boundedness of all signals. The main contributions of this work are twofold. First, we introduce the notion of adaptive tubes for MPC of discrete-time LTI systems with parametric uncertainty and additive disturbances, where the tube cross-sections, terminal set and constraint tightening are updated on-line based on parameter learning and uncertainty set contraction. Second, the proposed framework avoids the commonly imposed assumption of the existence of a quadratically stabilizing linear feedback gain for the en-tire parametric uncertainty set by constructing terminal ingredients using the current parameter estimate. Fur-ther, we establish recursive feasibility, robust exponen-tial stability of the origin, and boundedness of all closed-loop signals for the resulting adaptive tube MPC scheme. 
+
+Notations: For two sets A, B ⊆ Rn, the Minkowski sum A ⊕ B , {a + b | a ∈ A, b ∈ B} and a ⊕ B ,
+
+{a + b | b ∈ B}, where a ∈ Rn, the Pontryagin differ-ence A ⊖ B , {a | a + b ∈ A ∀b ∈ B}, the set multi-plication AB , {ab | a ∈ A, b ∈ B}, where a, b are of conformal dimensions. The convex hull of all elements in 
+
+B is denoted by co (B). The notation W ≻ 0 (  0) im-plies the matrix W is symmetric positive-definite (pos-itive semi-definite). || · || ∞, || · || 2 and || · || F denote 
+
+∞-norm, 2-norm and Frobenius norm, respectively, and 
+
+|| b|| 2 
+
+> W
+
+, b⊤W b for a vector b. The notation ai|t repre-sents the value of a at time t + i predicted at time t,and ( ·)∗ on any term denotes its optimal value. A se-quence {c(p), c(p + 1) , . . . , c (q − 1) , c(q)} is repre-sented as {c(i)}i=p:q , and the set of all integers from 
+
+a to b by Iba. Any signal belonging to L∞ implies it is bounded. A sequence vector zt is said to belong to S(m)if ∑t+ki=t z⊺ 
+
+> i
+
+zi ≤ c0mk + c1 ∀ t ∈ I∞ 
+
+> 1
+
+, a given constant 
+
+m ≥ 0, and some k ∈ I∞ 
+
+> 1
+
+, where c0, c 1 ≥ 0 [12, Theo-rem 4.11.2]. 
+
+2 Problem Statement 
+
+Consider the constrained discrete-time LTI system sub-ject to external disturbance 
+
+xt+1 = Ax t + Bu t + dt, (1) 
+
+xt ∈ X , ut ∈ U ∀t ∈ I∞ 
+
+> 0
+
+, (2) 2where xt ∈ Rn, ut ∈ Rm, and dt ∈ Rn denote the state, input, and external disturbance, respectively, at time t. The disturbance dt and the system parameter 
+
+ψ ,
+
+[
+
+A B 
+
+]
+
+∈ Rn×(n+m) are unknown but belong to sets 
+
+D and Ψ, respectively. The sets X, U and D are known convex polytopes containing their origins in their respec-tive interiors. The set Ψ ⊆ Rn×(n+m) is the convex hull of known vertices ψ[1] , ψ [2] , ..., ψ [L], where L is a known finite positive integer. Further, for each ˆψ ,
+
+[ ˆA ˆB
+
+]
+
+∈ Ψ, 
+
+∃ a pair ( P, K ) specific to ˆψ such that P ≻ 0, and 
+
+P − ( ˆA + ˆBK )⊤P ( ˆA + ˆBK ) − Q − K⊤RK  0, (3) for some given matrices Q, R ≻ 0, where P, Q ∈ Rn×n,
+
+R ∈ Rm×m and K ∈ Rm×n. This condition implies that each system corresponding to ˆψ ∈ Ψ is stabilizable and admits a stabilizing linear feedback gain K with a quadratic Lyapunov function x⊤P x , which is a standard assumption in MPC design [17, 20, 27]. The objective is to design a suitable control ut that drives the state of the system (1) to its origin while ensuring that the hard constraints (2) are satisfied despite the presence of the disturbance dt. For the known dynamics (A and B are known) and disturbance-free case, classical approaches [17] could be used to solve the COCP P1 in a receding horizon fashion. 
+
+P1 : min  
+
+> μt
+> N−1
+
+∑
+
+> i=0
+
+(|| xi|t|| 2 
+
+> Q
+
++ || ui|t|| 2
+
+> R
+
+) + || xN |t|| 2
+
+> P
+
+subject to x0|t = xt, xi+1 |t = Ax i|t + Bu i|t ∀i ∈ IN −10 ,xi|t ∈ X, ui|t ∈ U ∀i ∈ IN −10 , xN |t ∈ XT S ⊆ X,
+
+where μt , {ui|t}i=0: N −1, and XT S is the terminal set (refer to [17, Ch. 2] for details). The classical COCP P1 is not directly solvable in the presence of uncertainties in A, B and dt, and therefore requires reformulation. In the subsequent sections, moti-vated by set membership-based identification [15,21,23, 29] and homothetic tube-based MPC methods [20, 27], we reformulate the COCP using an adaptive tube frame-work that is designed to reduce the uncertainty in ψ at each time instant. Due to hard constraints on the system’s states and in-puts, the adaptive tube framework is equipped with a robust fallback mechanism to ensure constraint satisfac-tion regardless of parameter learning. The robust tube-based method serves as a backup if adaptation renders the modified COCP infeasible. We therefore start by de-veloping the robust framework. 
+
+3 COCP components without adaptation 
+
+A major motivation for this work is to relax the require-ment of a common quadratically stabilizing linear feed-back gain for the parametric uncertainty set Ψ, a com-mon assumption in tube-based MPC frameworks for sys-tems with uncertain parameters (see [3, 7–9, 13, 19, 21– 23, 30]). To this end, we rewrite the system dynamics in (1) as follows. 
+
+xt+1 = ˆAtxt + ˆBtut + ( A − ˆAt)xt + ( B − ˆBt)ut + dt
+
+︸ ︷︷ ︸
+
+> =: wt
+
+,
+
+(4) where the parameters ˆAt, ˆBt are the estimates of A, B
+
+obtained at time t using a subsequently designed adap-tive law and 
+
+[ ˆAt ˆBt
+
+]
+
+belong to the updated set Ψ t. The term wt acts as a lumped additive disturbance. In the absence of parameter adaptation, ˆAt = ˆA0, ˆBt = ˆB0
+
+and Ψ t = Ψ 0 ∀t ∈ I∞ 
+
+> 0
+
+, where Ψ 0 , Ψ. Throughout this section, we use the suffix t for easy extension to the adaptive case. 
+
+3.1 Disturbance set characterization 
+
+The knowledge of X, U, D, Ψ t along with ˆAt and ˆBt is used to characterize the set Wt containing every possible value of wt ∀t ∈ I∞ 
+
+> 0
+
+. Define Φt ,
+
+{
+
+ξ ∈ Rn×(n+m)
+
+∣∣∣ ξ +
+
+[ ˆAt ˆBt
+
+]
+
+∈ Ψt
+
+}
+
+, (5a) ΦAt ,
+
+{
+
+ξ ∈ Rn×n
+
+∣∣∣[
+
+ξ η 
+
+]
+
+∈ Φt, η ∈ Rn×m}
+
+, (5b) ΦBt ,
+
+{
+
+ξ ∈ Rn×m
+
+∣∣∣[
+
+η ξ 
+
+]
+
+∈ Φt, η ∈ Rn×n}
+
+. (5c) Using definitions (5b) and (5c), the set Wt is given by 
+
+Wt , ΦAt X ⊕ ΦBt U ⊕ D. (6) A less conservative characterization of the sets contain-ing wt is obtained by leveraging forward reachable sets of the state xt in the subsequent N steps 1 . At time t,the state measurement xt is used to compute the sets for xt+1 , x t+2 , x t+3 , ..., x t+N by propagating the dy-namics (1). Since the sets for xt+i ∀i ∈ IN 
+
+> 1
+
+depend on the current state xt, we denote these as Xi,t where i is the number of forward steps ahead of the current time 
+
+t. The sets are constructed recursively as follows. 
+
+X0,t , {xt}, (7a) 
+
+Xi+1 ,t , (Ψ At Xi,t ⊕ ΨBt U ⊕ D) ∩ X, (7b)        
+
+> 1We focus on only Nsteps since the sets for wtare used in constraint tightening for the homothetic tube in a COCP with a prediction horizon N.
+
+3where ΨAt ,
+
+{
+
+ξ ∈ Rn×n
+
+∣∣∣[
+
+ξ η 
+
+]
+
+∈ Ψt, η ∈ Rn×m}
+
+, (8a) ΨBt ,
+
+{
+
+ξ ∈ Rn×m
+
+∣∣∣[
+
+η ξ 
+
+]
+
+∈ Ψt, η ∈ Rn×n}
+
+. (8b) We only require Xi,t ∀i ∈ IN −10 . Using (5a)-(5c), (7a)-(8b), the sets containing wt+i are given by 
+
+Wi,t , ΦAt Xi,t ⊕ ΦBt U ⊕ D ∀i ∈ IN −10 , (9) which are used to make robust state predictions in the MPC COCP. 
+
+3.2 Terminal set construction 
+
+Without adaptation, Wt ≡ W0 and Wi,t ≡ Wi, 0. While 
+
+Wi,t contains the possible values of wt+i ∀i ∈ IN −10 start-ing at any given t, the set Wt is a superset of Wi,t and contains the possible values of wt+i ∀i ∈ I∞ 
+
+> 0
+
+. We, there-fore, use Wt = W0 to compute a suitable terminal set 
+
+XT S t for formulating the COCP [27], provided the fol-lowing standard assumption holds. 
+
+Assumption 1 Given constraint sets X, U, and W0, for each 
+
+[ ˆA ˆB
+
+]
+
+∈ Ψ, with the corresponding feedback gain 
+
+K( ˆA, ˆB) obtained from (3) , ∃ a non-empty terminal set 
+
+XT S ( ˆA, ˆB) such that 
+
+XT S ⊆ X, KXT S ⊆ U, (10a) ( ˆA + ˆBK ) XT S ⊕ W0 ⊆ XT S , (10b) 
+
+and XT S contains the origin in its interior. 
+
+The ideal choice of XT S t = XT S 0 is the maximal ad-missible RPI set satisfying (10); this can be computed following [6] for ˆAt = ˆA0, ˆBt = ˆB0 and Kt = K0.Note that the terminal set XT S t along with Kt obtained from (3) are specific to a given parameter estimate ( ˆA0,ˆB0), thereby relaxing the requirement for a common pair (Pcom , K com ) and a common terminal set for all the el-ements in Ψ, unlike [3, 7–9, 13, 19, 21–23, 30]. Even when a common stabilizing feedback gain exists, constructing a common terminal set satisfying (10) for all admissible systems can be difficult or may lead to excessive conser-vatism. This further motivates the use of terminal ingre-dients tailored to the current parameter estimate. 
+
+3.3 Homothetic tube parameterization 
+
+The tubes for state and control input obtained by solving the COCP at each time t are denoted by 
+
+T xt , {Txi|t}i=0: N and T ut , {Tui|t}i=0: N −1, (11) respectively. For the ease of solving the COCP, the tube-sections in T xt are defined as 
+
+Txi|t , αi|t ⊕ βi|tSt ⊆ Xi,t ∀i ∈ IN 
+
+> 0
+
+, (12) where αi|t ∈ Rn is the center, βi|t ≥ 0 is the scaling factor, and St determines the tube geometry. The set St
+
+is defined to be the convex hull of user-defined vertices 
+
+s[1]  
+
+> t
+
+, s[2]  
+
+> t
+
+, ..., s [Mt ] 
+
+> t
+
+, where Mt is finite. The state tube-sections can also be expressed as 
+
+Txi|t = co 
+
+({
+
+z[j]
+
+> i|t
+
+}
+
+> j=1: Mt
+
+)
+
+, where (13a) 
+
+z[j] 
+
+> i|t
+
+, αi|t + βi|ts[j] ∀(i, j, t ) ∈ IN 
+
+> 0
+
+× IMt 
+
+> 1
+
+× I∞ 
+
+> 0
+
+. (13b) Further, to achieve desirable guarantees of stability and recursive feasibility, a suitable choice of St [7, 27] is that it contains the origin in its interior and is the outer RPI approximation of the minimal RPI set satisfying ( ˆAt + ˆBtKt)St ⊕ Wt ⊆ St. (14) Here, Kt is the feedback gain obtained by solving (3) for ˆAt, ˆBt, and St can be computed following [26]. Again, without any adaptation, we have St = S0 ∀t ∈ I∞ 
+
+> 0
+
+.Corresponding to (13a), the control tube-sections are written as 
+
+Tui|t ,
+
+{
+
+v[j]
+
+> i|t
+
+}
+
+> j=1: Mt
+
+∀(i, t ) ∈ IN −10 × I∞ 
+
+> 0
+
+. (15) Since the tube-sections are expressed as convex hulls of vertices, any point η ∈ Txi|t, can be expressed as η =
+
+∑Mt 
+
+> j=1
+
+τ [j](i, t )z[j] 
+
+> i|t
+
+, where τ [j](i, t ) ∈ [0 , 1] and ∑Mt 
+
+> j=1
+
+τ [j](i, t ) =1. The corresponding control input u as a function of η
+
+is given by the following function 
+
+u = u(η, Txi|t, Tui|t) ,
+
+> Mt
+
+∑
+
+> j=1
+
+τ [j](i, t )v[j] 
+
+> i|t
+
+. (16) 
+
+4 Adaptive tube MPC framework 
+
+In this section, we introduce parameter learning and re-formulate the COCP with recursive feasibility and sta-bility guarantees. The dynamics used for developing the framework is given by (4) 
+
+xt+1 = ˆAtxt + ˆBtut + wt,
+
+where wt ∈ Wt defined in (6). The suffix t was already introduced with the estimated parameters and sets char-acterized in the previous section to indicate their time-varying nature due to adaptation. Below, we provide the 4laws for carrying out the adaptation of the parameter estimates ˆψt ,
+
+[ ˆAt ˆBt
+
+]
+
+and the uncertainty set Ψ t.
+
+4.1 Parameter learning and uncertainty set refinement 
+
+At each time step t ∈ I∞ 
+
+> 1
+
+, the available data xt, xt−1,
+
+ut−1 are leveraged to compute a non-falsified set for the true parameter ψ =
+
+[
+
+A B 
+
+]
+
+as follows [15] Ξt ,
+
+{[ ˆA ˆB
+
+] ∣ ∣∣ xt − ˆAx t−1 − ˆBu t−1 ∈ D
+
+}
+
+. (17) The parametric uncertainty set is then updated as Ψt , Ψt−1 ∩ Ξt ∀t ∈ I∞ 
+
+> 1
+
+; Ψ0 = Ψ . (18) 
+
+Lemma 2 For the plant dynamics (1) , the true param-eter ψ =
+
+[
+
+A B 
+
+]
+
+∈ Ψt ∀t ∈ I∞ 
+
+> 1
+
+, where the uncertainty sets Ψt, obtained using (17) and (18) , are nested, i.e., 
+
+Ψt ⊆ Ψt−1 ∀t ∈ I∞ 
+
+> 1
+
+. This further implies that Ψt 6 = ∅ at any time t.Proof: The proof easily follows from the plant dynamics (1) and the non-falsified set definition in (17) and the recursive update law (18), since both Ψ 0 and Ξ t ∀t ∈ I∞
+
+> 0
+
+contain the true parameter ψ. 
+
+Since the updated uncertainty set may yield a new set of vertices, we add a time index to the vertices of Ψ t.Ψt = co 
+
+({
+
+ψ[i]
+
+> t
+
+}
+
+> i=1: Lt
+
+)
+
+∀t ∈ I∞ 
+
+> 0
+
+, with 
+
+ψ[i]0 , ψ[i] ∀i ∈ IL0 
+
+> 1
+
+, where L0 , L. 
+
+(19) Using the updated uncertainty set Ψ t, obtained with (18), we compute the point estimate ˆψt using a nor-malized gradient descent-based law along with a projec-tion operator that projects the estimates onto the un-certainty set Ψ t. To this end, we rewrite (1) as 
+
+xt = ψg t−1 + dt−1 ∀t ∈ I∞ 
+
+> 1
+
+, (20) where gt−1 ,
+
+[
+
+x⊤ 
+
+> t−1
+
+u⊤
+
+> t−1
+
+]⊤
+
+∈ Rn+m. Here (20) is in a linear regression form with a perturbation-like term 
+
+dt−1, and at any time t, we know the terms xt and gt−1.Accordingly the update law is given by ¯ψt = ˆψt−1 + κ (xt − ˆψt−1gt−1)g⊤
+
+> t−1
+
+1 + g⊤
+
+> t−1
+
+gt−1
+
+,
+
+ˆψt =
+
+{ ¯ψt, if ¯ψt ∈ Ψt
+
+arg min 
+
+> ξ∈Ψt
+
+|| ξ − ¯ψt|| F , otherwise ,
+
+(21) where κ ∈ (0 , 2). 
+
+Lemma 3 Let et , (xt − ˆψt−1gt−1)/(1 + g⊤
+
+> t−1
+
+gt−1).The update law in (21) with κ ∈ (0 , 2) guarantees 
+
+• et, et(1 + g⊤
+
+> t−1
+
+gt−1) 1 
+
+> 2
+
+, ˆψt ∈ L ∞,
+
+• et, et(1 + g⊤
+
+> t−1
+
+gt−1) 1 
+
+> 2
+
+, || ˆψt − ˆψt−1|| F ∈ S ( ¯d2 ), where ¯d
+
+is the upper bound of || dt(1 + g⊤
+
+> t−1
+
+gt−1)− 1 
+
+> 2
+
+|| 2.Proof: The proof follows from [7, Lemma 1], [12, Theo-rem 4.11.4] with the use of Lemma 2. 
+
+4.2 Reformulated COCP with adaptation 
+
+Due to the adaptation of Ψ t and the parameter esti-mate ˆψt =
+
+[ ˆAt ˆBt
+
+]
+
+, the system dynamics in (4) and the associated sets defined in (5a)-(6) and (7b)-(9) are up-dated whenever Ψ t and/or ˆψt change. Accordingly, the matrices Pt, Kt, the terminal set XT S t and the poly-tope St defining the tube cross-sectional shape are re-computed to remain consistent with the updated un-certainty description. While this introduces additional computational effort, it enables the controller to exploit any reduction in the size of Ψ t, leading to the following dual benefits. 
+
+• The terminal set, which is desirably the maximal ad-missible RPI set, increases in size, implying the need for reduced control effort to reach the terminal set, and 
+
+• The tube cross-sectional shape St reduces in size, al-lowing for a better representation of the uncertainty in the propagation of the true state. The use of updated parameter estimates and uncertainty sets yields a modified COCP at each time instant. How-ever, the switching from the old setup at t − 1 to the new COCP at t with updated ( Pt, K t) and terminal set XT S t
+
+may affect recursive feasibility and stability. The treat-ment of feasibility under such switching is discussed in the next subsection. To ensure stability guarantees, we impose certain conditions on the choice of ( Pt, K t). 
+
+Criterion 4 Given the parameters ˆAt, ˆBt, the pair 
+
+(Pt−1, K t−1) and matrices Q, R , where Q, R, P t−1 ≻ 0,and constraint sets X, U and Wt, choose a pair (Pt, K t)
+
+that satisfies Pt ≻ 0 and the following conditions. (a) Pt − ( ˆAt + ˆBtKt)⊤Pt( ˆAt + ˆBtKt)
+
+− Q − K⊤ 
+
+> t
+
+RK t  0 (22a) 
+
+(b) Pt−1 − ( ˆAt + ˆBtKt)⊤Pt( ˆAt + ˆBtKt)
+
+− Q − K⊤
+
+> t−1
+
+RK t−1  0, (22b) 
+
+and, (c) ∃ a non-empty terminal set XT S t such that 
+
+XT S t ⊆ X, KtXT S t ⊆ U, (22c) ( ˆAt + ˆBtKt)XT S t ⊕ Wt ⊆ XT S t , (22d) 5and XT S t contains the origin in its interior. 
+
+Condition (b) plays a crucial role in preserving stability under adaptation. Specifically, it ensures that the Lya-punov function, which is associated with the cost ma-trices Q, R, and Pt−1 at time t − 1 and Pt at time t,does not increase when the prediction model switches from ( ˆAt−1, ˆBt−1) to ( ˆAt, ˆBt) and the feedback gain is updated from Kt−1 to Kt. In other words, even though the terminal cost and prediction dynamics are modified, the value function remains non-increasing along system trajectories, thereby preserving the stability guarantee across switching instances. In the absence of adapta-tion, i.e., when ( ˆAt, ˆBt) = ( ˆAt−1, ˆBt−1), Condition (b) reduces to Condition (a), and the requirement coincides with the standard discrete-time Lyapunov inequality for classical MPC [17, Ch. 2]. Conditions (a) and (c) follow from (3) as a property of Ψ0 and Assumption 1, respectively. Unlike the quadratic stabilizability assumption, which requires the existence of a common pair ( Pcom , K com ) satisfying Pcom − ( ˆA +ˆBK com )⊤Pcom ( ˆA + ˆBK com ) − Q − K⊤
+
+> com
+
+RK com  0, 
+
+∀
+
+[ ˆA ˆB
+
+]
+
+∈ Ψ, together with a common terminal set, Condition (b) only enforces a one-step compatibility be-tween consecutive parameter updates. Thus, it avoids the need for a common Lyapunov function and feedback gain that are valid for the entire uncertainty set. Provided Criterion 4 holds, we compute the polytope St
+
+as the outer RPI approximation of the minimal RPI set satisfying (14). 
+
+Remark 5 If Criterion 4 does not hold, the point es-timates ˆAt, ˆBt and the pair (Pt, K t) remain unchanged. Nevertheless, adaptation may still occur through contrac-tion of the uncertainty set. 
+
+The COCP for adaptive tube MPC with decision vari-able ¯ μt ,
+
+{
+
+{(αi|t, β i|t)}i=0: N ,
+
+{
+
+v[j]
+
+> i|t
+
+} 
+
+> i=0: N−1,j =1: Mt
+
+}
+
+is given by 
+
+P2t : min 
+
+> ¯μt
+> Mt
+
+∑
+
+> j=1
+
+(N −1∑
+
+> i=0
+
+(
+
+|| z[j] 
+
+> i|t
+
+|| 2 
+
+> Q
+
++ || v[j] 
+
+> i|t
+
+|| 2
+
+> R
+
+)
+
++ || z[j] 
+
+> N|t
+
+|| 2
+
+> Pt
+
+)
+
+(24a) subject to (11) − (13) 
+
+βi|t ≥ 0 ∀i ∈ IN 
+
+> 1
+
+, (24b) 
+
+Tx 
+
+> 0|t
+
+= {xt}, (24c) 
+
+Txi|t ⊆ X, Tui|t ⊆ U ∀i ∈ IN −10 , (24d) 
+
+TxN |t ⊆ XT S t ⊆ X, and (24e) ˆAtz[j] 
+
+> i|t
+
++ ˆBtv[j] 
+
+> i|t
+
+∈ Txi+1 |t ⊖ Wi,t ∀(i, j ) ∈ IN −10 × IMt 
+
+> 1
+
+.
+
+(24f) Using the solution of the COCP and (16), we compute the input u∗ 
+
+> t
+
+= u(xt, Tx∗ 
+
+> i|t
+
+, Tu∗ 
+
+> i|t
+
+) that is applied to the plant (1) to evolve to the next state xt+1 . The COCP is labelled as P2t since the formulation depends on time t.It is possible that the new set Ψ t, with the new es-timates ˆAt, ˆBt and the consequently computed sets, leads to an infeasible COCP. First, there may not exist a (Pt, K t) that satisfies Criterion 4. Second, even if Crite-rion 4 holds, (24) may be infeasible due to the inadequate length of the prediction horizon. In either case, we revert to the previous estimates by setting ˆAt ← ˆAt−1, ˆBt ←
+
+ˆBt−1, Pt ← Pt−1, Kt ← Kt−1 and Ψt ← co 
+
+(
+
+Ψt,
+
+{[ ˆAt−1 ˆBt−1
+
+]}) 
+
+, (25) and compute the sets in (5a)-(6), (7b)-(9), XT S t and St.At any time step, if there is a change in the set Ψ t or the estimates ˆAt ˆBt, the shape of the disturbance-related sets along with the polytope St changes. This renders the tube an adaptive nature, allowing for improved charac-terization of the uncertainties in trajectory propagation of the true system (1). Algorithm 1 outlines the steps for implementing the proposed framework. 
+
+Remark 6 It is possible that the number of vertices of 
+
+Ψt may increase with t. To ensure that the approach is tractable, one can either stop the set adaptation after the number of vertices Lt reaches a pre-decided upper bound depending on the computational resources or opt for methods discussed in [4, 21, 28]. 
+
+Remark 7 According to Algorithm 1, if P2t is infeasible at some time t ∈ I∞ 
+
+> 1
+
+, the COCP is reformulated using the setup described in Steps 28-30 and solved with the updated formulation. To avoid the additional computational effort associated with resolving the modified problem at time t,the control input ut can instead be computed using the previously obtained optimal solution at time t−1, together with the measured state xt and (16) .4.3 Recursive Feasibility and Stability Analysis 
+
+Next, we prove that the proposed COCP P2t following Algorithm 1 is recursively feasible, and leads to robust exponential stability of the origin of (1). 
+
+Theorem 8 Suppose Assumption 1 holds, and the COCP P2t is feasible at some time t. Then, Algorithm 1 ensures that P2t is feasible at time t + k ∀k ∈ I∞ 
+
+> 1
+
+.Proof: The proof proceeds by induction. Assume that the COCP is feasible at time t. We show feasibility at time t + 1. Given a feasible solution at t, the plant (1) evolves and the parameter estimates, uncertainty set and distur-6Algorithm 1 Adaptive Tube MPC 
+
+Input: X, U, D, ψ[i] ∀i ∈ IL0 
+
+> 1
+
+, N , Q, R, ˆψ0, κ.
+
+Output: ¯μ∗ 
+
+> t
+
+∀t ∈ I∞ 
+
+> 0
+
+.
+
+Steps: 
+
+1: Initialize Ψ 0 = Ψ, i.e., ψ[i]0 = ψ[i] ∀i ∈ IL0 
+
+> 1
+
+, a con-stant cbackup = 0 and time t = 0. 
+
+2: Measure x0.
+
+3: while t ≥ 0 do 
+
+4: Compute Φ t, ΦAt , ΦBt , Wt, Ψ At , Ψ Bt , and Xi,t ,
+
+Wi,t ∀i ∈ IN −10 and St using (5a)-(9) and (14). 
+
+5: if t == 0 then 
+
+6: Choose Pt, Kt and XT S t that satisfies (3) and Assumption 1. 
+
+7: else 
+
+8: Check if ∃ Pt, Kt, XT S t satisfying Criterion 4. 
+
+9: if Criterion 4 does not hold then 
+
+10: Set cbackup ← 1, t ← t − 1 and go to Step 28. 
+
+11: end if 
+
+12: end if 
+
+13: Run the COCP P2t.
+
+14: if ¯μ∗ 
+
+> t
+
+6 = ∅, i.e., P2t is feasible then 
+
+15: Set cbackup ← 0. 
+
+16: else 
+
+17: if t == 0 then 
+
+18: Exit the algorithm (initially infeasible). 
+
+19: else 
+
+20: Set cbackup ← 1 and t ← t − 1. 
+
+21: end if 
+
+22: end if 
+
+23: if cbackup == 0 then 
+
+24: Apply u∗ 
+
+> t
+
+= u(xt, Tx∗ 
+
+> i|t
+
+, Tu∗ 
+
+> i|t
+
+) to the plant (1). 
+
+25: Measure xt+1 from (1). 
+
+26: Compute the non-falsified set Ξ t+1 , the uncer-tainty set Ψ t+1 , and the point estimate ˆψt+1 
+
+using (17), (18), and (21), respectively. 
+
+27: end if 
+
+28: if cbackup == 1 then 
+
+29: Compute Ψ t+1 using (25), and set ˆAt+1 ← ˆAt,ˆBt+1 ← ˆBt, ˆPt+1 ← ˆPt, ˆKt+1 ← ˆKt.
+
+30: end if 
+
+31: Update t ← t + 1. 
+
+32: end while 
+
+bance sets are updated. Criterion 4 is then checked at 
+
+t + 1. If it is satisfied, new matrices Pt, Kt, terminal set and tube geometry St are computed, resulting in a mod-ified COCP. Since the problem data change, feasibility of this newly formed problem cannot be guaranteed a priori. If P2t+1 is feasible, the algorithm proceeds with its solution. Otherwise, or if Criterion 4 does not hold, the backup setup in Step 29 is used. For the backup, two situations arise. (i) No update of point estimate or uncertainty set. In this case, the COCP coincides with the standard homo-thetic tube-based MPC formulation. Recursive feasi-bility follows from the existing literature (see [7, 20, 21, 27]). Let the feasible solution at t + 1 for the non-adaptive scenario be denoted as follows using ( ·), with (·)∗ denoting the optimal solution of Pt.
+
+Tx 
+
+> 0|t+1
+
+= {xt+1 }, (26a) 
+
+Txi|t+1 = Tx∗ 
+
+> i+1 |t
+
+∀i ∈ IN −11 , (26b) 
+
+Tui|t+1 = Tu∗ 
+
+> i+1 |t
+
+∀i ∈ IN −20 , (26c) 
+
+TxN |t+1 = αN |t+1 ⊕ βN |t+1 St, (26d) 
+
+TuN −1|t+1 = KtTxN −1|t+1 = KtTx∗ 
+
+> N|t
+
+, (26e) where αN |t+1 = ( ˆAt + ˆBtKt)α∗  
+
+> N|t
+
+and (26f) 
+
+βN |t+1 = min 
+
+> β
+
+{
+
+β
+
+∣∣∣ ( ˆAt + ˆBtKt)β∗ 
+
+> N|t
+
+St ⊕ Wt ⊆ βSt
+
+}
+
+,
+
+(26g) with z[j] 
+
+> i|t+1
+
+and v[j] 
+
+> i|t+1
+
+being the vertices of Txi|t+1 ∀i ∈
+
+IN 
+
+> 0
+
+and the elements of Tui|t+1 ∀i ∈ IN −10 , respectively, 
+
+∀j ∈ IMt 
+
+> 1
+
+. The solution is useful in proving recursive feasibility of the next case. (ii) Uncertainty set update only. Here, the point estimates ˆAt, ˆBt and ( Pt, K t) remain unchanged, while the uncertainty set is refined according to (25), yielding Ψt+1 ⊆ Ψt+1 = Ψ t. Consequently, Φ t+1 ⊆ Φt+1 =Φt, ΦAt+1 ⊆ ΦAt+1 = ΦAt , ΦBt+1 ⊆ ΦBt+1 =ΦBt , ΨAt+1 ⊆ ΨAt+1 = Ψ At , ΨBt+1 ⊆ ΨBt+1 = Ψ Bt ,
+
+resulting in 
+
+Wt+1 ⊆ Wt+1 = Wt, St+1 ⊆ St+1 = St, (27a) 
+
+Xi,t +1 ⊆ Xi,t +1 ⊆ Xi+1 ,t ∀i ∈ IN −10 , (27b) 
+
+Wi,t +1 ⊆ Wi,t +1 ⊆ Wi+1 ,t ∀i ∈ IN −10 , (27c) 
+
+X ⊇ XT S t+1 ⊇ XT S t+1 = XT S t . (27d) Leveraging (27) and the solution (26) for the non-adaptive case, we prove that the following is a feasible solution for the COCP at t + 1 under the refined sets. 
+
+Txi|t+1 = αi|t+1 ⊕ βi|t+1 St+1 ∀i ∈ IN 
+
+> 0
+
+, where (28a) 
+
+α0|t+1 = xt+1 , β 0|t+1 = 0 , (28b) 
+
+αi|t+1 = α∗
+
+> i+1 |t
+
+, β i|t+1 = β∗ 
+
+> i+1 |t
+
+∀i ∈ IN −11 , (28c) 
+
+αN |t+1 = αN |t+1 , β N |t+1 = βN |t+1 , and (28d) 
+
+Tui|t+1 =
+
+{
+
+u(z[j]
+
+> i|t+1
+
+, Txi|t+1 , Tui|t+1 )
+
+∣∣∣j ∈ IMt+1 
+
+> 1
+
+}
+
+.
+
+(28e) It is easily seen that the centers and scaling factors in (28) satisfy (11)-(13), (24b) and (24c) at t + 1. For the tube-sections, we can write 
+
+Tx 
+
+> 0|t+1
+
+= Tx 
+
+> 0|t+1
+
+⊆ X1,t ,
+
+7Txi|t+1 = αi|t+1 ⊕ βi|t+1 St+1 
+
+⊆ α∗ 
+
+> i+1 |t
+
+⊕ β∗
+
+> i+1 |t
+
+St
+
+= Txi|t+1 ⊆ Xi+1 ,t ∀i ∈ IN −11 ,
+
+TxN |t+1 = αN |t+1 ⊕ βN |t+1 St+1 
+
+⊆ αN |t+1 ⊕ βN |t+1 St
+
+= TxN |t+1 ⊆ XT S t ⊆ XT S t+1 ⊆ X,
+
+co (Tui|t+1 ) ⊆ co (Tui|t+1 ) ⇒ Tui|t+1 ⊆ U ∀i ∈ IN −10 ,
+
+which together prove the satisfaction of (24d) and (24e) at time t + 1. Finally, for (28) to satisfy (24f), note that from the non-adaptive case we have ˆAtz[j] 
+
+> i|t+1
+
++ ˆBtv[j] 
+
+> i|t+1
+
+∈ Txi+1 |t+1 ⊖ Wi,t +1 ,
+
+St+1 ⊆ St+1 , Txi|t+1 ⊆ Txi|t+1 , co (Tui|t+1 ) ⊆ co (Tui|t+1 ), and Wi,t +1 ⊆ Wi,t +1 . Since the prediction dynam-ics is linear and the input applied to any z ∈ Txi|t+1 
+
+is obtained through the convex-combination mapping (16), it follows that ˆAt+1 z[j] 
+
+> i|t+1
+
++ ˆBt+1 v[j] 
+
+> i|t+1
+
+∈ Txi+1 |t+1 ⊖ Wi,t +1 .
+
+Hence (24f) holds at time t + 1, and the proposed solution in (28) satisfies all the constraints in P2t+1 .Therefore, whenever the backup setup is invoked, a fea-sible solution to the COCP at time t + 1 exists. If Cri-terion 4 is satisfied, the algorithm instead attempts to solve the updated problem P2t+1 corresponding to the modified problem data. If this problem is feasible, the re-sulting solution is applied; otherwise, the backup setup ensures feasibility. Repeating the same argument at sub-sequent time steps establishes recursive feasibility of the proposed MPC COCP. 
+
+Corollary 9 Suppose Assumption 1 holds, and the COCP P2t is feasible at time t. Then, by Lemmas 2, 3 and Theorem 8, it is guaranteed that the signals 
+
+xt, u t, ˆψt ∈ L ∞.
+
+Theorem 10 Suppose Assumption 1 holds, and the COCP P2t is feasible at time t. Then, Algorithm 1 guarantees robust exponential stability of the origin of the plant (1) .Proof: The proof follows the standard MPC stability argument [17] by using the cost function of the COCP as a candidate Lyapunov function. Let the COCP cost function be denoted as 
+
+Jt(xt, ¯μt) ,
+
+> Mt
+
+∑
+
+> j=1
+
+Γ[j] 
+
+> t
+
+, where Γ[j] 
+
+> t
+
+, 
+
+> N−1
+
+∑
+
+> i=0
+
+(
+
+|| z[j] 
+
+> i|t
+
+|| 2 
+
+> Q
+
++ || v[j] 
+
+> i|t
+
+|| 2
+
+> R
+
+)
+
++ || z[j] 
+
+> N|t
+
+|| 2
+
+> Pt
+
+is the component of the cost function for each vertex of the tube-sections. To address the change in the number of vertices ( Mt to Mt+1 ) due to a change in the tube geometry, define the variables 
+
+ρ1t ,
+
+{0, if Mt ≤ Mt+1 
+
+1, otherwise, ρ2t ,
+
+{0, if Mt ≥ Mt+1 
+
+1, otherwise .
+
+Also, let 
+
+γ1 , max   
+
+> t∈I∞
+> 0,x ∈X,u ∈U
+
+N (|| x|| 2 
+
+> Q
+
++ || u|| 2
+
+> R
+
+) + || x|| 2 
+
+> Pt+1
+
+, (29) which by Lemmas 2, 3 and Theorem 8 is finite. At any time t + 1, where t ∈ I∞ 
+
+> 0
+
+, we can write 
+
+J∗
+
+> t+1
+
+(xt+1 ) ≤ Jt+1 (xt+1 , ¯μt+1 ) = 
+
+> Mt+1
+
+∑
+
+> j=1
+
+Γ[j]
+
+> t+1
+
+=
+
+> Mt
+
+∑
+
+> j=1
+
+Γ[j] 
+
+> t+1
+
+− ρ1t
+
+> Mt
+
+∑ 
+
+> j=Mt+1 +1
+
+Γ[j] 
+
+> t+1
+
++ ρ2t
+
+> Mt+1
+
+∑ 
+
+> j=Mt+1
+
+Γ[j]
+
+> t+1
+
+≤
+
+> Mt
+
+∑
+
+> j=1
+
+(N −1∑
+
+> i=0
+
+(
+
+|| z[j]
+
+> i|t+1
+
+|| 2 
+
+> Q
+
++ || v[j]
+
+> i|t+1
+
+|| 2
+
+> R
+
+)
+
++ || z[j] 
+
+> N|t+1
+
+|| 2
+
+> Pt+1
+
+)
+
++ ρ2t (Mt+1 − Mt)γ1 (using (29)) 
+
+≤
+
+> Mt
+
+∑
+
+> j=1
+
+(N −1∑
+
+> i=0
+
+(
+
+|| z[j]
+
+> i|t+1
+
+|| 2 
+
+> Q
+
++ || v[j]
+
+> i|t+1
+
+|| 2
+
+> R
+
+)
+
++ || z[j] 
+
+> N|t+1
+
+|| 2
+
+> Pt+1
+
+)
+
++ ρ2t (Mt+1 − Mt)γ1
+
+(
+
+∵ Txi|t+1 ⊆ Txi|t+1 , co (Tui|t+1 ) ⊆ co (Tui|t+1 )
+
+)
+
+=
+
+> Mt
+
+∑
+
+> j=1
+
+(N −2∑
+
+> i=0
+
+(
+
+|| z[j]∗
+
+> i+1 |t
+
+|| 2 
+
+> Q
+
++ || v[j]∗
+
+> i+1 |t
+
+|| 2
+
+> R
+
+)
+
++ || z[j] 
+
+> N|t+1
+
+|| 2
+
+> Pt+1
+
++|| z[j]∗  
+
+> N|t
+
+|| 2 
+
+> Q+K⊤
+> tRK t
+
+)
+
++ ρ2t (Mt+1 − Mt)γ1 (using (26)) = J∗ 
+
+> t
+
+(xt) −
+
+> Mt
+
+∑
+
+> j=1
+
+(
+
+|| z[j]∗ 
+
+> 0|t
+
+|| 2 
+
+> Q
+
++ || v[j]∗ 
+
+> 0|t
+
+|| 2 
+
+> R
+
++ || z[j]∗  
+
+> N|t
+
+|| 2
+
+> Pt
+
+)
+
++
+
+> Mt
+
+∑
+
+> j=1
+
+(
+
+|| ( ˆAt+1 + ˆBt+1 Kt+1 )z[j]∗  
+
+> N|t
+
++ wt+N || 2
+
+> Pt+1
+
++|| z[j]∗  
+
+> N|t
+
+|| 2 
+
+> Q+K⊤
+> tRK t
+
+)
+
++ ρ2t (Mt+1 − Mt)γ1
+
+8≤ (1 − γ2)J∗ 
+
+> t
+
+(xt) + 
+
+> Mt
+
+∑
+
+> j=1
+
+(
+
+−|| z[j]∗  
+
+> N|t
+
+|| 2 
+
+> Pt
+
++ || z[j]∗  
+
+> N|t
+
+|| 2 
+
+> Q+K⊤
+> tRK t
+
++|| z[j]∗  
+
+> N|t
+
+|| 2( ˆAt+1 + ˆBt+1 Kt+1 )⊤Pt+1 ( ˆAt+1 + ˆBt+1 Kt+1 )
+
+)
+
++ Mt max  
+
+> t∈I∞
+> 0, w ∈Wt
+
+|| w|| 2 
+
+> Pt+1
+
++ ρ2t (Mt+1 − Mt)γ1,
+
+(by Cauchy-Schwartz inequality) where ∑Mt
+
+> j=1
+
+(
+
+|| z[j]∗ 
+
+> 0|t
+
+|| 2 
+
+> Q
+
++ || v[j]∗ 
+
+> 0|t
+
+|| 2
+
+> R
+
+)
+
+= γ2J∗ 
+
+> t
+
+(xt), imply-ing γ2 ∈ (0 , 1] ⇒ 1 − γ2 ∈ [0 , 1) (by definition of J∗ 
+
+> t
+
+).
+
+Since the COCP is initially feasible and Assumption 1 holds, by Theorem 8, recursive feasibility is guaranteed. Either Criterion 4 is satisfied, or we revert to ˆ At+1 = ˆ At,ˆBt+1 = ˆBt, Pt+1 = Pt and Kt+1 = Kt that satisfies (3). In any case, we have 
+
+Pt − ( ˆAt+1 + ˆBt+1 Kt+1 )⊤Pt+1 ( ˆAt+1 + ˆBt+1 Kt+1 )
+
+− Q − K⊤ 
+
+> t
+
+RK t  0,
+
+⇒J∗
+
+> t+1
+
+(xt+1 ) ≤ (1 − γ2)J∗ 
+
+> t
+
+(xt) + ρ2t (Mt+1 − Mt)γ1
+
++ Mt max  
+
+> t∈I∞
+> 0, w ∈Wt
+
+|| w|| 2 
+
+> Pt+1
+
+.
+
+For implementation purposes, we put an upper limit 
+
+Mmax on the number of vertices St, depending on the computational power. Due to recursive feasibility and bounded sets D and Ψ t, the value of wt is upper bounded. The elements of Pt are also upper bounded, since Pt is involved in the cost function. Therefore, we can define a constant γ3 , Mmax max t∈I∞  
+
+> 0, w ∈Wt
+
+|| w|| 2 
+
+> Pt
+
++ ( Mmax −
+
+Mmin )γ1 resulting in 
+
+J∗
+
+> t+1
+
+(xt+1 ) ≤ (1 − γ2)J∗ 
+
+> t
+
+(xt) + γ3, (30) which implies the plant (1) exhibits robust exponential stability. Further, once the learning has converged, Mt
+
+remains constant and the term Mt+1 − Mt becomes 0, implying that the state eventually converges to a finite set that depends on the sizes of D and Ψ t and ˆAt, ˆBt as 
+
+t → ∞ , all of which are bounded (see Corollary 9). 
+
+5 Numerical Example 
+
+We validate the proposed MPC framework using the fol-lowing 2 nd order LTI system 2 .
+
+xt+1 =
+
+[ 0.2 1.015 
+
+−0.2825 1
+
+]
+
+xt +
+
+[1.08 3
+
+]
+
+ut + dt
+
+with || dt|| ∞ ≤ 0.1 and constraints || xt|| ∞ ≤ 20, 
+
+|| ut|| ∞ ≤ 10. The parametric uncertainty is considered  
+
+> 2
+
+A 2 nd order system is chosen for ease of visualizing the tubes.       
+
+> 0510 15
+> -5 05
+> 0510 15
+> -20 020
+
+Fig. 1. State and control input.          
+
+> 0510 15
+> 00.2 0.4 0.6
+> 246810 12 14
+> 05
+> 10 -3
+
+Fig. 2. Frobenius norm of the parameter estimation error.                                              
+
+> 0510 15
+> 22.1
+> 0510 15
+> 0.2 0.3 0.4
+> 0510 15
+> 33.5
+> 0510 15
+> -0.1 -0.05 00.05
+> 0510 15
+> -0.4 -0.39 -0.38
+> 246810 12 14
+> 2.0285 2.029
+> 246810 12 14
+> 0.154 0.156
+> 246810 12 14
+> 2.915 2.92 2.925
+> 246810 12 14
+> -0.1 -0.099 -0.098
+> 246810 12 14
+> -0.3794 -0.3793 -0.3792
+
+Fig. 3. Elements of the terminal cost weight matrix, and the stabilizing linear feedback gain. 
+
+in two elements of A and one element of B with 3 ver-tices of Ψ given by ψ[1] =
+
+[
+
+0.2 1 .3 0 .7 ; −1 1 3 
+
+]
+
+, ψ[2] =
+
+[
+
+0.2 1 .2 0 .9 ; −0.25 1 3 
+
+]
+
+, ψ[3] =
+
+[
+
+0.2 1 1 .1 ; 0 .35 1 3 
+
+]
+
+.The results in Fig.s 1-8 are provided for x0 = [18 ; −18], 
+
+N = 10, Q =
+
+[
+
+1 0 ; 0 1 
+
+]
+
+, R = 0 .1 and κ = 0 .9 with ˆψ0 = ( ψ[1] + ψ[2] + ψ[3] )/3. It is seen from Fig. 1 that the hard constraints in (2) are satisfied, and the state trajectory converges to the neighbourhood of the origin. The parameter estimation error norm is bounded as shown in Fig. 2, and the vari-ations in the elements of Pt and Kt are shown in Fig. 3. 9Fig. 4. Barycentric representation of the parametric uncer-tainty sets containing the convex combination of the true parameter (shown with a blue dot). 
+
+> Fig. 5. (a), (b) The polytopes used to define the cross-sec-tional shape of the homothetic tubes, (c) The terminal sets.
+
+The reduction of the size of the parametric uncertainty set Ψ t at t = 1 , 3, 11 is shown in Fig. 4. From Fig. 5 (a), (b) and (c), the adaptation in the shape of the homo-thetic tube St and the terminal set XT S t is visible. The shape of St changes and the size reduces, giving a better characterization of state propagation in the presence of uncertainty Ψ t and D, whereas the terminal set size in-creases thereby reducing the strain on the controller to reach the terminal set. To highlight the impact of tube adaptation, the performance of the proposed MPC is compared with the robust homothetic tube MPC scheme of [27]. The comparison focuses on the amount of con-straint tightening required to guarantee robustness, the stabilization performance and the associated stage cost. Fig. 6 shows the predicted state tubes at selected time instants. The first and second subplots correspond to the tubes generated at t = 0 and t = 1, respectively. The tube produced by the proposed adaptive method (shown in green) is noticeably smaller than the tubes obtained using the robust homothetic tube MPC method of [27] (shown with magenta outline). This reduction in tube size is a direct consequence of the contraction of the parametric uncertainty set through online learning. The second subplot further shows that the tube gener-ated by the proposed method without adaptation (blue     
+
+> Fig. 6. Tubes generated at t= 0 and t= 1 following the proposed framework and [27], along with the state trajectory generated with the proposed method.
+
+outline) is still smaller than the tube generated follow-ing [27]. This is because even without adaptation, the disturbance set characterization is improved at each time step, whereas the robust tube MPC scheme relies on a fixed set that accounts for all admissible disturbance wt,thereby leading to larger tube cross-sections. The tightening sets associated with the disturbance bounds are illustrated in Fig.s 7 (a) and (b) for t = 0 and t = 1, respectively. The tightening set used by the method of [27] is shown in grey in Fig. 7 (a) and re-mains fixed over time. In contrast, the tightening sets generated by the proposed method, shown in Fig. 7 (a) and (b), shrink as the parametric uncertainty set is refined through learning. This reduction enlarges the region available for the state trajectory to evolve while maintaining robust constraint satisfaction. The improvement in performance is reflected in Fig. 8. The figure shows the evolution of the state norm ‖xt‖2
+
+and the cumulative stage cost for the proposed method and the robust tube MPC scheme of [27]. The proposed adaptive scheme achieves a faster reduction of the state norm, indicating improved stabilization performance. In addition, the cumulative stage cost is lower, reflecting a reduction in control effort enabled by the improved model representation obtained through online learning. These results demonstrate that adapting the tube geom-etry and other COCP components through online refine-ment of the uncertainty set significantly reduces conser-vatism while maintaining robust constraint satisfaction. 10 Fig. 7. Sets used for constraint tightening corresponding to the disturbance bounds for the proposed adaptive method and the robust tube MPC [27].       
+
+> 0510 15
+> 700 800 900 1000 1100
+> 0510 15
+> 010 20
+
+Fig. 8. Comparison of || xt|| 2 and the cumulative stage cost for the proposed method and [27]. 
+
+6 Conclusion 
+
+This paper introduces an adaptive tube framework for MPC of discrete-time LTI systems subject to para-metric uncertainty and additive disturbances. The ap-proach integrates homothetic tube-based MPC with set-membership identification, allowing the parametric uncertainty set and parameter estimates to be updated online using available state and input data. As the un-certainty set contracts, the tube cross-sections adapt accordingly, leading to less conservative constraint tight-ening and state propagation. It is formally established that the resulting adaptive tube MPC scheme guaran-tees recursive feasibility, robust exponential stability, and boundedness of all signals, despite the time-varying nature of the COCP induced by adaptation. A key theoretical feature of the framework is that it avoids the standard assumption of a common quadratically stabilizing linear feedback gain for the entire paramet-ric uncertainty set, instead requiring only a one-step Lyapunov compatibility condition between consecutive parameter updates. A backup mechanism ensures that these guarantees are preserved even when the adaptive updates render the modified COCP infeasible. Numeri-cal results demonstrate the benefits of the adaptive tube construction in reducing conservatism and improving performance. Future work will focus on reducing the computational burden associated with online recompu-tation of tube and terminal ingredients and extending the framework to the output feedback scenario. 
+
+References 
+
+[1] B Ross Barmish. Necessary and sufficient conditions for quadratic stabilizability of an uncertain system. Journal of Optimization theory and applications , 46(4):399–408, 1985. [2] Julian Berberich, Johannes K¨ ohler, Matthias A M¨ uller, and Frank Allg¨ ower. Data-driven model predictive control with stability and robustness guarantees. IEEE Transactions on Automatic Control , 66(4):1702–1717, 2020. [3] Monimoy Bujarbaruah, Ugo Rosolia, Yvonne R. St¨ urz, and Francesco Borrelli. A simple robust MPC for linear systems with parametric and additive uncertainty. In American Control Conference , pages 2108–2113, 2021. [4] L. Chisci, J.A. Rossiter, and G. Zappa. Systems with persistent disturbances: predictive control with restricted constraints. Automatica , 37(7):1019–1028, 2001. [5] Jeremy Coulson, John Lygeros, and Florian D¨ orfler. Data-enabled predictive control: In the shallows of the DeePC. In 
+
+European Control Conference , pages 307–312, 2019. [6] Anchita Dey and Shubhendu Bhasin. Computation of maximal admissible robust positive invariant sets for linear systems with parametric and additive uncertainties. IEEE Control Systems Letters , 8:1775–1780, 2024. [7] Anchita Dey and Shubhendu Bhasin. Adaptive output feedback MPC with guaranteed stability and robustness. 
+
+IEEE Transactions on Automatic Control , 70(12):8345–8352, 2025. [8] Anchita Dey, Abhishek Dhar, and Shubhendu Bhasin. Adaptive output feedback model predictive control. IEEE Control Systems Letters , 7:1129–1134, 2023. [9] Abhishek Dhar and Shubhendu Bhasin. Indirect adaptive MPC for discrete-time LTI systems with parametric uncertainties. IEEE Transactions on Automatic Control ,66(11):5498–5505, 2021. [10] James Fleming, Basil Kouvaritakis, and Mark Cannon. Robust tube MPC for linear systems with multiplicative uncertainty. IEEE Transactions on Automatic Control ,60(4):1087–1092, 2015. [11] Pascal Gahinet and Pierre Apkarian. A linear matrix inequality approach to H∞ control. International Journal of Robust and Nonlinear Control , 4(4):421–448, 1994. [12] Petros Ioannou and Bari¸ s Fidan. Adaptive Control Tutorial .SIAM, 2006. [13] Sh Jafari Fesharaki, M Kamali, and F Sheikholeslam. Adaptive tube-based model predictive control for linear systems with parametric uncertainty. IET Control Theory & Applications , 11(17):2947–2953, 2017. [14] Pramod P Khargonekar, Ian R Petersen, and Kemin Zhou. Robust stabilization of uncertain linear systems: quadratic stabilizability and H∞ control theory. IEEE Transactions on Automatic Control , 35(3):356–361, 1990. [15] R.L. Kosut, M.K. Lau, and S.P. Boyd. Set-membership identification of systems with parametric and nonparametric uncertainty. IEEE Transactions on Automatic Control ,37(7):929–941, 1992. [16] Mayuresh V. Kothare, Venkataramanan Balakrishnan, and Manfred Morari. Robust constrained model predictive control using linear matrix inequalities. Automatica , 32(10):1361– 1379, 1996. 
+
+11 [17] Basil Kouvaritakis and Mark Cannon. Model Predictive Control. Cham, Switzerland: Springer International , 38, 2016. [18] Markus K¨ ogel and Rolf Findeisen. Robust MPC with reduced conservatism blending multiples tubes. In American Control Conference , pages 1949–1954, 2020. [19] Johannes K¨ ohler, Elisa Andina, Raffaele Soloperto, Matthias A. M¨ uller, and Frank Allg¨ ower. Linear robust adaptive model predictive control: Computational complexity and conservatism. In IEEE Conference on Decision and Control , pages 1383–1388, 2019. [20] Wilbur Langson, Ioannis Chryssochoos, SV Rakovi´ c, and David Q Mayne. Robust model predictive control using tubes. 
+
+Automatica , 40(1):125–133, 2004. [21] Matthias Lorenzen, Mark Cannon, and Frank Allg¨ ower. Robust MPC with recursive model update. Automatica ,103:461–471, 2019. [22] Xiaonan Lu and Mark Cannon. Robust adaptive tube model predictive control. In American Control Conference , pages 3695–3701, 2019. [23] Xiaonan Lu and Mark Cannon. Robust adaptive model predictive control with persistent excitation conditions. 
+
+Automatica , 152:110959, 2023. [24] David Q Mayne, Saˇ sa V Rakovi´ c, Rolf Findeisen, and Frank Allg¨ ower. Robust output feedback model predictive control of constrained linear systems. Automatica , 42(7):1217–1222, 2006. [25] I. Petersen. Quadratic stabilizability of uncertain linear systems: Existence of a nonlinear stabilizing control does not imply existence of a linear stabilizing control. IEEE Transactions on Automatic Control , 30(3):291–293, 1985. [26] Sasa V Rakovic, Eric C Kerrigan, Konstantinos I Kouramas, and David Q Mayne. Invariant approximations of the minimal robust positively invariant set. IEEE Transactions on Automatic Control , 50(3):406–410, 2005. [27] Saˇ sa V Rakovi´ c, Basil Kouvaritakis, Rolf Findeisen, and Mark Cannon. Homothetic tube model predictive control. 
+
+Automatica , 48(8):1631–1638, 2012. [28] H. Messaoud S. M. Veres and Journal of P. Norton. Limited-complexity model-unfalsifying adaptive tracking-control. International Journal of Control , 72(15):1417–1426, 1999. [29] Andr´ as Sasfi, Melanie N Zeilinger, and Johannes K¨ ohler. Robust adaptive MPC using control contraction metrics. 
+
+Automatica , 155:111169, 2023. [30] Damianos Tranos, Alessio Russo, and Alexandre Proutiere. Self-tuning tube-based model predictive control. In American Control Conference , pages 3626–3632, 2023. 
+
+12

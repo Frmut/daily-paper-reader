@@ -1,0 +1,237 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-03-21T19:32:37.005022+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 6,
+    "quick_skim_target": 11,
+    "quick_selected": 6
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2603.13050v1",
+      "title": "EMT and RMS Modeling of Thyristor Rectifiers for Stability Analysis of Converter-Based Systems",
+      "abstract": "Thyristor rectifiers are a well-established and cost-effective solution for controlled high-power rectification, commonly used for hydrogen electrolysis and HVDC transmission. However, small-signal modeling and analysis of thyristor rectifiers remain challenging due to their line-commutated operation and nonlinear switching dynamics. This paper first revisits conventional RMS-based modeling of thyristor rectifiers and subsequently proposes a novel nonlinear state-space EMT model in the dq domain that can be linearized for small-signal analysis. The proposed model accurately captures all the relevant dynamic phenomena, including PLL dynamics, the commutation process, and switching delays. It is derived in polar coordinates, offering novel insights into the impact of the PLL and commutation angle on the thyristor rectifier dynamics. We verify the RMS and EMT models against a detailed switching model and demonstrate their applicability through small-signal stability analysis of a modified IEEE 39-bus test system that incorporates thyristor rectifier-interfaced hydrogen electrolyzers, synchronous generators, and grid-forming converters.",
+      "authors": [
+        "Ognjen Stanojev",
+        "Pol Jane Soneira",
+        "Gösta Stomberg",
+        "Mario Schweizer"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY"
+      ],
+      "published": "2026-03-13T15:02:07+00:00",
+      "link": "https://arxiv.org/pdf/2603.13050v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "dq domain modeling for converter-based systems",
+      "llm_evidence_cn": "变换器系统的dq域建模",
+      "llm_evidence": "变换器系统的dq域建模",
+      "canonical_evidence": "变换器系统的dq域建模",
+      "llm_tldr_en": "Develops a nonlinear state-space EMT model in the dq domain for thyristor rectifiers.",
+      "llm_tldr_cn": "为晶闸管整流器开发了dq坐标系下的非线性状态空间EMT模型。",
+      "llm_tldr": "为晶闸管整流器开发了dq坐标系下的非线性状态空间EMT模型。",
+      "llm_tags": [
+        "query:pmsm:composite"
+      ],
+      "matched_query_tag": "query:pmsm:composite",
+      "matched_query_text": "Papers central to 三相及双三相永磁同步电机相关研究检索, especially work that connects or combines: m; s; f; Permanent Magnet Synchronous Motor research; dual three-phase permanent magnet synchronous motor control and design; fault-tolerant control of multi-phase motors; recent advances in dual three phase permanent magnet synchronous motor control; fault tolerant strategies for multi phase permanent magnet synchronous motors.",
+      "matched_requirement_id": "req-composite-pmsm",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2603.14411v1",
+      "title": "A Comprehensive Survey of Redundancy Systems with a Focus on Triple Modular Redundancy (TMR)",
+      "abstract": "Despite its maturity, the field of fault-tolerant redundancy suffers from significant terminological fragmentation, where functionally equivalent methods are frequently described under disparate names across academic and industrial domains. This survey addresses this ambiguity by providing a structured and comprehensive analysis of redundancy techniques, with a primary focus on Triple Modular Redundancy (TMR). A unified taxonomy is established to classify redundancy strategies into Spatial, Temporal, and Mixed categories, alongside the introduction of a novel five-class framework for voter architectures. Key findings synthesize practical tradeoffs, contrasting high-reliability spatial TMR for safety-critical applications against resource-efficient temporal methods for constrained systems. Furthermore, the shift toward Mixed and Adaptive TMR (e.g., Approximate Triple Modular Redundancy (ATMR), X-Rel) for dynamic and error-tolerant applications, such as Artificial Intelligence (AI) acceleration, is explored. This work identifies critical research gaps, including the threat of Multi-Bit Upsets (MBUs) in sub-28nm technologies, the scarcity of public-domain data on proprietary high-integrity systems, and the absence of high-level toolchains for dynamic reconfiguration. Finally, suggestions are offered for future research directions, emphasizing the need for terminological standardization, MBU-resilient design methodologies, and the development of open-source tools for adaptive fault tolerance.",
+      "authors": [
+        "Lukas Flad",
+        "Mark Leyer",
+        "Felix Sebastian Nitz",
+        "Tobias Krawutschke"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY"
+      ],
+      "published": "2026-03-15T14:55:17+00:00",
+      "link": "https://arxiv.org/pdf/2603.14411v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "survey of fault-tolerant redundancy techniques",
+      "llm_evidence_cn": "容错冗余技术综述",
+      "llm_evidence": "容错冗余技术综述",
+      "canonical_evidence": "容错冗余技术综述",
+      "llm_tldr_en": "Provides a comprehensive survey of fault-tolerant redundancy systems and voter architectures.",
+      "llm_tldr_cn": "对容错冗余系统和表决器架构进行了全面的综述。",
+      "llm_tldr": "对容错冗余系统和表决器架构进行了全面的综述。",
+      "llm_tags": [
+        "query:pmsm"
+      ],
+      "matched_query_tag": "query:pmsm",
+      "matched_query_text": "fault-tolerant control of multi-phase motors",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2603.14910v1",
+      "title": "Transformers As Generalizable Optimal Controllers",
+      "abstract": "We study whether optimal state-feedback laws for a family of heterogeneous Multiple-Input, Multiple-Output (MIMO) Linear Time-Invariant (LTI) systems can be captured by a single learned controller. We train one transformer policy on LQR-generated trajectories from systems with different state and input dimensions, using a shared representation with standardization, padding, dimension encoding, and masked loss. The policy maps recent state history to control actions without requiring plant matrices at inference time. Across a broad set of systems, it achieves empirically small sub-optimality relative to Linear Quadratic Regulator (LQR), remains stabilizing under moderate parameter perturbations, and benefits from lightweight fine-tuning on unseen systems. These results support transformer policies as practical approximators of near-optimal feedback laws over structured linear-system families.",
+      "authors": [
+        "Turki Bin Mohaya",
+        "Maitham F. AL-Sunni",
+        "John M. Dolan",
+        "Peter Seiler"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY",
+        "cs.RO"
+      ],
+      "published": "2026-03-16T07:09:21+00:00",
+      "link": "https://arxiv.org/pdf/2603.14910v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Generalizable optimal controllers for MIMO LTI systems",
+      "llm_evidence_cn": "多输入多输出线性时不变系统的通用最优控制器",
+      "llm_evidence": "多输入多输出线性时不变系统的通用最优控制器",
+      "canonical_evidence": "多输入多输出线性时不变系统的通用最优控制器",
+      "llm_tldr_en": "Uses transformers to learn generalizable optimal state-feedback laws for diverse MIMO systems.",
+      "llm_tldr_cn": "利用Transformer学习适用于多种MIMO系统的通用最优状态反馈律。",
+      "llm_tldr": "利用Transformer学习适用于多种MIMO系统的通用最优状态反馈律。",
+      "llm_tags": [
+        "query:pmsm:composite"
+      ],
+      "matched_query_tag": "query:pmsm:composite",
+      "matched_query_text": "Papers central to 三相及双三相永磁同步电机相关研究检索, especially work that connects or combines: m; s; f; Permanent Magnet Synchronous Motor research; dual three-phase permanent magnet synchronous motor control and design; fault-tolerant control of multi-phase motors; recent advances in dual three phase permanent magnet synchronous motor control; fault tolerant strategies for multi phase permanent magnet synchronous motors.",
+      "matched_requirement_id": "req-composite-pmsm",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2603.15063v1",
+      "title": "Data-Driven Robust Predictive Control with Interval Matrix Uncertainty Propagation",
+      "abstract": "This paper presents a new data-driven robust predictive control law, for linear systems affected by unknown-but-bounded process disturbances. A sequence of input-state data is used to construct a suitable uncertainty representation based on interval matrices. Then, the effect of uncertainty along the prediction horizon is bounded through an operator leveraging matrix zonotopes. This yields a tube that is exploited within a variable-horizon optimal control problem, to guarantee robust satisfaction of state and input constraints. The resulting data-driven predictive control scheme is shown to be recursively feasible and practically stable. A numerical example shows that the proposed approach compares favorably to existing methods based on zonotopic tubes and is competitive with an approach combining set-membership system identification and model-based predictive control.",
+      "authors": [
+        "Renato Quartullo",
+        "Andrea Garulli",
+        "Mirko Leomanni"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY"
+      ],
+      "published": "2026-03-16T10:19:15+00:00",
+      "link": "https://arxiv.org/pdf/2603.15063v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Data-driven robust predictive control for linear systems with disturbances",
+      "llm_evidence_cn": "针对受扰动线性系统的数据驱动鲁棒预测控制",
+      "llm_evidence": "针对受扰动线性系统的数据驱动鲁棒预测控制",
+      "canonical_evidence": "针对受扰动线性系统的数据驱动鲁棒预测控制",
+      "llm_tldr_en": "Develops a data-driven robust MPC using interval matrices and zonotopes to guarantee constraint satisfaction.",
+      "llm_tldr_cn": "开发了一种基于区间矩阵和区域套的数据驱动鲁棒预测控制，保证约束满足。",
+      "llm_tldr": "开发了一种基于区间矩阵和区域套的数据驱动鲁棒预测控制，保证约束满足。",
+      "llm_tags": [
+        "query:pmsm:composite"
+      ],
+      "matched_query_tag": "query:pmsm:composite",
+      "matched_query_text": "Papers central to 三相及双三相永磁同步电机相关研究检索, especially work that connects or combines: m; s; f; Permanent Magnet Synchronous Motor research; dual three-phase permanent magnet synchronous motor control and design; fault-tolerant control of multi-phase motors; recent advances in dual three phase permanent magnet synchronous motor control; fault tolerant strategies for multi phase permanent magnet synchronous motors.",
+      "matched_requirement_id": "req-composite-pmsm",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2603.15063v2",
+      "title": "Data-Driven Robust Predictive Control with Interval Matrix Uncertainty Propagation",
+      "abstract": "This paper presents a new data-driven robust predictive control law, for linear systems affected by unknown-but-bounded process disturbances. A sequence of input-state data is used to construct a suitable uncertainty representation based on interval matrices. Then, the effect of uncertainty along the prediction horizon is bounded through an operator leveraging matrix zonotopes. This yields a tube that is exploited within a variable-horizon optimal control problem, to guarantee robust satisfaction of state and input constraints. The resulting data-driven predictive control scheme is proven to be recursively feasible and practically stable. A numerical example shows that the proposed approach compares favorably to existing methods based on zonotopic tubes.",
+      "authors": [
+        "Renato Quartullo",
+        "Andrea Garulli",
+        "Mirko Leomanni"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY"
+      ],
+      "published": "2026-03-16T10:19:15+00:00",
+      "link": "https://arxiv.org/pdf/2603.15063v2",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Data-driven robust predictive control for linear systems with disturbances",
+      "llm_evidence_cn": "针对受扰动线性系统的数据驱动鲁棒预测控制",
+      "llm_evidence": "针对受扰动线性系统的数据驱动鲁棒预测控制",
+      "canonical_evidence": "针对受扰动线性系统的数据驱动鲁棒预测控制",
+      "llm_tldr_en": "Develops a data-driven robust MPC using interval matrices and zonotopes to guarantee constraint satisfaction.",
+      "llm_tldr_cn": "开发了一种基于区间矩阵和区域套的数据驱动鲁棒预测控制，保证约束满足。",
+      "llm_tldr": "开发了一种基于区间矩阵和区域套的数据驱动鲁棒预测控制，保证约束满足。",
+      "llm_tags": [
+        "query:pmsm:composite"
+      ],
+      "matched_query_tag": "query:pmsm:composite",
+      "matched_query_text": "Papers central to 三相及双三相永磁同步电机相关研究检索, especially work that connects or combines: m; s; f; Permanent Magnet Synchronous Motor research; dual three-phase permanent magnet synchronous motor control and design; fault-tolerant control of multi-phase motors; recent advances in dual three phase permanent magnet synchronous motor control; fault tolerant strategies for multi phase permanent magnet synchronous motors.",
+      "matched_requirement_id": "req-composite-pmsm",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2603.15912v1",
+      "title": "Adaptive Tube MPC: Beyond a Common Quadratically Stabilizing Feedback Gain",
+      "abstract": "This paper proposes an adaptive tube framework for model predictive control (MPC) of discrete-time linear time-invariant systems subject to parametric uncertainty and additive disturbances. In contrast to conventional tube-based MPC schemes that employ fixed tube geometry and constraint tightening designed for worst-case uncertainty, the proposed approach incorporates online parameter learning to progressively refine the parametric uncertainty set and update the parameter estimates. These updates are used to adapt the components of the MPC optimization problem, including the prediction model, feedback gain, terminal set, and tube cross-sections. As the uncertainty set contracts, the required amount of constraint tightening reduces and the tube shrinks accordingly, yielding less conservative control actions. Recursive feasibility, robust constraint satisfaction, and closed-loop stability are formally established. Furthermore, the framework does not require the existence of a common quadratically stabilizing linear feedback gain for the entire parametric uncertainty set, thereby relaxing a standard assumption in existing tube-based MPC formulations. Numerical examples illustrate the effectiveness of the proposed approach.",
+      "authors": [
+        "Anchita Dey",
+        "Shubhendu Bhasin"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY",
+        "math.OC"
+      ],
+      "published": "2026-03-16T21:01:13+00:00",
+      "link": "https://arxiv.org/pdf/2603.15912v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Adaptive MPC for systems with parametric uncertainty and disturbances",
+      "llm_evidence_cn": "针对具有参数不确定性和扰动系统的自适应模型预测控制",
+      "llm_evidence": "针对具有参数不确定性和扰动系统的自适应模型预测控制",
+      "canonical_evidence": "针对具有参数不确定性和扰动系统的自适应模型预测控制",
+      "llm_tldr_en": "Proposes an adaptive tube MPC framework that refines uncertainty sets online to improve control performance.",
+      "llm_tldr_cn": "提出一种自适应管状模型预测控制框架，通过在线学习不确定性集来优化控制性能。",
+      "llm_tldr": "提出一种自适应管状模型预测控制框架，通过在线学习不确定性集来优化控制性能。",
+      "llm_tags": [
+        "query:pmsm:composite"
+      ],
+      "matched_query_tag": "query:pmsm:composite",
+      "matched_query_text": "Papers central to 三相及双三相永磁同步电机相关研究检索, especially work that connects or combines: m; s; f; Permanent Magnet Synchronous Motor research; dual three-phase permanent magnet synchronous motor control and design; fault-tolerant control of multi-phase motors; recent advances in dual three phase permanent magnet synchronous motor control; fault tolerant strategies for multi phase permanent magnet synchronous motors.",
+      "matched_requirement_id": "req-composite-pmsm",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

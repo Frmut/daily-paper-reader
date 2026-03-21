@@ -1,0 +1,93 @@
+{
+  "label": "2026-03-21",
+  "date": "2026-03-21",
+  "generated_at": "2026-03-21T19:33:17",
+  "count": 6,
+  "papers": [
+    {
+      "paper_id": "202603/21/2603.13050v1-emt-and-rms-modeling-of-thyristor-rectifiers-for-stability-analysis-of-converter-based-systems",
+      "section": "quick",
+      "title_en": "EMT and RMS Modeling of Thyristor Rectifiers for Stability Analysis of Converter-Based Systems",
+      "authors": "Ognjen Stanojev, Pol Jane Soneira, Gösta Stomberg, Mario Schweizer",
+      "date": "2026-03-13",
+      "pdf": "https://arxiv.org/pdf/2603.13050v1",
+      "score": "6.0",
+      "evidence": "变换器系统的dq域建模",
+      "tldr": "晶闸管整流器在氢电解和高压直流输电中应用广泛，但其非线性开关特性使小信号建模具有挑战性。本文回顾了传统的均效值（RMS）建模，并提出了一种新型的dq坐标系下非线性状态空间电磁暂态（EMT）模型。该模型在极坐标下推导，准确捕捉了锁相环（PLL）、换相过程和开关延迟的影响。通过在包含氢电解槽和多种变换器的IEEE 39节点系统中的仿真，验证了模型在小信号稳定性分析中的准确性和适用性。",
+      "tags": "query:pmsm",
+      "abstract_en": "Thyristor rectifiers are a well-established and cost-effective solution for controlled high-power rectification, commonly used for hydrogen electrolysis and HVDC transmission. However, small-signal modeling and analysis of thyristor rectifiers remain challenging due to their line-commutated operation and nonlinear switching dynamics. This paper first revisits conventional RMS-based modeling of thyristor rectifiers and subsequently proposes a novel nonlinear state-space EMT model in the dq domain that can be linearized for small-signal analysis. The proposed model accurately captures all the relevant dynamic phenomena, including PLL dynamics, the commutation process, and switching delays. It is derived in polar coordinates, offering novel insights into the impact of the PLL and commutation angle on the thyristor rectifier dynamics. We verify the RMS and EMT models against a detailed switching model and demonstrate their applicability through small-signal stability analysis of a modified IEEE 39-bus test system that incorporates thyristor rectifier-interfaced hydrogen electrolyzers, synchronous generators, and grid-forming converters.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202603/21/2603.14411v1-a-comprehensive-survey-of-redundancy-systems-with-a-focus-on-triple-modular-redundancy-tmr",
+      "section": "quick",
+      "title_en": "A Comprehensive Survey of Redundancy Systems with a Focus on Triple Modular Redundancy (TMR)",
+      "authors": "Lukas Flad, Mark Leyer, Felix Sebastian Nitz, Tobias Krawutschke",
+      "date": "2026-03-15",
+      "pdf": "https://arxiv.org/pdf/2603.14411v1",
+      "score": "6.0",
+      "evidence": "容错冗余技术综述",
+      "tldr": "本综述针对容错冗余领域术语碎片化的问题，系统分析了以三模冗余（TMR）为核心的冗余技术。文章建立了空间、时间及混合冗余的统一分类法，并提出了五类表决器架构框架。通过对比高可靠空间冗余与资源高效型时间冗余的权衡，探讨了面向AI加速的自适应冗余趋势，并指出了亚28nm工艺下多比特翻转（MBU）等研究挑战。",
+      "tags": "query:pmsm",
+      "abstract_en": "Despite its maturity, the field of fault-tolerant redundancy suffers from significant terminological fragmentation, where functionally equivalent methods are frequently described under disparate names across academic and industrial domains. This survey addresses this ambiguity by providing a structured and comprehensive analysis of redundancy techniques, with a primary focus on Triple Modular Redundancy (TMR). A unified taxonomy is established to classify redundancy strategies into Spatial, Temporal, and Mixed categories, alongside the introduction of a novel five-class framework for voter architectures. Key findings synthesize practical tradeoffs, contrasting high-reliability spatial TMR for safety-critical applications against resource-efficient temporal methods for constrained systems. Furthermore, the shift toward Mixed and Adaptive TMR (e.g., Approximate Triple Modular Redundancy (ATMR), X-Rel) for dynamic and error-tolerant applications, such as Artificial Intelligence (AI) acceleration, is explored. This work identifies critical research gaps, including the threat of Multi-Bit Upsets (MBUs) in sub-28nm technologies, the scarcity of public-domain data on proprietary high-integrity systems, and the absence of high-level toolchains for dynamic reconfiguration. Finally, suggestions are offered for future research directions, emphasizing the need for terminological standardization, MBU-resilient design methodologies, and the development of open-source tools for adaptive fault tolerance.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202603/21/2603.14910v1-transformers-as-generalizable-optimal-controllers",
+      "section": "quick",
+      "title_en": "Transformers As Generalizable Optimal Controllers",
+      "authors": "Turki Bin Mohaya, Maitham F. AL-Sunni, John M. Dolan, Peter Seiler",
+      "date": "2026-03-16",
+      "pdf": "https://arxiv.org/pdf/2603.14910v1",
+      "score": "6.0",
+      "evidence": "多输入多输出线性时不变系统的通用最优控制器",
+      "tldr": "本研究探讨了Transformer作为通用控制器在异构线性时不变（LTI）系统中的应用。通过在不同维度的LQR轨迹上进行训练，研究者利用标准化、填充和掩码损失等技术构建了统一的Transformer策略。该策略仅需历史状态即可实现接近最优的控制，无需系统矩阵，且在面对参数扰动和未知系统时表现出良好的鲁棒性与泛化能力，证明了其作为结构化线性系统族近似最优反馈律的潜力。",
+      "tags": "query:pmsm",
+      "abstract_en": "We study whether optimal state-feedback laws for a family of heterogeneous Multiple-Input, Multiple-Output (MIMO) Linear Time-Invariant (LTI) systems can be captured by a single learned controller. We train one transformer policy on LQR-generated trajectories from systems with different state and input dimensions, using a shared representation with standardization, padding, dimension encoding, and masked loss. The policy maps recent state history to control actions without requiring plant matrices at inference time. Across a broad set of systems, it achieves empirically small sub-optimality relative to Linear Quadratic Regulator (LQR), remains stabilizing under moderate parameter perturbations, and benefits from lightweight fine-tuning on unseen systems. These results support transformer policies as practical approximators of near-optimal feedback laws over structured linear-system families.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202603/21/2603.15063v1-data-driven-robust-predictive-control-with-interval-matrix-uncertainty-propagation",
+      "section": "quick",
+      "title_en": "Data-Driven Robust Predictive Control with Interval Matrix Uncertainty Propagation",
+      "authors": "Renato Quartullo, Andrea Garulli, Mirko Leomanni",
+      "date": "2026-03-16",
+      "pdf": "https://arxiv.org/pdf/2603.15063v1",
+      "score": "6.0",
+      "evidence": "针对受扰动线性系统的数据驱动鲁棒预测控制",
+      "tldr": "本文提出一种针对受未知但有界扰动影响线性系统的新型数据驱动鲁棒预测控制方法。该方法通过输入状态数据构建区间矩阵不确定性模型，并利用矩阵带状体算子在预测时域内传播不确定性边界以形成预测管柱。该方案在变时域优化框架下保证了约束的鲁棒满足、递归可行性及实际稳定性，在数值实验中表现优于现有的带状体管柱方法。",
+      "tags": "query:pmsm",
+      "abstract_en": "This paper presents a new data-driven robust predictive control law, for linear systems affected by unknown-but-bounded process disturbances. A sequence of input-state data is used to construct a suitable uncertainty representation based on interval matrices. Then, the effect of uncertainty along the prediction horizon is bounded through an operator leveraging matrix zonotopes. This yields a tube that is exploited within a variable-horizon optimal control problem, to guarantee robust satisfaction of state and input constraints. The resulting data-driven predictive control scheme is shown to be recursively feasible and practically stable. A numerical example shows that the proposed approach compares favorably to existing methods based on zonotopic tubes and is competitive with an approach combining set-membership system identification and model-based predictive control.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202603/21/2603.15063v2-data-driven-robust-predictive-control-with-interval-matrix-uncertainty-propagation",
+      "section": "quick",
+      "title_en": "Data-Driven Robust Predictive Control with Interval Matrix Uncertainty Propagation",
+      "authors": "Renato Quartullo, Andrea Garulli, Mirko Leomanni",
+      "date": "2026-03-16",
+      "pdf": "https://arxiv.org/pdf/2603.15063v2",
+      "score": "6.0",
+      "evidence": "针对受扰动线性系统的数据驱动鲁棒预测控制",
+      "tldr": "针对受未知但有界扰动影响的线性系统，本文提出一种新型数据驱动鲁棒预测控制方法。该方法利用输入状态数据构建区间矩阵不确定性表示，并通过矩阵带状体算子在预测时域内传播不确定性边界，形成预测管路。通过求解变时域优化问题，该方案在保证状态和输入约束鲁棒满足的同时，实现了递归可行性和实际稳定性，为数据驱动控制提供了新的理论支撑。",
+      "tags": "query:pmsm",
+      "abstract_en": "This paper presents a new data-driven robust predictive control law, for linear systems affected by unknown-but-bounded process disturbances. A sequence of input-state data is used to construct a suitable uncertainty representation based on interval matrices. Then, the effect of uncertainty along the prediction horizon is bounded through an operator leveraging matrix zonotopes. This yields a tube that is exploited within a variable-horizon optimal control problem, to guarantee robust satisfaction of state and input constraints. The resulting data-driven predictive control scheme is proven to be recursively feasible and practically stable. A numerical example shows that the proposed approach compares favorably to existing methods based on zonotopic tubes.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202603/21/2603.15912v1-adaptive-tube-mpc-beyond-a-common-quadratically-stabilizing-feedback-gain",
+      "section": "quick",
+      "title_en": "Adaptive Tube MPC: Beyond a Common Quadratically Stabilizing Feedback Gain",
+      "authors": "Anchita Dey, Shubhendu Bhasin",
+      "date": "2026-03-16",
+      "pdf": "https://arxiv.org/pdf/2603.15912v1",
+      "score": "6.0",
+      "evidence": "针对具有参数不确定性和扰动系统的自适应模型预测控制",
+      "tldr": "本文针对含有参数不确定性和加性扰动的离散线性时不变系统，提出了一种自适应管道模型预测控制（MPC）框架。该方法通过在线参数学习实时缩小不确定性集合，并据此动态调整预测模型、反馈增益及管道形状，从而减少约束紧缩的保守性。核心贡献在于放宽了现有方法中必须存在公共二次稳定反馈增益的严格假设，在保证递归可行性和稳定性的同时，显著提升了控制性能。",
+      "tags": "query:pmsm",
+      "abstract_en": "This paper proposes an adaptive tube framework for model predictive control (MPC) of discrete-time linear time-invariant systems subject to parametric uncertainty and additive disturbances. In contrast to conventional tube-based MPC schemes that employ fixed tube geometry and constraint tightening designed for worst-case uncertainty, the proposed approach incorporates online parameter learning to progressively refine the parametric uncertainty set and update the parameter estimates. These updates are used to adapt the components of the MPC optimization problem, including the prediction model, feedback gain, terminal set, and tube cross-sections. As the uncertainty set contracts, the required amount of constraint tightening reduces and the tube shrinks accordingly, yielding less conservative control actions. Recursive feasibility, robust constraint satisfaction, and closed-loop stability are formally established. Furthermore, the framework does not require the existence of a common quadratically stabilizing linear feedback gain for the entire parametric uncertainty set, thereby relaxing a standard assumption in existing tube-based MPC formulations. Numerical examples illustrate the effectiveness of the proposed approach.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

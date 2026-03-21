@@ -1,0 +1,1692 @@
+Title: Data-Driven Robust Predictive Control with Interval Matrix Uncertainty Propagation
+
+URL Source: https://arxiv.org/pdf/2603.15063v1
+
+Published Time: Tue, 17 Mar 2026 06:54:31 GMT
+
+Number of Pages: 10
+
+Markdown Content:
+# Data-Driven Robust Predictive Control with Interval Matrix Uncertainty Propagation 
+
+Renato Quartullo 1, Andrea Garulli 2, Mirko Leomanni 3.
+
+Abstract — This paper presents a new data-driven robust predictive control law, for linear systems affected by unknown-but-bounded process disturbances. A sequence of input-state data is used to construct a suitable uncertainty representation based on interval matrices. Then, the effect of uncertainty along the prediction horizon is bounded through an operator leveraging matrix zonotopes. This yields a tube that is exploited within a variable-horizon optimal control problem, to guarantee robust satisfaction of state and input constraints. The resulting data-driven predictive control scheme is shown to be recursively feasible and practically stable. A numerical example shows that the proposed approach compares favorably to existing methods based on zonotopic tubes and is competitive with an approach combining set-membership system identification and model-based predictive control. 
+
+I. I NTRODUCTION 
+
+Data-driven control has been an active research area for long time, receiving increasing attention in recent years due to the striking development of machine learning techniques [1], [2]. Within this broad research landscape, Data-Driven Predictive Control (DDPC) has emerged as a promising con-trol design framework, after the publication of the seminal work [3]. In that paper, an approach based on behavioural system theory is adopted to directly predict future trajectories from a set of past input-output data. This allows one to formulate a predictive control scheme without explicitly defining the system dynamics, which would require either to resort to first-principles modeling or to apply some system identification procedure. When data are not affected by noise, the solution proposed in [3] turns out to be equivalent to clas-sical model-based predictive control (MPC), thus inheriting its well-known capability to handle multivariable constrained control problems [4], [5]. Moreover, in [6] it is shown that DDPC is also equivalent to subspace predictive control [7], an indirect approach in which the prediction model is identified from data. An intense research activity has been devoted to the setting in which data are affected by noise. The case of bounded output noise is treated in [8], by using slack variables and a regularization term. Regularization is also used to deal with stochastic output noise in [6], [9]. A unified framework encompassing several regularization-based approaches is presented in [10]. Closed-loop stability properties have been also investigated. A terminal equality constraint is used in [8] to derive conditions for recursive fea-sibility and practical exponential stability of a DDPC scheme           
+
+> 1Uninettuno University, Rome, Italy. Email: re-nato.quartullo@uninettunouniversity.net, 2Universit` adi Siena, Italy. Email: garulli@diism.unisi.it, 3Mercatorum University, Rome, Italy. Email: mirko.leomanni@unimercatorum.it
+
+with bounded output noise. A similar approach is proposed in [11] for systems affected by bounded process disturbances. The key idea is to cope with the effect of disturbances by suitably tightening the state and input constraints, similarly to what is done in tube-based MPC [12], [13]. For a review of the theoretical properties and implementation details of different versions of DDPC, the interested reader is referred to [14], [15]. Recent works have addressed DDPC for systems affected by bounded process disturbances, exploiting results on reach-ability analysis based on matrix zonotopes [16]. In [17], a robust control scheme is presented in which data-driven reachable regions are used to achieve robust satisfaction of the state and input constraints along the prediction horizon. A similar approach is taken in [18], where probabilistic stability of the resulting scheme is shown. Both methods do not address recursive feasibility, which is instead guaranteed by the solution proposed in [19]. However, this result is based on a rigid tube, whose computation requires the knowledge of the data covering radius (namely, a measure of the data density in the input-state space), which is not available a priori and whose estimate form data is not easy [20]. In this paper, a new data-driven robust predictive control scheme is proposed, for linear discrete-time systems with unknown-but-bounded process disturbances. The set of sys-tems compatible with a collection of state-input data is char-acterized in terms of interval matrices. Then, the uncertainty propagation along the prediction horizon is approximated by using a suitable operator based on matrix zonotopes, similarly to what is done in [17], [18]. The considered data-driven interval matrix uncertainty representation has a twofold benefit: i) it allows one to guarantee recursive feasibility and practical stability of a variable-horizon robust DDPC scheme, without requiring any assumption on the data density; ii) it provides an efficient way to compute a tube bounding the uncertainty propagation, which turns out to be less conservative than that used in [19]. The rest of the paper is organized as follows. Section II introduces some preliminary material on matrix operations and set approximations. The DDPC problem formulation is presented in Section III. The proposed solution based on interval matrix uncertainty propagation is detailed in Section IV, which also states the closed-loop properties of the control scheme. Section V reports numerical results showing the performance of the proposed approach. Finally, some conclusions are drawn in Section VI. 
+
+> arXiv:2603.15063v1 [eess.SY] 16 Mar 2026
+
+II. N OTATION AND PRELIMINARIES 
+
+For sets of real matrices A, B, the following operations are considered: A ⊕ B = {A + B| A ∈ A, B ∈ B} ,
+
+AB = {AB | A ∈ A, B ∈ B} , Aj = {Aj | A ∈ A} .An interval matrix I = {M | C − ∆ ≤ M ≤ C + ∆ },where the operator ≤ represents elementwise inequality, is compactly denoted as I = C ⊕ J∆K. A matrix zonotope 
+
+M =
+
+{
+
+M |M = MC + ∑ng 
+
+> i=1
+
+Giβi, |βi| ≤ 1
+
+}
+
+, where MC
+
+is the center and Gi, i = 1 , . . . , n g, are the generators, is denoted as M = 〈MC ; G1, . . . , G ng 〉.The minimum interval matrix containing a matrix zono-tope M = 〈M ; G1, . . . , G ng 〉, is given by 
+
+B (M) = M ⊕ J∆K , (1) where ∆ = ∑ng 
+
+> i=1
+
+|Gi|.
+
+Given a matrix M ∈ Rl×q , we define the set of matrices 
+
+E(M ) = {M (k)}lq k=1 , containing all matrices M (k) ∈ Rl×q
+
+defined as 
+
+M (k) 
+
+> ij
+
+=
+
+{
+
+Mij , if k = ( i − 1) l + j, 
+
+0, otherwise ,
+
+so that ∑lq k=1 M (k) = M .The following result provides a key set approximation tool that will be exploited for uncertainty propagation. 
+
+Proposition 1: Let I = C ⊕ J∆K ∈ Rl×p be an interval matrix and M = 〈M ; G1, . . . , G ng 〉 ⊆ Rp×q be a matrix zonotope. Then 
+
+IM ⊆ TI (M) = 〈CM ; CG 1, . . . , CG ng , F (1) , . . . , F (lq )〉,
+
+(2) where 
+
+F = ∆ 
+
+ |M | +
+
+> ng
+
+∑
+
+> j=1
+
+|Gj |
+
+ (3) and {F (i)}lq i=1 = E(F ).
+
+Proof. See Appendix. If j successive iterations of the operator TI are performed on the zonotope M, one obtains the set approximation 
+
+Ij M ⊆ Tj 
+
+> I
+
+(M) = TI ◦ TI ◦ · · · ◦ TI
+
+︸ ︷︷ ︸ 
+
+> jtimes
+
+(M). (4) III. P ROBLEM FORMULATION 
+
+Consider the uncertain linear time-invariant system 
+
+x(k + 1) = Ax (k) + Bu (k) + w(k), (5) where x(k) ∈ Rn is the system state at time k, u(k) ∈ Rm
+
+is the control input, w(k) ∈ Rn is the process disturbance and A, B are unknown system matrices. It is assumed that 
+
+w(k) is bounded in scaled infinity norm, i.e. 
+
+w(k) ∈ W = JwK ,
+
+with w ∈ Rn, w ≥ 0.Suppose that input-state data of length T generated by system (5) are available. These samples are organized into the data matrices 
+
+X+ = [ x(1) x(2) · · · x(T )] ,X− = [ x(0) x(1) · · · x(T − 1)] ,U− = [ u(0) u(1) · · · u(T − 1)] .
+
+The objective of this work is to design a robust predictive control scheme using only the available input-state data, without explicit knowledge of the system matrices A and 
+
+B. The resulting closed-loop system must satisfy the state and input constraints 
+
+x(k) ∈ X , u (k) ∈ U , (6) for any possible realization of w(k), with X , U being convex polytopic sets. To proceed, we first compute data-driven interval matrix bounds for the unknown system matrices A
+
+and B, that are consistent with the collected data. 
+
+A. Data-driven Interval System Matrices 
+
+Let us define the state-input data matrix 
+
+Φ = 
+
+[X−
+
+U−
+
+]
+
+∈ R(n+m)×T . (7) Then the trajectories collected from system (5) satisfy 
+
+X+ = ΘΦ + W, (8) where 
+
+Θ = [ A B] ∈ Rn×(n+m),
+
+and W = [w(0) w(1) · · · w(T − 1)] . The following as-sumption is made, which is standard in data-driven control 
+
+rank(Φ) = n + m. (9) Now, let ΣΘ be the set of all matrices Θ that are compatible with the given data, i.e. 
+
+ΣΘ = {Θ : X+ − ΘΦ ∈ q W y}
+
+where W = [ w w . . . w]. The following result holds. 
+
+Proposition 2: Let (9) hold. Then 
+
+ΣΘ ⊆ X+Φ† ⊕ J∆S K (10) where ∆S = w 1⊤|Φ†|.
+
+Proof. Consider the matrix zonotope 
+
+MΘ = (X+ ⊕ q W y) Φ†. (11) From Lemma 1 in [16], one has ΣΘ ⊆ M Θ. Observe that the generators of q W y are the matrices wieiej , for i =1, . . . , n , j = 1 , . . . , T , where ei denotes the i-th canonical basis vector. Then, the zonotope (11) can be written as 
+
+MΘ = 〈X+Φ†; G1, . . . , G nT 〉
+
+with Gh = wieie⊤ 
+
+> j
+
+Φ†, for h = i + ( j − 1) n. Hence, (10) follows by computing B (MΘ) according to (1), with 
+
+∆S =
+
+> n
+
+∑
+
+> i=1
+> T
+
+∑
+
+> j=1
+
+|Gi+( j−1) n | =
+
+> n
+
+∑
+
+> i=1
+
+wieiT∑
+
+> j=1
+
+e⊤ 
+
+> j
+
+|Φ†|
+
+= w 1⊤|Φ†|. In the remainder of this work we will consider the fol-lowing partition of the data-based interval system matrices in (10) 
+
+X+Φ† =
+
+[ ˆA ˆB
+
+]
+
+, (12) 
+
+w 1⊤|Φ†| = [∆ A ∆B ] . (13) Due to Proposition 2, the unknown system matrices in (5) satisfy 
+
+[A B] ∈ I S =
+
+[ ˆA ˆB
+
+]
+
+⊕ J∆A ∆B K . (14) Therefore, the properties of any robust predictive control scheme designed on the uncertain system 
+
+x(k + 1) = ˆAx (k) + ˆBu (k) + A∆x(k) + B∆u(k) + w(k),
+
+(15) where A∆ = A − ˆA, B∆ = B − ˆB and [A∆ B∆] ∈
+
+J∆A ∆B K = J∆S K, are guaranteed to hold also for the original system (5). 
+
+B. Set-membership identification of Interval System Matrices 
+
+An alternative to the data-driven uncertain system rep-resentation previously introduced, is provided by set-membership system identification [21]. Since w(k) ∈ JwK,from (5) it follows that 
+
+x(k + 1) − w ≤ Θφ(k) ≤ x(k + 1) + w, (16) where φ(k) = [x(k)⊤ u(k)⊤]⊤. Note that the constraints in (16) are separable across the rows of matrix Θ. Let θTi
+
+denote the i-th row of Θ. Then, for each state component 
+
+xi, i = 1 , . . . , n , one gets 
+
+xi(k + 1) − wi ≤ θ⊤ 
+
+> i
+
+φ(k) ≤ xi(k + 1) + wi, (17) Stacking the inequalities over all time steps k yields the equivalent compact representation 
+
+X+,i − wi1⊤ ≤ θ⊤ 
+
+> i
+
+Φ ≤ X+,i + wi1⊤, (18) where X+,i is the i-th row of X+. Therefore, the feasible set for each θi is a bounded polyhedron, and the tightest interval bounds on the entries of Θ can be computed element-wise by solving n(n + m) linear programs subject to the constraints (18). Once such bounds are derived, an uncertainty model in the form (14) is available. This will be used as a benchmark to evaluate the performance of the proposed DDPC approach. 
+
+C. Robust Predictive Control 
+
+Let us define the nominal system 
+
+z(k + 1) = ˆAz (k) + ˆBv (k) (19) and introduce the feedback policy 
+
+u(k) = K(x(k) − z(k)) + v(k), (20) where v(k) is a nominal control input and K ∈ Rm×n is a gain matrix. By using (14), matrix AK = A + BK satisfies 
+
+AK ∈ A K = ˆAK ⊕ I ∆
+
+[ IK
+
+]
+
+, (21) where ˆAK = ˆA + ˆBK and I∆ = J∆S K.Let e(k) = x(k) − z(k) be the error between the true and the nominal state. From (5) and (15), the dynamics of e(k)
+
+is given by 
+
+e(k + 1) = AK e(k) + A∆z(k) + B∆v(k) + w(k). (22) Then, from (21)-(22), the set-valued dynamics 
+
+S(k + 1) = AK S(k) ⊕ I ∆
+
+[ z(k)
+
+v(k)
+
+]
+
+⊕ W (23) is such that if e(0) ∈ S (0) , then e(k) ∈ S (k), ∀k > 0.With the aim to design a robust predictive control scheme, let us introduce the following variable-horizon robust control problem min  
+
+> Nk,v(k),z(k)
+
+Jk(Nk, v(k), z(k)) 
+
+s.t. zk(0) = x(k)
+
+zk(j + 1) = ˆAz k(j) + ˆBv k(j)
+
+zk(j) ⊕ S k(j) ⊆ X , j = 0 , . . . , N k
+
+vk(j) ⊕ KSk(j) ⊆ U , j = 0 , . . . , N k − 1
+
+zk(Nk) ⊕ S k(Nk) ⊆ X f
+
+Nk ∈ N+
+
+(24) in which vk = (vk(0) , . . . , v k(Nk − 1)) and zk =(zk(0) , . . . , z k(Nk)) are the sequences of nominal inputs and states, respectively, and the cost Jk is defined as 
+
+Jk = γN k + 
+
+> Nk−1
+
+∑
+
+> j=0
+
+ℓ(vk(j) − Kz k(j)) (25) where γ > 0 and ℓ(·) is a positive function, i.e., ℓ(x) ≥
+
+0, ∀x. The choice of including the prediction horizon length 
+
+Nk among the optimization variables is instrumental to ensure recursive feasibility of the resulting DDPC scheme, as it will be clarified later. Similarly to (23), the sets Sk(j)
+
+in (24) are defined by the set-valued dynamics 
+
+Sk(j + 1) = AK Sk (j) ⊕ I ∆
+
+[ zk(j)
+
+vk(j)
+
+]
+
+⊕ W (26) with Sk(0) = {0}, due to the initial constraint zk(0) = x(k).The terminal set Xf is a further design element that can be used to guarantee stability properties of the DDPC scheme. As in classical tube-based MPC, the constraints of problem (24) coupled with the control law (20), guarantee that the state and input constraints (6) are robustly satisfied along the prediction horizon. To this aim, (24) explicitly incorporates uncertainty propagation along the prediction horizon through the sets Sk(j), in the same spirit as in [17], [18]. In particular, by exploiting (26), such sets can be expressed as 
+
+Sk (j) = 
+
+> j−1
+
+∑
+
+> i=0
+
+Aj−i−1 
+
+> K
+
+I∆
+
+[ zk(i)
+
+vk(i)
+
+]
+
+⊕
+
+> j−1
+
+∑
+
+> i=0
+
+AiK W. (27) Unfortunately, the exact computation of the sets Sk(j) be-comes intractable even for small values of j. Notice that a further difficulty stems from the fact that their expression in (27) depends on the optimization variables vk and zk
+
+of problem (24). This problem has been tackled in [19] by replacing the sets Sk(j) with a constant outer bound S,corresponding to a rigid tube. However, this choice turns out to be overly conservative and relies on the knowledge of the covering radius of the data set. In the next section, a less conservative approximation is proposed, which allows to maintain the time-varying nature of uncertainty propagation along the prediction horizon within the optimization prob-lem, without requiring additional assumptions on the data set. IV. D ATA -DRIVEN ROBUST PREDICTIVE CONTROL 
+
+In order to construct an outer approximation of the sets 
+
+Sk(j), we exploit uncertainty propagation in the form of matrix zonotopes through the operator T in (2). In particular, the operator Tj in (4) is used to outer bound the set multiplication terms in (27). Let us define the set 
+
+B∆ 
+
+> k
+
+(j) = 
+
+> j−1
+
+∑
+
+> i=0
+
+I∆(j − i − 1) 
+
+[ zk(i)
+
+vk(i)
+
+]
+
+(28) where 
+
+I∆(j) = B
+
+(
+
+Tj
+
+> IAK
+
+(I∆)
+
+)
+
+, (29) and IAK = ˆAK ⊕J∆K K with ∆K = ∆ A +∆ B |K|. Similarly, let 
+
+BW (j) = 
+
+> j−1
+
+∑
+
+> i=0
+
+IW (i). (30) where 
+
+IW (j) = B
+
+(
+
+Tj
+
+> IAK
+
+(W)
+
+)
+
+. (31) Then, define 
+
+Bk(j) = B∆ 
+
+> k
+
+(j) ⊕ B W (j). (32) The following result holds. 
+
+Proposition 3: The sets Bk(j) in (32) satisfy the inclusion 
+
+Sk(j) ⊆ B k(j), ∀k, j. (33) 
+
+Proof. From (21) one has that AK ⊆ I AK . Hence, as a consequence of (4) one gets AjK I∆ ⊆ I ∆(j) in (29) and 
+
+AjK W ⊆ I W (j) in (31). Therefore, the result follows from definitions (27) and (32). 
+
+By exploiting the outer approximation of the sets Sk(j)
+
+provided by Proposition 3, the robust optimal control prob-lem (24) is reformulated as follows 
+
+min   
+
+> Nk,v(k),z(k)
+
+Jk(Nk, v(k), z(k)) 
+
+s.t. zk(0) = x(k) (34a) 
+
+zk(j + 1) = ˆAz k(j) + ˆBv k(j), (34b) 
+
+zk(j) ⊕ B k(j) ⊆ X , j = 0 , . . . , N k (34c) 
+
+vk(j) ⊕ KBk(j) ⊆ U , j = 0 , . . . , N k − 1
+
+(34d) 
+
+zk(Nk) ⊕ B k(Nk) ⊆ X f (34e) 
+
+Nk ∈ N+.
+
+Denoting by N ∗ 
+
+> k
+
+, v∗(k), z∗(k), the optimal solution of problem (34), the nominal control input in (20) is then chosen as 
+
+v(k) = v∗
+
+> k
+
+(0) . (35) as in standard MPC schemes. The only difference between problem (34) and problem (24) is that the constraints (34c)-(34e) are more conservative than the corresponding constraints in problem (24), due to the inclusion (33). This implies that the closed-loop system resulting from the application of the DDPC scheme (34)-(35) to system (5) will robustly satisfy the constraints (6), whatever are the system matrices A, B and the process disturbance realization w(k) ∈ W .It is worth stressing that, while the sets B∆ 
+
+> k
+
+(j) depend on the nominal state and input sequences zk and vk, which are optimization variables of problem (34), the interval matrices 
+
+I∆(j), IW (j) and BW (j) can be computed offline for all j, since they are independent of vk and zk. This is a key feature of the proposed approach because it allows to significantly limit the computational burden required for the online solution of problem (34). In order to derive the closed-loop properties of the DDPC scheme (34)-(35), the following assumptions are enforced. 
+
+Assumption 1: The matrix K in (20) is such that AK =
+
+A + BK is a Schur matrix for all [A B] ∈ I S in (14). 
+
+Assumption 2: The terminal set Xf in (34e) is such that 
+
+Xf ⊆ X and KXf ⊆ U . Moreover, it is a robust positive invariant (RPI) set for the uncertain system x(k + 1) = 
+
+AK x(k)+ w(k), which means that AK x+w ∈ X f , ∀x ∈ X f ,
+
+∀AK ∈ A K in (21), and ∀w ∈ W .
+
+Assumption 3: Problem (34) is feasible at time k = 0 with associated optimal cost J∗ 
+
+> 0
+
+.Assumptions 1-3 are common in robust MPC literature. In particular, methods for computing RPI sets include iterative algorithms [22], [5, Ch. 10] or LMI-based approaches [23, Ch. 5], leading to ellipsoidal or polytopic terminal sets. We are now ready to state the main results of this section. 
+
+Theorem 1: Let Assumptions 1-3 be satisfied. Then, prob-lem (34) admits a feasible solution for all k > 0, for any 
+
+[A B] ∈ I S and any realization of w(k) ∈ W .
+
+Proof. See Appendix. 
+
+Theorem 2: Let Assumptions 1-3 be satisfied. Then, the closed-loop trajectories x(k) of system (5), under the con-trol law (20), (34)-(35), reach the set Xf in at most 
+
+⌊J∗ 
+
+> 0
+
+/γ ⌋+1 steps and converge asymptotically to the set 
+
+X∞ = ∑∞ 
+
+> i=0
+
+Ti
+
+> IAK
+
+(W).
+
+Proof. See Appendix. From a computational viewpoint, problem (34) can be solved very efficiently. Thanks to the use of interval matrices, constraints in (34c)-(34e) can be reformulated as linear constraints in the following way. By using (28), (30) and (28), the j-th state constraint (34c) can be rewritten as 
+
+zk(j) ⊕
+
+> j−1
+
+∑
+
+> i=0
+
+I∆(j − 1 − i)
+
+[ zk(i)
+
+vk(i)
+
+]
+
+⊆ X ⊖ B W (j). (36) Since the state constraints X is a polytopic set, the tightened constraint set on the right hand side can be expressed as 
+
+X ⊖ B W (j) = {x ∈ Rn| H(j)x ≤ b(j)}.
+
+Observing that all interval matrices I∆(j) in (29) are cen-tered in zero, let us write them as I∆(j) = J∆I (j)K. Then, (36) turns out to be equivalent to 
+
+H(j)zk(j) + |H(j)|
+
+> j−1
+
+∑
+
+> i=0
+
+∆I (j − i − 1) 
+
+∣∣∣∣[ zk(i)
+
+vk(i)
+
+]∣ ∣∣∣ ≤ b(j)
+
+(37) which is easily cast as a linear constraint in the variables 
+
+zk, vk [24]. The input constraint (34d) and the terminal constraint (34e) can be handled in the same way. It is worth remarking that the advantage of the proposed approach stems from the combined use of two distinct features. First, the zonotopic uncertainty propagation along the prediction horizon, through the operator Tj , permits to explicitly incorporate the effect of the data-driven uncertainty model (12)-(13) in the robust optimal control problem (34). Secondly, the adoption of the interval-matrix-based tube 
+
+Bk(j) has a twofold effect: (i) it is key to prove recur-sive feasibility of the DDPC scheme; (ii) it allows one to cast the constraints of problem (34) in the computationally lightweight form (37). The adoption of a variable-horizon predictive control scheme is also instrumental to achieve recursive feasibility and, at the same time, it provides further flexibility to the objective function Jk in (25), via the tuning parameter γ.Summing up, problem (34) is a mixed-integer program with linear constraints. Such a problem can be solved exactly by using standard solvers (see, e.g., [25]), or by adopting efficient heuristic procedures [26], [27]. V. N UMERICAL RESULTS 
+
+In this section, numerical results for a double-integrator example are presented to evaluate the performance of the proposed Data-Driven Interval Matrix Predictive Control (DD-IMPC) approach. This control strategy is compared to the Tube-Based Zonotopic Predictive Control (TZPC) method introduced in [19]. As a further comparison bench-mark, we consider the Set-Membership Interval Matrix Predictive Control (SM-IMPC) scheme, that is a version of DD-IMPC, in which the uncertainty model (14) is es-timated via the procedure in Section III-B. The simula-tions are carried out using MATLAB on a laptop equipped with the Apple M4 processor and 16 GB of RAM. The code is written in MATLAB and is publicly available at https://github.com/RenatoQuartullo/Data-Driven-Interval-Matrices-PC. Consider a discrete-time system (5), in which the true system matrices are 
+
+A =
+
+[ 1 10 1
+
+]
+
+, B =
+
+[ 01
+
+]            
+
+> TABLE I STATISTICS OF THE FEASIBLE DOMAIN .
+> Method Average Standard Deviation Empty FD
+> DD-IMPC 147.2 13.4 0TZPC 98.5 62.2 14 SM-IMPC 162.8 00
+
+and W = JwK with w = [0 .1, 0.05] ⊤. The state constraint 
+
+X is such that [ −12 
+
+−4
+
+]
+
+≤ x(k) ≤
+
+[ 12 4
+
+]
+
+,
+
+while the input command must satisfy |u(k)| ≤ 2. The matrix gain K and the terminal set Xf are calculated following the procedures described in [23, Sec. 5.2] and [5, Ch. 10], respectively. In DD-IMPC (and SM-IMPC), the function ℓ(·)
+
+in the cost Jk is quadratic, i.e., Jk = γN k +∑Nk −1 
+
+> j=0
+
+‖vk(j)−
+
+Kz k(j)‖22 with γ = 1 . The variable-horizon problem (34) is solved by enumeration for each horizon length Nk ∈{1, . . . , 25 }. The true system is used only to generate the data matrices X−, X +, U −, collecting a trajectory of length 
+
+T = 50 .In this experiment, we aim to evaluate the feasible domain (FD) of the considered control schemes and their sensitivity to the available data. The FDs are computed as the convex hull of the initial conditions for which the initial optimization problem is feasible. A total of 300 initial conditions are generated by uniformly gridding the admissible state set X .To ensure a fair comparison, the feasible domain of TZPC (which relies on a fixed prediction horizon) is defined as the set of all initial states for which the corresponding optimization problem is feasible for at least one horizon length N ∈ {1, . . . , 25 }. The FD evaluation is repeated 50 times using independently generated input-state datasets. Table I reports the average area of the FDs, their standard deviation, and the number of runs in which the FD is empty for each method. The results show that DD-IMPC achieves a larger FD on average and exhibits significantly lower sensitivity to the available data compared to TZPC. It is also worth noting that the FD of DD-IMPC is very close to that yielded by SM-IMPC, that, as expected, is essentially unaffected by the dataset. Figure 1 illustrates the FDs obtained in one representative run in which TZPC produces a non-empty feasible domain. To assess the sensitivity of the considered control schemes to the size of the process disturbance, we consider W =
+
+ǫW JwK, with ǫW ∈ { 0.2, 0.4, . . . , 0.8, 2}. For each value of 
+
+ǫW , the experiment is repeated 50 times using independently generated datasets. The average area of the resulting FDs is reported in Fig. 2 (solid lines), along with the minimum and maximum values across the runs (dashed lines). It can be observed that, on average, DD-IMPC yields a larger feasible domain than TZPC. Moreover, TZPC exhibits a strong sen-sitivity to ǫW , as the area of the FD drops significantly for larger values of the disturbance bound. Moreover, the low data sensitivity of DD-IMPC is confirmed by the small gap between the minimum and maximum area profiles, whereas Fig. 1. Feasible domain comparison. 
+
+this effect is much more pronounced for TZPC. In addition, for ǫW ≥ 0.8, TZPC results in an empty feasible region in some runs, while for ǫW ≥ 1.8 no runs yield feasible solutions. Once again, SM-IMPC achieves the largest fea-sible domain and appears to be essentially unaffected by 
+
+ǫW . In particular Fig. 2 suggests that the proposed data-driven approach is competitive with the one based on set-membership identification for moderate levels of process disturbance, while it turns out to be more conservative for higher values of ǫW .            
+
+> ǫW
+> 0.2 0.4 0.6 0.8 11.2 1.4 1.6 1.8 2
+> FD area
+> 020 40 60 80 100 120 140 160 180
+> DD-IMPC TZPC SM-IMPC
+> Fig. 2. Area of the feasible domains as a function of ǫW. The curves show the average (solid lines), minimum and maximum values (dashed lines) over 50 runs.
+
+Fig. 3 shows the trajectories of the closed-loop system (5), (20), and (34) for 100 different realizations of the process disturbance sequence w(k) ∈ W . It can be observed that the constraints (6) are robustly satisfied and that all trajectories converge to the set X∞, in accordance with Theorem 2. In this setting, the average runtime required to solve one instance of problem (34) is 9.5 ms. This indicates that the proposed DD-IMMPC scheme is significantly more compu-tationally efficient than other data-driven predictive control approaches. In particular, the runtime evaluation reported in [19] shows that the methods in [17], [18] require several    
+
+> Fig. 3. Closed-loop trajectories of the state (top) and input (bottom), for different realization of process disturbance sequences. The set X∞is shown in red, while the state and input constraints are shown in green.
+
+minutes to solve the corresponding optimization problem. VI. C ONCLUSIONS 
+
+A data-driven robust predictive control scheme has been presented, which is able to deal with the presence of unknown-but-bounded process disturbances affecting the un-known system dynamics. The proposed approach provides a viable alternative to the classical pipeline coupling set-membership system identification and model-predictive con-trol. The combined use of interval matrix uncertainty rep-resentation and variable-horizon optimal control is instru-mental to guarantee both recursive feasibility of the data-driven control scheme and an efficient uncertainty prop-agation along the prediction horizon. This results into a computationally lightweight control scheme, compared to tube-based MPC approaches. The investigation of alternative data-driven uncertainty representations, and of the associated trade-off between conservatism and computational load of the resulting control scheme, will be the subject of future research. APPENDIX 
+
+A. Auxiliary material 
+
+Let us first introduce some properties and lemmas that will be useful in the subsequent proofs. The following set inclusions hold 
+
+(A ⊕ B )C ⊆ AC ⊕ BC , (38) 
+
+A(B ⊕ C ) ⊆ AB ⊕ AC . (39) For any matrix M and interval matrix I = C ⊕ J∆K, their product satisfy the inclusions 
+
+IM = CM ⊕ J∆K M ⊆ CM ⊕ J∆|M |K , (40) 
+
+M I = M C ⊕ M J∆K ⊆ M C ⊕ J|M |∆K . (41) The sum of two interval matrices I1 = C1 ⊕ J∆1K, I2 =
+
+C2 ⊕ J∆2K is given by 
+
+I1 ⊕ I 2 = C1 + C2 ⊕ J∆1 + ∆ 2K , (42) while the sum of two zonotopes M = 〈M ; G1 . . . , G ng 〉,
+
+N = 〈N ; H1, . . . , H nh 〉is equal to 
+
+M ⊕ N = 〈M + N ; G1, . . . , G ng , H 1, . . . , H nh 〉. (43) The multiplication between two interval matrices can be over-approximated as follows 
+
+I1I2 ⊆ C1C2 ⊕ J|C1|∆2 + ∆ 1|C2| + ∆ 1∆2K . (44) Let A and M be matrices, with M ≥ 0. Then, the set of matrices E(M ) satisfies 
+
+> lq
+
+∑
+
+> k=1
+
+|AM (k)| = |A|M. (45) The following lemmas are instrumental for the proofs of the main results. 
+
+Lemma 1: The set I(j) defined in (29) satisfies 
+
+I(j) = 
+
+t j∑
+
+> i=0
+
+| ˆAj−iK |Fi
+
+|
+
+(46) where F0 = ∆ S and 
+
+Fj+1 = ∆ Kj∑
+
+> i=0
+
+| ˆAj−iK |Fi, for j ≥ 0. (47) 
+
+Proof. Let us first prove by induction that 
+
+Tj
+
+> IAK
+
+(I∆) = 〈0; ˆAjK E(F0), ˆAj−1 
+
+> K
+
+E(F1), . . . , E(Fj )〉. (48) For j = 1 , by applying (2) with I = IAK = ˆAK ⊕ J∆K K
+
+and M = I∆ = 〈0; E(∆ S )〉 one gets 
+
+TIAK (I∆) = 〈0; ˆAK E(F0), E(F1)〉,
+
+with F0 = ∆ S and F1 = ∆ K ∆S , which is in agreement with (47). Now, let (48) hold for a generic j. By applying again (2), one obtains 
+
+Tj+1 
+
+> IAK
+
+(I∆) = TIAK ◦ Tj
+
+> IAK
+
+(I∆)= 〈0; ˆAj+1  
+
+> K
+
+E(F0), ˆAjK E(F1), . . . , ˆAK E(Fj ), E(Fj+1 )〉,
+
+where, using (3) and (45), one has 
+
+Fj+1 = ∆Kn(n+m)
+
+∑
+
+> i=1
+
+(
+
+| ˆAjK F (i)0 |+| ˆAj−1 
+
+> K
+
+F (i)1 |+. . . +|F (i) 
+
+> j
+
+|
+
+)
+
+= ∆K
+
+(
+
+| ˆAjK |F0 + | ˆAj−1 
+
+> K
+
+|F1 + · · · + Fj
+
+)
+
+which corresponds to (47). Then, (46) immediately follows by applying (1) to the right hand side of (48). 
+
+Lemma 2: Let us define matrices Pj such that P1 = I
+
+and 
+
+Pj+1 = | ˆAjK | +
+
+> j
+
+∑
+
+> h=1
+
+Ph∆K | ˆAj−hK |, for j ≥ 1. (49) Then, matrices Fj in (47) satisfy 
+
+Fj = ∆ K Pj ∆S , for j ≥ 1. (50) 
+
+Proof. By recursively expanding the sum in (47), one gets that Fj = ∆ K Σj−1∆S , where Σj is the sum of the 2j terms of the form |M q1 
+
+> 1
+
+|| M q2 
+
+> 2
+
+| . . . |M qh 
+
+> h
+
+|, for 1 ≤ h ≤ j, with 
+
+Mi ∈ { ˆAK , ∆K }, Mi 6 = Mi+1 , and 1 ≤ qi ≤ j, ∑hi=1 qi =
+
+j. Similarly, by recursively expanding the sum in (49), one gets Pj = Σ j−1, thus giving (50). 
+
+B. Proof of Proposition 1 
+
+From (38), one has 
+
+IM = ( C ⊕ J∆K)〈M ; G1, . . . , G g 〉⊆ 〈 CM ; CG 1, . . . , CG g 〉 ⊕ J∆K M. (51) Since M can be expressed as M = M ⊕ 〈 0; G1, . . . , G ng 〉,
+
+by exploiting (39), (40) and (1), one gets 
+
+J∆K M ⊆ J∆K M ⊕ J∆K 〈0; G1, . . . , G g〉⊆ J∆|M |K ⊕ J∆Kt ng
+
+∑
+
+> i=1
+
+|Gi|
+
+|
+
+> (44)
+
+⊆ J∆|M |K ⊕
+
+t
+
+∆
+
+> ng
+
+∑
+
+> i=1
+
+|Gi|
+
+|
+
+> (42)
+
+=
+
+t
+
+∆
+
+(
+
+|M | +
+
+> ng
+
+∑
+
+> i=1
+
+|Gi|
+
+)|
+
+= JF K = 〈0; E(F )〉.
+
+Hence, the results follows from (51), by using (43) and the definition of TI (M) in (2). 
+
+C. Proof of Theorem 1 
+
+The aim of the proof is to show that if problem (34) is feasible at time k, then there exists a feasible solution at time k + 1 . We distinguish the cases in which the horizon length of the optimal solution at time k is N ∗ 
+
+> k
+
+> 1 (Case 1) or N ∗ 
+
+> k
+
+= 1 (Case 2). 
+
+Case 1 ( N ∗ 
+
+> k
+
+> 1): Let us consider the following candidate solution for step k + 1 ˆvk+1 (j) = v∗
+
+> k
+
+(j + 1) + K ˆAjK δ(k) + K ˆAjK w(k),j = 0 , . . . , N ∗ 
+
+> k
+
+−2,
+
+ˆzk+1 (j) = z∗
+
+> k
+
+(j + 1) + ˆAjK δ(k) + ˆAjK w(k),j = 0 , . . . , N ∗ 
+
+> k
+
+− 1
+
+(52) where 
+
+δ(k) = x(k + 1) − ˆAx (k) − ˆBu (k) = A∆x(k) + B∆u(k)
+
+(53) and z∗
+
+> k
+
+(j), v∗
+
+> k
+
+(j) are the optimal nominal states and inputs for problem (34). Note that the length of this solution is 
+
+N ∗ 
+
+> k
+
+− 1. From (53), one has that 
+
+δ(k) ∈ I ∆
+
+[ x(k)
+
+u(k)
+
+]
+
+= J∆S K
+
+[ z∗
+
+> k
+
+(0) 
+
+v∗ 
+
+> k
+
+(0) 
+
+]
+
+. (54) Next, we show that (52) satisfies all the constraints of problem (34). The initial state ˆzk+1 (0) of the candidate solution (52) satisfies 
+
+ˆzk+1 (0) = z∗
+
+> k
+
+(1) + δ(k) + w(k)= ˆAz ∗ 
+
+> k
+
+(0) + ˆBv ∗
+
+> k
+
+(0) + A∆x(k) + B∆u(k) + w(k)= ( ˆA + A∆)x(k) + ( ˆB + B∆)u(k) + w(k) = x(k + 1) 
+
+which corresponds to constraint (34a) at time k + 1 .By using (52), we have that 
+
+ˆzk+1 (j + 1) − ˆAj+1  
+
+> K
+
+δ(k) − ˆAj+1  
+
+> K
+
+w(k) = z∗ 
+
+> k
+
+(j + 2) = ˆAz ∗
+
+> k
+
+(j + 1) + ˆBv ∗ 
+
+> k
+
+(j + 1) = ˆA
+
+(
+
+ˆzk+1 (j) − ˆAjK δ(k) − ˆAjK w(k)
+
+)
+
++ ˆB
+
+(
+
+ˆvk+1 (j) − K ˆAjK δ(k) − K ˆAjK w(k)
+
+)
+
+= ˆAˆzk+1 (j)+ ˆBˆvk+1 (j) − ˆAj+1  
+
+> K
+
+δ(k) − ˆAj+1  
+
+> K
+
+w(k),
+
+which implies ˆzk+1 (j + 1) = ˆAˆzk+1 (j) + ˆBˆvk+1 (j) and hence satisfaction of constraint (34b). To prove that the candidate solution (52) satisfies the state constraint (34c), let us define 
+
+B∗
+
+> k
+
+(j) = 
+
+> j−1
+
+∑
+
+> i=0
+
+{I∆(j − i − 1) ξ∗ 
+
+> k
+
+(i) + IW (i)} (55) 
+
+ˆBk+1 (j) = 
+
+> j−1
+
+∑
+
+> i=0
+
+{
+
+I∆(j − i − 1) ˆξk+1 (i) + IW (i)
+
+}
+
+(56) where 
+
+ξ∗ 
+
+> k
+
+(i) = 
+
+[ z∗
+
+> k
+
+(i)
+
+v∗ 
+
+> k
+
+(i)
+
+]
+
+, ˆξk+1 (i) = 
+
+[ ˆzk+1 (i)ˆvk+1 (i)
+
+]
+
+.
+
+We aim to show that 
+
+ˆzk+1 (j) ⊕ ˆBk+1 (j) ⊆ z∗
+
+> k
+
+(j + 1) ⊕ B ∗
+
+> k
+
+(j + 1) (57) for j = 0 , 1, . . . , N ∗ 
+
+> k
+
+− 1, which implies (34c) because the right hand side of (57) is included in X . By using the second equation in (52), one has that (57) is equivalent to 
+
+ˆAjK (δ(k) + w(k)) ⊕ ˆBk+1 (j) ⊆ B ∗
+
+> k
+
+(j + 1) . (58) Exploiting (52), the left hand side of (58) becomes 
+
+ˆAjK (δ(k)+ w(k)) ⊕ ˆBk+1 (j)= ˆAjK (δ(k)+ w(k)) ⊕
+
+> j−1
+
+∑
+
+> i=0
+
+{
+
+I∆(j −i−1) ˆξk+1 (i) + IW (i)
+
+}
+
+= ˆAjK (δ(k)+ w(k)) ⊕
+
+> j−1
+
+∑
+
+> i=0
+
+{I∆(j −i−1) ξ∗
+
+> k
+
+(i+1) + IW (i)}
+
+⊕
+
+> j−1
+
+∑
+
+> i=0
+
+I∆(j −i−1) MK ˆAiK (δ(k)+ w(k)) 
+
+where MK =
+
+[ IK
+
+]
+
+. Therefore, by writing the right hand side of (58) according to (55), it turns out that (58) holds if the following two inclusions are true 
+
+ˆAjK δ(k) ⊕
+
+> j−1
+
+∑
+
+> i=0
+
+I∆(j −i−1) MK ˆAiK δ(k) ⊆ I ∆(j)ξ∗ 
+
+> k
+
+(0) ,
+
+(59) 
+
+ˆAjK w(k) ⊕
+
+> j−1
+
+∑
+
+> i=0
+
+I∆(j −i−1) MK ˆAiK w(k) ⊆ I W (j). (60) Let us first prove (59). By using Lemmas 1 and 2 and recalling ∆K = ∆ S |MK |, its left hand side satisfies 
+
+ˆAjK δ(k) ⊕
+
+> j−1
+
+∑
+
+> i=0
+
+I(j − i − 1) MK ˆAiK δ(k)
+
+> (46)
+
+= ˆAjK δ(k) ⊕
+
+> j−1
+
+∑
+
+> i=0
+
+tj−1−i∑
+
+> h=0
+
+| ˆAj−1−i−hK |Fh
+
+|
+
+MK ˆAiK δ(k)
+
+> (50)
+
+= ˆAjK δ(k) ⊕
+
+> j−1
+
+∑
+
+> i=0
+
+r
+
+| ˆAj−1−iK |∆S
+
+z
+
+MK ˆAiK δ(k)
+
+⊕
+
+> j−1
+
+∑
+
+> i=0
+
+tj−1−i∑
+
+> h=1
+
+| ˆAj−1−i−hK |∆K Ph∆S
+
+|
+
+MK ˆAiK δ(k)
+
+> (40)
+
+⊆ ˆAjK δ(k) ⊕
+
+> j−1
+
+∑
+
+> i=0
+
+r
+
+| ˆAj−1−iK |∆K | ˆAiK |
+
+z
+
+δ(k)
+
+⊕
+
+> j−1
+
+∑
+
+> h=1
+> j−1−h
+
+∑
+
+> i=0
+
+r
+
+| ˆAj−1−i−hK |∆K Ph∆K | ˆAiK |
+
+z
+
+δ(k) (61) where the last two equalities exploit property (42) and a reorganization of the sum indexes. Similarly, the right hand side of (59) satisfies 
+
+I(j)ξ∗ 
+
+> k
+
+(0) = 
+
+t j∑
+
+> i=0
+
+| ˆAj−iK |Fi
+
+|
+
+ξ∗ 
+
+> k
+
+(0) 
+
+> (50)
+
+=
+
+t
+
+| ˆAjK |∆S +
+
+> j
+
+∑
+
+> i=1
+
+| ˆAj−iK |∆K Pi∆S
+
+|
+
+ξ∗ 
+
+> k
+
+(0) 
+
+> (49)
+
+=
+
+t
+
+| ˆAjK |∆S +
+
+> j
+
+∑
+
+> i=1
+
+| ˆAj−iK |∆K | ˆAi−1 
+
+> K
+
+|∆S
+
+|
+
+ξ∗ 
+
+> k
+
+(0) 
+
+⊕
+
+t j∑
+
+> i=1
+
+| ˆAj−iK |∆Ki−1∑
+
+> h=1
+
+Ph∆K | ˆAi−1−hK |∆S
+
+|
+
+ξ∗ 
+
+> k
+
+(0) =
+
+t
+
+| ˆAjK |∆S +
+
+> j−1
+
+∑
+
+> i=0
+
+| ˆAj−1−iK |∆K | ˆAiK |∆S
+
+|
+
+ξ∗ 
+
+> k
+
+(0) 
+
+⊕
+
+tj−1∑
+
+> i=0
+
+| ˆAj−1−iK |∆Ki∑
+
+> h=1
+
+Ph∆K | ˆAi−hK |∆S
+
+|
+
+ξ∗ 
+
+> k
+
+(0) =
+
+t
+
+| ˆAjK |∆S +
+
+> j−1
+
+∑
+
+> i=0
+
+| ˆAj−1−iK |∆K | ˆAiK |∆S
+
+|
+
+ξ∗ 
+
+> k
+
+(0) 
+
+⊕
+
+tj−1∑
+
+> h=1
+> j−1−h
+
+∑
+
+> i=0
+
+| ˆAj−1−i−hK |∆K Ph∆K | ˆAiK |∆S
+
+|
+
+ξ∗ 
+
+> k
+
+(0) .
+
+(62) Now, recall that from (54) one has δ(k) ∈ J∆S K ξ∗ 
+
+> k
+
+(0) .Therefore, by comparing (61) and (62), and using properties (44) and (41), one gets that (59) holds. Inclusion (60) can be proved in the same way, exploiting w(k) ∈ qW y. For the input constraint (34d), a similar reasoning can be applied. Finally, inclusion (57) allows one to prove also the termi-nal constraint (34e). In fact, one has 
+
+ˆzk+1 (N ∗ 
+
+> k
+
+− 1) ⊕ ˆBk+1 (N ∗ 
+
+> k
+
+− 1) ⊆ z∗
+
+> k
+
+(N ∗ 
+
+> k
+
+) ⊕ B ∗
+
+> k
+
+(N ∗ 
+
+> k
+
+) ⊆ X f .
+
+Case 2 ( N ∗ 
+
+> k
+
+= 1 ): For time instant k + 1 , let us consider the candidate solution 
+
+ˆvk+1 (0) = Kx (k + 1) ,
+
+ˆzk+1 =
+
+(
+
+x(k + 1) , ˆAK x(k + 1) 
+
+)
+
+. (63) with associated horizon length ˆNk+1 = N ∗ 
+
+> k
+
+= 1 . Initial and dynamic constraints (34a)-(34b) are trivially satisfied by the candidate solution (63). Now, let us show that x(k+1) ∈ X f .From optimality of problem (34) (whose optimal horizon length is N ∗ 
+
+> k
+
+= 1 ), we know that z∗
+
+> k
+
+(1) ⊕ B ∗
+
+> k
+
+(1) ⊆ X f .Therefore 
+
+x(k + 1) = Ax (k) + Bu (k) + w(k)= ˆAx (k) + ˆBu (k) + δ(k) + w(k)= z∗
+
+> k
+
+(1) + δ(k) + w(k) ∈ z∗
+
+> k
+
+(1) ⊕ I ∆
+
+[ z∗
+
+> k
+
+(0) 
+
+v∗
+
+> k
+
+(0) 
+
+]
+
++ W
+
+= z∗
+
+> k
+
+(1) ⊕ B ∗
+
+> k
+
+(1) ⊆ X f .
+
+(64) Hence, the state constraint (34c) holds due to Xf ⊆ X . Since 
+
+Bk+1 (0) = {0} and KXf ⊆ U , one has also ˆvk+1 (0) = 
+
+Kx (k + 1) ∈ KXf ⊆ U , which corresponds to the input constraint (34d). For the terminal constraint, one has 
+
+ˆzk+1 (1) ⊕ ˆBk+1 (1) = ˆAK x(k + 1) ⊕ I ∆
+
+[ x(k + 1) 
+
+Kx (k + 1) 
+
+]
+
+⊕W 
+
+= ˆAK x(k + 1) ⊕ I ∆
+
+[ IK
+
+]
+
+x(k + 1) ⊕ W 
+
+=
+
+(
+
+ˆAK ⊕ I ∆
+
+[ IK
+
+]) 
+
+x(k + 1) ⊕ W 
+
+= AK x(k + 1) ⊕ W ⊆ X f ,
+
+thanks to Assumption 2, being x(k + 1) ∈ X f . 
+
+D. Proof of Theorem 2 
+
+The cost ˆJk+1 associated to the candidate solution (52) satisfies 
+
+ˆJk+1 = γ ˆNk+1 +
+
+> ˆNk+1 −1
+
+∑
+
+> j=0
+
+ℓ (ˆ vk+1 (j) − K ˆzk+1 (j)) = γ(N ∗ 
+
+> k
+
+− 1) +   
+
+> N∗
+> k−2
+
+∑
+
+> j=0
+
+ℓ (v∗ 
+
+> k
+
+(j + 1) − Kz ∗
+
+> k
+
+(j + 1)) = γN ∗ 
+
+> k
+
+− γ +  
+
+> N∗
+> k−1
+
+∑
+
+> j=1
+
+ℓ (v∗
+
+> k
+
+(j) − Kz ∗
+
+> k
+
+(j)) = J∗ 
+
+> k
+
+− γ − ℓ (v∗
+
+> k
+
+(0) − Kz ∗
+
+> k
+
+(0)) ≤ J∗ 
+
+> k
+
+− γ. 
+
+Therefore, the optimal cost at time k + 1 is such that J∗ 
+
+> k+1
+
+≤
+
+ˆJk+1 ≤ J∗ 
+
+> k
+
+− γ. This ensures that there exists a time ¯k ≤⌊J∗ 
+
+> 0
+
+/γ ⌋ at which the optimal horizon length is N ∗ 
+
+> ¯k
+
+= 1 , and hence x(¯k + 1) ∈ X f according to (64). When N ∗ 
+
+> k
+
+= 1 , the cost associated with the candidate solution (63) is ˆJk+1 = γ, which implies that such a solution is also optimal (as the cost value cannot be less than γ). Consequently, for all k > ¯k one has J∗ 
+
+> k
+
+= γ
+
+and the optimal solution of problem (34) is the candidate solution (63). Then, due to Assumption 2, the trajectories of the closed-loop system will remain indefinitely inside the terminal set Xf . Moreover, since for k > ¯k one has 
+
+x(k + 1) = AK x(k) + w(k), all trajectories will converge to the set ∑+∞ 
+
+> i=0
+
+AiK W ⊆ ∑+∞ 
+
+> i=0
+
+Ti
+
+> IAK
+
+(W) = X∞. 
+
+REFERENCES [1] F. D¨ orfler, “Data-driven control: Part one of two: A special issue sampling from a vast and dynamic landscape,” IEEE Control Systems Magazine , vol. 43, no. 5, pp. 24–27, 2023. [2] D. Soudbakhsh, A. M. Annaswamy, Y. Wang, S. L. Brunton, J. Gaudio, H. Hussain, D. Vrabie, J. Drgona, and D. Filev, “Data-driven control: Theory and applications,” in 2023 American Control Conference (ACC) , pp. 1922–1939, IEEE, 2023. [3] J. Coulson, J. Lygeros, and F. D¨ orfler, “Data-enabled predictive control: In the shallows of the DeePC,” in 18th European control conference (ECC) , pp. 307–312, IEEE, 2019. [4] J. B. Rawlings, D. Q. Mayne, and M. Diehl, Model predictive control: theory, computation, and design , vol. 2. Nob Hill Publishing Madison, WI, 2017. [5] F. Borrelli, A. Bemporad, and M. Morari, Predictive control for linear and hybrid systems . Cambridge University Press, 2017. [6] F. Fiedler and S. Lucia, “On the relationship between data-enabled predictive control and subspace predictive control,” in 2021 European Control Conference (ECC) , pp. 222–229, IEEE, 2021. [7] W. Favoreel, B. De Moor, and M. Gevers, “SPC: Subspace predictive control,” IFAC Proceedings Volumes , vol. 32, no. 2, pp. 4004–4009, 1999. [8] J. Berberich, J. K¨ ohler, M. A. M¨ uller, and F. Allg¨ ower, “Data-driven model predictive control with stability and robustness guarantees,” 
+
+IEEE transactions on automatic control , vol. 66, no. 4, pp. 1702– 1717, 2021. [9] F. D¨ orfler, J. Coulson, and I. Markovsky, “Bridging direct and indirect data-driven control formulations via regularizations and relaxations,” 
+
+IEEE Transactions on Automatic Control , vol. 68, no. 2, pp. 883–897, 2022. [10] V. Breschi, A. Chiuso, and S. Formentin, “Data-driven predictive control in a stochastic setting: A unified framework,” Automatica ,vol. 152, p. 110961, 2023. [11] C. Kl¨ oppelt, J. Berberich, F. Allg¨ ower, and M. A. M¨ uller, “A novel constraint-tightening approach for robust data-driven predictive con-trol,” International Journal of Robust and Nonlinear Control , vol. 35, no. 7, pp. 2566–2587, 2025. [12] L. Chisci, J. A. Rossiter, and G. Zappa, “Systems with persistent dis-turbances: predictive control with restricted constraints,” Automatica ,vol. 37, no. 7, pp. 1019–1028, 2001. [13] D. Q. Mayne, M. M. Seron, and S. V. Rakovi´ c, “Robust model predic-tive control of constrained linear systems with bounded disturbances,” 
+
+Automatica , vol. 41, no. 2, pp. 219–224, 2005. [14] P. Verheijen, V. Breschi, and M. Lazar, “Handbook of linear data-driven predictive control: Theory, implementation and design,” Annual Reviews in Control , vol. 56, p. 100914, 2023. [15] J. Berberich and F. Allg¨ ower, “An overview of systems-theoretic guarantees in data-driven model predictive control,” Annual Review of Control, Robotics, and Autonomous Systems , vol. 8, no. 1, pp. 77– 100, 2025. [16] A. Alanwar, A. Koch, F. Allg¨ ower, and K. H. Johansson, “Data-driven reachability analysis using matrix zonotopes,” in Learning for Dynamics and Control , pp. 163–175, PMLR, 2021. [17] A. Alanwar, Y. St¨ urz, and K. H. Johansson, “Robust data-driven predictive control using reachability analysis,” European Journal of Control , vol. 68, p. 100666, 2022. [18] A. Russo and A. Proutiere, “Tube-based zonotopic data-driven predic-tive control,” in 2023 American Control Conference (ACC) , pp. 3845– 3851, IEEE, 2023. [19] M. Farjadnia, A. Fontan, A. Alanwar, M. Molinari, and K. H. Johans-son, “Robust data-driven tube-based zonotopic predictive control with closed-loop guarantees,” in 2024 IEEE 63rd Conference on Decision and Control (CDC) , pp. 6837–6843, IEEE, 2024. [20] A. Alanwar, A. Koch, F. Allg¨ ower, and K. H. Johansson, “Data-driven reachability analysis from noisy data,” IEEE Transactions on Automatic Control , vol. 68, no. 5, pp. 3054–3069, 2023. [21] M. Milanese and A. Vicino, “Optimal estimation theory for dynamic systems with set membership uncertainty: An overview,” Automatica ,vol. 27, no. 6, pp. 997–1009, 1991. [22] I. Kolmanovsky and E. G. Gilbert, “Theory and computation of dis-turbance invariant sets for discrete-time linear systems,” Mathematical problems in engineering , vol. 4, pp. 317–367, 1998. [23] B. Kouvaritakis and M. Cannon, Model predictive control . Springer, 2016. [24] S. P. Boyd and L. Vandenberghe, Convex optimization . Cambridge university press, 2004. [25] Gurobi Optimization, LLC, “Gurobi Optimizer Reference Manual,” 2026. [26] M. Leomanni, R. Quartullo, G. Bianchini, A. Garulli, and A. Gi-annitrapani, “Variable-horizon guidance for autonomous rendezvous and docking to a tumbling target,” Journal of Guidance, Control, and Dynamics , vol. 45, no. 5, pp. 846–858, 2022. [27] L. Persson, A. Hansson, and B. Wahlberg, “An optimization algorithm based on forward recursion with applications to variable horizon MPC,” European Journal of Control , vol. 75, p. 100900, 2024.

@@ -1,0 +1,1185 @@
+Title: EMT and RMS Modeling of Thyristor Rectifiers for Stability Analysis of Converter-Based Systems
+
+URL Source: https://arxiv.org/pdf/2603.13050v1
+
+Published Time: Mon, 16 Mar 2026 01:06:48 GMT
+
+Number of Pages: 10
+
+Markdown Content:
+> 1
+
+# EMT and RMS Modeling of Thyristor Rectifiers for Stability Analysis of Converter-Based Systems 
+
+Ognjen Stanojev, Member, IEEE Pol Jane Soneira, Member, IEEE G¨ osta Stomberg, Member, IEEE 
+
+Mario Schweizer, Senior Member, IEEE 
+
+Abstract —Thyristor rectifiers are a well-established and cost-effective solution for controlled high-power rectification, com-monly used for hydrogen electrolysis and HVDC transmission. However, small-signal modeling and analysis of thyristor rectifiers remain challenging due to their line-commutated operation and nonlinear switching dynamics. This paper first revisits conven-tional RMS-based modeling of thyristor rectifiers and subse-quently proposes a novel nonlinear state-space EMT model in the dq domain that can be linearized for small-signal analysis. The proposed model accurately captures all the relevant dynamic phenomena, including PLL dynamics, the commutation process, and switching delays. It is derived in polar coordinates, offering novel insights into the impact of the PLL and commutation angle on the thyristor rectifier dynamics. We verify the RMS and EMT models against a detailed switching model and demonstrate their applicability through small-signal stability analysis of a modified IEEE 39-bus test system that incorporates thyristor rectifier-interfaced hydrogen electrolyzers, synchronous generators, and grid-forming converters. 
+
+Index Terms —thyristor rectifiers, small-signal stability, EMT models, RMS models, converter-based systems 
+
+I. I NTRODUCTION 
+
+Thyristor rectifiers are the most mature and prominent technology for high-power rectification, offering robustness, cost-effectiveness, and DC voltage controllability. These char-acteristics make thyristor rectifiers the preferred choice in applications such as HVDC transmission, large motor drives (e.g., in mining applications), and controlled rectification for electrochemical processes (e.g., hydrogen electrolysis). Never-theless, analytical modeling and stability analysis of thyristor rectifiers remain challenging due to their line-commutated operation and the nonlinearities of the switching process. The design and analysis of electrical systems that incor-porate thyristor rectifiers often rely on computer-based time-domain simulation tools capable of accurately reproducing instantaneous voltage and current waveforms, including thyris-tor switching patterns. These simulations are suitable for the analysis of power quality [1] and large-signal events such as commutation failure [2], short-circuit faults [3], and operation under current limits [4]. Although these simulations offer valu-able insights, they are computationally intensive and cannot provide deeper system-theoretic insights. Therefore, analytical modeling for small-signal stability analysis is required to uncover the properties of operating points, identify critical operating conditions, and provide tuning guidelines [5]. Small-signal stability analysis in power systems is com-monly performed separately for Root Mean Square (RMS) and Electromagnetic Transient (EMT) models [6] to address different aspects of system behavior and to meet the different 
+
+> O. Stanojev, M. Schweizer are with ABB Corporate Research, Baden-D¨ attwil, Switzerland, emails: {ognjen.stanojev, mario.schweizer }@ch.abb.com. P. J. Soneira, G. Stomberg are with ABB Corporate Research, Mannheim, Germany, emails: {pol.jane-soneira, goesta.stomberg }@de.abb.com.
+
+demands of grid design and grid operation tasks. RMS models, also known as quasi-static phasor models, simplify the system by representing voltages and currents as quasi-steady-state phasor quantities. This allows for computationally efficient analysis of slower dynamic phenomena such as interactions of outer control loops, frequency stability, etc. EMT models ex-tend the validity of RMS models to also consider fast dynamic phenomena, such as network resonances, PLL transients, and interactions of device-level converter controls [7]. The RMS modeling of thyristor rectifiers is well estab-lished, with its formulation and applications extensively docu-mented in classical references [8]–[11]. These models assume a constant, balanced three-phase supply and use fundamental frequency relationships derived from the converter switching waveforms, thereby enabling tractable analysis and efficient simulation. However, RMS models often neglect commutation angle variations or rely on their quasi-steady-state approxima-tions [12], [13]. As a result, the dynamics of the commutation process are not precisely characterized. Several studies have sought to extend the applicability of the RMS framework [14]–[16]. For example, [14] augments the formulation with filter dynamics, an AC-system representation, and PLL syn-chronization, while [15], [16] introduce additional control loops to broaden the modeling envelope. Nevertheless, the key assumptions remain, thus limiting the accuracy of the model. To improve the model quality while retaining analytical tractability, recent work has pivoted toward impedance-based models that capture multi-harmonic and interaction dynam-ics. Within this line of work, small-signal impedance and admittance models of thyristor rectifiers (and inverters) have been developed primarily in the context of Line Commutated Converter-based HVDC (LCC-HVDC) systems. In [17], a gen-eral sequence-frame impedance formulation was proposed that incorporates the overlap angle via switching functions. Sim-ilarly, frequency-domain admittance models based on single-side modulated state functions were derived in [18] to enable multi-harmonic linearization and provide a clearer view of har-monic interactions. Further advances include harmonic state-space formulations that employ multiple switching functions to model the variable commutation angle dynamics accurately [19]. For hybrid HVDC systems, impedance-based stability analysis has been extended to multi-terminal cascaded config-urations, where sensitivity analysis and impedance reshaping help mitigate oscillatory interactions [20]. In parallel, the influence of control-link time delays on small-signal dynamics has been quantified in [21], showing that even modest delays can significantly affect stability margins. Although these con-tributions enhance the understanding of harmonic interactions, they remain predominantly frequency-domain-oriented, which limits readiness for time-domain simulation, analysis of nonlin-ear effects, and generalization beyond HVDC-specific contexts. The need for high-fidelity EMT modeling of thyristor recti-
+
+> arXiv:2603.13050v1 [eess.SY] 13 Mar 2026 2
+
+fiers for eigenvalue analysis and transient studies has driven the development of state-space formulations based on state averaging [22]–[25]. In [22], a linearized state-space repre-sentation of thyristor rectifiers is derived using an infinite-series converter approach and subsequently transformed into the frequency domain to enable stability assessment through the generalized Nyquist criterion. The concept of motion equations has been employed in [23] to develop an EMT state-space model for multi-infeed LCC-HVDC systems. Building on these foundations, [24] proposes a continuous-time state-space model that incorporates firing-angle control, DC-side dynamics, and commutation overlap for small-signal analysis. The work in [25] focused on accurately modeling the commu-tation dynamics. More recently, [26] introduced a Linear Time-Periodic (LTP) framework to embed switching dynamics and address the nondifferentiable nature of thyristor commutation. Complementing these analytical approaches, [27] presents an enhanced RMS model utilizing neural networks to capture EMT transients and mitigate commutation-failure risks. Despite these advancements, several limitations persist in existing EMT modeling approaches for thyristor rectifiers. First, a systematic treatment of delays introduced by switching and PLL mechanisms is often absent, even though these delays can significantly shape dynamic performance during fast transients [22], [24], [26], [27]. This gap also appears in earlier dq-frame treatments of thyristor-controlled devices such as thyristor controlled rectifiers and thyristor controlled static compensators, which prioritize fundamental-frequency dynamics over switching-induced timing effects [28], [29]. Second, LTP-based and neural-network-enhanced formulations introduce substantial complexity and computational burden, limiting practicality in large-scale system studies [26], [27]. Third, most models are tailored to LCC-HVDC and do not generalize readily to other high-power rectifier-based systems (e.g., hydrogen electrolyzers). In addition, many formulations assume balanced network variables and periodic operation, which constrains accuracy under asymmetrical operation or nonstationary grid conditions. Finally, most existing studies on thyristor rectifier dynamics have focused on relatively simple system configurations, such as HVDC systems fed by synchronous generators and voltage sources [12], elec-trolyzer–generator interactions [16], and the IEEE 9-bus sys-tem [30]. While such system configurations provide valuable insights into local control interactions and rotor-angle stability, they do not capture the complexity of large interconnected grids where multiple thyristor-based loads interact with diverse generation sources. The absence of studies addressing large-scale power systems containing thyristor rectifiers is largely due to the reliance on impedance models, which are well-suited for frequency-domain analysis but impractical for large-scale networks with several generation and load types. In this paper, we revisit the RMS-based modeling of thyristor rectifiers and propose a novel EMT formulation suitable for large-scale stability studies. Both RMS and EMT models are presented to provide a complete perspective on the relevant characteristics of a small-signal model. We begin by examining existing RMS models, tracing their derivation, and highlighting the assumptions that limit their accuracy under fast transients. Building on this foundation, we extend the state-of-the-art in several directions. Firstly, we derive a continuous-time nonlinear state-space model in the dq domain that incorporates PLL dynamics, accurately represents the commutation process, and accounts for switching-related delays. The model is derived in polar coordinates, which offers novel insights into the impact of the PLL and commutation angle on the thyristor rectifier dynamics. Unlike previous approaches that relied on analytical linearization during model development, which introduced additional assumptions and potential inaccuracies, our method derives a nonlinear model to ensure higher fidelity. When required, linearization can be performed numerically, while the nonlinear formulation remains directly applicable for EMT simulations in time-domain studies. Secondly, although the proposed model employs a state-averaging technique, we demonstrate that its validity extends well beyond the switching frequency of the rectifier. This is confirmed through time-domain simulations and extensive frequency-domain analysis, which demonstrate close agreement with the behavior of a switching thyristor rectifier model. Finally, we conduct a large-scale system-level analysis using eigenvalue-based stability studies on a modified IEEE 39-bus network that integrates hydrogen electrolyzer loads, synchronous generators, and grid-forming converters. This configuration has been overlooked in the literature, despite its critical importance for future grids. The remainder of the paper is structured as follows. Firstly, in Sec. II, we briefly review the basics of small-signal analysis and present the RMS model. Subsequently, in Sec. III, we rigorously derive a novel EMT model of thyristor rectifiers. The RMS and EMT models are validated both in frequency and time-domain in Sec. IV. Finally, small-signal stability analysis of the standard IEEE 39-bus system containing electrolyzer loads interfaced via thyristor rectifiers is performed in Sec. V. II. M ODELING AND STABILITY ANALYSIS PRELIMINARIES 
+
+This section provides an overview of power system model-ing using differential-algebraic equations for EMT and RMS simulations and outlines the adopted approach to small-signal analysis. We then introduce two conventional RMS models of thyristor rectifiers which conform to this framework. 
+
+A. RMS and EMT Power System Modeling 
+
+A power system model represents a network of intercon-nected generation and load components in the form of explicit differential-algebraic equations. By grouping the system’s dif-ferential variables x, algebraic variables z, and inputs u, the DAE system can be formalized as  
+
+> ddt
+
+x = f  x, u, z, x(0) = xini , (1a) 
+
+0 = g x, u, z, (1b) where xini denotes the initial state of the differential variables. The structure of the above DAE system is influenced by the modeling approach adopted. RMS models focus on system behavior at the fundamental frequency, representing network variables as phasors under the assumption of quasi-steady-state conditions. This simplifies the grid model to algebraic equations and is typically valid for analyzing phenomena up to around 20 Hz, such as electro-mechanical interactions of machines. In contrast, EMT models retain full time-domain resolution (with averaged converter switching to enable lin-earization) and capture fast dynamics, including device-level converter control, machine flux behavior, and line transients. These models extend the validity in the frequency range up to 1 kHz or higher, resulting in detailed and higher-order DAEs. 3
+
+B. Small-Signal Stability Analysis 
+
+The small-signal model of a power system can be ob-tained by linearizing (1) around a desired equilibrium ξo =(xo, uo, zo) where f  ξo
+
+ = 0 and g ξo
+
+ = 0 . Using these properties, the linearized DAE system reads as  
+
+> ddt
+
+∆x = Axx ∆x + Bxu ∆u + Axz ∆z, (2a) 
+
+∆x(0) = xini − xo, (2b) 
+
+0 = Azx ∆x + Bzu ∆u + Azz ∆z, (2c) where the respective deviations from the desired operating point are represented by ∆x = x − xo, ∆u = u − uo, ∆z =
+
+z −zo. The matrices Axx , Bxu , and Axz denote the Jacobians of f with respect to x, u, z, respectively, and the matrices 
+
+Azx , Bzu , and Azz denote the Jacobians of g with respect to 
+
+x, u, z, respectively. The Jacobians are evaluated at ξo. We assume that DAE (1) is of index-1. Then, Azz is regular and the linearized DAE system (2) can be rewritten as  
+
+> ddt
+
+∆x = ˜A∆x + ˜B∆u, ∆x(0) = xini − xo (3) where ˜A = Axx −Axz A−1zz Azx and ˜B = Bxu −Axz A−1zz Bzu 
+
+are the state-space matrices. To determine whether the system is small-signal stable, we analyze the eigenvalues λ( ˜A) of the reduced state-space ma-trix. If all eigenvalues have negative real parts, then the power system is said to be small-signal stable at the equilibrium ξo.
+
+C. Thyristor Rectifier RMS Modeling 
+
+The RMS modeling of thyristor rectifiers is well established in the power systems literature and is readily available in classical references [8], [9]. In these works, the thyristor rectifier is modeled as a voltage source on the DC side and a current source on the AC side. The RMS behavior of a six-pulse thyristor rectifier, with input phase-to-ground voltage magnitude Vm, firing angle α, and output DC current Idc is given by the following equation set: 
+
+Vdc = 3√3Vm
+
+π cos α − Rdc Idc , (4a) 
+
+Im = 2√3
+
+π Idc , φ = α, (4b) with Rdc = 3ωgLc/π modeling the commutation-induced voltage drop, and Lc denoting the commutation inductance. Thus, Vdc defines the voltage of the DC-side votlage source and Im and φ define the magnitude and phase displacement angle of the AC-side current source, respectively. This model captures the basic power conversion principles of a six-pulse thyristor rectifier. To more accurately capture the commutation-related effects, this model has been extended in [10], [11], resulting in 
+
+Vdc = 3√3Vm
+
+π cos 
+
+
+
+α + μ
+
+2
+
+
+
+cos 
+
+ μ
+
+2
+
+
+
+, (5a) 
+
+μ = arccos 
+
+
+
+cos( α) − 2ωL c
+
+√3Vm
+
+Idc 
+
+
+
+− α, (5b) 
+
+Im = 2√3
+
+π kic Idc , (5c) 
+
+cos φ = 1
+
+kic 
+
+cos 
+
+
+
+α + μ
+
+2
+
+
+
+cos 
+
+ μ
+
+2
+
+
+
+, (5d) where μ is the commutation angle and kic is defined as                  
+
+> kic =
+> q cos(2 α)−cos  2( α+μ) 2+ 2μ+ sin(2 α)−sin  2( α+μ) 2
+> 4 cos( α)−cos( α+μ).
+
+Although (5) provides greater accuracy, it does not introduce additional dynamics compared to (4); both models therefore exhibit identical dynamic behavior. Multipulse thyristor recti-fier models, e.g., 12 pulse or 18 pulse, adopt the same structure, differing only in the voltage and current coefficient values. 
+
+D. RMS Model Assumptions and Limitations 
+
+The previously presented model captures the dominant rectifier behavior at the fundamental frequency, making it suitable for RMS simulations. Its derivation is based on several simplifying assumptions, which limit its applicability to EMT simulations. Firstly, the input is assumed to be a balanced three-phase voltage of constant magnitude and frequency, whereas more comprehensive models would treat it as time-varying and adopt a dq domain representation. Secondly, the model omits the dynamics of the PLL, which is typically used to syn-chronize thyristor firing; such dynamics can introduce delays that lead to delayed or premature thyristor firing. Furthermore, a constant DC output current is assumed, although practical systems exhibit time-varying currents as a result of finite output inductance. Moreover, commutation inductance is considered only in terms of its low-frequency impact on the average DC voltage, neglecting its dynamic behavior at higher frequencies. Finally, AC-side currents are derived via Fourier series, based on assumed waveforms, rather than through direct, physics-based dynamic modeling, that would yield increased accuracy. III. EMT M ODELING OF THYRISTOR RECTIFIERS 
+
+In this section, we develop a more detailed nonlinear thyris-tor rectifier model suitable for EMT small-signal analysis by considering the thyristor differential equations during commu-tation and during conduction and averaging them over a switch-ing period ( 2π/p interval, where p is the number of pulses of the thyristor rectifier). This model aims to overcome the limitations of the previously discussed RMS models. Without loss of generality, we consider the six-pulse rectifier topology depicted in Fig. 1 for the subsequent derivations. The DC voltage of a six-pulse thyristor rectifier consists of six identical segments within each fundamental cycle. That is, the DC voltage trajectory over each fundamental cycle is given by the concatenation of six equivalent segment trajectories. Thus, it is sufficient to model the DC voltage behavior over va        
+
+> vb
+> vc
+> Lc
+> Lc
+> Lc
+> Idc
+> +
+> vdc
+> -
+> ia
+> ib
+> ic
+> T1T3T5
+> T4T6T2
+> g1g3g5
+> g4g6g2
+> Fig. 1: Configuration of a six-pulse thyristor rectifier supplied from a three-phase voltage source and feeding a constant current load. 4
+
+a single segment, i.e., by studying a single π/ 3 interval. Throughout the commutation interval , as the current is redi-rected from T6 and T5 to T6 and T1, the behavior of the system is governed by the following set of equations: 
+
+Lc ddt ia = va − vdc ,p, ia = ia, (6a) 
+
+Lc ddt ib = vb − vdc ,n, ib = −Idc , (6b) 
+
+Lc ddt ic = vc − vdc ,p, ic = Idc − ia, (6c) where vdc ,p and vdc ,n denote the voltages of the positive and negative DC rails. Similarly, during the conduction interval ,when T6 and T1 are conducting, the circuit model becomes: 
+
+Lc ddt ia = va − vdc ,p, ia = Idc , (7a) 
+
+Lc ddt ib = vb − vdc ,n, ib = −Idc , (7b) 
+
+vc = vc, ic = 0 . (7c) The equations outlined above are the basis for subsequent development of the EMT model. 
+
+A. DC Voltage Dynamics 
+
+In order to capture both the commutation and conduction effects in a single continuous time expression, we average the conduction and commutation dynamics over a switching interval. To that end, the DC voltage vdc = vdc ,p − vdc ,n can firstly be calculated for both the commutation (superscript com) and the conduction (superscript con) intervals, as: 
+
+V com dc = 12 va + 12 vc − vb − 32 Lc ddt Idc , (8a) 
+
+V con dc = va − vb − 2Lc ddt Idc . (8b) Let us now consider a dq frame defined by an angle θr. A three-phase voltage vector v is described in the dq frame by a vector v = vd + jv q or in the polar form v = ∥v∥ exp (j θe).The phase voltages in (6) and (7) supplying the rectifier can be converted to the dq domain by using the inverse Park transform: 
+
+va = vd cos θ − vq sin θ, (9a) 
+
+vb = vd cos 
+
+
+
+θ − 2π
+
+3
+
+
+
+− vq sin 
+
+
+
+θ − 2π
+
+3
+
+
+
+, (9b) 
+
+vc = vd cos 
+
+
+
+θ + 2π
+
+3
+
+
+
+− vq sin 
+
+
+
+θ + 2π
+
+3
+
+
+
+. (9c) Expressing the phase quantities in their dq forms, the DC voltage equations in the two intervals (8) become: 
+
+V com dc = 32
+
+
+
+vd cos( θ + π
+
+3 ) − vq sin( θ + π
+
+3 )
+
+
+
+− 32 Lc ddt Idc ,V con dc = √3
+
+
+
+vd cos( θ + π
+
+6 ) − vq sin( θ + π
+
+6 )
+
+
+
+− 2Lc ddt Idc .
+
+Unlike in the RMS model derivation, no assumptions are made here about the form of the three-phase AC source voltages. These expressions are hence exact, as no simplifications have been adopted thus far. Furthermore, it is interesting to observe that the commutation inductance appears on the DC side, i.e., multiplied by the derivative of the DC current. The DC dynamics can now be averaged over a π/ 3 segment to obtain an EMT model: 
+
+Vdc = 3
+
+π
+
+Z − π   
+
+> 3+α+μ
+> −π
+> 3+α
+
+V com dc (θ) d θ +
+
+Z α  
+
+> −π
+> 3+α+μ
+
+V con dc (θ) d θ
+
+!
+
+,
+
+which, after evaluating the integrals and using vd + jv q =
+
+∥v∥ exp (j θe), yields the following DC voltage model 
+
+Vdc = kv∥v∥ cos 
+
+ μ
+
+2
+
+
+
+cos 
+
+
+
+α + μ
+
+2 + θe
+
+
+
+− ˜Lc(μ) ddt Idc , (10) where kv = 3 √3/π and ˜Lc(μ) = (2 − 3μ/ 2π)Lc. Averaging the system dynamics inevitably introduces modeling errors, as it captures only the mean behavior rather than the full range of dynamic responses. Nevertheless, this approximation is essential for transforming the hybrid switched differential-algebraic equation system into a standard DAE formulation that is amenable to small-signal analysis. The extent of the modeling error introduced by this step is examined in the results section. Figure 2 illustrates the equation (10) in the form of a control block diagram. The variable inductance is included in the circuit representation, derived later in this section. 
+
+B. Dynamics of the Commutation Process 
+
+The DC voltage dynamics, previously derived in (10), are a function of the commutation angle, denoted by μ. As in the derivation of the RMS model, the commutation angle can be determined by analyzing the commutation process, which is governed by the following differential equation: 
+
+2Lc ddt ia = va − vc + Lc ddt Idc 
+
+| {z } 
+
+> ≈0
+
+. (11) The differential equation is derived from the circuit in Fig. 1 assuming commutation from thyristor T5 to thyristor T1,where phases a and c are shorted during the commutation interval until the current in T1, i.e., ia, reaches Idc . The last term in (11) considers the effect of DC current variation during the commutation period, which is typically insignificant and can thus be neglected [25]. It is important to note that there are no inherent mathematical challenges in solving the differential equation in its original form. The introduced simplification is rather adopted since the resulting expression depends on the difference between the DC current at the beginning and end of the commutation period. These quantities are not captured by the EMT model, as our approach relies on averaging. The phase voltages va and vc can be expressed in the dq-domain as previously introduced in (9) and their difference can be obtained using trigonometric identities, as 
+
+va − vc = √3
+
+
+
+vd sin 
+
+
+
+θ + π
+
+3
+
+
+
++ vq cos 
+
+
+
+θ + π
+
+3
+
+ 
+
+. (12) Assuming ω = ddt θ is constant during commutation, the current 
+
+ia derivative can be written as  
+
+> ddt
+
+ia = ddθ ia ddt θ = ω ddθ ia. (13) α +
+
+θe
+
+‖v‖
+
+μ/ 2
+
+kv
+
+×cos ( ·)
+
+cos ( ·)
+
+Vdc 
+
+> Fig. 2: Control block diagram of the output DC voltage calculation. 5
+
++θe 
+
+> -
+
+μ
+
+α
+
+> -
+
++ cos ( ·) + arccos ( ·)
+
+> +
+> +
+
+Idc ‖ · ‖ 2ωL c ÷
+
+> -
+
+v ‖ · ‖ √3
+
+Fig. 3: Control block diagram of the commutation angle calculation. 
+
+Hence, the differential equation can be written as  
+
+> ddθ
+
+ia =
+
+√32ωL c
+
+
+
+vd sin 
+
+
+
+θ + π
+
+3
+
+
+
++ vq cos 
+
+
+
+θ + π
+
+3
+
+ 
+
+, (14) with the following initial and final conditions: 
+
+ia
+
+
+
+θ = − π
+
+3 + α
+
+
+
+= 0 , i a
+
+
+
+θ = − π
+
+3 + α + μ
+
+
+
+= Idc . (15) The differential equation can be solved by integrating the expression in (14) from θ0 = − π 
+
+> 3
+
++ α to θ, as follows 
+
+ia(θ) = 
+
+Z θθ0
+
+√32ωL c
+
+
+
+vd sin 
+
+
+
+ϕ + π
+
+3
+
+
+
++ vq cos 
+
+
+
+ϕ + π
+
+3
+
+ 
+
+dϕ, 
+
+which, after evaluating the integral, results in 
+
+ia(θ) = 
+
+√3∥v∥
+
+2ωL c
+
+
+
+cos( α + θe) − cos 
+
+
+
+θ + θe + π
+
+3
+
+ 
+
+. (16) In order to determine the commutation angle μ, let us impose the boundary condition for the current ia(θ):
+
+Idc =
+
+√3∥v∥
+
+2ωL c
+
+(cos( α + θe) − cos ( α + μ + θe)) . (17) Solving the above equation in μ, we obtain 
+
+μ = arccos 
+
+
+
+cos ( α + θe) − 2ωL c
+
+√3∥v∥ Idc 
+
+
+
+− α − θe. (18) This equation is illustrated in Fig. 3 in the form of a control diagram. An absolute-value operator is introduced to enforce strictly unidirectional conduction within the thyristor rectifier. 
+
+C. Input Current Dynamics 
+
+The average input current dynamics are derived following the same approach that is used to derive the DC voltage dynamics. As established at the beginning of this section, the phase currents during the commutation interval are given by 
+
+ia = ia, ib = −Idc , ic = Idc − ia, (19) which we transform to the dq domain through the Park transform, resulting in the following d- and q-components: 
+
+icom d (θ) = 2√33
+
+
+
+ia(θ) sin 
+
+
+
+θ + π
+
+3
+
+
+
+− Idc sin θ
+
+
+
+, (20) 
+
+icom q (θ) = 2√33
+
+
+
+ia(θ) cos 
+
+
+
+θ + π
+
+3
+
+
+
+− Idc cos θ
+
+
+
+. (21) On the other hand, the phase currents during the conduction interval are given by 
+
+ia = Idc , ib = −Idc , ic = 0 , (22) which we also transform to the dq domain, resulting in 
+
+icon d (θ) = − 2√33 Idc sin ( θ − π
+
+3 ), (23) 
+
+icon q (θ) = − 2√33 Idc cos ( θ − π
+
+3 ). (24) The input current dynamics can now be averaged over a switching period to obtain the EMT model: 
+
+id = 3
+
+π
+
+Z − π   
+
+> 3+α+μ
+> −π
+> 3+α
+
+icom d (θ) d θ +
+
+Z α  
+
+> −π
+> 3+α+μ
+
+icon d (θ) d θ
+
+!
+
+,iq = 3
+
+π
+
+Z − π   
+
+> 3+α+μ
+> −π
+> 3+α
+
+icom q (θ) d θ +
+
+Z α  
+
+> −π
+> 3+α+μ
+
+icon q (θ) d θ
+
+!
+
+.
+
+The final expressions depend on how the phase current ia(θ)
+
+during commutation is modeled. The expression in (16) is accurate but complex. For this reason, we first employ a simplified form assuming that the current increases linearly during commutation. In this case, the phase current becomes 
+
+ia(θ) = 1
+
+μ Idc (θ + π
+
+3 − α). (25) Under this assumption, the average current dynamics take the following form: 
+
+id = 2√33 Idc cos ( α + μ
+
+2 ), (26) 
+
+iq = − 2√33 Idc sin ( α + μ
+
+2 ). (27) Notice the resemblance between the equations above and the current approximation obtained in the RMS model (5). However, if the exact expression in (16) is adopted, we obtain: 
+
+id = 2√33 Idc cos ( α + μ) + idcom ,iq = − 2√33 Idc sin ( α + μ) − iqcom ,
+
+where 
+
+idcom = 3∥v∥
+
+πωL c
+
+2 sin 
+
+
+
+α + μ
+
+2
+
+
+
+sin 
+
+ μ
+
+2
+
+
+
+cos ( α + θe)+ μ
+
+2 sin ( θe) − 12 sin ( μ) sin (2 α + μ + θe)
+
+!
+
+,iqcom = 3∥v∥
+
+πωL c
+
+2 cos 
+
+
+
+α + μ
+
+2
+
+
+
+sin 
+
+ μ
+
+2
+
+
+
+cos ( α + θe)+ μ
+
+2 cos ( θe) + 12 sin ( μ) cos (2 α + μ + θe)
+
+!
+
+.
+
+The proposed input current model is depicted in Fig. 4 as a control block diagram for clarity. With the behaviors on both the AC and DC sides now defined, an equivalent circuit can be constructed. The representation shown in Fig. 5 illustrates that the thyristor rectifier EMT model is represented as a current sink on the AC side and as a voltage source on the DC side. 6+α
+
+μ
+
+cos ( ·) ×
+
+Io ‖ · ‖ ki
+
+− sin ( ·) ×
+
+idcom 
+
+iqcom 
+
++
+
++
+
+abc 
+
+dq 
+
+dq 
+
+dq iT
+
+θpll 
+
+> Fig. 4: Control block diagram of the input current model.
+
++
+
+vg
+
+-
+
+iT −
+
++Vo
+
+Lc
+
+(2 − 3μ
+
+> 2π
+
+)
+
++
+
+Vdc 
+
+-
+
+Idc 
+
+> Fig. 5: Circuit representation of the thyristor rectifier EMT model.
+
+D. PLL Dynamics 
+
+The PLL plays a critical role in rectifier operation by enabling the control system to accurately detect zero-crossing points and generate precise firing angles. Any error in the PLL angle results in delayed or premature thyristor firing, thereby affecting both the generated DC voltage and the input current. Naturally, commutation dynamics are also impacted. To adequately capture the dynamics of the PLL, the thyristor rectifier model should be implemented in a reference frame defined by the PLL angle θr ≡ θpll . A control block diagram of the considered PLL implementation is depicted in Fig. 6. It can be observed that the angle θe = arctan( vq, v d) appears consistently in the final expressions of the derived EMT model. Assuming the thyristor rectifier model is implemented in a reference frame defined by the PLL angle, the angle θe repre-sents the error in PLL angle estimation. By coupling the PLL error with the angle θe appearing in the derived EMT model equations, the PLL dynamics are effectively incorporated into the rectifier EMT model. One can verify that such an approach leads to proper accounting of delayed and premature thyristor firing effects. Consequently, the following equations should be included in the EMT model to account for the PLL dynamics: 
+
+v = R(θpll )vg, (28a) 
+
+ωpll = ωn + Kpll ,pvq +
+
+Z t
+
+> 0
+
+Kpll ,ivqdτ, (28b)  
+
+> ddt
+
+θpll = ωpll , θ pll (0) = 0 (28c) 
+
+θe = arctan( vq, v d), (28d) 
+
+∥v∥ =
+
+q
+
+v2d + v2q, (28e) where vg is the source voltage in the grid frame, ωn is the nominal angular frequency and R(·) is the rotation matrix. dq 
+
+dq 
+
+dq 
+
+dq 
+
+vg
+
+‖ · ‖ ‖v‖
+
+÷
+
+K(s)
+
+arctan ( ·) θe 
+
+> 1
+> s
+
+θpll 
+
+v
+
+vd
+
+vq ωpll 
+
+vq/v d
+
+> Fig. 6: PLL control diagram.
+
+E. Switching Delay Modeling 
+
+Given that the six-pulse rectifier operates at a pulse fre-quency of fsw = 300 Hz , high-frequency oscillations in the firing angle reference are not directly reflected in the out-put. To improve the accuracy of the model, we introduce a first-order low-pass filter with a cut-off frequency defined as 
+
+fc = fsw /2 = 150 Hz to prefilter the firing angle in the EMT model. The filtered firing angle is represented as  
+
+> ddt
+
+α = ωz
+
+ α⋆ − α, α (0) = α⋆(0) , (29) where ωz = 2 πf c denotes the filter cut-off frequency, and α⋆ is the reference firing angle typically determined by a controller. 
+
+F. EMT Model Summary 
+
+In summary, within the EMT model framework, the thyristor rectifier can be represented as a voltage source with a variable inductance on the DC side and a current sink on the AC side. This representation captures higher frequency behavior of the system, in contrast to the RMS-based modeling approach typ-ically used for steady-state or low-frequency analysis. Besides the PLL dynamics (28), all equations pertaining to the EMT model are collected below: 
+
+Vdc = kv∥v∥ cos 
+
+ μ
+
+2
+
+
+
+cos 
+
+
+
+α + μ
+
+2 + θe
+
+
+
+− ddt ˜LcIdc , (30a) 
+
+μ = arccos 
+
+
+
+cos ( α + θe) − 2ωL c
+
+√3∥v∥ Idc 
+
+
+
+− α − θe, (30b) 
+
+id = 2√33 Idc cos ( α + μ) + idcom , (30c) 
+
+iq = − 2√33 Idc sin ( α + μ) + iqcom , (30d)  
+
+> ddt
+
+α = ωz
+
+ α⋆ − α, α (0) = α⋆(0) , (30e) with idcom and iqcom defined in (28a), and vg and Idc being independent inputs to the system. The proposed model is formulated for a six-pulse rectifier. Extensions to rectifiers with a higher number of pulses can be achieved in a straightforward manner by appropriately connecting multiple six-pulse recti-fiers in series and/or parallel or by adjusting the corresponding coefficients in the model equations. IV. M ODEL VALIDATION 
+
+In this section, we validate the reviewed RMS model (4) and the proposed EMT model (30) by comparing their dynamic behavior against the detailed switching model – depicted in Fig. 1 and with its switching operation described in [8]. The models are evaluated in both the time and frequency domains. Frequency-domain analysis is performed via impedance spec-troscopy on both the DC and AC sides, measuring the DC output impedance and the AC input admittance. On the other 7Vg vp Ldidc 
+
+> +
+> vdc
+> -
+> ip
+> t
+> ip
+> t
+> vp
+> ia
+> ib
+> ic
+> Electrolyzer Thyristor Rectifier Grid Equivalent
+> Lc
+
+Fig. 7: Impedance spectroscopy through load and source perturbations. 
+
+hand, time-domain analysis focuses on the transient response to a load step change. 
+
+A. Time Domain Validation 
+
+We first compare the time domain responses of the three above-mentioned models. The simulation results for the system in Fig. 7 are presented in Fig. 8. The perturbation variables 
+
+vp = 0 and ip = 0 are set to zero and the electrolyzer model is given in Sec. V in (33). At 10 ms simulation time, the reverse voltage of the electrolyzer is halved in a stepwise fashion, creating a short transient in the DC current. As can be seen from the figure, the predictions from the considered RMS and EMT models match well the switching model in steady-state. Nevertheless, during the transient, only the EMT model correctly predicts the behavior of the switching model. Therefore, model matching in higher frequencies requires more detailed analysis, which is performed subsequently using frequency domain approaches. 
+
+B. DC Output Impedance Comparison 
+
+In this subsection, we verify how well the considered stabil-ity models (RMS and EMT) approximate the DC side dynamics by investigating the properties of the DC output impedance. The DC output impedance can be estimated using the circuit illustrated in Fig. 7. That is, load current perturbations ip of various frequencies (in the frequency range of interest) are applied, while the electrolyzer load is disconnected and the source perturbations are not applied, i.e., vp = 0 . Subsequently, the output impedance is calculated as 
+
+Zout (ω) = − vdc (ω)
+
+idc (ω) , ω ∈ [ωmin , ω max ].
+
+The output impedance scanning results are presented in Fig. 9. Interestingly, the output impedance in the RMS model 0 5 10 15 20 25 30 35 40 45 50 55 60 
+
+6
+
+8
+
+10 
+
+12 
+
+14 
+
+Time [ms] 
+
+> Idc  [kA]
+> Switching model
+> EMT model
+> RMS model
+
+Fig. 8: Time-domain response of the DC output current of the three considered models to a step change in the reverse voltage of the hydrogen electrolyzer. −45 
+
+−30 
+
+−15 
+
+0
+
+> ∥Zo(s)∥ [dB]
+> Switching model
+> EMT model
+> RMS model
+
+10 −1 10 0 10 1 10 2 10 3
+
+0
+
+30 
+
+60 
+
+90 
+
+Frequency [Hz] 
+
+> ∠{Zo(s)} [deg .]
+> Switching model
+> EMT model
+> RMS model
+
+Fig. 9: Comparison of DC output impedances of the RMS, EMT and full switching models. 
+
+is constant and corresponds to Rdc . This is an expected result, as the model includes only the low-frequency effects on the DC voltage. Higher frequency effects are well captured by the EMT model. The commutation inductance appears not only as a constant (resistive) component but also as an inductive element. The EMT model accurately captures the behavior of the full switching model, also at higher frequencies. The tiny mismatches at some frequencies between the EMT and the full model arise due to nonlinearities and switching harmonics. 
+
+C. AC Input Admittance Comparison 
+
+Secondly, we verify how well the considered stability mod-els approximate the AC side dynamics by investigating the properties of the AC input admittance. AC input admittance is estimated using the circuit in Fig. 7 with ip = 0 and the electrolyzer load connected to the DC terminal. The objective of the frequency scanning procedure is to determine the dq-admittance of the system as observed from the point of perturbation. This is achieved by injecting a small voltage disturbance vp at a specific frequency ω around the steady-state operating condition. By sweeping across a wide range of frequencies, the system’s dq-admittance can be identified. The dq-admittance consists of four components: 
+
+Ydd , Ydq , Yqd , and Yqq , calculated as [31]: 
+
+Ydd (ω) = idp d (ω)
+
+vdp d (ω) , Ydq (ω) = iqp d (ω)
+
+vqp q (ω) , (31) 
+
+Yqd (ω) = idp q (ω)
+
+vdp d (ω) , Yqq (ω) = iqp q (ω)
+
+vqp q (ω) . (32) Here, the superscripts dp and qp denote the perturbations ap-plied along the d and q axes, respectively, and ω ∈ [ωmin , ω max ]
+
+represents the frequency at which the system is perturbed. To accurately calculate dq-admittance, frequency scans must be performed independently for the d and q axes. Figure 10 shows the measurements in the frequency-domain obtained using the proposed method. As illustrated in the plots, both the RMS and the EMT model reproduce the behavior of the full switching model accurately in the low-frequency region (up to approximately 10 Hz). However, the EMT model provides a substantially closer match to the full model, particularly in the Ydq and Yqq admittances. This improved matching is attributed to its higher fidelity, the inclusion of a PLL, and its detailed modeling of the commutation process. 8−80                   
+
+> −70
+> −60
+> −50
+> −40
+> ∥Ydd (s)∥ [dB]
+> ∥Ydq (s)∥ [dB]
+> Switching model EMT model RMS model
+> ∥Yqd (s)∥ [dB]
+> ∥Yqq (s)∥ [dB]
+> 10 −110 010 110 210 3
+> −180
+> −90
+> 0
+> 90
+> 180
+> Frequency [Hz]
+> ∠{Ydd (s)} [deg .]
+> 10 −110 010 110 210 3
+> Frequency [Hz]
+> ∠{Ydq (s)} [deg .]
+> 10 −110 010 110 210 3
+> Frequency [Hz]
+> ∠{Yqd (s)} [deg .]
+> 10 −110 010 110 210 3
+> Frequency [Hz]
+> ∠{Yqq (s)} [deg .]
+
+Fig. 10: All four components of the input admittance, presented in both magnitude and phase, of the six-pulse rectifier with hydrogen electrolyzer load. 
+
+V. S MALL -S IGNAL STABILITY RESULTS 
+
+This section presents small-signal stability results for the IEEE 39-bus test system comprising synchronous genera-tors, grid-forming converters, and electrolyzer loads interfaced through thyristor rectifiers. The objective is to assess the impact of thyristor rectifiers on overall system stability and to identify potential sources of instability. The section first describes the case study setup and system parameterization. It then employs modal analysis to identify the most critical system modes, followed by a bifurcation analysis of key thyristor rectifier and electrolyzer parameters that may precipitate system instability. 
+
+A. Case Study Setup 
+
+The IEEE 39-bus New England test system considered in this paper is illustrated in Fig. 11. The original system [32] consists of ten conventional synchronous generators supplying a total load of approx. 6000 MW . The system is modified to incorporate three electrolyzer loads, which are connected at buses 21, 28, and 38 with nominal power consumptions of 
+
+50 MW , 100 MW , and 200 MW , respectively. To meet the ad-ditional electrolyzer demand, three renewable generation units interfaced through voltage source converters (VSCs) are added to buses 1, 2, and 3, with corresponding generation capacities of 50 MW , 100 MW , and 200 MW . All VSCs are operated in grid-forming mode. The relevant network, load, and syn-chronous generator parameters are adopted from the original reference [32], while the modeling and parameterization of the electrolyzers and grid-forming converters are described in the following. All simulations are performed in P OWER FACTORY ,which provides detailed models of synchronous machines, inverter-interfaced generation, and transmission lines. 1
+
+A Proton Exchange Membrane (PEM) hydrogen electrolyzer is considered in this work and is modeled using an equivalent electrical circuit. The electrolyzer cell voltage is described by the following set of equations [33]: 
+
+Vcell = Ld ddt Icell + R0Icell + v1 + Vrev , (33a) 
+
+C1 ddt v1 = Icell − v1
+
+R1
+
+, (33b) where Ld denotes the DC-side inductance, which is typically required for the stable operation of a thyristor rectifier. The pa-rameter R0 represents the membrane resistance, while (R1, C 1)
+
+define the parallel RC branch used to model the double-layer 
+
+> 1https://www.digsilent.de/en/powerfactory.html
+
+capacitance effect. Finally, Vrev is the reversible voltage asso-ciated with the electrochemical reaction and corresponds to the minimum voltage required for hydrogen production. The electrolyzer is supplied by a 12-pulse thyristor rectifier, obtained by connecting in series two six-pulse rectifiers in (30). The rectifier DC voltage and current correspond directly to the electrolyzer cell voltage and current, that is, Vdc = Vcell 
+
+and Idc = Icell . To regulate hydrogen production, a propor-tional–integral controller is employed to adjust the firing angle of the thyristor rectifier, thereby tracking a desired DC current reference Iref dc . The parameter values of the three electrolyzers integrated into the IEEE 39-bus system are summarized in Table I and are inspired by parameters in [16]. A virtual synchronous machine model [34] is employed to represent grid-forming converter behavior. As noted earlier, VSC-based converters are connected at buses 1, 2, and 3, with rated capacities of 50 MW , 100 MW , and 200 MW ,respectively. The inertia and damping parameters are identical VSC      
+
+> VSC
+> VSC
+> 31
+> 36
+> 38
+> 33
+> 34 35
+> 32
+> 37
+> 30
+> 39
+> 11
+> 12
+> 13
+> 14
+> 15
+> 16
+> 17
+> 18
+> 19
+> 20
+> 21 22
+> 23
+> 24
+> 25 26
+> 27
+> 28 29
+> 9
+> 1
+> 7
+> 4
+> 5
+> 6
+> 2
+> 83
+> 10
+
+Fig. 11: Single-line diagram of the modified IEEE 39-bus New Eng-land test system, illustrating the placement of VSC-based generation and thyristor rectifier-interfaced electrolyzer loads. 9
+
+TABLE I: Electrolyzer parameters.                            
+
+> Bus Capacity LdR0R1C1Vrev
+> 38 200 MW 5μH0.2 mΩ 0.7 mΩ 53 F 100 V 28 100 MW 10 μH0.4 mΩ 1.5 mΩ 25 F 100 V 21 50 MW 20 μH0.8 mΩ 3 mΩ 10 F 100 V
+
+for all three converters, with an inertia constant of 5 s and a damping coefficient of 0.32 . Voltage magnitude regulation is implemented via a first-order lag, consistent with standard virtual synchronous machine implementations. 
+
+B. Modal Analysis 
+
+In this subsection, we analyze the eigenvalues of the small-signal model in (2) for the modified IEEE 39-bus system at the nominal operating point described above. Since the system comprises a total of 253 modes, the analysis focuses on those eigenvalues located closest to the imaginary axis, as these are the most critical for stability assessment. A set of selected 21 critical eigenvalues is reported in Table II, expressed both as complex numbers in rectangular form and in terms of their corresponding damped frequencies fn = |ℑ (λ)|/2π and damping ratios ζ = −ℜ (λ)/p(ℜ(λ)2 + ℑ(λ)2. Furthermore, a participation-factor analysis [35] is performed to determine the grid components that contribute to each mode, as shown in the last column of the table. We note that all of the analysis in this subsection and the next pertain solely to the EMT model. Stability issues with RMS thyristor rectifier models have not been observed in our study due to the absence of PLL and accurate current dynamics modeling. The critical eigenvalues listed in Table II reveal the rel-ative involvement of the synchronous generators (Gs), the virtual synchronous machine (VSM), and the thyristor rectifiers (TRs) in shaping the system’s small-signal dynamics. The lowest-frequency electromechanical modes (e.g., λ1,2 and λ3,4)show dominant participation from the synchronous generators 
+
+G10 and G9, together with the virtual synchronous machine 
+
+VSM 3. This indicates that the VSM is dynamically coupled to the classical rotor-angle oscillations and contributes to their damping. As the modal frequency increases, the influence of the synchronous machines remains present, but additional dynamics originating from the thyristor rectifiers become sig-nificant. In particular, modes such as λ14 ,15 and λ18 ,19 exhibit strong participation from TR 28 and TR 38 , reflecting the higher sensitivity of rectifier current control loops to oscillations in the mid-frequency range. Several modes (e.g., λ20 ,21 ) further highlight the combined interaction of synchronous generators, the VSM, and multiple electrolyzer loads. 
+
+TABLE II: Selected critical eigenvalues.                                                                                     
+
+> ID Mode ζfn[Hz] Participating Units
+> λ1, λ 2−0.05 ±j0.03 0.88 0.004 G10 ,G9,VSM 3
+> λ3, λ 4−0.135 ±j0.437 0.30 0.070 G9,VSM 3
+> λ5−0.188 1.00 0G10 ,VSM 3
+> λ6, λ 7−0.198 ±j0.849 0.23 0.135 G10 ,G9
+> λ8, λ 9−0.212 ±j0.451 0.43 0.072 G10 ,G4
+> λ10 , λ 11 −0.254 ±j0.519 0.44 0.083 G10 ,G4
+> λ12 , λ 13 −0.456 ±j6.074 0.45 0.967 TR 28 ,TR 38 ,G9
+> λ14 , λ 15 −1.384 ±j0.350 0.97 0.056 G8,TR 28 ,VSM 3
+> λ16 , λ 17 −4.833 ±j3.774 0.79 0.601 G10 ,TR 38
+> λ18 , λ 19 −5.030 ±j3.424 0.83 0.545 G10 ,TR 28 ,VSM 3
+> λ20 , λ 21 −5.162 ±j3.758 0.81 0.598 G10 ,TR 28 ,TR 21
+
+C. Bifurcation Analysis 
+
+We further perform a bifurcation analysis to identify crit-ical parameter values at which the system transitions from stable to unstable operation. The results indicate that these transitions are primarily driven by the tuning of the current controller and the PLL. Figure 12a illustrates the evolution of the eigenvalue spectrum as the PLL proportional gain of the thyristor rectifier at bus 28 is reduced from 1 to 0.01 ,while Fig. 12b depicts the effect of decreasing its current control bandwidth from 100 Hz to 1 Hz. In the former case, a bifurcation is observed, demonstrating that the system loses stability at the lowest examined PLL bandwidth. In particular, the eigenvalue pair λ12 ,13 transitions toward and eventually crosses into the unstable region. In contrast, reducing the current controller bandwidth shifts the eigenvalues closer to the imaginary axis but does not induce instability within the considered parameter range. The evolution of the PLL-induced instability is presented in time domain in Fig. 13. The system is initialized at the nominal operating point and the PLL proportional gain of the rectifer at bus 28 is set to 0.01 . As can be seen from the figure, the output power of the VSM units and the rectifier at bus 28 abruptly decrease to zero, leading to a system collapse. VI. C ONCLUSION 
+
+This work presented a nonlinear EMT model of a thyristor rectifier that achieves a balance between fidelity and com-putational tractability, addressing limitations of both RMS-based and time domain switched modeling approaches. By formulating rectifier dynamics in polar coordinates in the dq domain and incorporating PLL behavior, commutation over-lap, and switching delays without restrictive assumptions, the model enables accurate EMT simulations as well as small-signal analysis of large-scale systems through numerical lin-−3 −2 −1 0
+
+−10 
+
+−5
+
+0
+
+5
+
+10 
+
+ℜ(λ)
+
+> ℑ(λ)
+> (a)
+
+−1 −0.75 −0.5 −0.25 0
+
+−10 
+
+−5
+
+0
+
+5
+
+10 
+
+ℜ(λ)
+
+> ℑ(λ)
+> (b)
+
+Fig. 12: Movement of eigenvalues due to the changes in (a) PLL proportional gain; (b) current control bandwidth. 10 0 0.5 1 1.5 2 2.5
+
+−200 
+
+−100 
+
+0
+
+100 
+
+200 
+
+Time [s]    
+
+> Active Power [MW]
+> VSM TR 38 TR 28 TR 21
+
+Fig. 13: Trajectories of active power outputs of the three VSM converters and power consumption of the three thyristor rectifiers in the case of a PLL-induced instability. 
+
+earization. The validation results demonstrate close agreement with the full switching model. The eigenvalue-based stability analysis conducted on a modified IEEE 39-bus system further highlights the model’s capability to reveal interactions among synchronous generators, grid-forming converters, and thyristor rectifiers. Furthermore, the study identified that PLL gains and current-control bandwidth of thyirstor rectifiers critically affect stability margins, with potential bifurcations emerging under poor PLL tuning. REFERENCES [1] Y. Yang, P. Davari, F. Zare, and F. Blaabjerg, “Enhanced phase-shifted current control for harmonic cancellation in three-phase multiple ad-justable speed drive systems,” IEEE Transactions on Power Delivery ,vol. 32, no. 2, pp. 996–1004, 2017. [2] C. Gao, J. Yang, Z. He, G. Tang, J. Zhang, T. Li, and D. He, “Novel controllable-line-commutated converter for eliminating commutation fail-ures of LCC-HVDC system,” IEEE Transactions on Power Delivery ,vol. 38, no. 1, pp. 255–267, 2023. [3] D. Dong, Y. Pan, R. Lai, X. Wu, and K. Weeber, “Active fault-current foldback control in thyristor rectifier for DC shipboard electrical system,” 
+
+IEEE Journal of Emerging and Selected Topics in Power Electronics ,vol. 5, no. 1, pp. 203–212, 2017. [4] S. Mirsaeidi, X. Dong, and D. M. Said, “A fault current limiting ap-proach for commutation failure prevention in LCC-HVDC transmission systems,” IEEE Transactions on Power Delivery , vol. 34, no. 5, pp. 2018– 2027, 2019. [5] X. Wang and F. Blaabjerg, “Harmonic stability in power electronic-based power systems: Concept, modeling, and analysis,” IEEE Transactions on Smart Grid , vol. 10, no. 3, pp. 2858–2870, 2019. [6] J. D. Lara, R. Henriquez-Auba, D. Ramasubramanian, S. Dhople, D. S. Callaway, and S. Sanders, “Revisiting power systems time-domain sim-ulation methods and models,” IEEE Transactions on Power Systems ,vol. 39, no. 2, pp. 2421–2437, 2024. [7] U. Markovic, O. Stanojev, P. Aristidou, E. Vrettos, D. Callaway, and G. Hug, “Understanding small-signal stability of low-inertia systems,” 
+
+IEEE Transactions on Power Systems , vol. 36, no. 5, pp. 3997–4017, 2021. [8] B. R. Pelly, Thyristor Phase-Controlled Converters and Cycloconverters ,First ed. John Wiley & Sons, Inc., 1971. [9] P. Kundur, Power System Stability and Control . McGraw-Hill, New York, 1994. [10] J. Arrillaga, High Voltage Direct Current Transmission , Second ed. IET Power and Energy Series, 1998, vol. 29. [11] B. Wu, High-Power Converters and AC Drives , First ed. John Wiley & Sons, Inc., 2006. [12] C. Karawita and U. D. Annakkage, “Multi-infeed HVDC interaction studies using small-signal stability assessment,” IEEE Transactions on Power Delivery , vol. 24, no. 2, pp. 910–918, 2009. [13] D.-H. Kwon, Y.-J. Kim, and S.-I. Moon, “Modeling and analysis of an LCC HVDC system using dc voltage control to improve transient response and short-term power transfer capability,” IEEE Transactions on Power Delivery , vol. 33, no. 4, pp. 1922–1933, 2018. [14] C. Osauskas and A. Wood, “Small-signal dynamic modeling of HVDC systems,” IEEE Transactions on Power Delivery , vol. 18, no. 1, pp. 220– 225, 2003. [15] H. Atighechi, S. Chiniforoosh, J. Jatskevich, A. Davoudi, J. A. Martinez, M. O. Faruque, V. Sood, M. Saeedifard, J. M. Cano, J. Mahseredjian, D. C. Aliprantis, and K. Strunz, “Dynamic average-value modeling of CIGRE HVDC benchmark system,” IEEE Transactions on Power Delivery , vol. 29, no. 5, pp. 2046–2054, 2014. [16] G. W. Ndiwulu, E. V. Mayen, and E. De Jaeger, “Dynamic interactions of a high-current thyristor-rectifier interfaced PEM electrolyzer with the angular dynamics of synchronous machines,” in 2024 IEEE International Conference on Environment and Electrical Engineering , 2024, pp. 1–6. [17] Y. Chen, L. Xu, A. Egea- ` Alvarez, and B. Marshall, “Accurate and general small-signal impedance model of lcc-hvdc in sequence frame,” IEEE Transactions on Power Delivery , vol. 38, no. 6, pp. 4226–4241, 2023. [18] J. Wang, Y. Liu, C. Fu, Z. Wang, J. Feng, H. Li, Z. Yu, Z. Mo, and S. Zhou, “Frequency domain admittance model of line-commutated con-verter based on single-side modulated state function,” IEEE Transactions on Power Delivery , vol. 39, no. 2, pp. 845–858, 2024. [19] T. Liu, R. Xu, Q. Jiang, B. Li, F. Blaabjerg, and P. Wang, “Multiple switching functions based hss model of LCC considering variable com-mutation angle and harmonic couplings,” IEEE Transactions on Power Delivery , vol. 38, no. 6, pp. 3820–3833, 2023. [20] R. Xu, Q. Jiang, B. Li, Y. Liu, T. Liu, F. Blaabjerg, and P. Wang, “Impedance based stability analysis of the multi-terminal cascaded hybrid hvdc system,” IEEE Transactions on Power Delivery , vol. 40, no. 3, pp. 1754–1768, 2025. [21] C. Guo, J. Zhang, S. Yang, and N. Lv, “Impact of time delay on the control link in small signal dynamics of LCC-HVDC system,” IEEE Transactions on Power Delivery , vol. 38, no. 5, pp. 3342–3355, 2023. [22] Y. Qi, H. Zhao, S. Fan, A. M. Gole, H. Ding, and I. T. Fernando, “Small signal frequency-domain model of a LCC-HVDC converter based on an infinite series-converter approach,” IEEE Transactions on Power Delivery , vol. 34, no. 1, pp. 95–106, 2019. [23] J. Lu, X. Yuan, J. Hu, M. Zhang, and H. Yuan, “Motion equation modeling of LCC-HVDC stations for analyzing dc and ac network interactions,” IEEE Transactions on Power Delivery , vol. 35, no. 3, pp. 1563–1574, 2020. [24] Y. Dong, J. Ma, S. Wang, T. Liu, X. Chen, and H. Huang, “An accurate small signal dynamic model for LCC-HVDC,” IEEE Transactions on Applied Superconductivity , vol. 31, no. 8, pp. 1–6, 2021. [25] X. Chen, J. Ma, S. Wang, T. Liu, D. Liu, and T. Zhu, “An accurate impedance model of line commutated converter with variable commuta-tion overlap,” IEEE Transactions on Power Delivery , vol. 37, no. 1, pp. 562–572, 2022. [26] B. Du, J. Zhu, J. Hu, Z. Guo, S. Ma, and J. Guo, “Small-signal modeling of LCC-HVDC considering switching dynamics based on the linear time-periodic (LTP) method,” IEEE Transactions on Power Delivery , vol. 39, no. 5, pp. 2715–2728, 2024. [27] K. Yang, X. Wang, Q. Zhang, G. Geng, and Q. Jiang, “Dynamics enhanced quasi-steady-state model of LCC-HVDC systems based on neural network,” IEEE Transactions on Power Delivery , vol. 40, no. 4, pp. 2017–2028, 2025. [28] C. Finotti and E. Gaio, “Continuous model in dq frame of thyristor controlled reactors for stability analysis of high power electrical systems,” 
+
+International Journal of Electrical Power & Energy Systems , vol. 63, pp. 836–845, 2014. [29] B. Perkins and M. Iravani, “Dynamic modeling of high power static switching circuits in the dq-frame,” IEEE Transactions on Power Systems ,vol. 14, no. 2, pp. 678–684, 1999. [30] A. Bidadfar, H.-P. Nee, L. Zhang, L. Harnefors, S. Namayantavana, M. Abedi, M. Karrari, and G. B. Gharehpetian, “Power system stability analysis using feedback control system modeling including HVDC transmission links,” IEEE Transactions on Power Systems , vol. 31, no. 1, pp. 116–124, 2016. [31] R. H. Ramakrishna, Z. Miao, L. Fan, and S. Shah, “DQ admittance extraction for inverter-based resources,” in 2023 IEEE Power & Energy Society General Meeting (PESGM) , 2023, pp. 1–5. [32] T. Athay, R. Podmore, and S. Virmani, “A practical method for the direct analysis of transient stability,” IEEE Transactions on Power Apparatus and Systems , vol. PAS-98, no. 2, pp. 573–584, March 1979. [33] M. Khalid Ratib, K. M. Muttaqi, M. R. Islam, D. Sutanto, and A. P. Agalgaonkar, “Electrical circuit modeling of proton exchange membrane electrolyzer: The state-of-the-art, current challenges, and recommenda-tions,” International Journal of Hydrogen Energy , vol. 49, pp. 625–645, 2024. [34] S. D’Arco, J. A. Suul, and O. B. Fosso, “Small-signal modelling and parametric sensitivity of a virtual synchronous machine,” in 2014 Power Systems Computation Conference , 2014, pp. 1–9. [35] I. J. Perez-Arriaga, G. C. Verghese, and F. C. Schweppe, “Selective Modal Analysis with Applications to Electric Power Systems, PART I: Heuristic Introduction,” IEEE Transactions on Power Apparatus and Systems , vol. PAS-101, no. 9, pp. 3117–3125, 1982.
