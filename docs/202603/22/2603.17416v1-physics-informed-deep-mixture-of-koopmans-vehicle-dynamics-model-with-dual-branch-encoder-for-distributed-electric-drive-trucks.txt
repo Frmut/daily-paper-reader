@@ -1,0 +1,711 @@
+Title: Physics-informed Deep Mixture-of-Koopmans Vehicle Dynamics Model with Dual-branch Encoder for Distributed Electric-drive Trucks
+
+URL Source: https://arxiv.org/pdf/2603.17416v1
+
+Published Time: Thu, 19 Mar 2026 00:52:21 GMT
+
+Number of Pages: 13
+
+Markdown Content:
+> 1
+
+# Physics-informed Deep Mixture-of-Koopmans Vehicle Dynamics Model with Dual-branch Encoder for Distributed Electric-drive Trucks 
+
+Jinyu Miao 1, Pu Zhang 2, Rujun Yan 1, Yifei He 1, Bowei Zhang 1, Zheng Fu 1, Ke Wang 2, Qi Song 1,Kun Jiang 1,∗, Mengmeng Yang 1, Diange Yang 1,∗
+
+Abstract —Advanced autonomous driving systems require ac-curate vehicle dynamics modeling. However, identifying a precise dynamics model remains challenging due to strong nonlinearities and the coupled longitudinal and lateral dynamic characteristics. Previous research has employed physics-based analytical models or neural networks to construct vehicle dynamics representations. Nevertheless, these approaches often struggle to simultaneously achieve satisfactory performance in terms of system identification efficiency, modeling accuracy, and compatibility with linear control strategies. In this paper, we propose a fully data-driven dynamics modeling method tailored for complex distributed electric-drive trucks (DETs), leveraging Koopman operator the-ory to represent highly nonlinear dynamics in a lifted linear embedding space. To achieve high-precision modeling, we first propose a novel dual-branch encoder which encodes dynamic states and provides a powerful basis for the proposed Koopman-based methods entitled KODE. A physics-informed supervision mechanism, grounded in the geometric consistency of temporal vehicle motion, is incorporated into the training process to facilitate effective learning of both the encoder and the Koopman operator. Furthermore, to accommodate the diverse driving patterns of DETs, we extend the vanilla Koopman operator to a mixture-of-Koopman operator framework, enhancing modeling capability. Simulations conducted in a high-fidelity TruckSim environment and real-world experiments demonstrate that the proposed approach achieves state-of-the-art performance in long-term dynamics state estimation. 
+
+Index Terms —Vehicle Dynamics, State Estimation, Koopman Operator Theory, Deep Neural Network 
+
+I. I NTRODUCTION 
+
+Safety-guarantee autonomous driving requires precise iden-tification of vehicle dynamics [1], [2]. Many well-established controllers, such as model predictive control (MPC) [3] and linear quadratic regulators (LQR) [4], rely on accurate dynam-ics models to achieve high-performance trajectory tracking. However, constructing an accurate vehicle dynamics model remains technically challenging [5], particularly for distributed electric-drive trucks (DETs), which feature higher centers of gravity (CoG) and more complex control flexibility compared 
+
+This work was supported in part by the National Natural Science Foundation of China (52394264, 52472449, 52372414, 52402499), and China Postdoc-toral Science Foundation (2024M761636). 
+
+> 1
+
+Jinyu Miao, Rujun Yan, Yifei He, Bowei Zhang, Zheng Fu, Qi Song, Kun Jiang, Mengmeng Yang, and Diange Yang are with the School of Vehicle and Mobility, and State Key Laboratory of Intelligent Green Vehicle and Mobility, Tsinghua University, Beijing, China. jinyu.miao97@gmail.com 
+
+> 2
+
+Pu Zhang and Ke Wang are KargoBot Inc., Beijing, China. 
+
+> ∗
+
+Corresponding author: Diange Yang, Kun Jiang 
+
+Fig. 1. A diagram of (a) physics-based dynamics model, (b) learning-based dynamics model, and (c) the proposed Koopman-based dynamics model KODE using a dual-branch encoder and MoK operator, respectively. 
+
+to traditional internal combustion engine-drive vehicles (ICVs) [6]. Over the past decades, researchers have pursued accurate vehicle dynamics modeling. Classical physics-based methods derive analytical formulations to mathematically describe ve-hicle behavior [7]–[11]. However, their accuracy is inherently limited by prior knowledge of the real vehicle, and their generalizability is often compromised by linearization and simplifying assumptions [12]. Moreover, their performance depends heavily on identified system parameters, which is costly and labor-intensive [13], [14]. In response to these limitations, recent research has shifted toward learning-based approaches, where deep neural networks are employed as data-driven alternatives to analytical models [5], [15], as compared in Fig. 1 (a) and (b). These methods identify system (network) parameters directly from data, thereby significantly reducing the need for parameter calibration [16]. Nevertheless, the nonlinearity and lack of interpretability in neural network-based models hinder integration with linear controllers [3], [4]. This limits their practical deployment in safety-critical autonomous driving systems, where controller transparency and reliability are paramount. Koopman operator theory [17] provides a powerful frame-work for analyzing nonlinear systems by lifting states into an infinite-dimensional embedding space, and has recently been applied to vehicle dynamics modeling. To obtain a ac-ceptable finite-dimensional yet accurate linear representation, dimensionality reduction techniques such as dynamic mode 
+
+> arXiv:2603.17416v1 [cs.RO] 18 Mar 2026 2
+
+decomposition (DMD) [18] and extended DMD (EDMD) [19] have been proposed to approximate the Koopman operator. These approaches typically rely on manually designed kernel functions for state lifting, which is non-trivial for highly nonlinear systems and consequently limits modeling perfor-mance. To address this, DeepEDMD [20] and deep direct Koopman (DDK) [21] introduce multi-layer perceptron (MLP) encoders and enable pure data-driven system identification via gradient backpropagation. Thanks to the linear structure in the lifted embedding space, Koopman-based models can be readily integrated with linear controllers [3], [4]. Despite these advances, existing Koopman-based methods have been validated only on small or regular ICVs. Their applicability to DETs, which exhibit significantly higher system complexity, remains unexplored and poses new challenges for accurate dynamics state estimation. To address these challenges, we propose an enhanced 
+
+KO opman-based dynamics modeling framework tailored for high-precision state estimation towards DE Ts, entitled KODE. As shown in Fig. 1, our improvements span three aspects: encoder architecture, training supervision, and Koopman op-erator formulation. Specifically, a novel dual-branch encoder combining Transformer and MLP modules is designed to embed dynamics states. A mixture-of-Koopman (MoK) oper-ators is introduced, where the appropriate operator is selected based on the current driving pattern. The encoded dynamics embeddings are evolved linearly via the selected Koopman operator and subsequently decoded to predict future states. Ad-ditionally, a geometric consistency loss is incorporated during training to promote long-term prediction accuracy. Benefiting from these innovations, the proposed method achieves precise modeling of the complex dynamics of DETs. The primary contributions in this work are summarized as follows:  
+
+> •
+
+To the best of our knowledge, this work is the first to introduce Koopman-based dynamics modeling to dis-tributed electric trucks characterized by expanded control space and complex dynamical behavior, and to achieve high-fidelity dynamics analysis for such platforms.  
+
+> •
+
+We propose three key enhancements to Koopman-based vehicle dynamics modeling: 
+
+♢ A novel dual-branch encoder that lifts states into high-dimensional embeddings, providing a powerful basis for our Koopman-based dynamics model; 
+
+♢ A physics-informed loss function that enforces ge-ometric consistency in the vehicle temporal motion, thereby improving long-term estimation fidelity and physical correlation between various states; 
+
+♢ A mixture-of-Koopman (MoK) operator framework that assigns specialized Koopman operators to dis-tinct driving patterns, enhancing modeling accuracy across diverse patterns. These components efficiently enhance the capability of Koopman-based vehicle dynamics models without requir-ing extra training data or incurring significant parameter overhead, and they are universally applicable as plug-and-play improvements for any Koopman-based method.  
+
+> •
+
+We collect vehicle dynamics data for DETs from both high-fidelity simulations and real-world tests. Com-prehensive experiments demonstrate that the proposed method achieves state-of-the-art (SOTA) performance in dynamics state estimation. II. R ELATED WORKS 
+
+A. Physics-based Vehicle Dynamics Model 
+
+Traditional physics-based methods model vehicle dynam-ics through mathematical formulations, spanning a range of complexities and precisions. The simplest models neglect vehicle dimensions and load transfer, treating the vehicle as an infinitesimal point mass [7], [22]. Three degree-of-freedom (DoF) bicycle models introduce geometric realism and cap-ture the three fundamental DoF of vehicle motion, enabling widespread application in planning and control [23], [24]. To capture additional dynamical effects, such as yaw moments arising from differential drive and brake forces across an axle, which simpler models fail to represent [12], more complex dynamics models have been developed, including 7 DoF [8], 8 DoF [9], and 14 DoF [10] models, as well as the well-known Pacejka tire model [11]. However, these approaches suffer from two inherent limitations. First, physics-based mod-eling necessarily relies on local linearization and simplifying assumptions, yet real vehicles are complex electro-mechanical systems rather than ideal rigid bodies. This discrepancy in-herently constrains both the accuracy and generalization capa-bility of physics-based models. Second, these models depend on physical parameters that need to be identified, which is called system identification process [13], [14]. While existing methods employ Gaussian processes [25] or neural networks [26] for parameter identification, certain parameters like cor-nering stiffness coefficients remain inherently unmeasurable [13]. These challenges are particularly pronounced for DETs, whose dynamical systems are substantially more complex than those of conventional ICVs. 
+
+B. Learning-based Vehicle Dynamics Model 
+
+Inspired by recent advances in deep learning, researchers have introduced neural networks to learn vehicle dynamics directly from data, circumventing the need for traditional an-alytical formulations. Spielberg et al. experimentally demon-strated that deep neural networks can serve as effective dy-namics models, often outperforming physics-based approaches [5]. The Baidu Apollo team further showed that such data-driven solutions substantially reduce development effort by eliminating the need for explicit analytical modeling and system identification, while maintaining high accuracy [16]. As a result, learning-based vehicle dynamics models using deep neural networks have been widely adopted and further developed in subsequent years [27], [28]. Some methods integrate physics-based models with neural networks, where the networks are designed to estimate model parameters rather than directly regressing dynamics states [15], [29]. This hybrid approach effectively mitigates the drift and poor generalization commonly associated with purely data-driven models. Other researchers have adopted a complementary strategy, employing neural networks to compensate for the estimation errors of 3
+
+physics-based methods [30], [31]. This emerging paradigm achieves excellent accuracy in dynamics state estimation, even for complex platforms such as distributed electric vehicles [32]. Despite their success in high-precision dynamics mod-eling, neural network-based approaches suffer from limited interpretability and inherent nonlinearity, which hinder their integration into well-posed model-based linear controllers, such as MPC [3] and LQR [4]. 
+
+C. Koopman-based Vehicle Dynamics Model 
+
+The inherent nonlinearity of real vehicle dynamics poses a fundamental challenge for linear controllers, which require linear system representations. To address this issue, the Koop-man operator [17] has been introduced into vehicle dynamics modeling. Researchers have developed several approaches to approximate finite-dimensional Koopman operators, including DMD [18] and its variants such as EDMD [19], [33], [34] and kernel-based DMD [35], which lift dynamics states into high-dimensional embedding spaces using kernel functions. However, the performance of these methods critically depends on the selection of appropriate kernels, which requires domain expertise and may not optimally capture the intricate nonlin-earities inherent in complex vehicle dynamics. To overcome this limitation, neural networks have been adopted as learnable kernel functions, enabling automatic learning of both network parameters and the Koopman operator in a pure data-driven manner. This paradigm reduces manual effort in kernel design and system identification while achieving improved modeling performance [20], [36], [37]. For instance, DeepEDMD [20] introduces multi-step supervision during training to enhance long-term prediction accuracy. Building on this foundation, Xiao et al. learn Koopman eigenvalues to construct a block-diagonal transition matrix as the Koopman operator [21], while Shi et al. incorporate an auxiliary control network to encode nonlinear state-dependent control components, effec-tively modeling input nonlinearities [38]. However, existing Koopman-based methods have been pri-marily validated on small or regular ICVs where simple state encoders, regression-based supervision, and single Koopman operator suffice to achieve satisfactory performance. When applied to DETs with significantly increased system complex-ity, the performance of vanilla Koopman operators remains suboptimal, leaving substantial room for improvement. This gap motivates the work presented in this paper. III. M ETHODOLOGY 
+
+In this section, we first formalize the dynamics state estima-tion problem. Next, we review the fundamentals of Koopman operator theory. Subsequently, we present the core contribu-tions of this work, followed by a description of the simulation data collection pipeline used for model training and evaluation. Finally, we introduce a sim-to-real vehicle adaptation strategy to deploy the proposed method on a real-world truck. 
+
+A. Problem Statement 
+
+This paper considers a class of DETs characterized by a six-wheel, three-axis configuration and all-wheel steering functionality. Denote s = [ px py αz vx vy wz ] ∈ RNs and 
+
+u =
+
+h
+
+T fl T fr T ml T mr T rl T rr δfl δfr δml δmr δrl δrr
+
+i
+
+∈ RNc as the considered dynamics states and control inputs of the DETs, respectively, where px, p y are the CoG position of trucks in global frame, αz is the heading/yaw angle, vx, v y , w z are the longitudinal and lateral CoG velocities and heading angular velocity in ego frame, T f /m/r l/r is the driving torque applied to the left (l) or right (r) wheel on the front (f), middle (m) or rear (r) axis, and δ is the steering angle. Thus, a vehicle dynamics model can be mathematically described as a mapping function 
+
+Fθ : RNs × RNc → RNs :
+
+˙s = Fθ (s, u) (1) where Ns = 6, N c = 12 in this paper, θ is the system parameters of the dynamics model. In practical applications, we often adopt a discrete-time version of Eqn 1: 
+
+st+1 |t = Fθ (st, ut) (2) where t in the index of discrete timestamp. And the one-step estimation results from t-th timestamp to t + 1 timestamp can be simplify as st+1 = st+1 |t. For the ease of reading, we format the long-horizon estimation process as: 
+
+st+He|t = Fθ (· · · F θ (st, ut), · · · , ut+He−1)= Fθ (st, ut:t+He−1) (3) where He is the estimation horizon. The task of vehicle dynamics state estimation aims to constuct a reasonable model Fθ that can accurately govern the state transition of the vehicle over time as a function of control inputs: 
+
+min  
+
+> F,θ
+
+||F θ (st, ut) − st+1 || (4) However, accurate modeling of real-world vehicle dynamics remains technically challenging due to the strong coupling between longitudinal and lateral dynamics, as well as the non-linear characteristics of tires and suspensions. On one hand, the inherent linearity and simplifying assumptions required in con-ventional modeling approaches inevitably compromise model fidelity. On the other hand, identifying the system parameters 
+
+θ is both costly and difficult. These limitations underscore the need for a novel methodology that can simultaneously achieve high-fidelity vehicle dynamics modeling and enable efficient system identification. 
+
+B. Preliminaries: Koopman Operator for Forced Systems 
+
+The Koopman operator provides a powerful operator-theoretic framework for modeling nonlinear dynamical sys-tems. Rather than propagating states directly in the origi-nal low-dimensional space, this operator acts on a space of observable functions, enabling linear dynamical evolution in an infinite-dimensional Hilbert space for unforced nonlinear systems [36], [39], [40]. By incorporating control inputs into the observable functions, the Koopman framework can be extended to forced systems given in Eqn. 1: 
+
+g(st+1 , uk+1 ) = K · g(st, uk) (5) 4 
+
+> Fig. 2. An overview of the proposed method. The dynamics states are encoded to dynamics embeddings through a dual-branch encoder. Specific Koopman operator is selected by given driving pattern. Then, the dynamics embeddings are linearly evolved and decoded to future dynamics states.
+
+where g : RNs+Nc → R∞ is the encoding function that lifts the state space to a embedding space, and K represents the Koopman operator, which is typically an infinite-dimensional linear operator in Hilbert space. For practical implementation, it is necessary to design appropriate finite-dimensional en-coding functions to obtain a tractable approximation of the Koopman operator. Generally, A common simplification is to partition the encoding function such that control inputs are not encoded: g(st, uk) = [ zt; uk], where zt represents the encoded state embeddings. Then, Eqn. 5 can be simplified as: 
+
+ zt+1 
+
+ut+1 
+
+
+
+=
+
+ KA KB
+
+K∗ K∗
+
+  zt
+
+ut
+
+
+
+(6) Since the future control signals ut+1 are determined by the controller, the dynamics model based on D-order Koopman operator can be expressed as: 
+
+zt+1 = KA · zt + KB · ut (7) where KA ∈ RD×D, KB ∈ RD×Nc are operator parameters. Following prior work [20], [21], [38], [41], the encoded emebddings zt typically consist of the original dynamics states and features extracted by an encoder E(·): zt = [ st; E(st)] .After linear evolution in embedding space, the future dynamics states can be recovered by a decoder: st+1 = D(zt+1 ).The impracticality of infinite-dimensional embeddings in real-world settings demands effective encoder-decoder designs for finite-order Koopman-based dynamics models. Early im-plementations utilized manually designed kernels for encoding and decoding [19], with least-squares estimation for KA, KB .Later, deep learning-enabled Koopman models replaced these with trainable MLP encoders and decoders, optimized via gradient backpropagation [19], [20]. Although successful for traditional ICVs, these approaches struggle with DETs due to their expanded state and control dimensionality. We attribute this limitation to three key factors: insufficient encoder capa-bility, inadequate training supervision, and ill-suited Koopman operator modeling. 
+
+C. KODE: Deep Koopman with Dual Branch Encoder 
+
+In this work, we first introduce a novel dual-branch dynam-ics encoder that maps dynamics states into expressive em-beddings, providing a powerful foundation for high-precision Koopman-based dynamics modeling, as in Fig. 2. The first branch leverages a Transformer-based encoder and decoder for rich representation learning, while the second branch com-prises an MLP module to ensure stable training convergence. We consider a Hp-step temporal dynamics sequence 
+
+st−Hp:t ∈ RNs×(Hp+1) , with t representing the index of cur-rent timestamp. The significant scale variations across different dynamics states, especially vehicle positions, hinder raw state encoding by neural networks. Conventional methods normalize states based on predefined ranges. However, such approaches fail in unbounded open scenarios where range priors are unavailable. We therefore convert the position components of the temporal dynamics states into a local ego frame centered at the current timestamp t via st−Hp:t[: 2] = st−Hp:t[: 2] − st[: 2] 
+
+such that the ranges of different states become comparable and bounded, facilitating effective learning by neural networks. 
+
+Feature Extraction: The processed temporal dynamics states are fed into a state encoder for initial encoding. Each state is treated as an independent element and first encoded using Fourier position encoding [42] to preserve subtle state varia-tions. These encoded features are then passed through a two-layer MLP with GeLU activations [43] and averaged along the temporal dimension: 
+
+ft = mean (MLP (Fourier (st−Hp:t))) ∈ RN ×D (8) 5 
+
+> Fig. 3. A diagram of feature interaction by Transformer encoder and feature aggregation by Transformer decoder, respectively.
+
+Here, various dynamics states are separately encoded and temporally aggregated to high-dimensional state features. 
+
+Feature Interaction: To obtain expressive encoded state features, modeling interactions between different states is essential, as it enables the synthesis of composite features. Therefore, following individual state encoding, we introduce a Transformer encoder module for state-wise interaction. 
+
+fet = encoder (ft, pos ) ∈ RN ×D (9) A learnable state position embedding pos ∈ RNs×D is added to the state features to distinguish different states. As illustrated in Fig. 3, the self-attention mechanism in the Trans-former encoder facilitates global interaction among dynamics states, allowing each feature to aggregate information from others in proportion to their relevance, thereby constructing a representative basis for the embedding space. 
+
+Feature Aggregation: Unlike common feature aggregation methods that simply average or summarize features, we instead employ a Transformer decoder-based module to aggregate the 
+
+Ns state features into the final Transformer embeddings: 
+
+zTrans  
+
+> t
+
+= decoder (q = z0, k = v = fet , pos ) ∈ RD (10) where z0 ∈ RD is a zero-initialized learnable query, and the state position embedding pos is shared between the feature in-teraction and aggregation stages, serving as a unique identifier for each dynamics state. As illustrated in Fig. 3, this module fuses multiple dynamics features into a single embedding by computing adaptive weights based on the relevance of each feature. Intuitively, the cross-attention mechanism in the Transformer decoder assigns importance weights to different basis in the embedding space and aggregates them to produce the final representation. This approach is conceptually similar to the class token in Transformer-based image classification [44] and the pose query in Transformer-based pose estimation [45], both of which have demonstrated significant success, validating the effectiveness of this aggregation strategy. 
+
+Skip Connection: To ensure the training stability of deep neural networks, we add a shallow MLP module to directly encode dynamics states and obtain a MLP embedding: 
+
+zMLP  
+
+> t
+
+= MLP ([ st−H , st−H+1 , · · · , st]) ∈ RD (11) where [· · · ] is channel-wise concatenation. Finally, the final dynamics embedding is obtained by: 
+
+zt = zTrans  
+
+> t
+
++ zMLP  
+
+> t
+
+∈ RD (12) After linear evolution using the Koopman operator, we use a fixed decoder KC to recover the dynamics states from the dynamics embedding: 
+
+st+1 = KC · zt+1 
+
+KC =
+
+ diag (N ) 00 0
+
+
+
+∈ RN ×D (13) where diag (N ) is a N -order diagonal matrix. Note that for fair comparison with existing methods, the historical state length H is typically set to 0 (no historical states are used). 
+
+D. Physics-informed Learning for Deep Koopman 
+
+We adopt a multi-objective training framework for our data-driven Koopman dynamics model, incorporating standard state and feature losses [19], [20] alongside a novel physics-informed geometry consistency loss. 
+
+Multiple-step Estimation: As demonstrated in [20], incorpo-rating multi-step supervision improves long-term estimation fidelity. Given the linear evolution structure of the Koopman framework, the He-step state estimation in Eqn. 3 can be written as: 
+
+st+He|t = Fθ (st, ut:t+He−1)= KC · zt+He|t
+
+zt+He|t = KA · zt+He−1|t + KB · ut+He−1
+
+= K2 
+
+> A
+
+· zt+He−2|t + KAKB · ut+He−2 + KB · ut+He−1
+
+= · · · 
+
+= KHe 
+
+> A
+
+· zt +
+
+> He
+
+X
+
+> i=1
+
+Ki−1 
+
+> A
+
+KB · ut+He−i
+
+(14) In this work, we employ both single-step ( He = 1 ) and multi-step ( He = 100 ) supervision to comprehensively train the dynamics model for optimal performance. 
+
+State Loss: First, we measure the estimation errors in original dynamics state space as state loss Ls:
+
+Ls = 1
+
+HeHeX
+
+> i=1
+
+|| st+i − ˆst+i|| 2
+
+| {z }
+
+> single-step
+
++ 1
+
+HeHeX
+
+> i=1
+
+|| st+i|t − ˆst+i|| 2
+
+| {z }
+
+> multi-step
+
+(15) where ˆs is the ground-truth dynamics states. 
+
+Feature Loss: Then, to ensure the capability of linear evo-lution in lifted embedding space, we measure the estimation errors in dynamics embedding space as feature loss Lf :
+
+Lf = 1
+
+HeHeX
+
+> i=1
+
+|| zt+i − ˆzt+i|| 2 + 1
+
+HeHeX
+
+> i=1
+
+|| zt+i|t − ˆzt+i|| 2
+
+(16) where ˆz is the dynamics embedding of ground-truth states. 
+
+Physics-informed Geometry Consistency Loss: Although the state loss and feature loss enable the Koopman-based dynamics model to progressively learn state estimation in a time-series regression manner, they overlook the geometric re-lationships among different dynamics states along the temporal dimension. As illustrated in Fig. 4, the temporal motion of a 6 
+
+> Fig. 4. A diagram of geometric consistency of the temporal vehicle motion.
+
+vehicle inherently follows the geometric principles of rigid-body motion. Consequently, the evolution of vehicle poses, specifically global position px, p y and heading angle αz , can be approximately derived from linear velocities vx, v y and angular velocity wz as follows: 
+
+˙ptx = lim 
+
+> ∆t→0
+
+pt+∆ tx − ptx
+
+∆t = vtx · cos (αtz ) − vty · sin (αtz )˙pty = lim 
+
+> ∆t→0
+
+pt+∆ ty − pty
+
+∆t = vtx · sin (αtz ) + vty · vos (αtz )˙αtz = lim 
+
+> ∆t→0
+
+αt+∆ tz − αtz
+
+∆t = wtz
+
+(17) Based on this principle, we propose a geometric consistency loss. First, we measure the discrepancy between estimated poses and those derived from velocity estimates over time. 
+
+δtx = pt+∆ tx − ptx
+
+∆t − (vtx · cos (αtz ) − vty · sin (αtz )) 
+
+δty = pt+∆ ty − pty
+
+∆t − (vtx · sin (αtz ) + vty · cos (αtz )) 
+
+δtα = αt+∆ tz − αtz
+
+∆t − wtz
+
+(18) In practice, the discrepancy cannot be eliminated entirely due to measurement noise and the discrete-time interval 
+
+∆t. We therefore compute “reference” discrepancy ˆδtx, ˆδty , ˆδtα
+
+from the ground-truth states to establish tolerance thresholds. As different driving conditions and patterns yield varying scales of discrepancy, we adaptively normalize the estimated discrepancy against these tolerances, yielding the geometric consistency errors for position and orientation: 
+
+etx =
+
+
+
+δtx − ˆδtx
+
++
+
+max ˆδ∗ 
+
+> x
+
++ ϵ , e ty =
+
+
+
+δty − ˆδty
+
++
+
+max ˆδ∗ 
+
+> y
+
++ ϵ , e tα =
+
+
+
+δtα − ˆδtα
+
++
+
+max ˆδ∗ 
+
+> α
+
++ ϵ
+
+(19) where (·)+ truncates the negative values ( i.e. , when the es-timated geometric consistency discrepancy is lower than the ground-truth value), and ϵ = 1 e−6 is a tiny constant to avoid numerical division by zero.  
+
+> Fig. 5. A diagram of five driving patterns in this work.
+
+To prioritize long-term estimation accuracy, we introduce a temporal weighting scheme that assigns increasing weight r
+
+to geometric consistency errors at later timestamps: 
+
+rt = 1 + 
+
+ tL
+
+2
+
+(20) Therefore, the proposed physics-informed geometric consis-tency loss Lg can be formatted as: 
+
+Lg = 1
+
+L
+
+> L
+
+X
+
+> t=1
+
+rt ·  etx + ety + λ · etα
+
+ (21) where λ is a weighting factor. In all, the overall loss function used in this work is written as: 
+
+L = Ls + βLf + ηLg (22) where β, η are weighting factors. 
+
+E. Mixture-of-Koopmans for Varying Driving Patterns 
+
+Each wheel in DETs can be independently driven and steered, resulting in an action space of dimensionality RM ,which is substantially larger than that of conventional ICVs. This expanded action space introduces significant complexity for both dynamics modeling and control. In practice, the motion of DETs can be categorized into five typical driving patterns based on the characteristics of the applied control actions: front-rear wheel opposite (FRO), counter rotation (COR), rear-wheel locked (RWL), lateral motion (LAM), and crab motion (CRM). Formal definitions of these patterns are provided in Table I, with visual illustrations in Fig. 5. Among these, FRO, RWL, and CRM are commonly used during normal operation, whereas COR and LAM rarely occur unless required for specialized maneuvers such as U-turns or parallel parking. For safety reasons, pattern switching is not allowed in a single driving maneuver. Consequently, the collected data from both simulation and real-world exhibits significant imbalance across patterns. In this work, we observe that a single, unified Koopman operator fails to generalize well across all patterns due to both 7                                                                        
+
+> TABLE I THE DEFINITION OF FIVE DRIVING PATTERNS FOR DISTIBUTED ELECTRIC DRIVE TRUCKS .Pattern train val Definition Data Generation Rules c1:FRO 154.3K 13.9K The rear wheels are steered in the opposite direction to the front wheels, reducing the turning radius. Under high-speed steering in simulation, this pattern may induce rollover incidents where the wheels on one side lift off the ground.
+> T∗∗=T, δ f
+> ∗=−δr
+> ∗=δ, δ m
+> ∗=0
+> c2:COR 9.2K 2.3K This pattern, also termed the “tank turn” pattern, steers the left and right, front and rear wheels in opposite directions, aligning all steering centers at the vehicle’s CoG. It permits rotation around the vertical axis with no translational movement.
+> Tf
+> ∗=−Tml=Tmr=Tr
+> ∗=
+> T, δfl=−δrl=π−δfr=
+> δrr+π=δ > π/ 2, δ m
+> ∗= 0
+> c3:RWL 92.0K 18.4K The front wheels and middle wheels are steered according to Ackerman steering geometry, whereas the rear wheels are locked with no steering input.
+> T∗∗=T, δf
+> ∗=δ, δm
+> ∗=
+> atan (δ/ 2) , δ r
+> ∗= 0
+> c4:LAM 11.5K 2.3K All wheels are steered to 90° relative to the vehicle’s longitudinal axis, enabling lateral movement for parallel parking or precise positioning in confined spaces.
+> T∗∗=T, δ ∗∗=δ=π/ 2
+> c5:CRM 92.0K 18.4K All wheels are oriented at an identical angle and direction, producing diagonal movement without altering the vehicle’s heading angle.
+> T∗∗=T, δ ∗∗=δ < π/ 2
+> TABLE II THE CONFIGURATION OF THE TRUCK IN THE SIMULATION .
+
+Config Value Config Value sprung mass 4455.0 kg load mass 5000.0 kg unsprung mass 1050.0 kg track width 2.030 m axis f-m distance 3.250 m axis f-r distance 6.500 m 
+
+the distinct control characteristics and the imbalanced training data. To this end, we propose a MoK operator inspired by the mixture-of-experts framework [46], where each “expert” corresponds to a Koopman operator specialized for a specific driving pattern. This approach enhances modeling capacity without requiring additional training data for rare patterns or increasing the dimension of dynamics embeddings. The implementation is straightforward. Formally, we define a set of Koopman operators {K iA}5 
+
+> i=1
+
+∈ R5×D×D, {K iB }5 
+
+> i=1
+
+∈
+
+R5×D×M as the MoK operator. The driving pattern associated with each run is encoded as a one-hot embedding C ∈ R5.During dynamics state estimation, the specific Koopman op-erator corresponding to the current driving pattern is selected. Accordingly, Eqn. 7 can be reformulated as: 
+
+zt+1 = C · K A · zt + C · K B · ut (23) In addition, we also propose a weighting scheme for the MoK operator based on the proportion of each driving pattern: 
+
+κ(C) = log (X
+
+> i
+
+Vi + 1) /log (Vc + 1) (24) where Vc is the amount of training data using driving pattern 
+
+c. The weight is multiplied by the batch-wise training loss: 
+
+Lbatch =
+
+P 
+
+> b
+
+κ(Cb) · L b
+
+P 
+
+> b
+
+κ(Cb) (25) where b is the batch index. This scheme helps the MoK operator to emphasize samples using rare driving conditions. 
+
+F. Vehicle State Data Collection by Simulation 
+
+Given the lack of publicly available dynamics datasets for DETs, we conduct simulations to generate the necessary data for validating our method. Following common practice in autonomous driving research, we employ a six-wheel DET model with independent steering capabilities in the TruckSim simulator. Detailed conguration settings are listed in Table II. Steering angles and driving torques are generated using sinusoidal waveforms to simulate a wide range of driving con-ditions, including acceleration, deceleration, constant-speed driving, straight-line motion, and turning, following [32]. To ensure the validity of the control inputs, all generated sequences comply with the constraints of the five driving patterns and are manually verified. Given that COR and LAM patterns are rare in practice, we collect fewer samples for these patterns to reflect real-world usage. Additionally, we simulate high-speed steering scenarios using FRO pattern that leads to rollover, to improve the model’s generalization capability. The final dataset comprises approximately 414,400 valid samples, split into training and validation sets as detailed in Table I. 
+
+G. Sim-to-Real Vehicle Adaptation 
+
+According to Koopman operator theory, the operators KA
+
+and KB serve as the system parameters of the dynamical system in the high-dimensional embedding space. Conse-quently, this formulation enables a practically feasible and efficient adaptation strategy: given a well pre-trained encoder, identifying a new vehicle reduces to learning only the Koop-man operator. In this work, we pre-train the encoder using large-scale, high-quality, and diversely distributed simulation data, enabling it to effectively lift raw dynamics states into expressive embeddings. When deploying the proposed method to real-world applications, we therefore freeze the pre-trained encoder and adapt only the Koopman operator. To mitigate overfitting on limited real-world data, we further introduce a regularization loss Lr :
+
+Lr = ||K A|| 2 + ||K B || 2 (26) and add this item into the training loss in Eqn. 22 with a tiny weighting factor. 8
+
+IV. E XPERIMENTS 
+
+A. Experimental Settings 
+
+Implementation Details: We implement the proposed Koopman-based dynamics model using the PyTorch library and train it from scratch for 100 epochs on a single NVIDIA 4090D GPU. We employ the ADAM optimizer with a batch size of 512, an initial learning rate of 1 × 10 −3, and a weight decay of 1 × 10 −5. The learning rate is decayed by a factor of 0.9 every 10 epochs to prevent oscillation and ensure stable convergence. Simulation data are collected using TruckSim 2019.0, where the DET model is developed from a 3A conventional van with six wheels, three axles, and a payload. The weighting factors in the loss function are set as 
+
+λ = 0 .01 , β = 0 .1, and η = 0 .05 across all experiments. By default, the dimension of the lifted dynamics embedding is set to 16 to ensure fair comparison with existing methods [20], [21]. The depth of Transformer encoders and decoders are set as 2 for efficiency. Control inputs are normalized to the range [0 , 1] . The simulation sampling interval is 10 ms, and we perform state estimation over a horizon of L = 100 steps, corresponding to 1 second in most experiments. 
+
+Compared Baselines: Due to the lack of publicly available dynamics models for DETs, we reproduce some popular baselines to validate the effectiveness of our method. All approaches under comparison take identical inputs (current dynamics states and control inputs) and estimate the dynamics states for the subsequent timestamp. The evaluated methods span three categories: physics-based analytical models, neu-ral network-based approaches, and Koopman-based methods. Further details are as follows.  
+
+> •
+
+For physics-based methods, we implement a linear model of the form st+1 = Ast + But and a 6 DoF model. Their system parameters are either provided by TruckSim (GT), or identified via gradient backpropagation (BP) or least squares solvers (LS).  
+
+> •
+
+For neural network-based methods, we adopt commonly used MLP, Transformer [47], and the recently proposed KAN [48]. In these baselines, states and control inputs are concatenated along the channel dimension and fed into the network. Beyond direct future state estimation, we also implement a variant that estimates the increments (∆) of dynamics states, which helps mitigate estimation drift and yields improved performance.  
+
+> •
+
+For Koopman-based methods, we reproduce EDMD with four different hand-crafted kernel functions [19], as well as DeepEDMD [20] and DDK [21]. Original implemen-tations employ lightweight encoders and rely on pre-defined state ranges for normalization, which leads to suboptimal performance when applied to DETs in open scenarios. To ensure a fair comparison, we adjust the encoder sizes in DeepEDMD and DDK to match the parameter size of our model, and we adopt the same state preprocessing strategy. The modified versions are denoted with an mask (*) for distinction. All compared methods are configured with the same experi-mental settings as our approach, including the lifted dimension of dynamics embeddings, training epochs, and so on. 
+
+Evaluation Metrics: The practical utility of a dynamics model lies in its ability to accurately estimate states over extended horizons. Therefore, we assess long-term estimation performance by computing the average trajectory error (MDE) and heading error (MAE) between the estimated and ground-truth states over the estimation horizon: MDE = 1
+
+HeHeX
+
+> i=1
+
+q
+
+(pix − ˆpix)2 +  piy − ˆpiy
+
+2
+
+MAE = 1
+
+HeHeX
+
+> i=1
+
+|αiz − ˆαiz |
+
+(27) which reflects the overall accuracy of multi-step dynamics state estimation. Additionally, we measure the final trajectory error (FDE) and heading error (FAE) to analyze the accumu-lation of estimation errors: FDE =
+
+r
+
+pHe 
+
+> x
+
+− ˆpHe
+
+> x
+
+2
+
++
+
+
+
+pHe 
+
+> y
+
+− ˆpHe
+
+> y
+
+2
+
+FAE = |αHe 
+
+> z
+
+− ˆαHe 
+
+> z
+
+|
+
+(28) As heading error is encompassed within trajectory error, we primarily adopt the MDE and FDE metric for evaluation. 
+
+B. Comparison with State-of-the-Art methods 
+
+The proposed method is evaluated against existing baselines on the 100-step dynamics state estimation task. Tables III and IV summarize the main results, while further analysis using different driving patterns is also provided. The 6 DoF model with ground-truth parameters achieves high accuracy on certain driving patterns but fails on others where the operating conditions exceed its design domain. When parameters are learned from data, its performance de-grades substantially. The linear model, despite its widespread use in planning and control, fails to deliver satisfactory mod-eling accuracy. These results highlight the inherent limitation of physics-based approaches that they cannot simultaneously achieve efficient identification, high accuracy, and broad gener-alization. Neural networks [47], [48], while capable of learning nonlinear dynamics from data, suffer from black-box opacity and nonlinearity, which hinder deployment in safety-critical applications and integration with linear controllers [3], [4]. Koopman-based methods offer a compelling alternative by lifting nonlinear dynamics into a linear embedding space compatible with linear control frameworks. They also enable data-driven parameter learning, circumventing costly system identification. Among these, our approach, KODE, consis-tently outperforms all baselines across diverse driving patterns. Experimental results further reveal that manually designed kernels [19] produce poor lifted embeddings, leading to un-satisfactory accuracy. DeepEDMD [20] replaces fixed kernels with learnable MLP encoders, but its original normalization scheme fails in unbounded scenarios. With our preprocessing, its performance improves markedly, surpassing EDMD by a large margin and confirming the value of learnable encoders. DDK [21] exhibits convergence issues in our setting. By contrast, our proposed method, KODE, which integrates a dual-branch neural network-based encoder with the Koopman 9
+
+TABLE III THE COMPARISON OF 100-STEP DYNAMICS STATE ESTIMATION WITH DIFFERENT METHODS IN TERMS OF TRAJECTORY ERRORS (METER ). Model c1: FRO c2: COR c3: RWL c4: LAM c5: CRM All 
+
+MDE ↓ FDE ↓ MDE ↓ FDE ↓ MDE ↓ FDE ↓ MDE ↓ FDE ↓ MDE ↓ FDE ↓ MDE ↓ FDE ↓
+
+Physics-based Dynamics methods 
+
+6 DoF model (GT) 0.0064 ! 0.0150 ! failed 0.0068 0.0162 failed 0.0040 0.0097 0.0057 0.0135 6 DoF model (BP) 0.0376 0.0977 0.0808 0.2426 0.0425 0.1119 0.7946 2.1898 0.0145 0.0378 0.0648 0.1755 linear model (LS) 0.9167 1.8189 0.5379 1.0405 1.2429 2.4641 0.1373 0.2730 0.6020 1.2061 0.8724 1.7331 linear model (BP) 0.5570 1.0847 1.8098 3.6884 1.1240 2.1366 0.0647 0.1564 0.1233 0.3139 0.6329 1.2478 
+
+Pure Neural Network-based Dynamics methods 
+
+MLP 1.6777 3.6579 0.0574 0.1143 1.9547 3.9397 0.4071 0.8423 1.5586 3.5511 1.6101 3.4518 
+
+△ MLP 0.0293 0.0779 0.0535 0.1073 0.0274 0.0712 0.0244 0.0459 0.0128 0.0204 0.0240 0.0564 KAN [48] 1.6925 3.6847 0.0764 0.1228 1.9228 3.9090 0.3571 0.7780 1.5945 3.6046 1.6138 3.4638 
+
+△ KAN [48] 0.0676 0.1458 0.3476 0.6888 0.0641 0.1548 0.0809 0.1604 0.0583 0.1354 0.0755 0.1685 
+
+△ Transformer [47] 0.0140 0.0272 0.0421 0.0831 0.0116 0.0235 0.0194 0.0320 0.0110 0.0229 0.0136 0.0271 
+
+Koopman-based Dynamics methods 
+
+EDMD ∗ 
+
+> Thinplate
+
+[19] 0.4330 0.8552 1.2985 2.9354 0.6774 1.3424 0.2288 0.5310 0.2478 0.6511 0.4802 1.0223 EDMD ∗ 
+
+> Gaussian
+
+[19] 0.5585 1.0902 1.8374 3.7574 1.1623 2.2602 0.0278 0.0375 0.0895 0.1894 0.6344 1.2468 EDMD ∗ 
+
+> Invquad
+
+[19] 0.5373 1.1711 0.5631 1.0196 0.8221 1.6167 0.1271 0.2625 0.2956 0.7505 0.5357 1.1353 EDMD ∗ 
+
+> Invmultquad
+
+[19] 0.5750 1.3703 1.1202 2.2939 0.7544 1.5445 0.2482 0.7975 0.3652 1.1358 0.5740 1.3648 DeepEDMD [20] 0.7465 1.1394 0.3044 0.6822 0.7184 1.2484 0.3297 0.6736 0.3356 0.6122 0.5648 0.9620 DeepEDMD* [20] 0.0334 0.0680 0.0566 0.1012 0.0259 0.0461 0.0051 0.0095 0.0346 0.0841 0.0311 0.0650 DDK* [21] 1.6214 3.5264 0.0687 0.1205 1.9247 3.8601 0.2856 0.5447 1.2991 2.5991 1.4950 3.0635 KODE (Ours) 0.0120 0.0323 0.0186 0.0331 0.0089 0.0254 0.0051 0.0113 0.0055 0.0133 0.0088 0.0228  
+
+> !
+
+The 6 DoF model sometimes fails when the truck is steered in high speed. TABLE IV THE COMPARISON OF 100-STEP DYNAMICS STATE ESTIMATION WITH DIFFERENT METHODS IN TERMS OF HEADING ANGLE ERRORS (DEGREE ). Model c1: FRO c2: COR c3: RWL c4: LAM c5: CRM All 
+
+MAE ↓ FAE ↓ MAE ↓ FAE ↓ MAE ↓ FAE ↓ MAE ↓ FAE ↓ MAE ↓ FAE ↓ MAE ↓ FAE ↓
+
+Physics-based Dynamics methods 
+
+6 DoF model (GT) 0.0379 ! 0.0827 ! failed 0.0434 0.0956 failed 0.0149 0.0331 0.0315 0.0693 6 DoF model (BP) 0.1016 0.2786 9.5936 28.4310 0.1134 0.3257 16.5352 45.7721 0.0361 0.1053 1.1613 3.2976 linear model (BP) 0.3863 1.2790 2.0805 4.0713 0.2675 0.6080 0.1357 0.2626 0.4337 1.4458 0.4226 1.1852 
+
+Pure Neural Network-based Dynamics methods 
+
+△ MLP 2.3063 4.6282 0.6151 1.2107 2.3901 4.8265 0.2186 0.4222 0.7765 1.5661 1.6684 3.3591 
+
+△ KAN [48] 0.6733 1.3301 8.2556 16.4227 0.6020 1.1366 0.6361 1.2820 0.5764 1.1451 0.9310 1.8295 
+
+△ Transformer [47] 0.1387 0.2185 1.5967 3.1523 0.1604 0.2929 0.1629 0.2829 0.1862 0.2795 0.2233 0.3881 
+
+Koopman-based Dynamics methods 
+
+EDMD ∗ 
+
+> Thinplate
+
+[19] 1.3388 3.2921 1.6396 3.3221 1.7239 3.1224 0.5773 1.0089 0.7188 1.8324 1.2415 2.6567 EDMD ∗ 
+
+> Invquad
+
+[19] 0.4142 1.0749 0.9720 2.0876 0.2237 0.6498 0.4162 1.0839 0.2774 0.4794 0.3286 0.7780 DeepEDMD* [20] 1.1743 1.6803 0.4107 0.6030 1.0409 1.4455 0.0871 0.2832 1.0500 1.2985 1.0117 1.3724 DDK* [21] 20.4075 19.9178 79.1033 81.0054 29.0135 28.9444 3.4534 3.4142 3.6693 3.7408 19.4384 19.3933 KODE (Ours) 0.1435 0.3522 0.3000 0.6591 0.0926 0.2406 0.2302 0.3334 0.0371 0.0621 0.1013 0.2306 
+
+framework and achieves enhancements from both physics-informed supervision and the MoK operator consistently outperforms all Koopman-based baselines, demonstrating its superior representation capacity. Fig. 6 visualizes the per-timestamp MDE metric for a rep-resentative run. EDMD and original DeepEDMD exhibit sub-stantial performance degradation during steering maneuvers, reaching meter-level errors. By contrast, DeepEDMD* and 10    
+
+> Fig. 6. The average trajectory errors for 100-step estimation by our method, DeepEDMD [20], DeepEDMD* [20], and EDMD [19]. The value of each point in the trajectory is the average trajectory error of the estimation at this point. We also visualize the average trajectory error of our method and DeepEDMD* [20] in each timestamp for clear visualization. TABLE V THE 100-STEP DYNAMICS STATE ESTMATION PERFORMANCE OF
+> KOOPMAN -BASED METHODS WITH DIFFERENT ENCODES (METER ).
+
+Encoder D Hp Params. MDE ↓ FDE ↓
+
+Invquad [19] 16 0 0.0001 M 0.5357 1.1353 MLP [20] 16 0 0.5845 M 0.0153 0.0391 KAN [48] 16 0 0.6010 M 0.0252 0.0686 (a) 16 0 0.5503 M 0.0139 0.0343 (b) 16 0 0.0022 M 0.0708 0.1919 Ours (a+b) 16 0 0.5525 M 0.0125 0.0323 16 1 0.5544 M 0.0092 0.0240 16 5 0.5618 M 0.0068 0.0196 16 10 0.5711 M 0.0109 0.0263 16 15 0.5804 M 0.0097 0.0252 64 0 1.3653 M 0.0106 0.0259 128 0 1.9713 M 0.0069 0.0175 
+
+our method maintain centimeter-level accuracy. Our approach consistently outperforms DeepEDMD* at every timestamp, particularly under high-speed steering. 
+
+C. Ablation Analysis 
+
+To better understand the contribution of each contribution in our proposed method, we conduct comprehensive ablation studies through a series of experiments. 
+
+1) Effectiveness of dual-branch encoder: In this work, we propose a dual-branch encoder that lifts dynamics states to high-dimensional dynamics embeddings for Koopman oper-ator approximation. The encoder comprises a Transformer-based branch (a) and a MLP branch (b). To validate the effectiveness of our proposed encoder, we compare it against manual kernel functions [19], MLP networks [20], and KAN networks [48]. The MLP and KAN baselines are configured with comparable parameter counts and network depths. As shown in Tab. V, all three learnable neural encoders achieve substantially lower long-term estima-tion errors compared to manual kernel functions [19], demon-strating the advantage of data-driven encoding over human-designed alternatives. Moreover, our proposed dual-branch encoder outperforms both manual kernels [19] and existing network architectures [20], [48], validating its effectiveness. We further investigate the contribution of each branch in our proposed encoder. As shown in Tab. V, the Transformer-based branch (a) alone achieves satisfactory performance, which can be further enhanced by incorporating a shallow MLP branch (b) that functions as a skip connection—conceptually similar to deep residual learning [49]. These results validate the rationality of our dual-branch encoder design. Theoretically, the Koopman operator requires infinite-dimensional embeddings to exactly capture nonlinear dynam-ics. In practice, however, finite-dimensional approximations are necessary. To assess the influence of embedding dimension, we compare variants with higher-dimensional embeddings against our default setting. Results in Tab. V indicate that higher dimensions yield better accuracy. For example, the 128-dimensional variant reduces errors by about 45% relative to 
+
+D = 16 . For efficiency and fair comparison with existing methods, we retain D = 16 as the default dimension. Our proposed encoder is theoretically capable of processing sequential historical dynamics states as input. We therefore investigate the impact of historical state length on modeling performance. The results in Tab. V demonstrate that incorpo-rating historical states enriches the dynamics embeddings and improves estimation accuracy. However, an appropriate length is necessary. As H increases, performance initially improves but begins to degrade once H exceeds 5, likely due to the accumulation of noise from distant historical states. 
+
+2) Effectiveness of physics-informed supervision: In this work, we introduce a physics-informed loss function that enforces temporal geometric consistency in vehicle motion, enabling the dynamics model to better learn the underly-ing physical relationships among different states. To validate its effectiveness, we conduct ablation experiments compar-ing several Koopman-based methods with and without this supervisory signal. As reported in Tab. VI, the proposed physics-informed supervision consistently improves modeling performance across different neural network-based encoders, including MLP [20], KAN [48], and our dual-branch encoder. This suggests that the loss captures general dynamical princi-ples that are independent of network architecture. Furthermore, results in Tabs. III and IV demonstrate that incorporating this loss enhances accuracy across most driving patterns. Notably, this improvement is achieved without requiring additional 11 
+
+> TABLE VI THE ABLATION EXPERIMENTS ON DYNAMICS STATE ESTIMATION ABOUT PHYSICS -INFORMED LOSS AND MIXTURE -OF -K OOPMAN .
+
+Model PiKo MoK MDE@1s ↓ FDE@1s ↓ MAE@1s ↓ FAE@1s ↓ MDE@2s ↓ MAE@2s ↓ MDE@3s ↓ MAE@3s ↓
+
+MLP [20] ✘ ✘ 0.0153 m 0.0391 m 0.2883° 0.6519° 0.0542 m 0.7256° 0.1430 m 1.3227° MLP [20] ✓ ✘ 0.0126 m 0.0348 m 0.2651° 0.6481° 0.0528 m 0.7331° 0.1551 m 1.2593° 17.6% ↓ 11.0% ↓ 8.0% ↓ 0.6% ↓ 2.6% ↓ 1.0% ↑ 8.5% ↑ 4.8% ↓
+
+KAN [48] ✘ ✘ 0.0252 m 0.0686 m 0.2626° 0.6017° 0.1100 m 0.7290° 0.3464 m 1.6376° KAN [48] ✓ ✘ 0.0217 m 0.0587 m 0.1614° 0.3828° 0.0894 m 0.5209° 0.2411 m 1.2328° 17.6% ↓ 13.9% ↓ 14.4% ↓ 36.4% ↓ 18.7% ↓ 28.5% ↓ 30.4% ↓ 24.7% ↓
+
+Ours (a) ✘ ✘ 0.0125 m 0.0323 m 0.2311° 0.5596° 0.0522 m 0.6525° 0.1876 m 1.2629° Ours (b) ✓ ✘ 0.0105 m 0.0269 m 0.1043° 0.2744° 0.0497 m 0.3997° 0.2035 m 1.0959° 16.0% ↓ 16.7% ↓ 54.9% ↓ 51.0% ↓ 4.8% ↓ 38.7% ↓ 8.5% ↑ 13.2% ↓
+
+Ours (c) ✘ ✓ 0.0121 m 0.0293 m 0.1346° 0.2895° 0.0427 m 0.3025° 0.1349 m 0.5418° 3.2% ↓ 9.3% ↓ 41.8% ↓ 48.3% ↓ 18.2% ↓ 53.6% ↓ 28.1% ↓ 57.1% ↓
+
+Ours (d) ✓ ✓ 0.0088 m 0.0228 m 0.1013 ° 0.2306 ° 0.0375 m 0.2625 ° 0.1366 m 0.4952 °
+
+29.6% ↓ 29.4% ↓ 56.2% ↓ 58.8% ↓ 28.2% ↓ 59.8% ↓ 27.2% ↓ 60.8% ↓  
+
+> TABLE VII THE ABLATION EXPERIMENTS ON DYNAMICS STATE ESTIMATION ABOUT MOKOPERATOR .
+
+Model c1: FRO c2: COR c3: RWL c4: LAM c5: CRM All 
+
+MDE ↓ FDE ↓ MDE ↓ FDE ↓ MDE ↓ FDE ↓ MDE ↓ FDE ↓ MDE ↓ FDE ↓ MDE ↓ FDE ↓
+
+vanilla 0.0126 0.0324 0.0156 0.0318 0.0122 0.0318 0.0080 0.0166 0.0070 0.0187 0.0105 0.0269 MoK 0.0120 0.0323 0.0186 0.0331 0.0089 0.0254 0.0051 0.0113 0.0055 0.0133 0.0088 0.0228 
+
+data, network parameters, or training overhead, positioning it as a general enhancement applicable to any Koopman-based dynamics modeling framework. 
+
+3) Effectiveness of MoK operator: Given the high-dimensional control space of DETs, practical applications typically employ distinct driving patterns (Fig. 5) to avoid generating infeasible control signals. In this work, we propose a MoK operator as an alternative to the conventional single Koopman operator to better accommodate this multi-pattern setting. To demonstrate its effectiveness, we compare variants using the vanilla Koopman operator against those using the proposed MoK operator. As shown in Tab. VI, comparing (a) vs. (c) and (b) vs. (c) reveals that MoK consistently improves long-term estimation accuracy. Notably, the improvement be-comes more pronounced as the estimation horizon extends, from a 3.2% gain at 100 steps to a 28.1% gain at 300 steps. Furthermore, results in Tab. VII confirm that the MoK operator addresses different driving patterns in a divide-and-conquer fashion, thereby enhancing the overall modeling capability. 
+
+D. Real-world Vehicle Case Testing 
+
+We validate our method on real-world data collected from a six-wheel DET in an industrial park. A single trajectory was divided into training (17.6k frames) and test (5.8k frames) sets to evaluate rapid model identification. Comparisons against a physics-based linear model, EDMD [19], and DeepEDMD* [20] are presented in Tab. VIII. The linear model exhibits 
+
+> TABLE VIII THE DYNAMICS STATE ESTIMATION PERFORMANCE OF DIFFERENT METHODS IN REAL -WORLD VEHICLE CASE TESTING .
+
+Method MDE ↓ FDE ↓ MAE ↓ FAE ↓
+
+Linear model (LS) 2.0039 3.9822 23.2635 46.0574 Linear model (BP) 2.1753 4.3873 0.4035 1.1294 EDMD ∗ 
+
+> Invquad
+
+[19] 1.2098 2.0335 2.0702 4.4623 DeepEDMD* [20] 0.2774 0.4937 5.7466 10.3690 KODE (Ours) 0.2508 0.4991 0.1025 0.2125 KODE-S2R (Ours) 0.0722 0.1206 0.1001 0.2011 
+
+inherent limitations, while EDMD improves upon it via kernel-based lifting. DeepEDMD*, with its learnable MLP encoder, achieves substantially better accuracy. Our full model, incor-porating the dual-branch encoder and physics-informed loss, yields the most precise heading estimates among all methods trained from scratch. However, all methods perform worse than when trained on large-scale simulation data, which we attribute to overfitting given the limited real-world samples. Leveraging the insight that the Koopman operator repre-sents the dynamics model parameters (Sec. III-G), we test the proposed sim-to-real adaptation strategy (“KODE-S2R”) where the pre-trained encoder is frozen and only the operator 12 
+
+Fig. 7. The average trajectory errors for 100-step estimation by our method, both with and without sim-to-real adaptation strategy, across a 45-second clip. The value of each point in the trajectory is the average trajectory error of the estimation at this point. We also visualize the average trajectory error in each timestamp for clear visualization. 
+
+is fine-tuned. As shown in Tab. VIII and Fig. 7, this approach effectively overcomes overfitting, demonstrating the efficacy of both the adaptation method and the embeddings learned by our encoder. The adapted model achieves centimeter-level accuracy for 100-step state estimation in real-world conditions. V. C ONCLUSIONS AND FUTURE WORKS 
+
+In this paper, we address the dynamics modeling problem for complex DETs by proposing a novel Koopman-based dynamics model entitled KODE. Koopman operator theory enables the construction of high-precision linear dynamics models within a lifted high-dimensional embedding space. To enhance long-term dynamics state estimation performance, we introduce three main contributions. First, a novel dual-branch encoder is proposed to transform raw dynamics states into expressive embeddings, providing a robust foundation for evo-lution via the Koopman operator. Second, a physics-informed loss function is derived to enforce geometric consistency in vehicle motion and couple the estimated dynamics states, which can serve as a universal enhancement applicable to any Koopman-based method. Third, to accommodate diverse driving patterns characterized by distinct control input modes, we design a MoK operator that assigns a specialized operator to each pattern, further improving modeling capability. Addi-tionally, efficient adaptation to a new vehicle can be achieved by fine-tuning only the Koopman operator while keeping the encoder frozen. The proposed method is comprehensively evaluated on simulation datasets, demonstrating significant improvements over existing Koopman-based approaches. Real-world vehicle testing further confirms its practical effective-ness, highlighting its strong potential for accurate dynamics modeling in support of high-level autonomous driving. Future work will focus on integrating the proposed dynam-ics model into practical closed-loop control systems to validate its effectiveness in real-world autonomous driving scenarios. REFERENCES [1] X. Jin, G. Yin, and N. Chen, “Advanced estimation techniques for vehicle system dynamic state: A survey,” Sensors , vol. 19, no. 19, 2019. [2] T. Zhang, Y. Sun, Y. Wang, B. Li, Y. Tian, and F.-Y. Wang, “A survey of vehicle dynamics modeling methods for autonomous racing: Theoretical models, physical/virtual platforms, and perspectives,” IEEE Transactions on Intelligent Vehicles , vol. 9, no. 3, pp. 4312–4334, 2024. [3] D. Moser, R. Schmied, H. Waschl, and L. del Re, “Flexible spacing adaptive cruise control using stochastic model predictive control,” IEEE Transactions on Control Systems Technology , vol. 26, no. 1, pp. 114– 127, 2018. [4] J. Chen, W. Zhan, and M. Tomizuka, “Autonomous driving motion planning with constrained iterative lqr,” IEEE Transactions on Intelligent Vehicles , vol. 4, no. 2, pp. 244–254, 2019. [5] N. A. Spielberg, M. Brown, N. R. Kapania, J. C. Kegelman, and J. C. Gerdes, “Neural network vehicle models for high-performance automated driving,” Science robotics , vol. 4, no. 28, p. eaaw1975, 2019. [6] J. Guo, Z. Dai, M. Liu, Z. Xie, Y. Jiang, H. Yang, and D. Xie, “Distributed drive electric vehicle handling stability coordination control framework based on adaptive model predictive control,” Sensors , vol. 24, no. 15, 2024. [7] N. R. Kapania, J. Subosits, and J. Christian Gerdes, “A sequential two-step algorithm for fast generation of vehicle racing trajectories,” Journal of Dynamic Systems, Measurement, and Control , vol. 138, p. 091005, 06 2016. [8] L. Li, G. Jia, J. Chen, H. Zhu, D. Cao, and J. Song, “A novel vehicle dynamics stability control algorithm based on the hierarchical strategy with constrain of nonlinear tyre forces,” Vehicle System Dynamics ,vol. 53, pp. 1–24, 04 2015. [9] G. Tekin and Y. S. Unlusoy, “Design and simulation of an integrated active yaw control system for road vehicles,” International Journal of Vehicle Design - INT J VEH DES , vol. 52, 11 2010. [10] M. A. Azizul, F. Ahmad, J. Karjanto, M. Che Hasan, and S. Sulaiman, “Modelling, simulation and testing of steer-by-wire system with variable steering ratio control strategy in 14-dof full vehicle model,” International Journal of Automotive and Mechanical Engineering , vol. 21, pp. 11784– 11808, 11 2024. [11] H. B. Pacejka and E. Bakker, “The magic formula tyre model,” Vehicle System Dynamics , vol. 21, no. sup001, pp. 1–18, 1992. [12] J. K. Subosits and J. C. Gerdes, “Impacts of model fidelity on trajectory optimization for autonomous vehicles in extreme maneuvers,” IEEE Transactions on Intelligent Vehicles , vol. 6, no. 3, pp. 546–558, 2021. [13] B. A. H. Vicente, S. S. James, and S. R. Anderson, “Linear system identification versus physical modeling of lateral–longitudinal vehicle dynamics,” IEEE Transactions on Control Systems Technology , vol. 29, no. 3, pp. 1380–1387, 2021. [14] J. Schoukens and L. Ljung, “Nonlinear system identification: A user-oriented road map,” IEEE Control Systems Magazine , vol. 39, no. 6, pp. 28–99, 2019. [15] J. Chrosniak, J. Ning, and M. Behl, “Deep dynamics: Vehicle dynamics modeling with a physics-constrained neural network for autonomous racing,” IEEE Robotics and Automation Letters , vol. 9, no. 6, pp. 5292– 5297, 2024. [16] J. Xu, Q. Luo, K. Xu, X. Xiao, S. Yu, J. Hu, J. Miao, and J. Wang, “An automated learning-based procedure for large-scale vehicle dynamics modeling on baidu apollo platform,” in Proceedings of 2019 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS) ,pp. 5049–5056, 2019. [17] A. Mauroy, I. Mezic, and Y. Susuki, The Koopman Operator in Systems and Control Concepts, Methodologies, and Applications: Concepts, Methodologies, and Applications . 01 2020. [18] P. J. SCHMID, “Dynamic mode decomposition of numerical and exper-imental data,” Journal of Fluid Mechanics , vol. 656, p. 5–28, 2010. [19] M. Korda and I. Mezi´ c, “Linear predictors for nonlinear dynamical sys-tems: Koopman operator meets model predictive control,” Automatica ,vol. 93, pp. 149–160, 2018. 13 
+
+[20] Y. Xiao, X. Zhang, X. Xu, X. Liu, and J. Liu, “Deep neural networks with koopman operators for modeling and control of autonomous vehicles,” IEEE Transactions on Intelligent Vehicles , vol. 8, no. 1, pp. 135–146, 2023. [21] Y. Xiao, X. Zhang, X. Xu, Y. Lu, and J. Lil, “Ddk: A deep koopman approach for longitudinal and lateral control of autonomous ground vehicles,” in 2023 IEEE International Conference on Robotics and Automation (ICRA) , pp. 975–981, 2023. [22] J. K. Subosits and J. C. Gerdes, “From the racetrack to the road: Real-time trajectory replanning for autonomous driving,” IEEE Transactions on Intelligent Vehicles , vol. 4, no. 2, pp. 309–320, 2019. [23] J. P. Timings and D. J. Cole, “Minimum maneuver time calculation using convex optimization,” Journal of Dynamic Systems, Measurement, and Control , vol. 135, p. 031015, 03 2013. [24] K. Liu, J. Gong, A. Kurt, H. Chen, and U. Ozguner, “Dynamic modeling and control of high-speed automated vehicles for lane change maneuver,” 
+
+IEEE Transactions on Intelligent Vehicles , vol. 3, no. 3, pp. 329–339, 2018. [25] J. Kabzan, L. Hewing, A. Liniger, and M. N. Zeilinger, “Learning-based model predictive control for autonomous racing,” IEEE Robotics and Automation Letters , vol. 4, no. 4, pp. 3363–3370, 2019. [26] G. Costa, J. Pinho, M. A. Botto, and P. U. Lima, “Online learning of mpc for autonomous racing,” Robotics and Autonomous Systems , vol. 167, p. 104469, 2023. [27] L. Hermansdorfer, R. Trauth, J. Betz, and M. Lienkamp, “End-to-end neural network for vehicle dynamics modeling,” in Proceedings of 2020 6th IEEE Congress on Information Science and Technology (CiSt) ,pp. 407–412, 2020. [28] X. Cao, H. Li, C. Liu, and C. Qiu, “Vehicle longitudinal and lateral dynamics modeling by deep neural network,” in Proceedings of 2021 IEEE International Conference on Real-time Computing and Robotics (RCAR) , pp. 7–13, 2021. [29] T. Kim, H. Lee, and W. Lee, “Physics embedded neural network vehicle model and applications in risk-aware autonomous driving using latent features,” in Proceedings of 2022 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS) , pp. 4182–4189, 2022. [30] S. Jiang, W. Lin, Y. Cao, Y. Wang, J. Miao, and Q. Luo, “Learning-based vehicle dynamics residual correction model for autonomous driving simulation,” in Proceedings of 2021 IEEE International Intelligent Transportation Systems Conference (ITSC) , pp. 782–789, 2021. [31] S. Jiang, Y. Wang, W. Lin, Y. Cao, L. Lin, J. Miao, and Q. Luo, “A high-accuracy framework for vehicle dynamic modeling in autonomous driving,” in Proceedings of 2021 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS) , pp. 6680–6687, 2021. [32] J. Miao, R. Yan, B. Zhang, T. Wen, J. Li, Z. Fu, K. Jiang, M. Yang, J. Huang, Z. Zhong, and D. Yang, “Residual learning towards high-fidelity vehicle dynamics modeling with transformer,” IEEE Robotics and Automation Letters , vol. 10, no. 7, pp. 7404–7411, 2025. [33] M. O. Williams, I. G. Kevrekidis, and C. W. Rowley, “A data–driven approximation of the Koopman operator: Extending dynamic mode decomposition,” Journal of Nonlinear Science , vol. 25, pp. 1307–1346, Dec. 2015. [34] G. Mamakoukas, M. L. Casta˜ no, X. Tan, and T. D. Murphey, “Derivative-based koopman operators for real-time control of robotic systems,” IEEE Transactions on Robotics , vol. 37, no. 6, pp. 2173–2192, 2021. [35] M. O. Williams, C. W. Rowley, and I. G. Kevrekidis, “A kernel-based method for data-driven koopman spectral analysis,” 2015. [36] B. Lusch, J. N. Kutz, and S. L. Brunton, “Deep learning for universal linear embeddings of nonlinear dynamics,” Nature Communications ,vol. 9, no. 1, p. 4950, 2018. [37] R. Str¨ asser, M. Schaller, K. Worthmann, J. Berberich, and F. Allg¨ ower, “Safedmd: A koopman-based data-driven controller design framework for nonlinear dynamical systems,” Automatica , vol. 185, p. 112732, 2026. [38] H. Shi and M. Q.-H. Meng, “Deep koopman operator with control for nonlinear systems,” IEEE Robotics and Automation Letters , vol. 7, no. 3, pp. 7700–7707, 2022. [39] N. Takeishi, Y. Kawahara, and T. Yairi, “Learning koopman invariant subspaces for dynamic mode decomposition,” in Proceedings of the 31st International Conference on Neural Information Processing Systems ,NIPS’17, (Red Hook, NY, USA), p. 1130–1140, Curran Associates Inc., 2017. [40] S. L. Brunton, M. Budiˇ si´ c, E. Kaiser, and J. N. Kutz, “Modern koopman theory for dynamical systems,” SIAM Review , vol. 64, no. 2, pp. 229– 340, 2022. [41] H. Chen and C. Lv, “Incorporating eso into deep koopman operator modeling for control of autonomous vehicles,” IEEE Transactions on Control Systems Technology , vol. 32, no. 5, pp. 1854–1864, 2024. [42] M. Tancik, P. Srinivasan, B. Mildenhall, S. Fridovich-Keil, N. Raghavan, U. Singhal, R. Ramamoorthi, J. Barron, and R. Ng, “Fourier features let networks learn high frequency functions in low dimensional domains,” 
+
+Advances in neural information processing systems , vol. 33, pp. 7537– 7547, 2020. [43] D. Hendrycks and K. Gimpel, “Gaussian error linear units (gelus),” 
+
+arXiv: Learning , 2016. [44] A. Dosovitskiy, L. Beyer, A. Kolesnikov, D. Weissenborn, X. Zhai, T. Unterthiner, M. Dehghani, M. Minderer, G. Heigold, S. Gelly, J. Uszkoreit, and N. Houlsby, “An image is worth 16x16 words: Trans-formers for image recognition at scale,” in 9th International Conference on Learning Representations, ICLR 2021, Virtual Event, Austria, May 3-7, 2021 , OpenReview.net, 2021. [45] J. Miao, K. Jiang, Y. Wang, T. Wen, Z. Xiao, Z. Fu, M. Yang, M. Liu, J. Huang, Z. Zhong, and D. Yang, “Poses as queries: End-to-end image-to-lidar map localization with transformers,” IEEE Robotics and Automation Letters , vol. 9, no. 1, pp. 803–810, 2024. [46] W. Gan, Z. Ning, Z. Qi, and P. S. Yu, “Mixture of experts (moe): A big data perspective,” Information Fusion , vol. 127, p. 103664, 2026. [47] A. Vaswani, “Attention is all you need,” Proceedings of Advances in Neural Information Processing Systems (NeurIPS) , 2017. [48] Z. Liu, Y. Wang, S. Vaidya, F. Ruehle, J. Halverson, M. Soljacic, T. Y. Hou, and M. Tegmark, “KAN: Kolmogorov–arnold networks,” in The Thirteenth International Conference on Learning Representations , 2025. [49] K. He, X. Zhang, S. Ren, and J. Sun, “Deep residual learning for image recognition,” in Proceedings of 2016 IEEE Conference on Computer Vision and Pattern Recognition (CVPR) , pp. 770–778, 2016.

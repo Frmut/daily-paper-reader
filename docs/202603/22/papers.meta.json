@@ -1,0 +1,23 @@
+{
+  "label": "2026-03-22",
+  "date": "2026-03-22",
+  "generated_at": "2026-03-22T20:01:32",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202603/22/2603.17416v1-physics-informed-deep-mixture-of-koopmans-vehicle-dynamics-model-with-dual-branch-encoder-for-distributed-electric-drive-trucks",
+      "section": "quick",
+      "title_en": "Physics-informed Deep Mixture-of-Koopmans Vehicle Dynamics Model with Dual-branch Encoder for Distributed Electric-drive Trucks",
+      "authors": "Jinyu Miao, Pu Zhang, Rujun Yan, Yifei He, Bowei Zhang, Zheng Fu, Ke Wang, Qi Song, Kun Jiang, Mengmeng Yang, Diange Yang",
+      "date": "2026-03-18",
+      "pdf": "https://arxiv.org/pdf/2603.17416v1",
+      "score": "7.0",
+      "evidence": "分布式电驱动卡车的动力学建模",
+      "tldr": "针对分布式电驱动卡车（DET）复杂的非线性动力学建模难题，本文提出了一种基于Koopman算子理论的数据驱动模型。通过设计双分支编码器（KODE）和物理一致性监督机制，将非线性动力学映射到线性空间。此外，引入混合Koopman算子框架以适应多样化驾驶模式。实验证明该方法在长时状态估计中达到了SOTA性能，兼顾了建模精度与线性控制兼容性。",
+      "tags": "query:pmsm",
+      "abstract_en": "Advanced autonomous driving systems require accurate vehicle dynamics modeling. However, identifying a precise dynamics model remains challenging due to strong nonlinearities and the coupled longitudinal and lateral dynamic characteristics. Previous research has employed physics-based analytical models or neural networks to construct vehicle dynamics representations. Nevertheless, these approaches often struggle to simultaneously achieve satisfactory performance in terms of system identification efficiency, modeling accuracy, and compatibility with linear control strategies. In this paper, we propose a fully data-driven dynamics modeling method tailored for complex distributed electric-drive trucks (DETs), leveraging Koopman operator theory to represent highly nonlinear dynamics in a lifted linear embedding space. To achieve high-precision modeling, we first propose a novel dual-branch encoder which encodes dynamic states and provides a powerful basis for the proposed Koopman-based methods entitled KODE. A physics-informed supervision mechanism, grounded in the geometric consistency of temporal vehicle motion, is incorporated into the training process to facilitate effective learning of both the encoder and the Koopman operator. Furthermore, to accommodate the diverse driving patterns of DETs, we extend the vanilla Koopman operator to a mixture-of-Koopman operator framework, enhancing modeling capability. Simulations conducted in a high-fidelity TruckSim environment and real-world experiments demonstrate that the proposed approach achieves state-of-the-art performance in long-term dynamics state estimation.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

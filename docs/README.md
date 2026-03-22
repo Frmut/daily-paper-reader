@@ -6,41 +6,26 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-03-21
-- 运行时间：2026-03-21 19:33:08 UTC
+- 最新运行日期：2026-03-22
+- 运行时间：2026-03-22 20:01:21 UTC
 - 运行状态：成功
-- 本次总论文数：6
+- 本次总论文数：1
 - 精读区：0
-- 速读区：6
+- 速读区：1
 
 ### 今日简报（AI）
-今日聚焦电力电子建模、高可靠性冗余系统及 Transformer 在最优控制中的泛化能力等 6 项研究。
-重点推荐三模冗余（TMR）系统的演进综述，以及 Transformer 架构作为通用最优控制器的潜力探索。
-建议关注系统可靠性或 AI 驱动控制的读者，优先研读 TMR 综述与 Transformer 控制器相关论文。
-- 详情：[/202603/21/README](/202603/21/README)
+今日聚焦分布式电驱卡车动力学建模，探索物理增强的深度库普曼（Koopmans）混合模型。
+该研究通过双分支编码器融合物理先验与深度学习，显著提升了复杂工况下重型卡车的动力学预测精度。
+建议关注自动驾驶控制与车辆动力学结合的读者，深入了解物理信息神经网络在重型车辆上的落地应用。
+- 详情：[/202603/22/README](/202603/22/README)
 
 ### 精读区论文标签
 - 本次无精读推荐。
 
 ### 速读区论文标签
-1. [EMT and RMS Modeling of Thyristor Rectifiers for Stability Analysis of Converter-Based Systems](/202603/21/2603.13050v1-emt-and-rms-modeling-of-thyristor-rectifiers-for-stability-analysis-of-converter-based-systems)  
-   标签：评分：6.0/10、query:pmsm
-   evidence：变换器系统的dq域建模
-2. [A Comprehensive Survey of Redundancy Systems with a Focus on Triple Modular Redundancy (TMR)](/202603/21/2603.14411v1-a-comprehensive-survey-of-redundancy-systems-with-a-focus-on-triple-modular-redundancy-tmr)  
-   标签：评分：6.0/10、query:pmsm
-   evidence：容错冗余技术综述
-3. [Transformers As Generalizable Optimal Controllers](/202603/21/2603.14910v1-transformers-as-generalizable-optimal-controllers)  
-   标签：评分：6.0/10、query:pmsm
-   evidence：多输入多输出线性时不变系统的通用最优控制器
-4. [Data-Driven Robust Predictive Control with Interval Matrix Uncertainty Propagation](/202603/21/2603.15063v1-data-driven-robust-predictive-control-with-interval-matrix-uncertainty-propagation)  
-   标签：评分：6.0/10、query:pmsm
-   evidence：针对受扰动线性系统的数据驱动鲁棒预测控制
-5. [Data-Driven Robust Predictive Control with Interval Matrix Uncertainty Propagation](/202603/21/2603.15063v2-data-driven-robust-predictive-control-with-interval-matrix-uncertainty-propagation)  
-   标签：评分：6.0/10、query:pmsm
-   evidence：针对受扰动线性系统的数据驱动鲁棒预测控制
-6. [Adaptive Tube MPC: Beyond a Common Quadratically Stabilizing Feedback Gain](/202603/21/2603.15912v1-adaptive-tube-mpc-beyond-a-common-quadratically-stabilizing-feedback-gain)  
-   标签：评分：6.0/10、query:pmsm
-   evidence：针对具有参数不确定性和扰动系统的自适应模型预测控制
+1. [Physics-informed Deep Mixture-of-Koopmans Vehicle Dynamics Model with Dual-branch Encoder for Distributed Electric-drive Trucks](/202603/22/2603.17416v1-physics-informed-deep-mixture-of-koopmans-vehicle-dynamics-model-with-dual-branch-encoder-for-distributed-electric-drive-trucks)  
+   标签：评分：7.0/10、query:pmsm
+   evidence：分布式电驱动卡车的动力学建模
 
 
 <div class="dpr-home-promo-card">
