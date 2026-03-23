@@ -1,0 +1,52 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-03-23T20:28:23.602214+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 1,
+    "quick_skim_target": 11,
+    "quick_selected": 1
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2603.19132v1",
+      "title": "Tutorial: Grid-Following Inverter for Electrical Power Grid",
+      "abstract": "The growing use of inverter-based resources in modern power systems has made grid-following inverters a central topic in power-system modeling, control, and simulation. Despite their widespread deployment, introductory material that explains grid-following inverter operation from first principles and connects control design to time-domain simulation remains limited. To address this need, this tutorial presents a circuit-theoretic introduction to the modeling and simulation of a grid- following inverter connected to an electrical power grid. We describe the inverter synchronization with the grid (PLL), power control, and current control structure and show how these elements can be represented within an electromagnetic transient (EMT) simulation framework using companion model-based formulations similar to those used in circuit simulators such as SPICE and Cadence. In this tutorial, we use the grid-following inverter as the primary example to illustrate how its governing equations, control loops, and network interface can be formulated and simulated from first principles. By the end of the document, readers should gain a clear introductory understanding of how to model and simulate a grid-following inverter in an EMT platform.",
+      "authors": [
+        "Muhammad Hamza Ali",
+        "Amritanshu Pandey"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY"
+      ],
+      "published": "2026-03-19T16:51:06+00:00",
+      "link": "https://arxiv.org/pdf/2603.19132v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "inverter control and current control structure",
+      "llm_evidence_cn": "逆变器控制与电流控制结构",
+      "llm_evidence": "逆变器控制与电流控制结构",
+      "canonical_evidence": "逆变器控制与电流控制结构",
+      "llm_tldr_en": "A tutorial on grid-following inverter modeling and control, relevant to power electronics in motor drives.",
+      "llm_tldr_cn": "关于并网逆变器建模与控制的教程，与电机驱动中的电力电子技术相关。",
+      "llm_tldr": "关于并网逆变器建模与控制的教程，与电机驱动中的电力电子技术相关。",
+      "llm_tags": [
+        "query:pmsm:composite"
+      ],
+      "matched_query_tag": "query:pmsm:composite",
+      "matched_query_text": "Papers central to 三相及双三相永磁同步电机相关研究检索, especially work that connects or combines: m; s; f; Permanent Magnet Synchronous Motor research; dual three-phase permanent magnet synchronous motor control and design; fault-tolerant control of multi-phase motors; recent advances in dual three phase permanent magnet synchronous motor control; fault tolerant strategies for multi phase permanent magnet synchronous motors.",
+      "matched_requirement_id": "req-composite-pmsm",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

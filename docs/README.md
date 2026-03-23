@@ -6,26 +6,26 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-03-22
-- 运行时间：2026-03-22 20:01:21 UTC
+- 最新运行日期：2026-03-23
+- 运行时间：2026-03-23 20:28:39 UTC
 - 运行状态：成功
 - 本次总论文数：1
 - 精读区：0
 - 速读区：1
 
 ### 今日简报（AI）
-今日聚焦分布式电驱卡车动力学建模，探索物理增强的深度库普曼（Koopmans）混合模型。
-该研究通过双分支编码器融合物理先验与深度学习，显著提升了复杂工况下重型卡车的动力学预测精度。
-建议关注自动驾驶控制与车辆动力学结合的读者，深入了解物理信息神经网络在重型车辆上的落地应用。
-- 详情：[/202603/22/README](/202603/22/README)
+今日深入解析电力系统关键组件，系统梳理了跟网型逆变器（GFL）的基础架构与控制原理。
+该教程为新能源并网提供了标准化的技术参考，是理解现代电网稳定性的核心入门资料。
+建议电力电子初学者及电网工程师借此快速构建对逆变器控制系统的全局认知。
+- 详情：[/202603/23/README](/202603/23/README)
 
 ### 精读区论文标签
 - 本次无精读推荐。
 
 ### 速读区论文标签
-1. [Physics-informed Deep Mixture-of-Koopmans Vehicle Dynamics Model with Dual-branch Encoder for Distributed Electric-drive Trucks](/202603/22/2603.17416v1-physics-informed-deep-mixture-of-koopmans-vehicle-dynamics-model-with-dual-branch-encoder-for-distributed-electric-drive-trucks)  
-   标签：评分：7.0/10、query:pmsm
-   evidence：分布式电驱动卡车的动力学建模
+1. [Tutorial: Grid-Following Inverter for Electrical Power Grid](/202603/23/2603.19132v1-tutorial-grid-following-inverter-for-electrical-power-grid)  
+   标签：评分：6.0/10、query:pmsm
+   evidence：逆变器控制与电流控制结构
 
 
 <div class="dpr-home-promo-card">

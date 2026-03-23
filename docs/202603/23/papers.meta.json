@@ -1,0 +1,23 @@
+{
+  "label": "2026-03-23",
+  "date": "2026-03-23",
+  "generated_at": "2026-03-23T20:28:48",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202603/23/2603.19132v1-tutorial-grid-following-inverter-for-electrical-power-grid",
+      "section": "quick",
+      "title_en": "Tutorial: Grid-Following Inverter for Electrical Power Grid",
+      "authors": "Muhammad Hamza Ali, Amritanshu Pandey",
+      "date": "2026-03-19",
+      "pdf": "https://arxiv.org/pdf/2603.19132v1",
+      "score": "6.0",
+      "evidence": "逆变器控制与电流控制结构",
+      "tldr": "随着逆变器资源在现代电力系统中的广泛应用，跟网型逆变器（GFLI）成为研究核心。本文提供了一份教程，旨在填补从基础原理到时域仿真之间的教学空白。文章采用电路理论方法，详细介绍了GFLI的同步（PLL）、功率控制及电流控制结构，并展示了如何在电磁暂态（EMT）仿真框架下，利用伴随模型公式进行建模。该教程为读者提供了从零开始构建和模拟跟网型逆变器的清晰指导。",
+      "tags": "query:pmsm",
+      "abstract_en": "The growing use of inverter-based resources in modern power systems has made grid-following inverters a central topic in power-system modeling, control, and simulation. Despite their widespread deployment, introductory material that explains grid-following inverter operation from first principles and connects control design to time-domain simulation remains limited. To address this need, this tutorial presents a circuit-theoretic introduction to the modeling and simulation of a grid- following inverter connected to an electrical power grid. We describe the inverter synchronization with the grid (PLL), power control, and current control structure and show how these elements can be represented within an electromagnetic transient (EMT) simulation framework using companion model-based formulations similar to those used in circuit simulators such as SPICE and Cadence. In this tutorial, we use the grid-following inverter as the primary example to illustrate how its governing equations, control loops, and network interface can be formulated and simulated from first principles. By the end of the document, readers should gain a clear introductory understanding of how to model and simulate a grid-following inverter in an EMT platform.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
