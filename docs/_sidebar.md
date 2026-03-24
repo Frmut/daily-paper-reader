@@ -1,6 +1,9 @@
 * <a class="dpr-sidebar-root-link" href="#/">首页</a>
 * <a class="dpr-sidebar-root-link dpr-sidebar-noactive-link" href="javascript:void(0)" data-dpr-hash="#/tutorial/README">使用教程</a>
 * Daily Papers
+  * 2026-03-24 <!--dpr-date:20260324-->
+    * 精读区
+      * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202603/24/2603.21133v1-high-endurance-ucav-propulsion-system-a-1-d-cnn-based-real-time-fault-classification-for-tactical-grade-ipmsm-drive" data-sidebar-item="{&quot;title&quot;: &quot;High-Endurance UCAV Propulsion System: A 1-D CNN-Based Real-Time Fault Classification for Tactical-Grade IPMSM Drive&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2603.21133v1-high-endurance-ucav-propulsion-system-a-1-d-cnn-based-real-time-fault-classification-for-tactical-grade-ipmsm-drive&quot;, &quot;score&quot;: &quot;10.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;pmsm&quot;}], &quot;evidence&quot;: &quot;基于一维卷积神经网络的内置式永磁同步电机（IPMSM）实时故障分类&quot;}">High-Endurance UCAV Propulsion System: A 1-D CNN-Based Real-Time Fault Classification for Tactical-Grade IPMSM Drive</a>
   * 2026-03-23 <!--dpr-date:20260323-->
     * 速读区
       * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202603/23/2603.19132v1-tutorial-grid-following-inverter-for-electrical-power-grid" data-sidebar-item="{&quot;title&quot;: &quot;Tutorial: Grid-Following Inverter for Electrical Power Grid&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2603.19132v1-tutorial-grid-following-inverter-for-electrical-power-grid&quot;, &quot;score&quot;: &quot;6.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;pmsm&quot;}], &quot;evidence&quot;: &quot;逆变器控制与电流控制结构&quot;}">Tutorial: Grid-Following Inverter for Electrical Power Grid</a>

@@ -1,0 +1,23 @@
+{
+  "label": "2026-03-24",
+  "date": "2026-03-24",
+  "generated_at": "2026-03-24T19:45:03",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202603/24/2603.21133v1-high-endurance-ucav-propulsion-system-a-1-d-cnn-based-real-time-fault-classification-for-tactical-grade-ipmsm-drive",
+      "section": "deep",
+      "title_en": "High-Endurance UCAV Propulsion System: A 1-D CNN-Based Real-Time Fault Classification for Tactical-Grade IPMSM Drive",
+      "authors": "Tahmin Mahmud",
+      "date": "2026-03-22",
+      "pdf": "https://arxiv.org/pdf/2603.21133v1",
+      "score": "10.0",
+      "evidence": "基于一维卷积神经网络的内置式永磁同步电机（IPMSM）实时故障分类",
+      "tldr": "针对高耐力无人作战飞机（UCAV）推进系统对高可靠性和实时故障恢复的需求，本文提出一种基于一维卷积神经网络（1-D CNN）的实时故障分类框架。该方法直接从高频电流和转速信号中提取特征，实现了亚毫秒级的推理速度。在HPDM-350永磁同步电机上的实验表明，该模型在变转速工况下具有极高的准确率和鲁棒性，优于传统的机器学习和LSTM方法，为关键任务电力推进系统提供了轻量化解决方案。",
+      "tags": "query:pmsm",
+      "abstract_en": "High-performance propulsion for mission-critical applications demands unprecedented reliability and real-time fault resilience. Conventional diagnostic methods (signal-based analysis and standard ML models) are essential for stator/rotor fault detection but suffer from high latency and poor generalization across variable speeds. This paper proposes a 1-D Convolutional Neural Network (CNN) framework for real-time fault classification in the HPDM-350 interior permanent magnet synchronous motor (IPMSM). The proposed architecture extracts discriminative features directly from high-frequency current and speed signals, enabling sub-millisecond inference on embedded controllers. Compared to state-of-the-art long short term memory (LSTM) and classical ML approaches, the 1-D CNN achieves a superior weighted F1-score of 0.9834. Validated through high-fidelity magnetic-domain MATLAB/Simscape models, the method demonstrates robust performance across a +-2700 RPM envelope, providing a lightweight solution for mission-critical electric propulsion systems.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

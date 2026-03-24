@@ -1,0 +1,50 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-03-24T19:44:16.114791+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 1,
+    "deep_cap": 6,
+    "deep_selected": 1,
+    "quick_candidates": 0,
+    "quick_skim_target": 11,
+    "quick_selected": 0
+  },
+  "deep_dive": [
+    {
+      "id": "2603.21133v1",
+      "title": "High-Endurance UCAV Propulsion System: A 1-D CNN-Based Real-Time Fault Classification for Tactical-Grade IPMSM Drive",
+      "abstract": "High-performance propulsion for mission-critical applications demands unprecedented reliability and real-time fault resilience. Conventional diagnostic methods (signal-based analysis and standard ML models) are essential for stator/rotor fault detection but suffer from high latency and poor generalization across variable speeds. This paper proposes a 1-D Convolutional Neural Network (CNN) framework for real-time fault classification in the HPDM-350 interior permanent magnet synchronous motor (IPMSM). The proposed architecture extracts discriminative features directly from high-frequency current and speed signals, enabling sub-millisecond inference on embedded controllers. Compared to state-of-the-art long short term memory (LSTM) and classical ML approaches, the 1-D CNN achieves a superior weighted F1-score of 0.9834. Validated through high-fidelity magnetic-domain MATLAB/Simscape models, the method demonstrates robust performance across a +-2700 RPM envelope, providing a lightweight solution for mission-critical electric propulsion systems.",
+      "authors": [
+        "Tahmin Mahmud"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY"
+      ],
+      "published": "2026-03-22T09:08:28+00:00",
+      "link": "https://arxiv.org/pdf/2603.21133v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 10.0,
+      "llm_evidence_en": "Real-time fault classification for Interior Permanent Magnet Synchronous Motor (IPMSM) using 1-D CNN",
+      "llm_evidence_cn": "基于一维卷积神经网络的内置式永磁同步电机（IPMSM）实时故障分类",
+      "llm_evidence": "基于一维卷积神经网络的内置式永磁同步电机（IPMSM）实时故障分类",
+      "canonical_evidence": "基于一维卷积神经网络的内置式永磁同步电机（IPMSM）实时故障分类",
+      "llm_tldr_en": "Introduces a 1-D CNN framework for sub-millisecond fault diagnosis in high-performance IPMSM drives.",
+      "llm_tldr_cn": "提出了一种一维卷积神经网络框架，用于高性能IPMSM驱动器的亚毫秒级故障诊断。",
+      "llm_tldr": "提出了一种一维卷积神经网络框架，用于高性能IPMSM驱动器的亚毫秒级故障诊断。",
+      "llm_tags": [
+        "query:pmsm"
+      ],
+      "matched_query_tag": "query:pmsm",
+      "matched_query_text": "Permanent Magnet Synchronous Motor research",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": []
+}
