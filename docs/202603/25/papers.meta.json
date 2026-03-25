@@ -1,0 +1,23 @@
+{
+  "label": "2026-03-25",
+  "date": "2026-03-25",
+  "generated_at": "2026-03-25T19:41:42",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202603/25/2603.23113v1-fault-tolerant-design-and-multi-objective-model-checking-for-real-time-deep-reinforcement-learning-systems",
+      "section": "quick",
+      "title_en": "Fault-Tolerant Design and Multi-Objective Model Checking for Real-Time Deep Reinforcement Learning Systems",
+      "authors": "Guoxin Su, Thomas Robinson, Hoa Khanh Dam, Li Liu, David S. Rosenblum",
+      "date": "2026-03-24",
+      "pdf": "https://arxiv.org/pdf/2603.23113v1",
+      "score": "6.0",
+      "evidence": "实时控制系统的容错设计",
+      "tldr": "针对实时深度强化学习（DRL）系统在延迟等故障下的可靠性挑战，本文提出一种形式化框架，用于设计和分析DRL代理与备用控制器之间的切换机制。研究通过时间自动机建模并转换为马尔可夫决策过程，利用创新的多目标模型检测技术在保证硬安全约束的同时优化性能。此外，开发的GPU加速工具MOPMC在处理大规模模型和多目标优化时展现出卓越的扩展性。",
+      "tags": "query:pmsm",
+      "abstract_en": "Deep reinforcement learning (DRL) has emerged as a powerful paradigm for solving complex decision-making problems. However, DRL-based systems still face significant dependability challenges particularly in real-time environments due to the simulation-to-reality gap, out-of-distribution observations, and the critical impact of latency. Latency-induced faults, in particular, can lead to unsafe or unstable behaviour, yet existing fault-tolerance approaches to DRL systems lack formal methods to rigorously analyse and optimise performance and safety simultaneously in real-time settings. To address this, we propose a formal framework for designing and analysing real-time switching mechanisms between DRL agents and alternative controllers. Our approach leverages Timed Automata (TAs) for explicit switch logic design, which is then syntactically converted to a Markov Decision Process (MDP) for formal analysis. We develop a novel convex query technique for multi-objective model checking, enabling the optimisation of soft performance objectives while ensuring hard safety constraints for MDPs. Furthermore, we present MOPMC, a GPU-accelerated software tool implementing this technique, demonstrating superior scalability in both model size and objective numbers.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

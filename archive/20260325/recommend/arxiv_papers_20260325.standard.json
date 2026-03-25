@@ -1,0 +1,55 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-03-25T19:41:15.329938+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 1,
+    "quick_skim_target": 11,
+    "quick_selected": 1
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2603.23113v1",
+      "title": "Fault-Tolerant Design and Multi-Objective Model Checking for Real-Time Deep Reinforcement Learning Systems",
+      "abstract": "Deep reinforcement learning (DRL) has emerged as a powerful paradigm for solving complex decision-making problems. However, DRL-based systems still face significant dependability challenges particularly in real-time environments due to the simulation-to-reality gap, out-of-distribution observations, and the critical impact of latency. Latency-induced faults, in particular, can lead to unsafe or unstable behaviour, yet existing fault-tolerance approaches to DRL systems lack formal methods to rigorously analyse and optimise performance and safety simultaneously in real-time settings. To address this, we propose a formal framework for designing and analysing real-time switching mechanisms between DRL agents and alternative controllers. Our approach leverages Timed Automata (TAs) for explicit switch logic design, which is then syntactically converted to a Markov Decision Process (MDP) for formal analysis. We develop a novel convex query technique for multi-objective model checking, enabling the optimisation of soft performance objectives while ensuring hard safety constraints for MDPs. Furthermore, we present MOPMC, a GPU-accelerated software tool implementing this technique, demonstrating superior scalability in both model size and objective numbers.",
+      "authors": [
+        "Guoxin Su",
+        "Thomas Robinson",
+        "Hoa Khanh Dam",
+        "Li Liu",
+        "David S. Rosenblum"
+      ],
+      "primary_category": "cs.SE",
+      "categories": [
+        "cs.SE"
+      ],
+      "published": "2026-03-24T12:08:06+00:00",
+      "link": "https://arxiv.org/pdf/2603.23113v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Fault-tolerant design for real-time control systems",
+      "llm_evidence_cn": "实时控制系统的容错设计",
+      "llm_evidence": "实时控制系统的容错设计",
+      "canonical_evidence": "实时控制系统的容错设计",
+      "llm_tldr_en": "Proposes a formal framework for fault-tolerant switching in real-time deep reinforcement learning systems.",
+      "llm_tldr_cn": "提出了一种用于实时深度强化学习系统容错切换的正式框架。",
+      "llm_tldr": "提出了一种用于实时深度强化学习系统容错切换的正式框架。",
+      "llm_tags": [
+        "query:pmsm"
+      ],
+      "matched_query_tag": "query:pmsm",
+      "matched_query_text": "fault-tolerant control of multi-phase motors",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
