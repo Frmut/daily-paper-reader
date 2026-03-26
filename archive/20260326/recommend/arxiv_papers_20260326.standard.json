@@ -1,0 +1,124 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-03-26T19:42:03.210532+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 3,
+    "quick_skim_target": 11,
+    "quick_selected": 3
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2603.17843v1",
+      "title": "Certainty-equivalent adaptive MPC for uncertain nonlinear systems",
+      "abstract": "We provide a method to design adaptive controllers for nonlinear systems using model predictive control (MPC). By combining a certainty-equivalent MPC formulation with least-mean-square parameter adaptation, we obtain an adaptive controller with strong robust performance guarantees: The cumulative tracking error and violation of state constraints scale linearly with noise energy, disturbance energy, and path length of parameter variation. A key technical contribution is developing the underlying certainty-equivalent MPC that tracks output references, accounts for actuator limitations and desired state constraints, requires no system-specific offline design, and provides strong inherent robustness properties. This is achieved by leveraging finite-horizon rollouts, artificial references, recent analysis techniques for optimization-based controllers, and soft state constraints. For open-loop stable systems, we derive a semi-global result that applies to arbitrarily large measurement noise, disturbances, and parametric uncertainty. For stabilizable systems, we derive a regional result that is valid within a given region of attraction and for sufficiently small uncertainty. Applicability and benefits are demonstrated with numerical simulations involving systems with large parametric uncertainty: a linear stable chain of mass-spring-dampers and a nonlinear unstable quadrotor navigating obstacles.",
+      "authors": [
+        "Johannes Köhler"
+      ],
+      "primary_category": "math.OC",
+      "categories": [
+        "math.OC",
+        "eess.SY"
+      ],
+      "published": "2026-03-18T15:33:46+00:00",
+      "link": "https://arxiv.org/pdf/2603.17843v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Adaptive MPC for uncertain nonlinear systems",
+      "llm_evidence_cn": "不确定非线性系统的自适应模型预测控制",
+      "llm_evidence": "不确定非线性系统的自适应模型预测控制",
+      "canonical_evidence": "不确定非线性系统的自适应模型预测控制",
+      "llm_tldr_en": "Provides an adaptive MPC method for nonlinear systems with strong robust performance and constraint guarantees.",
+      "llm_tldr_cn": "提供了一种用于非线性系统的自适应模型预测控制方法，具有强大的鲁棒性能和约束保证。",
+      "llm_tldr": "提供了一种用于非线性系统的自适应模型预测控制方法，具有强大的鲁棒性能和约束保证。",
+      "llm_tags": [
+        "query:pmsm:composite"
+      ],
+      "matched_query_tag": "query:pmsm:composite",
+      "matched_query_text": "Papers central to 三相及双三相永磁同步电机相关研究检索, especially work that connects or combines: m; s; f; Permanent Magnet Synchronous Motor research; dual three-phase permanent magnet synchronous motor control and design; fault-tolerant control of multi-phase motors; recent advances in dual three phase permanent magnet synchronous motor control; fault tolerant strategies for multi phase permanent magnet synchronous motors.",
+      "matched_requirement_id": "req-composite-pmsm",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2603.18921v1",
+      "title": "Lightweight Model Predictive Control for Spacecraft Rendezvous Attitude Synchronization",
+      "abstract": "This work introduces two lightweight model predictive control (MPC) approaches for attitude tracking with reaction wheels during spacecraft rendezvous synchronization. Both approaches are based on a novel attitude deviation formulation, which enables the use of inherently linear constraints on angular velocity. We develop a single-loop and a dual-loop MPC; the latter embeds a stabilizing feedback controller within the inner loop, yielding a linear time-invariant system. Both controllers are implemented with CasADi - including automatic code generation - evaluated across various solvers, and validated within the Basilisk astrodynamics simulation framework. The experimental results demonstrate improved tracking accuracy alongside reductions in computational effort and memory consumption. Finally, embedded delivery to an ARM Cortex-M7 - representative of commercial off-the-shelf devices used in New Space platforms - confirms the real-time feasibility of these approaches and highlights their suitability for onboard attitude control in resource-constrained spacecraft rendezvous missions.",
+      "authors": [
+        "Peter Stadler",
+        "Alexander Meinert",
+        "Niklas Baldauf",
+        "Alen Turnwald"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "eess.SY"
+      ],
+      "published": "2026-03-19T13:58:55+00:00",
+      "link": "https://arxiv.org/pdf/2603.18921v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "MPC for attitude tracking with reaction wheels",
+      "llm_evidence_cn": "使用反作用轮进行姿态跟踪的模型预测控制",
+      "llm_evidence": "使用反作用轮进行姿态跟踪的模型预测控制",
+      "canonical_evidence": "使用反作用轮进行姿态跟踪的模型预测控制",
+      "llm_tldr_en": "Introduces lightweight MPC approaches for spacecraft attitude synchronization using reaction wheels.",
+      "llm_tldr_cn": "介绍了用于航天器姿态同步的轻量级模型预测控制方法，提高了跟踪精度并减少了计算量。",
+      "llm_tldr": "介绍了用于航天器姿态同步的轻量级模型预测控制方法，提高了跟踪精度并减少了计算量。",
+      "llm_tags": [
+        "query:pmsm:composite"
+      ],
+      "matched_query_tag": "query:pmsm:composite",
+      "matched_query_text": "Papers central to 三相及双三相永磁同步电机相关研究检索, especially work that connects or combines: m; s; f; Permanent Magnet Synchronous Motor research; dual three-phase permanent magnet synchronous motor control and design; fault-tolerant control of multi-phase motors; recent advances in dual three phase permanent magnet synchronous motor control; fault tolerant strategies for multi phase permanent magnet synchronous motors.",
+      "matched_requirement_id": "req-composite-pmsm",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2603.24273v1",
+      "title": "Graph-Theoretic Analysis of Residual Generation Under Computational Constraints",
+      "abstract": "A unified structural framework is presented for model-based fault diagnosis that explicitly incorporates both fault locations and constraints imposed by the residual generation methodology. Building on the concepts of proper and minimal structurally overdetermined (PSO/MSO) sets and Test Equation Supports (TES/MTES), the framework introduces testable PSO sets, Residual Generation (RG) sets, irreducible fault signatures (IFS), and Irreducible RG (IRG) sets to characterize which submodels are suitable for residual generation under given computational restrictions. An operator $M^*$ is defined to extract, from any model, the largest testable PSO subset consistent with a specified residual generation method. Using this operator, an algorithm is developed to compute all RG sets, and it is shown that irreducible fault signature sets form the join-irreducible elements of a join-semilattice of sets and fully capture the multiple-fault isolability properties in the method-constrained setting. The approach is exemplified on a semi-explicit linear DAE model, where low structural differential index can be used to define $M^*$. The results demonstrate that the proposed framework generalizes MTES-based analysis to residual generation scenarios with explicit computational limitations.",
+      "authors": [
+        "Jan Åslund"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY"
+      ],
+      "published": "2026-03-25T13:05:17+00:00",
+      "link": "https://arxiv.org/pdf/2603.24273v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Model-based fault diagnosis and residual generation framework",
+      "llm_evidence_cn": "基于模型的故障诊断与残差生成框架",
+      "llm_evidence": "基于模型的故障诊断与残差生成框架",
+      "canonical_evidence": "基于模型的故障诊断与残差生成框架",
+      "llm_tldr_en": "Presents a structural framework for fault diagnosis under computational constraints using residual generation.",
+      "llm_tldr_cn": "提出了一种在计算限制下利用残差生成进行故障诊断的结构化框架。",
+      "llm_tldr": "提出了一种在计算限制下利用残差生成进行故障诊断的结构化框架。",
+      "llm_tags": [
+        "query:pmsm"
+      ],
+      "matched_query_tag": "query:pmsm",
+      "matched_query_text": "fault-tolerant control of multi-phase motors",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
