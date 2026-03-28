@@ -1,0 +1,3205 @@
+Title: 2603.25287v1.pdf
+
+URL Source: https://arxiv.org/pdf/2603.25287v1
+
+Published Time: Fri, 27 Mar 2026 00:50:56 GMT
+
+Number of Pages: 13
+
+Markdown Content:
+1
+
+> REPLACE THIS LINE WITH YOUR MANUSCRIPT ID NUMBER (DOUBLE -CLICK HERE TO EDIT) < 
+
+# Entire Period Transient Stability of S yn chronous 
+
+# Generator s Considering LVRT Switching of Nearby 
+
+# Renewable Energy Sources 
+
+Bingfang Li, Student Member , IEEE , Songhao Yang, Senior Member , IEEE , Guosong Wang, Yiwen Hu, Xu Zhang ,
+
+Zhiguo Hao, Senior Member , IEEE , Dongxu Chang , Baohui Zhang, Fellow , IEEE 
+
+Abstract —In scenarios where synchronous generators (SGs) 
+
+and grid -following renewable energy sources (GFLR) are co -
+
+located, existing research , which mainly focus es on the first -swing 
+
+stability of SGs , often overlook s ongoing dynamic interactions 
+
+between GFLRs and SGs throughout the entire rotor swing period. 
+
+To address this gap, this study first reveal s that the angle 
+
+oscillations of SG can cause periodic grid voltage fluctuations, 
+
+potentially triggering low -voltage ride -throu gh (LVRT) control 
+
+switching of GFLR repeatedly . Then, the periodic energy changes 
+
+of SGs under "circular" and "rectangular" LVRT limits are 
+
+analyzed. The results indicate that circular limits are detrimental 
+
+to SG’s first -swing stability, while rectangular limits and their 
+
+slow recovery strategies can lead to SG ’s multi -swing instability. 
+
+Conservative stability criteria are also proposed for these 
+
+phenomena . Furthermore, an additional controller based on 
+
+feedback linearization is introduced to enhance the entire period 
+
+transient stability of SG by adjusting the post -fault GFLR output 
+
+current. Finally, t he efficacy of the analysis is validated through 
+
+electromagnetic transi ent simulations and controller hardware -in -
+
+the -loop (CHIL) test s.
+
+Index Terms —transient stability, synchronous generator, grid -
+
+following renewable energy sources , entire period dynamic , low 
+
+voltage ride through, feedback linearization control .
+
+I. INTRODUCTION 
+
+HE large -scale and centralized integration of wind and 
+
+solar power into the grid presents challenges like low 
+
+short -circuit ratios and weak inertia support  [1] -[5] . The 
+
+combination of GFLR with existing SG units in the 
+
+system offers a promising solution , which enhance s the grid's 
+
+dynamic support capability and mitigate s operational 
+
+challenges stemming from the inherent uncertainty of GFLR 
+
+output . However, the strong power coupling between GFLRs 
+
+and nearby SGs raises concerns about potential impacts on rotor 
+
+angle stabil ity in SGs . This emerging issue warrants a tho rough 
+
+investigation to ensure the stable operation of power systems. 
+
+Numerous scholars have investigated the rotor angle stability 
+
+issues in co -located GFLR and SG systems. Some use detailed 
+
+time -domain simulations for transient stability analysis  [6] -[8] ,
+
+while others prefer simplified analytical models. On the 
+
+elect romechanical timescale of SG rotor motion, the phase -
+
+locked loop (PLL) dynamics of GFLR 's grid -side converters 
+
+(GSC) can be neglected [9] -[11] . This simplification allows 
+
+GFLR to be modeled as a negative impedance [12] , power 
+
+source [13] , or controlled current source [14] , enabling classical 
+
+stability analysis methods such as the direct method [15] ,[16] ,
+
+the equal area criterion [17]  and phase trajectory method 
+
+[18] ,[19]  to assess system stability. Within this framework, 
+
+researchers have examined how GFLR penetration, connect ed 
+
+location , fault condition , operating mode, and voltage or 
+
+frequency control affect system transient angle stability 
+
+[5] ,[11] ,[13] . However, these studies often overlook the control 
+
+switching of GSC s, especial ly the impact s of LVRT control .
+
+This oversight can lead to discrepancies between analytical 
+
+results and actual system behavior. 
+
+During severe grid fault s, GSC s switch to LVRT mode t o
+
+prevent overcurrent and provide reactive power support [20] .
+
+Ref.  [21]  shows that wind farms lacking conventional support 
+
+may experience voltage oscillations due to repeated LVRT 
+
+control . The underlying mechanism involves a vicious circle: 
+
+LVRT switching causes sudden changes in wind farm ou tput, 
+
+leading to grid voltage shifts, which in turn trigger further 
+
+LVRT events. In the scenario discussed in this paper, however, 
+
+SGs provide strong short -circuit capacity support. This 
+
+enhances the voltage security of the sending -end system but 
+
+also highlights rotor angle in stability issues. Analyzing the 
+
+dynamic interaction between rotor angle swings of SGs and the 
+
+transient control of GFLRs is crucial to addressing this 
+
+challenge. 
+
+Current research has explore d the impact of GFLR's LVRT 
+
+dynamics on the first -swing rotor angle stability of synchronous 
+
+machines. First -swing stability refers to the system’s ability to 
+
+maintain stable durin g the first swing cycle after fault 
+
+clearance [22] . This primarily depends on whether the transient 
+
+energy accumulated during the fault can be effectively absorbed 
+
+and dissipated after fault clearance. Ref.  [23]  and  [24]  identify 
+
+two forms of rotor angle instability in GFLR stations with 
+
+synchronous condensers, considering various LVRT depths and 
+
+fault types. Ref . [25]  studies a similar scenario in a system 
+
+where GFLR is paralleled with virtual synchronous generators 
+
+(VSGs). It investigates the impact of the current -limiting angle 
+
+relationship between GFLR and VSG during faults on system 
+
+stability, and proposes an adaptive current -limiting control 
+
+method. However, these studies primarily focus on LVRT's 
+
+impact during faults, overlooking the sustained influence of 
+
+GFLRs on voltage source equipment after fault clearance. Ref. 
+
+[26]  reveals that increases in VSG rotor angle post -fault narrow 
+
+the stability region of the PLL, thus adversely affecting system 
+
+stability during the first swing. While this study touched upon 
+
+post -fault interactions, its research perspective remained 
+
+# T
+
+This work was supported by The Key Science and Technology Project of CSG 
+
+(GZKJXM20222178, GZKJXM20222211, GZKJXM20222213 ).
+
+B. Li, S. Yang, Z. Hao, Y. Hu, X. Zhang, and B. Zhang are with Xi’an Jiaotong 
+
+University, Xi'an, China (e -mail: {songhaoyang, zhghao, bhzhang}@ 
+
+xjtu.edu.cn, {libingfang, huyiwen}@stu. xjtu.edu.cn). G. Wang and D. Chang 
+
+are with China Southern Power Gridcsg Electric Power Research Institute .2
+
+> REPLACE THIS LINE WITH YOUR MANUSCRIPT ID NUMBER (DOUBLE -CLICK HERE TO EDIT) < 
+
+confined to first -swing stability in the traditional sense. 
+
+Considering GFLRs’ ongoing effects on subsequent swing 
+
+periods after fault clearance, the issue of multi -swing stability 
+
+in GFLR and SG co -located systems is gaining increasing 
+
+attention. Multi -swing stability refers to the system’s stability 
+
+during subsequent oscillation cy cles, assuming first -swing 
+
+stability has been achieved . This instability often stems from 
+
+new coupling effects and disturbance injections  [27] . Ref.  [28] 
+
+graphically illustrates the acceleration and deceleration energy 
+
+changes of SGs across multiple swings, revealing odd -
+
+numbered instability trends due to slow GFLR power recovery. 
+
+Complementing this work, Ref.  [29]  provides a mathematical 
+
+proof of this phenomen on . However, it treats GFLR output as 
+
+an independent variable , failing to accurately account for the 
+
+dynamic interactions between GFLR and main grids .
+
+In a nutshell, existing research either solely focuses on first -
+
+swing stability or fails to account for the post -fault interactions 
+
+between GFLR and the grid. Focusing on the interaction 
+
+between SG rotor dynamics and GFLR output after fault 
+
+clearance , this paper makes four main contributions: 
+
+1) The post -fault interaction mechanism between SG rotor 
+
+angle and GFLR's LVRT control is revealed. It is found that 
+
+roto r angle swings of SGs can cause voltage oscillations, which 
+
+may lead to the periodic activation and deactivation of LVRT .
+
+This process, in turn, affects the rotor dynamics of SGs .
+
+2) The entire period transient instability risks of SGs with 
+
+different LVRT limit modes of GFLR are analyzed. The 
+
+"circular limit" makes SGs more prone to first -swing instability, 
+
+while the "rectangular limit" may cause multi -swing instability .
+
+3) Stability boundaries in the form of critical energy are 
+
+proposed for both the first -swing and multi -swing stability of 
+
+SGs affected by the LVRT control switching of the GFLR. 
+
+4) Based on feedback linearization, this paper proposes a 
+
+stabilization control strategy applied after fault clearance to 
+
+enhance the entire period transient stability of SG s.
+
+II. SYSTEM MODELING 
+
+A. System Overview 
+
+Fig. 1  depicts a simplified topology of a parallel transmission 
+
+system comprising GFLR and SG. They are aggregated at the 
+
+point of common coupling (PCC) and connected to the 
+
+receiving -end grid via AC transmission lines. The grid 
+
+integration characteristics of GFLRs are primarily reflected in 
+
+the interaction between the GSC and the power grid. In  Fig. 1 ,
+
+Es∠δ, Uw∠, Upcc ∠p, Ug∠0° denote the voltage phasors of 
+
+the sending -end SG, the converter, and the receiving -end 
+
+infinite bus, respectively. Is∠
+
+s, Iw∠w, and Ig∠
+
+g represent 
+
+the corresponding branch currents, while Ys, Yw, Yg are the 
+
+respective branch admittances. 
+
+In  Fig. 2 , the ds-qs, d-q, and x-y reference frames rotate 
+
+counterclockwise with angular speeds 
+
+s,
+
+p, and 
+
+g. The ds-
+
+axis, aligned with the SG rotor , leads the x-axis by an angle δ,
+
+which is the SG 's rotor angle. The d-axis of the GSC frame leads 
+
+the x-axis by an angle 𝜃 , as provided by the PLL. 𝜂 is defined 
+
+as the angle by which Iw∠w lag s the d-axis. SG         
+
+> GFLR
+> Grid Bus PCC Filter
+> PWM PLL
+> Outer Loop Power Control
+> LVRT Control
+> Inner Loop
+> Current Control 
+> GSC *
+> dq idq ipcc pU
+> 
+> sE
+> 
+> g0U  wwI
+> 
+> wYsYgYggI
+> 
+> wU
+> 
+> ssI
+> 
+> 
+> Fig. 1. Topology of the GFLR and SG c o-located system .
+
+x
+
+y
+
+d
+
+q
+
+ds
+
+qsw wI
+
+w
+
+s
+
+p
+
+g
+
+s
+
+> w
+> d
+
+I 
+
+> Fig. 2. Relationships of different frames in the vector space .
+
+B. Transient Stability Analysis Model 
+
+The GSC employs a classic cascaded control structure [30] ,
+
+as illustrated in  Fig. 1 . The control dynamics of the power 
+
+electronic interface c an be effectively decoupled from the rotor 
+
+motion of SGs. Typically, the inner current loop (100Hz and 
+
+above) and PLL (10 -70Hz ) operate at control bandwidths much 
+
+higher than the SG rotor dynamics ( approximately 1Hz ), while 
+
+the outer power control loop ope rates at an intermediate 
+
+bandwidth (around 10Hz) [9] . Therefore, on the time scale of 
+
+SG rotor dynamics, which is the focus of this paper, it can be 
+
+assumed that the GSC control loops have reached a quasi -
+
+steady state. This means that the outer loop control of the GSC 
+
+has completed its response to grid volta ge changes and provid ed 
+
+current reference values (i * 
+
+> dq
+
+). Also, the actual GSC output 
+
+currents ( idq ) can be considered equal to i*
+
+> dq
+
+. Consequently, the 
+
+GSC primarily acts as a controlled current source, as 
+
+determined by the outer loop or LVRT control. 
+
+Under normal grid conditions, the current reference i* 
+
+> dq
+
+is 
+
+provided by the outer power control loop . If a fault occurs 
+
+causing Uw to drop below the LVRT ac tivation threshold, Uin ,
+
+the LVRT is triggered . In this mode, idq =i* 
+
+> dq
+
+is determined by the 
+
+LVRT control strategy to meet the requirement for rapid current 
+
+regulation. Typically, the reactive current increment of GSC 
+
+should respond to voltage changes at the connection point: ( )   
+
+> qqwN
+
+0.9 i K U I= −
+
+, (1)
+
+where Kq is the gain coefficient of reactive current support and 
+
+IN represents the rated current . Applying the reactive power 
+
+priority principle, two strategies can be employed to limit 
+
+GFLR active current while ensuring priority for reactive current 
+
+output as per (1). The first, known as "circular limiting " and 
+
+described by (2), maximizes active current while keeping the 
+
+total cu rrent magnitude below Imax , the maximum allowable 
+
+current of the GSC [24] ,[31] . This method minimizes active 
+
+power losses during LVRT. The second strategy, termed 
+
+"rectangu lar limiting " and represented by (3), directly caps the 
+
+GSC active current at iref  
+
+> d,lim
+
+upon LVRT activation [20] . This 
+
+method offers rapid response and simpler implementation. 3
+
+> REPLACE THIS LINE WITH YOUR MANUSCRIPT ID NUMBER (DOUBLE -CLICK HERE TO EDIT) < 2 2ref d max qw
+
+min ,
+
+Pi I iU
+
+ = −  
+
+(2)ref d d,lim i i=
+
+(3)
+
+(note: Pref is the reference power for the outer loop control. )Output current of GSC  
+
+> Time
+> Active
+> current
+> Reactive
+> current
+> LVRT
+> recovery
+> LVRT
+> Ramp
+> recovery
+> Fig. 3. GSC 's output current under the LVRT and recovery control .
+
+Upon fault clearance, if Uw surpasses the LVRT deactivation 
+
+threshold, Uout , the GSC transitions from "support mode "
+
+(described in (1)-(3)) to "recovery mode ", mark ing the 
+
+beginning of the LVRT recovery stage. To address the 
+
+challenges of minimi zing sudden active power changes , a
+
+common recovery strategy gradually ramps up the active 
+
+current to its normal value , as depicted in  Fig. 3 . This approach 
+
+can be expressed as: *d di v t =
+
+(4)
+
+where vd is GFLR 's active current r amp rate .
+
+The active power of the SG can be expressed as  [29] :s     
+
+> Esgsg sw
+
+sin d
+
+P E U Y IE
+
+ = −
+
+, (5)
+
+where Ids  
+
+> w
+
+=Iwcos( δ-φw) is the projection of Iw∠w onto the ds-
+
+axis; s gsg s g
+
+Y Y Y Y Y
+
+= +
+
+,( )ss g
+
+0,1 
+
+YY Y
+
+ = + . (6)
+
+Neglecting the resistance component of  Ys and  Yg,
+
+ is a real 
+
+number. Define Pes =EsUg|Y sg |sin δ as the electromagnetic power 
+
+of the SG without the influence of GFLR. Pw=
+
+EsIds 
+
+> w
+
+represents 
+
+the power coupling term between the GFLR and the SG. Pm is 
+
+the mechanical power of the SG. Thus, the rotor dynamic 
+
+equation of the sending -end SG can be expressed as: s g gJ m es w
+
+d dd d
+
+tT P P Pt D
+
+     + − = − =   = − 
+
+(7)
+
+where  Pm, TJ, and D denote the mechanism power, inertia time 
+
+constant, and the damping coefficient of the SG, respectively. 
+
+III. DYNAMIC INTERACTION BETWEEN SG ROTOR SWING AND 
+
+POST -FAULT OUTPUT OF GFLR 
+
+After the clearance of a large disturbance , SG angle oscillations 
+
+induce system voltage fluctuation s, leading to changes in the 
+
+GFLR current . Th ese changes , in turn , affect SG rotor dynamics 
+
+via the power coupling term , creating a closed -loo p interaction :
+
+rotor angle oscillation → voltage fluctuation → GFLR LVRT→ 
+
+GFLR output change → rotor angle oscillation . The following 
+
+analysis examines the mechanism of such an interactive process .
+
+A. Dynamic Process Analysis of GFLR LVRT Switching 
+
+Induced by Rotor Angle Swings 
+
+The voltage at the GFLR grid connection point , denoted as 
+
+Uw∠ in Fig. 1 , can be expressed as: ( ) ( )      
+
+> w2 2w1 1
+> wgsww
+
+1 0 90 
+
+> UU
+
+U U E I
+
+> 
+
+    
+
+> 
+
+ = −   +  +  + 
+
+, (8)
+
+where 
+
+=1/( Ys+Yg)+1/ Yw. Fig. 4(a) illustrates the voltage 
+
+phasor diagram corresponding to (8), where the vector Uw1 ∠𝛾 1
+
+starts at point o and ends on the trajectory formed by the sum of 
+
+vectors  (1 -
+
+)Ug ∠ 0°  and 
+
+Es ∠ δ. Therefore, for the vector 
+
+triangle ∆ oab , the cosine law gives: ( ) ( ) ( )      
+
+> 222w1 sgsg
+
+1 2 1 cos U E U E U 
+
+ = + − + −
+
+. (9)
+
+Based on  Fig. 4  and (8), we know that Uw1 ∠𝛾 1, Uw2 ∠𝛾 2, and 
+
+Uw ∠
+
+ form the vector triangle ∆ oac , with ∠ oca =90° -η.
+
+Therefore, ∠ oda is a right angle. Using the Pythagorean 
+
+theorem, Uw can be expressed as: ( ) ( ) ( ) ( )       
+
+> ww2 2222sgsgw2
+
+sin +1 2 1 cos cos 
+
+U UE U E U U
+
+ =+ − + − −
+
+.(10 )
+
+As indicated by (10 ), the grid connection point voltage Uw of 
+
+the GFLR is dynamically coupled with the rotor angle δ of the 
+
+SG and the current of GFLR. With in the interval [0, π], δ varies 
+
+inversely with Uw in a monotonic trend. That is to say, Uw
+
+decreases as δ increases. Letting Uw=Uin (LVRT activation 
+
+threshold ) and Uw=Uout (LVRT deactivation threshold), the 
+
+corresponding δ=δin and δ=δout can be solved as follows: ( ) ( ) ( )( )      
+
+> 22222in wsgin s
+
+1arccos 2 1
+
+U I E UE
+
+  + − − −= −
+
+, (11 )( ) ( ) ( ) ( )( )                
+
+> 22222out wout sgout s
+> sin cos 1arccos 21
+> UIIEUE
+
+     − + − − −= −
+
+.(12 )o b1
+
+
+
+aw1 1U 
+
+> sE
+> 
+> wU
+> 
+> 
+
+( )  
+
+> g10U
+> 
+> − 
+
+( )       
+
+> ww90 I
+> 
+> +wcos I
+> 
+
+c
+
+d  
+
+> Fig. 4. Voltage phasor of the co -located system .
+
+Let δm denote the maximum rotor angle of the SG within a 
+
+given swing cycle , as shown in  Fig. 5 . If δin <δm, the GFLR will 
+
+trigger its LVRT contr ol during Phase I. Subsequently, Uw rises 
+
+abruptly due to the increases in i* 
+
+> q
+
+and decrease in i* 
+
+> d
+
+. Typically, 
+
+Uout > Uin . There will be two typical patterns after the rise of Uw.
+
+Pattern 1: If Uout <Uw, the GFLR will immediately exit 
+
+LVRT mode. However, since ∆ω>0 at this moment, δ continues 
+
+to increase according to (7), potentially causing Uw to drop 
+
+below Uin again. This could lead to repeated toggling between 
+
+LVRT activation and deactivation. 
+
+Pattern 2: If Uin <U w<U out , the converter will remain in 
+
+LVRT control. Then, δ increases continuously along the orange 
+
+trajectory in  Fig. 5 . Assuming that the SG rotor angle does not 4
+
+> REPLACE THIS LINE WITH YOUR MANUSCRIPT ID NUMBER (DOUBLE -CLICK HERE TO EDIT) < 
+
+become unstable during Phase I, it enters Phase II where δ
+
+begins to decrease along the blue trajectory and Uw sta rts to 
+
+increase until Uw > Uout , at which point LVRT exits. In this 
+
+scenario, δin and δout divide one swing cycle of the SG into two 
+
+subsystems: the LVRT subsystem and the LVRT recovery 
+
+subsystem, as shown in  Fig. 7 .
+
+This analysis reveals that during one oscillation cycle after 
+
+fault clearance, the converter may exhibit two switching 
+
+patterns depending on the LVRT threshold settings. Pattern 1 
+
+involves multiple rapi d LVRT switches while the rotor angle 
+
+remains relatively constant, where LVRT switching and voltage 
+
+oscillations mutually induce each other, as described in  [21] . If 
+
+the number of short -term LVRT events exceeds the maximum 
+
+allowable value, GFLR may disconnect from the grid. Pattern 
+
+2 maintains the LVRT state after switching until swinging back 
+
+to δout in phase II. In this scenario, the LVRT switching 
+
+frequency matches the rotor angle swing cycle of the SG .
+
+This paper focuses on transient stability under continuous 
+
+dynamic interaction between the GFLR and nearby SGs, 
+
+namely the latter pattern. δ
+
+
+
+   
+
+> (δs,0)
+> LVRT
+> activates
+> Phase I:
+> δrises, Uwdrops
+> LVRT
+> deactivates
+> δm
+> Uin
+> Uout
+> Uw
+> δ
+> δin
+> δout
+
+t
+
+t    
+
+> LVRT
+> activates
+> LVRT
+> deactivates
+> 
+> in
+> 
+> out
+> Phase II:
+> δdrops, Uwrises
+> Fig. 5. Diagram of the correspondence b etween SG rotor angle swing period
+> and LVRT switching.
+
+B. Impacts of GFL R Output Variations on SG Rotor Dynamics 
+
+The previous analysis explains a single instance of LVRT 
+
+activation and deactivation during the forward and return swing 
+
+of the SG ’s rotor angle. However, whether this phenomenon 
+
+will periodically recur, and thus the underlying mechanism of 
+
+GFLR ’s impact on SG stability, still requires further analysis. 
+
+To this end, we will first preliminarily analyze the impact of 
+
+GFLR output variation s (as disturbances) on the SG's transient 
+
+energy. Following this, a systematic analysis of the SG ’s rotor 
+
+angle stability throughout a complete oscillation cycle will be 
+
+provided in the next section. 
+
+Define Pw* as the value of Pw corresponding to normal 
+
+operation, which can be considered constant during the 
+
+transient period ( typically a few seconds). Let Pw=P w-Pw* ,
+
+system (7) is then transformed into :( ) ( ) 
+
+> 2ggJw2
+
+d ,d , ,dd ft Pt T t
+
+ = =  +    
+
+, (13 )( )  
+
+> e*mws
+
+,f PP P D
+
+− + − = 
+
+. (14 )
+
+t is known from (13 ) that Pw can be regarded as a 
+
+disturbance to the nominal system (15 ):( ) 
+
+> 2gg2J
+
+d d ,dd ft Tt
+
+= = 
+
+. (15 )
+
+Define δs as mg sg sw* s arcsin E U YP P
+
++=
+
+. (16 )
+
+Since f (δs,0) =0 and Pw(t,δs,0) =0, ( δs,0) is an equilibrium 
+
+point of both the nominal system (15 ) and the disturbed system 
+
+(13 ). Small disturbance analysis shows that this point is a stable 
+
+equilibrium point (SEP). The classical energy function for the 
+
+nominal system (15 ) can be chosen as: ( ) ( )   
+
+> s
+> 2Jes w* mg
+
+11, d2
+
+V T P P P
+
+> 
+
+   + − −= 
+
+. (17 )
+
+Eq. (17 ) has a clear physical significance: the first term 
+
+represents the system's kinetic energy, while the second 
+
+represents the potential energy. To investigate how the 
+
+disturbance Pw affects the system 's stability , t he derivative of 
+
+V(δ,
+
+) along the trajectory of the system (13 ) is given by :w2d d dd d d
+
+V V V Pt Dtt
+
+   = + = −  +  
+
+. (18 )
+
+From (18 ), it indicates that the inherent damping always 
+
+causes the system energy to dissipate due to -D
+
+2≤0 .
+
+However , the damping effect from Pw is uncertain . As shown 
+
+in  Fig. 6 , i f Pw<0 , GFLR exhibits a positive damping effect on 
+
+SG 's rotor in the half -plane where 
+
+>0 (Phase I and IV) of the 
+
+phase plane . Conversely, a negative damping effect of GFLR is 
+
+present in the half -plane where 
+
+<0 (Phase II and III) . I f
+
+Pw>0, th e effects are reversed. Th us, changes in GFLR output 
+
+have varying damping effects during different phases of the 
+
+SG 's angle oscillations , necessita ting further analysis of their 
+
+impact on angle stability. Positive damping effect interval of Pw (if Pw<0) 
+
+o δ        
+
+> 
+> 
+> Phase I Phase IV
+> Phase II Phase III
+> PE
+> Negative damping effect interval of Pw(if Pw<0)
+> Phase I
+> Phase IV
+> Phase II
+> Phase III δ(δs,0)
+> (a)Speed -angle plane (phase plane) (b) Acceleration -angle plane
+> Fig. 6. Positive and negative damping effects of GFLR on SG’s dynamics .
+
+IV. INSTABILITY MECHANISM AND STABILITY BOUNDARY 
+
+The previous section suggests that SG rotor angle swings might 
+
+trigger repeated LVRT in GFLRs after fault clearance. The 
+
+analysis in the following will focus on scenarios where SG rotor 
+
+angle stability is the pr imary concern (Appendix A discusses the 
+
+necessary conditions for this phenomenon). The instability 
+
+mechanism of SGs considering their interaction is analyzed, and 
+
+the stability assessment criteria are investigated. 
+
+A. SG Stability Considering Repeated LVRT Switching 
+
+After fault clearance, the SG's rotor angle increases. I f Uw
+
+drops below the LVRT threshold Uin during this phase, the GSC 
+
+will re -trigger LVRT control. This transition point, labeled as E
+
+in  Fig. 7 , occurs when δ≥δin . As the SG rotor angle retreats from 
+
+its peak ( δ=δM), Uw climbs with the declining δ. The GSC 
+
+deactivate s LVRT mode at point F when Uw≥Uout and δ≤δout .5
+
+> REPLACE THIS LINE WITH YOUR MANUSCRIPT ID NUMBER (DOUBLE -CLICK HERE TO EDIT) < 
+
+These two critical points, E and F, effectively split the SG's 
+
+cyclic trajectory (denoted as  ) into two segments:  a, and  b,
+
+representing the trajectory during LVRT and post -LVRT. 
+
+Starting from point E, the transient energy increment ∆V over 
+
+one complete swing cycle can be expressed as: ( )  
+
+> wa wb Dwab
+> ww02wgwgg
+
+1 11d d dd d d   
+
+> TEME FNF VVE F F E VV
+
+V V t P PP P D t
+
+    
+
+> 
+
+ = =  + +  +  − 
+
+#     
+
+, (19 )
+
+where ∆Vwa and ∆Vwb represent energy increments along δ-axis 
+
+symmetric segments within  a and  b respectively. If two points 
+
+symmetrical about the δ-axis belong to  a and  b respectively ,
+
+the energy increment along this path is denoted as ∆Vwab .
+
+Next, we will discuss the per iodic energy changes of the SG 
+
+under the two current limiting strategies in Section II.B. E 
+
+> M
+> F
+> 0
+
+o
+
+> E
+> F
+> Vwa Vwb
+
+δin δout δN δM
+
+> Trajectory in
+> LVRT subsystem N
+> Trajectory in
+> LVRT recovery subsystem
+> LVRT activates
+> Vwab
+> A1
+> A2
+
+δab
+
+> 
+
+
+
+δs    
+
+> LVRT deactivates
+> Fig. 7. Phase trajectories of SG with repeated LVRT triggering.
+
+1) SG stability under GSC 's circular LVRT limiting 
+
+During LVRT along the E→M→E' , changes in δ influence 
+
+Uw. This causes the GSC 's output current to adjust in response 
+
+to the voltage change, which then affects ∆Pw. In the scope of 
+
+this study, the influence of GFLR current on Uw is limited due 
+
+to a strong short circuit ratio. Therefore, the magnitude of Uw
+
+mainly depends on Uw1 . At this point, (1) and (2) change to :( )  
+
+> qqw1
+
+0.9 i K U= −
+
+(20 )( )
+
+#      
+
+> 222ref dmax qw1 w1
+
+min , 0.9 
+
+Pi I K UU
+
+= − −
+
+(21 )
+
+According to (9), Uw1 changes monotonically with δ in the 
+
+range of (0,π) . Therefore, it can be approximated that at two 
+
+points symmetric about the δ-axis on the phase plane (such as 
+
+points A1 and A2 in  Fig. 7 ), the magnitude and angle o f the GSC 
+
+output current are nearly equal. Consequently, along the 
+
+trajectory E→M→E' , ∆Pw is approximately equal for the same 
+
+δ. Since the damping effect of ∆Pw reverses when 
+
+ changes 
+
+from positive to negative, the energy change s induced by ∆Pw
+
+cancel out, resulting in ∆Vwa ≈0. 
+
+From point M to F (the LVRT deactivation point) in  Fig. 7 ,
+
+the "circular limiting " strategy gradually reduces GSC 's
+
+reactive current support to zero while smoothly transitioning 
+
+active current to normal . This eliminat es the need for an LVRT 
+
+recovery state as shown in  Fig. 4 (b) . Th erefore, along the 
+
+trajectory F→N→F' , the GSC activates the outer loop control 
+
+mode, where iq=0 and id=P ref /Uw. Similarly, the energy 
+
+increments caused by ∆Pw along F→N and N→F' cancel each 
+
+other out, so ∆Vwb ≈0. 
+
+Despite different GSC control modes in E' →F and F' →E
+
+segments, the s light variations in Uw near LVRT activation and 
+
+deactivation points lead to small change s in GSC current. This 
+
+results in similar ∆Pw values in E' →F and F' →E, making ∆Vwab 
+
+negligible. Thus, LVRT reactivation minimally impacts SG's 
+
+periodic energy under the "circular limiting ".
+
+Nevertheless , if the reactive current coefficient Kq (in (1)) is 
+
+small , the drop in Uw during the first swing prompts the GSC to 
+
+increase active current output up to Imax to maintain steady 
+
+power as much as possible. This results in a positive ∆Pw, which, 
+
+combined with 
+
+>0 at this stage, introduces negative damping 
+
+from the GFLR. Thus , the SG's first swing stability is 
+
+exacerbated under these conditions .
+
+2) SG stability under GSC 's rectangular LVRT limiting 
+
+The "rectangular limiting" strategy imposes tighter 
+
+constraints on active current , leading to a lower Ids  
+
+> w
+
+during 
+
+LVRT . Consequently, this approach yields a significantly 
+
+smaller ∆Pw th an the "circular limiting ". The reduced ∆Pw
+
+enhances the positive damping effect s along the trajectory 
+
+E→M, which is more conducive to the SG 's first -swing stability. 
+
+To analyze periodic energy variations, we define ∆Pwa and 
+
+∆Pwb as the ΔPw values along trajectories  a and  b respectively. 
+
+First, we analyze the magnitude of ∆Vwa . Similar to "circular 
+
+limiting ", for two points symmetrical about the δ-axis, 
+
+∆Pwa ≈∆Pwb , leading to ∆Vwa ≈0 . Consequently, the magnitude of 
+
+∆Vw is primarily determined by ∆Vwab and ∆Vwb :( )
+
+# ( )           
+
+> out Nout in out Nwab wb
+> ggwwwwa wb bb
+
+1d d1 d 
+
+> VV
+
+V P P P P
+
+> 
+
+ 
+
+> 
+
+ =  −  +  +   
+
+(22 )
+
+Next, we analyze ∆Vwab . Under the constraints of the current 
+
+limiting, ∆Pwa on E' →F is smaller than ∆Pwb on F' →E. It is 
+
+deduced f rom (22 ) that if δout <δin , then ∆Vwab >0; conversely, if 
+
+δout >δin , then ∆Vwab <0. Therefore, ∆Vwab primarily depends on 
+
+LVRT switc hing conditions specified in (11 ) and (12 ).
+
+For the F→N→F' interval , if the slow current recovery 
+
+strategy is adopted, the GSC 's current gradually returns to 
+
+normal levels, making ΔPw time -dependent. During recovery, 
+
+ΔPw(t) remains negative but increases over time, behaving 
+
+monotonically with respect to δ in both F→N and N→F' 
+
+intervals. Acc ord ing to the Mean Value Theorem for Integrals, 
+
+there exi st constants C 1 and C 2, with C 1<C 2≤0, that satisfy: ( ) ( )   
+
+> Nout
+> wb 1Nout
+
+d =C P t
+
+> 
+
+   −
+
+. (23 )( ) ( )   
+
+> out N
+> wb 2out N
+
+d =C P t
+
+> 
+
+   −
+
+. (24 )
+
+Adding (23 ) and (24 ) gives the system energy increment 
+
+∆Vwb along the trajectory F→N→F' :( )( )     
+
+> wb 21out Ng
+
+C C 0V
+
+ = − − 
+
+. (25 )
+
+Therefore, the slow recovery strategy results in an 
+
+accumulation of transient energy. Even if ∆Vwab <0, ∆Vw may 
+
+still be positive due to ∆Vwb >0 under the slow recovery. If ∆Vw-
+
+∆VD>0, cyclic energy accumulation occurs. This, in turn, 
+
+exacerbates the magnitude of its rotor angle swings. A more 
+
+pronounced angle swing naturally leads to more severe voltage 
+
+oscillation, thereby triggering LVRT switching in the 
+
+subsequent cycle and leadi ng to further accumulation of 6
+
+> REPLACE THIS LINE WITH YOUR MANUSCRIPT ID NUMBER (DOUBLE -CLICK HERE TO EDIT) < 
+
+transient energy. Once this vicious cycle in  Fig. 8  is established, 
+
+the GFLR's LVRT is periodically triggered, and additional 
+
+energy accumulates in each cycle , resulting in multi -swing 
+
+angle instability in the SG.  
+
+> Fig. 8. The vicious cycle driving SG multi -swing instability.
+
+In a nutshell, if the GFLR uses "circular limiting " with a 
+
+low reactive support coefficient, the SG has a higher risk of 
+
+first -swing instability. Conversely, if the GFLR uses 
+
+"rectangular limiting " with a slow recovery strategy, there 
+
+is a risk of multi -swing instability in the nearby SG . For a 
+
+multi -machi ne system, the sending -end SGs can be coherently 
+
+aggregated. The injected current Iw∠w at the PCC in  Fig. 1 
+
+can be considered as the combined output of multiple GFL 
+
+converters. Thus, the conclusions of this analysis also apply. 
+
+B. Stability Boundaries in the Form of Critical Energy 
+
+The following di scussion explores the first -swing and multi -
+
+swing stability boundaries for SGs in the form of critical energy ,
+
+considering the control dynamics of the nearby GFLR cluster. 
+
+1) First -Swing Stability Boundary 
+
+Based on Section III.B, if Pw reaches its maximum value 
+
+(Pw=
+
+EsImax ), the GFLR exerts the greatest negative damping 
+
+effect during the first -swing phase (Phase I) after fault clearance. 
+
+This results in the conservative first -swing stability boundary. 
+
+Therefore, the first -swing critical energy of the SG, denoted as 
+
+Vmax  
+
+> f
+
+, is as follows: ( )   
+
+> ss
+> ssgsg mfgmax max
+
+sin 1 dV PEU IE Y 
+
+> 
+
+
+
+> −
+
+− −= 
+
+(26 )
+
+The SG maintains first -swing stability if the energy at fault 
+
+clearance , denoted as Vc, is less than Vmax  
+
+> f
+
+.
+
+2) Multi -Swing Stability Boundary 
+
+Sudden output variations at the moment of GFLR LVRT 
+
+control switching, as well as time -varying GFLR currents 
+
+during the slow recovery phase, may result in periodic energy 
+
+accumulation in SG. This potentially triggers multi -swing 
+
+instability . T he actual multi -swing stab ility boundary forms an 
+
+unstable limit circle (u1 ). The proof is provided in Appendix B.
+
+Since  u1  is difficult to analyze theoretically, a more 
+
+conservative stability boundary is needed , which is constructed 
+
+based on two main principles: 
+
+1) Preventing GF LR from re -entering the LVRT switching 
+
+state after fault clearance. 
+
+2) Maximizing transient energy accumulation during the 
+
+LVRT recovery period. 
+
+To prevent GFLR from re -entering the LVRT switching state 
+
+after fault clearance, SG ’s rotor angle should be less than δin .
+
+Thus, the critical energy of SG should be less than the energy 
+
+in (26 ) corresponding to ( δin , 0), denoted as Vmax  
+
+> m1
+
+:( )    
+
+> es
+> ssgmax m1 ma mgxsg
+
+sin 1 dV U EE IY P
+
+> 
+
+− −= 
+
+(27 )
+
+where in in ses in s
+
+,,
+
+         −=  −  −
+
+(28 )
+
+Even if GFLR does not re -enter LVRT mode after fault 
+
+clearance, its LVRT recovery control will still introduce time -
+
+varying disturbances to SG. To account for this, the energy 
+
+increment during the LVRT recovery period, ∆ Vwr , should be 
+
+calculated along the path of maximum transient energy for SG. 
+
+Despite the complexity of disturbances caused by GFLR after 
+
+fault clearance, ∆ Pw has upper and lower limits. From (18 ), it is 
+
+known that if  
+
+<0 (phases I and IV ), taking the minimum 
+
+value of  Pw maximizes energy accumulation; if  
+
+>0 (phases 
+
+II and III ), taking the maximum value of  Pw maximizes energy 
+
+accumulation. According to (5), 0< Pw<
+
+EsImax , so the 
+
+maximum ( ∆Pmax  
+
+> w
+
+) and minimum ( ∆Pmin  
+
+> w
+
+) values of  Pw can be 
+
+expressed as: min max w* w w w s max w* P P P P E I P
+
+− =      = −
+
+(29 )
+
+There fore, as shown in  Fig. 9 , ∆Vwr can be maximized along 
+
+path  b. Let Vmax  
+
+> m
+
+=Vmax  
+
+> m1
+
+-∆Vwr . This represents the equivalent 
+
+stability boundary in terms of energy and can be expressed as 
+
+follows: ( )    
+
+> MN
+> max max mm1 smax g
+
+d1
+
+V V E I 
+
+> 
+
+= − 
+
+(30 )
+
+where δM and δN can be determined by solving (31 ) and (32 ):( )     
+
+> Ms
+> csmax es mg
+
+dV P E I P
+
+> 
+
+− −= 
+
+(31 )( ) ( )     
+
+> MZZN
+> es mmes
+
+d dP P P P
+
+> 
+
+− = − 
+
+(32 )
+
+where δZ is the δ value at the intersection of Pmin  
+
+> E
+
+and Pm. If Vc
+
+is less than Vmax  
+
+> m
+
+, SGs can be considered multi -swing stable. δ
+
+PE
+
+> Pm
+> δM
+> δZb
+
+           
+
+> Phase III
+> Phase II
+> Phase IV
+> Phase I
+> δNEes PP=Ees smax PPE I
+> 
+> =−
+> Fig. 9. Path of maximum energy increment during the LVRT recovery phase
+> on the PE-δplane.
+
+V. CONTROLLER DESIGN 
+
+Next, we design an additional controller using feedback 
+
+linearization. This controller adjusts the GFLR's output after 
+
+fault clearance to transform its negative damping effect on the 
+
+rotor motion of SGs into positive damping. 7
+
+> REPLACE THIS LINE WITH YOUR MANUSCRIPT ID NUMBER (DOUBLE -CLICK HERE TO EDIT) < 
+
+A. Controller Design Based on Feedback Linearization 
+
+After applying an additional current controller, Iadd , in the 
+
+post -fault period , the rotor motion equation of the SG becomes :g **J m E* * s add 
+
+d ddd DtT P P E I t
+
+    =    +−= −
+
+, (33 )
+
+where δ, ∆
+
+*, and PE* represent the SG's controlled rotor angle, 
+
+angular velocity deviation, and electromagnetic power ,
+
+respectively. According to the feedback linearization theory, 
+
+Iadd can be designed as ( ) ( ) ( )       
+
+> sadd E* m1*2*d
+
+I P EP K K
+
+ = − −  − −
+
+. (34 )
+
+In (34 ), the nonlinear term Pm-PE* is elimi nated and 
+
+simultaneously introducing a linear state feedback term -K1∆
+
+*–
+
+K2(δ*-δd), where K1 and K2 function as the tuning parameters. 
+
+Accordingly, the following linear closed -loop system can be 
+
+obtained: ( )  
+
+> J1Jg2
+
+0eKeT D TK
+
+    =     − +   − 
+
+, (35 )
+
+where e=δ*-δd and σ=∆
+
+* are the track errors. kAJ 
+
+> 1
+> s
+> T s
+> KE
+> 
+> +
+
+p
+
+g+− s++−
+
+> Imax
+
+id* 
+
+id0
+
+id* 
+
+Iadd ++   
+
+> Additional
+> Controller
+> Fig. 10. Block diagrams of p roposed control method .
+
+B. Stability Proof and Parameter Selection 
+
+The Lyapunov function, specifically selected for this controlled 
+
+system, is established as follows: ( ) 
+
+> 22J
+
+, 0.5 0.5 V e e T
+
+= +
+
+. (36 )
+
+The only equilibrium point of system (35 ) is (0,0). According 
+
+to (36 ), V(e,σ) is positive definite because it satisfies V(e,σ)≥0 and 
+
+is equ al to zero only when V(0,0)=0. The derivative of V(e,σ) with 
+
+respect to time is: ( )( ) ( ) 
+
+> 221
+
+,1
+
+V VV e eeK e K D
+
+ = + −= − +
+
+. (37 )
+
+According to (37 ), d V/d t<0 is valid if K2=1 and K1>0. 
+
+Therefore , the system will achieve asymptotic stability at (δ*,
+
+∆
+
+*)=(δd,0) under these conditions. 
+
+In (34 ), Es can be approximated as a constant under excitation 
+
+contro l. α can be estimated based on the system 's pre -fault 
+
+parameters , which is valid because the system parameters after 
+
+fault clearance do not differ significantly from those before the 
+
+fault. Due to the close electrical distance between GFLR and 
+
+sending -end SG, once the GSC 's PLL converges quickly after 
+
+fault clearance, its fre quency and phase can approximate the 
+
+SG 's angular velocity and rotor angle. Specifically, ∆
+
+*≈p −
+
+g and δ*−δd≈𝜃 −𝜃 s, where 𝜃 s is the angle of the pre -fault 
+
+PLL SEP . Neglecting the inherent damping (which results in a 
+
+more conservative control approach), Pm-PE* can be estimated 
+
+as TJd∆
+
+*/d t. After fault clearance, the GFLR's reactive current 
+
+support is withdrawn, so Iadd is adjusted through the GFLR 's
+
+active current. Let the command for the adjustment in active 
+
+current be ∆id* . Thus, the final control law is given by ( )
+
+## ( )      
+
+> *JdA1pgss
+
+ET s i k k
+
+    = − + − − −     
+
+, (38 )
+
+where kA is set to be greater than 1 to amplify the control effect 
+
+since Iadd =∆id* cos( δ-𝜃 ) according to (5). Adding ∆id* to the 
+
+normal current reference id0 gives the current reference id* under 
+
+the proposed control. This control block is shown in  Fig. 10 . The 
+
+controller activates when the LVRT control qui ts. Control 
+
+duration can be set to a typical rotor transient time, within several 
+
+seconds. 
+
+It is important to note that under the proposed strategy, the 
+
+GFLR 's active current decreases if 
+
+p and 𝜃 increase , stabiliz ing 
+
+the PLL . Additionally, once the control target is achieved, it 
+
+indicates that the GFLR output has returned to normal. Thus, 
+
+this additional controller not only prevent s adverse effects on 
+
+SG power angle stability but also support s PLL grid stability 
+
+and timely recovery of active current after LVRT ends. 
+
+However, due to the limited adjustment of ∆id* , global 
+
+stabilization of the system can be achieved only if the upper and 
+
+lower limits of ∆id* are not reached during the control peri od. 
+
+VI. NUMERICAL RESULTS 
+
+A. Test System 1: Multi -Machine System Simulation 
+
+A simplified equivalent model of one actual grid was built on 
+
+the PSD -BPA simulation platform. Simulation parameters are 
+
+provided in Appendix C. Topology of test system 1 is shown in 
+
+Fig. 11 . A permanent three -phase metallic short circuit occurs 
+
+on one of the three outgoing lines at t=1s. To verify the 
+
+phen omenon of SG multi -swing instability, the fault is set near 
+
+the PCC on the line for 120 ms. Test conditions for Cases 1 -4
+
+are listed in  TABLE I. AC Main  
+
+> Grid
+> SGs(1 -4) (3)
+> f
+> GSC 1
+> GSC 2
+> GSC 3
+> GSC 4
+> GSC 5
+> PCC
+> Fig. 11. Topology of the test system 1.
+
+Fig. 12  presents the simulation results , showing SG rotor 
+
+angles, GFLR grid -connected voltages, and GFLR output 
+
+current. After fault clearance, Uw shows an opposite trend to δ.
+
+When Uw drops below th e LVRT threshold Uin as δ increases, 
+
+the GFLR s’ active current decrease s while the reactive current 
+
+increases . Comparing Cases 1 and 2, "rectangular limiting" 
+
+enhances SG first -swing stability more effectively than 
+
+"circular limiting." However, in Case 3, increasing the LVRT 
+
+deactivation threshold, and in Case 4, changing the recovery 
+
+strategy from immediate to ramp , both increase the risk of SG 
+
+multi -swing instability compared to Case 2 . This indicates that 8
+
+> REPLACE THIS LINE WITH YOUR MANUSCRIPT ID NUMBER (DOUBLE -CLICK HERE TO EDIT) < 
+
+re peated LVRT along with specific switching conditions and 
+
+slow recovery strategies can worsen SG multi -swing stability, 
+
+confirming the theoretical analysis in S ection IV. A. 
+
+TABLE I. CONDITION S AND RESULT S OF TEST SYSTEM 1
+
+Case  1 2 3 4
+
+Limit type  circular  rectangular  rectangular  rectangular 
+
+reactive 
+
+coefficient 
+
+(Kq)
+
+2 2 2 2
+
+Active 
+
+current 
+
+limit (iref 
+
+> d,lim
+
+)
+
+GSC1:25%; GSC2:40%; GSC3:30%; 
+
+GSC4:20%; GSC5:35% 
+
+LVRT 
+
+threshold 
+
+(Uin ,Uout )
+
+0.9,0.91  0.9,0.91  0.9,0.95  0.9,0.95 
+
+Recovery 
+
+rate ( v) ∞ ∞ ∞ GSC1 -5: 2.5, 
+
+2.5,5,1.5,2A/s 
+
+Result  first -swing 
+
+unstable  stable  oscillation  multi -swing 
+
+unstable time (s)    
+
+> id,q  (p.u.) active current reactive current (c)
+> δ (° )Uw (p.u.) Case 1 Case 2 Case 3 Case 4
+> (a) (b)
+> Uin
+
+Fig. 12.  Simulation results of Cases 1 -4. (a) rotor angle curves of SGs; (b) grid 
+
+connection point voltage of GFLRs; (c) sum of active current of GFLRs. 
+
+Next, we will v erify the stability assessment criteria proposed 
+
+in Section IV. B . Cases 5, 6, and 7 represen t three scenarios: 
+
+"circular limiting ", "rectangular limiting " with immediate 
+
+recovery, and "rectangular limiting " with ramp recovery ,
+
+respectively . In these cases , the ranges for Kq, Uin , Uout , iref 
+
+> d,lim
+
+, and 
+
+v are [1.5, 3], [0.8, 0.9], [0.85, 0.95], [20%, 90%], and [1 A/s, 5 
+
+A/s], respectively. The fault location is set at the midpoint of 
+
+the transmission line. Fault duration s tc are set to 20, 40, 60, and 
+
+100 ms to evaluate stability criteria. For each tc, adjust Kq, Uin ,
+
+Uout , iref  
+
+> d,lim
+
+, and v within the specified ranges to observe any 
+
+scenarios. The resulting rotor angle curves for representative 
+
+stable and unstable scenarios are shown in  Fig. 13 .
+
+TABLE II.  shows the critical energy calculations for first -
+
+swing ( Vmax  
+
+> f
+
+) and multi -swing ( Vmax  
+
+> m
+
+) instability. Let Vd represent 
+
+the transient energy of SGs at fault clearance. If Vd<Vmax  
+
+> f
+
+and 
+
+Vd<Vmax  
+
+> m
+
+, the system maintains first and multi -swing stability; 
+
+otherwise, it face s the risk of instability. As shown in  TABLE 
+
+II.  , when the criteria indi cate the system is stable at tc =20ms, 
+
+simulation results confirm this stability. At tc=60 and 100 ms, 
+
+both the criteria and simulation predict instability. However, at 
+
+tc=40 ms, the criteria suggest first -swing stability but multi -
+
+swing instability, while the simulation indicates stability, 
+
+revealing that the criteria are conservative. (a)   
+
+> (b)
+> (c)
+> (d)
+> time (s)
+> Case 5 Case 6 Case 7
+> δ (° )δ (° ) δ (° )δ (° )
+
+Fig. 13.  Rotor angle curves in Cases 5 -7. (a) tcr =20ms; (b) tcr =40ms; (c) 
+
+tcr =60ms; (d) tcr =100ms. 
+
+TABLE II. STABILITY ASSESSMENT AND SIMULATION RESULTS 
+
+tcr 
+
+(ms) 
+
+Estimated Critical 
+
+Energy (Vmax  
+
+> f
+
+,Vmax  
+
+> m
+
+)
+
+Fault Clearance 
+
+Energy (Vd) Stability 
+
+Assessme 
+
+nt 
+
+Simulati 
+
+on result First -
+
+swing 
+
+Multi -
+
+swing  Case5  Case 
+
+6,7 
+
+20  1.76  0.91  0.31  0.29  stable  stable 
+
+40 1.76  0.57  1.19  1.06  unstable  stable 
+
+60 1.76  <0  2.69  2.33  unstable  unstable 
+
+100 1.76  <0  8.97  3.17  unstable  unstable 
+
+B. Test System 2: Controller Hardware -in -the -Loop Test GFLR1 
+
+> SGs
+> Grid (3)
+> f
+> GFLR2
+> Ys
+> Yw
+> Yg
+
+(a) Topology of the test system 2 RTDS  
+
+> Host Computer
+> Oscilloscope
+> DSP1 GTAO
+> GTDI
+> Data
+> PWM
+> Circuit Model
+> AC
+> Sampling
+> DSP2
+
+(b) GHIL test system setup 
+
+Fig. 14.  Configuration of the CHIL platform .
+
+To verify the theoretical analysis, a CHIL platform is 
+
+constructed, as shown in  Fig. 14 . The main circuit shown in  Fig. 
+
+14 (a) is simulated in RTDS, while the controllers of the GFLRs 
+
+are implemented on a DSP -TMS320F28335 board. Data 
+
+exchange between the RTDS and DSPs is facilitated through 
+
+Giga -Transceiver Analog Output (GTAO) and Giga -9
+
+> REPLACE THIS LINE WITH YOUR MANUSCRIPT ID NUMBER (DOUBLE -CLICK HERE TO EDIT) < 
+
+Transceiver Digital Input (GTDI) interface boards. At the 
+
+sending end, 10 converters are divided into two groups (GFLR1 
+
+and GFLR2), each with identical parameters. System 
+
+parameters are provided in Appendix C TABLE V.  At t=1.7s, a 
+
+three -phase short circuit occurs near the receiving end of one of 
+
+the double -circuit transmission lines. The protection relay then 
+
+isolates the faulty line, followed by a reclosing action to 
+
+reconnect it. The proposed control activates when LVRT 
+
+deactivate s and is set to last for 4 seconds. 
+
+TABLE III. CONDITIONS AND RESULTS OF TEST SYSTEM 2
+
+Case 8 Case 9 Case 10 
+
+GFLR1  GFLR2  GFLR1  GFLR2  GFLR1  GFLR2 
+
+Limit 
+
+type  circular  rectangular  rectangular 
+
+Steady 
+
+power  60MW  47MW  60MW  47MW  60MW  47MW 
+
+Uin ,Uout 
+
+0.87, 
+
+0.95p.u 
+
+0.86, 
+
+0.9p.u. 
+
+0.87, 
+
+0.95p.u 
+
+0.9, 
+
+0.95p.u 
+
+0.87, 
+
+0.95p.u 
+
+0.86, 
+
+0.9p.u. 
+
+Kq 1.5  2.5  1.5  2.5  1.5  2.5 
+
+iref  
+
+> d,lim
+
+15%  15% 
+
+v 2p.u./s  1p.u./s  2p.u./s  1p.u./s  2p.u./s  1p.u./s 
+
+k1, k A 2, 1.5  2, 2  2, 1.5  2, 2  2, 1.5  2, 2 
+
+Fault 
+
+duration  100ms  200ms  150ms 
+
+Reclose  After 3s  After 2s  After 3s
+
+Cases 8, 9, and 10 compare and verify the effectiveness of 
+
+the proposed control method in suppressing the first -swing 
+
+instability and multi -swing instability of the SG. The test 
+
+conditions are listed in  TABLE III.  The results are presented in 
+
+Fig. 15 , and 1 6. Fig. 15  demonstrates that the SG experiences 
+
+first -swing instability under the circular LVRT limiting control. 
+
+From fault clearance to loss of synchronism,  Fig. 15  (g) shows 
+
+that the GFLRs exert a negative damping effect, leading to 
+
+transient energy accumulation in the SG, denoted as E−.
+
+However, when the proposed control method is applied, GFLRs 
+
+provide a positive damping effect during the first swing, 
+
+resulting in energy dissipation in the SG, denoted as E +, as 
+
+illustrated in  Fig. 15  (h). (a)      
+
+> (c)
+> (e)
+> (b)
+> (d)
+> (f)
+> time (s)
+> Pw
+> 
+> (kA· rad 2/s)
+> (g) (h)
+> Fault clear Out of
+> step
+> Fault
+> clear
+> E-=0.75
+> E+=0
+> E-=1.13
+> E+=-13.58
+> time (s)
+> (rad) (rad)
+> (p.u.) (p.u.)
+> (kA) (kA)
+
+Fig. 15.  Simulation results of Cases 8. (a) SG rotor angle ( δ) without control; 
+
+(b) SG rotor angle ( δ) with control; (c) GFLR grid -connection voltage ( Uw) of 
+
+without control; (d) GFLR grid -connection voltage ( Uw) with control; (e) active 
+
+and reac tive current of GFLR without control; (f) active and reactive current of 
+
+GFLR with control; (g) GFLR energy increment without control; (h) GFLR 
+
+energy increment with control. (a)     
+
+> (c)
+> (e)
+> (b)
+> (d)
+> (f)
+> Pw
+> 
+> (kA· rad 2/s)
+> time (s)
+> E-=70.57
+> E+=-35.83
+> One cycle
+> Fault
+> clear
+> (g) (h)
+> time (s)
+> E-=1.41
+> E+=-10.19
+> (rad) (rad)
+> (p.u.) (p.u.)
+> (kA) (kA)
+
+Fig. 16.  Simulation results of Cases 9. (a) SG rotor angle ( δ) without control; 
+
+(b) SG rotor angle ( δ) with control; (c) GFLR grid -connection voltage ( Uw) of 
+
+without control; (d) GFLR grid -connection voltage ( Uw) with control; (e) active 
+
+and reactive current of GFL R without control; (f) active and reactive current of 
+
+GFLR with control; (g) GFLR energy increment without control; (h) GFLR 
+
+energy increment with control. 
+
+Fig. 16  (g) and  Fig. 17  (g) reveal that compared to circular 
+
+limiting, rectangular LVRT limiting reduces the transient 
+
+energy of the SG dur ing the first swing after fault clearance, 
+
+thus enhancing the first -swing stability. However, it may 
+
+increase the risk of oscillations or instability in later swings. In 
+
+Case 9 (Fig. 16 ), after the fault line is reclosed, the oscillation 
+
+of δ causes Uw to oscillate inversely, periodically triggering the 
+
+LVRT control of the GFLRs.  Fig. 16  (g) shows that in each 
+
+oscillation cycle, the negative damping effect from GFLRs 
+
+leads to more energy accumulation than the positive damping 
+
+dissipates, resulting in ongoing oscillations despite physical 
+
+damping. In Case 10 (Fig. 17 ), the SG becomes unstable during 
+
+the third swin g due to delayed reclosing. With the proposed 
+
+control, the SG rotor angle stabilizes in both Cases 9 and 10 ,
+
+demonstrating the effectiveness of the proposed control. (a)     
+
+> (c)
+> (e)
+> (b)
+> (d)
+> (f)
+> Pw
+> 
+> (kA· rad 2/s)
+> time (s) time (s)
+> Fault
+> clear
+> Out of
+> step
+> E-=13.62
+> E+=-11.64
+> (g) (h)
+> E-=0.93
+> E+=-7.82
+> (rad) (rad)
+> (p.u.) (p.u.)
+> (kA) (kA)
+
+Fig. 17.  Simulation results of Case 10 . (a) SG rotor angle ( δ) without control; 
+
+(b) SG rotor angle ( δ) with control; (c) GFLR grid -connection voltage ( Uw) of 
+
+without control; (d) GFLR grid -connection voltage ( Uw) with control; (e) active 
+
+and reactive current of GFLR without control; (f) active and reactive current of 
+
+GFLR with control; (g) GFLR energy increment without control; (h) GFLR 
+
+energy increment with control. 10 
+
+> REPLACE THIS LINE WITH YOUR MANUSCRIPT ID NUMBER (DOUBLE -CLICK HERE TO EDIT) < 
+
+VII. DISCUSSION 
+
+This section aims to deepen the understanding of this multi -
+
+swing instability problem from the dual perspectives of 
+
+scenarios and solution s: first, investigating whether the 
+
+observed phenomenon would persist if SG were replaced by 
+
+grid forming (GFM ) devices, and second, discussing more 
+
+alternative strategies for enhancing the SG’s stability. 
+
+A. Similar Scenario s
+
+As GFM technology matures, co -located systems of GFLRs 
+
+and GFM devices are poised to become mainstream in the 
+
+future. Given that Virtual Synchronous Generator (VSG) -type 
+
+GFM converters exhibit external characteristics similar to those 
+
+of SGs , the y could similarly manifest the multi -swing 
+
+instability behavior investigated in this paper . Nevertheless, the 
+
+highly flexible and adjustable virtual damping of GFM 
+
+converters offers the potential to significantly reduce their 
+
+multi -swing instability risk compared to SGs. 
+
+However, due to their limited overcurrent capability, GFM 
+
+converters may remain current -limiting even after the fault is 
+
+cleared [33] . This condition not only compromise s their own 
+
+transient stability [34]  but also causes a significant reduction in 
+
+grid strength . As a result, the risk of PLL transient instability 
+
+for the GFLRs would be greatly increase d. During such periods, 
+
+the dynamic interactions among GFM converters, PLLs, and 
+
+GFL R’s LVRT control become considerably complex .
+
+Whether the multi -swing instability needs to be considered in 
+
+such scenario s deserves further in -depth investigation. 
+
+B. Alternative Solutions 
+
+In addition to the control proposed in this paper, modifying 
+
+LVRT parameters and adjusting the SG ’s own control strategies 
+
+are also alternative solutions. 
+
+1) Modifying LVRT Parameters 
+
+Acc ording to the analysis in this paper, adjusting the LVRT 
+
+parameter could be considered a potential solution. However, 
+
+this approach faces several practical challenges . First, LVRT 
+
+strategies typically prioritize device overcurrent limits and grid 
+
+code comp liance instead of stability objectives. Second, 
+
+simultaneously addressing both first -swing and multi -swing 
+
+stability through such adjustments is challenging due to their 
+
+contradictory requirements. For instance, while greater active 
+
+current reduction or slower recovery during LVRT may aid 
+
+first -swing stability, it can concurrently increase the risk of 
+
+multi -swing instability. Furthermore, modifying LVRT 
+
+thresholds also introduces additional complications. A narrow 
+
+deadband between LVRT activation ( Uin ) and deactivation ( Uout )
+
+thresholds can lead to undesirable LVRT toggling , dictated by 
+
+the rapid inner current control loop. Conversely, a wider 
+
+deadband may, as this study shows, trigger repeated LVRT 
+
+events on the SG rotor dynamic timescale that are of concern. 
+
+Consequently, relying on LVRT paramet er adjustments is not 
+
+recommended as a primary solution to this specific stability 
+
+problem. 
+
+2) SG Control Alternatives 
+
+Alternative SG control strategies include disconnecting SG 
+
+if unstable or enhanc ing its excitation. While disconnecting the 
+
+SG appears straightforward, this approach sacrifices the SG’s 
+
+contribution to grid strength and risks inducing secondary large 
+
+disturbances in PLLs of GFLRs. 
+
+Enhanced excitation control, on the other hand, offers a more 
+
+sophisticated solution. Beyond its primary role in voltage 
+
+regulation, it can be strategically used to improve angle stability. 
+
+Under GFLR influence, this necessitates not only improving 
+
+first -swing stability but also implementing comprehensive four -
+
+quadrant regulation ( Fig. 6 ). A promising direction integrates 
+
+Lyapunov -based energy dissipation criteria w ith supplementary 
+
+excitation, which allows for real -time active damping based on 
+
+rotor speed and power imbalance . However, practically 
+
+implementing full -period supplementary excitation requires 
+
+coordination with overvoltage limits and protection schemes 
+
+(e specially transformer differential protection) to avoid 
+
+undesired trips resulting from increased excitation currents. 
+
+VII I. CONCLUSION 
+
+On the transient stability of the SG and GFLR co -located 
+
+system, this paper extends the analysis beyond the first swing 
+
+stability to encompass the entire dynamic process. It reveals a 
+
+periodic forced instability phenomenon in SGs induced by a 
+
+“vicious cycle” after fault clearance. Specifically, the SG’s 
+
+rotor angle oscillations trigger voltage fluctuations, which can 
+
+re -trig ger the GFLR’s LVRT activation and deactivation. While 
+
+LVRT limits can enhance SG’s first -swing stability, they may 
+
+promote transient energy accumulation in subsequent swings. 
+
+Ultimately, more severe rotor angle swings trigger another 
+
+round of this switchi ng process, potentially leading to SG multi -
+
+swing instability. Under worst -case scenarios, the stability 
+
+margin for this GFLR -induced multi -swing instability may 
+
+become narrower than that of the first -swing stability, 
+
+demanding dedicated mitigation strateg ies. To address this, the 
+
+paper proposes an additional GFLR current controller based on 
+
+feedback linearization theory, which effectively suppresses 
+
+GFLR -induced multi -swing instability while simultaneously 
+
+improving first -swing stability. 
+
+APPENDIX 
+
+A. System Conditions for the Studied Scenarios 
+
+ indicates the strength of the electrical connection between the 
+
+SG and the GFLR. As SG capacity increases or grid connection 
+
+impedance decreases, Ys increases, resulting in a larger 
+
+. Next, we 
+
+discuss the ran ge of 
+
+ in the scenarios examined in this paper. 
+
+1) How 
+
+ changes GFLR current 's impact on SG rotor speed 
+
+According to (7), Pw increases as 
+
+ increases. This indicates that 
+
+GFLR output changes have a more significant impact on the rotor 
+
+dynamics of SG with a higher 
+
+.
+
+2) How 
+
+ changes the impact of δ on Uw
+
+The sensitivity of Uw to cos δ (or δ) can be expressed as: ( )( )( ) ( ) ( )( )                      
+
+> sgw222sgsg
+> 1cos 121cos
+> E U UgEUE U
+> −==+−+−
+
+(39 )
+
+From (39 ), we see that g(
+
+)≥ 0, with g(
+
+)= 0 only when 
+
+=0 
+
+or 
+
+=1. Thus, g(
+
+) reaches a maximum within the interval 
+
+0< 
+
+<1. By setting g'(
+
+)=0 assuming Es≈Ug in per unit values, 11 
+
+> REPLACE THIS LINE WITH YOUR MANUSCRIPT ID NUMBER (DOUBLE -CLICK HERE TO EDIT) < 
+
+we find that g'(
+
+)=0 at 
+
+=0.5. At this point, Uw is most sensitive 
+
+to changes in δ.
+
+3) How 
+
+ changes t he impact of GFLR Current on Uw
+
+After fault clearance, the GFLR current is is mainly composed 
+
+of active current . The sensitivity of Uw to id can be expressed as: ( ) ( ) ( ) ( )( )        
+
+> 2wd2222dsgsgd
+
+1 2 1 cos s
+
+U i r Y i E U E U i
+
+   = − = + − + − −
+
+(40 )
+
+Differentiating equation (40 ) with respect to Ys yields: ( )
+
+( )   
+
+> ()()
+
+( )                                                                                                                                        
+
+> ()()
+> 2222222sdgsssggdgswgsw3/2 322232222dgsssggdgswgsw
+> 1111221cos 1111121cos 1
+> YiYYEE U UiYYYYYYiYYEE U UiYYYYYYr
+> +++−+−−+++++++−+−−+++=
+
+(41 )
+
+From (41 ), we know that r'>0, indicating that r increases with 
+
+Ys. Since r<0, as Ys (and thus 
+
+) increases, the impact of active 
+
+current injection from GFLR on system voltage weakens. 
+
+In summary, as 
+
+ increases, Uw becomes less sensitive to 
+
+changes in the active current of GFLRs, while the sensitivity of 
+
+SG's rotor angle dynamics to GFLR current chan ges increases. At ≈0.5, Uw is most sensitive to SG's rotor angle changes. Therefore, 
+
+the study focuses on the range 
+
+∈(0.5,1) , where interactions 
+
+between SG and GFLR are more pronounced, making SG rotor 
+
+angle stability the primary concern .
+
+B. Proof of the Multi -Swing Stability Boundary being an 
+
+Unstable Limit Circle 
+
+Theorem 1 (Poincare Annular Region Theorem )[32] : If D is an 
+
+annular region that does not contain any equilibrium point, and 
+
+any trajectory that intersects the boundary of D moves in the 
+
+exterior -to -interior (interior -to -exterior) direction, then there 
+
+exists at least one stable (unstable) limit cycle. If the inner 
+
+boundary of D shrinks into an unstable (stable) point, the 
+
+theorem can still be established. E
+
+0
+
+δin δu
+
+> LVRT
+> activate
+
+δ
+
+
+
+
+
+> UEP
+
+δs
+
+> SEP
+
+Annular 
+
+region Du1 u2 s
+
+Fig. 18.  Multi -swing stability boundary of the system 
+
+Let u1 be the true stability boundary of the system. Due to 
+
+the control dynamics of the GFLR after fault clearance, 
+
+transient energy may continue to accumulate, narrowing the 
+
+SG's stability boundary compared to the first -swing boundary 
+
+through the UEP. As shown in  Fig. 18 , the maximum rotor 
+
+angle on u1 is less than the angle  δu corresponding to the UEP. 
+
+Thus, there exists an annular region D containing u1 , and D
+
+does not contain the system's equilibrium points (SEP and UEP). 
+
+Any trajectory crossing these boundaries exits D, as indicated 
+
+by the red arrows in  Fig. 18 . Accord ing to Theorem 1 , there is 
+
+at least one unstable limit cycle within D. If there is only one 
+
+unstable limit cycle, u1 serves as the system's stability 
+
+boundary. If there are multiple unstable limit cycles (u1 and 
+
+u2 ), as shown in  Fig. 18 , a stable limit cycle (s) must exist 
+
+between them. If the system stabilizes on s, it will oscillate, 
+
+which is considered unstable in terms of Lyapunov asymptotic 
+
+stability and practical engineering. Therefore, u1 remains the 
+
+system's stability boundary and is an unstable limit circle. 
+
+C. Test System Parameters 
+
+TABLE IV. PARAMETERS OF TEST SYST EM 1
+
+Parameter Name  Parameter Value 
+
+Wind 
+
+Farms 
+
+Total capacity  1500MVA 
+
+Outer loop 
+
+proportional/integral 
+
+coefficient (kip ,kio )
+
+GSC 1,3,4 : 0.2 , 4
+
+GSC 2,5 : 0.7 , 0.14 
+
+SCR for grid connection  GSC 1-5: 2.716 ; 2.261 ;
+
+3.928 ; 2.173 ; 1.868 
+
+LVRT reactive compensation 
+
+coefficient (Kq) 2
+
+SGs 
+
+Capacity  2520MVA 
+
+Transient d ,q -axis reactance  0.28,0.39 
+
+Inertia time constant (TJ) 7s 
+
+Grid -
+
+connected 
+
+branch 
+
+WF connection branch (1/Yw) 0.18 p.u. 
+
+SG connection branch( 1/ Ys) 0.128 p.u. 
+
+Branch after PCC( 1/ Yg) 0.26 p.u. 
+
+Receiving -
+
+end grid 
+
+Voltage level  525kV 
+
+Base frequency  50Hz 
+
+Base capacity  1000MVA 
+
+TABLE V. PARAMETERS OF TEST SYSTEM 2
+
+Parameter Name  Parameter Value 
+
+GFLRs 
+
+Outer loop proportional/integral 
+
+coefficient (kpo,kio )
+
+GFLR1: 
+
+2,10 
+
+GFLR2: 
+
+2,10 
+
+Inner loop proportional/integral 
+
+coefficient (kpi,kii )
+
+GFLR1: 
+
+50, 200 
+
+GFLR2: 
+
+100,250 
+
+PLL proportional/integral 
+
+coefficient (kpl,kil)
+
+GFLR1: 
+
+10, 100 
+
+GFLR2: 
+
+15, 100 
+
+Filter inductor, capacitor, resistor  8e -3 H, 1e6 μF, 5 e-3 Ω
+
+SG
+
+Capacity, steady state output  120MVA, 95MW 
+
+Transient reactance  0.15 p.u. 
+
+Physical damping coefficient ( D) 3 p.u./p.u. 
+
+Branches  Ys, Yw, Yg 5, 5, 1.67 p.u. 
+
+Grid  Voltage level  100kV 
+
+Base frequency and capacity  50Hz, 1000MVA 
+
+REFERENCES 
+
+[1] J. Matevosyan et al., “A Future With Inverter -Based Resources: Finding 
+
+Strength From Traditional Weakness,” IEEE PES , vol. 19, no. 6, pp. 18 –
+
+28, Nov. 2021. 
+
+[2] X. Wang, M. G. Taul, H. Wu, Y. Liao, F. Blaabjerg, and L. Harnefors, 
+
+“Grid -Synchronization Stabilit y of Converter -Based Resources —An 
+
+Overview,” IEEE Open J. Ind. Appl. , vol. 1, pp. 115 –134, 2020. 
+
+[3] K. Strunz, K. Almunem, C. Wulkow, M. Kuschke, M. Valescudero, and X. 
+
+Guillaud, “Enabling 100% Renewable Power Systems Through Power 
+
+Electronic Grid -Forming Co nverter and Control: System Integration for 
+
+Security, Stability, and Application to Europe,” Proc. IEEE , vol. 111, no. 
+
+7, pp. 891 –915, Jul. 2023. 
+
+[4] Y. Li, L. Fan, and Z. Miao, “Wind in Weak Grids: Low -Frequency 
+
+Oscillations, Subsynchronous Oscillations, and Torsional Interactions,” 
+
+IEEE Trans. Power Syst. , vol. 35, no. 1, pp. 109 –118, Jan. 2020. 
+
+[5] X. Fu, Z. Tian, H. Yan, et al., “Large -Signal Stability of Grid -Forming and 
+
+Grid -Following Controls in Voltage Source Converter: A Comparative 
+
+Study,” IEEE Trans. Pow er Electron. , vol. 36, no. 7, pp. 7832 –7840, Jul. 
+
+[6] E. Vittal, M. O’Malley, and A. Keane, “Rotor Angle Stability With High 
+
+Penetrations of Wind Generation,” IEEE Trans. Power Syst. , vol. 27, no. 1, 
+
+pp. 353 –362, Feb. 2012. 12 
+
+> REPLACE THIS LINE WITH YOUR MANUSCRIPT ID NUMBER (DOUBLE -CLICK HERE TO EDIT) < 
+
+[7] M. Edrah, K. L. Lo and O. Anaya -Lara, "Impacts of High Penetration of 
+
+DFIG Wind Turbi nes on Rotor Angle Stability of Power Systems," IEEE 
+
+Trans. Sustain. Energy , vol. 6, no. 3, pp. 759 -766, July 2015. 
+
+[8] A. Sajadi, R. M. Kolacinski, K. Clark and K. A. Loparo, "Transient 
+
+Stability Analysis for Offshore Wind Power Plant Integration Planning 
+
+Stu dies —Part II: Long -Term Faults," IEEE Trans. Ind. Appl. , vol. 55, no. 
+
+1, pp. 193 -202, Jan. -Feb. 2019. 
+
+[9] W. Tang, J. Hu, Y. Chang, and F. Liu, “Modeling of DFIG -Based Wind 
+
+Turbine for Power System Transient Response Analysis in Rotor Speed 
+
+Control Timescale,” IEEE Trans. Power Syst. , vol. 33, no. 6, pp. 6795 –
+
+6805, Nov. 2018. 
+
+[10] J. Hu, W. Wang, Y. Li, and J. Guo, “Cross -Timescale Interaction Analysis 
+
+between Current Control and Rotor Speed Control Timescale Dynamics in 
+
+a High -Proportion DFIG -WT System,” IEEE Trans . Sustain. Energy , pp. 
+
+1–13, 2024. 
+
+[11] X. He and H. Geng, “Transient Stability of Power Systems Integrated With 
+
+Inverter -Based Generation,” IEEE Trans. Power Syst. , vol. 36, no. 1, pp. 
+
+553 –556, Jan. 2021. 
+
+[12] Y. Chen, S. M. Mazhari, C. Y. Chung, S. O. Faried and B. C. Pal, "Rotor 
+
+Angle Stability Prediction of Power Systems With High Wind Power 
+
+Penetration Using a Stability Index Vector," IEEE Trans. Power Syst. , vol. 
+
+35, no. 6, pp. 4632 -4643, Nov. 2020. 
+
+[13] X. Ge, J. Qian, Y. Fu, W. -J. Lee, and Y. Mi, “Transient Stability Evaluation 
+
+Criterion of Multi -Wind Farms Integrated Power System,” IEEE Trans. 
+
+Power Syst. , vol. 37, no. 4, pp. 3137 –3140, Jul. 2022. 
+
+[14] S. Yang, B. Li, Z, Hao, Y. Hu, T. Zhao, and B. Zhang, “Multi -Swing 
+
+Transient Stability of Synchronous Generators and IBR Combined 
+
+Generation Systems,” IEEE Trans. Power Syst. , pp. 1 –4, 2024. 
+
+[15] Da -Zhong Fang, T. S. Chung, Yao Zhang and Wennan Song, "Transient 
+
+stability limit conditions analysis using a corrected transie nt energy 
+
+function approach," IEEE Trans. Power Syst. , vol. 15, no. 2, pp. 804 -810, 
+
+May 2000. 
+
+[16] T. L. Vu and K. Turitsyn, “Lyapunov Functions Family Approach to 
+
+Transient Stability Assessment,” IEEE Trans. Power Syst. , vol. 31, no. 2, 
+
+pp. 1269 –1277, Mar. 201 6. 
+
+[17] J. Lei, X. Xiang, B. Liu, W. Li, and X. He, “Transient Stability Analysis of 
+
+Grid Forming Converters Based on Damping Energy Visualization and 
+
+Geometry Approximation,” IEEE Trans. Ind. Electron. , vol. 71, no. 3, pp. 
+
+2510 –2521, Mar. 2024. 
+
+[18] S. Yang, Z. Hao, B. Zhang, and M. Hojo, “An Accurate and Fast Start -Up 
+
+Scheme for Power System Real -Time Emergency Control,” IEEE Trans. 
+
+Power Syst ., vol. 34, no. 5, pp. 3562 –3572, Sep. 2019. 
+
+[19] Wang, A. Jiang, J. Ma, P. Wang, R. Zhang and T. Liu, "Transient Stability 
+
+Analysis for Hybrid Parallel -Connected Converters by Two -Dimensional 
+
+Phase Portrait," IEEE Trans. Power Electron. , vol. 40, no. 6, pp. 7765 -7776, 
+
+June 2025. 
+
+[20] M. Choopani, S. H. Hosseinian and B. Vahidi, "New Transient Stability 
+
+and LVRT Improveme nt of Multi -VSG Grids Using the Frequency of the 
+
+Center of Inertia," IEEE Trans. Power Syst. , vol. 35, no. 1, pp. 527 -538, 
+
+Jan. 2020. 
+
+[21] H. Kong, J. Yang, Y. Zhao, Z. Zhang, S. Hou, and A. Xue, “Bifurcation 
+
+Analysis and Criterion of Voltage Oscillation Induce d by Low Voltage 
+
+Ride Through Control in Renewable Energy Stations,” IEEE Trans. 
+
+Circuits Syst. II: Express Briefs , vol. 71, no. 4, pp. 2439 –2443, Apr. 2024. 
+
+[22] M. Musavi and N. Narasimhamurthi, "Bounding the short term phase plots 
+
+of inter -machine swings for determining first swing stability," IEEE Trans. 
+
+Circuits Syst. vol. 32, no. 7, pp. 712 -718, July 1985. 
+
+[23] B. Li, S. Yang, Y. Hu, Z. Hao, H. Xie, and T. Zhao, “Rotor Angle Transient 
+
+First -Swing Stability Analysis of Synchronous Condensers Near Wind 
+
+Farms,” in 2023 IEEE PESGM , Jul. 2023, pp. 1 –5. 
+
+[24] X. Liu, H. Xin, D. Zheng, D. Chen, and J. Tu, “Transient Stability of 
+
+Synchronous Condenser Co -located with Renewable Power Plants,” IEEE 
+
+Trans. Power Syst. , pp. 1 –11, 2023. 
+
+[25] C. Shen et al., "Transient Stability and Current Injection Design of 
+
+Paralleled Current -Controlled VSCs and Virtual Synchronous Generators," 
+
+IEEE Trans. Smart Grid , vol. 12, no. 2, pp. 1118 -1134, March 2021. 
+
+[26] S. P. Me, M. H. Ravanji, M. Z. Mansour, S. Zabih i, and B. Bahrani, 
+
+“Transient Stability of Paralleled Virtual Synchronous Generator and Grid -
+
+Following Inverter,” IEEE Trans. Smart Grid , vol. 14, no. 6, pp. 4451 –
+
+4466, Nov. 2023. 
+
+[27] Z. Wang, L. Guo, X. Li, X. Zhou, J. Zhu and C. Wang, "Multi -Swing PLL 
+
+Synch ronization Transient Stability of Grid -Connected Paralleled 
+
+Converters," IEEE Trans. Sustain. Energy , vol. 16, no. 1, pp. 716 -729, Jan. 
+
+2025 .
+
+[28] M. Zhou, Z. Dong, H. Li, C. Gan, G. Li, and Y. Liu, “Coordinated Control 
+
+of DFIG Based Wind Farms and SGs for Improving Transient Stability,” 
+
+IEEE Access , vol. 6, pp. 46844 –46855, 2018. 
+
+[29] S. Yang , B. Li, Z, Hao, Y. Hu, T. Zhao, and B. Zhang , “Multi -Swing 
+
+Tra nsient Stability of Synchronous Generators and IBR Combined 
+
+Generation Systems,” IEEE Trans. Power Syst. , pp. 1 –4, 2024. 
+
+[30] C. Wu, Y. Lyu, Y. Wang, and F. Blaabjerg, “Transient Synchronization 
+
+Stability Analysis of Grid -Following Converter Considering the Cou pling 
+
+Effect of Current Loop and Phase Locked Loop,” IEEE Trans. Energy 
+
+Convers. , vol. 39, no. 1, pp. 544 –554, Mar. 2024. 
+
+[31] X. He, H. Geng, R. Li, and B. C. Pal, “Transient Stability Analysis and 
+
+Enhancement of Renewable Energy Conversion System During LVRT, ”
+
+IEEE Trans. Sustain. Energy , vol. 11, no. 3, pp. 1612 –1623, Jul. 2020. 
+
+[32] Y. -Q. Ye, Y. Ye, Y. -C. I. Yeh, and S. -l. Cai, Theory of Limit Cycles, vol. 
+
+66. Ann Arbor, MI, USA: Amer. Math. Soc., 1986. 
+
+[33] K. Zhuang, H. Xin, P. Hu, and Z. Wang, “Current Saturation Analysis and 
+
+Anti -Windup Control Design of Grid -Forming Voltage Source Converter,” 
+
+IEEE Trans. Energy Convers. , vol. 37, no. 4, pp. 2790 –2802, Dec. 2022. 
+
+[34] G. Wang, L. Fu, Q. Hu, C. Liu, and Y. Ma, “Transient Synchronization 
+
+Stability of Grid -Forming Converter During Grid Fault Considering 
+
+Transient Switched Operation Mode,” IEEE Trans. Sustain. Energy , vol. 
+
+14, no. 3, pp. 1504 –1515, Jul. 2023. 
+
+Bingfang Li (Graduate Student Member, 
+
+IEEE), received the B.S. degree from North 
+
+China Electric Power University, Baoding, 
+
+China, in 2022, and is currently working 
+
+toward the Ph.D. degree with Xi’an Jiaotong 
+
+University. Her main fields of interest include 
+
+Power system stability analysis and control. 
+
+Songhao Yang (S enior Member, IEEE) was 
+
+born in Shandong, China, in 1989. He received 
+
+the B.S. and Ph.D. degrees in electrical 
+
+engineering from Xi’an Jiaotong University, 
+
+Xi’an, China, in 2012 and 2019, respec -tively, 
+
+and the Ph.D. degree in electrical and 
+
+electronic engineering from Tokushima 
+
+University, Tokushima, Japan, in 2019. He is currently an 
+
+Associate Professor with Xi’an Jiaotong University. His 
+
+research focuses on power system stability analysis and control. 
+
+Guosong Wang , born in Guizhou Province, 
+
+China, in 1978, received his bachelor's degree 
+
+from Wuhan University of Hydraulic and 
+
+Electric Engineering in 2001. He has long been 
+
+engaged in power system dispatch and 
+
+operation, security and stability analysis, and 
+
+security and stability contr ol. 
+
+Yiwen Hu , received the B.S. degree from 
+
+North China Electric Power University, 
+
+Baoding, China, in 2023, and is currently 
+
+working toward the M.S. degree with Xi’an 
+
+Jiaotong University. Her main fields of interest 
+
+include Power system stability analysis and 
+
+control. 
+
+Xu Zhang (Graduate Student Member, IEEE) ,
+
+received the B.S. degree from Xi’an Jiaotong 
+
+University , Xi’an , China, in 202 1, and is 
+
+currently working toward the Ph.D . degree 
+
+with Xi’an Jiaotong University. Her main 
+
+fields of interest include Po wer system voltage 
+
+stability analysis. 13 
+
+> REPLACE THIS LINE WITH YOUR MANUSCRIPT ID NUMBER (DOUBLE -CLICK HERE TO EDIT) < 
+
+Zhiguo Hao (Senior Member, IEEE), was born 
+
+in Ordos, China, in 1976. He received the B.Sc. 
+
+and Ph.D. degrees in electrical engineering 
+
+from Xi’an Jiaotong University, Xi’an, China, 
+
+in 1998 and 2007, respectively. He is currently 
+
+a Professor with the Electrical Engineering 
+
+Department, Xi’an Jiaotong University. His 
+
+research focuses on power system protection and control. 
+
+Dongxu Chang , (Member, IEEE) was born in 
+
+He -nan, China, in 1982. He received the B.S. 
+
+degrees in electrical engineering from HUST, 
+
+Wuhan, China, in 2006.He is currently working 
+
+at the Electric Power Research Institute ，
+
+CSG. His research focuses on power system 
+
+stability analysis and control. 
+
+Baohui Zhang (Fellow, IEEE) was born in 
+
+Hebei Province, China, in 1953. He received 
+
+the M.Eng. and Ph.D. degrees in electrical 
+
+engineering from Xi’an Jiaotong University, 
+
+Xi’an, China, in 1982 and 1988, respectively. 
+
+Since 1992, he has been a Professor with 
+
+Electrical Engineering Department, Xi’an 
+
+Jiaotong University. His research interests are system analysis, 
+
+control, communication, and protection .

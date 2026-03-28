@@ -1,0 +1,37 @@
+{
+  "label": "2026-03-28",
+  "date": "2026-03-28",
+  "generated_at": "2026-03-28T20:00:29",
+  "count": 2,
+  "papers": [
+    {
+      "paper_id": "202603/28/2603.25167v1-multi-swing-transient-stability-of-synchronous-generators-and-ibr-combined-generation-systems",
+      "section": "quick",
+      "title_en": "Multi-Swing Transient Stability of Synchronous Generators and IBR Combined Generation Systems",
+      "authors": "Songhao Yang, Bingfang Li, Zhiguo Hao, Yiwen Hu, Huan Xie, Tianqi Zhao, Baohui Zhang",
+      "date": "2026-03-26",
+      "pdf": "https://arxiv.org/pdf/2603.25167v1",
+      "score": "6.0",
+      "evidence": "故障期间同步发电机的暂态稳定性",
+      "tldr": "本研究探讨了同步发电机（SG）与并网逆变器（GFL-IBR）混合系统的多摆暂态稳定性。传统观点认为故障期间的加速能量导致首摆失稳，但本文发现GFL-IBR的低电压穿越及恢复控制会导致减速能量积累，进而引发SG的暂态角失稳。这种能量在后续摆动中转化为加速能量，表现为多摆失稳。研究通过理论分析和仿真验证了这一新机制，为混合电力系统稳定性分析提供了新视角。",
+      "tags": "query:pmsm",
+      "abstract_en": "In traditional views, the build-up of accelerating energy during faults can cause the well-known first-swing angle instability in synchronous generators (SGs). Interestingly, this letter presents a new insight that the accumulation of decelerating energy due to the low voltage ride-through (LVRT) and recovery control of grid-following inverter-based resources (GFL-IBRs), might also result in transient angle instability in SGs. The transient energy accumulated during angle-decreasing swing transforms into the acceleration energy of the subsequent swing, hence such phenomena often manifest as multi-swing instability. Both theoretical analysis and simulation support these findings.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202603/28/2603.25287v1-entire-period-transient-stability-of-synchronous-generators-considering-lvrt-switching-of-nearby-renewable-energy-sources",
+      "section": "quick",
+      "title_en": "Entire Period Transient Stability of Synchronous Generators Considering LVRT Switching of Nearby Renewable Energy Sources",
+      "authors": "Bingfang Li, Songhao Yang, Guosong Wang, Yiwen Hu, Xu Zhang, Zhiguo Hao, Dongxu Chang, Baohui Zhang",
+      "date": "2026-03-26",
+      "pdf": "https://arxiv.org/pdf/2603.25287v1",
+      "score": "6.0",
+      "evidence": "同步发电机的暂态稳定性与电网交互",
+      "tldr": "本研究探讨了同步发电机（SG）与并网型可再生能源（GFLR）共存场景下的全过程暂态稳定性。针对SG功角振荡引发GFLR频繁触发低压穿越（LVRT）的问题，分析了圆形和矩形LVRT限制对SG首摆及多摆稳定性的不同影响。研究提出了相应的稳定性判据，并设计了基于反馈线性化的附加控制器，通过优化GFLR电流输出增强系统稳定性，最后通过仿真和硬件在环测试验证了其有效性。",
+      "tags": "query:pmsm",
+      "abstract_en": "In scenarios where synchronous generators (SGs) and grid-following renewable energy sources (GFLR) are co-located, existing research, which mainly focuses on the first-swing stability of SGs, often overlooks ongoing dynamic interactions between GFLRs and SGs throughout the entire rotor swing period. To address this gap, this study first reveals that the angle oscillations of SG can cause periodic grid voltage fluctuations, potentially triggering low-voltage ride-through (LVRT) control switching of GFLR repeatedly. Then, the periodic energy changes of SGs under \"circular\" and \"rectangular\" LVRT limits are analyzed. The results indicate that circular limits are detrimental to SG's first-swing stability, while rectangular limits and their slow recovery strategies can lead to SG's multi-swing instability. Conservative stability criteria are also proposed for these phenomena. Furthermore, an additional controller based on feedback linearization is introduced to enhance the entire period transient stability of SG by adjusting the post-fault GFLR output current. Finally, the efficacy of the analysis is validated through electromagnetic transient simulations and controller hardware-in-the-loop (CHIL) tests.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

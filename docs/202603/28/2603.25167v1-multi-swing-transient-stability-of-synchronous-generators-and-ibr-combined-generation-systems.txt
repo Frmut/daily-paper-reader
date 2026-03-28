@@ -1,0 +1,1079 @@
+Title: 2603.25167v1.pdf
+
+URL Source: https://arxiv.org/pdf/2603.25167v1
+
+Published Time: Fri, 27 Mar 2026 00:42:46 GMT
+
+Number of Pages: 4
+
+Markdown Content:
+1
+
+> REPLACE THIS LINE WITH YOUR MANUSCRIPT ID NUMBER (DOUBLE -CLICK HERE TO EDIT) < 
+
+# Multi -Swing Transient Stability of Synchronous 
+
+# Generators and IBR Combined Generation System s
+
+Songhao Yang , Member , IEEE , Bingfang Li, Student Member , IEEE , Zhiguo Hao, Senior Member , IEEE , Yiwen Hu, 
+
+Huan Xie, Tianqi Zhao, and Baohui Zhang , Fellow , IEEE 
+
+Abstract —In traditional views , the build -up of accelerating energy 
+
+during faults can cause the well -known first -swing angle 
+
+instability in synchronous generators (SG s). Interestingly, this 
+
+letter presents a new insight that the accumulation of decelerating 
+
+energy due to the low voltage ride -through (LVRT) and recovery 
+
+control of grid -following inverter -based resources ( GFL -IBRs), 
+
+might also result in transient angle instability in SGs. The 
+
+transient energy accumulat ed during angle -decreasing swing 
+
+transforms in to the accelerati on energy of the subsequent swing ,
+
+hence such phenomena often manifest as multi -swing instability. 
+
+Both theoretical analysis and simulation support these findings .
+
+Index Terms —synchronous generator s, grid -follow inverter -based 
+
+resource s, transient rotor angle stability , multi -swing, low voltage 
+
+ride -through 
+
+I. INTRODUCTION 
+
+ombining GFL -IBRs and SGs for centralized , long -
+
+distance transmission enhances resource flexibility and 
+
+network strength . However, IBRs exhibit complex 
+
+effects on the transient stability of such combined systems . Ref. 
+
+[1]  introduces a transient stability criterion to identify 
+
+operational areas impacting system stability , while ref . [2]  notes 
+
+that IBRs' gradual active current restoration post -LVRT can 
+
+enhance the first -swing stability of nearby SGs. Additionally, 
+
+ref . [3]  explore s the transient interaction of the GFL -IBRs and 
+
+virtual synchronous generators (VSG) combined system s. 
+
+The existing studies mainly focus on the first -swing stability. 
+
+However, IBR’s time -varying output during LVRT and 
+
+recovery control can change the unbalanced power of nearby 
+
+SGs, thus affecting their multi -swing dynamics. Inspired by 
+
+such an idea, this let ter explores the multi -swing transient 
+
+instability of SGs affected by adjacent GFL -IBRs. Utilizing the 
+
+transient energy function method, this instability phenomenon 
+
+is explained by the 'Spring Effect', and these findings are 
+
+verified by simulations .
+
+II. SYSTEM MODELING 
+
+Fig. 1  showcases a typical topology of the IBR -SG combined 
+
+system , and  Fig. 2 presents the rotating vectors of the 
+
+coordinate system . In  Fig. 2 , the ds-qs and x-y reference frames 
+
+are counterclockwise rotating with the angular speed of 𝜔 s and 
+
+𝜔 g respectively. The ds-axis leads the x-axis by an angle δ,
+
+representing SG ’s rotor angle, while the d-axis leads by an 
+
+angle θ, as provided by the PLL. Reference [1], [4] suggest that 
+
+the dynamics of PLL (tens of Hz) can be ignored on the rotor 
+
+motion timescale (0.1~2 Hz). Thus, the dynamic equation of the 
+
+SG can be written as ( )
+
+1    
+
+> EgsgJM
+
+P DT P
+
+     = − =   = −  −
+
+, (1)
+
+where PM, PE, TJ, and D are the mechanical power, electrical 
+
+power, time constant inertia , and damping coefficient of SG ,
+
+respectively . As per the definit ion PE=Re( Es∠δ∙Is∠s),( )
+
+sin cos E s g sg s w wwsg PP
+
+P E U Y E I 
+
+  = − −
+
+, (2)
+
+where α= Ys/(Ys+Y g), Ysg =Y sYg/(Ys+Y g). Pw represents the power 
+
+coupling term between SG and IBR. Define Ids  
+
+> w
+
+=Iwcos( δ-𝜑 w) as 
+
+the project ion of IBR’s output current vector Iw∠
+
+w on the ds-
+
+axis , which determines the value of Pw. Changes in Pw further 
+
+influence PE, thereby affecting the rotor dynamics of the SG. 
+
+In the steady state with unity power factor control, 𝜑 w=θ.
+
+During transient s, if the IBR generates reactive power, 𝜑 w
+
+adjusts to θ-η as shown in  Fig. 2 , where η is defined as ( )
+
+arctan q dw wi i
+
+=
+
+. (3)
+
+In (3), id 
+
+> w
+
+and iq 
+
+> w
+
+are the active and reactive output current of 
+
+the IBR .SG 
+
+GFL -IBR 
+
+> PCC s
+
+YgY
+
+> Filter
+> PLL
+> Current
+> Control 
+
+GSC sE
+
+
+
+s sI
+
+
+
+g gI
+
+
+
+
+
+> PQ Control s
+
+
+
+> LVRT
+> Outer -loop Control
+
+Infinite bus p pU
+
+
+
+w wI
+
+
+
+g
+
+wY 
+
+> (Steady state)
+> (During fault) gf f
+
+U
+
+
+
+0gU   
+
+Fig. 1.  Typical topology of SG -IBR combined generation system s.x
+
+y
+
+d
+
+q
+
+ds
+
+qsg
+
+s
+
+w wI
+
+
+
+sd
+
+> w
+
+Iw
+
+
+
+Fig. 2.  Relationships of different frames in the vector space. 
+
+III. MULTI -SWING TRANSIENT STABILITY ANALYSIS 
+
+A. Multi -Swing Instability Caused by IBR’s LVRT Control 
+
+The energy function of the system (1) can be formulated as ( )
+
+# ( )
+
+> 2
+
+1, 2 s    
+
+> Jgsg wM
+
+V PT P P d
+
+> 
+
+    + − −= 
+
+, (4)
+
+where δs is denoted as the stable equilibrium point (SEP) of SG :( )
+
+# ( )
+
+arcsin / s g sg Ms wP E YP U
+
+= +
+
+. (5)
+
+Assuming a grid fault shifts Ug∠0° to Ugf ∠f while triggers 
+
+the IBR’s LVRT control, both components  Psg  and  Pw within 
+
+PE would change, labelled as  Psg f and  Pwf .
+
+# C
+
+This work was supported by Science and Technology Project of State Grid Jibei 
+
+Electric Power Co., Ltd "Research on the coordinated control technology of grid -
+
+forming renewable energy station with new synchronous condenser” 
+
+(B3018K240005) 
+
+S. Yang, B. Li, Z. Hao , Y. Hu, and B. Zhang are with Xi’an Jiaotong University, 
+
+Xi'an, China (e -mail: {songhaoyang, zhghao, bhzhang}@xjtu.edu.cn, 
+
+{libingfang , huyiwen }@stu. xjtu.edu.cn). H. Xie and T. Zhao are with State Grid 
+
+Hebei Electric Power Co. 2
+
+> REPLACE THIS LINE WITH YOUR MANUSCRIPT ID NUMBER (DOUBLE -CLICK HERE TO EDIT) < ( )
+
+sin sgf s gf sg fP E U Y
+
+ = +
+
+,sdwf s wf P E I 
+
+= . (6)
+
+As shown in  Fig. 3 , the intersection of curve s Pe(δ) and 
+
+PM+Pw, i.e. Point A , represents the Stable Equilibrium Point 
+
+(SEP). Once a fault occurs,  Psg (δ) shifts to  Psg f (δ). Since  δ
+
+cannot change abruptly, the operating point moves from Point 
+
+A to B . After LVRT control activation, due to an increase in  iq
+
+> w
+
+and usually a decrease in id 
+
+> w
+
+, the projection of the IBR output 
+
+current vector on the ds axis, Ids  
+
+> wf
+
+, decreases from its steady state 
+
+value Ids  
+
+> w
+
+, resulting in Pwf  <Pw. According to (1)-(2), if Psg f (δ)
+
+<PM+Pwf during the fault , then ∆ 𝜔 >0 , causing the SG’s rotor to 
+
+accelerate; otherwise, ∆ 𝜔 <0 , causing it to decelerate.   
+
+> Fig. 3. Power -angle plane of the SG during IBR’s LVRT .
+
+Define  ΔPsg f=P sg f -Psg and Δ Pwf =P wf -Pw, generally ΔPwf <0 .
+
+The derivation of V in (4) during fault could be derived as ( )
+
+# ( )
+
+> 2
+
+d , d dd d d  
+
+> gwf sgf
+
+V V Vt t tP P D
+
+    = +  =   − −  
+
+. (7)
+
+Eq. (7) indicates that the effect s of ΔPwf var y with ∆𝜔 .
+
+Specifically, i f ∆𝜔 >0 , then ΔPwf ∆𝜔 <0, thus ΔPwf exhibits a 
+
+positive damping effect, reducing V as a result . In contrast , if 
+
+∆𝜔 <0 , the damping effect of ΔPwf turns negative since 
+
+ΔPwf ∆𝜔 >0 , there by contributing to the increase of V.       
+
+> (a) ∆𝜔 >0 during LVRT (b) ∆𝜔 <0 during LVRT
+> Fig. 4. Phase trajectories of SG during IBR’s LVRT control.
+> Fig. 5. IBR’s output under the LVRT and recovery control.
+
+Assum ing a sign change in ∆𝜔 marks the end of a rotor swing. 
+
+Fig. 4  illustrates these swing -dependent damping effects of IBR ,
+
+where the magnitude of ΔPwf is characterized by C 1 to C 4. Fig. 
+
+4(a) shows that during faults, if SG accelerates, the accelerating 
+
+energy is mitigated by the positive damping effect of ΔPwf ,
+
+reducing the risk of first -swing instability . Conversely, as 
+
+shown in  Fig. 4 (b), if the SG decelerates in the first swing , the 
+
+negative damping effect of ΔPwf exacerbates the risk of 
+
+acceleration instability in the subsequent swing by increas ing 
+
+the transient (decelerating) energy during faults .
+
+B. Multi -Swing Instabil ity Caused by IBR ’s Recovery Control 
+
+After the fault is cleared , Psg f reverts to Psg and IBR’s output 
+
+gradually recovers under the LVRT recovery control (such as 
+
+ramp recovery control in  Fig. 5 ). During this stage , the power 
+
+coupling term , marked as Pwr , satisfies Pwf <Pwr <Pw. Thus, 
+
+dV/d t in (7) is updated to ( )
+
+> 2
+
+, wr g gV P D
+
+    =  −  
+
+. (8)
+
+Define t he change in transient energy over one cycle T as ΔV:( ) ( )     
+
+> 0
+> 200
+> D
+> VTTwr ggVw
+
+V V
+
+V dV P dt D dt 
+
+  
+
+ 
+
+ = =   −   
+
+(9)
+
+where V0 denotes the transient energy at the start of th is cycle 
+
+(marked as point A in  Fig. 6 ). By the end of the cycle (marked 
+
+as point C in  Fig. 6 ), V can be expressed as ( ) ( )       
+
+> 0
+> BCAB
+> Dgwgw
+
+V V V P t d P t d 
+
+> 
+
+ = − +  +  
+
+(10 )
+
+Define ΔPwr (t)= Pwr (t)-Pw. It is a time -incre asing function and 
+
+remains negative during the recovery phase . Besides , it’s also a 
+
+monotonic function of δ respectively in the intervals A→B and 
+
+B→C. According to the Mean Value Theorem for Integrals, ( ) ( )
+
+> 1
+
+=   
+
+> BA
+> wr wr BA
+
+P t d P
+
+> 
+
+    −
+
+, (11 )( ) ( )
+
+> 2
+
+=   
+
+> CB
+> wr wr CB
+
+P t d P
+
+> 
+
+   −
+
+, (12 )
+
+where 1wr P and 2wr P are both constants and satisfies 1 2 0wr wr P P   
+
+. According to (7), similar to the LVRT stage ,1wr P
+
+exerts a negative damping effect during A →B because 1wr P
+
+∆𝜔 >0 , leading V to increase . In contrast, 2wr P ∆𝜔 <0 
+
+during B→C, resulting in a reduction of V. 
+
+> Fig. 6. Phase trajectories of SG during IBR’s LVRT recovery.
+
+Substitute (10 )-(12 ) into (9), we can obtain :( )
+
+## ( ) ( )         
+
+> 212wr wr ABwr CADwV
+
+V P P P V
+
+  
+
+> 
+
+ =  −  − +  − −  
+
+(13 )
+
+According to (13 ), the cyclic energy change ∆
+
+V is 
+
+determined by the sum of the energy change ∆
+
+Vw from IBR’s 
+
+damping effects and the energy dissipation ∆
+
+VD from SG’s 
+
+physical damping . If δA-δC<0, then ∆ 
+
+V >0. Since ∆ 
+
+VD >0, it 
+
+follows that ∆ 
+
+Vw >0. If δA-δC>0, ∆
+
+Vw >0 also holds because 1 2 0wr wr P P   
+
+and δA-δB>0. This indicates that IBR’s 
+
+negative damping effect is predominan t when ∆𝜔 <0 ,
+
+contributing to the increase in ∆
+
+V. If ∆
+
+Vw >∆
+
+VD within one cycle, 
+
+the multi -swing stability of SGs will deteriorate , as shown in 
+
+Fig. 6 . Negative 1wr P lead to an increase in 
+
+V during A →B,
+
+compared to 1 0wr P = . Despite a decrease in 
+
+V during B→C,
+
+the increase in 
+
+V is more significant within one cycle . Thus, the 
+
+time -varying damping effect s of the IBR during the recovery 0
+
+> PM+Pwf
+> PM+Pw
+> Psgf Psg
+
+A
+
+B
+
+δs     
+
+> ω<0 ω>0
+> (ω>0)
+> PM+Pwf (ω<0)
+> Psg 0
+
+o    
+
+> Positive Damping Effect of IBR
+> ΔPwf =C 1ΔPwf =C 2
+> 0
+
+o
+
+> s
+> 
+
+s
+
+> 
+
+      
+
+> 
+> Negative Damping Effect of IBR
+> Isoenergetic curve
+> Increase of V
+> Fault Clearance
+> ΔPwf =C 3ΔPwf =C 4(C 2<C 1<0) (C 4<C 3<0)
+> Fault Clearance Output current of IBR
+> Time
+> Active
+> current
+> Reactive
+> current
+> LVRT
+> recovery
+> LVRT
+> Ramp
+> recovery
+
+3
+
+> REPLACE THIS LINE WITH YOUR MANUSCRIPT ID NUMBER (DOUBLE -CLICK HERE TO EDIT) < 
+
+process increase transient (decelerating) energy during angle -
+
+decreasing swings and potentially lead to instabilit y in the 
+
+subsequent swing .
+
+C. In stability Mechanism Analogous to the “Spring Effect ”
+
+The mechanisms behind the first -swing instability induced 
+
+by excessive mechanical power (Mode 1) and the multi -swing 
+
+instability caused by LVRT and recovery control of IBRs 
+
+(M ode 2) are markedly different . This can be analogized to the 
+
+“Spring Effect” seen in a pull -back toy car , as depicted in  Fig. 
+
+7. The finish line ( δuep in  Fig. 7 (a)) represents SG’s unstable 
+
+equilibrium point (UEP). One way of play involves propelling 
+
+the toy car directly to cross the finish line , where the forward 
+
+thrust represents the accelerating energy of SGs accumulated 
+
+during a large disturbance (corresponding to the scenario in  Fig. 
+
+4(a)) . The other way is to first pull the car back and then release 
+
+it . When the car is retracted , the internal spring stores potential 
+
+energy , which then converts to kinetic energy upon release. 
+
+This backward thrust mirrors the decelerating energy in the 
+
+angle -decreasing direction of SGs , resulting from the negative 
+
+damping effect of IBR’s LVRT and slow recovery control , as 
+
+illustrated in  Fig. 4 (b) and  Fig. 6 .          
+
+> (a) motion trajectories (b) δ-tcurves
+> Fig. 7. Pull -back toy car a nalogy for SG’s mu lti -swing instability.
+
+IV. NUMERICAL RESULTS 
+
+A simplified IBR -SG system test model is established in 
+
+DIgSILENT , with system parameters provided in TABLE I. At 
+
+t= 0.5s, a three -phase permanent short circuit occurs on one of 
+
+the double circuit line s, cleared by protection at t= 0.7s . To
+
+verify the impact of GFL -IBR’s LVRT and recovery on rotor 
+
+dynamics of nearby SGs, the cases in TABLE II. are discussed .
+
+As shown in  Fig. 5 , during LVRT, IBR’s grid -side converter 
+
+(GSC) generates reactive current based on voltage droop 
+
+control [6] , while the active output is limited . In the recovery 
+
+stage , reactive support is withdrawn immediately, and active 
+
+current is restored using a ramp -up strategy. Different active 
+
+current and recovery rate s are discussed in TABLE II.                         
+
+> TABLE I
+> SYSTEM PARAMETERS
+> Component Item (Symbol) Value
+> GSC
+> Proportional
+> and integral
+> gain
+> PLL 50,900
+> Inner loop controller 1,10
+> Outer loop controller 0.5,10
+> SG
+> Capacity 600MVA
+> Transient reactance ( ,qdXX)0.15,0.25
+> D,TJ10,8s
+> Admittance Ys,Yw,Yg-j2.18, -j10, -j1.08
+> Grid Fundamental frequency ( fg)50Hz
+> Base capacity 1000MVA
+
+Case 1 -4 are designed to validate the impacts of IBR’s LVRT 
+
+control on the rotor dynamics and transient stability of SG, with 
+
+results presented in  Fig. 8 . In TABLE II , 𝜎 represents the 
+
+retention level of active current. As 𝜎 decreases, ΔPwf also 
+
+decreases. Results of Case s 1 and 3 in  Fig. 8 (a) and (c) confirm 
+
+the scenario described in  Fig. 4 (a): If ∆ 𝜔 >0 during the fault ,
+
+reducing ΔPwf (or σ) introduces positive damping, enhancing 
+
+SG’s transient stability by lowering transient energy. 
+
+Conversely, Case 2 and 4 ( Fig. 8 (b) and (d)) correspond to  Fig. 
+
+4(b): If ∆ 𝜔 <0 during the fault, a decrease in ΔPwf (or σ) results 
+
+in a negative damping effect, making the SG more prone to lose 
+
+stability in the second swing.                                       
+
+> TABLE II
+> STUDY CASES
+> Case
+> IBR
+> output
+> (MW)
+> SG output
+> (MW)
+> Transition
+> resistance
+> (Ω)
+> Active current
+> reserve ( σ)
+> (p.u.)
+> Recovery
+> rate
+> (p.u./s)
+> 1650 50 00.5,0.7 ∞
+> 2650 50 00,0.1 ∞
+> 3450 250 50.7,1.2 ∞
+> 4450 250 25 0,0.5 ∞
+> 5650 50 00.7 ∞,5
+> 6650 50 00.5 ∞,1
+> 7650 50 00.2 ∞,0.4
+
+0.7 
+
+=0.5 
+
+=0.1 
+
+
+
+=0
+
+=0
+
+=0.5 
+
+=1.2 
+
+
+
+=0.7 
+
+=OOOO( ) 
+
+> 
+
+( )    
+
+> 
+> (a) Case 1 (b ) Case 2 0.7
+> =0.5
+> =0.1
+> 
+> =0
+> =0
+> =0.5
+> =1.2
+> 
+> =0.7
+> =OOOO( )
+> ( )
+> 
+> (c) Case 3 (d) Case 4
+> Fig. 8. Results of IBR’s damping effect during LVRT. iwd (p.u.)
+> time(s)
+
+( )  
+
+> 
+> 5 p.u./s B
+> 
+> B
+> 
+> O
+> B B C
+> (a) Case 5 iwd (p.u.)
+> time(s)
+
+( )    
+
+> 
+> 1 p.u./s C
+> B
+> A
+> 
+> OBACBC
+> (b) Case 6 iwd (p.u.)
+> time(s)
+
+( )       
+
+> 
+> 0.4 p.u./s
+> BOA
+> (c) Case 7
+> Fig. 9. Results of IBR’s damping effect during LVRT recovery .
+
+Cases 5 -7 concentrate on examining how IBR’s LVRT 
+
+recovery control impacts the rotor dynamics of SG.  Fig. 9 
+
+presents SG’s rotor angle, phase trajectory, and IBR’s active 
+
+current. As depicted in  Fig. 9 (a) an d (b), regardless of whether Spring Effect 
+
+t
+
+> Mode 1
+> Mode 2 s
+> s
+> uep
+> 
+
+4
+
+> REPLACE THIS LINE WITH YOUR MANUSCRIPT ID NUMBER (DOUBLE -CLICK HERE TO EDIT) < 
+
+SG accelerates or decelerates during faults , a slower restoration 
+
+of Pw in the angle -decreasing swings post -fault leads to a greater 
+
+accumulation of transient energy compared to immediate 
+
+recovery. This is evident from the redu ced minimum rotor angle 
+
+of SG (from B’ to B), indicating a closer proximity to the 
+
+stability boundary. In the subsequent swing with ∆𝜔 >0 , due to 
+
+the nearly complete recovery of IBR's active current, the 
+
+decrease of energy caused by IBR’s positive damping effect in 
+
+this swing is less than its increase in the last swing. Therefore, 
+
+the transient energy increases at the end of one cycle, pushing 
+
+the SG towards a potential multi -swing acceleration instability. 
+
+Specifically, Case 7 ( Fig. 9 (c)) demonstrates that the SG's 
+
+instability swing is delayed from the first swing to the third 
+
+swing under the slow recovery control. These results validate 
+
+the previous analysis .
+
+V. DISCUSSION 
+
+The above analysis reveals the mechanism of IBR's LVRT 
+
+and recovery control on the transient energy of SGs and verifies 
+
+the existence of multi -swing instability through simulations. 
+
+However, the manifestation of this phenomenon depends on 
+
+various factors , includ ing but not limited to the electrical 
+
+distance between IBR and SG , the output of IBR and SG, the 
+
+type of fault, and the physical damping of SG . First ly, a higher 
+
+proportion of IBR output and closer electrical proximity 
+
+between the IBR and SG make s the rotor dynamics of SG more 
+
+sensitive to changes in 𝑃 𝑤 during the transient s, thus increasing 
+
+the likelihood of multi -swing instability. Additionally, different 
+
+fault locations and types significantly affect SG dynamics 
+
+during LVRT . In the presence of transition resistance, SGs are 
+
+more likely to decelerate during a fault. Finally, t he impact of 
+
+SG's physical damping is pronounced during th e LVRT 
+
+recovery process. Increas ing SG damping not only benefits its 
+
+first -swing stability but also can improve the multi -swing 
+
+stability if it offsets the negative damping effect of IBR. 
+
+VI. CONCLUSION 
+
+This letter offers an analytical perspective on how GFL -
+
+IBR s’ LVRT and recovery control affect the transient stability 
+
+of nearby SG s. Notably, IBR introduces a time -varying, non -
+
+uniform damping torque, altering the unbalanced power during 
+
+different rotor swing stages of nearby SGs and potentially 
+
+leading to multi -swing instability . Mitigating these negative 
+
+effects of IBRs and enhancing the overall stability of the system 
+
+will be the focus of our future work. 
+
+REFERENCES                
+
+> [1] X. Ge, J. Qian, Y. Fu, W. -J. Lee, and Y. Mi, “Transient Stability
+> Evaluation Criterion of Multi -Wind Farms Integrated Power System,”
+> IEEE Trans. Power Syst. , vol. 37, no. 4, pp. 3137 –3140, Jul. 2022.
+> [2] E. Munkhchuluun, L. Meegahapola, and A. Vahidnia, “Impact of active
+> power recovery rate of DFIG wind farms on first swing rotor angle
+> stability,” IET Gener. Transm. Distrib. , vol. 14, no. 25, pp. 6041 –6048,
+> 2020.
+> [3] S. P. Me, M. H. Ravanji, M. Z. Mansour, S. Zabihi, and B. Bahrani,
+> “Transient Stability of Paralleled Virtual Synchronous Generator and
+> Grid -Following Inverter,” IEEE Trans .Smart Grid , vol. 14, no. 6, pp.
+> 4451 –4466, Nov. 2023.
+> [4] X. He and H. Geng, “Transien t Stability of Power Systems Integrated
+> With Inverter -Based Generation,” IEEE Trans. Power Syst. , vol. 36, no.
+> 1, pp. 553 –556, Jan. 2021.
+> [5] W. Tang, J. Hu, Y. Chang, and F. Liu, “Modeling of DFIG -Based Wind
+> Turbine for Power System Transient Response Analysi s in Rotor Speed
+> Control Timescale,” IEEE Trans. Power Syst. , vol. 33, no. 6, pp. 6795 –
+> 6805, Nov. 2018.
+> [6] X. Liu, H. Xin, D. Zheng, D. Chen, and J. Tu, “Transient Stability of
+> Synchronous Condenser Co -located with Renewable Power Plants,”
+> IEEE Trans .Power Syst .,vol .39, no.1, pp. 2030 -2041, Jan. 2024 .
+
+Songhao Yang (Senior Member, IEEE) was 
+
+born in Shandong, China, in 1989. He received 
+
+the B.S. and Ph.D. degrees in electrical 
+
+engineering from Xi’an Jiaotong University, 
+
+Xi’an, China, in 2012 and 2019, respec -tively, 
+
+and the Ph.D. degree in electrical and electronic 
+
+engineering from Tokushima University, 
+
+Tokushima, Japan, in 2019. He is currently an Associate 
+
+Professor with Xi’an Jiaotong University. His research focuses 
+
+on power system stability analysi s and control. 
+
+Bingfang Li (Student Member, IEEE), , received 
+
+the B.S. degree from North China Electric 
+
+Power University, Baoding, China, in 2022, and 
+
+is currently working toward the Ph.D. degree 
+
+with Xi’an Jiaotong University. Her main fields 
+
+of interest include Power system stability 
+
+analysis and control. 
+
+Zhiguo Hao (Senior Member, IEEE), was born 
+
+in Ordos, China, in 1976. He received the B.Sc. 
+
+and Ph.D. degrees in electrical engineering from 
+
+Xi’an Jiaotong University, Xi’an, China, in 
+
+1998 and 2007, respectively. He is currently a 
+
+Professor with the Electrical Engineering 
+
+Department, Xi’an Jiaotong University. His research focuses on 
+
+power system protection and control. 
+
+Yiwen Hu , received the B.S. degree from North 
+
+China Electric Power University, Baoding, 
+
+China, in 2023, and is currently working toward 
+
+the M.S. degree with Xi’an Jiaotong University. 
+
+Her main fields of interest include Power 
+
+system stability analysis and control. 
+
+Huan Xie , is working as an electrical engineer 
+
+at State Grid Jibei Electric Power Research 
+
+Instit ute, Beijing, China. He received the B.Sc. 
+
+and M.Sc. in Electrical Engineering and 
+
+Automation from Hohai University in 2001 and 
+
+2014, and received Ph.D. degree in Elec trical 
+
+Engineering and Automation from Xi'an Jiao 
+
+Tong University, Xi'an .China in 2008. His areas of interest 
+
+include power system stability and control. 
+
+Tianqi Zhao , is working as an electrical 
+
+engineer at State Grid Jibei Electric Power 
+
+Research Insti tute, Beijing, China. He received 
+
+the B.Sc., M.Sc. and Ph.D. degree in Electrical 
+
+Engineering and Automation from Tianjin 
+
+University, Tianjin .China, in 2012, 2014 and 
+
+2018 respectively. His areas of interest include 
+
+power system stability and control, ren ewable energy 
+
+integration and analytical methods for planning and operations.
