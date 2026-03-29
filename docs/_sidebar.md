@@ -1,6 +1,9 @@
 * <a class="dpr-sidebar-root-link" href="#/">首页</a>
 * <a class="dpr-sidebar-root-link dpr-sidebar-noactive-link" href="javascript:void(0)" data-dpr-hash="#/tutorial/README">使用教程</a>
 * Daily Papers
+  * 2026-03-29 <!--dpr-date:20260329-->
+    * 速读区
+      * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202603/29/2603.21128v1-physics-infused-neural-mpc-of-a-dc-dc-boost-converter-with-adaptive-transient-recovery-and-enhanced-dynamic-stability" data-sidebar-item="{&quot;title&quot;: &quot;Physics-Infused Neural MPC of a DC-DC Boost Converter with Adaptive Transient Recovery and Enhanced Dynamic Stability&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2603.21128v1-physics-infused-neural-mpc-of-a-dc-dc-boost-converter-with-adaptive-transient-recovery-and-enhanced-dynamic-stability&quot;, &quot;score&quot;: &quot;6.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;pmsm&quot;}], &quot;evidence&quot;: &quot;用于电力电子控制的物理融合神经模型预测控制&quot;}">Physics-Infused Neural MPC of a DC-DC Boost Converter with Adaptive Transient Recovery and Enhanced Dynamic Stability</a>
   * 2026-03-28 <!--dpr-date:20260328-->
     * 速读区
       * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202603/28/2603.25167v1-multi-swing-transient-stability-of-synchronous-generators-and-ibr-combined-generation-systems" data-sidebar-item="{&quot;title&quot;: &quot;Multi-Swing Transient Stability of Synchronous Generators and IBR Combined Generation Systems&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2603.25167v1-multi-swing-transient-stability-of-synchronous-generators-and-ibr-combined-generation-systems&quot;, &quot;score&quot;: &quot;6.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;pmsm&quot;}], &quot;evidence&quot;: &quot;故障期间同步发电机的暂态稳定性&quot;}">Multi-Swing Transient Stability of Synchronous Generators and IBR Combined Generation Systems</a>

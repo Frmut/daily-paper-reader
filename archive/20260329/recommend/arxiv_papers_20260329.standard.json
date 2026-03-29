@@ -1,0 +1,51 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-03-29T19:19:46.496789+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 1,
+    "quick_skim_target": 11,
+    "quick_selected": 1
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2603.21128v1",
+      "title": "Physics-Infused Neural MPC of a DC-DC Boost Converter with Adaptive Transient Recovery and Enhanced Dynamic Stability",
+      "abstract": "DC-DC boost converters require advanced control to ensure efficiency and stability under varying loads. Traditional model predictive control (MPC) and data-driven neural network methods face challenges such as high complexity and limited physical constraint enforcement. This paper proposes a hybrid physics-informed neural network (PINN) combined with finite control set MPC (FCS-MPC) for boost converters. The PINN embeds physical laws into neural training, providing accurate state predictions, while FCS-MPC ensures constraint satisfaction and multi-objective optimization. The method features adaptive transient recovery, explicit duty-ratio control, and enhanced dynamic stability. Experimental results on a commercial boost module demonstrate improved transient response, reduced voltage ripple, and robust operation across conduction modes. The proposed framework offers a computationally efficient, physically consistent solution for real-time control in power electronics.",
+      "authors": [
+        "Tahmin Mahmud"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY"
+      ],
+      "published": "2026-03-22T08:51:33+00:00",
+      "link": "https://arxiv.org/pdf/2603.21128v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Physics-infused neural MPC for power electronics control",
+      "llm_evidence_cn": "用于电力电子控制的物理融合神经模型预测控制",
+      "llm_evidence": "用于电力电子控制的物理融合神经模型预测控制",
+      "canonical_evidence": "用于电力电子控制的物理融合神经模型预测控制",
+      "llm_tldr_en": "Combines PINNs with FCS-MPC for DC-DC boost converter control, enhancing stability and transient recovery.",
+      "llm_tldr_cn": "将物理信息神经网络与有限控制集模型预测控制结合，用于直流升压变换器控制，增强稳定性。",
+      "llm_tldr": "将物理信息神经网络与有限控制集模型预测控制结合，用于直流升压变换器控制，增强稳定性。",
+      "llm_tags": [
+        "query:pmsm:composite"
+      ],
+      "matched_query_tag": "query:pmsm:composite",
+      "matched_query_text": "Papers central to 三相及双三相永磁同步电机相关研究检索, especially work that connects or combines: m; s; f; Permanent Magnet Synchronous Motor research; dual three-phase permanent magnet synchronous motor control and design; fault-tolerant control of multi-phase motors; recent advances in dual three phase permanent magnet synchronous motor control; fault tolerant strategies for multi phase permanent magnet synchronous motors.",
+      "matched_requirement_id": "req-composite-pmsm",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
