@@ -1,0 +1,93 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-03-30T20:04:16.972114+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 2,
+    "quick_skim_target": 11,
+    "quick_selected": 2
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2603.21428v1",
+      "title": "Active-power control strategies in grid-forming power converters to improve transient stability in power systems with 100% converter-based generation",
+      "abstract": "Grid-forming voltage source converters (GFM-VSCs) play a crucial role in the stability of power systems with large amounts of converter-based generation. Transient stability (angle stability under large disturbances) is a critical limiting factor in stressed power systems. Previous studies have proposed control strategies in GFM-VSCs to improve transient stability. These approaches typically rely on suitable current-limiting algorithms, voltage/reactive-power and active-power supplementary control strategies. This paper investigates and compares the effectiveness of three active-power control strategies in GFM-VSCs to enhance transient stability in power systems with 100 % converter-based generation: (i) a wide-area control strategy (TSP-WACS) using the centre of inertia (COI) frequency, (ii) a local transient damping method (TSP-TDM), and (iii) a novel local control strategy (TSP-L) proposed in this work. All strategies were implemented and assessed using short-circuit simulations on Kundur two-area test system with 100 % GFM-VSC generators, demonstrating critical clearing time (CCT) improvement. The TSP-WACS strategy achieves the best performance but requires a communication infrastructure, while TSP-L strategy offers a simple-but-robust alternative using local measurements, only.",
+      "authors": [
+        "Régulo E. Ávila-Martínez",
+        "Luis Rouco",
+        "Javier Renedo",
+        "Lukas Sigrist",
+        "Aurelio Garcia-Cerrada"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY"
+      ],
+      "published": "2026-03-22T22:37:41+00:00",
+      "link": "https://arxiv.org/pdf/2603.21428v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "control strategies in grid-forming power converters",
+      "llm_evidence_cn": "构网型功率变换器的控制策略",
+      "llm_evidence": "构网型功率变换器的控制策略",
+      "canonical_evidence": "构网型功率变换器的控制策略",
+      "llm_tldr_en": "Compares active-power control strategies in grid-forming converters to enhance transient stability.",
+      "llm_tldr_cn": "比较了构网型变换器中的有功功率控制策略，以增强电力系统的瞬态稳定性。",
+      "llm_tldr": "比较了构网型变换器中的有功功率控制策略，以增强电力系统的瞬态稳定性。",
+      "llm_tags": [
+        "query:pmsm:composite"
+      ],
+      "matched_query_tag": "query:pmsm:composite",
+      "matched_query_text": "Papers central to 三相及双三相永磁同步电机相关研究检索, especially work that connects or combines: m; s; f; Permanent Magnet Synchronous Motor research; dual three-phase permanent magnet synchronous motor control and design; fault-tolerant control of multi-phase motors; recent advances in dual three phase permanent magnet synchronous motor control; fault tolerant strategies for multi phase permanent magnet synchronous motors.",
+      "matched_requirement_id": "req-composite-pmsm",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2603.25982v1",
+      "title": "Data-Driven Probabilistic Fault Detection and Identification via Density Flow Matching",
+      "abstract": "Fault detection and identification (FDI) is critical for maintaining the safety and reliability of systems subject to actuator and sensor faults. In this paper, the problem of FDI for nonlinear control-affine systems under simultaneous actuator and sensor faults is studied. We model fault signatures through the evolution of the probability density flow along the trajectory and characterize detectability using the 2-Wasserstein metric. In order to introduce quantifiable guarantees for fault detectability based on system parameters and fault magnitudes, we derive upper bounds on the distributional separation between nominal and faulty dynamics. The latter is achieved through a stochastic contraction analysis of probability distributions in the 2-Wasserstein metric. A data-driven FDI method is developed by means of a conditional flow-matching scheme that learns neural vector fields governing density propagation under different fault profiles. To generalize the data-driven FDI method across continuous fault magnitudes, Gaussian bridge interpolation and Feature-wise Linear Modulation (FiLM) conditioning are incorporated. The effectiveness of our proposed method is illustrated on a spacecraft attitude control system, and its performance is compared with an augmented Extended Kalman Filter (EKF) baseline. The results confirm that trajectory-based distributional analysis provides improved discrimination between fault scenarios and enables reliable data-driven FDI with a lower false alarm rate compared with the augmented EKF.",
+      "authors": [
+        "Joshua D. Ibrahim",
+        "Mahdi Taheri",
+        "Soon-Jo Chung",
+        "Fred Y. Hadaegh"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY",
+        "eess.SP"
+      ],
+      "published": "2026-03-26T23:58:16+00:00",
+      "link": "https://arxiv.org/pdf/2603.25982v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "fault detection and identification for nonlinear control-affine systems",
+      "llm_evidence_cn": "非线性控制仿射系统的故障检测与识别",
+      "llm_evidence": "非线性控制仿射系统的故障检测与识别",
+      "canonical_evidence": "非线性控制仿射系统的故障检测与识别",
+      "llm_tldr_en": "Proposes a data-driven probabilistic method for fault detection and identification in nonlinear control systems.",
+      "llm_tldr_cn": "提出了一种用于非线性控制系统故障检测与识别的数据驱动概率方法。",
+      "llm_tldr": "提出了一种用于非线性控制系统故障检测与识别的数据驱动概率方法。",
+      "llm_tags": [
+        "query:pmsm"
+      ],
+      "matched_query_tag": "query:pmsm",
+      "matched_query_text": "fault tolerant strategies for multi phase permanent magnet synchronous motors",
+      "matched_requirement_id": "req-8",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

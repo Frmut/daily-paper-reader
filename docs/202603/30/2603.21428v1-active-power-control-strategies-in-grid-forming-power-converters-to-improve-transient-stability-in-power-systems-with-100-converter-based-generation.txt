@@ -1,0 +1,621 @@
+Title: Active-power control strategies in grid-forming power converters to improve transient stability in power systems with 100% converter-based generation
+
+URL Source: https://arxiv.org/pdf/2603.21428v1
+
+Published Time: Tue, 24 Mar 2026 01:35:47 GMT
+
+Number of Pages: 17
+
+Markdown Content:
+# Active-power control strategies in grid-forming power converters to improve transient stability in power systems with 100% converter-based generation 
+
+Régulo E. Ávila-Martínez 1,2, Luis Rouco 1,2, Javier Renedo 2, Lukas Sigrist 1,2, Aurelio Garcia-Cerrada 1,2
+
+1 Instituto de Investigación Tecnológica (IIT), Madrid, Spain. 
+
+2 ETSI ICAI, Universidad Ponti fi cia Comillas, Madrid, Spain. {regulo.avila, luis.rouco, lukas.sigrist, aurelio}@iit.comillas.edu javier.renedo@ieee.org March 24, 2026 
+
+Abstract 
+
+Grid-forming voltage source converters (GFM-VSCs) play a crucial role in the stability of power systems with large amounts of converter-based generation. Transient stability (angle stability under large disturbances) is a critical limiting factor in stressed power systems. Previous studies have proposed control strategies for GFM-VSCs to improve transient stability. These approaches typically rely on suitable current-limiting algorithms, voltage/reactive-power and active-power supplementary control strategies. This paper investigates and compares the e ff ectiveness of three active-power control strategies in GFM-VSCs to enhance transient stability in power systems with 100 % converter-based generation: (i) a wide-area control strategy (TSP-WACS) using the centre of inertia (COI) frequency, (ii) a local transient damping method (TSP-TDM), and (iii) a novel local control strategy (TSP-L) proposed in this work. All strategies were implemented and assessed using short-circuit simulations on Kundur’s two-area test system with 100% GFM-VSC generators, demonstrating critical clearing time (CCT) improvement. The TSP-WACS strategy achieves the best performance but requires a communication infrastructure, while TSP-L strategy o ff ers a simple, robust alternative using only local measurements. 
+
+Keywords: Grid-forming power converters, VSC, transient stability, active-power control strategies, WACS, center of inertia (COI), transient damping method (TDM), TSP-L. This is an unabridged draft of the following paper (submitted to 24rd Power Systems Computation Conference, Limassol, Cyprus (PSCC’2026), Electric Power Systems Research Journal, special section: VSI:PSCC 2026, under review): • R. E. Ávila-Martínez, L. Rouco, J. Renedo, L. Sigrist A. Garcia-Cerrada, "Active-power control strategies in grid-forming power converters to improve transient stability in power systems with 100% converter-based generation", submitted to the XXIV Power System Computation Conference (PSCC), Limassol, Cyprus, pp. 1-10, 2026. • ID: EPSR-D-25-06392-R1. • Internal reference: IIT-25-331WP. 1
+
+> arXiv:2603.21428v1 [eess.SY] 22 Mar 2026
+
+# 1 Introduction 
+
+Voltage Source Converters with grid-forming control (GFM-VSC) play a crucial role in the stability of power systems with large amounts of converter-based generation [1]. Traditionally, non-synchronous generation resources operate in grid-following (GFL) mode. In contrast, GFM-VSCs not only possess the capability for islanded operation but can also seamlessly connect to the main grid, contributing to the grid strength. Consequently, they must emulate the behavior of a real synchronous generator through by means of appropriate GFM-VSC self-synchronization strategies. Transient stability (angle stability under large disturbances) has traditionally been associated with the rotor-angle dynamics of synchronous machines [2, 3]. In power systems consisting solely of synchronous generators, this phenomenon is well understood and has been extensively studied. However, as the use of converter-based resources continues to increase, the concept of transient stability has gained renewed importance in power systems with high proportion of or even 100 % converter-based generation. Recent studies have shown that loss of synchronism may also occur in power systems dominated by grid-forming converters after large disturbances [4, 5]: if a GFM-VSC emulates a synchronous machine, it could also lose synchronism. Consequently, the term transient stability is now often used to describe loss-of-synchronism phenomenon in power systems with high or even 100% penetration of non-synchronous generation [6–8] and several publications have examined the impact of various control approaches and parameters on transient stability in GFM-VSC-based systems [9,10]. During the past years, several dedicated control methods in GFM-VSCs have been proposed to improve transient stability, which can be classi fi ed in the following categories: 1. GFM self-synchronization strategies: GFM strategies have an in fl uence on transient stability [11, 12] and also their parameters (i.e., emulated inertia constant, damping coe ffi cient, etc...). For example, the work in [13] proposed an increase of the emulated inertia constant when a fault occurs to prevent loss of synchronism of the GFM-VSC. Meanwhile, some studies proposed the limitation of the output frequency of the GFM-VSC [12,14,15], and the work in [16] proposed the concept of Active-Power Control (VAPC), which signi fi cantly improves transient-stability margin of GFM-VSCs. 2. Speci fi c current limiters in the GFM-VSCs: Previous work has shown that conventional vector-control current limiters (Current Saturation Algorithms, CSA-CL) jeopardize transient stability and several current limiters in GFM-VSCs have been proposed to improve transient stability [17–21]. For example, reference [17] proposed a hybrid current limiter (CSA + virtual-impedance-based current limiter) in GFM-VSCs to improve transient stability. 3. Supplementary active-power (P) control strategies in GFM-VSCs to improve transient stability [22–26]. 4. Supplementary reactive-power (Q) / voltage control strategies in GFM-VSCs to improve transient stability [27– 31]. In general, methods within the di ff erent categories above are complementary and they can be combined. This work just focuses on supplementary active-power (P) control strategies in the GFM-VSCs to improve transient stability. Traditionally, fast reduction of the mechanical active-power of synchronous machines was a very attractive alternative to improve transient stability from a theoretical point of view. However, the practical implementation was very limited, since it is only feasible in steam turbines with fast valving [32]. Since GFM-VSCs emulate synchronous machines with a control algorithm and the active-power setpoint plays the role of the emulated mechanical active power, and control of power converters can be fast, active-power control strategies in GFM-VSCs have an enormous potential to improve transient stability and they are feasible from a practical point of view. In the local active-power control strategy proposed in [22], when the GFM-VSC detects a fault, it reduces its active-power setpoint proportionally to the voltage sag, to prevent loss of synchronism. The work in [23] proposed an adaptive Active-power/frequency (P-f) droop constant to prevent loss of synchronism of the GFM-VSC. Ref. [24] proposed a supplementary P setpoint in the GFM-VSC to improve transient stability, using a proportional-integral-di ff erential (PID) controller with the local frequency deviation as input signal and with an instability-detection method. The work [25] proposes a P-control strategy in GFM-VSCs to improve transient stability, using as input signal the di ff erence between the the frequency of the centre of inertia (COI) and the output frequency of the GFM-VSC and using a PID controller. The proposed P-control strategy uses a Wide Area Control System (WACS) 2to obtain the COI frequency. This control strategy will be referred as TSP-WACS, for short. 1 The authors analyzed the impact of communication latency on the proposed strategy in [33]. However, this global measurement-based approach presents implementation challenges due to the required communication system. In contrast, the research presented in [26] proposes a supplementary P-control strategy to improve transient stability using a transient damping method (TDM) for a GFM-VSC connected to an in fi nite grid (TSP-TDM strategy, for short). The P-control method adds a proportional gain to the frequency deviation with respect to the nominal frequency, using local measurements. The TSP-TDM strategy changes its active-power set-point proportionally to its frequency deviation through a wash-out fi lter as a solution for improving transient stability. Unlike the strategy in [33], which uses global measurements of the centre of inertia to try to pull all GFM-VSC frequencies together to to converge to the COI frequency, if a fault produces the increase of the frequencies of the GFM-VSCs, the TSP-TDM control action slows down all the converters independently when they are close to or far from the faults. This means that the TSP-TDM control strategy also slows down the converters with frequency the COI frequency, jeopardising the transient stability in case of faults far from the GFM-VSC. This analysis highlights a noticeable lack of an e ff ective-but-practical local active power control strategy for GFM-VSCs to improve transient stability in multi-converter systems. While the TSP-TDM controller proposed in [26] provides a local approach, its application and e ff ectiveness in multi-converter systems remain unproven and are still questionable due to its lack of selectivity regarding fault location. Therefore, there is a need to explore e ff ective P-control strategies in GFM-VSCs to improve transient stability in in power systems with 100% converter-based generation, especially when using local measurements. In this context, this paper proposes a local active-power control strategy (TSP-L), designed to be active only for severe-enough faults in a multi-converter system with 100 % GFM-VSC-based generators. The TSP-L control will be only activated in those converters that are close to the faults and disabled in those ones far from the faults. The aim of this design is to ensure a robust performance in terms of transient stability of multi-converter systems in all scenarios. Furthermore, this work presents a comparative study of three active-power control strategies in GFM-VSCs for improving transient stability in power systems with 100% converter-based generation: the wide-area TSP-WACS [25] (which uses the Centre of Inertia frequency), the local TSP-TDM [26] (based on local frequency deviations), and the novel local TSP-L (which activates control actions based on local voltage and frequency thresholds). By conducting a thorough analysis and comparison of various P-supplementary controllers designed for GFM-VSCs, the main contributions of this paper are as follows: • Proposal of a local active-power control strategy to improve transient stability of power systems with 100% of GFM-VSC-based generation (TSP-L). • Comparison of the proposed control strategy with two existing active-power control strategies based on both global measurements (TSP-WACS) and local measurements (TSP-TDM). • Demonstration, via simulations, of the e ff ectiveness of the control approaches in signi fi cantly improving the critical clearing times of di ff erent faults. • Analysis of the impact of communication latency on the global control strategy (TSP-WACS), showing that this strategy is robust for realistic communication delays. The performance of the control strategies is demonstrated through electromagnetic transient simulation (EMT) using Kundur’s two-area test system [32] with 100% grid-forming VSC-based generation.   
+
+> 1Transient-stability-tailored active-power control strategies in GFM-VSCs will be referred as TSP in this paper.
+
+32 Grid-forming VSCs 
+
+## 2.1 Modelling and control 
+
+The equivalent circuit model for a GFM-VSC, following the established methodology in [1, 13, 34], is described in this section. As depicted in Fig. 1, the GFM-VSC-i converter is modeled as a voltage source ( ¯em,i ) connected to the rest of the system through an LC fi lter, consisting of a phase reactor ( ¯zf ,i = rf ,i + jω i Lf ,i ) and a capacitor (¯zCf ,i = −j/ (ωi Cf ,i )), and a transformer ( ¯zc,i = rc,i + jω i Lc,i ). + Rest of the 
+
+system ,m i e, ,,m i m i p q, ,,s i s i p q, ,,f i f i p q, ,,g i g i p q,g i v,f i v,f i C,f i r,f i L,c i r,c i L,s i i,g i iGFM -VSC 
+
+Figure 1: Model of a grid-forming VSC. ,
+
+> ref
+> f i
+
+v, ,
+
+> ref
+> f d i
+
+v,   
+
+> ,
+> ,1
+> VR i
+> V i
+> VR i
+> sT
+> rsT
+> −+,,g d i
+
+i0, ,
+
+> ref
+> f q i
+
+v, ,g q i i(b) Transient  
+
+> virtual resistance ,
+> ,,
+> ref VR
+> f d i
+
+v, 
+
+> ,,
+> ref VR
+> f q i
+
+v, ( ) V i C s, ,f d i v,f i iC
+
+, ( ) V i C s, ,f q i v, ,g d i i, ,g q i i 
+
+> (a) Voltage control '
+> ,,
+> ref
+> s d i
+
+i' 
+
+> ,,
+> ref
+> s q i
+
+i 
+
+> Current
+> limiter ,
+
+( ) C i C s, ,s d i i,f i iL 
+
+> ,,s q i
+
+i, ,f d i v 
+
+> (c) Current control ,,
+> ref
+> m d i
+
+e 
+
+> Max.
+> modulation
+> index ,,
+> ref
+> s d i
+
+i, ,
+
+> ref
+> s q i
+
+i, ( ) C i C s, ,f q i v, ,
+
+> ref
+> m q i
+
+e, ,m d i e, ,m q i e,dc i v1 ( )iP
+
+
+
+> −i
+
+, ,m abc i e
+
+> (d) Voltage modulation
+> VSM control ,g i
+
+p   
+
+> (e) VSM control ,
+> ,
+> ,1
+> VR i
+> V i
+> VR i
+> sT
+> rsT
+> −+,f i iC
+
+,f i iL
+
+> *
+> ,g i
+
+p
+
+Figure 2: General scheme of the control system of a grid-forming VSC. Fig. 2 displays the general control scheme for GFM-VSC-i, [13]. The scheme consist of a cascade AC voltage and current control loops operating in the d − q reference frame: (a) a voltage controller, (b) a virtual transient resistance to enhance damping during disturbances [13], (c) a current controller with current limitation, and (d) voltage modulation with modulation index limitations. Finally, (e) a Virtual Synchronous Machine (VSM) control mechanism (GFM-VSC self-synchronization strategy) [1, 13]. The GFM-VSC-i controls voltage magnitude vf ,i and frequency ωi (and, thus, the voltage angle δf ,i ) at bus fi .The angle δf ,i (rad) is imposed by the GFM-VSC VSM control (e) (Subection 2.2), aligning ¯vf ,i with the direct axis component ( d-axis) of the rotating d − q reference frame. 
+
+## 2.2 Virtual synchronous machine control (VSM) 
+
+The virtual synchronous machine (VSM) control is used as a self-synchronization mechanism in the GFM-VSC as is shown in Fig. 3 [25, 35]. It is the variant VSM - without PLL , as used in [26, 33]. The swing equation emulated by a VSM is given by: 
+
+2HGFM,i 
+
+d∆ωi
+
+dt = p∗
+
+g,i − pg,i − DGFM,i ∆ωi (1) 4where: • HGFM,i (s) is the emulated inertia constant. • DGFM,i (pu) is the proportional gain of the primary frequency response (PFR). It also plays the role of damping coe ffi cient. • ∆ωi = ωi − ω0,pu (pu), where ωi is the frequency imposed by the GFM-VSC and ω0,pu = 1 pu. • p∗ 
+
+> g,i
+
+(pu) is the active-power set-point of the GFM-VSC. • ∆pref ,T S g,i (pu) is a supplementary active-power set-point for transient stability improvement, which will be discussed in Section 3. • pg,i (pu) is the active-power injected by the GFM-VSC at the connection point. • ω0 is the nominal frequency in rad/s. i
+
+# ,g i p0, pu 
+
+# 0
+
+# s
+
+# i
+
+# 0
+
+# s
+
+# i
+
+# i
+
+# *
+
+> ,g i
+
+# p,
+
+> ,
+> ref TS
+> g i
+
+# p0
+
+> ,g i
+
+# p,
+
+# 1
+
+# 2 GFM i sH ,GFM i D
+
+Figure 3: VSM control in a GFM-VSC. Through equation (1), the GFM-VSC-i controls the frequency ωi (pu) at its connection point (bus fi ). Fig. 3 shows the angles used for the Park’s Transformation applied in the control loops (see Fig. 2). 
+
+# 3 Active-Power control strategies 
+
+It is assumed that the GFM-VSCs are connected to a transmission system (inductive network). The active-power injection of a certain GFM-VSC-i is given by: 
+
+pg,i ≃ vf ,i vg,i 
+
+xc,i 
+
+sin( δf ,i − δg,i ) (2) where vf ,i and vg,i are the voltage magnitudes at bus fi and the PCC ( gi ), respectively; xc,i is the coupling reactance; and δf ,i and δg,i are the corresponding power angles of vf ,i and vg,i .During a short-circuit event, the voltage at the connection point ( vg,i ) decreases, leading to a reduction in active power injection ( pg,i ) according to Eq. (2). This implies that the frequency of GFM-VSC-i increases, according to (1). Notice that, analogously to synchronous machines, in GFM-VSCs the active-power setpoint p∗ 
+
+> g,i
+
+in Fig. 3 and (1) plays the role of the emulated mechanical active power . Therefore, P setpoint p∗ 
+
+> g,i
+
+could be used to improve transient stability. If p∗ 
+
+> g,i
+
+decreases (increases), the frequency of GFM-VSC-i and nearby GFM-VSCs are slowed down (or accelerated, respectively). The total active-power setpoint of the GFM-VSC, p∗ 
+
+> g,i
+
+in Fig. 3, is given by: 
+
+p∗ 
+
+> g,i
+
+= p0 
+
+> g,i
+
++ ∆pref ,T S g,i (3) 5where: • p0 
+
+> g,i
+
+is a constant active-power setpoint. • ∆pref ,T S g,i is the supplementary active-power setpoint for transient stability improvement. Three active-power control strategies in GFM-VSCs to improve transient stability will be analyzed in this work: • Active-power control using a wide-area control system ( TSP-WACS ) [25] (global measurements). • Active-power control using transient damping method ( TSP-TDM ) [26] (local measurements). • A novel active-power control ( TSP-L ) strategy proposed in this work (local measurements). 
+
+## 3.1 TSP-WACS strategy [25] 
+
+Fig. 4 shows the TSP-WACS strategy proposed in [25] to improve transient stability. As this strategy involves calculating and using the frequency of the center of inertia (COI), ωCOI , frequency, a WACS is required. In a power system with 100 % GFM-based generation, the COI frequency is de fi ned as [25]: 
+
+ωCOI = 1
+
+Htot nGX
+
+> k=1
+
+HGFM,k ωk (pu), with Htot =
+
+> nG
+
+X
+
+> k=1
+
+HGFM,k . (4) The use of the COI frequency has been very useful in WACS-based supplementary controllers to improve transient stability in di ff erent contexts, such as excitation boosters in synchronous machines [36, 37] or in high voltage direct current systems based on voltage source converters (VSC-HVDC) [38], for example. i
+
+# ,
+
+# 1
+
+# 1 f i sT +,
+
+> ,
+
+## 1
+
+> W i
+> W i
+
+## sT 
+
+## sT +max 
+
+> ,g i
+
+# pi
+
+i
+
+
+
+−max 
+
+> ,g i
+
+# p− ,
+
+,
+
+ref TS 
+
+g i p,TSP i KCOI 
+
+# 
+
+Figure 4: Strategy TSP-WACS. Although in [25] the authors proposed a general scheme of TSP-WACS strategy using a PID controller, this paper will use a proportional controller (gain KT SP ,i ), since it proved to be remarkably e ff ective. In addition, this work includes blocks that are often useful in transient-stability controllers: a low-pass fi lter (with time constant 
+
+Tf ,i ), a wash-out fi lter (with time constant TW ,i ), a deadband ( ±ϵi ), and a saturator ( ±pmax g,i ). The objective of TSP-WACS strategy is to manipulate the active-power setpoint of each GFM-VSC to pull the frequencies of all converters towards the COI frequency, thereby preventing loss of synchronism among them. The control action of Fig. 4 ( ∆pref ,T S g,i ) is determined based on the deviation of the local frequency ( ωi ) of GFM-VSC-
+
+i with respect to the COI frequency ( ωCOI ). According to the emulated swing equation of the synchronization strategy (Fig. 3 and (1)), by reducing (increasing) the active-power setpoint of each GFM-VSC-i, its frequency slowed down (or accelerated). The behaviour of TSP-WACS strategy can be summarized as follows: • If the fault (short circuit) is close to GFM-VSC-i, the voltage sag is more severe, and the frequency of the GFM-VSC-i increases more, resulting in a frequency above the COI frequency ( ωi > ω COI ). Then, TSP-WACS strategy adds a negative supplementary active-power setpoint ( ∆pref ,T S g,i < 0) to slow down the frequency GFM-VSC-i.6• If the fault (short circuit) is far from GFM-VSC-i, the voltage sag is smaller, and the frequency of the GFM-VSC-i increases less than in other converters of the system, resulting in a frequency below the COI frequency (ωi < ω COI ). Then, TSP-WACS strategy adds a positive supplementary active-power setpoint ( ∆pref ,T S g,i > 0)to accelerate the frequency of the GFM-VSC-i.• In this way, control actions will pull together the frequencies of GFM-VSCs of the system. 
+
+## 3.2 TSP-TDM strategy [26] 
+
+This control strategy consists of a transient damping method in VSM proposed in [26] for transient stability improvement in GFM-VSCs connected to in fi nite grid. The input of the controller of TSP-TDM is the frequency deviation of each GFM-VSC-i, with respect to an absolute reference frequency, ∆ωi = ωi − ω0,pu . Fig. 5 shows the scheme of the TDM implemented in a GFM-VSC with VSM control. i
+
+# ,
+
+# 1
+
+# 1 f i sT +,
+
+> ,
+
+## 1
+
+> W i
+> W i
+
+## sT 
+
+## sT +max 
+
+> ,g i
+
+# pi
+
+i
+
+
+
+−max 
+
+> ,g i
+
+# p− ,
+
+,
+
+ref TS 
+
+g i p0, pu 
+
+# ,TDM i K
+
+Figure 5: Strategy TSP-TDM. The TSP-TDM control strategy consists of a gain ( KT DM,i ) and a wash-out fi lter (with a time constant of 
+
+TW ,i ). Although not discussed in [26], this work includes a saturation parameter to limit the contribution of control actions, denoted as ±∆pmax g,i , and a deadband ( ±ϵi ). A low-pass fi lter (with time constant Tf ,i ) is also considered, although the authors do not use it ( Tf ,i = 0 s), in order to produce a pure damping e ff ect. The controller takes the frequency deviation ( ∆ωi ) calculated by the VSM algorithm of the GFM-VSC as input, and its output is a supplementary active-power set point ( ∆pref ,T S g,i ). In the TSP-TDM control strategy, each GFM-VSC adds a supplementary active-power set point that is proportional to the frequency deviation, which uses only local information. This means that, if a short-circuit occurs, the frequency of the GFM-VSC ωi increases and TSP-TDM strategy adds a supplementary P setpoint ∆pref ,T S g,i < 0, slowing down the frequency of the GFM-VSC. TSP-TDM strategy improves transient stability (large disturbance), but it also produces a pure damping e ff ect on the dynamic response of the GFM-VSC (small-disturbance stability). However, in contrast to the TSP-WACS, which uses global measurements of the centre of inertia to try to pull all GFM-VSC frequencies together to join the COI frequency, if a fault increases the frequencies of the system, the TSP-TDM control action would slow down the frequencies of all the converters independently when they are close to or far from the faults. This means that the TSP-TDM control strategy also slows down the converters below the centre of inertia, which would jeopardize the transient stability in some cases. 73.3 Proposed local active-power control (TSP-L) 
+
+This section proposes a local active-power (TSP-L) control strategy applying a supplementary active-power setpoint, 
+
+∆pref ,T S g,i , to the power reference as shown in the fl owchart of Fig. 6. The detailed block diagram of TSP-L strategy is shown in Fig. 7. TSP-L strategy uses two input signals: the terminal voltage ( vg,i ) and the frequency deviation (∆ωi ) of the GFM-VSC-i. This combination of inputs is used to create a selective activation mechanism. By monitoring the local voltage and frequency, the TSP-L ensures that the supplementary active power control is only triggered when critical fault thresholds are reached. TSP-L is activated when the voltage at the connection point is lower than a certain threshold and it remains activated if the frequency di ff erence is greater than a certain threshold (vA,i , vB,i and ωthres,i ). Fault detection (hysteresis): 
+
+• If vg,i ≤ vA,i ⇒ γ1i = 1 
+
+• γ1i = 1 until vg,i > v B,i 
+
+Frequency deviation condition: 
+
+• ωi ≥ ωthres,i 
+
+• Activation: ⇒ γ2i = 1 
+
+OR TSP-L strategy Activation: 
+
+• If ∆pref,T S g,i = −γi∆pmax g,i 
+
+γ1i
+
+γ2i
+
+γi
+
+Figure 6: Activation philosophy for the TSP-L strategy. Logic circuit max 
+
+> ,g i
+
+p x,g i vi
+
+
+
+0,A i v,B i v, (pu) g i v111 , i
+
+1 , i
+
+i
+
+# ,
+
+> 2,
+> 2,
+
+( )
+
+1
+
+0 
+
+> ithres i
+> i
+> i
+
+if 
+
+else 
+
+end 
+
+ 
+
+
+
+
+
+ 
+
+=
+
+=2 , i
+
+,
+
+> ,
+> ref TS
+> g i
+
+p -11 , i
+
+i
+
+# 2 , i
+
+
+
+> OR
+> OR
+> AND
+> delay of one time step
+> Logic circuit
+
+Figure 7: Strategy TSP-L and Logic circuit for fault detection. 8The activation philosophy for the TSP-L strategy shown in Figs. 6 and 7 is as follows: • Binary variable γ1,i is set to 1 if a voltage sag is detected with an hysteresis, as shown in Fig. 7. If vg,i ≤ vA,i ,then γ1,i = 1 and remains equal to 1 until vg,i > v B,i . if a fault is not detected, then γ1,i = 0 .• Binary variable γ2,i is set to 1 if the frequency deviation of GFM-VSC-i (with respect to the nominal frequency) is greater than or equal to a certain threshold: ∆ωi ≥ ωthres,i . Otherwise, γ2,i = 0 .• The supplementary controller is activated with binary variable γi , which is the result of a logic circuit with 
+
+γ1,i and γ2,i as inputs, as shown in Fig. 7. • The supplementary active-power set point is given by: ∆pref ,T S g,i = −γi ∆pmax g,i , where ∆pmax g,i > 0 is a param-eter of the controller ( γi = 0 if the controller is deactivated and γi = 1 if the controller is activated). The logic used to activate TSP-L controller can then be summarised as follows: • The controller will be activated if a voltage sag is detected. Therefore, γ1,i will drive the activation of the controller. • Once the controller is activated, the supplementary active-power set-point is maintained if at least one of the two following conditions are satis fi ed: undervoltage ( γ1,i = 1 ) or frequency greater than or equal to the threshold ( γ2,i = 1 ). • The supplementary P setpoint is negative ( ∆pref ,T S g,i < 0), to slow down the frequency ωi of the GFM-VSC to prevent loss of synchronism. Unlike TSP-TDM, which activates the control more broadly, the key di ff erence with TSP-L lies in its activation logic, which has conditioned action rules. This ensures that the control is only activated during several-enough faults, guaranteeing that supplementary active power is applied only to the converters that require it within the multi-converter environment. 
+
+# 4 Results 
+
+This section assesses the three supplementary P-control strategies by analyzing the system’s transient stability. The analysis is performed on Kundur’s two-area test system [32], where the original synchronous machines have been replaced by 100% grid-forming VSC-based generation, as illustrated in Fig. 8. The GFM-VSCs-based generators use VSM control and maintain the same nominal apparent power (900 MVA) as the original synchronous generators. System data and GFM-VSCs parameters are detailed in the Appendix (Table 5). Simulations were conducted using average electromagnetic-type (EMT) models within the VSC_Lib tool, an open-source library based on Matlab + Simulink + SimPowerSystems [39]. 2     
+
+> 3
+> 4
+> 678910 11
+
+L7 L9   
+
+> 15
+
+GFM -VSC3 
+
+> a
+> b
+> a
+> b
+
+GFM -VSC1 
+
+GFM -VSC2 GFM -VSC4 
+
+Figure 8: Kundur’s two-area test system with 100 % GFM-VSC-based generation. 9Four cases are compared: • Base case: no supplementary controller for transient stability is implemented in the GFM-VSCs. • TSP-L: GFM-VSCs applying TSP-L strategy (Fig. 7, with parameters: vA,i = 0 .50 pu, vB,i = 0 .9 pu, ωthres,i =10 −3 pu, ∆pmax g,i = 0 .15 pu. • TSP-WACS: GFM-VSCs applying TSP-WACS strategy (Fig. 4), with parameters: KT SP ,i = 100 pu, Tf ,i = 0 .1 s, 
+
+TW ,i = 10 s, ∆pmax g,i = 0 .15 pu and ϵi = 10 −3 pu. • TSP-TDM: GFM-VSCs applying TSP-TDM strategy (Fig. 5) with parameters: KT DM,i = 100 pu, Tf ,i = 0 s, 
+
+TW ,i = 10 s, ∆pmax g,i = 0 .15 pu and ϵi = 10 −3 pu. Gain values of TSP-WACS and TSP-TDM were tuned to obtain reasonable improvements on transient stability, leading to KT SP = 100 pu (TSP-WACS) and KT DM = 100 pu (TSP-TDM). 
+
+## 4.1 Short-circuit simulation 
+
+Fault I is applied at t = 1 s and cleared after 150 ms. As shown in Fig. 9 (angle di ff erence between GFM-VSCs 1 & 3 ), GFM-VSC-based generators lose synchronism in the Base Case. However, synchronism is successfully maintained when any of the three supplementary controllers (TSP-L, TSP-TDM, and TSP-WACS) are implemented. 0 1 2 3 4 5 6
+
+time (s) 
+
+> 020 40 60 80 100 120 140 160 180
+> /f; 1 ! /f; 3 (deg)
+> Base case TSP-L TSP-WACS TSP-TDM
+
+Figure 9: Fault I cleared after 150 ms. Angle di ff erence of the GFM-VSCs applying TSP controllers. Fig. 10 shows the frequency deviations of the GFM-VSCs with respect to the COI frequency. The TSP-WACS strategy provides the most coordinated action (Fig. 11): GFM-VSCs 1 and 2 ( ωi > ω COI ) apply a negative supplemen-tary power set-point to slow down the converters, while GFM-VSCs 3 and 4 ( ωi < ω COI ) apply a positive set-point to accelerate the GFM-VSCs (Fig. 10 and 11). This coordinated control e ff ectively reduces the angle di ff erence and mitigates the risk of loss of synchronism. The TSP-L strategy, illustrated in Fig. 11, demonstrates its selective activation: the supplementary active-power set-point ( ∆pref ,T S g,i < 0) is only applied to GFM-VSCs 1 and 2 (close to the fault), and not to GFM-VSCs 3 and 4 (distant from the fault). This is the result of the activation logic (Fig. 7). In contrast, the TSP-TDM strategy reduces the active-power setpoint in all converters, using local frequency deviation from nominal frequency ( ω0,pu = 1 pu). Since all GFM-VSCs accelerate during the fault (i.e., ωi > ω 0,pu ), the TSP-TDM action decelerates all of them simultaneously ( ∆pref ,T S g,i < 0). As discussed previously, the optimal behaviour, taking TSP-WACS as a reference, would be that GFM-VSCs 3 & 4 increase their P setpoint, and not reduce it. 10 0 1 2 3 4 5 6
+
+time (s) 
+
+-0.8 -0.6 -0.4 -0.2 00.2 0.4 0.6 0.8 
+
+> !i ! !COI  (Hz)
+
+Base case TSP-L TSP-WACS TSP-TDM 
+
+GFM-VSCs 1 & 2 GFM-VSCs 3 & 4 Figure 10: Fault I cleared after 150 ms. Frequency deviations of the GFM-VSCs with respect to the frequency of the COI applying TSP controllers. 0 1 2 3 4 5 6
+
+time (s) 
+
+> -0.15 -0.1 -0.05 0
+> "P T S g; 1 (pu)
+
+Base case TSP-L TSP-WACS TSP-TDM       
+
+> 0123456
+
+time (s)       
+
+> -0.15 -0.1 -0.05 0
+> "P T S g; 2 (pu)
+> 0123456
+
+time (s)       
+
+> -0.1 -0.05 00.05 0.1
+> "P T S g; 3 (pu)
+> 0123456
+
+time (s)       
+
+> -0.1 00.1 0.2
+> "P T S g; 1 (pu)
+> 0123456
+
+time (s)       
+
+> -500 0500 1000
+> Pg; 1 (MW)
+> 0123456
+
+time (s)       
+
+> -500 0500 1000 1500
+> Pg; 2 (MW)
+> 0123456
+
+time (s)       
+
+> 400 600 800 1000
+> Pg; 3 (MW)
+> 0123456
+
+time (s) 
+
+> 400 600 800 1000
+> Pg; 4 (MW)
+
+Figure 11: Fault I cleared after 150 ms. (left) Active-power set-points and (right) active-power injections of each GFM-VSC applying TSP controllers. 11 4.2 Critical clearing times (CCTs) 
+
+The Critical Clearing Times (CCTs) for the faults described in Table 1 are presented in Table 2. All three P-supplementary control strategies (TSP-L, TSP-TDM, and TSP-WACS) signi fi cantly increase the CCTs compared to the base case. Table 1: Fault description. Short circuit close clearing at line i − j to bus Fault I 7-8a 7 Disconnect 7-8a Fault II 5-6 5 short circuit cleared (line not disconnected) Fault III 10-11 11 short circuit cleared (line not disconnected) Fault IV 8-9a 8 Disconnect 8-9a Table 2: Critical clearing times (CCTs) for TSPs. 
+
+CCT base TSP-L TSP-TDM TSP-WACS with delay (ms) case vA,i = 0 .75 pu vA,i = 0 .5 pu τ = 0 ms 50 ms 100 ms Fault I 130 300 300 230 280 270 270 Fault II 270 390 390 350 430 410 390 Fault III 220 260 260 240 320 300 270 Fault IV 420 300 420 540 1520 1420 1410 As Table 2 illustrates, the e ff ectiveness of the strategies varies by fault type. For instance, the TSP-WACS strategy yields the best performance for Fault I and Fault II. The TSP-TDM strategy also achieves good CCTs, reaching a competitive performance for Fault II. However, the TSP-L strategy, with its dependency on the voltage activation threshold ( vA,i ), shows the most robust increase in CCTs for Faults I, II, and III. The performance for Fault IV highlights a key design di ff erence. The Base Case CCT for Fault IV is notably lower, and the TSP-L strategy, when implemented with vA,i = 0 .75 pu, leads to a reduction in the CCT (from 420 ms to 300 ms, as shown in the table). This adverse e ff ect is mitigated by setting the threshold to a lower value, 
+
+vA,i = 0 .5 pu, which maintains the base case CCT of 420 ms. This demonstrates the importance of the TSP-L’s selective activation, ensuring that the control action only engages for severe faults near the converter without jeopardizing stability elsewhere. Therefore, vA,i = 0 .5 pu is adopted as the optimal setting for the TSP-L strategy. As a general rule for tuning parameter vA,i of the hysteresis characteristic of TSP-L strategy, it should be small enough in such way that the GFM-VSC only detects short circuits close to the converter and, naturally, the value of this parameter may depend on each particular power system. 
+
+## 4.3 Impact of communication latency 
+
+It is essential to analyze the in fl uence of communication latency on the performance of the TSP-WACS strategy, as it relies on a WACS. To model this, the input error signal of the supplementary controller in Fig. 4 is subjected to a communication delay ( τ): 
+
+ui = e−sτ (ωCOI − ωi ) (5) Previous studies on WACS report delays ranging from 50 to 80 ms [40]. Based on this, we analyze the TSP-WACS strategy using conservative delays of 50 ms and 100 ms. The results, presented in the last two columns of Table 2, demonstrate that the TSP-WACS strategy is highly robust against realistic communication latency. While an increase in τ naturally leads to a slight reduction in CCTs across various fault scenarios, the strategy consistently maintains the best overall performance compared to TSP-L and TSP-TDM (see Table 2 for comparison). 12 4.4 Impact of the activation of the TSP controllers in di ff erent areas. 
+
+To evaluate the impact of fault location and control selectivity, Tables 3 and 4 present the CCTs when the supple-mentary control strategies are activated only in Area 1 or Area 2, respectively. Table 3: Critical clearing times (CCTs) for TSPs. Area 1 
+
+CCT base TSP-L TSP-TDM TSP-WACS 
+
+(ms) case vA,i = 0 .5 pu KT DM,i = 100 pu KT SP ,i = 100 pu Fault I 130 300 270 230 Fault II 270 390 360 350 Fault III 220 220 220 320 Fault IV 420 420 1080 840 Table 4: Critical clearing times (CCTs) for TSPs. Area 2 
+
+CCT base TSP-L TSP-TDM TSP-WACS 
+
+(ms) case vA,i = 0 .5 pu KT DM,i = 100 pu KT SP ,i = 100 pu Fault I 130 130 0 230 Fault II 270 270 250 350 Fault III 220 260 250 610 Fault IV 420 420 0 790 In Area 1, all strategies demonstrate a clear improvement over the Base Case for faults I and II. Speci fi cally, the TSP-TDM and TSP-WACS strategies achieve substantial CCT increases for Fault IV, underscoring the potential of active power control when a fault is physically distant from the converters being controlled (Area 1 GFM-VSCs are far from Fault IV). Conversely, the TSP-L strategy, designed for selective activation, maintains the Base Case CCT for Fault IV, con fi rming that its logic successfully prevents unnecessary control action for less critical disturbances. The analysis of Area 2 (Table 4) reveals a critical drawback of the TSP-TDM strategy. While TSP-WACS consistently improves CCTs across all four fault scenarios, the TSP-L strategy is correctly inactive for Faults I, II, and IV, maintaining Base Case performance, but successfully increases the CCT for Fault III. Furthermore, the TSP-TDM strategy results in a CCT of 0 ms for Faults I and IV. A CCT of 0 ms indicates that the control action itself destabilizes the system following even a minimal fault clearance time, demonstrating limitations of TSP-TDM strategy in this multi-converter system. 
+
+## 4.5 Discussion on the use of the three active-power control strategies 
+
+The choice among the three supplementary active power controllers depends primarily on the trade-o ff between implementation complexity (cost and infrastructure) and transient-stability performance (CCTs). The TSP-L and TSP-TDM strategies utilize only local measurements, making them easier and more cost-e ff ective to implement as they avoid the need for a Wide-Area Control System (WACS) and its associated communication infrastructure. Conversely, the TSP-WACS strategy relies on global measurements, adding complexity and cost due to the required communication system, though it provides the best performance. In terms of e ff ectiveness, the TSP-WACS strategy, which references the Center of Inertia (COI) frequency, achieves the best results (CCT improvements). This is because it aligns the control action with the ideal response: applying a negative supplementary active-power setpoint ( ∆pref ,T S g,i < 0) to slow down the frequency of those GFM-VSCs with ωi > ω COI and applying a positive supplementary active-power setpoint ( ∆pref ,T S g,i > 0) to accelerate the frequency of those GFM-VSCs with ωi < ω COI . The local strategies, TSP-L and TSP-TDM, approximate this ideal action using local frequency deviations from nominal frequency. A key advantage of the novel TSP-L strategy over TSP-TDM is its selective activation mechanism. By tuning the voltage and frequency thresholds, TSP-L ensures the controller only activates for severe, nearby faults by applying a negative supplementary active-power setpoint (∆pref ,T S g,i < 0). This selectivity prevents the unnecessary intervention observed in the TSP-TDM strategy, which can adversely a ff ect CCTs for remote faults. 13 In conclusion, while the TSP-WACS strategy is superior in maximizing CCT and is robust against latency, its de-ployment is limited by communication requirements. The local TSP-TDM provides simplicity and clearly improves transient stability when the faults are close and the strategy improves the damping of the system, but lacks control selectivity. The proposed TSP-L strategy o ff ers the optimal balance, providing robust CCT improvements compa-rable to TSP-WACS for key fault types, but achieving this without any communication overhead. Therefore, TSP-L strategy is an e ff ective-but-practical choice for enhancing transient stability in systems where the implementation of a WACS is unfeasible. 
+
+# 5 Conclusions 
+
+This paper investigated three supplementary active power control (P-control) strategies in grid-forming power converters (TSP-WACS, TSP-TDM, and the novel TSP-L) to enhance the transient stability in power systems with 
+
+100% converter-based generation. A direct comparison of local versus global approaches was provided, including an analysis of TSP-WACS strategy sensitivity to communication latency and design guidelines for TSP-L strategy. The key conclusions derived from this paper are as follows: • The TSP-WACS strategy, which utilizes global measurements (COI frequency), achieved the best overall per-formance by e ff ectively coordinating the frequency of all converters, signi fi cantly increasing Critical Clearing Times (CCTs), and it proved to be robust against communication latency. • While the local TSP-TDM method improved transient stability for close faults, its non-selective action on fault location demonstrated that it could jeopardize transient stability in some cases (remote faults). • The proposed TSP-L strategy successfully overcomes the limitations of TSP-TDM by implementing an acti-vation logic based on local voltage and frequency thresholds. This selectivity ensures the controller acts only for critical faults, establishing TSP-L as a robust, communication-free alternative for CCT enhancement. • Design guidelines were provided for parameter tuning TSP-L strategy (parameters of the hysteresis charac-teristic for fault detection), to ensure its robustness. 
+
+# 6 Future work 
+
+The work presented in this paper opens several research lines: • The active-power control strategies in GFM-VSCs to improve transient stability are appropriate when the GFM-VSCs are connected to a transmission system (inductive network). An interesting research line would be control strategies in GFM-VSCs to improve transient stability in resistive AC microgrids. • In this work, an in fi nite DC-voltage source is used in the GFM-VSCs. An interesting research line would be analysing P-control strategies in GFM-VSC for transient stability taking into account the primary energy / energy storage / DC-voltage control of the GFM-VSCs, studying di ff erent technologies. • Further research on active-power control strategies in GFM-VSCs to improve transient stability, including di ff erent strategies, other methods (for example, optimization, marching learning, neural networks, etc...), analysis of larger power systems and hardware-in-the loop tests. 
+
+# 7 Acknowledgements 
+
+Work supported by the Spanish Government under a research project ref. PRE2019-088084, RETOS Project, Spain Ref. RTI2018-098865-B-C31 (MCI/AEI/FEDER, EU) and research project PID2021-125628OB-C21 (MICIU/AEI /10.13039/501100011033 and FEDER, EU); and by Madrid Regional Government under PROMINT-CM Project, Spain Ref. S2018/EMT-4366. 14 Appendix: data 
+
+Table 5 depicts the data of the GFM-VSCs. The data of the original two-area Kundur’s test system can be found in [32]. In this work the same conditions of [29] were considered: (Load at bus 7: 917 MW & 100 MVAr; load at bus 9: 1817 MW & 100 MVAr). Nominal frequency is 50 Hz. Table 5: Parameters of the GFM-VSCs. 
+
+Parameters Values 
+
+Rating VSC, DC voltage, AC voltage 900 MVA, 640 kV, 300 kV Max. modulation index ( mmax i =
+
+q 32 · Vdc,B  
+
+> 2Vac,B
+
+) 1.31 pu Series fi lter resistance ( rf ,i )/reactance ( xf ,i ) 0.005 pu / 0.15 pu Shunt fi lter capacitance ( Cf ,i ) 0.0660 pu Transformer resistance ( rc,i )/reactance ( xc,i ) 0.005 pu / 0.15 pu (900 MVA 300/220 kV transformer) Current prop./int. control ( KC,P ,i /KC,I,i ) 0.73 pu / 1.19 pu/s Voltage prop./int. control ( KV ,P ,i /KV ,I,i ) 0.52 pu / 1.16 pu/s Virtual transient resistance ( rV ,i /TV R,i ) 0.09 pu / 0.0167 s Emulated inertia ( HGFM,i ) of GFM-VSCs 1, 2, 3 & 4 4.5 s / 4.5 s / 4.175 s / 6.175 s Damping constant ( DGFM,i ) 20 pu *GFM-VSC’s rating: base values for pu 
+
+# References 
+
+[1] M. Paolone, T. Gaunt, X. Guillaud, M. Liserre, S. Meliopoulos, A. Monti, T. Van Cutsen, V. Vittal, and C. Vournas, “Fundamentals of power systems modelling in the presence of converter-interfaced generation,” 
+
+Electric Power Systems Research , vol. 189, no. 106811, pp. 1–33, 2020. [2] P. Kundur, J. Paserba, V. Ajjarapu, G. Andersson, A. Bose, C. Canizares, N. Hatziargyriou, D. Hill, A. Stankovic, C. Taylor, T. Van Cutsem, and V. Vittal, “De fi nition and classi fi cation of power system stability IEEE/CIGRE joint task force on stability terms and de fi nitions,” IEEE Transactions on Power Systems , vol. 19, no. 3, pp. 1387–1401, 2004. [3] N. Hatziargyriou, J. V. Milanovi´ c, C. Rahmann, V. Ajjarapu, C. Canizares, I. Erlich, D. Hill, I. Hiskens, I. Kamwa, B. Pal, P. Pourbeik, J. J. Sanchez-Gasca, A. Stankovi´ c, T. Van Cutsem, V. Vittal, and C. Vournas, “De fi nition and classi fi cation of power system stability - revisited and extended,” IEEE Transactions on Power Systems , vol. 36, no. 4, pp. 3271–3281, 2021. [4] Y. Wang, Y. Zhou, K. Zhou, T. Wang, Z. Xu, and X. Li, “Study on Transient Stability of Power System Con-taining Non-Synchronous Machine Sources Based on PSCAD/EMTDC,” in 2020 4th International Conference on HVDC (HVDC) , Nov. 2020, pp. 276–281. [5] H. Amano and A. Yokoyama, “Rotor Angle Stability Analysis Using Normal form Method with High Penetra-tions of Renewable Energy Sources-Energy Index for Multi-Swing Stability,” in 2018 Power Systems Computation Conference (PSCC) , Jun. 2018, pp. 1–6. [6] W. Du, K. P. Schneider, F. K. Tu ff ner, Z. Chen, and R. H. Lasseter, “Modeling of Grid-Forming Inverters for Transient Stability Simulations of an all Inverter-based Distribution System,” in 2019 IEEE Power & Energy Society Innovative Smart Grid Technologies Conference (ISGT) , Feb. 2019, pp. 1–5. [7] X. Zhao and D. Flynn, “Transient Stability Enhancement with High Shares of Grid-Following Converters in a 100% Converter Grid,” in 2020 IEEE PES Innovative Smart Grid Technologies Europe (ISGT-Europe) , Oct. 2020, pp. 594–598. 15 [8] X. He, S. Pan, and H. Geng, “Transient Stability of Hybrid Power Systems Dominated by Di ff erent Types of Grid-Forming Devices,” IEEE Transactions on Energy Conversion , vol. 37, no. 2, pp. 868–879, Jun. 2022. [9] H. Cheng, Z. Shuai, C. Shen, X. Liu, Z. Li, and Z. J. Shen, “Transient angle stability of paralleled synchronous and virtual synchronous generators in islanded microgrids,” IEEE Transactions on Power Electronics , vol. 35, no. 8, pp. 1019–1033, 2020. [10] M. Eskandari and A. V. Savkin, “On the impact of fault ride-through on transient stability of autonomous microgrids: Nonlinear analysis and solution,” IEEE Transactions on Smart Grid , vol. 12, no. 2, pp. 999 – 1010, 2021. [11] D. Pan, X. Wang, F. Liu, and R. Shi, “Transient stability of voltage-source converters with grid-forming control: A design-oriented study,” IEEE Journal of Emerging and Selected Topics in Power Electronics , vol. 8, no. 2, pp. 1019–1033, 2020. [12] R. E. Ávila Martínez, X. Guillaud, J. Renedo, L. Rouco, A. Garcia-Cerrada, and L. Sigrist, “Impact on transient stability of self-synchronisation control strategies in grid-forming power converters,” International Journal of Electrical Power & Energy Systems , vol. 174, no. 111540, pp. 1 – 18, 2026. [13] T. Qoria, E. Rokrok, A. Bruyere, B. Francois, and X. Guillaud, “A PLL-Free grid-forming control with decou-pled functionalities for high-power transmission system applications,” IEEE access , no. 106765, pp. 197 363– 197 378, 2020. [14] X. Zhao and D. Flynn, “Freezing Grid-Forming Converter Virtual Angular Speed to Enhance Transient Stability Under Current Reference Limiting,” in 2020 IEEE 21st Workshop on Control and Modeling for Power Electronics (COMPEL) , ser. ISSN: 1093-5142, Nov. 2020, pp. 1–7. [15] ——, “Grid-Forming Converter Angular Speed Freezing to Enhance Transient Stability in 100% Grid-Forming and Mixed Power Systems,” IFAC-PapersOnLine , vol. 55, no. 9, pp. 425–430, 2022. [16] K. Vatta Kkuni and G. Yang, “E ff ects of current limit for grid forming converters on transient stability: Analysis and solution,” International Journal of Electrical Power and Energy Systems , vol. 158, no. 109919, pp. 1–8, 2024. [17] T. Qoria, F. Gruson, F. Colas, X. Kestelyn, and X. Guillaud, “Current limiting algorithms and transient stability analysis of grid-forming VSCs,” Electric Power Systems Research , vol. 189, no. 106726, pp. 1–8, 2020. [18] T. Qoria, F. Gruson, F. Colas, G. Denis, T. Prevost, and X. Guillaud, “Critical clearing time determination and enhancement of grid-forming converters embedding virtual impedance as current limitation algorithm,” IEEE Journal of Emerging and Selected Topics in Power Electronics , vol. 8, no. 2, pp. 1050–1061, 2020. [19] E. Rokrok, T. Qoria, A. Bruyere, B. Francois, and X. Guillaud, “Transient stability assessment and enhance-ment of grid-forming converters embedding current reference saturation as current limiting strategy,” IEEE Transactions on Power Systems , vol. 37, no. 2, pp. 1519–1531, 2022. [20] T. Qoria, X. Wang, and R. Kadri, “Grid-forming control vsc-based including current limitation and re-synchronization functions to deal with symmetrical and asymmetrical faults,” Electric Power Systems Research ,vol. 223, no. 109647, pp. 1–7, 2023. [21] N. Baeckeland, B. Yang, and G.-S. Seo, “Transient stability-enhancing method for grid-forming inverters under current limiting,” IEEE Transactions on Power Electronics , vol. 40, no. 5, pp. 6714–6725, 2025. [22] Z. Shuai, C. Shen, X. Liu, Z. Li, and Z. J. Shen, “Transient angle stability of virtual synchronous generators using lyapunov’s direct method,” IEEE Transactions on Smart Grid , vol. 10, no. 4, pp. 4648–4661, 2019. [23] C. Collados-Rodriguez, D. Westerman Spier, M. Cheah-Mane, E. Prieto-Araujo, and O. Gomis-Bellmunt, “Preventing loss of synchronism of droop-based grid-forming converters during frequency excursions,” Inter-national Journal of Electrical Power & Energy Systems , vol. 148, no. 108989, pp. 1–8, Jun. 2023. [24] J. Yu, X. Lu, S. Xiong, Y. Xing, W. Liu, and J. Yu, “Transient Stability Enhancement of Virtual Synchronous Generators Based on Additional Frequency Control,” IEEE Journal of Emerging and Selected Topics in Power Electronics , vol. 12, no. 1, pp. 1129–1139, 2024. 16 [25] M. Choopani, S. H. Hosseinian, and B. Vahidi, “New transient stability and LVRT improvement of multi-VSG grids using the frequency of the center of inertia,” IEEE Transactions on Power Systems , vol. 35, no. 1, pp. 527–538, 2020. [26] X. Xiong, C. Wu, P. Cheng, and F. Blaabjerg, “An optimal damping design of virtual synchronous generators for transient stability enhancement,” IEEE Transactions on Power Electronics , vol. 36, no. 10, pp. 11 026–11 030, 2021. [27] X. Xiong, C. Wu, and F. Blaabjerg, “An Improved Synchronization Stability Method of Virtual Synchronous Generators Based on Frequency Feedforward on Reactive Power Control Loop,” IEEE Transactions on Power Electronics , vol. 36, no. 8, pp. 9136–9148, 2021. [28] M. Chen, D. Zhou, and F. Blaabjerg, “Enhanced Transient Angle Stability Control of Grid-Forming Converter Based on Virtual Synchronous Generator,” IEEE Transactions on Industrial Electronics , vol. 69, no. 9, pp. 9133–9144, Sep. 2022. [29] R. E. Ávila Martínez, J. Renedo, L. Rouco, A. García-Cerrada, L. Sigrist, T. Qoria, and X. Guillaud, “Fast volt-age boosters to improve transient stability of power systems with 100% of grid-forming VSC-Based generation,” 
+
+IEEE Transactions on Energy Conversion , vol. 37, no. 4, pp. 2777–2789, 2022. [30] W. Si and J. Fang, “Transient Stability Improvement of Grid-Forming Converters Through Voltage Amplitude Regulation and Reactive Power Injection,” IEEE Transactions on Power Electronics , vol. 38, no. 10, pp. 12 116– 12 125, Oct. 2023. [31] R. E. Ávila Martínez, J. Renedo, L. Rouco, A. Garcia-Cerrada, L. Sigrist, X. Guillaud, and T. Qoria, “Impact of current limiters and fast voltage boosters in grid-forming vsc-based generators on transient stability,” Electric Power Systems Research , vol. 235, no. 110753, pp. 1–11, 2024. [32] P. Kundur, Power system stability and control . McGraw Hill Education, New York, NY, USA, 1994. [33] M. Choopani, S. Hosseinain, and B. Vahidi, “A novel comprehensive method to enhance stability of multi-VSG grids,” International Journal of Electrical Power & Energy Systems , vol. 104, pp. 502–514, 2019. [34] G. S. Pereira, V. Costan, A. Bruyére, and X. Guillaud, “Simpli fi ed approach for frequency dynamics assessment of 100% power electronics-based systems,” Electric Power Systems Research , vol. 188, no. 106551, pp. 1–8, 2020. [35] S. D’Arco, J. A. Suul, and O. B. Fosso, “A Virtual Synchronous Machine implementation for distributed control of power converters in SmartGrids,” Electric Power Systems Research , vol. 122, pp. 180–197, 2015. [36] L. Diez-Maroto, L. Vanfretti, M. S. Almas, G. M. Jónsdóttir, and L. Rouco, “A WACS exploiting generator Excitation Boosters for power system transient stability enhancement,” Electric Power Systems Research , vol. 148, pp. 245–253, 2017. [37] L. Díez-Maroto, J. Renedo, L. Rouco, and F. Fernández-Bernal, “Lyapunov stability based wide area control systems for excitation boosters in synchronous generators,” IEEE Transactions on Power Systems , vol. 34, no. 1, pp. 194–204, 2019. [38] R. Eriksson, “Coordinated Control of Multiterminal DC Grid Power Injections for Improved Rotor-Angle Stability Based on Lyapunov Theory,” IEEE Transactions on Power Delivery , vol. 29, no. 4, pp. 1789–1797, 2014. [39] L2EP-LILLE, “VSC_lib: Grid forming models for Matlab/SimPowerSystem,” vol. https://github.com/l2ep-epmlab/ (accessed 08-07-2020), 2020. [40] F. Zhang, Y. Sun, L. Cheng, X. Li, J. H. Chow, and W. Zhao, “Measurement and modeling of delays in wide-area closed-loop control systems,” IEEE Transactions on Power Systems , vol. 30, no. 1, pp. 2426–2433, 2015. 17

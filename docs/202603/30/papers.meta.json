@@ -1,0 +1,37 @@
+{
+  "label": "2026-03-30",
+  "date": "2026-03-30",
+  "generated_at": "2026-03-30T20:04:47",
+  "count": 2,
+  "papers": [
+    {
+      "paper_id": "202603/30/2603.21428v1-active-power-control-strategies-in-grid-forming-power-converters-to-improve-transient-stability-in-power-systems-with-100-converter-based-generation",
+      "section": "quick",
+      "title_en": "Active-power control strategies in grid-forming power converters to improve transient stability in power systems with 100% converter-based generation",
+      "authors": "Régulo E. Ávila-Martínez, Luis Rouco, Javier Renedo, Lukas Sigrist, Aurelio Garcia-Cerrada",
+      "date": "2026-03-22",
+      "pdf": "https://arxiv.org/pdf/2603.21428v1",
+      "score": "6.0",
+      "evidence": "构网型功率变换器的控制策略",
+      "tldr": "本研究针对100%电力电子化电力系统的暂态稳定性问题，探讨了构网型电压源变流器（GFM-VSC）的有功功率控制策略。文章对比了基于惯性中心频率的广域控制（TSP-WACS）、局部暂态阻尼方法（TSP-TDM）以及提出的一种新型局部控制策略（TSP-L）。通过在Kundur两区域系统上的短路仿真验证，证明了这些策略均能显著提升临界切除时间（CCT），其中TSP-WACS性能最优，而TSP-L则在无需通信的情况下表现出良好的鲁棒性。",
+      "tags": "query:pmsm",
+      "abstract_en": "Grid-forming voltage source converters (GFM-VSCs) play a crucial role in the stability of power systems with large amounts of converter-based generation. Transient stability (angle stability under large disturbances) is a critical limiting factor in stressed power systems. Previous studies have proposed control strategies in GFM-VSCs to improve transient stability. These approaches typically rely on suitable current-limiting algorithms, voltage/reactive-power and active-power supplementary control strategies. This paper investigates and compares the effectiveness of three active-power control strategies in GFM-VSCs to enhance transient stability in power systems with 100 % converter-based generation: (i) a wide-area control strategy (TSP-WACS) using the centre of inertia (COI) frequency, (ii) a local transient damping method (TSP-TDM), and (iii) a novel local control strategy (TSP-L) proposed in this work. All strategies were implemented and assessed using short-circuit simulations on Kundur two-area test system with 100 % GFM-VSC generators, demonstrating critical clearing time (CCT) improvement. The TSP-WACS strategy achieves the best performance but requires a communication infrastructure, while TSP-L strategy offers a simple-but-robust alternative using local measurements, only.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202603/30/2603.25982v1-data-driven-probabilistic-fault-detection-and-identification-via-density-flow-matching",
+      "section": "quick",
+      "title_en": "Data-Driven Probabilistic Fault Detection and Identification via Density Flow Matching",
+      "authors": "Joshua D. Ibrahim, Mahdi Taheri, Soon-Jo Chung, Fred Y. Hadaegh",
+      "date": "2026-03-26",
+      "pdf": "https://arxiv.org/pdf/2603.25982v1",
+      "score": "6.0",
+      "evidence": "非线性控制仿射系统的故障检测与识别",
+      "tldr": "针对非线性控制系统的执行器与传感器故障诊断问题，本文提出一种基于密度流匹配（Density Flow Matching）的数据驱动概率故障检测与识别（FDI）方法。研究利用2-Wasserstein度量刻画故障可检测性，并通过随机收缩分析推导分布分离上界。该方法结合条件流匹配、高斯桥插值和FiLM技术，实现了对连续故障幅值的泛化识别。在航天器姿态控制系统上的实验表明，该方法在区分故障场景和降低误报率方面优于传统的扩展卡尔曼滤波（EKF）。",
+      "tags": "query:pmsm",
+      "abstract_en": "Fault detection and identification (FDI) is critical for maintaining the safety and reliability of systems subject to actuator and sensor faults. In this paper, the problem of FDI for nonlinear control-affine systems under simultaneous actuator and sensor faults is studied. We model fault signatures through the evolution of the probability density flow along the trajectory and characterize detectability using the 2-Wasserstein metric. In order to introduce quantifiable guarantees for fault detectability based on system parameters and fault magnitudes, we derive upper bounds on the distributional separation between nominal and faulty dynamics. The latter is achieved through a stochastic contraction analysis of probability distributions in the 2-Wasserstein metric. A data-driven FDI method is developed by means of a conditional flow-matching scheme that learns neural vector fields governing density propagation under different fault profiles. To generalize the data-driven FDI method across continuous fault magnitudes, Gaussian bridge interpolation and Feature-wise Linear Modulation (FiLM) conditioning are incorporated. The effectiveness of our proposed method is illustrated on a spacecraft attitude control system, and its performance is compared with an augmented Extended Kalman Filter (EKF) baseline. The results confirm that trajectory-based distributional analysis provides improved discrimination between fault scenarios and enables reliable data-driven FDI with a lower false alarm rate compared with the augmented EKF.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
