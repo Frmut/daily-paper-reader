@@ -1,0 +1,23 @@
+{
+  "label": "2026-03-31",
+  "date": "2026-03-31",
+  "generated_at": "2026-03-31T20:07:41",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202603/31/2603.28608v1-fault-tolerant-mpc-control-for-trajectory-tracking",
+      "section": "quick",
+      "title_en": "Fault-Tolerant MPC Control for Trajectory Tracking",
+      "authors": "David Laranjinho, Daniel Silvestre",
+      "date": "2026-03-30",
+      "pdf": "https://arxiv.org/pdf/2603.28608v1",
+      "score": "7.0",
+      "evidence": "用于轨迹跟踪的容错MPC控制",
+      "tldr": "本研究针对模型预测控制（MPC）在发生故障时性能下降的问题，提出了一种容错控制策略。该方法将主动故障识别与轨迹跟踪相结合，利用受限凸生成器（CCGs）进行集合传播的精确建模，并引入基于SVD分解的次优方案实现实时故障隔离与模型调整。该研究显著提升了MPC在动态系统故障情况下的鲁棒性与跟踪精度。",
+      "tags": "query:pmsm",
+      "abstract_en": "An MPC controller uses a model of the dynamical system to plan an optimal control strategy for a finite horizon, which makes its performance intrinsically tied to the quality of the model. When faults occur, the compromised model will degrade the performance of the MPC with this impact being dependent on the designed cost function. In this paper, we aim to devise a strategy that combines active fault identification while driving the system towards the desired trajectory. The explored approaches make use of an exact formulation of the problem in terms of set-based propagation resorting to Constrained Convex Generators (CCGs) and a suboptimal version that resorts to the SVD decomposition to achieve the active fault isolation in order to adapt the model in runtime.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

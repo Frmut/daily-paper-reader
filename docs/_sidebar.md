@@ -1,6 +1,9 @@
 * <a class="dpr-sidebar-root-link" href="#/">首页</a>
 * <a class="dpr-sidebar-root-link dpr-sidebar-noactive-link" href="javascript:void(0)" data-dpr-hash="#/tutorial/README">使用教程</a>
 * Daily Papers
+  * 2026-03-31 <!--dpr-date:20260331-->
+    * 速读区
+      * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202603/31/2603.28608v1-fault-tolerant-mpc-control-for-trajectory-tracking" data-sidebar-item="{&quot;title&quot;: &quot;Fault-Tolerant MPC Control for Trajectory Tracking&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2603.28608v1-fault-tolerant-mpc-control-for-trajectory-tracking&quot;, &quot;score&quot;: &quot;7.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;pmsm&quot;}], &quot;evidence&quot;: &quot;用于轨迹跟踪的容错MPC控制&quot;}">Fault-Tolerant MPC Control for Trajectory Tracking</a>
   * 2026-03-30 <!--dpr-date:20260330-->
     * 速读区
       * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202603/30/2603.21428v1-active-power-control-strategies-in-grid-forming-power-converters-to-improve-transient-stability-in-power-systems-with-100-converter-based-generation" data-sidebar-item="{&quot;title&quot;: &quot;Active-power control strategies in grid-forming power converters to improve transient stability in power systems with 100% converter-based generation&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2603.21428v1-active-power-control-strategies-in-grid-forming-power-converters-to-improve-transient-stability-in-power-systems-with-100-converter-based-generation&quot;, &quot;score&quot;: &quot;6.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;pmsm&quot;}], &quot;evidence&quot;: &quot;构网型功率变换器的控制策略&quot;}">Active-power control strategies in grid-forming power converters to improve transient stability in power systems with 100% converter-based generation</a>

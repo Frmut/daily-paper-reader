@@ -1,0 +1,52 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-03-31T20:07:21.445358+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 1,
+    "quick_skim_target": 11,
+    "quick_selected": 1
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2603.28608v1",
+      "title": "Fault-Tolerant MPC Control for Trajectory Tracking",
+      "abstract": "An MPC controller uses a model of the dynamical system to plan an optimal control strategy for a finite horizon, which makes its performance intrinsically tied to the quality of the model. When faults occur, the compromised model will degrade the performance of the MPC with this impact being dependent on the designed cost function. In this paper, we aim to devise a strategy that combines active fault identification while driving the system towards the desired trajectory. The explored approaches make use of an exact formulation of the problem in terms of set-based propagation resorting to Constrained Convex Generators (CCGs) and a suboptimal version that resorts to the SVD decomposition to achieve the active fault isolation in order to adapt the model in runtime.",
+      "authors": [
+        "David Laranjinho",
+        "Daniel Silvestre"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY"
+      ],
+      "published": "2026-03-30T15:57:02+00:00",
+      "link": "https://arxiv.org/pdf/2603.28608v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Fault-tolerant MPC control for trajectory tracking",
+      "llm_evidence_cn": "用于轨迹跟踪的容错MPC控制",
+      "llm_evidence": "用于轨迹跟踪的容错MPC控制",
+      "canonical_evidence": "用于轨迹跟踪的容错MPC控制",
+      "llm_tldr_en": "Develops a fault-tolerant MPC strategy combining active fault identification with trajectory tracking.",
+      "llm_tldr_cn": "开发了一种结合主动故障识别与轨迹跟踪的容错MPC策略。",
+      "llm_tldr": "开发了一种结合主动故障识别与轨迹跟踪的容错MPC策略。",
+      "llm_tags": [
+        "query:pmsm"
+      ],
+      "matched_query_tag": "query:pmsm",
+      "matched_query_text": "fault-tolerant control of multi-phase motors",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}

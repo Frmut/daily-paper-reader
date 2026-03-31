@@ -6,29 +6,26 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-03-30
-- 运行时间：2026-03-30 20:04:38 UTC
+- 最新运行日期：2026-03-31
+- 运行时间：2026-03-31 20:07:33 UTC
 - 运行状态：成功
-- 本次总论文数：2
+- 本次总论文数：1
 - 精读区：0
-- 速读区：2
+- 速读区：1
 
 ### 今日简报（AI）
-今日聚焦 100% 新能源电力系统的暂态稳定性优化及基于密度流匹配的智能故障诊断技术。
-重点探讨了构网型变流器的有功控制策略以提升电网韧性，并展示了数据驱动的概率性故障识别新方案。
-建议关注电力电子化电力系统的稳定性控制及生成式模型在工业监测中的前沿应用。
-- 详情：[/202603/30/README](/202603/30/README)
+今日聚焦轨迹跟踪任务中的容错模型预测控制（MPC）方案。
+核心结论在于通过算法优化提升系统在故障状态下的控制稳定性与可靠性。
+推荐关注自动化控制与鲁棒性设计的读者快速查阅，获取容错机制的实现灵感。
+- 详情：[/202603/31/README](/202603/31/README)
 
 ### 精读区论文标签
 - 本次无精读推荐。
 
 ### 速读区论文标签
-1. [Active-power control strategies in grid-forming power converters to improve transient stability in power systems with 100% converter-based generation](/202603/30/2603.21428v1-active-power-control-strategies-in-grid-forming-power-converters-to-improve-transient-stability-in-power-systems-with-100-converter-based-generation)  
-   标签：评分：6.0/10、query:pmsm
-   evidence：构网型功率变换器的控制策略
-2. [Data-Driven Probabilistic Fault Detection and Identification via Density Flow Matching](/202603/30/2603.25982v1-data-driven-probabilistic-fault-detection-and-identification-via-density-flow-matching)  
-   标签：评分：6.0/10、query:pmsm
-   evidence：非线性控制仿射系统的故障检测与识别
+1. [Fault-Tolerant MPC Control for Trajectory Tracking](/202603/31/2603.28608v1-fault-tolerant-mpc-control-for-trajectory-tracking)  
+   标签：评分：7.0/10、query:pmsm
+   evidence：用于轨迹跟踪的容错MPC控制
 
 
 <div class="dpr-home-promo-card">

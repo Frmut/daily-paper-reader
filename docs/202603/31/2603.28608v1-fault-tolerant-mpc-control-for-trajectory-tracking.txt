@@ -1,0 +1,741 @@
+Title: Fault-Tolerant MPC Control for Trajectory Tracking
+
+URL Source: https://arxiv.org/pdf/2603.28608v1
+
+Published Time: Tue, 31 Mar 2026 02:20:47 GMT
+
+Number of Pages: 6
+
+Markdown Content:
+> IEEE CONTROL SYSTEMS LETTERS, VOL. XX, NO. XX, XXXX 2017 1
+
+# Fault-Tolerant MPC Control for Trajectory Tracking 
+
+David Laranjinho Daniel Silvestre 
+
+Abstract — An MPC controller uses a model of the dy-namical system to plan an optimal control strategy for a finite horizon, which makes its performance intrinsically tied to the quality of the model. When faults occur, the compromised model will degrade the performance of the MPC with this impact being dependent on the designed cost function. In this paper, we aim to devise a strategy that combines active fault identification while driving the system towards the desired trajectory. The explored ap-proaches make use of an exact formulation of the problem in terms of set-based propagation resorting to Constrained Convex Generators (CCGs) and a suboptimal version that resorts to the SVD decomposition to achieve the active fault isolation in order to adapt the model in runtime. 
+
+Index Terms — Fault-tolerant Control, reachability analy-sis, Singular Value Decomposition. 
+
+I. I NTRODUCTION 
+
+The MPC controller is an optimal control strategy that solves an optimization problem for a given horizon with a known model for the system. If the model is incorrect, the mismatch between the model and the plant will degrade the performance as the prediction in the horizon will not hold in practice. In the presence of faults, the control strategy should detect the model change while still attempting to drive towards the desired trajectory point. Within the field of the Aerospace industry, many applications can be described by nonlinear models with the nonlinear terms involving parameters like the angular velocity or inertia and driven by thrusters that are characterized by a positive input [1]. With that in mind, we will focus on Fault-tolerant MPC applied to uncertain Linear Parameter Varying (LPV) systems where the control action is positive, which can model from quadrotors to spacecraft. A related concept to the considered setup in this paper is the theory of positive systems where states and outputs remain non-negative for all time whenever the initial con-ditions and inputs are non-negative. In the linear case, this property is guaranteed when the dynamics matrix is Metzler with nonnegative input, output, and feed through matrices. Positive systems model processes where negative values have 
+
+> David Laranjinho and Daniel Silvestre are with the School of Science and Technology, NOVA University of Lisbon, 2829-516 Caparica, Por-tugal, also with CTS - Centro de Tecnologia e Sistemas part of LASI, 2829-516 Caparica. D. Silvestre is also with the Institute for Systems and Robotics, Instituto Superior T ´ ecnico, University of Lisbon, 1049-001 Lisbon, Portugal (e-mail: dsilvestre@fct.unl.pt). The work from D. Silvestre was funded by FCT – Fundac ¸ ˜ ao para a Ci ˆ encia e a Tecnologia through CTS - Centro de Tecnologia e Sistemas/UNINOVA/FCT/NOVA with reference UID/0066/2025.
+
+no physical meaning and have simpler stability analysis, performance evaluation, and controller design. For example, stability can often be certified using linear rather than quadratic Lyapunov functions, and optimization-based methods such as model predictive control benefit from reduced computational complexity. In this paper, we consider only that the control action is non-negative with no further assumptions. There are two different approaches when it comes to the design of Fault Detection and Isolation (FDI): i) model-based and ii) data-driven. Beginning with model-based FDI, first introduced in 1971 and studied ever since [2] [3] [4], this approach is based on estimating the residuals by designing an observer that estimates the output of the plant and monitor its difference against the acquired measurements. We can then find a fault and isolate it by calculating the residue between the output and the estimated output. Examples like constructing a bank of Kalman Filters [5], H∞ filters in linear [6] and non linear [7] cases as well as Sliding Mode Observers (SMO) [8] have all been considered in the literature. This concept can also be considered when the observers produce sets [9] to isolate actuator faults [10], or for the case of multiple controllers [11] and even in a distributed setting [12]. The second approach is data-driven, where it is not required the plant description and FDI is accomplished by analyzing the previous outputs of the system either with regression, an Artificial Intelligence model, time/frequency analysis, Singular Value Decomposition (SVD) [13], among others. The main focus of these methods is detecting a general trend in the past input-output relation to detect an anomaly in the present input-output relation. A recent method that makes sole use of the input-output relation in order to perform FDI on a system, uses a SVD approach on a matrix that encompasses the time responses arranged into a Henkel matrix, which is equivalent to multiplying the observability and controllability matrices together [14]. Given that some faults might not sufficiently excite the output measurements, active FDI improves on this issue by injecting specific inputs to get more information of the system, with the disadvantage of temporarily reducing system performance. When resorting to set-based FDI, the residual logic is replaced by the idea of separating the reachable sets of the various models. One such approach to LTI systems makes use of the gain of a Luenberger observer to create the separation [15]. This introduces some conservatism as it uses an observer that adds some regions through the Minkowski operator to the original set and is only applicable to systems without  
+
+> arXiv:2603.28608v1 [eess.SY] 30 Mar 2026 2IEEE CONTROL SYSTEMS LETTERS, VOL. XX, NO. XX, XXXX 2017
+
+uncertainty, making it undesirable for nonlinear systems that can be modeled by an LPV. The authors of [16] introduced the idea of constructing sets representing all possible combinations of modes and control actions, given bounded uncertainty in a high-dimensional space comprised of the states and control actions throughout the entire horizon. The next step involves extracting the subspace of this set that contains the intersection of the modes. The main disadvantage is the high computational cost given by vertex enumeration or Fourier Motzkin for the exact projection associated with retrieving the control action subspace. In a similar direction, [17] designs fault-tolerant controllers for systems with LPV models and unknown bounded uncertainty. The paper in [18] still resorted to the active identification by separating sets while considering Gaussian noise represented by the confidence ellipsoids for use cases with LTI systems. In the literature of set-based estimation, it has recently been introduced the concept of Constrained Convex Gener-ators (CCG) [19] arising as a generalization of Constraint Zonotopes (CZ). Since CCGs can represent both polytopes and ellipsoids, they are better suited to model cases with energy constraints arising from physical quantities like veloc-ity (ellipsoids) and use polytopes to represent limit bounds on the sensors. Moreover, it was proved in [20] that CCGs admit an optimal representation for the convex hull operation, which will greatly reduce the computational complexity for the broad family of uncertain LPVs. Therefore, the main objective in this paper is to generalize the concept of active FDI in [16] to handle energy-like constraints and avoid the representation using polytopes in CZ and H-representations. By representing the sets with CCGs, and since these have an optimal representation both in accuracy and data structure size for the convex hull operation (see the exact expression in [20] and a result highlighting the growth when using CZs in [21]), we are able to outperform the state-of-the-art both in terms of accuracy and computational complexity. We also present a sub-optimal approach based on the SVD that further reduces the computational time and memory footprint for cases where the exact representation might not be needed. 
+
+Notation : Throughout this paper, matrices are denoted by capital letters while vectors are lower case letters, with the distiction that u will be used to represent the control sequence from k = 0 to k = N while uk is used to represent one control action at time k. The transpose of a matrix A is denoted by A⊺.We will use the notation B(θ) = Conv 
+
+S 
+
+> v∈vertex(Θ)
+
+B(v)
+
+
+
+to denote the polytopic set of the matrices generated by the uncertain vector θ and similarly for the A matrix. The controllability matrix is given by 
+
+CN = B AB A2B · · · AN −1B (1) for matrices A, B representing the dynamics and input matri-ces. We will also make use of tuples of matrices and vectors for a shorthand notation of sets described by those values like in Z = ( Gz , c z , A z , b z , ξ z ).
+
+II. P ROBLEM FORMULATION 
+
+In this paper, we consider a dynamical system that can be described by the model 
+
+xk+1 = A(θk)xk + B(θk)uk + r(θk) + E(θk)wk,yk = C(θk)xk + s(θk) + F (θk)vk. (2) where x ∈ Rnx , u ∈ Rnu 
+
+> +
+
+and y ∈ Rny represent the state, input, and output signal of the system, respectively. Additionally, w ∈ Rnw is the disturbance of the process and 
+
+v ∈ Rnv the measurement noise. The values r and s are additive bias to the actuator and sensor, whereas θk contains the values of the parameters for the LPV at time k.In order to formulate the problem of active FDI using a set-based approach, we require a formal definition of distin-guishability for linear systems that was given in [22]. 
+
+Definition (Input Distinguishability): Given T > 0, let U
+
+be a set describing all possible values of u for the horizon T .
+
+We say that systems S1 and S2 with models following (2) are 
+
+input distinguishable on [0 , T ], if, for any non-zero 
+
+(x(1) 0 , x (2) 0 , u) ∈ Rn × Rn × U (3) 
+
+the outputs y(1)  
+
+> k
+
+and y(2)  
+
+> k
+
+can not be identical to each other on [0 , T ] regardless of the values of the initial conditions 
+
+x(1) 0 , x (2) 0 , respectively for systems S1 and S2.Notice that even though the input distinguishability is theo-retical, we can construct a set encoding all possible values for the signals for which the two systems are distinguishable as was done in [23] using the concept of Set-Valued Observers (SVOs) that consists in storing this relationship as a polytope with a vector containing all the signals. Following the concept of distinguishability, fault detection corresponds to checking if the reachable sets for the nominal and potential faulty models do not intersect. This would mean that xk violates the reachable set for the nominal model computed from prior information, i.e., 
+
+xk /∈ X k ⇒ Fault Detected . (4) In a similar fashion, fault isolation extends this concept to multiple sets by having a bank of observers each for a particular faulty model. Therefore, the problem addressed in this paper is the design of the actuation signal uk such that the sets for the faulty and nominal models do not intersect while attempting to track a reference. For simplicity of exposition, we will be denoting ˜x(1)  
+
+> k
+
+= x(1)  
+
+> k
+
+− ¯x for some reference ¯x.Therefore, the optimization problem being tackled corresponds to 
+
+min   
+
+> {uk+i}N−1
+> i=0
+> N−1
+
+X
+
+> i=0
+
+ ˜x(1) ⊺ 
+
+> k+i
+
+Q˜x(1)  
+
+> k+i
+
++ u⊺
+
+> k+i
+
+R1uk+i+
+
+∥R2(uk+i+1 − uk+i)∥2 + ˜ x(1) ⊺ 
+
+> k+N
+
+P ˜x(1) 
+
+> k+N
+
+s.t. x(1)  
+
+> k+i+1
+
+satisfies (2) , i = 0 , . . . , N − 1,x(1)  
+
+> k+N
+
+∈ X (1)  
+
+> f
+
+, uk+i ∈ U , i = 0 , . . . , N − 1,
+
+X (1)  
+
+> k+N
+
+∩ X (2)  
+
+> k+N
+
+= ∅,
+
+where the sets X (1)  
+
+> k+N
+
+and X (2)  
+
+> k+N
+
+are built for the nominal and faulty model in consideration, respectively. As soon as a AUTHOR et al. : PREPARATION OF PAPERS FOR TEXTSCIEEE CONTROL SYSTEMS LETTERS (NOVEMBER 2021) 3
+
+fault is detected (i.e., X (1)  
+
+> k
+
+is empty for some time instant k), the new model being considered with be the faulty one and the same problem stated above can be solved with different models for a more accurate isolation or detect recovery. 
+
+III. O PTIMAL SET SEPARATION WITH CCG 
+
+Before introducing the solution to the active FDI, we recover the definition of a CCG and also the main operations with closed-form expression that can be found in [19]. 
+
+Definition 1 (Constrained Convex Generators): AConstrained Convex Generator (CCG) Z ⊂ Rn is defined by the tuple (G, c, A, b, C) with G ∈ Rn×ng , c ∈ Rn,
+
+A ∈ Rnc×ng , b ∈ Rnc , and C := {C 1, C2, · · · , Cnp } such that: 
+
+Z = {Gξ + c : Aξ = b, ξ ∈ C 1 × · · · × C np }. (5) 
+
+Proposition 1: Consider three Constrained Convex Gener-ators (CCGs) as in Definition 1:  
+
+> •
+
+Z = ( Gz , c z , A z , b z , Cz ) ⊂ Rn; 
+
+> •
+
+W = ( Gw, c w, A w, b w, Cw) ⊂ Rn; 
+
+> •
+
+Y = ( Gy , c y , A y , b y , Cy ) ⊂ Rm;and a matrix R ∈ Rm×n and a vector t ∈ Rm. The three set operations are defined as: 
+
+RZ + t = ( RG z , Rc z + t, A z , b z , Cz ) (6) 
+
+Z⊕W =
+
+Gz Gw
+
+ , c z + cw,
+
+Az 00 Aw
+
+
+
+,
+
+bz
+
+bw
+
+
+
+, {Cz , Cw}
+
+
+
+(7)                  
+
+> Z ∩ RY=
+> Gz0, c z,
+> 
+> Az00Ay
+> RG z−Gy
+> ,
+> 
+> bz
+> by
+> cy−Rc z
+> ,{Cz,Cy}
+> .
+
+(8) Since the optimization associated with the MPC formula-tion requires building the reachable sets based on available dynamical equations, we start by considering the definition of reachable set 
+
+RN =
+
+n
+
+[yk+N , u k, . . . , u k+N −1]
+
+xk+i+1 = A(θk+i)xk+i + B(θk+i)uk+i + r(θk+i)+ 
+
+E(θk+i)wk+i,yk+i = C(θk+i)xk+i + s(θk+i) + F (θk+i)vk+i
+
+x0 ∈ X 0, u k+i ∈ U , w k+i ∈ W , v k+i ∈ V 
+
+i = 0 , . . . , N − 1
+
+o
+
+.
+
+(9) From the definition of reachable set, we can take the scheduling vector θk to be equal to a vertex of the set of dynamics matrices, apply the formulas in Proposition 1 to replace vector operations with that of sets, and then perform the convex hull over all sets produced for each vertex. Since the typical MPC problem minimizes a quadratic cost function corresponding to the system energy, it is sufficient to consider the boundary of the indistinguishable region, rather than computing the full complement. This significantly improves computational efficiency as the problem reduces to finding the boundary of a set in RnuN , rather than enumerating vertices in the full (nx +nu)N space, as in [16]. Moreover, as we have seen from the definition of set operations for CCGs, these have closed-form expressions for all the steps required to build the reachable set. Therefore, the proposed technique in this paper is to build the reachable sets for the LPV model and enforce its separation with the same set with a fault present. Our approach is summarized in Algorithm 1. 
+
+Algorithm 1: Optimal Separation with CCG 
+
+Input: Initial set X0, noise set V, disturbance set W,scheduling polytope Θ, and feasible input set 
+
+U, weight matrix for control action energy R1
+
+and variation R2, list of modes M , regulation factor γ
+
+Output: control sequence for FDI u⋆
+
+Initialize reachable set collection R ← ∅ 
+
+Initialize indistinguishable set collection I ← ∅ 
+
+Compute the subsets of carnality 2 P2 ←  M
+
+> 2
+
+
+
+foreach m ∈ M do foreach θ ∈ Θ do 
+
+Compute reachable set Rmθ in extended state-control space 
+
+Rm ← Convex Hull( Rm, Rmθ ); 
+
+foreach i, j ∈ P2 do 
+
+Ii,j ← Intersection( Ri, Rj )
+
+Ii,j ← Project Ii,j onto sub-space UI ← Convex Hull( I, Ii,j )
+
+u⋆ ← arg min u∈U\I γ u⊺R1u + (1 − γ) ∥R2u∥22
+
+From the pseudo-code in Algorithm 1, it becomes clear that two additional operations are required for the proposed FDI sets, namely i) the product of sets required for the product between the polytopic set of the input matrix and the set describing all possible control actions; ii) the computations in state-control space. In the remainder of this section, we provide the details for these two operations. 
+
+A. Multiplication of Sets 
+
+In the construction of the reachable set, we will need the product between the set resulting from the convex hull of the controllability matrices under any scheduling vector value with the set of feasible inputs. In mathematical terms, this operation arises from the product B(θ)U where both B(θ) and U are sets. In this paper, we adopt a construction similar to the convex hull operation for CCGs and handle each entry α following 
+
+B(θ)Uα = ( GB ξB + cB )uα
+
+= GB ξB uα + cB (Guα ξu + cuα )= GB ξB Guα ξuα + GB ξB cuα + cB Guξu + cB cuα
+
+(10) The first term of the expression is nonlinear, as it involves the product of two generators. Consequently, it cannot be implemented directly within the canonical CCG format. How-ever, by introducing norm cone constraints this is made pos-sible. More precisely, instead of computing the bilinear term 4 IEEE CONTROL SYSTEMS LETTERS, VOL. XX, NO. XX, XXXX 2017 
+
+explicitly, we introduce an auxiliary generator that bounds the interaction term. By making || ξB || ≤ Guα ξuα + cuα we have made it so the generator is proportional to the amount we want to multiply, leading to 
+
+xu
+
+
+
+=
+
+GB Guα cB
+
+0 Guα
+
+  ξB
+
+ξuα
+
+
+
++
+
+cuα cB
+
+cuα
+
+
+
+(11) 
+
+∥ξB ∥ ≤ Guα ξuα + cuα , (12) where the generator set in (12) can be used directly in the CCG latent space. 
+
+B. Reachable Set in State-Control Space 
+
+In order to write the distinguishable space, we require encoding the relationship between x and u directly by lifting the set description to a higher dimension. For an easier notation, we present the steps for an LTI to remove the need for the dependence of the scheduling vector, which can be readily generalized once we take the convex hull of all such sets. We start by writing 
+
+xN = AN x0 + 
+
+> N−1
+
+X
+
+> k=0
+
+AN −k−1Bu k (13) for which, if we have the initial condition and input described by CCGs of the form X0 = ( Gx, c x, A x, b x, ξ x) and U =(Gu, c u, A u, b u, ξ u), will result in 
+
+XN = AN (Gx ξx + cx) + CN (Gu ξu + cu) (14) 
+
+= AN Gx CN Gu
+
+ ξx
+
+ξu
+
+
+
++ AN cx + CN cu,
+
+meaning 
+
+XN =
+
+ AN Gx CN Gu
+
+0 Gu
+
+
+
+,
+
+AN cx + CN cu
+
+cu
+
+
+
+,
+
+Ax 00 Au
+
+
+
+,
+
+bx
+
+bu
+
+ 
+
+.
+
+In the LPV case, the linear map of the matrix power applied to the initial set AN X0 will be replaced by a N -th prod-uct of all dynamics matrices for each time step AN . This formulation provides sufficient flexibility to accommodate additional constraints, such as those involving the ℓ2-norm, which frequently arise in the context of radial measures or energy-based constraints. 
+
+IV. S ET SEPARATION BASED ON SINGULAR VALUE 
+
+DECOMPOSITION 
+
+In the previous section, we proposed to write the con-straints for the fault-tolerant controller as the condition for distinguishability and resorted to its representation through CCGs. However, the projection part to select the boundary still increases the computing time. In this section, we proposed a suboptimal approach of using the direction of maximum control authority to perform the separation of the nominal and faulty reachable sets. The loss of optimality arises from the fact that the maximum controllable direction can also amplify the effect of the uncertainties. Formally, we are searching for a direction such that 
+
+max 
+
+> ∥u∥22≤1
+
+∥x(1)  
+
+> N
+
+− x(2)  
+
+> N
+
+∥22
+
+In order to avoid the aforementioned problem, we will in-troduce a change of coordinates to account for non-symmetric sets using the inverse of the shape matrix. Since the generator space is typically of higher dimension in comparison with the state-control space, we can compute an over-approximation of G by a square generator matrix Φ(j) ∈ Rnx×nx through order reduction for the j-th mode. We can perform the transformation and solve the related problem 
+
+max 
+
+> ∥u∥22≤1
+
+∥(Φ (1) )−1x(1)  
+
+> N
+
+− (Φ (2) )−1x(2)  
+
+> N
+
+∥22 (15) 
+
+⇐⇒ max 
+
+> ∥u∥22≤1
+
+(Φ (1) )−1(Φ (1) x(1) 0 + C(1)  
+
+> N
+
+u)−
+
+(Φ (2) )−1(Φ (2) x(2) 0 + C(2)  
+
+> N
+
+u) 22
+
+(16) which since both models will have the same initial state value can be simplified further to 
+
+max 
+
+> || u|| 22≤1
+
+|| ((Φ (1) )−1C(1)  
+
+> N
+
+− (Φ (2) )−1C(2)  
+
+> N
+
+)u|| 22.
+
+Let V = (Φ (1) )−1C(1)  
+
+> N
+
+− (Φ (2) )−1C(2)  
+
+> N
+
+, then the problem corresponds to the maximization of a square function given as 
+
+max 
+
+> || u|| 22≤1
+
+|| V u|| 22 = max 
+
+> || u|| 22≤1
+
+u⊺V ⊺V u
+
+By the spectral theorem, we know that a symmetric matrix has an orthonormal basis given by its eigenvectors. We can decompose V ⊺V as QΛQ⊺, where Q is an orthogonal matrix whose columns are the eigenvectors of V ⊺V , and Λ is a diag-onal matrix with the eigenvalues. Since Q is an orthonormal eigen-basis, we can express any vector as u = Pni=1 αiqi,where αi are the weights, and qi are the eigenvectors of V .The unit norm for u can be simplified to the sum of the squares of the weights is one, leading to 
+
+max Pni=1 α2 
+
+> i=1
+
+u⊺V ⊺V u = max Pni=1 α2 
+
+> i=1
+> n
+
+X
+
+> i=1
+> n
+
+X
+
+> j=1
+
+αiαj q⊺ 
+
+> i
+
+V ⊺V q j
+
+(17) which since the eigenvectors form an orthogonal space, the inner product of two distinct eigenvectors is zero, leading to the expression being maximized to be 
+
+> n
+
+X
+
+> i=1
+
+α2 
+
+> i
+
+q⊺ 
+
+> i
+
+V ⊺V q i =
+
+> n
+
+X
+
+> i=1
+
+α2 
+
+> i
+
+λiq⊺ 
+
+> i
+
+qi =
+
+> n
+
+X
+
+> i=1
+
+α2 
+
+> i
+
+λi,
+
+where we used the facts V ⊺V q i = λiqi and that the product of an orthonormal vector with itself is the unity. Therefore, we are maximizing the weighted sum of the eigenvalues λi under a unit norm constraint on the factors. The solution corresponds to set weight one on the largest eigenvalue. The direction can be retrieved from the SVD of 
+
+V , where the right singular vector associated with the largest singular value defines the direction of maximal separation. For LPV systems, this procedure must be performed iteratively since the actuation can enlarge the reachable set due to the uncertain components and create overlap. Accordingly, the separation direction and required magnitude are recomputed at each iteration until the process converges within a tolerance. AUTHOR et al. : PREPARATION OF PAPERS FOR TEXTSCIEEE CONTROL SYSTEMS LETTERS (NOVEMBER 2021) 5
+
+V. S IMULATIONS 
+
+To test our approach, we start with an LPV model for a hovering drone, 
+
+˙p = v, m ˙v = R(ϕ, θ, ψ )
+
+ 00
+
+T
+
+ −
+
+ 00
+
+mg 
+
+ ,
+
+˙R = RS (ω), J ˙ω = τ − S(ω) × (Jω ),
+
+where p is the position, v is the velocity of a m = 1Kg 
+
+quadrotor. The rotation matrix R accounts for the attitude, g =9.81m /s2, ω is the angular velcity, S(ω) is the skew matrix and J is the inertia matrix with Iϕ = 0 .02Kg · m2, Iθ =0.02Kg · m2, and sampling time Td = 0 .2s . The uncertainty regarding the initial state X0 = x ∈ R10 ∥x∥∞ ≤ 0.1 ,the disturbances are contained in W = w ∈ R10 ∥w −
+
+Td g e6∥2 ≤ 0.1 , where e6 is the canonical vector with 1 in the 6th entry, and the scheduling vector assumes a maximum error of the yaw angle of 20 ◦.After a forward Euler discretization and removing the altitude components, we get the LPV: 
+
+A(θ) = I10 + Td
+
+
+
+0 1 0 0 0 0 0 0 0 0
+
+−gθ 1 0 0 0 0 0 0 0 0 00 0 0 1 0 0 0 0 0 00 0 −gθ 2 0 0 0 0 0 0 00 0 0 0 0 1 0 0 0 00 0 0 0 0 0 0 0 0 00 0 0 0 0 0 0 1 0 00 0 1 
+
+> m
+
+θ2 0 0 0 0 0 0 00 0 0 0 0 0 0 0 0 1
+
+− 1 
+
+> m
+
+θ1 0 0 0 0 0 0 0 0 0
+
+
+
+B(i)(θ) = Td
+
+
+
+0 0 0 
+
+> 1
+> Iϕ
+
+0 00 0 00 1 
+
+> Iθ
+
+00 0 00 0 f (i) 
+
+> m
+
+cos( θ1) cos( θ2)0 0 00 0 1 
+
+> m
+
+sin( θ1)0 0 00 0 − 1 
+
+> m
+
+sin( θ2)
+
+
+
+C =
+
+
+
+0 0 0 0 1 0 0 0 0 00 0 0 0 0 0 1 0 0 00 0 0 0 0 0 0 0 1 0
+
+ ,
+
+where B(i) translates the two possible modes with f (1) = 1 
+
+and f (2) = 0 .5. The control actions for the roll and pitch torque were assumed in [0 , 1] and the thrust in [0 , 2] . Using the CCG approach with the cost function 
+
+min f (u) = u24 +
+
+> 3
+
+X
+
+> k=1
+
+h
+
+u2 
+
+> k
+
++  uk+1 − uk
+
+2i
+
+we obtain u⋆ = 0, 0, 1.537 , 0, 0, 0.965 , 0, 0, 0.369 , 0, 0, 0.052 ⊺
+
+with the reachable sets being depicted in Figure 1. For the SVD based approach, the com-puted solution is more inefficient with u⋆ =0, 0, 1.6036 , 0, 0, 1.0690 , 0, 0, 0.5345 , 0, 0, 0⊺ but the    
+
+> Fig. 1. Reachable sets using the CCG propagation for a horizon of
+> N= 4 projected on the position coordinates.
+
+method still allows for an active fault detection as can be seen in Figure 2.    
+
+> Fig. 2. Reachable sets using the SVD method for a horizon of N= 4
+> projected on the position coordinates.
+
+In order to compare against the state-of-the-art in [16], we consider a model for a vehicle with decoupled axis and unknown coefficients of friction linear with velocity while driving in the ground. In this scenario, the parameters are 
+
+Θx = [0 .5, 0.8] , Θu = [0 .7, 1] , Ts = 0 .5s, and the maximum drag D = 0 .6 where Θ is the scheduling vector for the states and control actions. The model matrices are 
+
+A1(θ) = 
+
+1 − D θ T s 00 1 − D θ T s
+
+
+
+B1(θ) = 
+
+Tsθ 00 Tsθ
+
+
+
+C1 = I2 = C2 A2(θ) = A1(θ) B1(θ) = 
+
+0.8Tsθ 00 0.4Tsθ
+
+
+
+.
+
+The sets X , V and F all correspond to an ℓ2 norm ball of radius 0.1 and a cost function of 
+
+min f (u) = u23 +
+
+> 2
+
+X
+
+> k=1
+
+h
+
+u2 
+
+> k
+
++  uk+1 − uk
+
+2i         
+
+> TABLE I COMPARISON BETWEEN OUR ALGORITHM AND H-REP ALGORITHM
+> Proposed Algorithm H-rep Algorithm [16] Time 53 sec 387 sec Cost 11.5632 19.9649
+
+Using the CCG method resulted in u⋆ =0, 2.7253 , 0, 1.7442 , 0, 1.0458 ⊺ for the proposed algorithm 6 IEEE CONTROL SYSTEMS LETTERS, VOL. XX, NO. XX, XXXX 2017 
+
+with a cost of 11 .56 whereas the method in [16] resulted in 
+
+u⋆ = 0, 1.3778 , 0, 2.2940 , 0, 3.5844 ⊺ with a cost of 19.96 as shown in Table I. Since vertex enumeration in the [16] is computationally expensive, we employed a ray-shooting method to sample the boundary of the set. For this approach, the number of points required is typically on the order of 
+
+2m + 2 m for a set in Rm with the control-action space with m = 18 , which would require 262,180 points to accurately recover the boundary. Sampling the full range at this resolution is computationally prohibitive, so we limited the number of points to 2,000 which still takes 387 s. In comparison, the proposed method took 53 s because it only samples the boundary at the final step in a 6-dimensional space (we used 484 rays). Moreover, since in [16] only allows polytopes, improving the accuracy would result in a larger dimension with the additional conservatism shown in the dark regions around the set in Figure 3. 
+
+Fig. 3. Reachable set propagation using the method in [16] that uses 
+
+H-rep polytopes for a horizon of N = 3 .
+
+Fig. 4. Reachable set propagation using the proposed CCG method for a horizon of N = 3 .
+
+VI. C ONCLUSION 
+
+While the approaches presented in this document provide a solid foundation for fault detection and isolation, there are areas for future improvement. One key aspect is the optimization of the new CCG operations, as well as a better way to obtain the boundary after intersection as that is the most expensive step in the algorithm. Although the current method to get the boundary of a set is effective, if improved could benefit cases where the MPC is not being used for guidance but also for the lower level controller with a shorter sampling time. 
+
+REFERENCES 
+
+[1] P. Taborda, H. Matias, D. Silvestre, and P. Lourenc ¸o, “Convex MPC and Thrust Allocation With Deadband for Spacecraft Rendezvous,” IEEE Control Systems Letters , vol. 8, pp. 1132–1137, 2024. [2] V. Venkatasubramanian, R. Rengaswamy, S. N. Kavuri, and K. Yin, “A review of process fault detection and diagnosis: Part III: Process history based methods,” Computers Chemical Engineering , vol. 27, no. 3, pp. 327–346, 2003. [3] R. Isermann, “Model-based fault-detection and diagnosis - status and applications,” Annual Reviews in Control , vol. 29, no. 1, pp. 71–85, 2005. [4] M. Zhong, T. Xue, and S. X. Ding, “A survey on model-based fault diagnosis for linear discrete time-varying systems,” Neurocomputing ,vol. 306, pp. 51–60, 2018. [5] K. Manandhar, X. Cao, F. Hu, and Y. Liu, “Detection of faults and attacks including false data injection attack in smart grid using kalman filter,” IEEE Transactions on Control of Network Systems , vol. 1, no. 4, pp. 370–379, 2014. [6] M.-Y. Zhong, S. Liu, and H.-H. Zhao, “Krein space-based h fault estimation for linear discrete time-varying systems,” Acta Automatica Sinica , vol. 34, no. 12, pp. 1529–1533, 2008. [7] S. Aouaouda, M. Chadli, P. Shi, and H. Karimi, “Discrete-time H-H sensor fault detection observer design for nonlinear systems with parameter uncertainty,” International Journal of Robust and Nonlinear Control , vol. 25, no. 3, pp. 339–361, 2015. [8] I. Castillo, T. F. Edgar, and B. R. Fern´ andez, “Robust model-based fault detection and isolation for nonlinear processes using sliding modes,” 
+
+International Journal of Robust and Nonlinear Control , vol. 22, no. 1, pp. 89–104, 2012. [9] P. Casau, P. Rosa, S. M. Tabatabaeipour, C. Silvestre, and J. Stoustrup, “A Set-Valued Approach to FDI and FTC of Wind Turbines,” IEEE Transactions on Control Systems Technology , vol. 23, no. 1, pp. 245– 263, 2015. [10] C. Ocampo-Martinez, J. A. De Don´ a, and M. M. Seron, “Actuator fault-tolerant control based on set separation,” International Journal of Adaptive Control and Signal Processing , vol. 24, no. 12, pp. 1070–1090, 2010. [11] M. M. Seron and J. A. D. D. and, “Actuator fault tolerant multi-controller scheme using set separation based diagnosis,” International Journal of Control , vol. 83, no. 11, pp. 2328–2339, 2010. [12] D. Silvestre, P. Rosa, J. P. Hespanha, and C. Silvestre, “Distributed fault detection using relative information in linear multi-agent networks,” 
+
+IFAC-PapersOnLine , vol. 48, no. 21, pp. 446–451, 2015, 9th IFAC Symposium on Fault Detection, Supervision andSafety for Technical Processes SAFEPROCESS 2015. [13] H. Alwi and C. Edwards, “Fault detection and fault-tolerant control of a civil aircraft using a sliding-mode-based scheme,” IEEE Transactions on Control Systems Technology , vol. 16, no. 3, pp. 499–510, 2008. [14] J. M. Galvez, “An algorithm for fault detection from a singular value decomposition based technique,” 2007. [15] Y. Sun and F. Xu, “Observer-based passive/active fault diagnosis: A new optimization design perspective from state sets,” Automatica , 11 2025. [16] J. Tan, S. Olaru, M. M. Seron, and F. Xu, “Set-based guaranteed active fault diagnosis for lpv systems with unknown bounded uncertainties,” 
+
+Automatica , vol. 128, p. 109602, 2021. [17] J. Tan, H. Zheng, D. Meng, X. Wang, and B. Liang, “Active input design for simultaneous fault estimation and fault-tolerant control of lpv systems,” Automatica , vol. 151, p. 110903, 2023. [18] H. Qiu, F. Xu, B. Liang, and X. Wang, “Active fault diagnosis under hybrid bounded and gaussian uncertainties,” Automatica , vol. 147, p. 110703, 2023. [19] D. Silvestre, “Constrained convex generators: A tool suitable for set-based estimation with range and bearing measurements,” IEEE Control Systems Letters , vol. 6, pp. 1610–1615, 2022. [20] ——, “Exact set-valued estimation using constrained convex generators for uncertain linear systems,” IFAC-PapersOnLine , vol. 56, no. 2, pp. 9461–9466, 2023, 22nd IFAC World Congress. [21] ——, “Accurate Guaranteed State Estimation for Uncertain LPVs using Constrained Convex Generators,” in 2022 IEEE 61st Conference on Decision and Control (CDC) , 2022, pp. 4957–4962. [22] H. Lou and P. Si, “The distinguishability of linear control systems,” 
+
+Nonlinear Analysis: Hybrid Systems , vol. 3, no. 1, pp. 21–38, 2009. [23] D. Silvestre, P. Rosa, and C. Silvestre, “Distinguishability of discrete-time linear systems,” International Journal of Robust and Nonlinear Control , vol. 31, no. 5, pp. 1452–1478, 2021.
