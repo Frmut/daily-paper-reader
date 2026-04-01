@@ -1,0 +1,412 @@
+Title: Proprioceptive feedback paradigm for safe and resilient motion control
+
+URL Source: https://arxiv.org/pdf/2603.27051v1
+
+Published Time: Tue, 31 Mar 2026 00:25:55 GMT
+
+Number of Pages: 8
+
+Markdown Content:
+# Proprioceptive feedback paradigm for safe and resilient motion control 
+
+Mrdjan Jankovic 1
+
+Abstract — Proprioception is a human sense that provides feedback from muscles and joints about body position and motion. This key capability keeps us upright, moving, and responding quickly to slips or stumbles. In this paper we discuss a proprioception-like feature (machine proprioceptive feedback – MPF) for motion control systems. An unexpected response of one actuator, or one agent in a multi-agent system, is compensated by other actuators/agents through fast feedback loops that react only to the unexpected portion. The paper appropriates the predictor-corrector mechanism of decentral-ized, multi-agent controllers as “proprioceptive feedback” for centrally controlled ones. It analyzes a nature and degree of impairment that can be managed and offer two options – full-MPF and split-MPF – with different wiring architectures as well as different stability and safety properties. Multi-vehicle interchange lane-swap traffic simulations confirm the analytical results. 
+
+I. INTRODUCTION A key requirement of human motion control is to maintain safety while walking, running, lifting objects, etc. Human motion may be subject to a sudden interruption – a slip or stumble – that requires a very fast response to prevent a fall. An alternative would be a more conservative motion such as ASIMO robot’s stable walk [1], which is less effi-cient and less responsive than human slightly-unstable gait. An analogous situation appears in standard robust control: preparing for the worst case disturbance, the system operates conservatively. In most cases in the control literature, the goal of robust control is to resist (unintended) change, maintain its original operating regime, and function under a wide range of conditions. The ultimate goal is stable operation in the presence of changing parameters or persistent disturbances. Recent multi-agent system work leverages instability to provide liveness [2], [3], agility [4], and efficiency [5]. These papers use Control Barrier Functions (CBFs) for safety guarantees. The mechanism that produces instability was originally introduced to handle unexpected behavior due to agents’ incomplete and asymmetric information. It has turned out that it does more, providing resilience * thanks to very fast predictor-corrector feedback loops. A similar mechanism exist for postural control in humans and animals: the proprioceptive feedback ([6], [7], [8]). Pro-prioception is a “muscle sense” that enables perception of the position and motion of the body in space independent from vision, vestibular, or other senses. Proprioceptive feedback connects motor neurons with special sensory neurons in muscles, tendons and joints as illustrated in Fig. 1.a. An        
+
+> 1Southwest Research Institute, Ann Arbor, MI 48108, USA
+
+mrdjan.jankovic@swri.org 
+
+> *Resilience definition: “ability of a system to absorb sudden disruption, recover quickly, and adapt or bounce back after a disturbance has occurred.”
+
+(a) 
+
+(b)  
+
+> Fig. 1. a) Proprioceptive feedback structure in human muscles; b) machine proprioceptive loops for a two degree of freedom controller – e.g., steering (u1) and acceleration ( u2) in a vehicle – considered in this paper.
+
+illustrative proprioceptive feedback use case is an instinctive reaction to tripping. In response to the leg motion being interrupted, a hand immediately reaches forward and the other leg extends to prevent a fall, before the person actually starts to fall. As discussed below in Section II, there is a part of human proprioception-related response that does not engage the brain at all – the “spinal reflex” which is much faster than a vision based one. The goal of this paper is to transfer the proprioceptive feedback paradigm to design of motion control systems. The motivation includes  
+
+> •
+
+Establishing a biological counterpart for a control algo-rithm may provide insights that lead to improvements (e.g., the new split-MPF algorithm in this paper);  
+
+> •
+
+Connecting an algorithm with a biological feature honed by evolution over hundreds of millions of years (pro-prioception is present in insects [7]);  
+
+> •
+
+Explaining observed interchange traffic results;  
+
+> •
+
+Providing control theoretic insights may help under-standing human/animal proprioceptive feedback. 
+
+> arXiv:2603.27051v1 [eess.SY] 27 Mar 2026
+
+We consider nonlinear systems with safety constraints that must hold at all times, including during a sudden adverse event. A block diagram of a control system augmented with the Machine Proprioceptive Feedback (MFP) loops is shown in Fig 1.b. The controller computes the intended control actions and monitors their execution. ∆1 and ∆2 represent uncertain static or dynamic blocks assumed in the design phase to be equal to 1. The difference is fed back into the controller to compensate for any discrepancy. The first order filters in Fig. 1.b break potential algebraic loops. The time constant, denoted by ϵ to indicate a small quantity, is selected such that the filters are much faster than the system dynamics and the safety-related CBF dynamics. It is not easy to assure stability of very fast feedback loops in the presence of uncertain, potentially slower dynamics as is the case here. Stability of feedback loops with unknown dynamics has been studied in the control literature (e.g., Absolute Stability, Chapter 7 in [9]; Integral Quadratic Constraints (IQC) [10]). Within safety context, CBF safety filters with IQC for robustness to input uncertainty has been considered in [11]. Without the proprioceptive w-loops, IQC tends to produce a conservative controller. A contribution of this paper is showing that, for the “full-MPF” depicted in Fig 1.b, the fast-loop stability and safety are assured if a connection of ∆1 and ∆2 is input strictly passive (ISP), see Chapter 6 in [9]. The ISP is related to inputs and outputs being “in-phase” and having a direct feed-through. The class of ISP systems includes the case when one of the control channels suddenly stops working. Through the fast MPF-loops, the controller very quickly transfers the safety responsibility to the other available actuator. If ISP cannot be guaranteed a-priori (e.g., even a short delay is not ISP, not even passive), the “split-MPF” option is introduced. This new architecture has a sub-controller responsible for only one actuator while seeing the other’s deficiency (like the other limb in the cross-extensor spinal-reflex). The split-MPF controller has much broader fast-loop stability, including delays, and works well if one actuator is impacted. It does not, however, guarantee CBF constraint satisfaction if both actuators are impaired simultaneously. We illustrate the results with highway interchange lane-swap traffic for connected and automated vehicles (CAV) [4]. In this complex multi-agent system, there are four actuators for every vehicle-to-vehicle collision constraint, while each vehicle may have more than one such constraint. Unexpected actuator impairments include random vehicles with sudden loss of acceleration or steering ability, and/or filtered/attenuated actuator response. Extensive Monte Carlo (MC) simulations confirm the analytical results. II. P ROPRIOCEPTIVE FEEDBACK 
+
+Proprioception is the human’s “sixth sense” that provides feedback about body’s position in space as well as the level of muscle exertion. It is largely subconscious, but gives us the feeling of being “in the body.” A similar mechanism exists in animals including insects. In this section we briefly review proprioception and proprioceptive feedback based on  
+
+> Fig. 2. A model of a “difference calculator” that produces an actionable signal from the proprioceptive feedback (based on [6], [12]).
+
+[6], [7], [8]. We concentrate on resilience and recovery from a disruption, while noting that proprioception also provides means to coordinate limbs to produce movement. Compared to other human sensory feedback systems, of specific interest here is that proprioception is distributed, assigned to aspecific actuator, and fast. The concept is used to motivate our work on resilient multi-agent systems and our MPF design choices. Proprioceptive sense is based on mechanoreceptors in our muscles, tendons, and joints, Fig 1.a. Motor neurons activate the muscle to contract, while the sensory neurons send back the information about the amount of contraction (length), velocity, as well as the level of force applied. Similarly, the Golgi tendon organ provides the load or tension in the tendon while the joint receptor typically activates at the physical limits of the joint motion. Together, these sensory receptors provide feedback to the spinal cord and the cerebellum that is not directly related to the ultimate objective, say, a hand reaching an object. Rather it shows if the local actuator (the muscle) is executing its assigned task as expected, similar to the w-feedback in Fig 1.b. It is generally understood that the proprioceptive feedback operates on a difference between what is expected and what actually occurred [6], [12]. In human motion control, there are situations when unexpected increase in resistance to muscle motion results in increased effort for the same muscle group (e.g. lifting a weight heavier than expected). It is assumed that this reaction is conscious (i.e. not reflexive), but only the difference between the expected and actual motion is perceived as shown in Fig. 2. One interesting human reaction related to our MPF work is spinal reflex, in particular “cross-extensor” reflex, see Section 28 in [8]. As the name suggests, the reaction does not include the brain at all and operates within the muscle groups, motor and sensory neurons, and the spinal cord. Thus, the (re)action is very fast: tens rather than hundreds of milliseconds. If a person steps on a sharp object, the spinal reflex withdraws (contracts muscles of) the affected leg. The cross-extensor reflex extends the other leg automatically to maintain balance and prevent a fall. As mentioned in the Introduction, human gait is unstable. Stopping a leg mid-movement (tripping) can cause a fall. When the stopped movement is detected, a more complex response than the spinal reflex may be initiated. It involves muscle groups from the torso and other limbs (e.g. reaching for the handrails) with unconscious brain coordination. In this case, as well as in the case of the cross-extensor spinal reflex, the perceived deficiency of one actuator (stopped muscle motion in a limb) does not produce an effort to actuate the same group more. Instead, it tries to recover by fast reactions of other actuators. This is a good analogy of how the split-MPF works. In summary, properties of the proprioceptive feedback that are relevant for MPF design are  
+
+> •
+
+The proprioceptive sense is distributed and collocated with the actuators (muscles).  
+
+> •
+
+Proprioceptive feedback is safety critical and must be fast.  
+
+> •
+
+The reaction to unexpected motion of a muscle group may be to further actuate the same group (probably not a reflexive reaction) or deactivate the affected group and compensate with other muscle groups (likely an unconscious, reflexive reaction). III. S AFETY CRITICAL SYSTEMS 
+
+One key ingredient for the concept of machine proprio-ceptive feedback is existence of a safety constraint that the system must satisfy at all times. One example is road vehi-cles that must maintain a predetermined minimum distance. Here, we employ Control Barrier Functions [13], [14], [15] to enforce safety. Following [16], we consider input-affine nonlinear systems with disturbance: 
+
+˙x = f (x) + g(x)u + p(x)w (1) The vector x ∈ IR n is the system’s state, u ∈ U ⊆ IRnu is the control input, and w ∈ W ⊆ IRnw is an external disturbance. Here, the disturbance input relates to actuator unexpected behavior as shown in Figs. 1.b and Fig. 2, the difference of what is commanded (expected) and what is observed. The system has an admissible (safe) set C = {x ∈
+
+IR n : h(x) ≥ 0} defined by a differentiable function h(x)
+
+(e.g., vehicle-to-vehicle distance). The following definition combines exponential [17] and robust [16] CBFs. 
+
+Definition 1 : The function h(x) is an (exponential) Robust Control Barrier Function (RCBF) if there exists a constant 
+
+λ > 0 such that 
+
+max  
+
+> u∈U
+
+min 
+
+> w∈W
+
+{ ˙h(x, u, w ) + λh (x)} > 0 (2) The time derivative of h is given by ˙h = Lf h + Lg h u +
+
+Lph w , where Lf h denotes ∂h ∂x f . The safety constraint to be satisfied at all times is 
+
+Lf h + Lg h u + Lph w + λh ≥ 0 (3) As long as the control satisfying (3) is used, ˙h + λh ≥ 0 and 
+
+h(t) ≥ 0, ∀t > t 0 provided that x(t0) is in the admissible set C. Thus, a system that starts in the safe set stays in the safe set. Typically, CBF is used as a safety filter to override a baseline, or performance, control u0 using a Quadratic Program (QP). In the case of human walking, u0 could be a motor command that generates repetitive leg motion. In the case of a vehicle, u0 could represent steering and acceleration needed to follow the road at the desired speed. The MPF QP takes the form 
+
+u∗ = argmin u∈U ∥u − u0∥2 such that 
+
+Lf h + Lg h (u + w) + λh = a + b(u + w) ≥ 0 (4) with a = Lf h(x) + λh (x), b = Lg h(x), and w assumed known. By definition of the RCBF, we know that the solution exists, that is, the QP is feasible. In the next two sections, we assume that U = I Rnu , i.e. the control is unconstrained. In the presence of input uncertainty ∆, but without the w
+
+term in (4), the CBF constraint becomes 
+
+˙h + λh + b(∆( s) − I)u∗ ≥ 0
+
+For simplicity, we assume that ∆ = diag {∆1, . . . , ∆nu } is a linear system with unknown gains and unknown dynamics in its nu channels. (∆( s) − I)φ(t) notation is to be understood as the linear operator acting on the time varying input φ(t).The quantity b(∆( s) − I)u∗ is not necessarily positive or small. Thus, h(x) may go negative and the state x may leave the safe set C.IV. F ULL MACHINE PROPRIOCEPTIVE FEEDBACK 
+
+In the original decentralized predictor-corrector applica-tions [18], [2], the fast “disturbance w” feedback was used to reconcile differences between (the ego vehicle) local copies and actual actions of other agents. The differences arose from incomplete and asymmetric information about u0. In the MPF case, we deal with a problem of unexpected actuator response that brings up fast-loop stability issues. As illustrated in Fig. 1.b, the vector w is the difference between the expected and the actual control action filtered by a very fast filter 
+
+ϵ ˙w = −w + ( uact − u∗) (5) with the time constant ϵ ≪ 1/λ . That is, we tune the w-feedback to be much faster than the CBF constraint dynamics and the system (1). Because the complete w-vector is used in (4), we refer to this algorithm as full-MPF .The control input computed from (4) is 
+
+u∗ = u0 − min {0, a + bu 0 + bw }∥b∥2 bT (6) Note that by the definition of RCBF, b̸ = 0 when the constraint is active, i.e., when a + bu 0 + bw ≤ 0.We now consider η1 = b(x) 
+
+> ∥b(x)∥
+
+w, a product of the slow and fast variables. If the CBF constraint is active, using (5) we obtain 
+
+ϵ ˙η1 = a + bu act 
+
+∥b∥ + ϵ
+
+ ddt b
+
+∥b∥
+
+
+
+w (7) Note that uact depends on η1 through ∆. This equation is in the standard singular perturbation form (see, [9], Chapter 11). If this coupled system is asymptotically stable, the singular perturbation theory (Tikhonov’s Theorem 11.1, [9]) applies: for a positive δ arbitrarily small, and T arbitrarily large, if the time constant ϵ is sufficiently small, a + bu act = O(ϵ)†   
+
+> †In the standard Singular Perturbation notation, O(ϵ)denotes a quantity that converges to 0 as fast as ϵ
+
+on an interval [t0 + δ, T ], with t0 the initial time. The CBF dynamics is ˙h+λh = a+bu act and the singular perturbation result gives an estimate 
+
+h(t) = h(t0)e−λ(t−t0) + O(ϵ) > O(ϵ) (8) for all t ∈ [0 , T ]. Thus, if the w-loop is asymptotically stable (and remains fast), the CBF h is always larger than a very small possibly negative quantity. To handle O(ϵ), we need a small barrier margin. Typically, the safe set is made a little more conservative (i.e smaller), relying on CBF robustness to small disturbances, see [19]. Similarly, if the CBF constraint is inactive, a+bu 0 +bw ≥
+
+0, the control is u∗ = u0 and, using Singular Perturbation, 
+
+w = uact − u0 + O(ϵ). Substituting into the constraint produces ˙h + λh = a + bu act ≥ O (ϵ). In this case, u∗ and 
+
+uact are independent of w and (5) is asymptotically stable. 
+
+A. Input strict passivity and full-MPF loop stability 
+
+The key question we need to answer is under what conditions is (7) asymptotically stable. For this purpose, we employ input strict passivity (see Chapter 6 of [9] and Chapter 2 of [20]). The notion of passivity originates from circuit theory where it was observed that passive RLC circuits have the relative phase between inputs (voltages) and outputs (currents) always within ±90 ◦. The negative feedback connection between two such systems is stable as well as passive itself. Because fast asymptotic stability is needed, we use a stronger passivity property. A dynamical system with the state z, input u, and output y is input strictly passive (ISP) if there is a positive definite “storage function” S such that 
+
+˙S(z) ≤ yT u − νu T u (9) For exposition efficiency, we consider linear ISP systems 
+
+˙z = Az + Bu y = Cz + Du (10) with A a Hurwitz matrix (i.e., ˙z = Az is asymptotically stable). The ISP implies that the matrix D is positive definite with the minimal eigenvalue λmin (D) ≥ ν. The system ¯∆
+
+obtained by pre- and post-multiplying ∆ by a vector and its transpose, ¯∆ = b 
+
+> ∥b∥
+
+∆ bT 
+
+> ∥b∥
+
+, is also input strictly passive ([20], Proposition 2.11) with the same storage function S and, in this case, the same supply rate yT u−νu T u. It doesn’t matter if the vector b is time varying or not. In other words, we do not assume that ∆-dynamics is 1 
+
+> ϵ
+
+-fast. Combining (7) and (10) we obtain 
+
+ϵ ˙η = − b 
+
+> ∥b∥
+
+D bT 
+
+> ∥b∥
+
+η + b 
+
+> ∥b∥
+
+Cz + ψ1(x) + O(ϵ)˙z = Az + B(− bT 
+
+> ∥b∥
+
+η + ψ2(x)) (11) where the terms ψi(x) are easy to derive from the control input u∗. The (η, z ) loop is a negative feedback connection of two passive systems and, thus, stable. Asymptotic stability follows from ISP and A being Hurwitz. Repeating the Singular Perturbation argument, we set ϵ ˙η = 0 and, from  
+
+> Fig. 3. Split-MPF configuration: separate controllers control each actuator while reacting to other actuator’s unexpected response.
+
+(7), a + bu act = O(ϵ) for t ∈ [t0 + δ, T ]. This, in turn, assures that h(t) > O(ϵ) for t ∈ [t0, T ] as shown above. By restricting the uncertainty ∆ to be ISP, we assure sta-bility of the feedback loop and the x-system stays in the safe set. Passive systems include stand-alone gains κ ∈ [0 , ∞),first order filters with any positive gain, etc. Strict input passivity, in addition, requires a direct feed-through, D > 0.We only need one of the subsystems ∆i to be ISP (while others are just passive), provided that the corresponding i-th entry of the vector b is bounded away from zero. The class of passive systems does not include second order filters or time delays. To illustrate a contrast with the split-MPF discussed next, we look at the case of equal delay in all channels: ∆( s) = e−τdsI. Assuming that the delay is short enough so that the slow b(x) stays approximately constant, from (7) we obtain 
+
+ϵ ˙η = −η(t − τd) + ψ3(x) + O(ϵ) (12) This system is unstable if τd > π 
+
+> 2
+
+ϵ. Moreover, to prevent undesirable under-damped response, we need τd < ϵ . Thus, the delay that could be tolerated is smaller than ϵ, the time constant of the fast system. V. S PLIT -MPF Full-MPF replaced b(∆( s)−I)u∗ with likely much smaller 
+
+O(ϵ) error in the CBF constraint dynamics. In the process, it has acquired sensitivity to small delays and other non-passive dynamics. If the dynamics ∆ are known, applying it to u∗
+
+would approximately zero-out the feed into the w-filters (see Fig. 1). This approach mimics the proprioceptive structure in Fig. 2 as well as the internal feedback loops in human brain described in [21]. The latter paper explicitly credits these loops with compensating for delays. However, modeling ∆
+
+is often not an option because it is not known a-priori or it may appear as a result of a sudden event as illustrated by the interchange traffic example below. Here, we propose an MPF mechanism that resembles cross-extensor spinal reflex (see the bullet points in Section II). While the full-MPF (partially) “doubles down” on using the impaired actuator, the split-MPF approach substitutes the missing contribution of the affected actuator with enhanced action of other ones as shown in Fig. 3. In response, the affected actuator pulls back because it does not see its own impairment, but it does see the enhanced safety action of the other actuator(s). In the split-MPF case, each actuator has its own sub-controller. The approach is decentralized because the sub-controllers are using different information about actuator impairments. For the actuator i, the QP controller is 
+
+u∗ 
+
+> i
+
+= argmin ui∈U ∥ui − u0∥2 such that 
+
+a + b(ui + wi) ≥ 0
+
+ϵ ˙wi = −wi + uact − u∗ 
+
+> i
+
+, with wii ≡ 0
+
+(13) where ui = [ ui1, . . . , u in u ]T and wi = [ wi1, . . . , w in u ]T .Except for uii , all other computed control inputs are local copies only used to compute wi. The actual implemented control is the “ego” output from every sub-controller: u∗ =[u∗
+
+> 11
+
+, . . . , u ∗ 
+
+> nunu
+
+]T . As before, uact = ∆( s)u∗.To describe Split-MPF operation, let us just consider the 2-actuator system as shown in Fig. 3. If the controls are unaffected by ∆, w’s are equal to 0 and they both compute the same control input, u∗ 
+
+> 1
+
+= u∗
+
+> 2
+
+. If one of them, say u2
+
+is impacted by ∆2, w12 inside Controller 1 becomes non-zero. As before, the singular perturbation provides w12 =
+
+uact  
+
+> 2
+
+− u12 + O(ϵ). The constraint in (13) becomes 
+
+a + b1u11 + b2u12 + b2w12 = a + b1uact  
+
+> 1
+
++ b2uact  
+
+> 2
+
++ O(ϵ)
+
+Thus, if the actuator 1 is unaffected, and the w-feedback is asymptotically stable and fast, the safety of the system is assured within O(ϵ).This consideration reveals a drawback of the approach. If both actuators are impacted at the same time, the cross compensation may not be enough to keep the error within 
+
+O(ϵ). The problem arises only if both actuator ∆is attenuate the control input. There is no problem if one actuator uncertainty amplifies the input. The advantage of this approach is that the stability of the 
+
+w-loop is much broader than for full-MPF. If we reconsider the case from Subsection IV-A where equal delay τd in both channels is considered, we obtain the fast dynamics as 
+
+ϵ ˙η = − 2b21b22
+
+∥b∥4 (η + η(t − τd)) + ψ4(x) + O(ϵ) (14) In contrast to (12), here we have the direct feed-trough term as if the delay is an ISP system. While in the full-MPF case the delay must be limited to τd < π 
+
+> 2
+
+ϵ for stability, the system (14) is stable for all τd. This can be shown using Razumikhin stability theory (Theorem 4.3 in [22]). Obviously, with a very long delay in both channels, the safety cannot be guaranteed. Thus, split-MPF disconnects stability of the fast w-loop and CBF safety while for full-MPF asymptotic stability is more difficult to attain, but it guarantees safety. VI. HIGHWAY INTERCHANGE FOR CAV S
+
+The results of Section IV and V are illustrated on the interchange lane-swap traffic scenario with the algorithms running the same “IDA-fast” tuning described in [4]. The main difference from [4] is that the controllers have full information about everyone’s intent ‡. The controller could 
+
+> ‡The MPF controllers would work with incomplete information, but our baseline no-MPF controller needs to know other agents’ intent.
+
+be executed in a central roadside unit or distributed in the vehicles. The additional intent information could be provided by adding it to the standard vehicle-to-vehicle (V2V) Basic Safety Message (BSM) broadcast at 10Hz rate [23]. The interchange traffic at two time instants separated by 5s is shown in Fig. 4 . As the vehicles enter the interchange zone, they are commanded to change lanes while avoiding collisions or running off the road. The pale (transparent) red vehicle is randomly selected to behave unexpectedly (in this run, it lost acceleration capability). The vehicle dynamics considered in this paper is the standard simplified bicycle model [24]: 
+
+˙x = v cos θ
+
+˙y = v sin θ
+
+˙θ = vLw δ
+
+˙v = ac
+
+(15) where x, y are the (global) cartesian coordinates of the vehi-cle center, v is its longitudinal velocity, θ is the orientation relative to the x coordinate, δ ≈ tan( δ) is the wheel steering angle, Lw is the wheelbase, and ac is the vehicle acceleration. The safety-filter setup requires a baseline controller u0
+
+that ignores obstacles and moves the vehicles along the desired path. We employ the standard pure-pursuit algorithm with independent lateral and longitudinal components. The former tracks the desired lateral position on the road with a velocity-adjusted look-ahead, while the latter regulates vehicle velocity to its desired setpoint. The vehicles are protected by elliptic CBFs: the center of the other vehicle is required to stay outside of an ellipse centered on the ego vehicle (Fig. 4 shows 1/2-size ellipses for clarity). The CBF function h(x) uses the definition of the ellipse as the set of points with the sum of distances from the two focal points equal to the length of the major axis, 
+
+2αr (r is the semi-minor axis and α is the ratio of the major and minor axes). Thus, the elliptic CBF for vehicles i and j
+
+is given by: 
+
+hij = ∥Xi + ρφ i − Xj ∥ + ∥Xi − ρφ i − Xj ∥ − 2αr (16) where ρ = r√α2 − 1 is the distance of the focal points from the center of the ellipse Xi = [ xi, y i]T , and φi =[cos θi, sin θi]T .As shown in [4], the control inputs appear in the second derivative of each inter-agent CBF hij . Combining the CBF and its two derivatives produces the CBF constraint: 
+
+¨hij + l1 ˙hij + l0hij = aij + bij ui + bji uj ≥ 0 (17) with l0 and l1 selected such that the roots of s2 +l1s+l0 = 0 
+
+are negative real numbers. They determine the behavior of the CBF function hij when the constraint is active. The road boundary CBFs enforce the vehicle lateral po-sition y of to satisfy yi ∈ [rb r , rb l]. Thus, the pair of road CBF constraints for the agent i are 
+
+hir = y − rb r and hil = −y + rb l (18) Fig. 4. Two still frames taken 5s apart from an interchange traffic video. Blue vehicles go from right to left lane and and red vehicles from left to right. The pale red vehicle has lost propulsive power at -20m marker. 
+
+The right road CBF constraint is obtained by combining hir 
+
+and its first two derivatives to obtain 
+
+air + bir ui ≥ 0
+
+where air = l1vi sin θi + l0hir , bir = [ v2 
+
+> i
+
+cos θi/L w, sin θi]
+
+and similarly for the left road boundary. VII. CBF S AFETY FILTERS WITH AND WITHOUT MPF We consider three controllers (full-MPF, no-MPF, and split-MPF) with different w-feedback configurations as ex-plained below. With ∆ = I, i.e. without unexpected behavior, they all agree and compute the same set of inputs. In the decentralized PCCA [18], [2], each agent inde-pendently computes everyone’s control action based on the information it has and implements its own. The full-MPF algorithm closely resembles the decentralized PCCA used in [4], except that the complete information (that is, u0) is available: 
+
+min u∈U 
+
+PNa 
+
+> i=1
+
+∥ui − ui0∥ such that 
+
+aij + bij (ui + wi) + bji (uj + wj ) ≥ 0, i, j = 1 , . . . , N a
+
+aiμ + biμ (ui + wi) ≥ 0, μ = {“r”, “l”}
+
+(19) where Na is the number of agents. The set U = {u ∈
+
+IR 2Na : u ≤ ui ≤ ¯u} with u and ¯u the upper and lower limits on the steering and acceleration: ±π/ 7rad for steering and [−8, 4] m/s 2 for acceleration, the same as in [4]. In the implementation, the constraints are soft with high cost [4]. The full-MPF determines the proprioceptive w-feedback inputs into the QP (19) as in (5). In this case, uact may be de-termined from on-board sensors: accelerometers, propulsion system sensors, steering angle and/or velocity measurements. The pure “centralized” approach sets w ≡ 0 in (19) and is referred to as no-MPF . The entity that computes the control actions simply assumes they are executed faithfully. The previous two algorithms can be implemented as a single controller or distributed in the vehicles as exact copies. In contrast, the split-MPF needs a separate controller for each actuator, that is, it becomes decentralized not only across agents, but also across actuators with the controller (19) ran for each agent-actuator combination. Compared to the centralized roadside-unit implementation, the complexity increases 2Na times. Compared to the distributed approach, the complexity increases by a factor of 2. The size of the 
+
+w vector also increases from 2Na to 4N 2 
+
+> a
+
+, with each agent-actuator controller having its own copy. For example, wsi jq is computed by 
+
+ϵ ˙wsi jq = −wsi jq + ( uact jq − u∗si jq ), wsi is ≡ 0 (20) where s and i in the superscript denote that this quantity belongs to the steering controller of the agent (vehicle) i and is based on the local copy of the control action for agent j
+
+and actuator q (“ q” stands for either “ s” (steering) or “ a”(acceleration)). The information needed to compute (20) is contained in standard vehicle BSMs. For 16-vehicle lane-swap Monte Carlo runs reported below, the average loop time was about 5ms, while the worst observed time was 34ms (i7-3800H, 2.5GHz laptop running Matlab quadprog solver). The loop time corresponds to the split-MPF algorithm (2 QPs of the form (19)) ran on-board each vehicle. The update rate of the controller is 100 ms, consistent with the BSM rate. The fast time constant ϵ is 200 ms. VIII. M ONTE CARLO SIMULATIONS 
+
+We ran Monte Carlo (MC) simulations with 16 lane-swapping vehicles, each with random initial positions and random initial/desired speeds in the range 20 to 24m/s. The average traffic density is 3400 veh/h per lane with Fig. 4 illustrating the resulting traffic pattern. The initial conditions were identical for runs with each of the three controllers. As in [4], 15 % of the vehicles, on average, are randomly selected to go straight and not change lanes. To compare the three MPF options, we introduced three sources of unexpected behavior in the form of ∆ uncertainty: 1) A single vehicle is randomly selected to have accel-eration limited at or below the road load deceleration (loss of propulsion) as in Fig 2. 2) With probability 0.5 vehicles are selected to be “on rails” (i.e., they cannot steer to avoid other vehicles) and simultaneously have their acceleration attenuated. 3) With probability 0.5 vehicles are selected to have both steering and acceleration filtered by first order filters. The MPF algorithms do not know that vehicles have their capabilities degraded. In all three cases the resulting uncertainty ∆ is passive, and in the fist and second case it is input strictly passive. 
+
+A. Single vehicle loss of propulsion 
+
+This is the case that illustrates the capability of MPF and, at the same time, is a realistic traffic scenario. A single, randomly selected vehicle lost ability to accelerate 20m before the lane change command starts. Its acceleration is Fig. 5. Acceleration profiles for all sixteen vehicles of a single run.     
+
+> Fig. 6. Loss of propulsion. Top plot: the minimal value of h0
+> ij over all agents in a run; Middle plot: lane completion metric; Bottom plot: max
+> ∆acbetween subsequent samples.
+
+clipped at −0.2m/s 2, approximately equal to the coast-down deceleration. Steering is available as illustrated in Fig. 4 (the affected vehicle changes lanes) as is additional deceleration by braking, Fig, 5 (the affected vehicle, blue-dash trace, initially brakes more). The two figures correspond to the same simulation run. The top plot in Fig. 6 shows the values of h0 
+
+> min
+
+=min i,j,t h0 
+
+> ij
+
+(t). The superscript “0” is for the reference value for the hij ’s. The actual CBF hij used in the controller is enlarged by a 10% barrier margin (see [4]) to account for O(ϵ) and for modeling approximations. The no-MPF algorithm has 32% of its runs with CBF violations. The full-and split-MPF handle this scenario without a problem thanks to their capability to react very fast to unexpected behavior. The middle plot in Fig. 6 shows the lane completion metric in terms of the vehicle distance from the assigned lane boundary (the worst case in an MC run). Negative numbers mean a vehicle has not managed to get fully into the new lane by 120m marker. In this metric, no-MPF has six runs with incomplete lane changes, while full-MPF and split-MPFs have one each. It is interesting to note that almost all vehicles manage to change lanes, even those that are impaired. The bottom plot shows a measure of harshness of the control action. Many of the runs with no-MPF algorithm produce full acceleration reversals (from full acceleration to full deceleration or vice-versa, ∆ac = 12 m/s 2) in one sample (100ms). The full- and split-MPFs are much milder. Their traces in Fig. 6 are almost indistinguishable.                                 
+
+> TABLE I 100 MC RUNS WITH LOSS OF PROPULSION FOR A RANDOM VEHICLE
+> Algorithm min h0incomp-OOB max ∆ac∆ac>2[m]lete LS # [m][m/s 2]#full MPF 0.20 1N/A 6.1 22 no MFP –1.21 62.0 12 52 split MFP 0.20 1N/A 6.2 20
+> Fig. 7. Random vehicles on-rails and with attenuated acceleration: Minimal value of h0
+> ij barrier over all agents in a run.
+
+The statistics for 100 MC runs is shown in Table I. The items in bold font indicate undesirable outcomes. The first column identifies the algorithm. The second column corresponds to the minimal value in the top plot in Fig. 6. As a rule of thumb, h0 = 0 means that the ellipses in Fig. 4 touch. The value h0min = 0 .20 m is the same as for the nominal, no-impairment case. The third column shows the number of incomplete lane changes. The forth, “OOB” column shows the worst case distance a vehicle went off the road. The column five corresponds to the worst value of ∆ac
+
+from the bottom plot in Fig. 6. The last column shows the average number of times per run that ∆ac exceeded 2m/s 2.
+
+B. Vehicles on rails with attenuated acceleration 
+
+In contrast to the loss-of-propulsion case, we consider a less realistic scenario selected as unfavorable for the split-MPF algorithm. Vehicles are randomly selected with proba-bility 0.5 to be on rails (i.e., selected vehicles use u0 instead of u∗ steering) and at the same time have the acceleration and braking reduced proportionaly: ∆i2 = 0 .7. Hence, if two adjacent vehicles are impaired, all four actuators engaged in collision avoidance are impacted, while the resulting ¯∆ is input strictly passive. Full-MPF acceleration is controlled by a system that knows if agent’s acceleration is impaired or not, while ego split-MPF acceleration controller does not. As a result, split-MPF does have four runs with h0 < 0 shown in Fig. 7. The statistics is summarized in Table II. The severe impairment presents a problem for all algorithms, but full-MPF handles it with the smallest impact. 
+
+C. Filtered steering and acceleration 
+
+In this case ∆i1(s) = 10.2s+1 and ∆i2(s) = 10.4s+1 
+
+are filter transfer functions for steering and acceleration for randomly selected vehicles (0.5 probability). The results of 100 MC runs are shown in Fig. 8 and Table III. In this case the full-MPF runs into safety violations because the                               
+
+> TABLE II 100 MC RUNS :VEHICLES ON RAILS WITH ATTENUATED ACCELERATION
+> Algorithm min h0incomp-OOB max ∆ac∆ac>2[m]lete LS # [m][m/s 2]#full MPF -0.15 00.1 8.9 33 no MFP –0.31 0N/A 5.8 20 split MFP -0.73 2N/A 11.7 25
+
+Fig. 8. Filtered steering and acceleration: minimal value of h0 
+
+> ij
+
+barrier over all agents in a run. TABLE III 100 MC RUNS WITH RANDOM FILTERED STEERING AND ACCELERATION 
+
+Method and min h0 incomp- OOB max ∆ac ∆ac > 2
+
+use case [m] lete LS # [m] [m/s 2] #Full MPF –1.27 0 5.4 11.4 42 No MPF 0.16 1 N/A 6.8 16 Split MPF –0.02 1 N/A 11 34 
+
+absence of strict input passivity leads to oscillatory behavior (the fast w-loop response is stable, but under-damped). Split-MPF fares much better. The no-MPF has no issues with the actuator filters that are much faster than the dominant time constant τh = 2 .5s of the inter-agent CBF constraint. Interesting points about the interchange traffic simulations:  
+
+> •
+
+The analytical results of Sections IV and V predict well the results of the interchange lane swap simulations.  
+
+> •
+
+The speed reduction needed to execute the lane swap is minimal: on average, −0.6 mi/h (49.5 to 48.9 mph) for the loss-of-propulsion and −0.1 mi/h for the other two cases with no difference between the algorithms.  
+
+> •
+
+A case could be made that the split-MPF provides the strongest resilience to unexpected events and robustness to unmodeled dynamics. It should be emphasized that it can only be implemented as a decentralized controller.  
+
+> •
+
+Some of the benefits of MPF may be attributed to the use of the acceleration signal not employed by the no-MPF algorithm. It appears that human drivers leverage acceleration (vestibular sense) to improve performance, see [25] and reference therein.  
+
+> •
+
+Vestibular sense in humans does not replace propriocep-tion. Likewise, adding acceleration as a measured state to a CBF constraint would not provide the MPF func-tionality in terms of speed of response and resilience. IX. C ONCLUSION 
+
+In this paper we present a machine proprioceptive feed-back mechanism for motion control intended for managing sudden unexpected events. In many respects, MPF resembles human proprioception – our fast-reacting safety system for gait and position. The challenge of assuring stability of the fast system is addressed with a biology-inspired split-MPF algorithm that is, by necessity, decentralized. In highway interchange traffic with randomly impaired vehicles, the two MPF versions showed safer and more resilient behavior compared to the no-MPF baseline. X. A CKNOWLEDGMENT 
+
+The author would like to thank Dr. Ivana Jankovic, MD, for informative discussion and useful pointers on human proprioception. REFERENCES [1] S. Shigemi, ASIMO and Humanoid Robot Research at Honda .Springer Netherlands, 2019, pp. 55–90. [2] M. Jankovic, M. Santillo, and Y. Wang, “Multiagent systems with cbf-based controllers: Collision avoidance and liveness from instability,” 
+
+IEEE Transactions on Control Systems Technology , vol. 32, no. 2, pp. 705–712, 2023. [3] M. Jankovic, “Instinctive negotiation by autonomous agents in dense, unstructured traffic: A controls perspective,” Annual Review of Control, Robotics, and Autonomous Systems , vol. 7, 2024. [4] M. Jankovic, S. Rajakumar Deshpande, and G. Ajaykumar, “Nego-tiating highway interchange traffic with a decentralized instability-driven cbf-based algorithm,” in 2026 American Control Conference (accepted), also arXiv:2512.01098v1 , 2026. [5] S. Rajakumar Deshpande and M. Jankovic, “Decentralized merging control of connected and automated vehicles to enhance safety and energy efficiency using control barrier functions,” in 2026 American Control Conference (accepted), also arXiv:2510.24871v1 , 2026. [6] U. Proske and S. Gandevia, “The proprioceptive senses: their roles in signaling body shape, body position and movement, and muscle force,” Physiology Review , vol. 92, p. 1651–1697, 2012. [7] J. Tuthill and E. Azim, “Primer proprioception,” Current Biology ,vol. 28, p. 194–203, 2018. [8] C. Hanley, Fundation of Neuroscience . Michigan State University Openbooks, 2021. [9] H. Khalil, Nonlinear Systems, III Edition . Prentice Hall, New Jersey, 2002. [10] A. Megretski and A. Rentzer, “System analysis via integral quadratic constraints,” IEEE Trans. on Automomatic Control , vol. 42, 1997. [11] P. Seiler, M. Jankovic, and E. Hellsotrm, “Control barrier functions with unmodeled input dynamics using intergal quadratic constraints,” 
+
+IEEE Control Systems Letters , vol. 6, 2022. [12] P. Bays and D. Wolpert, “Computational principles of sensorimotor control that minimize uncertainty and variability,” Journal of Phisiol-ogy , vol. 578, p. 387–396, 2007. [13] A. D. Ames, J. W. Grizzle, and P. Tabuada, “Control barrier function based quadratic programs with application to adaptive cruise control,” in 53rd IEEE conference on decision and control . IEEE, 2014, pp. 6271–6278. [14] A. D. Ames, X. Xu, J. W. Grizzle, and P. Tabuada, “Control barrier function based quadratic programs for safety critical systems,” IEEE Transactions on Automatic Control , vol. 62, no. 8, pp. 3861–3876, 2017. [15] A. D. Ames, S. Coogan, M. Egerstedt, G. Notomista, K. Sreenath, and P. Tabuada, “Control barrier functions: Theory and applications,” in 18th European Control Conference , 2019, pp. 3420–3431. [16] M. Jankovic, “Robust control barrier functions for constrained sta-bilization of nonlinear systems,” Automatica , vol. 96, pp. 359–367, 2018. [17] Q. Nguyen and K. Sreenath, “Exponential control barrier functions for enforcing high relative-degree safety-critical constraints,” in 2016 American Control Conference . IEEE, 2016, pp. 322–328. [18] M. Santillo and M. Jankovic, “Collision free navigation with in-teracting, non-communicating obstacles,” in 2021 American Control Conference (ACC) , 2021, pp. 1637–1643. [19] X. Xu, P. Tabuada, J. Grizzle, and A. Ames, “Robustness of control barrier functions for safety critical control,” in IFAC Conference Analysis and Design of Hybrid Systems , 2015. [20] R. Sepulchre, M. Jankovic, and P. Kokotovic, Constructive Nonlinear Control . Prentice Hall, New Jersey, 1997. [21] J. S. Li, A. A. Sarma, T. J. Sejnowski, and J. C. Doyle, “Internal feedback in the cortical perception-action loop enables fast and acurate behavior,” Proceedings of the National Academy of Science , vol. 120, 2023. [22] J. Hale and S. Verduyn Lunel, Introduction to Functional Differential Equations . Springer, New York, 1993. [23] SAE International Technical Standard, “V2X communications mes-sage set dictionary,” Rev. 2024, sAE Standard J2735. [24] R. Rajamani, Vehicle Dynamics and Control . Springer, NY, 2012. [25] G. Markkula, R. Romano, R. Waldram, O. Giles, C. Mole, and R. Wilkie, “Modeling visual-vestibular integration and behavioural adpatation in the driving simulator,” Transportation Research Part F ,vol. 66, 2019.

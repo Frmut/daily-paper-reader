@@ -1,0 +1,65 @@
+{
+  "label": "2026-04-01",
+  "date": "2026-04-01",
+  "generated_at": "2026-04-01T19:56:40",
+  "count": 4,
+  "papers": [
+    {
+      "paper_id": "202604/01/2603.27051v1-proprioceptive-feedback-paradigm-for-safe-and-resilient-motion-control",
+      "section": "quick",
+      "title_en": "Proprioceptive feedback paradigm for safe and resilient motion control",
+      "authors": "Mrdjan Jankovic",
+      "date": "2026-03-27",
+      "pdf": "https://arxiv.org/pdf/2603.27051v1",
+      "score": "7.0",
+      "evidence": "弹性运动控制与故障补偿",
+      "tldr": "本文提出了一种受人类本体感受启发的“机器本体感受反馈”（MPF）范式，旨在提升运动控制系统的安全性和韧性。该方法利用快速反馈回路，使系统在执行器或多智能体中的个体发生意外响应时，能由其他部分自动补偿。研究分析了不同程度的损伤管理，提出了full-MPF和split-MPF两种架构，并通过多车换道交通仿真验证了其在应对突发故障时的稳定性和安全性。",
+      "tags": "query:pmsm",
+      "abstract_en": "Proprioception is a human sense that provides feedback from muscles and joints about body position and motion. This key capability keeps us upright, moving, and responding quickly to slips or stumbles. In this paper we discuss a proprioception-like feature (machine proprioceptive feedback - MPF) for motion control systems. An unexpected response of one actuator, or one agent in a multi-agent system, is compensated by other actuators/agents through fast feedback loops that react only to the unexpected portion. The paper appropriates the predictor-corrector mechanism of decentralized, multi-agent controllers as \"proprioceptive feedback\" for centrally controlled ones. It analyzes a nature and degree of impairment that can be managed and offer two options, full- MPF and split-MPF, with different wiring architectures as well as different stability and safety properties. Multi-vehicle interchange lane-swap traffic simulations confirm the analytical results.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202604/01/2603.24811v1-a-nonvolatile-switchable-polarity-epm-valve",
+      "section": "quick",
+      "title_en": "A Nonvolatile Switchable-polarity EPM Valve",
+      "authors": "Bingchao Wang, Jonah Mack, Francesco Giorgio-Serchi, Adam A. Stokes",
+      "date": "2026-03-25",
+      "pdf": "https://arxiv.org/pdf/2603.24811v1",
+      "score": "6.0",
+      "evidence": "用于磁极性控制的电永磁架构",
+      "tldr": "针对气动和流体网络中持续功耗和固定路由的局限，本研究提出了一种极性可切换的电永磁（S-EPM）阀。该技术利用瞬态电激励改变内部磁通路径，实现双稳态磁极反转，无需持续供电即可维持状态。通过将其集成到挤压阀中，实现了逻辑嵌入式流体网络，支持地址寻址路由和可编程成分控制，为数字化流体和自动化实验室平台提供了可扩展的基础。",
+      "tags": "query:pmsm",
+      "abstract_en": "Scalable control of pneumatic and fluidic networks remains fundamentally constrained by architectures that require continuous power input, dense external control hardware, and fixed routing topologies. Current valve arrays rely on such continuous actuation and mechanically fixed routing, imposing substantial thermal and architectural overhead. Here, we introduce the Switchable-polarity ElectroPermanent Magnet (S-EPM), a fundamentally new bistable magnetic architecture that deterministically reverses its external magnetic polarity through transient electrical excitation. By reconfiguring internal flux pathways within a composite magnet assembly, the S-EPM establishes two stable, opposing magnetic configurations without requiring sustained power. We integrate this architecture into a compact pinch-valve to robustly control pneumatic and liquid media. This state-encoded magnetic control enables logic-embedded fluidic networks, including decoders, hierarchical distribution modules, and a nonvolatile six-port routing array. These systems provide address-based routing and programmable compositional control, offering features like individual port isolation that are impossible with standard mechanically coupled rotary valves. By embedding functionality in persistent magnetic states rather than continuous power or static plumbing, this work establishes a scalable foundation for digital fluidics and autonomous laboratory platforms.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202604/01/2603.29526v1-cooperative-control-of-parallel-actuators-for-linear-robust-output-regulation-of-uncertain-linear-minimum-phase-plants",
+      "section": "quick",
+      "title_en": "Cooperative Control of Parallel Actuators for Linear Robust Output Regulation of Uncertain Linear Minimum-phase Plants",
+      "authors": "Liang Xu, Tao Liu, Zhiyun Lin",
+      "date": "2026-03-31",
+      "pdf": "https://arxiv.org/pdf/2603.29526v1",
+      "score": "6.0",
+      "evidence": "用于鲁棒输出调节的并行执行器协同控制",
+      "tldr": "本文研究了不确定线性最小相位系统在多执行器并行协作下的鲁棒输出调节问题。基于内模原理，作者设计了一种分布式动态输出反馈控制律，实现了无向网络下多执行器的协同操作。该方法不仅建立了单/多执行器控制参数间的联系，还突破性地取消了执行器必须稳定的假设，允许包含不稳定执行器。数值仿真验证了该方案在处理系统不确定性和执行器协同方面的有效性。",
+      "tags": "query:pmsm",
+      "abstract_en": "This paper investigates the robust output regulation problem for an uncertain linear minimum-phase plant with cooperative parallel operation of multiple actuators. Building on the internal model approach, we first propose a dynamic output feedback control law to solve the robust output regulation problem with a single actuator. Then, we construct a distributed dynamic output feedback control law that is nearly independent of the number of actuators and incorporates coupling terms to address the linear robust output regulation problem with cooperative parallel operation of multiple actuators over undirected communication networks. We reveal the connection in the design of parameters between the dynamic output feedback control law under single actuator operation and the distributed dynamic output feedback control law under cooperative parallel operation with multiple actuators. Moreover, we remove the existing assumption that the actuator dynamics must be Hurwitz stable, thereby enabling the incorporation of unstable actuators in our framework. Finally, two numerical examples are provided to validate the effectiveness of the proposed control laws.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202604/01/2603.29745v1-rhino-mag-recursive-h-field-inference-based-on-observed-magnetic-flux-under-dynamic-excitation",
+      "section": "quick",
+      "title_en": "RHINO-MAG: Recursive H-Field Inference based on Observed Magnetic Flux under Dynamic Excitation",
+      "authors": "Hendrik Vater, Oliver Schweins, Lukas Hölsch, Wilhelm Kirchgässner, Till Piepenbrock, Oliver Wallscheid",
+      "date": "2026-03-31",
+      "pdf": "https://arxiv.org/pdf/2603.29745v1",
+      "score": "6.0",
+      "evidence": "瞬态磁场建模与磁性元件优化",
+      "tldr": "本研究针对MagNet Challenge 2025，旨在对铁氧体材料中的瞬态磁场进行建模。通过对比物理启发式模型与黑盒模型，提出了一种基于门控循环单元（GRU）且具有优雅初始化设置的RHINO-MAG模型。该模型仅含325个参数，在五种不同材料的测试中实现了8.02%的序列相对误差和1.07%的能量相对误差，凭借极高的参数效率和预测精度荣获竞赛性能组冠军。",
+      "tags": "query:pmsm",
+      "abstract_en": "Driven by the MagNet Challenge 2025 (MC2), increased research interest is directed towards modeling transient magnetic fields within ferrite material. An accurate time-resolved and temperature-aware H-field prediction is essential for optimizing magnetic components in applications with quasi-stationary / non-stationary excitation waveforms. Within the scope of this investigation, a selection of model structures with varying degrees of physically motivated structure are compared. Based on a Pareto investigation, a rather black-box gated recurrent unit (GRU) model structure with a graceful initialization setup is found to offer the most attractive model size vs. model accuracy trade-off, while the physics-inspired models performed worse. For a GRU-based model with only 325 parameters, a sequence relative error of 8.02 % and a normalized energy relative error of 1.07 % averaged across five different materials are achieved on unseen test data. With this excellent parameter efficiency, the proposed model won the first place in the performance category of the MC2.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
