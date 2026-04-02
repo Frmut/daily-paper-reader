@@ -6,35 +6,29 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-04-01
-- 运行时间：2026-04-01 19:56:28 UTC
+- 最新运行日期：2026-04-02
+- 运行时间：2026-04-02 19:46:44 UTC
 - 运行状态：成功
-- 本次总论文数：4
+- 本次总论文数：2
 - 精读区：0
-- 速读区：4
+- 速读区：2
 
 ### 今日简报（AI）
-今日聚焦机器人运动控制的韧性增强与新型电磁永磁阀硬件突破。
-重点关注本体感受反馈在提升运动安全性方面的应用，以及具备非易失性切换特征的 EPM 阀门设计。
-建议关注如何通过软硬件协同提升复杂环境下控制系统的鲁棒性。
-- 详情：[/202604/01/README](/202604/01/README)
+今日聚焦机器人运动控制的安全性与高精度感知，探索复杂环境下的稳健表现。
+重点关注基于本体感受反馈的韧性控制范式，以及融合曲率自适应跟踪的RPM估计新算法。
+建议深入研究自适应反馈机制，以提升自动化设备在动态任务中的执行精度与容错能力。
+- 详情：[/202604/02/README](/202604/02/README)
 
 ### 精读区论文标签
 - 本次无精读推荐。
 
 ### 速读区论文标签
-1. [Proprioceptive feedback paradigm for safe and resilient motion control](/202604/01/2603.27051v1-proprioceptive-feedback-paradigm-for-safe-and-resilient-motion-control)  
-   标签：评分：7.0/10、query:pmsm
-   evidence：弹性运动控制与故障补偿
-2. [A Nonvolatile Switchable-polarity EPM Valve](/202604/01/2603.24811v1-a-nonvolatile-switchable-polarity-epm-valve)  
+1. [Proprioceptive feedback paradigm for safe and resilient motion control](/202604/02/2603.27051v2-proprioceptive-feedback-paradigm-for-safe-and-resilient-motion-control)  
    标签：评分：6.0/10、query:pmsm
-   evidence：用于磁极性控制的电永磁架构
-3. [Cooperative Control of Parallel Actuators for Linear Robust Output Regulation of Uncertain Linear Minimum-phase Plants](/202604/01/2603.29526v1-cooperative-control-of-parallel-actuators-for-linear-robust-output-regulation-of-uncertain-linear-minimum-phase-plants)  
+   evidence：弹性运动控制与执行器故障补偿
+2. [ARC: Alignment-based RPM Estimation with Curvature-adaptive Tracking](/202604/02/2603.29354v1-arc-alignment-based-rpm-estimation-with-curvature-adaptive-tracking)  
    标签：评分：6.0/10、query:pmsm
-   evidence：用于鲁棒输出调节的并行执行器协同控制
-4. [RHINO-MAG: Recursive H-Field Inference based on Observed Magnetic Flux under Dynamic Excitation](/202604/01/2603.29745v1-rhino-mag-recursive-h-field-inference-based-on-observed-magnetic-flux-under-dynamic-excitation)  
-   标签：评分：6.0/10、query:pmsm
-   evidence：瞬态磁场建模与磁性元件优化
+   evidence：旋转机械的转速估计
 
 
 <div class="dpr-home-promo-card">
