@@ -1,0 +1,37 @@
+{
+  "label": "2026-04-03",
+  "date": "2026-04-03",
+  "generated_at": "2026-04-03T19:24:28",
+  "count": 2,
+  "papers": [
+    {
+      "paper_id": "202604/03/2604.01923v1-pll-based-sub-super-synchronous-resonance-damping-controller-for-d-pmsg-wind-farm-integrated-power-systems",
+      "section": "deep",
+      "title_en": "PLL Based Sub-/Super-synchronous Resonance Damping Controller for D-PMSG Wind Farm Integrated Power Systems",
+      "authors": "Songhao Yang, Ruixin Shen, Jin Shu, Tao Zhang, Yujun Li, Baohui Zhang, Zhiguo Hao",
+      "date": "2026-04-02",
+      "pdf": "https://arxiv.org/pdf/2604.01923v1",
+      "score": "9.0",
+      "evidence": "直驱永磁同步发电机（D-PMSG）控制",
+      "tldr": "针对直驱永磁同步发电机（D-PMSG）并网系统中的次/超同步振荡（SSO）问题，本文提出了一种基于锁相环（PLL）的自适应阻尼控制器。通过灵敏度分析确定PLL参数对SSO的关键影响，设计了结构简单、无需相位补偿且易于调参的SSRDC。该方案降低了控制成本，提高了在多种工况下的鲁棒性，并通过硬件在环测试验证了其有效性。",
+      "tags": "query:pmsm",
+      "abstract_en": "Existing sub-/super-synchronous (SSO) suppression methods for the direct-drive permanent magnet synchronous generators (D-PMSG) integrated power systems are mainly achieved by external devices or sub-synchronous resonance damping controller (SSRDC) at the converters, facing challenges of considerable control costs, complex parameters tuning, or inadaptability to various operating conditions. To address these problems, this paper proposes an adaptive SSRDC based on the phase-locked loop (PLL) for D-PMSG integrated power systems. Firstly, the PLL parameter is found critical to SSO suppression by a comprehensive sensitivity analysis on the dominant poles of the impedance closed-loop transfer function. Motivated by this finding, this paper then designs a PLL-based SSRDC, which features a simple structure, easy parameter tuning, and flexible adaptability to various operating modes. The simplicity in structure is guaranteed by the avoidance of phase compensation. Benefiting from the simple structure, only one key parameter needs to be tuned. Moreover, two principles of parameter tuning are proposed to enhance the efficiency, robustness, and adaptability of the proposed SSRDC. The controller-hardware-in-the-loop (CHIL) tests verify the validity of the proposed SSRDC under various operating conditions. Finally, some concerns about this method such as frequency estimation, computational efficiency and potential impacts on PLL are thoroughly analyzed and clarified.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202604/03/2604.02132v1-safe-control-of-feedback-interconnected-systems-via-singular-perturbations",
+      "section": "quick",
+      "title_en": "Safe Control of Feedback-Interconnected Systems via Singular Perturbations",
+      "authors": "Stefano Di Gregorio, Guido Carnevale, Giuseppe Notarstefano",
+      "date": "2026-04-02",
+      "pdf": "https://arxiv.org/pdf/2604.02132v1",
+      "score": "6.0",
+      "evidence": "电气与机械子系统安全关键控制的方法论桥梁",
+      "tldr": "本研究针对具有多时间尺度特性的反馈互联非线性系统，提出了一种基于奇异摄动理论的安全控制方法。通过将低阶简化模型上设计的控制屏障函数（CBF）提升至全阶系统，证明了在快慢动力学充分分离的情况下，复合CBF能确保全系统的安全性。该方法显著降低了在线安全滤波的计算负担，并在机器人手臂和优化驱动系统上得到了验证。",
+      "tags": "query:pmsm",
+      "abstract_en": "Control Barrier Functions (CBFs) have emerged as a powerful tool in the design of safety-critical controllers for nonlinear systems. In modern applications, complex systems often involve the feedback interconnection of subsystems evolving at different timescales, e.g., two parts from different physical domains (e.g., the electrical and mechanical parts of robotic systems) or a physical plant and an (optimization or control) algorithm. In these scenarios, safety constraints often involve only a portion of the overall system. Inspired by singular perturbations for stability analysis, we develop a formal procedure to lift a safety certificate designed on a reduced-order model to the overall feedback-interconnected system. Specifically, we show that under a sufficient timescale separation between slow and fast dynamics, a composite CBF can be designed to certify the forward invariance of the safe set for the interconnected system. As a result, the online safety filter only needs to be solved for the lower-dimensional, reduced-order model. We numerically test the proposed approach on: (i) a robotic arm with joint motor dynamics, and (ii) a physical plant driven by an optimization algorithm.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

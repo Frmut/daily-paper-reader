@@ -1,0 +1,94 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-04-03T19:23:15.874923+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 1,
+    "deep_cap": 6,
+    "deep_selected": 1,
+    "quick_candidates": 1,
+    "quick_skim_target": 11,
+    "quick_selected": 1
+  },
+  "deep_dive": [
+    {
+      "id": "2604.01923v1",
+      "title": "PLL Based Sub-/Super-synchronous Resonance Damping Controller for D-PMSG Wind Farm Integrated Power Systems",
+      "abstract": "Existing sub-/super-synchronous (SSO) suppression methods for the direct-drive permanent magnet synchronous generators (D-PMSG) integrated power systems are mainly achieved by external devices or sub-synchronous resonance damping controller (SSRDC) at the converters, facing challenges of considerable control costs, complex parameters tuning, or inadaptability to various operating conditions. To address these problems, this paper proposes an adaptive SSRDC based on the phase-locked loop (PLL) for D-PMSG integrated power systems. Firstly, the PLL parameter is found critical to SSO suppression by a comprehensive sensitivity analysis on the dominant poles of the impedance closed-loop transfer function. Motivated by this finding, this paper then designs a PLL-based SSRDC, which features a simple structure, easy parameter tuning, and flexible adaptability to various operating modes. The simplicity in structure is guaranteed by the avoidance of phase compensation. Benefiting from the simple structure, only one key parameter needs to be tuned. Moreover, two principles of parameter tuning are proposed to enhance the efficiency, robustness, and adaptability of the proposed SSRDC. The controller-hardware-in-the-loop (CHIL) tests verify the validity of the proposed SSRDC under various operating conditions. Finally, some concerns about this method such as frequency estimation, computational efficiency and potential impacts on PLL are thoroughly analyzed and clarified.",
+      "authors": [
+        "Songhao Yang",
+        "Ruixin Shen",
+        "Jin Shu",
+        "Tao Zhang",
+        "Yujun Li",
+        "Baohui Zhang",
+        "Zhiguo Hao"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY"
+      ],
+      "published": "2026-04-02T11:40:33+00:00",
+      "link": "https://arxiv.org/pdf/2604.01923v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "direct-drive permanent magnet synchronous generators (D-PMSG) control",
+      "llm_evidence_cn": "直驱永磁同步发电机（D-PMSG）控制",
+      "llm_evidence": "直驱永磁同步发电机（D-PMSG）控制",
+      "canonical_evidence": "直驱永磁同步发电机（D-PMSG）控制",
+      "llm_tldr_en": "Proposes an adaptive resonance damping controller for PMSG-based wind farm systems using PLL parameters.",
+      "llm_tldr_cn": "提出一种基于锁相环参数的永磁同步发电机风电场系统自适应共振抑制控制器。",
+      "llm_tldr": "提出一种基于锁相环参数的永磁同步发电机风电场系统自适应共振抑制控制器。",
+      "llm_tags": [
+        "query:pmsm"
+      ],
+      "matched_query_tag": "query:pmsm",
+      "matched_query_text": "Permanent Magnet Synchronous Motor research",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2604.02132v1",
+      "title": "Safe Control of Feedback-Interconnected Systems via Singular Perturbations",
+      "abstract": "Control Barrier Functions (CBFs) have emerged as a powerful tool in the design of safety-critical controllers for nonlinear systems. In modern applications, complex systems often involve the feedback interconnection of subsystems evolving at different timescales, e.g., two parts from different physical domains (e.g., the electrical and mechanical parts of robotic systems) or a physical plant and an (optimization or control) algorithm. In these scenarios, safety constraints often involve only a portion of the overall system. Inspired by singular perturbations for stability analysis, we develop a formal procedure to lift a safety certificate designed on a reduced-order model to the overall feedback-interconnected system. Specifically, we show that under a sufficient timescale separation between slow and fast dynamics, a composite CBF can be designed to certify the forward invariance of the safe set for the interconnected system. As a result, the online safety filter only needs to be solved for the lower-dimensional, reduced-order model. We numerically test the proposed approach on: (i) a robotic arm with joint motor dynamics, and (ii) a physical plant driven by an optimization algorithm.",
+      "authors": [
+        "Stefano Di Gregorio",
+        "Guido Carnevale",
+        "Giuseppe Notarstefano"
+      ],
+      "primary_category": "math.OC",
+      "categories": [
+        "math.OC",
+        "eess.SY"
+      ],
+      "published": "2026-04-02T15:04:51+00:00",
+      "link": "https://arxiv.org/pdf/2604.02132v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Methodological bridge for safety-critical control of electrical and mechanical subsystems",
+      "llm_evidence_cn": "电气与机械子系统安全关键控制的方法论桥梁",
+      "llm_evidence": "电气与机械子系统安全关键控制的方法论桥梁",
+      "canonical_evidence": "电气与机械子系统安全关键控制的方法论桥梁",
+      "llm_tldr_en": "Develops a procedure to lift safety certificates from reduced-order models to interconnected systems.",
+      "llm_tldr_cn": "开发了一种将安全证书从降阶模型提升到互联系统的程序。",
+      "llm_tldr": "开发了一种将安全证书从降阶模型提升到互联系统的程序。",
+      "llm_tags": [
+        "query:pmsm"
+      ],
+      "matched_query_tag": "query:pmsm",
+      "matched_query_text": "Permanent Magnet Synchronous Motor research",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
