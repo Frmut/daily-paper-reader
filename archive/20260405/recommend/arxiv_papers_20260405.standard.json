@@ -1,0 +1,143 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-04-05T19:49:52.426561+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 2,
+    "quick_skim_target": 11,
+    "quick_selected": 2
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2603.29740v1",
+      "title": "Data-Driven Optimisation of Superconducting Magnets at CEA Paris-Saclay",
+      "abstract": "Superconducting magnets for particle accelerators are particularly challenging to design because they involve a large number of coupled physical phenomena and the management of complex datasets. Artificial Intelligence (AI), including machine learning and advanced optimisation techniques, offers promising approaches to address these challenges and accelerate the design process. This paper presents a new AI-based optimisation and data management platform, and highlights several ongoing applications of AI methods carried out at CEA Paris-Saclay, including multiphysics optimisation using active learning, topology optimisation, holistic modelling of an Electron Cyclotron Resonance (ERC) ion source, and anomaly detection in quench events.",
+      "authors": [
+        "Damien F. G. Minenna",
+        "Guillaume Dilasser",
+        "Robin Penavaire",
+        "Valerio Calvelli",
+        "Thibault de Chabannes",
+        "Thibault Lecrevisse",
+        "Thomas Achard",
+        "Jason Le Coz",
+        "Christophe Berriaud",
+        "Benoît Bolzon",
+        "Antomne Caunes",
+        "Phillipe Fazilleau",
+        "Hélène Felice",
+        "Clément Genot",
+        "Antoine Guinet",
+        "Nikola Jerance",
+        "François-Paul Juster",
+        "Thibaut Lemercier",
+        "Gilles Lenoir",
+        "Clément Lorin",
+        "Yann Perron",
+        "Camille Pucheu-Plante",
+        "Étienne Rochepault",
+        "Damien Simon",
+        "Francesco Stacchi",
+        "Michel Segreti",
+        "Vincent Trauchessec",
+        "Olivier Tuske",
+        "Hajar Zgour"
+      ],
+      "primary_category": "physics.acc-ph",
+      "categories": [
+        "physics.acc-ph",
+        "physics.plasm-ph"
+      ],
+      "published": "2026-03-31T13:38:18+00:00",
+      "link": "https://arxiv.org/pdf/2603.29740v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "AI-based optimization of superconducting magnets",
+      "llm_evidence_cn": "基于人工智能的超导磁体优化",
+      "llm_evidence": "基于人工智能的超导磁体优化",
+      "canonical_evidence": "基于人工智能的超导磁体优化",
+      "llm_tldr_en": "Applies AI and machine learning to optimize the design and anomaly detection of complex magnetic systems.",
+      "llm_tldr_cn": "应用人工智能和机器学习来优化复杂磁性系统的设计和异常检测。",
+      "llm_tldr": "应用人工智能和机器学习来优化复杂磁性系统的设计和异常检测。",
+      "llm_tags": [
+        "query:pmsm:composite"
+      ],
+      "matched_query_tag": "query:pmsm:composite",
+      "matched_query_text": "Papers central to 三相及双三相永磁同步电机相关研究检索, especially work that connects or combines: m; s; f; Permanent Magnet Synchronous Motor research; dual three-phase permanent magnet synchronous motor control and design; fault-tolerant control of multi-phase motors; recent advances in dual three phase permanent magnet synchronous motor control; fault tolerant strategies for multi phase permanent magnet synchronous motors.",
+      "matched_requirement_id": "req-composite-pmsm",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2603.29740v2",
+      "title": "Data-Driven Optimisation of Superconducting Magnets at CEA Paris-Saclay",
+      "abstract": "Superconducting magnets for particle accelerators are particularly challenging to design because they involve a large number of coupled physical phenomena and the management of complex datasets. Artificial Intelligence (AI), including machine learning and advanced optimisation techniques, offers promising approaches to address these challenges and accelerate the design process. This paper presents a new AI-based optimisation and data management platform, and highlights several ongoing applications of AI methods carried out at CEA Paris-Saclay, including multiphysics optimisation using active learning, topology optimisation, holistic modelling of an Electron Cyclotron Resonance (ERC) ion source, and anomaly detection in quench events.",
+      "authors": [
+        "Damien F. G. Minenna",
+        "Guillaume Dilasser",
+        "Robin Penavaire",
+        "Valerio Calvelli",
+        "Thibault de Chabannes",
+        "Thibault Lecrevisse",
+        "Thomas Achard",
+        "Jason Le Coz",
+        "Christophe Berriaud",
+        "Benoît Bolzon",
+        "Antomne Caunes",
+        "Phillipe Fazilleau",
+        "Hélène Felice",
+        "Clément Genot",
+        "Antoine Guinet",
+        "Nikola Jerance",
+        "François-Paul Juster",
+        "Thibaut Lemercier",
+        "Gilles Lenoir",
+        "Clément Lorin",
+        "Yann Perron",
+        "Camille Pucheu-Plante",
+        "Étienne Rochepault",
+        "Damien Simon",
+        "Francesco Stacchi",
+        "Michel Segreti",
+        "Vincent Trauchessec",
+        "Olivier Tuske",
+        "Hajar Zgour"
+      ],
+      "primary_category": "physics.acc-ph",
+      "categories": [
+        "physics.acc-ph",
+        "physics.plasm-ph"
+      ],
+      "published": "2026-03-31T13:38:18+00:00",
+      "link": "https://arxiv.org/pdf/2603.29740v2",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "AI-based optimization of superconducting magnets",
+      "llm_evidence_cn": "基于人工智能的超导磁体优化",
+      "llm_evidence": "基于人工智能的超导磁体优化",
+      "canonical_evidence": "基于人工智能的超导磁体优化",
+      "llm_tldr_en": "Presents an AI platform for multiphysics and topology optimization of superconducting magnets.",
+      "llm_tldr_cn": "介绍了一个用于超导磁体多物理场和拓扑优化的AI平台。",
+      "llm_tldr": "介绍了一个用于超导磁体多物理场和拓扑优化的AI平台。",
+      "llm_tags": [
+        "query:pmsm:composite"
+      ],
+      "matched_query_tag": "query:pmsm:composite",
+      "matched_query_text": "Papers central to 三相及双三相永磁同步电机相关研究检索, especially work that connects or combines: m; s; f; Permanent Magnet Synchronous Motor research; dual three-phase permanent magnet synchronous motor control and design; fault-tolerant control of multi-phase motors; recent advances in dual three phase permanent magnet synchronous motor control; fault tolerant strategies for multi phase permanent magnet synchronous motors.",
+      "matched_requirement_id": "req-composite-pmsm",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

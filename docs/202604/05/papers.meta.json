@@ -1,0 +1,37 @@
+{
+  "label": "2026-04-05",
+  "date": "2026-04-05",
+  "generated_at": "2026-04-05T19:50:14",
+  "count": 2,
+  "papers": [
+    {
+      "paper_id": "202604/05/2603.29740v1-data-driven-optimisation-of-superconducting-magnets-at-cea-paris-saclay",
+      "section": "quick",
+      "title_en": "Data-Driven Optimisation of Superconducting Magnets at CEA Paris-Saclay",
+      "authors": "Damien F. G. Minenna, Guillaume Dilasser, Robin Penavaire, Valerio Calvelli, Thibault de Chabannes, Thibault Lecrevisse, Thomas Achard, Jason Le Coz, Christophe Berriaud, Benoît Bolzon, Antomne Caunes, Phillipe Fazilleau, Hélène Felice, Clément Genot, Antoine Guinet, Nikola Jerance, François-Paul Juster, Thibaut Lemercier, Gilles Lenoir, Clément Lorin, Yann Perron, Camille Pucheu-Plante, Étienne Rochepault, Damien Simon, Francesco Stacchi, Michel Segreti, Vincent Trauchessec, Olivier Tuske, Hajar Zgour",
+      "date": "2026-03-31",
+      "pdf": "https://arxiv.org/pdf/2603.29740v1",
+      "score": "7.0",
+      "evidence": "基于人工智能的超导磁体优化",
+      "tldr": "CEA Paris-Saclay开发了一个基于人工智能的优化与数据管理平台，旨在解决粒子加速器超导磁体设计中涉及的多物理场耦合及复杂数据管理难题。该研究通过集成机器学习、主动学习和拓扑优化等先进技术，展示了在多物理场优化、电子回旋共振离子源建模及失超事件异常检测等方面的应用，显著提升了设计效率和系统性能。",
+      "tags": "query:pmsm",
+      "abstract_en": "Superconducting magnets for particle accelerators are particularly challenging to design because they involve a large number of coupled physical phenomena and the management of complex datasets. Artificial Intelligence (AI), including machine learning and advanced optimisation techniques, offers promising approaches to address these challenges and accelerate the design process. This paper presents a new AI-based optimisation and data management platform, and highlights several ongoing applications of AI methods carried out at CEA Paris-Saclay, including multiphysics optimisation using active learning, topology optimisation, holistic modelling of an Electron Cyclotron Resonance (ERC) ion source, and anomaly detection in quench events.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202604/05/2603.29740v2-data-driven-optimisation-of-superconducting-magnets-at-cea-paris-saclay",
+      "section": "quick",
+      "title_en": "Data-Driven Optimisation of Superconducting Magnets at CEA Paris-Saclay",
+      "authors": "Damien F. G. Minenna, Guillaume Dilasser, Robin Penavaire, Valerio Calvelli, Thibault de Chabannes, Thibault Lecrevisse, Thomas Achard, Jason Le Coz, Christophe Berriaud, Benoît Bolzon, Antomne Caunes, Phillipe Fazilleau, Hélène Felice, Clément Genot, Antoine Guinet, Nikola Jerance, François-Paul Juster, Thibaut Lemercier, Gilles Lenoir, Clément Lorin, Yann Perron, Camille Pucheu-Plante, Étienne Rochepault, Damien Simon, Francesco Stacchi, Michel Segreti, Vincent Trauchessec, Olivier Tuske, Hajar Zgour",
+      "date": "2026-03-31",
+      "pdf": "https://arxiv.org/pdf/2603.29740v2",
+      "score": "6.0",
+      "evidence": "基于人工智能的超导磁体优化",
+      "tldr": "针对粒子加速器超导磁体设计中物理现象耦合复杂及数据管理难的问题，CEA Paris-Saclay 开发了一个基于人工智能的优化与数据管理平台。该研究利用机器学习和先进优化技术，涵盖了主动学习多物理场优化、拓扑优化、离子源整体建模及失超事件异常检测等多个应用场景，旨在加速设计流程并提升磁体性能。",
+      "tags": "query:pmsm",
+      "abstract_en": "Superconducting magnets for particle accelerators are particularly challenging to design because they involve a large number of coupled physical phenomena and the management of complex datasets. Artificial Intelligence (AI), including machine learning and advanced optimisation techniques, offers promising approaches to address these challenges and accelerate the design process. This paper presents a new AI-based optimisation and data management platform, and highlights several ongoing applications of AI methods carried out at CEA Paris-Saclay, including multiphysics optimisation using active learning, topology optimisation, holistic modelling of an Electron Cyclotron Resonance (ERC) ion source, and anomaly detection in quench events.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

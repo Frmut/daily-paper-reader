@@ -1,0 +1,295 @@
+Title: Data-Driven Optimisation of Superconducting Magnets at CEA Paris-Saclay
+
+URL Source: https://arxiv.org/pdf/2603.29740v1
+
+Published Time: Wed, 01 Apr 2026 01:15:54 GMT
+
+Number of Pages: 10
+
+Markdown Content:
+## Data-Driven Optimisation of Superconducting Magnets at CEA Paris-Saclay 
+
+Damien F. G. Minenna, ∗ Guillaume Dilasser, Robin Penavaire, Valerio Calvelli, Thibault de Chabannes, Thibault Lecrevisse, Thomas Achard, Jason Le Coz, Christophe Berriaud, Benoˆ ıt Bolzon, Antomne Caunes, Phillipe Fazilleau, H´ el` ene Felice, Cl´ ement Genot, Antoine Guinet, Nikola Jerance, Fran¸ cois-Paul Juster, Thibaut Lemercier, Gilles Lenoir, Cl´ ement Lorin, Yann Perron, Camille Pucheu-Plante, ´Etienne Rochepault, Damien Simon, Francesco Stacchi, Michel Segreti, Vincent Trauchessec, Olivier Tuske, and Hajar Zgour 
+
+Universit´ e Paris-Saclay, CEA, IRFU, D´ epartement des Acc´ el´ erateurs, de la Cryog´ enie et du Magn´ etisme, Gif-sur-Yvette, 91191, France 
+
+(Dated: April 1, 2026) Superconducting magnets for particle accelerators are particularly challenging to design because they involve a large number of coupled physical phenomena and the management of complex datasets. Artificial Intelligence (AI), including machine learning and advanced optimisation tech-niques, offers promising approaches to address these challenges and accelerate the design process. This paper presents a new AI-based optimisation and data management platform, and highlights several ongoing applications of AI methods carried out at CEA Paris-Saclay, including multiphysics optimisation using active learning, topology optimisation, holistic modelling of an Electron Cy-clotron Resonance (ERC) ion source, and anomaly detection in quench events. 
+
+I. INTRODUCTION 
+
+Since the 1960s, CEA Paris-Saclay has been actively involved in the design, construction, and operation of superconducting magnets for a wide range of applica-tions including: particle accelerators and detectors, fu-sion devices, and Magnetic Resonance Imaging (MRI) systems. Superconducting magnets are highly integrated and complex systems. Their development is both multi-disciplinary and data-intensive, requiring expertise across multiple areas of physics and engineering, including elec-tromagnetism, mechanics, thermal analysis, cryogenics, and materials science. Accurate modelling must account for the various components of the magnet system, such as superconducting cables, winding geometries, ferromag-netic structures, cooling circuits, quench and safety pro-tection systems, and power supplies. The design and con-struction of such magnets typically span several years, during which project requirements may evolve. Dur-ing the design phases, extensive numerical simulations are performed, often relying on computationally expen-sive Finite Element Method (FEM) models to capture strongly coupled multiphysics behaviours. In addition, the emergence of new High-Temperature Superconduc-tors (HTS) requires the development of new modelling and optimisation tools. In this context, the integration of Artificial Intelli-gence (AI), including Machine Learning (ML) and ad-vanced optimisation techniques, is transforming the way superconducting magnets are designed and operated [1], particularly through three main contributions. First, AI approaches can significantly reduce computational time and resource requirements through the development of surrogate (reduced-order) models. Second, AI en-ables more efficient and systematic optimisation strate- 
+
+> ∗damien.minenna@cea.fr ALESIA Manager
+> Material & project
+> databases
+> Data analysis tools
+> Interfaces with
+> software
+> Multiparametric
+> optimisers
+> Supervised learning
+> In-house physics
+> models
+
+FIG. 1. Main modules of the alesia platform. 
+
+gies, particularly for identifying optimal configurations in high-dimensional parameter spaces. Third, AI meth-ods provide new opportunities to improve operational efficiency, anomaly detection and overall system safety during magnet operation. This paper presents several examples related to superconducting magnets that illus-trate these three aspects, based on recent activities car-ried out at CEA. CEA is also investigating in this paper the use of those tools towards the development of the new Electron Cyclotron Resonance Ion Sources (ECRIS). This paper is organised as follows: Section II presents a new platform. Section III presents applications to mag-net optimisation, including active learning and topology optimisation. Section IV presents applications to the fu-ture ECRIS, including HTS magnets and the extraction system. Finally, Section V addresses quench detection and simulation. 
+
+II. DATA ANALYSIS AND MANAGEMENT 
+
+Two of the biggest challenges of designing large super-conducting magnets are the large number of parameters involved and the diversity of expertise required across multiple areas of physics and engineering. To solve those 
+
+> arXiv:2603.29740v1 [physics.acc-ph] 31 Mar 2026
+
+2challenges, CEA is developing a new artificial intelli-gence optimisation and data management platform called 
+
+alesia . alesia is developed in Python and Cython ow-ing to the languages versatility and strong community support, which facilitates the integration of AI tools. The platform has been benchmarked on Windows, Linux, and macOS systems, as well as on high-performance com-puting (HPC) clusters using on job schedulers, such as SLURM. Note that several other frameworks dedicated to the design of superconducting magnets have been pro-posed in recent years [2–4]. It is currently structured into seven main modules as represented in Fig. 1 and described in the following Sec-tions.  
+
+> A. Project Manager
+
+The core of alesia rests on its project manager ap-proach. A “project” is defined as the set of simulation scripts, execution shell scripts, input parameter ranges, individual simulation inputs, optimiser hyperparameters, and the generated data. The manager is responsible for launching simulations and supports their parallel execu-tion. It also ensures the coordination and interaction between all modules.  
+
+> B. Databases
+
+Such projects can require substantial storage capacity. For example, one thousand simulations performed with 
+
+opera 2D [5] can generate several terabytes of data if full meshed models are stored. To limit storage requirements, only relevant output data are retained. All scripts and input parameters are archived, allowing simulations to be reproduced if necessary. The project database is stored in a single file using the HDF5 format. For each individual simulation, a temporary local HDF5 file is first created and subsequently merged into the project database upon completion. This database follows several of the FAIR (Findable, Accessible, Interoperable, Reusable) guiding principles. It facilitates data analysis by ML models, allows cross-disciplinary uses, and reduces the time spent locating and preparing datasets. To facilitate design simulations throughout all devel-opment phases, a unified material properties database implemented in SQL (Structured Query Language) has also been developed. The database stores a wide range of material properties, including magnetisation curves, Young’s modulus, shear modulus, Poisson’s ratio, ther-mal expansion coefficients, heat capacity, thermal con-ductivity, electrical resistivity, density, together with ref-erences to the original data sources. In addition, the database includes critical current density fits for several superconductors, including HTS and Low-Temperature Superconductors (LTS), such as Nb-Ti, Nb 3Sn. A key advantage of this approach is that a consistent material dataset can be accessed by all simulation codes through-out the design workflow (via the interfaces introduced in Section II C), thereby limiting the risk of modelling er-rors. A Django-based API (Application Programming Interface) was made to access the material properties database within the CEA network.  
+
+> C. Interface With Physics Software
+
+The platform integrates seamlessly with external physics simulation codes. This integration serves two primary objectives: exporting input data from alesia to the simulation code and importing the resulting output data back into the alesia project database. At present, alesia is interfaced with opera 2d and 
+
+3d , rat (open source version) [6], ansys [7], cast3m [8] and ibsimu [9]. Interfaces also exist for codes written in C++, Matlab and Python. An interface with comsol 
+
+[10] is currently under development. Two complementary approaches are employed, some-times in combination: i) a direct database interaction, in which the physics codes are modified to interface di-rectly with the alesia project database. As an exam-ple, the Python interface in recent versions of opera 2D 
+
+is exploited via a dedicated package developed for this purpose. Similarly, tailored processes have been imple-mented for cast3m . ii) a keyword-based script modifica-tion, in which input scripts are automatically edited by replacing predefined keywords with the desired values. A third-party post-processing script is then used to retrieve the output and add them into the project database. This approach is useful when direct modifications of HDF5 files is impractical or unsupported.  
+
+> D. Multiparametric Optimisers
+
+alesia is capable of solving nonlinear optimisation problems with multiple objective functions subject to a set of constraints. Numerous heuristic multi-parameter optimisation methods have been implemented and bench-marked in Ref. [11]. They are based on evolutionary computation and active learning, including genetic algo-rithms, differential evolution, particle swarm optimisa-tion, Covariance Matrix Adaptation Evolution Strategy (CMA-ES), and Bayesian optimisation. The benchmark was performed on an Nb-Ti superconducting magnet de-sign that simultaneously involved electromagnetism, me-chanics, materials, conductor behaviour, and quench sim-ulations. The main challenge addressed was managing the highly coupled interdependencies between numerous design parameters. Previously, in a similar vein, genetic algorithms were employed for the development of the FCC Flared-end Dipole Demonstrator (F2D2) project [12], within a col-laboration between CEA and CERN, as well as for the 3MADMAX (MAgnetized Disk and Mirror AXion) exper-iment [13], hosted at HERA, DESY. In addition, several custom optimisation algorithms with different objectives have been developed. For in-stance, this includes a parameter sweep over a uniform N-dimensional grid, where each sampled point is further refined using a bisection method. This approach is use-ful when investigating variations in the winding geome-try, while requiring the current density to be adjusted at each point to maintain the target magnetic field. It also includes a Monte Carlo approach for error analysis, in which the parameters of a validated design are randomly perturbed to assess tolerances.  
+
+> E. Supervised Learning Techniques
+
+The multi-parametric optimisation algorithms, de-scribed in Section II D, are not the only means of ex-ploring designs within alesia . Once a sufficiently large dataset has been generated (preferably through random sampling), the platform can exploit a variety of super-vised learning techniques to construct surrogate models representing the behaviour of the magnet. These surro-gate models are valuable when, for instance, target re-quirements are modified, as they enable the rapid iden-tification of new feasible regions within the parametric design space without the need for running extensive ad-ditional simulations.  
+
+> F. Data Analysis Tools
+
+Data analysis is performed mainly in Python, using customised Jupyter notebooks. Those tools allow rapid exploration of the parametric space and facilitate the val-idation of design results. A metadata database is main-tained throughout the simulations, storing, for each in-put and output quantity, its description, physical units, symbolic name, and L ATEX representation for use in plots and reports. Based on the simulation results, alesia can automatically generate basic reports in .docx , .pptx , or 
+
+.tex formats.  
+
+> G. In-House Modelling
+
+A set of analytical and quasi-analytical models for su-perconducting magnets are also directly included into 
+
+alesia , for example Biot-Savart field modelling. Includ-ing those models into alesia allows them to directly ac-cess the material database and superconductor property fits. This capability is particularly useful for the conduc-tors design model and the quench model implemented in the platform. The conductors design model estimates the conductor composition and margins. The quench model is based on a 3D adiabatic approximation [14] of the nor-mal zone temperature combined with a matrix-based cou-    
+
+> FIG. 2. Cross section of the 6.2 m-long SPIN ROTATORS magnet. The colormap represents the magnetic field distri-bution within the coil. The design was obtained using the
+> alesia platform.
+
+pled equivalent circuit, allowing to compute the hotspot temperature and current decay.   
+
+> III. MAGNET OPTIMISATION DESIGN A. Multiphysics Optimisation
+
+CEA is currently responsible for the design of the SPIN ROTATORS superconducting magnets, which consist of eight solenoid magnets for the Electron-Ion Collider (EIC) [15] at Brookhaven National Laboratory (BNL). These magnets will control the electron spin polarisation prior to collision, and they require both a high opera-tive magnetic field (around 8 T) and a large magnetic field integral (15.43 T ·m for the 2.5 m-long magnet and 47.26 T ·m for the 6.2 m-long magnet , see Fig. 2). To meet these requirements, two different superconductors: Nb-Ti and Nb 3Sn were considered. The optimisation of both was automated by the alesia platform. The full design process must integrate magnetic, mechanical, con-ductor, and quench simulations across multiple materials and variable geometries, including the coil, yoke, man-drel, and insulation layers. Figure 3 displays the design workflow for an Nb 3Sn solenoid magnet, illustrating the complexity and interde-pendence of the different physical domains and associated simulations. At the beginning of the loop, the values of the design variables (design inputs) are selected by the optimisation algorithm (evolutionary computation or ac-tive learning). A first magnetic simulation is then per-formed using opera 2d to retrieve the magnetic prop-erties. A second magnetic simulation with cast3m is 4Magnetism 1  
+
+> (Opera)
+> Magnetism 3
+> (Opera)
+> Magnetism 2
+> (Cast3M)
+> Material
+> properties
+> Figure of merit
+> Magnetic map
+> Fringe field
+> Energy mag.
+> Inductance
+> Laplace forces
+> Laplace forces
+> (Cast3M grid)
+> Secondary
+> inductance
+> Mechanics
+> (Cast3M) Strain
+> Mechanics
+> (Cast3M)
+> Stress
+> Displacement
+> Composition
+> Margins
+> Current
+> Quench
+> Conductor design
+> with strain
+> Conductor design
+> Conductor
+> fits
+> Geometry
+> Current
+> Targets &
+> Constraints
+> Quench hotspot
+> Temperature
+> Currents
+> Score
+> Inputs
+> Data analysis
+> Optimised?
+> Yes
+> No
+> Electromagnetism
+> Electricity
+> General / technical
+> Mechanics
+> Thermics
+> Material science
+> Outputs Superconductivity
+> Automated
+> feedback loop
+
+FIG. 3. Automated workflow of the design of an Nb 3Sn solenoid magnet with the new platform alesia .
+
+carried out to compute the Laplace forces. In addition, a third magnetic simulation with opera 2d evaluates the secondary inductance induced in the stainless steel mandrel. Next, an initial conductor design estimation is performed using an in-house software to determine a preliminary composition, which is then as input for a first mechanical simulation with cast3m , to evaluate the strain experienced by the Nb 3Sn cable. Based on these results, the final conductor design is produced, followed by the final mechanical simulation. A quench simulation ends the workflow. Thanks to alesia , the overall process is linear and automated. The platform sequentially exe-cutes each simulation software with the required inputs, and retrieves the outputs and stores them to the next stage of the workflow. All the generated data are stored for subsequent analysis and design verification. This ar-chitecture requires only N interfaces, instead of ( N − 1)! 0 20 40 60 80       
+
+> Actual (T ·m)
+> 0
+> 20
+> 40
+> 60
+> 80
+> Predicted (T ·m)
+> Field integral
+> R²=0.997
+> RMSE=0.850
+> MAE=0.632
+> Perfect fit
+> 0510 15
+> Actual (T)
+> 0
+> 5
+> 10
+> 15
+> Predicted (T)
+> Peak field
+> R²=0.998
+> RMSE=0.146
+> MAE=0.107
+> Perfect fit
+> 100 200 300
+> Actual (MPa)
+> 0
+> 100
+> 200
+> 300
+> Predicted (MPa)
+> von Mises stress
+> R²=0.988
+> RMSE=7.047
+> MAE=4.824
+> Perfect fit
+> 100 200
+> Actual (K)
+> 0
+> 100
+> 200
+> 300
+> Predicted (K)
+> Quench temperature
+> R²=0.952
+> RMSE=11.582
+> MAE=4.525
+> Perfect fit
+
+FIG. 4. Parity plots with 2131 test points (not used dur-ing model training), evaluating a surrogate model predictions. Upper left: integrated magnetic field along the beam propa-gation axis (reflects beam propagation needs). Upper right: peak magnetic field in the coil (up to 18 T with an Nb 3Sn conductor). Lower left: Maximum von Mises stress in the coil windings (relevant to mechanical integrity under Lorentz forces and cooling down). Lower right: Maximum hotspot temperature during a quench event. 
+
+if direct interfaces had to be implemented between ev-ery pair of software. The complete Nb 3Sn workflow is described by 70 parameters, including geometrical vari-ables, current, operating temperature, material and su-perconductor properties interpolated at the relevant field and temperature. A the end of the workflow, each design is evaluated through a fitness score, defined as a weighted difference between target and obtained values. The op-timisation algorithm goal is to minimise this score. This approach ensures a rapid and comprehensive evaluation of each design, while enabling the exploration of multiple candidate solutions. For instance, several magnet and conductor designs can be assessed, each presenting dif-ferent trade-offs such as cost, performance, or protection margins. Using this methodology, several feasible Nb 3Sn conductor solutions have been identified. Nb-Ti conduc-tors are also being investigated with a similar workflow [11]. In addition, the data generated from the workflow shown in Fig. 3 can be leveraged to train fast surro-gate models enabling rapid exploration of the parameter space. Figure 4 presents the parity plots obtained from a deep residual neural network designed for multi-output regression, implemented using the PyTorch framework. The model handles mixed-type input (categorical and continuous variables) and was trained on 8524 simula-tions managed through the project database. The net-work architecture consists of a series of residual blocks with batch normalisation, GELU (Gaussian Error Lin-5  
+
+> FIG. 5. Example of shim coils (racetrack and solenoid ge-ometries). For clarity, the coil positions are shifted along the longitudinal axis. The detector magnet is not represented. The system is composed, from left to right, by a dipole (with 8 loops), a quadrupole (with 6 loops), an hexadecapole (with 3 loops) and 6 solenoids.
+
+ear Unit) activation functions, and dropout regularisa-tion. Training is performed on GPU (Graphics Process-ing Unit) using the AdamW optimiser.  
+
+> B. Shim Coils
+
+Many detectors or MRI magnets require additional shim coils for active shielding and for improving mag-netic field homogeneity. The shim coil geometry, includ-ing multipole order, number of loop per multipole, cur-rent density in each loop, length, radius, conductor thick-ness and width, defines a large parametric space that is explored automatically using alesia Bayesian optimisa-tion. The optimisation aims at reducing fringe fields and, if needed, can improve local magnetic field homogeneity within the region of interest. Figure 5 shows an example of shim coil systems with a dipole, a quadrupole, an hex-adecapole and 6 solenoids for a generic study. The mag-netic field simulations are performed using opera 3d ,allowing evaluation of the field distribution produced by complex coil geometries. In addition, CEA also investi-gates the use of reinforcement learning methods in order to redesign the shim coil system to innovative configura-tions beyond traditional design approaches.  
+
+> C. Topology Optimisation
+
+Several applications require superconducting magnets capable of generating increasingly high magnetic fields. However, higher fields also lead to increased Lorentz forces acting on the coils. These forces induce mechan-ical stresses and deformations that may degrade the su-perconducting properties of the conductors, and cause irreversible plastic deformation of the windings, or even        
+
+> FIG. 6. Upper half of the winding cross-section obtained through magneto-mechanical topology optimisation for a 11.7 T MRI solenoid with a Ø1 m bore and maximum von Mises stress below 160 MPa. Left plot: Density map of the opti-mised solution. White mean empty space, black is windings carrying jE= 26 .5 A/mm 2.Right plot: Map of von Mises stress in the optimised windings.
+
+result in structural failure. Consequently, the mechani-cal integrity of the windings must be considered from the earliest stages of the design process for magnets intended to operate at very high fields. Another technique currently being investigated to si-multaneously handle target field requirements together with mechanical constraints in electromagnet design is based on Topology Optimisation (TO) [16]. The method-ology is derived from the Solid Isotropic Microstruc-ture with Penalisation (SIMP) approach [17]. It aims at finding the optimal distribution of the density of ho-mogenised windings inside a predefined discretised design domain. The cost function to be minimised is the vol-ume of the magnet. A mixture of magnetic constraints on the target field and mechanical constraint on the maxi-mum value of the von Mises stress inside the windings are simultaneously considered. The resulting non-linear pro-gram is solved using gradient-based optimisers like the Method of Moving Asymptotes (MMA) [18]. This TO-based approach is presently being developed in 2D for the optimisation of the cross-section of ultra-high field MRI electromagnets [19]. Figure 6 shows ex-ample results of the optimisation process for the cross-section of a highly homogeneous 11.7 T MRI magnet with a Ø1 m bore and a maximum von Mises stress in the windings lower than 160 MPa. The main benefits of this approach are that it takes no initial assumption of the solution topology and that it is very fast, requiring only 6a few minutes to yield solution on a personal computer. As such, it is believed it could be useful to quickly estab-lish magnet first drafts, that can then be parameterised and refined using the other optimisation approaches pre-sented in this article.  
+
+> D. HTS optimisation
+
+As part of CERN’s High Field Magnet (HFM) pro-gram, CEA is contributing by investigating the pos-sibility of using innovative HTS-based windings, using REBCO (Rare Earth Barium Copper Oxide) tapes, for dipole magnets targeting very high magnetic field. Op-timising the use of HTS in these magnets requires mul-tiphysics and multiscale approaches, encompassing ge-ometric aspects (minimising hardway bending and the volume of HTS material, optimising the conductor ori-entation to reduce the anisotropic limitations), electro-magnetic aspects (magnetic field quality, minimisation of cylindrical harmonics, generation of magnetic fields ex-ceeding 14 T), electrical aspects (electrical joints, current margins at the cable level, tolerances to local defects, stability and protection against quenches, AC losses), mechanical aspects (Lorentz forces, degradation of su-perconducting performance due to deformation, changes in contact resistance with pressure), and cooling perfor-mances (localisation of thermal drain/channel in relation with instabilities, efficiency of local and global heat trans-fers). In this context, the use of advance optimisation meth-ods within alesia , coupled with an in-house Python wrapper of the rat software (denoted pyrat ), enables automated exploration of the design space and identi-fication of the most suitable solutions (see Section II). This approach provides significant time savings by first assessing strong and weak constraints, identifying corre-lations between parameters, and estimating the range of viable solutions, without the need to exhaustively com-pute every configuration, which would otherwise requires substantial numerical resources.  
+
+> E. Beyond particle accelerator magnets
+
+With the development of particle accelerators, it is pos-sible to achieve a technological transfer toward other ap-plication domains. In the context of the FASUM (Forty Teslas All Super-conducting User Magnet) project, carried out in collabo-ration with CNRS LNCMI, CEA aim to develop a fully superconducting 40 T user magnet, based on a 19 T LTS ouster, produced by Oxford Instrument company, and a 21 T HTS insert developed jointly by CEA and CNRS. To mechanically design the HTS insert, composed of stacked double HTS pancakes, CEA is developing a me-chanical analysis procedure based on to numerical Mat-lab and cast3m codes, enabling the evaluation of stress and strain distributions within the layers induced by the three main loading conditions: pre-tensioning, cooling and energising. Several challenges remain, especially the distribution of screening currents, which induces signif-icant stress and strain concentrations. In that context, parametric studies using alesia are investigated to iden-tify HTS insert configurations that reduce stress concen-trations in critical regions. In parallel, CEA is also conducting the development of future high-field LTS and HTS MRI magnets. The 
+
+alesia platform is currently deployed for the design of an 11.7 T MRI magnet similar to ISEULT [20] using Bayesian optimisation approaches.  
+
+> IV. ECRIS DESIGN
+
+CEA is also heavily involved in the development and operation of ECRIS [21, 22]. It is anticipated that the 
+
+alesia platform will be capable of optimising all aspects of an ECRIS together, from the magnets and plasma, up to the beam extraction and transport. For the moment, it is being evaluated on the design of LTS and HTS magnets for ECRIS and their extraction systems.  
+
+> A. Magnet for next generation ECRIS
+
+The alesia platform was firstly used for the super-conducting magnet of the 28 GHz ASTERICS ion source [23] developped for the NEWGAIN project and that will be installed on the SPIRAL2 Linac at GANIL in Caen (France). For this magnet who have been designed at CEA and is now under construction in the industry, a parametric sensitivity analysis of component positioning errors was conducted using opera 3d thought alesia .The objective was to quantify the impact of geometric perturbations (misalignments and displacements) on the magnetic field topology and confinement properties. This study aims at defining acceptable assembly tolerances and identifying the most critical components. Building upon ASTERICS, CEA is investigating the design of a next-generation 45 GHz ECRIS, named TOUHTATIS, using HTS conductor, targeting higher ion density and improved mass-over-charge ratio. The mag-netic configuration follows the classical ECR topology: a sextupole composed of six racetrack double-pancake coils, surrounded by three solenoids (injection, middle and extraction). However, due to the rapid decline of LTS critical current under high magnetic fields, TOUH-TATIS relies on REBCO HTS tapes to achieve the re-quired magnetic field levels. The use of HTS enables increased compactness and operation at 20 K instead of 4 K, which improve energy efficiency, and reduced oper-ational costs and maintenance. The magnetic design was developed using rat , while mechanical behaviour was assessed using ansys .7   
+
+> FIG. 7. Upper plot: CAD cross-section of a sixth of the TOUHTATIS sextupoles. Lines and gaps denoted 1–5 are design variables to be optimised. Lower plot: von Mises stress on this cross-section.
+
+As part of the TOUHTATIS effort, and to demonstrate the viability of using HTS for a 45 GHz ion source, CEA is currently developing a short-model design for an 18 GHz ECRIS that will serve as a proof of concept. It is to optimise the design of this short model that alesia have been used. A key design objective of TOUHTATIS is the modularity of its sextupole racetracks. Each racetrack assembly consists of REBCO tapes, copper stabiliser, and fiberglass electrical insulation (G10). They are in-serted into a stainless steel casing, towards an aluminum support ring with stainless steel teeth. The mechani-cal performance of this assembly critically depends on contact pressure distribution between components. Fig-ure 7 presents the sextupole CAD configuration. Sev-eral geometric parameters, in particular the lines and gaps denoted 1–5 in Fig. 7, were identified as design variables. The optimisation objective was to inmprove the mean and standard deviation of the contact pressure on a and b. Two complementary strategies were imple- 
+
+> FIG. 8. Mean contact pressure and pressure integral-based metric (evaluated along b in Fig. 7) from the thickness of the upper steel plate (called 4 in Fig. 7), and the gap between lower steel plates (called 5 in Fig. 7). Higher contact pressure and integral of pressure are better.
+
+mented within alesia and based on mechanical simula-tions from ansys . A direct optimisation using evolution-ary computation (similar to Section III A or Ref. [11]), whose goal is to converge towards the optimal values of the contact pressures, allowing to quickly find a suitable solution. In addition, supervised surrogate models were trained based on 1400 random simulations. Those mod-els included a Random Forest, a Gaussian process, and a Neural Network. These models enabled a rapid multi-dimensional response surface exploration, an identifica-tion of dominant parameters, a correlation quantification, and a better understanding of the design trade-offs. Fig-ure 8 presents a predictive model from a fully connected deep neural network using a pipeline, combining feature scaling and neural network modelling with four hidden layers using the ReLU (Rectified Linear Unit) activation function and the Adam optimiser.  
+
+> B. Extraction Systems
+
+The alesia platform is also employed [21, 22] for the optimisation of ECRIS beam extraction simulations. It has been integrated with the ibsimu software for beam dynamics. alesia can adjust the ion source parameters used as inputs for ibsimu simulations (e.g., gap length, electrode aperture hole diameter, and current density at the plasma electrode aperture) using evolutionary algo-rithms, such as a particle swarm algorithm, to rapidly en-hance the extraction design for an optimised beam with low emittance. Our goal is to automate the design of the electrodes and potentials through topological optimisa-tion (see Fig. 9) . alesia can manage shape variations of 8
+
+> FIG. 9. Superposition of 27225 valid polygons, composed of 35 points, shaping the main repeller electrode of an ECRIS extraction system. The fitness score comprises the beam emit-tance, beam current and validity of the shape. The grey re-gions are other electrodes with the aims to optimise them as well.
+
+electrodes, initiate ibsimu simulations, retrieve the beam emittance from ibsimu , update the electrode shape us-ing active learning methods, and iteratively refine the shape of electrodes until the specified tolerances are met. Currently, a promising method combining deep reinforce-ment learning with evolutionary optimisation strategies is under investigation to propose physically valid elec-trode shapes.  
+
+> V. QUENCH PROTECTION
+
+A quench is the rapid transition of a superconducting material to its normal (resistive) state, that may lead to the release of the very large stored energy into a small volume of conductor. It can cause irreversible damage to magnets and must be mitigated.  
+
+> A. Anomaly Detection
+
+To prevent quench damage on operating magnets, it is crucial to detect quickly any anomalies and activate pro-tective measures. The quench detection is particularly challenging for recent HTS due to their very slow normal-zone propagation velocities. To address this, CEA is de-veloping digital twins of the superconducting systems. Currently, these models are trained using voltage data from REBCO pancake coils, leveraging in-house Partial Element Equivalent Circuit (PEEC) codes [24]. These models integrate both classifiers and regressors. The clas-sifiers (mostly decision trees and random decision forests) assess detected anomalies to determine whether they will lead to a rapid quench, a slow quench, or if the system is in a recovery state. Meanwhile, the regressors (con-volutional neural networks and long short-term memory) forecast the temporal evolution of voltage and magnetic fields within the coils. Additionally, models are devel-oped at various time scales: fast models analyse a few milliseconds of input data, while more accurate models use tens of milliseconds of input data. The long term goal is to enhance these models by integrating experimental data to improve their accuracy and reliability.  
+
+> B. Propagation Velocities
+
+Accurately estimating the longitudinal and transverse propagation velocities, influenced by the conductor prop-erties and insulation layers, in the normal zone during a quench event is a critical challenge. These velocities gov-ern how rapidly this zone expands and influence the tem-perature map, hence impacting the protection strategy and overall system safety. At present, the most reliable method to evaluate these propagation velocities involves magnetoresistive time-dependent finite element simula-tions. While these multiphysics models provide high-fidelity results, they are computationally expensive and require substantial modelling effort limiting their practi-cal use. CEA is currently investigating surrogate mod-els aimed at providing fast and sufficiently accurate es-timations of the propagation velocities. The resulting propagation velocities will be integrated into a fast 3D adiabatic model of the quench called qaesar (Quench quasi-Analytic Equivalent Solver in Adiabatic Regime). This will enable rapid parametric analyses, to improve design guidelines, and more efficient protection strate-gies, while, in principle, maintaining a strong physical foundation.  
+
+> VI. CONCLUSION
+
+Future generations of superconducting magnets for particles accelerators, including Nb-Ti, Nb 3Sn or HTS magnets, can greatly benefit from the emergence of arti-ficial intelligence tools and advanced optimisation meth-ods. This paper presents several ongoing case studies at CEA illustrating how data-driven approaches, most of them implemented within the alesia platform, can sup-port complex multiphysics design and accelerate optimi-sation workflows. The platform will be further developed to integrate additional physics software tools and new ad-vanced optimisation methods. Beyond particle accelerators, alesia is being applied to a broad range of projects including MRI magnets and magnets for fusion.In parallel, CEA is exploring new op-timisation strategies, including physics-informed neural networks, as well as the use of generative AI to automat-9ically construct optimisation workflows based on knowl-edge extracted from previous projects. 
+
+ACKNOWLEDGMENTS 
+
+The authors thank the members of DACM at CEA, IRFU for fruitful discussions. 
+
+AUTHOR CONTRIBUTIONS 
+
+This manuscript brings together several projects sup-ported over the years by many members of DACM at CEA, IRFU. The lead instigator of this work is Damien F. G. Minenna. This manuscript was mainly written by Damien F. G. Minenna, Guillaume Dilasser, Thibault de Chabannes and Thibault Lecrevisse, and used data and plots from Thomas Achard and Jason Le Coz. Damien F. G. Minenna, Robin Penavaire and Valerio Calvelli are the main contributors to the ALESIA platform, which was used on several aspects of this work. All authors have read and approved the final manuscript. 
+
+DATA AVAILABILITY 
+
+The data that support the findings of this study are available from the corresponding author upon reasonable request. 
+
+COMPETING INTERESTS 
+
+The authors declare no Conflict of interest. 
+
+[1] M. Yazdani-Asrami, A. Sadeghi, W. Song, A. Madureira, J. Murta-Pina, A. Morandi, and M. Parizh, Artificial in-telligence methods for applied superconductivity: mate-rial, design, manufacturing, testing, operation, and con-dition monitoring, Superconductor Science and Technol-ogy 35 , 123001 (2022). [2] L. Bortot, B. Auchmann, I. C. Garcia, A. M. F. Navarro, M. Maciejewski, M. Mentink, M. Prioli, E. Ravaioli, S. Schps, and A. P. Verweij, Steam: A hierarchical cosim-ulation framework for superconducting accelerator mag-net circuits, IEEE Transactions on Applied Superconduc-tivity 28 , 1 (2018). [3] L. Zani, B. Lacroix, A. Torre, J.-C. Vallet, C. Berthinier, C. Bourcier, N. Misiara, F. Nunio, R. Vallcorba, C. Van Wambeke, F. Bonne, C. Hoa, S. Constans, and Q. Le Coz, Olympe, a multi-physic platform for fusion magnet design: Development status and first applica-tions, Cryogenics 108 , 103086 (2020). [4] M. Maciejewski, B. Auchmann, D. M. Araujo, G. Val-lone, J. Leuthold, and J. Smajic, Model-based system engineering framework for superconducting accelerator magnet design, IEEE Transactions on Applied Supercon-ductivity 33 , 1 (2023). [5] Opera, website (2026), accessed: 2026-01-05. [6] RAT, website (2026), accessed: 2026-01-05. [7] Ansys, website (2026), accessed: 2026-01-05. [8] Cast3M, website (2026), accessed: 2026-01-05. [9] T. Kalvas, O. Tarvainen, T. Ropponen, O. Steczkiewicz, J. ¨Arje, and H. Clark, Ibsimu: A three-dimensional sim-ulation software for charged particle optics, Review of Scientific Instruments 81 , 10.1063/1.3258608 (2010). [10] COMSOL, website (2026), accessed: 2026-01-05. [11] D. F. G. Minenna, R. Penavaire, V. Calvelli, F. Stac-chi, M. Segreti, and O. Tuske, Machine learning and evolutionary algorithms for holistic multiphysicsoptimi-sation of superconducting magnet designs, To be submit-ted (2026). [12] H. Felice, V. Calvelli, M. Durante, P. Mallon, P. Manil, J.-F. Millot, G. Minier, E. Rochepault, A. Bord, S. Per-raud, and S. I. Bermudez, F2d2: A block-coil short-model dipole toward fcc, IEEE Transactions on Applied Super-conductivity 29 , 1 (2019). [13] V. Calvelli, G. Dilasser, W. A. Maksoud, C. Berriaud, F.-P. Juster, J.-p. Lottin, A. Madur, F. Nunio, J.-M. Rifflet, and L. Scola, 2d and 3d conceptual magnetic design of the madmax dipole, IEEE Transactions on Applied Su-perconductivity 30 , 1 (2020). [14] M. N. Wilson, Superconducting magnets (Clarendon Press, Oxford, 2002). [15] F. Willeke and J. Beebe-Wang, Electron Ion Collider Conceptual Design Report 2021 (2021). [16] M. P. Bendsøe and N. Kikuchi, Generating optimal topologies in structural design using a homogenization method, Computer Methods in Applied Mechanics and Engineering 71 , 197 (1988). [17] V. Rion and M. Bruyneel, Topology optimization of membranes made of orthotropic material, in Selected Pa-pers of Prof. Nguyen Dang Hung’s Students and Collab-orators, Vietnam National University-HCM Publishing House (2006). [18] K. Svanberg, The method of moving asymptotes—a new method for structural optimization, International Jour-nal for Numerical Methods in Engineering 24 , 359 (1987). [19] J. Le Coz et al. , Stress-constrained topology optimization for self-supporting ultra-high field mri coils, Submitted (2026). [20] L. Quettier, G. Aubert, J. Belorgey, C. Berriaud, P. Bredy, G. Dilasser, O. Dubois, G. Gilgrass, Q. Gui-hard, V. Jannot, F.-P. Juster, H. Lannou, F. Molinie, F. Nunio, A. Roger, T. Schild, L. Scola, A. Sinanna, V. Stepanov, and P. Vedrine, Commissioning completion of the iseult whole body 11.7 t mri system, IEEE Trans-actions on Applied Superconductivity 30 , 1 (2020). [21] B. Bolzon, M. Barant, V. Calvelli, O. Delferri` ere, A. Dubois, G. Ferrand, Y. Gauthier, D. Minenna, R. Pe-navaire, Y. Sauce, and T. O., High intensity ion source activity at cea, Proceedings of the 71st ICFA Adv. Beam Dyn. Workshop High-Intensity High-Bright. Hadron 10 
+
+Beams 10.18429/JACoW-HB2025-THIAC02 (2025). [22] O. Tuske, A. Dubois, D. Minenna, G. Ferrand, M. Barant, O. Delferri` ere, R. Penavaire, V. Calvelli, V. Trauchessec, Y. Gauthier, and Y. Sauce, Solid state amplifier for a 2,45 ghz high intensityproton source, Proc. International Conference on Ion Sources 2025 (2025). [23] D. Simon, T. Cadoux, E. F. Mora, B. Hervieu, C. Berri-aud, M. Segreti, G. Minier, E. Rochepault, R. Vallcorba, A. Sinanna, L. Gregoire, N. Bakon, T. Thuillier, and A. Ghribi, Design of asterics: A superconducting 28 ghz ecr ion source magnet for ganil, IEEE Transactions on Applied Superconductivity 33 , 1 (2023). [24] C. Genot, T. Lecrevisse, P. Fazilleau, and P. Tixador, Transient behavior of a rebco no-insulation or metal-as-insulation multi-pancake coil using a partial element equivalent circuit model, IEEE Transactions on Applied Superconductivity 32 , 1 (2022).
