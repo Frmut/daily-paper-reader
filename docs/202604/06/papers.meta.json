@@ -1,0 +1,23 @@
+{
+  "label": "2026-04-06",
+  "date": "2026-04-06",
+  "generated_at": "2026-04-06T20:35:29",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202604/06/2604.03151v1-observer-design-for-classes-of-nonlinear-port-hamiltonian-systems",
+      "section": "quick",
+      "title_en": "Observer design for classes of nonlinear port-Hamiltonian systems",
+      "authors": "Filippo Ugolini, Ning Liu, Yongxin Wu, Yann Le Gorrec, Alessandro Macchelli",
+      "date": "2026-04-03",
+      "pdf": "https://arxiv.org/pdf/2604.03151v1",
+      "score": "7.0",
+      "evidence": "机电系统的观测器设计",
+      "tldr": "本文针对具有状态相关输入矩阵的非线性端口受控哈密顿（pH）系统，提出了一种系统的观测器设计方法。该类系统广泛应用于磁悬浮、MEMS及电活性聚合物驱动器等机电领域。研究采用LPV多胞体嵌入框架和LMI合成条件，利用积分均值表示法将非线性误差动力学转化为线性顶点系统的凸组合，实现了常增益与增益调度观测器的设计。结果表明，增益调度设计能显著提高指数收敛速率并降低保守性。",
+      "tags": "query:pmsm",
+      "abstract_en": "This paper presents a systematic observer design methodology for a class of port-Hamiltonian (pH) systems with state-dependent input matrices. Such systems can model a wide range of electromechanical systems, including magnetic levitation systems, MEMS devices, and electro-active polymer actuators such as DEA actuators, HASEL actuators, etc. In these applications, state-dependent input matrices naturally arise when the system is modeled under quasi-static electrical assumptions. An LPV polytopic embedding framework, together with LMI-based synthesis conditions, is proposed. The nonlinear error dynamics are represented as a convex combination of linear vertex systems using an integral mean value representation, which enables systematic computation of the observer gains that ensures exponential convergence. Both constant-gain and gain-scheduled observers are derived. Numerical results demonstrate the effectiveness of the proposed observer, with the gain-scheduled design achieving a significant increase in the maximum certifiable decay rate compared with constant-gain approaches, thereby reducing conservatism.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

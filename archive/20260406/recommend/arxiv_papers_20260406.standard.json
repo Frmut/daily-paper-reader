@@ -1,0 +1,55 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-04-06T20:35:01.735734+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 1,
+    "quick_skim_target": 11,
+    "quick_selected": 1
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2604.03151v1",
+      "title": "Observer design for classes of nonlinear port-Hamiltonian systems",
+      "abstract": "This paper presents a systematic observer design methodology for a class of port-Hamiltonian (pH) systems with state-dependent input matrices. Such systems can model a wide range of electromechanical systems, including magnetic levitation systems, MEMS devices, and electro-active polymer actuators such as DEA actuators, HASEL actuators, etc. In these applications, state-dependent input matrices naturally arise when the system is modeled under quasi-static electrical assumptions. An LPV polytopic embedding framework, together with LMI-based synthesis conditions, is proposed. The nonlinear error dynamics are represented as a convex combination of linear vertex systems using an integral mean value representation, which enables systematic computation of the observer gains that ensures exponential convergence. Both constant-gain and gain-scheduled observers are derived. Numerical results demonstrate the effectiveness of the proposed observer, with the gain-scheduled design achieving a significant increase in the maximum certifiable decay rate compared with constant-gain approaches, thereby reducing conservatism.",
+      "authors": [
+        "Filippo Ugolini",
+        "Ning Liu",
+        "Yongxin Wu",
+        "Yann Le Gorrec",
+        "Alessandro Macchelli"
+      ],
+      "primary_category": "math.OC",
+      "categories": [
+        "math.OC"
+      ],
+      "published": "2026-04-03T16:13:23+00:00",
+      "link": "https://arxiv.org/pdf/2604.03151v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "observer design for electromechanical systems",
+      "llm_evidence_cn": "机电系统的观测器设计",
+      "llm_evidence": "机电系统的观测器设计",
+      "canonical_evidence": "机电系统的观测器设计",
+      "llm_tldr_en": "Presents a systematic observer design for port-Hamiltonian systems applicable to electromechanical devices.",
+      "llm_tldr_cn": "为适用于机电设备的端口哈密顿系统提供了一种系统的观测器设计方法。",
+      "llm_tldr": "为适用于机电设备的端口哈密顿系统提供了一种系统的观测器设计方法。",
+      "llm_tags": [
+        "query:pmsm:composite"
+      ],
+      "matched_query_tag": "query:pmsm:composite",
+      "matched_query_text": "Papers central to 三相及双三相永磁同步电机相关研究检索, especially work that connects or combines: m; s; f; Permanent Magnet Synchronous Motor research; dual three-phase permanent magnet synchronous motor control and design; fault-tolerant control of multi-phase motors; recent advances in dual three phase permanent magnet synchronous motor control; fault tolerant strategies for multi phase permanent magnet synchronous motors.",
+      "matched_requirement_id": "req-composite-pmsm",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}

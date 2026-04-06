@@ -1,6 +1,9 @@
 * <a class="dpr-sidebar-root-link" href="#/">首页</a>
 * <a class="dpr-sidebar-root-link dpr-sidebar-noactive-link" href="javascript:void(0)" data-dpr-hash="#/tutorial/README">使用教程</a>
 * Daily Papers
+  * 2026-04-06 <!--dpr-date:20260406-->
+    * 速读区
+      * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202604/06/2604.03151v1-observer-design-for-classes-of-nonlinear-port-hamiltonian-systems" data-sidebar-item="{&quot;title&quot;: &quot;Observer design for classes of nonlinear port-Hamiltonian systems&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2604.03151v1-observer-design-for-classes-of-nonlinear-port-hamiltonian-systems&quot;, &quot;score&quot;: &quot;7.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;pmsm&quot;}], &quot;evidence&quot;: &quot;机电系统的观测器设计&quot;}">Observer design for classes of nonlinear port-Hamiltonian systems</a>
   * 2026-04-05 <!--dpr-date:20260405-->
     * 速读区
       * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202604/05/2603.29740v1-data-driven-optimisation-of-superconducting-magnets-at-cea-paris-saclay" data-sidebar-item="{&quot;title&quot;: &quot;Data-Driven Optimisation of Superconducting Magnets at CEA Paris-Saclay&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2603.29740v1-data-driven-optimisation-of-superconducting-magnets-at-cea-paris-saclay&quot;, &quot;score&quot;: &quot;7.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;pmsm&quot;}], &quot;evidence&quot;: &quot;基于人工智能的超导磁体优化&quot;}">Data-Driven Optimisation of Superconducting Magnets at CEA Paris-Saclay</a>
