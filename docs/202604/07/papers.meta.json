@@ -1,0 +1,79 @@
+{
+  "label": "2026-04-07",
+  "date": "2026-04-07",
+  "generated_at": "2026-04-07T20:13:23",
+  "count": 5,
+  "papers": [
+    {
+      "paper_id": "202604/07/2604.03921v1-cooperative-observer-based-mathcalhinfty-fault-tolerant-tracking-control-for-networked-processes-with-sensor-faults",
+      "section": "quick",
+      "title_en": "Cooperative Observer-Based $\\mathcal{H}_\\infty$ Fault-Tolerant Tracking Control for Networked Processes with Sensor Faults",
+      "authors": "Moh Kamalul Wafi, Yurid E. Nugraha, Bambang L. Widjiantoro, Katherin Indriawati",
+      "date": "2026-04-05",
+      "pdf": "https://arxiv.org/pdf/2604.03921v1",
+      "score": "7.0",
+      "evidence": "网络化过程的容错跟踪控制",
+      "tldr": "针对存在传感器故障和外部干扰的异构网络化线性系统，本文提出了一种基于协同观测器的 H-infinity 容错跟踪控制框架。该方法利用增广观测器同时重构状态与故障，结合 LMI 综合的内环反馈和分布式积分外环，实现了对恒定参考点的鲁棒跟踪。研究证明了系统在干扰下的输入状态稳定性，并通过多种拓扑结构的仿真验证了其在传感器失效时的可靠性与扩展性。",
+      "tags": "query:pmsm",
+      "abstract_en": "This paper develops a cooperative fault-tolerant control framework for heterogeneous networked linear systems subject to sensor degradation and external disturbances. Each unit employs an augmented $\\mathcal{H}_\\infty$ observer that jointly reconstructs its state and sensor fault, providing disturbance-attenuated estimation guarantees. An inner state-feedback gain is then synthesized via convex $\\mathcal{H}_\\infty$ LMIs to ensure robust closed-loop stabilization, while an outer distributed integral action drives all units to track a constant setpoint source. The resulting network error dynamics satisfy an input-to-state stability condition with respect to disturbances and estimation imperfections, and converge to zero in their absence. Simulations on star, cyclic, and path topologies with heterogeneous agents confirm reliable tracking despite abrupt sensor faults and bounded disturbances, demonstrating a scalable and resilient coordination strategy for multi-agent systems with sensing imperfections.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202604/07/2603.29445v1-dual-mpc-for-quasi-linear-parameter-varying-systems",
+      "section": "quick",
+      "title_en": "Dual MPC for quasi-Linear Parameter Varying systems",
+      "authors": "Sampath Kumar Mulagaleti, Alberto Bemporad",
+      "date": "2026-03-31",
+      "pdf": "https://arxiv.org/pdf/2603.29445v1",
+      "score": "6.0",
+      "evidence": "用于参数辨识与控制的双重MPC",
+      "tldr": "本研究针对拟线性参数时变（qLPV）系统，提出了一种双重模型预测控制（MPC）框架，旨在同时实现系统辨识与控制。该框架结合了在线状态与参数估计器，通过主动激励系统来增强参数估计精度，同时确保输出跟踪。利用鲁棒管柱MPC技术和多胞体几何理论，在模型不确定性下保证了递归可行性与稳定性，有效提升了系统的控制性能与建模精度。",
+      "tags": "query:pmsm",
+      "abstract_en": "We present a dual Model Predictive Control (MPC) framework for the simultaneous identification and control of quasi-Linear Parameter Varying (qLPV) systems. The framework is composed of an online estimator for the states and parameters of the qLPV system, and a controller that leverages the estimated model to compute inputs with a dual purpose: tracking a reference output while actively exciting the system to enhance parameter estimation. The core of this approach is a robust tube-based MPC scheme that exploits recent developments in polytopic geometry to guarantee recursive feasibility and stability in spite of model uncertainty. The effectiveness of the framework in achieving improved tracking performance while identifying a model of the system is demonstrated through a numerical example.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202604/07/2604.00667v1-explicit-mpc-for-parameter-dependent-linear-systems",
+      "section": "quick",
+      "title_en": "Explicit MPC for Parameter Dependent Linear Systems",
+      "authors": "Carlos J. G. Rojas, Esteban Lage Cano, Leyla Özkan",
+      "date": "2026-04-01",
+      "pdf": "https://arxiv.org/pdf/2604.00667v1",
+      "score": "6.0",
+      "evidence": "针对电气和机械参数变化的MPC控制",
+      "tldr": "本文针对受设计参数影响的线性系统提出了两种显式模型预测控制（eMPC）方案。研究背景涉及非线性系统线性化及物理属性变化，核心贡献在于将参数以仿射形式直接引入系统矩阵，而非视为扰动。为应对由此产生的非线性计算复杂性，提出了两种近似方法，并通过算例验证了其在性能上与精确eMPC的接近程度及实用性。",
+      "tags": "query:pmsm",
+      "abstract_en": "This paper presents two explicit Model Predictive Control formulations for linear systems parameterized in terms of design variables. Such parameter dependent behavior commonly arises from operating point dependent linearization of nonlinear systems as well as from variations in mechanical, electrical, or thermal properties associated with material selection in the design of the process or system components. In contrast to explicit MPC approaches that treat design parameter variations and dependencies as disturbances, the proposed methods incorporate the parameters directly into the system matrices in an affine manner. However, explicitly incorporating these dependencies significantly increases the complexity of explicit MPC formulations due to resulting nonlinear terms involving decision variables and parameters. We address this complexity by proposing two approximation methods. Both methods are applied to two examples, and their performances are compared with respect to the exact eMPC implementation.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202604/07/2604.04051v1-extended-hybrid-timed-petri-nets-with-semi-supervised-anomaly-detection-for-switched-systems-modelling-and-fault-detection",
+      "section": "quick",
+      "title_en": "Extended Hybrid Timed Petri Nets with Semi-Supervised Anomaly Detection for Switched Systems, Modelling and Fault Detection",
+      "authors": "Fatiha Hamdi, Abdelhafid Zeroual, Fouzi Harrou",
+      "date": "2026-04-05",
+      "pdf": "https://arxiv.org/pdf/2604.04051v1",
+      "score": "6.0",
+      "evidence": "基于Petri网的混合动力系统故障检测框架",
+      "tldr": "针对混合物理系统中离散与连续动力学故障耦合难以检测的问题，本文提出一种集成扩展时间连续Petri网（ETCPN）与半监督异常检测的统一故障检测框架。通过引入标记依赖流函数实现动力学耦合，并设计基于LMI保证稳定性的混合观测器生成残差，最后利用OC-SVM等算法实现高效故障识别。该方法在处理混合故障时表现出高精度和实时性。",
+      "tags": "query:pmsm",
+      "abstract_en": "Hybrid physical systems combine continuous and discrete dynamics, which can be simultaneously affected by faults. Conventional fault detection methods often treat these dynamics separately, limiting their ability to capture interacting fault patterns. This paper proposes a unified fault detection framework for hybrid dynamical systems by integrating an Extended Timed Continuous Petri Net (ETCPN) model with semi-supervised anomaly detection. The proposed ETCPN extends existing Petri net formalisms by introducing marking-dependent flow functions, enabling intrinsic coupling between discrete and continuous dynamics. Based on this structure, a mode-dependent hybrid observer is designed, whose stability under arbitrary switching is ensured via Linear Matrix Inequalities (LMIs), solved offline to determine observer gains. The observer generates residuals that reflect discrepancies between the estimated and measured outputs. These residuals are processed using semi-supervised methods, including One-Class SVM (OC-SVM), Support Vector Data Description (SVDD), and Elliptic Envelope (EE), trained exclusively on normal data to avoid reliance on labeled faults. The framework is validated through simulations involving discrete faults, continuous faults, and hybrid faults. Results demonstrate high detection accuracy, fast convergence, and robust performance, with OC-SVM and SVDD providing the best trade-off between detection rate and false alarms. The framework is computationally efficient for real-time deployment, as the main complexity is confined to the offline LMI design phase.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202604/07/2604.04150v1-a-multi-scale-resnet-augmented-fourier-neural-operator-framework-for-high-frequency-sequence-to-sequence-prediction-of-magnetic-hysteresis",
+      "section": "quick",
+      "title_en": "A Multi-Scale ResNet-augmented Fourier Neural Operator Framework for High-Frequency Sequence-to-Sequence Prediction of Magnetic Hysteresis",
+      "authors": "Ziqing Guo, Xiaobing Shen, Ruth V. Sabariego",
+      "date": "2026-04-05",
+      "pdf": "https://arxiv.org/pdf/2604.04150v1",
+      "score": "6.0",
+      "evidence": "电力电子设备的磁滞预测",
+      "tldr": "针对电力电子设备中磁滞现象建模的挑战，特别是高频振荡和局部磁滞回线（minor loops）的精确捕捉，本文提出了一种多尺度ResNet增强的傅里叶神经算子（Res-FNO）框架。该框架结合了全局频谱建模与局部细节细化，通过引入磁通密度随时间的变化率（dB/dt）等物理特征，显著提升了模型对复杂磁滞行为的预测精度和泛化能力。",
+      "tags": "query:pmsm",
+      "abstract_en": "Accurate modeling of magnetic hysteresis is essential for high-fidelity power electronics device simulations. The transient hysteresis phenomena such as the ringing effect and the minor loops are the bottleneck for the accurate hysteresis modeling and the core losses estimation. To capture the hysteresis loops with both the macro structure and the micro transient details, in this paper, we propose the multi-scale ResNet augmented Fourier Neural Operator (Res-FNO). The framework employs a hybrid input structure that combines sequential time-series data with scalar material labels through specialized feature engineering. Specifically, the time derivative of magnetic flux density ($\\frac{dB}{dt}$) is incorporated as a critical physical feature to enhance the model sensitivity to high-frequency oscillations and minor loop triggers. The proposed architecture synergizes global spectral modeling with localized refinement by integrating a multi-scale ResNet path in parallel with the FNO blocks. This design allows the global operator path to capture the underlying physical evolution while the local refinement path, compensates for spectral bias and reconstructs fine-grained temporal details. Extensive experimental validation across diverse magnetic materials from 79 to Material 3C90 demonstrates the strong generalization capability of the proposed Res-FNO, proving its robust ability to model complex ringing effects and minor loops in realistic power electronic applications.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

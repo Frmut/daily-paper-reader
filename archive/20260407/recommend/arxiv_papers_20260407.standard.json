@@ -1,0 +1,200 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-04-07T20:12:46.356238+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 5,
+    "quick_skim_target": 11,
+    "quick_selected": 5
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2604.03921v1",
+      "title": "Cooperative Observer-Based $\\mathcal{H}_\\infty$ Fault-Tolerant Tracking Control for Networked Processes with Sensor Faults",
+      "abstract": "This paper develops a cooperative fault-tolerant control framework for heterogeneous networked linear systems subject to sensor degradation and external disturbances. Each unit employs an augmented $\\mathcal{H}_\\infty$ observer that jointly reconstructs its state and sensor fault, providing disturbance-attenuated estimation guarantees. An inner state-feedback gain is then synthesized via convex $\\mathcal{H}_\\infty$ LMIs to ensure robust closed-loop stabilization, while an outer distributed integral action drives all units to track a constant setpoint source. The resulting network error dynamics satisfy an input-to-state stability condition with respect to disturbances and estimation imperfections, and converge to zero in their absence. Simulations on star, cyclic, and path topologies with heterogeneous agents confirm reliable tracking despite abrupt sensor faults and bounded disturbances, demonstrating a scalable and resilient coordination strategy for multi-agent systems with sensing imperfections.",
+      "authors": [
+        "Moh Kamalul Wafi",
+        "Yurid E. Nugraha",
+        "Bambang L. Widjiantoro",
+        "Katherin Indriawati"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY"
+      ],
+      "published": "2026-04-05T01:14:14+00:00",
+      "link": "https://arxiv.org/pdf/2604.03921v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Fault-tolerant tracking control for networked processes",
+      "llm_evidence_cn": "网络化过程的容错跟踪控制",
+      "llm_evidence": "网络化过程的容错跟踪控制",
+      "canonical_evidence": "网络化过程的容错跟踪控制",
+      "llm_tldr_en": "Develops a cooperative fault-tolerant control framework for networked systems with sensor faults.",
+      "llm_tldr_cn": "为具有传感器故障的网络化系统开发了一种协作容错控制框架。",
+      "llm_tldr": "为具有传感器故障的网络化系统开发了一种协作容错控制框架。",
+      "llm_tags": [
+        "query:pmsm"
+      ],
+      "matched_query_tag": "query:pmsm",
+      "matched_query_text": "fault-tolerant control of multi-phase motors",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2603.29445v1",
+      "title": "Dual MPC for quasi-Linear Parameter Varying systems",
+      "abstract": "We present a dual Model Predictive Control (MPC) framework for the simultaneous identification and control of quasi-Linear Parameter Varying (qLPV) systems. The framework is composed of an online estimator for the states and parameters of the qLPV system, and a controller that leverages the estimated model to compute inputs with a dual purpose: tracking a reference output while actively exciting the system to enhance parameter estimation. The core of this approach is a robust tube-based MPC scheme that exploits recent developments in polytopic geometry to guarantee recursive feasibility and stability in spite of model uncertainty. The effectiveness of the framework in achieving improved tracking performance while identifying a model of the system is demonstrated through a numerical example.",
+      "authors": [
+        "Sampath Kumar Mulagaleti",
+        "Alberto Bemporad"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY"
+      ],
+      "published": "2026-03-31T08:50:34+00:00",
+      "link": "https://arxiv.org/pdf/2603.29445v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Dual MPC for parameter identification and control",
+      "llm_evidence_cn": "用于参数辨识与控制的双重MPC",
+      "llm_evidence": "用于参数辨识与控制的双重MPC",
+      "canonical_evidence": "用于参数辨识与控制的双重MPC",
+      "llm_tldr_en": "A dual MPC framework for simultaneous parameter identification and tracking in quasi-LPV systems.",
+      "llm_tldr_cn": "一种用于准LPV系统同时进行参数辨识和跟踪的双重MPC框架。",
+      "llm_tldr": "一种用于准LPV系统同时进行参数辨识和跟踪的双重MPC框架。",
+      "llm_tags": [
+        "query:pmsm:composite"
+      ],
+      "matched_query_tag": "query:pmsm:composite",
+      "matched_query_text": "Papers central to 三相及双三相永磁同步电机相关研究检索, especially work that connects or combines: m; s; f; Permanent Magnet Synchronous Motor research; dual three-phase permanent magnet synchronous motor control and design; fault-tolerant control of multi-phase motors; recent advances in dual three phase permanent magnet synchronous motor control; fault tolerant strategies for multi phase permanent magnet synchronous motors.",
+      "matched_requirement_id": "req-composite-pmsm",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2604.00667v1",
+      "title": "Explicit MPC for Parameter Dependent Linear Systems",
+      "abstract": "This paper presents two explicit Model Predictive Control formulations for linear systems parameterized in terms of design variables. Such parameter dependent behavior commonly arises from operating point dependent linearization of nonlinear systems as well as from variations in mechanical, electrical, or thermal properties associated with material selection in the design of the process or system components. In contrast to explicit MPC approaches that treat design parameter variations and dependencies as disturbances, the proposed methods incorporate the parameters directly into the system matrices in an affine manner. However, explicitly incorporating these dependencies significantly increases the complexity of explicit MPC formulations due to resulting nonlinear terms involving decision variables and parameters. We address this complexity by proposing two approximation methods. Both methods are applied to two examples, and their performances are compared with respect to the exact eMPC implementation.",
+      "authors": [
+        "Carlos J. G. Rojas",
+        "Esteban Lage Cano",
+        "Leyla Özkan"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY"
+      ],
+      "published": "2026-04-01T09:14:46+00:00",
+      "link": "https://arxiv.org/pdf/2604.00667v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "MPC for electrical and mechanical parameter variations",
+      "llm_evidence_cn": "针对电气和机械参数变化的MPC控制",
+      "llm_evidence": "针对电气和机械参数变化的MPC控制",
+      "canonical_evidence": "针对电气和机械参数变化的MPC控制",
+      "llm_tldr_en": "Develops explicit MPC for systems with parameter dependencies, applicable to electrical motor variations.",
+      "llm_tldr_cn": "为具有参数依赖性的系统开发显式MPC，适用于电机参数变化场景。",
+      "llm_tldr": "为具有参数依赖性的系统开发显式MPC，适用于电机参数变化场景。",
+      "llm_tags": [
+        "query:pmsm:composite"
+      ],
+      "matched_query_tag": "query:pmsm:composite",
+      "matched_query_text": "Papers central to 三相及双三相永磁同步电机相关研究检索, especially work that connects or combines: m; s; f; Permanent Magnet Synchronous Motor research; dual three-phase permanent magnet synchronous motor control and design; fault-tolerant control of multi-phase motors; recent advances in dual three phase permanent magnet synchronous motor control; fault tolerant strategies for multi phase permanent magnet synchronous motors.",
+      "matched_requirement_id": "req-composite-pmsm",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2604.04051v1",
+      "title": "Extended Hybrid Timed Petri Nets with Semi-Supervised Anomaly Detection for Switched Systems, Modelling and Fault Detection",
+      "abstract": "Hybrid physical systems combine continuous and discrete dynamics, which can be simultaneously affected by faults. Conventional fault detection methods often treat these dynamics separately, limiting their ability to capture interacting fault patterns. This paper proposes a unified fault detection framework for hybrid dynamical systems by integrating an Extended Timed Continuous Petri Net (ETCPN) model with semi-supervised anomaly detection. The proposed ETCPN extends existing Petri net formalisms by introducing marking-dependent flow functions, enabling intrinsic coupling between discrete and continuous dynamics. Based on this structure, a mode-dependent hybrid observer is designed, whose stability under arbitrary switching is ensured via Linear Matrix Inequalities (LMIs), solved offline to determine observer gains. The observer generates residuals that reflect discrepancies between the estimated and measured outputs. These residuals are processed using semi-supervised methods, including One-Class SVM (OC-SVM), Support Vector Data Description (SVDD), and Elliptic Envelope (EE), trained exclusively on normal data to avoid reliance on labeled faults. The framework is validated through simulations involving discrete faults, continuous faults, and hybrid faults. Results demonstrate high detection accuracy, fast convergence, and robust performance, with OC-SVM and SVDD providing the best trade-off between detection rate and false alarms. The framework is computationally efficient for real-time deployment, as the main complexity is confined to the offline LMI design phase.",
+      "authors": [
+        "Fatiha Hamdi",
+        "Abdelhafid Zeroual",
+        "Fouzi Harrou"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY",
+        "cs.LG",
+        "math.DS",
+        "nlin.CG"
+      ],
+      "published": "2026-04-05T10:54:15+00:00",
+      "link": "https://arxiv.org/pdf/2604.04051v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Fault detection framework for hybrid dynamical systems using Petri nets",
+      "llm_evidence_cn": "基于Petri网的混合动力系统故障检测框架",
+      "llm_evidence": "基于Petri网的混合动力系统故障检测框架",
+      "canonical_evidence": "基于Petri网的混合动力系统故障检测框架",
+      "llm_tldr_en": "Develops a unified fault detection framework for hybrid systems using Extended Timed Continuous Petri Nets.",
+      "llm_tldr_cn": "利用扩展时间连续Petri网为混合系统开发了统一的故障检测框架。",
+      "llm_tldr": "利用扩展时间连续Petri网为混合系统开发了统一的故障检测框架。",
+      "llm_tags": [
+        "query:pmsm"
+      ],
+      "matched_query_tag": "query:pmsm",
+      "matched_query_text": "fault-tolerant control of multi-phase motors",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2604.04150v1",
+      "title": "A Multi-Scale ResNet-augmented Fourier Neural Operator Framework for High-Frequency Sequence-to-Sequence Prediction of Magnetic Hysteresis",
+      "abstract": "Accurate modeling of magnetic hysteresis is essential for high-fidelity power electronics device simulations. The transient hysteresis phenomena such as the ringing effect and the minor loops are the bottleneck for the accurate hysteresis modeling and the core losses estimation. To capture the hysteresis loops with both the macro structure and the micro transient details, in this paper, we propose the multi-scale ResNet augmented Fourier Neural Operator (Res-FNO). The framework employs a hybrid input structure that combines sequential time-series data with scalar material labels through specialized feature engineering. Specifically, the time derivative of magnetic flux density ($\\frac{dB}{dt}$) is incorporated as a critical physical feature to enhance the model sensitivity to high-frequency oscillations and minor loop triggers. The proposed architecture synergizes global spectral modeling with localized refinement by integrating a multi-scale ResNet path in parallel with the FNO blocks. This design allows the global operator path to capture the underlying physical evolution while the local refinement path, compensates for spectral bias and reconstructs fine-grained temporal details. Extensive experimental validation across diverse magnetic materials from 79 to Material 3C90 demonstrates the strong generalization capability of the proposed Res-FNO, proving its robust ability to model complex ringing effects and minor loops in realistic power electronic applications.",
+      "authors": [
+        "Ziqing Guo",
+        "Xiaobing Shen",
+        "Ruth V. Sabariego"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY"
+      ],
+      "published": "2026-04-05T15:29:07+00:00",
+      "link": "https://arxiv.org/pdf/2604.04150v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "magnetic hysteresis prediction for power electronics",
+      "llm_evidence_cn": "电力电子设备的磁滞预测",
+      "llm_evidence": "电力电子设备的磁滞预测",
+      "canonical_evidence": "电力电子设备的磁滞预测",
+      "llm_tldr_en": "Proposes a Res-FNO framework for high-frequency sequence prediction of magnetic hysteresis in power electronics.",
+      "llm_tldr_cn": "提出Res-FNO框架，用于电力电子设备磁滞的高频序列预测。",
+      "llm_tldr": "提出Res-FNO框架，用于电力电子设备磁滞的高频序列预测。",
+      "llm_tags": [
+        "query:pmsm:composite"
+      ],
+      "matched_query_tag": "query:pmsm:composite",
+      "matched_query_text": "Papers central to 三相及双三相永磁同步电机相关研究检索, especially work that connects or combines: m; s; f; Permanent Magnet Synchronous Motor research; dual three-phase permanent magnet synchronous motor control and design; fault-tolerant control of multi-phase motors; recent advances in dual three phase permanent magnet synchronous motor control; fault tolerant strategies for multi phase permanent magnet synchronous motors.",
+      "matched_requirement_id": "req-composite-pmsm",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
