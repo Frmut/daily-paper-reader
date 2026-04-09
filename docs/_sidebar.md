@@ -1,6 +1,9 @@
 * <a class="dpr-sidebar-root-link" href="#/">首页</a>
 * <a class="dpr-sidebar-root-link dpr-sidebar-noactive-link" href="javascript:void(0)" data-dpr-hash="#/tutorial/README">使用教程</a>
 * Daily Papers
+  * 2026-04-09 <!--dpr-date:20260409-->
+    * 速读区
+      * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202604/09/2604.02503v1-nonlinear-system-identification-of-variable-pitch-propellers-using-a-wiener-model" data-sidebar-item="{&quot;title&quot;: &quot;Nonlinear System Identification of Variable-Pitch Propellers Using a Wiener Model&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2604.02503v1-nonlinear-system-identification-of-variable-pitch-propellers-using-a-wiener-model&quot;, &quot;score&quot;: &quot;6.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;pmsm&quot;}], &quot;evidence&quot;: &quot;电机及驱动链建模&quot;}">Nonlinear System Identification of Variable-Pitch Propellers Using a Wiener Model</a>
   * 2026-04-08 <!--dpr-date:20260408-->
     * 精读区
       * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202604/08/2604.05579v1-an-additional-resonance-damping-control-for-grey-box-d-pmsg-wind-farm-integrated-weak-grid" data-sidebar-item="{&quot;title&quot;: &quot;An Additional Resonance Damping Control for Grey-Box D-PMSG Wind Farm Integrated Weak Grid&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2604.05579v1-an-additional-resonance-damping-control-for-grey-box-d-pmsg-wind-farm-integrated-weak-grid&quot;, &quot;score&quot;: &quot;9.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;pmsm&quot;}], &quot;evidence&quot;: &quot;永磁同步发电机的谐振抑制&quot;}">An Additional Resonance Damping Control for Grey-Box D-PMSG Wind Farm Integrated Weak Grid</a>

@@ -6,26 +6,26 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-04-08
-- 运行时间：2026-04-08 20:15:14 UTC
+- 最新运行日期：2026-04-09
+- 运行时间：2026-04-09 20:19:05 UTC
 - 运行状态：成功
 - 本次总论文数：1
-- 精读区：1
-- 速读区：0
+- 精读区：0
+- 速读区：1
 
 ### 今日简报（AI）
-聚焦弱电网稳定性，深度解析直驱永磁风电场谐振抑制的高分前沿研究。
-论文通过灰箱模型提出附加阻尼控制方案，显著提升了风电场在复杂电网环境下的并网性能。
-推荐电力系统开发者重点参考其控制策略，以应对大规模新能源接入带来的谐振挑战。
-- 详情：[/202604/08/README](/202604/08/README)
+今日聚焦变桨距螺旋桨的非线性建模，深入探讨了 Wiener 模型在系统辨识中的应用。
+该研究利用 Wiener 模型有效捕捉了螺旋桨复杂的动态特性，为提升飞行器控制精度提供了数学支撑。
+建议对无人机动力系统建模或非线性控制感兴趣的读者关注此辨识方法的工程实践。
+- 详情：[/202604/09/README](/202604/09/README)
 
 ### 精读区论文标签
-1. [An Additional Resonance Damping Control for Grey-Box D-PMSG Wind Farm Integrated Weak Grid](/202604/08/2604.05579v1-an-additional-resonance-damping-control-for-grey-box-d-pmsg-wind-farm-integrated-weak-grid)  
-   标签：评分：9.0/10、query:pmsm
-   evidence：永磁同步发电机的谐振抑制
+- 本次无精读推荐。
 
 ### 速读区论文标签
-- 本次无速读推荐。
+1. [Nonlinear System Identification of Variable-Pitch Propellers Using a Wiener Model](/202604/09/2604.02503v1-nonlinear-system-identification-of-variable-pitch-propellers-using-a-wiener-model)  
+   标签：评分：6.0/10、query:pmsm
+   evidence：电机及驱动链建模
 
 
 <div class="dpr-home-promo-card">

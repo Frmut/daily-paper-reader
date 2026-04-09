@@ -1,0 +1,23 @@
+{
+  "label": "2026-04-09",
+  "date": "2026-04-09",
+  "generated_at": "2026-04-09T20:19:13",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202604/09/2604.02503v1-nonlinear-system-identification-of-variable-pitch-propellers-using-a-wiener-model",
+      "section": "quick",
+      "title_en": "Nonlinear System Identification of Variable-Pitch Propellers Using a Wiener Model",
+      "authors": "David Grasev, Miguel A. Mendez",
+      "date": "2026-04-02",
+      "pdf": "https://arxiv.org/pdf/2604.02503v1",
+      "score": "6.0",
+      "evidence": "电机及驱动链建模",
+      "tldr": "本研究针对变桨距螺旋桨（VPP）动力系统，提出了一种基于Wiener模型的非线性系统辨识方法。通过实验数据捕捉从PWM信号到推力生成的全过程，该模型结合了描述电机和桨距执行机构的线性一阶动力学与静态非线性推力映射。该模型不仅计算开销低、可解释性强，且能准确复现动态响应，为实时数字孪生和控制应用提供了紧凑且实用的建模方案。",
+      "tags": "query:pmsm",
+      "abstract_en": "This work presents the system identification of a variable-pitch propeller (VPP) powertrain, encompassing the full actuation chain from PWM signals to thrust generation, with the aim of developing compact models suitable for real-time digital twinning and control applications. The identification is grounded in experimental data covering both static and dynamic responses of the system. The proposed model takes the form of a Wiener-like architecture, where the PWM inputs are first processed through linear first-order dynamics describing the motor and pitch actuation, and the resulting states are then mapped via a static nonlinear relation to the generated thrust. This structure naturally arises under the assumptions that the electronic actuation operates on a much faster time scale than the mechanical response, and that the contribution of the aerodynamically induced torque is negligible in the tested regime. The resulting parsimonious representation is shown to reproduce the measured dynamics with good accuracy while remaining interpretable and computationally light, thereby providing a practical basis for integration in control-oriented digital twin frameworks.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
