@@ -1,0 +1,1257 @@
+Title: A Structurally Flat Triangular Form for Three-Input Systems
+
+URL Source: https://arxiv.org/pdf/2604.02510v1
+
+Published Time: Mon, 06 Apr 2026 00:09:37 GMT
+
+Number of Pages: 8
+
+Markdown Content:
+# A Structurally Flat Triangular Form for Three-Input Systems 
+
+Georg Hartl, Conrad Gst¨ ottner, and Markus Sch¨ oberl 
+
+Abstract — We present a broadly applicable structurally flat triangular form for x-flat control-affine systems with three inputs. Building on recent results for the derivative structure of flat outputs, we define the triangular form together with regularity conditions that guarantee structural flatness, and derive necessary and sufficient conditions for a system with a given x-flat output to be static feedback equivalent to this form. Further, we present sufficient conditions under which general 
+
+x-flat three-input systems can be rendered static feedback equivalent to the proposed triangular form after a finite number of input prolongations. 
+
+I. I NTRODUCTION 
+
+Differential flatness provides a powerful framework for the systematic solution of feedforward and feedback control problems [1], [2]. A nonlinear control system 
+
+˙x = f (x, u ) (1) with n states x and m inputs u is called flat if there exists an m-tuple of functions y = φ(x, u, u (1) , . . . , u (ν)), where 
+
+u(ν) denotes the ν-th time derivative of u, such that both the state and the input can be expressed in terms of the flat output y and finitely many of its time derivatives via the 
+
+flat parameterization (x, u ) = F (y, y (1) , . . . , y (r)). If a flat output depends only on state variables x, we call this flat output and the corresponding system x-flat. However, computing a flat output for a given nonlinear multi-input system remains a challenging open problem, as neither practically verifiable necessary and sufficient condi-tions for flatness nor computationally tractable methods for computing flat outputs have yet been established. Completely solved subclasses of flat systems for which tractable necessary and sufficient conditions exist include 
+
+static feedback linearizable (SFL 1) systems [3], two-input driftless systems [4], general two-input systems that are linearizable by a two-fold prolongation of a suitably chosen control [5], [6], and general multi-input systems that become static feedback linearizable after a one-fold prolongation of a suitably chosen control [7].                          
+
+> This work has been submitted to the IEEE for possible publication. Copyright may be transferred without notice, after which this version may no longer be accessible. This research was funded in whole, or in part, by the Austrian Science Fund (FWF) P36473. For the purpose of open access, the author has applied a CC BY public copyright licence to any Author Accepted Manuscript version arising from this submission. All authors are with the Institute of Control Systems, Johannes Kepler University Linz, Altenberger Strasse 69, 4040 Linz, Austria, E-mail: {georg.hartl, conrad.gstoettner, markus.schoeberl }@jku.at .
+> 1We use SFL as an abbreviation for static feedback linearization and, by extension, for the associated notion of being statically feedback linearizable
+> and the corresponding property of static feedback linearizability .
+
+Structurally flat triangular forms have proven to be an ef-fective tool for characterizing flat systems. As demonstrated, e.g., in [8]–[13], complete geometric characterizations of such forms yield sufficient conditions for flatness that require only differentiation and algebraic operations, and provide constructive procedures for computing flat outputs, which typically appear as top state variables in flat triangular forms. For two-input systems, a broadly applicable general tri-angular form (GT F 2) was proposed in [9]. Building on this, an algorithm for identifying flat-output components has been presented in [14]. The GT F 2 encompasses the chained form [4], the extended chained form [12], [15], and the structurally flat triangular forms presented in [8], [16]. For systems with more than two inputs, the situation is considerably less developed. The canonical contact form with compatible drift [15] provides a structurally flat triangular form that has been extended in [17] by appending and prepending integrator chains. In a complementary direction, [18] studies when x-flat three-input systems can be rendered static feedback linearizable by a minimal number of prolon-gations of suitably chosen inputs after applying a static input transformation. In [18], this property is referred to as φ-SFL via minimal prolongations .In this paper, we propose a general structurally flat trian-gular form for control-affine three-input systems of the form 
+
+˙x = f (x) + g1(x)u1 + g2(x)u2 + g3(x)u3, (2) that admit an x-flat output 
+
+y = ( φ1(x), φ 2(x), φ 3(x)) . (3) The proposed form encompasses several previously charac-terized structurally flat triangular forms. Our contribution is as follows: A) We introduce the general structurally flat triangular form for x-flat control-affine three-input systems and present necessary and sufficient conditions for a system with a given x-flat output to be static feedback equivalent (SFE) to this form. B) We prove that every x-flat system (2) that is φ-SFL via minimal prolongations can be transformed into the general triangular form after a finite number of input prolongations. Our paper is structured as follows: Section II introduces notation and terminology. Section III recalls the derivative structure of three-input x-flat outputs. Our main results are presented in Section IV. Illustrating examples are given in Section V. Finally, Section VI gives a conclusion and an outlook for further research. Remaining proofs are presented in the appendix. 
+
+> arXiv:2604.02510v1 [math.DS] 2 Apr 2026
+
+II. N OTATION AND TERMINOLOGY 
+
+Throughout, the Einstein summation convention and the tensor notation are used omitting the index range when clear from the context. For a smooth manifold X with local coordinates x = ( x1, . . . , x n), the tangent and cotangent bundle on X are denoted by T (X ) and T ∗(X ). Given an m-tuple of functions h = ( h1, . . . , h m) : X → Rm, we write its 
+
+m×n Jacobian matrix as ∂xh. In particular, ∂xi hj represents the partial derivative of hj with respect to xi. The notation 
+
+dh represents the differentials (d h1, . . . , dhm). Given a set of one-forms ω = ( ω1, . . . , ω m) that defines a codistribution 
+
+P = ⟨ω1, . . . , ω m⟩ ⊂ T ∗(X ), ⟨ω⟩ is used to indicate the set of all possible linear combinations of (ω1, . . . , ω m). The notation P1 ⊂ 
+
+> k
+
+P2 indicates that the corank of P1 in P2 is k.Given a vector field v ∈ T (X ), we denote the Lie derivative of a scalar function hj along v by Lv hj .To represent time derivatives we use subscripts in square brackets. For example, yj 
+
+> [α]
+
+represents the α-th time derivative of the j-th element within the m-tuple 
+
+y, and y[α] = ( y1[α], . . . , y m
+
+> [α]
+
+) indicates the α-th time derivative for each component of y. Capitalized multi-indices are used to represent time derivatives of different orders of each element in a tuple. Given two multi-indices A = ( a1, . . . , a m) and B = ( b1, . . . , b m) with 
+
+aj ≤ bj , denoted by A ≤ B, we can find concise representations of time derivatives of different orders, such as y[A] = ( y1[a1], . . . , y m
+
+> [am]
+
+), y[0 ,A ] = ( y1[0 ,a 1], . . . , y m
+
+> [0 ,a m]
+
+),and y[A,B ] = ( y1[a1,b 1], . . . , y m
+
+> [am,b m]
+
+). Then yj  
+
+> [aj,b j]
+
+denotes successive time derivatives of yj given by yj   
+
+> [aj,b j]
+
+= ( yj 
+
+> [aj]
+
+, . . . , y j 
+
+> [bj]
+
+). If aj > b j , then 
+
+yj   
+
+> [aj,b j]
+
+is empty. We express the component-wise addition and subtraction of multi-indices as A ± B = ( a1 ± b1, . . . , a m ± bm). The summation over the indices is given by |A| = Pmj=1 aj .We use the overline to represent successive state variables of a subsystem. That is, xij = ( x1 
+
+> j
+
+, . . . , x ij ), where the super-script i indicates the range and the subscript j distinguishes different subsystems. Given a subsystem consisting of k
+
+states, for the complete collection we drop the overline and the superscript, and simply write xj = ( x1 
+
+> j
+
+, . . . , x kj )(= xkj ).Throughout, when coefficient functions appear in the same expression, e.g., ak2 
+
+> 2
+
+(z1, z k2+1 2 , z k3+δ+1 3 ) + bk2
+
+> 2,1
+
+(. . . )ˆ u1, the abbreviation (. . . ) indicates that bk2 
+
+> 2,1
+
+may depend on the same variables as ak2 
+
+> 2
+
+.A nonlinear system (1) is static feedback equivalent (SFE) to another system ˙z = g(z, ˆu), if there exist a state trans-formation z = Φz (x) and a static input transformation 
+
+ˆu = Φ ˆu(x, u ) such that the system dynamics satisfy 
+
+ f i(x, u )∂xi Φjz (x) ◦ (Φ x(z), Φu(z, ˆu)) = gj (z, ˆu),
+
+where (x, u ) = (Φ x(z), Φu(z, ˆu)) denotes the inverse of 
+
+(z, ˆu) = (Φ z (x), Φˆu(x, u )) . Unless stated otherwise, any given transformation is considered invertible. We assume that all functions, vector fields, and covector fields are smooth, and that all codistributions have locally constant rank. 
+
+A. Differential Flatness 
+
+Within a differential geometric setting as, e.g., in [19], we work on an extended state-input manifold X × U [0 ,l u] with local coordinates (x, u [0 ,l u]), where the integer lu is chosen large enough to ensure that all time derivatives of relevant functions along trajectories of (1) can be computed via Lie derivatives along the vector field 
+
+fu = f i(x, u )∂xi +
+
+> lu−1
+
+X
+
+> α=0
+
+uj
+
+> [α+1]
+
+∂uj
+
+> [α]
+
+. (4) 
+
+Definition 1. A system of the form (1) is differentially flat if there exist m smooth functions 
+
+y = φ(x, u [0 ,Q ]), (5) on X × U [0 ,l u] that permit a local parametrization 
+
+xi = F ix(y[0 ,R −1] ), i = 1 , . . . , n, uj = F ju (y[0 ,R ]), j = 1 , . . . , m, (6) where F ix and F ju are smooth functions, and the multi-index 
+
+R = ( r1, . . . , r m) specifies the highest derivative-orders of 
+
+y appearing in (6). The m-tuple of functions (5), where Q
+
+defines the highest-derivative orders of u therein, is called a flat output of the system. As shown in [19], the differentials dφ, dφ[1] , . . . , dφ[β]
+
+are linearly independent for arbitrary differentiation or-der β. This guarantees local uniqueness of the param-eterization (6) and of the multi-index R. The mapping 
+
+(Fx, F u) : R|R|+m → Rn+m is a submersion, whose corank defines the differential difference ddiff (φ) = |R| − n. Flat-ness further implies 
+
+⟨dx⟩ ⊂ ⟨ dφ[0 ,R −1] ⟩, ⟨du⟩ ⊂ ⟨ dφ[0 ,R ]⟩. (7) Each component φj (x) of an x-flat output is characterized by its relative degree kj , defined via the vector field (4) as 
+
+Lkj −1 
+
+> fu
+
+φj = φj 
+
+> [kj−1]
+
+(x), Lkj 
+
+> fu
+
+φj = φj 
+
+> [kj]
+
+(x, u ) .
+
+The following definition formalizes the linearizability of flat systems via static feedback after prolongations of suitably chosen inputs. 
+
+Definition 2. Consider a system (1) with a flat output φ
+
+of the form (5). The given system is φ-SFL via prolonga-tions if there exist an invertible static input transformation 
+
+(ˆ u1, ˆu2) = Φ ˆu(x, u ), where dim(ˆ u1) = m1, and a multi-index D = ( d1, . . . , d m1 ), with each dj > 0, such that 
+
+˙x = ˆf (x, ˆu1, ˆu2), ˙ˆu1 = ˆ u1,[1] , . . . , ˙ˆu1,[D−1] = ˆ u1,[D]
+
+is SFL with φ as linearizing output. If |D| = ddiff (φ)
+
+holds additionally, the system is called φ-SFL via minimal prolongations .A detailed analysis of φ-SFL via minimal prolongations for x-flat three-input systems is given in [18]. III. K NOWN RESULTS 
+
+In this section, we recall important structural properties of 
+
+x-flat three-input systems from [18] that form the basis for the definition and characterization of the proposed triangular form. The following theorem, based on [18, Theorem 2], describes the structure of the time derivatives of an x-flat output after applying a suitable input transformation. 
+
+Theorem 1. Consider a system of the form (2) that admits an x-flat output (3) , characterized by the relative degrees K
+
+and the multi-index R. First, the flat-output components can always be rearranged such that 
+
+dmax := r1 − k1 = r3 − k3 ≥ r2 − k2 =: dmin . (8) 
+
+Then, after a possible relabeling of the input components, let ˆu1 = φ1[k1](x, u ) replace u1. Under this input transfor-mation, the following properties hold: a) The derivatives φ[0 ,R ] take the form (DS 3), where p2
+
+and p3 denote the smallest derivative orders such that φj 
+
+> [pj]
+
+,
+
+j ∈ { 2, 3}, explicitly depend on u2, and s ≥ 0 is the smallest integer such that φj 
+
+> [pj+s]
+
+, j ∈ { 2, 3}, explicitly depend on u3.Furthermore, 
+
+r2 − p2 = r3 − p3 =: drp , and p3 − k3 ≥ p2 − k2 .
+
+b) The state dimension and ddiff (φ) are given by 
+
+ddiff (φ) = dmax + drp , and n = k1 + p2 + r3.c) The system is φ-SFL via minimal prolongations with an input transformation of the form 
+
+ˆu1 = (ˆ u1, ˆu2) =  φ1[k1](x, u ), ϕ ˆu2 (x, u ),
+
+replacing (u1, u 2), and D = ( dmax , d rp ), if and only if there exists a transformation ˆu2 = ϕˆu2 (x, u ) such that s = drp .Remark 1. For p2 = k2, i.e., for rank( ∂u(φ[K])) = 2 , a possible input transformation satisfying item c) of Theorem 1 is given by ϕˆu2 = φ2[k2].IV. M AIN RESULTS 
+
+This section introduces the general triangular form for 
+
+x-flat three-input systems and provides a geometric charac-terization based on a given flat output φ(x). Subsequently, we establish a relation between φ-SFL via minimal prolon-gations and the proposed triangular form. 
+
+A. A General Flat Triangular Form for Three-Input Systems 
+
+Consider a control-affine system (2) with a flat output (3) and let its components be arranged such that (8) holds. According to Theorem 1, applying the input transformation 
+
+ˆu1 = φ1[k1](x, u ) yields time derivatives φ[0 ,R ] of the form (DS 3). For notational convenience, we introduce 
+
+δ = dmax − dmin .
+
+From (8) and item a) of Theorem 1 it follows that 
+
+p3 − k3 ≥ p2 − k2, and (p3 − k3) − (p2 − k2) = δ. 
+
+We further define the multi-index P = ( p1, p 2, p 3), where 
+
+p1 is chosen such that p1 − k1 = p3 − k3.Based on the derivative structure established in Theorem 1, we establish the general structurally flat triangular form for three-input systems. 
+
+Definition 3. Consider a three-input system ( GT F 3) with 
+
+n = k1 + p2 + r3 states z = ( zk1 
+
+> 1
+
+, z p2 
+
+> 2
+
+, z r3 
+
+> 3
+
+). Suppose that 
+
+bk2
+
+> 2,1
+
+̸ = 0 , bk3
+
+> 3,1
+
+̸ = 0 , and that the regularity conditions 
+
+∂zk3+i+1 3
+
+(ak3+i 
+
+> 3
+
++ bk3+i 
+
+> 3,1
+
+ˆu1)̸ = 0 (9) for 0 ≤ i ≤ δ − 1,
+
+det ∂(zk2+i+1 2 ,z k3+δ+i+1 3 )
+
+ak2+i 
+
+> 2
+
++ bk2+i 
+
+> 2,1
+
+ˆu1
+
+ak3+δ+i 
+
+> 3
+
++ bk3+δ+i 
+
+> 3,1
+
+ˆu1
+
+!! ̸
+
+= 0 
+
+(10) for 0 ≤ i ≤ p2 − k2 − 1, and 
+
+∂zk3+i+1 3
+
+(ak3+i 
+
+> 3
+
++ bk3+i 
+
+> 3,1
+
+ˆu1 + bk3+i 
+
+> 3,2
+
+ˆu2)̸ = 0 (11) for (p3 − k3) ≤ i ≤ r3 − k3 − 1 hold. Then we refer to ( GT F 3) as the general structurally flat triangular form for 
+
+x-flat three-input systems with the corresponding flat output 
+
+φ = ( z11 , z 12 , z 13 ). (12) The triangular form ( GT F 3) consists of three coupled subsystems: the z1-subsystem given by an integrator chain of dimension k1 with the input ˆu1, the z2-subsystem of dimension p2 where ˆu1 and ˆu2 act as inputs, and the 
+
+z3-subsystem of dimension r3 in which all three inputs enter in a triangular way. 
+
+φ1[0 ,k 1−1] = φ1[0 ,k 1−1] (x) φ2[0 ,k 2−1] (x) φ3[0 ,k 3−1] (x)
+
+φ1[k1] = ˆ u1 φ2[k2](x, ˆu1) φ3[k3](x, ˆu1)
+
+... ... ...
+
+φ2[p2](x, ˆu1[0 ,p 2−k2], u 2) φ3[p3](x, ˆu1[0 ,p 3−k3], u 2)
+
+... ... ...
+
+φ2[p2+s](x, ˆu1[0 ,p 2−k2+s], u 2[0 ,s ], u 3) φ3[p3+s](x, ˆu1[0 ,p 3−k3+s], u 2[0 ,s ], u 3)
+
+... ... ...
+
+φ1[r1−1] = ˆ u1[dmax −1] φ2[r2−1] (x, ˆu1[0 ,d min −1] , u 2[0 ,d rp −1] , u 3[0 ,d rp −s−1] ) φ3[r3−1] (x, ˆu1[0 ,d max −1] , u 2[0 ,d rp −1] , u 3[0 ,d rp −s−1] )
+
+φ1[r1] = ˆ u1[dmax ] φ2[r2](x, ˆu1[0 ,d min ], u 2[0 ,d rp ], u 3[0 ,d rp −s]) φ3[r3](x, ˆu1[0 ,d max ], u 2[0 ,d rp ], u 3[0 ,d rp −s])
+
+(DS 3)Given a system of the form ( GT F 3), the regularity con-ditions ensure that each level of the dynamics uniquely determines the parameterization of the succeeding set of state variables in terms of the flat output (12) and finitely many of its time derivatives. The flat parameterization (6) can then be computed from top to bottom as follows: 1) The integrator chains yield zkj 
+
+> j
+
+= yj  
+
+> [0 ,k j−1]
+
+for 
+
+j ∈ { 1, 2, 3}, and ˆu1 = y1[k1].2) The states zk3+1 3 , . . . , z k3+δ 
+
+> 3
+
+are determined from 
+
+˙zk3 
+
+> 3
+
+, . . . , ˙zk3+δ−13 , guaranteed by (9). 3) By (10), the states zk2+1 2 , . . . , z p2 
+
+> 2
+
+and zk3+δ+1 3 , . . . , z p3
+
+> 3
+
+are determined from ˙zk2 
+
+> 2
+
+, . . . , ˙zp2−12 and 
+
+˙zk3+δ 
+
+> 3
+
+, . . . , ˙zp3−13 . The input ˆu2 follows from ˙zp2 
+
+> 2
+
+= ˆ u2.4) The remaining states zp3+1 3 , . . . , z r3 
+
+> 3
+
+are determined from ˙zp3 
+
+> 3
+
+, . . . , ˙zr3−13 , guaranteed by (11). The input ˆu3
+
+follows from ˙zr3 
+
+> 3
+
+= ˆ u3.In the following, we establish necessary and sufficient geo-metric conditions for static feedback equivalence to ( GT F 3)formulated in terms of a sequence of integrable codistri-butions associated with a given x-flat output. To define a sequence of codistributions whose integrability characterizes the triangular form ( GT F 3), we first introduce the multi-index 
+
+A(i) = ( k1 − 1 + i, k 2 − 1 + max( i − δ, 0) , k 3 − 1 + i) (13) for i = 0, . . . , d max . Note that A(0) = K − 1,
+
+A(p3 − k3) = P − 1, and A(dmax ) = R − 1. For any system with a given x-flat output, there exists acorresponding sequence of codistributions 
+
+PA(i) = ⟨dφ[0 ,A (i)] ⟩ , i = 0 , . . . d max ,
+
+taking the form 
+
+PA(0) = ⟨dφ[0 ,K −1] ⟩,
+
+...
+
+PA(δ) = ⟨dφ1[0 ,(k1−1)+ δ], dφ2[0 ,k 2−1] , dφ3[0 ,(k3−1)+ δ]⟩,
+
+(14a) where dφ2[k2] does not appear, since A(i) only increments the first and third components for i ≤ δ, and 
+
+PA(δ+1) = ⟨dφ1[0 ,k 1+δ], dφ2[0 ,k 2], dφ3[0 ,k 3+δ]⟩,
+
+...
+
+PA(p3−k3+1) = ⟨dφ1[0 ,p 1], dφ2[0 ,p 2], dφ3[0 ,p 3]⟩,
+
+...
+
+PA(dmax ) = ⟨dφ1[0 ,r 1−1] , dφ2[0 ,r 2−1] , dφ3[0 ,r 3−1] ⟩ .
+
+(14b) Intersecting each codistribution of (14) with the span of the state differentials, i.e., 
+
+QA(i) = PA(i) ∩ ⟨ dx⟩, i = 0 , . . . , d max .
+
+yields the sequence 
+
+QA(0) ⊂ 
+
+> 1
+
+QA(1) ⊂ 
+
+> 1
+
+· · · ⊂  
+
+> 1
+
+QA(δ) ⊂ 
+
+> 2
+
+QA(δ+1) ⊂ 
+
+> 2
+
+· · · · · · ⊂  
+
+> 2
+
+QA(p3−k3) ⊂ 
+
+> 1
+
+QA(p3−k3+1) ⊂ 
+
+> 1
+
+· · · · · · ⊂  
+
+> 1
+
+QA(dmax ) = QR−1 = ⟨dx⟩,
+
+(15) relevant for the geometric characterization. 
+
+Remark 2. Note that QA(0) = ⟨dφ[0 ,K −1] ⟩ and 
+
+QA(dmax ) = QR−1 are always integrable, because 
+
+φ[0 ,K −1] (x) depends solely on the state x, whereas 
+
+QR−1 = ⟨dx⟩ is directly implied by (7). Using (15), the following theorem provides a geomet-ric characterization of the structurally flat triangular form (GT F 3). 
+
+Theorem 2. A system (2) with a flat output (3) is SFE to (GT F 3) if and only if the sequence (15) consists purely of integrable codistributions. 
+
+Appendix I provides a proof sketch of Theorem 2. 
+
+B. Equivalence to the Triangular Form by Prolongations 
+
+Given a system for which Theorem 2 does not hold, there exist sufficient conditions to render a system SFE to ( GT F 3)by prolongations of the original control inputs. 
+
+˙z11 = z21
+
+...
+
+˙zk1−11 = zk1
+
+> 1
+
+˙zk1 
+
+> 1
+
+= ˆ u1
+
+˙z12 = z22
+
+...
+
+˙zk2−12 = zk2
+
+> 2
+
+˙zk2 
+
+> 2
+
+= ak2 
+
+> 2
+
+(z1, z k2+1 2 , z k3+δ+1 3 ) + bk2
+
+> 2,1
+
+(. . . )ˆ u1
+
+...
+
+˙zp2−12 = ap2−12 (z1, z 2, z p3 
+
+> 3
+
+) + bp2−12,1 (. . . )ˆ u1
+
+˙zp2 
+
+> 2
+
+= ˆ u2
+
+˙z13 = z23
+
+...
+
+˙zk3−13 = zk3
+
+> 3
+
+˙zk3 
+
+> 3
+
+= ak3 
+
+> 3
+
+(z1, z k2−δ+1 2 , z k3+1 3 ) + bk3
+
+> 3,1
+
+(. . . )ˆ u1
+
+...
+
+˙zk3+δ 
+
+> 3
+
+= ak3+δ 
+
+> 3
+
+(z1, z k2+1 2 , z k3+δ+1 3 ) + bk3+δ 
+
+> 3,1
+
+(. . . )ˆ u1
+
+...
+
+˙zp3−13 = ap3−13 (z1, z 2, z p3 
+
+> 3
+
+) + bp3−13,1 (. . . )ˆ u1
+
+˙zp3 
+
+> 3
+
+= ap3 
+
+> 3
+
+(z1, z 2, z p3+1 3 ) + bp3
+
+> 3,1
+
+(. . . )ˆ u1 + bp3
+
+> 3,2
+
+(. . . )ˆ u2
+
+...
+
+˙zr3−13 = ar3−13 (z) + br3−13,1 (z)ˆ u1 + br3−13,2 (z)ˆ u2
+
+˙zr3 
+
+> 3
+
+= ˆ u3
+
+(GT F 3)Corollary 1. Let y = ( φ1(x), φ 2(x), φ 3(x)) be an x-flat output of a control-affine system of the form (2) that is not SFE to (GT F 3). If the given system is φ-SFL via minimal prolongations, then the system becomes SFE to (GT F 3) after at most ddiff (φ)-fold prolongations of each input. Further, the components of the flat output φ(x) appear as (z11 , z 12 , z 13 )
+
+in the corresponding triangular form defined by (GT F 3).Remark 3. Corollary 1 also applies to nonlinear three-input systems that do not admit a control-affine representation, except that at most ddiff (φ) + 1 prolongations of each input are required, since a one-fold prolongation of each input yields a control-affine system. Appendix II provides a sketch of the proof for Corollary 1. As discussed in [18], whether x-flatness implies φ-SFL via minimal prolongations remains an open question, although— or perhaps because—no counterexample has been found to date. Since systems that are φ-SFL via minimal prolonga-tions always become SFE to ( GT F 3) after finitely many input prolongations according to Corollary 1, the proposed triangular form is a candidate for a universal structurally flat triangular form for x-flat three-input systems. This moti-vates the search for computationally tractable necessary and sufficient conditions characterizing ( GT F 3) directly by the system dynamics, without requiring prior knowledge of a valid x-flat output. 
+
+Remark 4. Such conditions would yield an iterative flatness test: verify SFE to ( GT F 3), and if the test fails, extend the system by a one-fold prolongation of each input and repeat. Given the upper bound ddiff (φ) ≤ 2n−6 that can be derived via, e.g., [19, Theorem 4], this procedure terminates after at most 2n − 6 iterations for any system that is x-flat and 
+
+φ-SFL via minimal prolongations. If the test fails at every step, the system is either not x-flat or not φ-SFL via minimal prolongations. V. E XAMPLES 
+
+We illustrate our results on two examples. The first is a physical system that is directly SFE the proposed triangular form, while the second is an academic example that requires input prolongations before SFE to ( GT F 3) can be achieved. 
+
+Example 1 (Planar Aerial Manipulator) . Consider the pla-nar aerial manipulator studied, e.g., in [20], [21], whose equations of motion are of the form (2) with n = 8 states and three inputs. As shown in [20], a flat output is given by y = ( θ, z e − re sin( ϕ + θ), x e − re cos( ϕ + θ)) . For the given flat output we have K = (2 , 2, 2) , R = (4 , 4, 4) (see [21]), yielding ddiff (φ) = 4 . Since R − K = (2 , 2, 2) , the ar-rangement (8) is satisfied with dmax = dmin = 2 and δ = 0 .After applying the input transformation ˆu1 = φ1[2] (x, u ),the flat-output derivatives take the form (DS 3) with 
+
+P = (2 , 2, 2) = K and s = 2. The multi-index A(j)
+
+from (13) evaluates to 
+
+A(0) = (1 , 1, 1) , A(1) = (2 , 2, 2) , A(2) = (3 , 3, 3) ,
+
+yielding drp = r2 − p2 = 2 and confirming 
+
+n = k1 + p2 + r3 = 2 + 2 + 4 = 8 .The codistribution sequence (15) reduces to 
+
+QA(0) ⊂ 
+
+> 1
+
+QA(1) ⊂ 
+
+> 1
+
+QA(2) = ⟨dx⟩,
+
+being completely integrable. By Theorem 2 the system is SFE to ( GT F 3) yielding the triangular form 
+
+˙z11 = z21 , ˙z12 = z22 , ˙z13 = z23 ,
+
+˙z21 = ˆ u1, ˙z22 = ˆ u2, ˙z23 = a23(z13 , z 23 , z 33 )+ b23,1(z13 , z 33 )ˆ u1
+
++b23,2(z13 , z 33 )ˆ u2,
+
+˙z33 = z43 ,
+
+˙z43 = ˆ u3,
+
+with subsystem dimensions k1 = 2 , p2 = 2 , and r3 = 4 .
+
+Example 2 (Academic Example) . Consider the system from [22, Sec. 4.4.2]: 
+
+˙x1 = u1, ˙x5 = −x6 + x4x7u1,
+
+˙x2 = x3 + x4u1, ˙x6 = −x5u1 + x7(u1u3
+
+˙x3 = u2 − u1u3, − u2−1) + ( x4+u1)x4u1,
+
+˙x4 = u3, ˙x7 = x4 + u1.
+
+(16) System (16) admits the flat output φ = ( x2, x 1, x 5) with 
+
+K = (1 , 1, 1) , R = (4 , 3, 4) , and ddiff (φ) = 4. Given 
+
+R − K = (3 , 2, 3) , the components are already arranged such that (8) holds. Since (16) does not admit a control-affine representation 2, we first perform a one-fold prolongation of each input, yielding 
+
+˙x = f (x, u ), ˙u = u[1] , (17) with extended state xe = ( x, u ) and input u[1] . Note that prolongation preserves the flat output φ = ( x2, x 1, x 5) with 
+
+ddiff (φ) = 4 , but now Ke = (2 , 2, 2) and Re = (5 , 4, 5) ,giving Re − Ke = (3 , 2, 3) , dmax = 3, dmin = 2,and δ = 1. The multi-index A(j) from (13) evaluates to A(0) = (1 , 1, 1) , A(1) = (2 , 1, 2) , A(2) = (3 , 2, 3) , and 
+
+A(3) = (4 , 3, 4) . Then the codistribution sequence (15) takes the form 
+
+QA(0) ⊂ 
+
+> 1
+
+QA(1) ⊂ 
+
+> 2
+
+QA(2) ⊂ 
+
+> 1
+
+QA(3) = ⟨dx, du⟩,
+
+where 
+
+QA(0) = ⟨dx1, dx2, dx5, dx3+u1dx4,
+
+−x7dx3−dx6+x4u1dx7, du1⟩,
+
+QA(1) = QA(0) + ⟨dx7⟩,
+
+QA(2) = QA(1) + ⟨du2, dx6⟩,
+
+QA(3) = QA(2) + ⟨du3⟩.
+
+(18) Given the state xe = ( x, u ) of the extended system (17), it follows that all codistributions are integrable. According         
+
+> 2This means, there exists no invertible input transformation ˜u=ϕ˜u(x, u )
+> such that (16) takes a control-affine form. See, e.g., [23, Lemma 2.2], for a test to prove whether a system ˙x=f(x, u )allows a control-affine representation.
+
+to Theorem 2, the prolonged system is SFE to ( GT F 3). To construct the transformation, note that (z1 
+
+> j
+
+, z 2 
+
+> j
+
+) = φj 
+
+> [0 ,1]
+
+for 
+
+j ∈ { 1, 2, 3} and the remaining coordinates are determined by the growing sequence (18): 
+
+z11 = x2, z12 = x1, z13 = x5,z21 = x3+x4u1, z22 = u1, z23 = x4x7u1−x6,z33 = x7,z32 = u2, z43 = x6,z53 = u3.
+
+(19) Applying (19) together with the input transformation 
+
+(ˆ u1, ˆu2, ˆu3) = ( φ1[2] (xe, u [1] ), u 2[1] , u 3[1] ) ,
+
+the z1-subsystem takes the form ˙z11 = z21 , ˙z21 = ˆ u1, and the 
+
+z2- and z3-subsystems read 
+
+˙z12 = z22 , ˙z13 = z23 ,
+
+˙z23 = z22 z13 +z33 +z33 ˆu1,
+
+˙z22 = a22(z2,32 , z 2,43 ) ˙z33 = a33(z22 , z 2,43 ),
+
++ b22(z22 , z 2,43 )ˆ u1,
+
+˙z32 = ˆ u2, ˙z43 = a43(z2,32 , z 2,53 ),
+
+˙z53 = ˆ u3,
+
+(20) where z2,32 = ( z22 , z 32 ) and z2,43 = ( z23 , z 33 , z 43 ). The sys-tem (20) is of the form ( GT F 3) with k1 = 2 , p2 = 3 ,and r3 = 5. Note that δ = 1 is reflected by the way the flat parameterization (6) is derived from top to bottom: starting from the integrator chains, one first obtains the flat parameterization for (z11 , z 21 ), (z12 , z 22 ), (z13 , z 23 ), and ˆu1. At the next level, only z33 = zk3+δ 
+
+> 3
+
+can be recovered from the dynamics of ˙z23 , before z32 = zk2+1 2 and z43 = zk3+δ+1 3 follow from ˙z22 and ˙z33 .VI. C ONCLUSION 
+
+We introduced a general structurally flat triangular form for x-flat control-affine three-input systems and derived necessary and sufficient conditions for static feedback equiv-alence to the proposed form that are formulated via the integrability of a sequence of codistributions based on a given flat output. We showed that every x-flat three-input system that is φ-SFL via minimal prolongations can be brought into the general triangular form after a finite number of input prolongations. The results were illustrated on a mechanical and an academic example. For the two-input case, the analogous triangular form [9] has been used to develop distribution-based algorithms to identify flat-output candidates [14]. Future work will therefore focus on extend-ing these results to the three-input case using ( GT F 3). REFERENCES [1] M. Fliess, J. L´ evine, P. Martin, and P. Rouchon, “Flatness and defect of non-linear systems: introductory theory and examples,” International Journal of Control , vol. 61, no. 6, pp. 1327–1361, 1995. [2] ——, “A Lie-B¨ acklund approach to equivalence and flatness of nonlinear systems,” IEEE Trans. Autom. Control , vol. 44, no. 5, pp. 922–937, May 1999. [3] B. Jakubczyk and W. Respondek, “On linearization of control sys-tems,” vol. 28, no. 9-10, pp. 517–522, 1980. [4] P. Martin and P. Rouchon, “Feedback linearization and driftless systems,” Mathematics of Control, Signals, and Systems , vol. 7, no. 3, pp. 235–254, Sep. 1994. [5] F. Nicolau and W. Respondek, “Flatness of two-input control-affine systems linearizable via a two-fold prolongation,” in 2016 IEEE 55th Conference on Decision and Control (CDC) , Las Vegas, NV, Dec. 2016, pp. 3862–3867. [6] C. Gst¨ ottner, B. Kolar, and M. Sch¨ oberl, “Necessary and sufficient conditions for the linearisability of two-input systems by a two-dimensional endogenous dynamic feedback,” International Journal of Control , vol. 96, no. 3, pp. 800–821, 2023. [7] F. Nicolau and W. Respondek, “Flatness of multi-input control-affine systems linearizable via one-fold prolongation,” SIAM Journal on Control and Optimization , vol. 55, no. 5, pp. 3171–3203, Jan. 2017. [8] C. Gst¨ ottner, B. Kolar, and M. Sch¨ oberl, “A structurally flat triangular form based on the extended chained form,” International Journal of Control , vol. 95, no. 5, pp. 1144–1163, 2022. [9] ——, “A triangular normal form for x-flat control-affine two-input systems,” in 2024 28th International Conference on Methods and Models in Automation and Robotics (MMAR) , Miedzyzdroje, Poland, Aug. 2024, pp. 298–303. [10] S. Bououden, D. Boutat, G. Zheng, J.-P. Barbot, and F. Kratz, “A triangular canonical form for a class of 0-flat nonlinear systems,” 
+
+International Journal of Control , vol. 84, no. 2, pp. 261–269, 2011. [11] F. Nicolau and W. Respondek, “Normal forms for multi-input flat systems of minimal differential weight,” International Journal of Robust and Nonlinear Control , vol. 29, no. 10, pp. 3139–3162, Jul. 2019. [12] H. B. Silveira, P. S. Pereira Da Silva, and P. Rouchon, “A flat triangular form for nonlinear systems with two inputs: Necessary and sufficient conditions,” European Journal of Control , vol. 22, pp. 17–22, Mar. 2015. [13] M. Sch¨ oberl and K. Schlacher, “On an implicit triangular decom-position of nonlinear control systems that are 1-flat—A constructive approach,” Automatica , vol. 50, no. 6, pp. 1649–1655, Jun. 2014. [14] G. Hartl, C. Gst¨ ottner, and M. Sch¨ oberl, “On triangular forms for x-flat control-affine systems with two inputs,” in 2025 29th International Conference on System Theory, Control and Computing (ICSTCC) ,Cluj-Napoca, Oct. 2025, pp. 161–168. [15] S. Li, F. Nicolau, and W. Respondek, “Multi-input control-affine systems static feedback equivalent to a triangular form and their flatness,” International Journal of Control , vol. 89, no. 1, pp. 1–24, 2016. [16] C. Gst¨ ottner, B. Kolar, and M. Sch¨ oberl, “On a flat triangular form based on the extended chained form,” IFAC-PapersOnLine , vol. 54, no. 9, pp. 245–252, 2021. [17] G. Hartl, C. Gst¨ ottner, and M. Sch¨ oberl, “A flat triangular structure based on a multi-chained form,” Nov. 2025, arXiv:2510.26632, Accepted for ECC 2026. [Online]. Available: http://arxiv.org/abs/2510.26632 [18] G. Hartl, C. Gst¨ ottner, and M. Sch¨ oberl, “On the linearization of flat multi-input systems via prolongations,” Feb. 2026, arXiv:2602.17562. [Online]. Available: https://arxiv.org/abs/2602.17562 [19] B. Kolar, M. Sch¨ oberl, and K. Schlacher, “Properties of flat systems with regard to the parameterization of the system variables by the flat output,” IFAC-PapersOnLine , vol. 49, no. 18, pp. 814–819, 2016. [20] J. Welde, M. D. Kvalheim, and V. Kumar, “The role of symmetry in constructing geometric flat outputs for free-flying robotic systems,” in 2023 IEEE International Conference on Robotics and Automation (ICRA) , London, United Kingdom, May 2023, pp. 12 247–12 253. [21] G. Hartl, C. Gst¨ ottner, B. Kolar, and M. Sch¨ oberl, “On the exact linearization of minimally underactuated configuration flat Lagrangian systems in generalized state representation,” IFAC-PapersOnLine ,vol. 58, no. 17, pp. 244–249, 2024. [22] B. Kolar, Contributions to the Differential Geometric Analysis and Control of Flat Systems , ser. Modellierung und Regelung komplexer dynamischer Systeme. Aachen: Shaker, 2017, vol. 35. [23] C. Gst¨ ottner, Analysis and Control of Flat Systems by Geometric Methods , ser. Modellierung und Regelung komplexer dynamischer Systeme. D¨ uren: Shaker Verlag, 2023, vol. 59. APPENDIX IPROOF OF THEOREM 2
+
+Necessity: It suffices to verify that the sequence (15) for any system of the form (GT F 3) with flat output 
+
+φ = ( z11 , z 12 , z 13 ) consists solely of integrable codistributions. 
+
+Sufficiency: We show that any system (2) with a flat output (3) for which all codistributions in (15) are integrable can be brought into the form ( GT F 3). 
+
+Step 1 (State transformation): Since the codistributions in (15) are integrable by assumption, there exist functions 
+
+gi
+
+> 2
+
+(x), i = k2+1 , . . . , p 2, and gi
+
+> 3
+
+(x), i = k3+1 , . . . , r 3, such that 
+
+QA(1) = QA(0) + ⟨dgk3+1 3 ⟩,
+
+...
+
+QA(δ) = QA(δ−1) + ⟨dgk3+δ 
+
+> 3
+
+⟩,
+
+QA(δ+1) = QA(δ) + ⟨dgk2+1 2 , dgk3+δ+1 3 ⟩,
+
+...
+
+QA(p3−k3) = QA(p3−k3−1) + ⟨dgp2 
+
+> 2
+
+, dgp3 
+
+> 3
+
+⟩,
+
+QA(p3−k3+1) = QA(p3−k3) + ⟨dgp3+1 3 ⟩,
+
+...
+
+QA(dmax ) = QA(r3−k3−1) + ⟨dgr3 
+
+> 3
+
+⟩ = ⟨dx⟩.
+
+We introduce the invertible state transformation 
+
+(z11 , . . . , z k1 
+
+> 1
+
+, z 12 , . . . , z k2 
+
+> 2
+
+, z 13 , . . . , z k3 
+
+> 3
+
+) = φ[0 ,K −1] (x),zk2+1 2 = gk2+1 2 (x), . . . , z p2 
+
+> 2
+
+= gp2 
+
+> 2
+
+(x),zk3+1 3 = gk3+1 3 (x), . . . , z r3 
+
+> 3
+
+= gr3 
+
+> 3
+
+(x).
+
+(21) In these coordinates, the Q-sequence takes the form 
+
+QA(1) = ⟨dz1, dzk2 
+
+> 2
+
+, dzk3+1 3 ⟩,
+
+...
+
+QA(δ+1) = ⟨dz1, dzk2+1 2 , dzk3+δ+1 3 ⟩,
+
+...
+
+QA(p3−k3) = ⟨dz1, dz2, dzp3 
+
+> 3
+
+⟩,
+
+...
+
+QA(dmax ) = ⟨dz1, dz2, dz3⟩.
+
+Step 2 (Dynamics for zk2 
+
+> 2
+
+,. . . ,z p2−12 and zk3 
+
+> 3
+
+,. . . ,z p3−13 ): We apply the static input transformation ˆu1 = φ1[k1](z, u )
+
+replacing u1 after a possible relabeling. For convenience, we denote the vector field (4) by fu regardless of the choice of state and input coordinates. In the z-coordinates, fu takes the form 
+
+fu = z2 
+
+> j
+
+∂z1 
+
+> j
+
++ · · · + zkj 
+
+> j
+
+∂zkj −1
+
+> j
+
++ f il 
+
+> l
+
+(z, ˆu1, u 2, u 3)∂zill
+
++
+
+> dmax −1
+
+X
+
+> α=0
+
+ˆu1[α+1] ∂ˆu1[α] +
+
+> drp −1
+
+X
+
+> α=0
+
+ul
+
+> [α+1]
+
+∂ul
+
+> [α]
+
+,
+
+(22) with j = 1, 2, 3, l = 2, 3, i2 = k2, . . . , p 2, and 
+
+i3 = k3, . . . , r 3.The key idea underlying the remainder of this proof is as follows: since QA(i) ⊂ PA(i), each PA(i) admits an explicit basis. By comparing this basis with the relation 
+
+dφj 
+
+> [i]
+
+= dL fu φj
+
+> [i−1]
+
+, one can determine the admissible dependencies of the coefficient functions of (22). For each 
+
+i ∈ { 0, . . . , δ − 1}, a basis for the codistribution 
+
+PA(i+1) = PA(i) + ⟨dφ1[k1+i], dφ3[k3+i]⟩ (23) is given by 
+
+PA(i+1) = ⟨dz1, dˆ u1[0 ,i ], dzk2 
+
+> 2
+
+, dzk3+i+1 3 ⟩. (24) Given that φ3[k3+i] = L fu φ3[k3+i−1] , it follows that f k3+i
+
+> 3
+
+must explicitly depend on zk3+i+1 3 while being independent of (zk2+1 2 , . . . , z p2 
+
+> 2
+
+) and (zk3+i+2 3 , . . . , z r3 
+
+> 3
+
+). This proves the regularity condition (9). For i ∈ { 0, . . . , p 2 − k2 − 1}, the codistributions 
+
+PA(δ+i+1) = PA(δ+i) + ⟨dφ1[k1+δ+i], dφ2[k2+i], dφ3[k3+δ+i]⟩
+
+take the form 
+
+PA(δ+i+1) = ⟨dz1, dˆ u1[0 ,δ +i], dzk2+i+1 2 , dzk3+δ+i+1 3 ⟩.
+
+Again, given that φ2[k2+i] = Lfu φ2[k2+i−1] and 
+
+φ3[k3+δ+i] = Lfu φ3[k3+δ+i−1] , it follows that f k2+i 
+
+> 2
+
+and 
+
+f k3+δ+i 
+
+> 3
+
+must explicitly depend on (zk2+i+1 2 , z k3+δ+i+1 3 )
+
+such that the regularity condition (10) is satisfied. It remains to determine the dependency of f k3+i 
+
+> 3
+
+,
+
+i ∈ { 0, . . . , p 3 − k3 − 1}, on the z2-subsystem. Given the 
+
+z2-integrator chain ˙zl 
+
+> 2
+
+= zl+1 2 for 1 ≤ l ≤ k2 − 1, any de-pendency of f k3+i 
+
+> 3
+
+on zl 
+
+> 2
+
+propagates through successive Lie derivatives and after k2 − l differentiations, it reaches zk2 
+
+> 2
+
+.One further differentiation introduces f k2 
+
+> 2
+
+, which depends on zk2+1 2 and/or zk3+δ+1 3 . Since dzk2+1 2 and dzk3+δ+1 3 first appear in PA(δ+1) , they must not enter PA(i) for i ≤ δ,implying that f k3+δ−13 may depend on at most zk2 
+
+> 2
+
+. This requires l+δ−1−i ≤ k2, which further yields that f k3+i 
+
+> 3
+
+may depend on at most zk2−δ+1+ i 
+
+> 2
+
+, for i ∈ { 0, . . . , p 3 − k3 − 1}.Given the control-affine structure of the system, the func-tions f k3+i 
+
+> 3
+
+, i ∈ { 0, . . . , p 3 − k3 − 1}, decompose as 
+
+f k3+i 
+
+> 3
+
+= ak3+i 
+
+> 3
+
+(z1, z k2−δ+i+1 2 , z k3+i+1 3 ) + bk3+i 
+
+> 3,1
+
+(. . . )ˆ u1,
+
+while f k2+i 
+
+> 2
+
+, i ∈ { 0, . . . , p 2 − k2 − 1} take the form 
+
+f k2+i 
+
+> 2
+
+= ak2+i 
+
+> 2
+
+(z1, z k2+i+1 2 , z k3+δ+i+1 3 ) + bk2+i 
+
+> 2,1
+
+(. . . )ˆ u1.
+
+Step 3 (Input transformation ˆu2 = f p2 
+
+> 2
+
+(z, ˆu1, u 2, u 3)): Given (DS 3), φj 
+
+> [pj]
+
+, j ∈ { 2, 3}, are the first functions depending explicitly on u2 and additionally on u3 if s = 0. Since the codistribution 
+
+PA(p3−k3+1) = ⟨dφ1[0 ,p 1], dφ2[0 ,p 2], dφ3[0 ,p 3]⟩ is spanned by 
+
+PA(p3−k3+1) = ⟨dz1, dˆ u1[0 ,p 3−k3], dz2, α du2+βdu3, dzp3+1 3 ⟩,
+
+with β = 0 for s > 0, the functions f p2 
+
+> 2
+
+and f p3 
+
+> 3
+
+are given by 
+
+f pj 
+
+> j
+
+= ˜ aj (z1, z 2, z p3+1 3 ) + ˜bj, 1(. . . )ˆ u1
+
++ ˜bj, 2(. . . )u2 + ˜bj, 3(. . . )u3,j ∈ { 2, 3}. Applying the static input transformation 
+
+ˆu2 = f p2 
+
+> 2
+
+(z1, z 2, z p3+1 3 , ˆu1, u 2, u 3), (25) replacing u2 yields f p2 
+
+> 2
+
+= ˆ u2 and 
+
+f p3 
+
+> 3
+
+= ap3 
+
+> 3
+
+(z1, z 2, z p3+1 3 ) + bp3
+
+> 3,1
+
+(. . . )ˆ u1 + bp3
+
+> 3,2
+
+(. . . )ˆ u2.
+
+Note that f p3 
+
+> 3
+
+is independent of u3, as otherwise dzp3+1 3
+
+would not be contained in PA(p3−k3+1) .
+
+Step 4 (Remaining dynamics for zp3+1 3 , . . . , z r3 
+
+> 3
+
+): After the input transformation (25), the subsequent codistributions grow by one z3-coordinate at each level: 
+
+PA(p3−k3+1) = PA(p3−k3) + ⟨dˆ u1[p3−k3], dˆ u2, dzp3+1 3 ⟩,
+
+...
+
+PA(dmax +1) = PA(dmax ) + ⟨dˆ u1[dmax ], dˆ u2[drp ], du3⟩.
+
+Note that du3 must appear in PA(dmax +1) , since flatness implies ⟨dx, du⟩ ⊂ ⟨ dφ[0 ,R ]⟩. Analogous reasoning as in Steps 2 and 3 shows that for i ∈ { p3 − k3, . . . , r 3 − k3 − 1},the functions f k3+i 
+
+> 3
+
+take the form 
+
+f k3+i 
+
+> 3
+
+= ak3+i 
+
+> 3
+
+(z1, z 2, z k3+i+1 3 )+ bk3+i 
+
+> 3,1
+
+(. . . )ˆ u1 + bk3+i 
+
+> 3,2
+
+(. . . )ˆ u2,
+
+satisfying regularity condition (11). Normalizing f r3 
+
+> 3
+
+= ˆ u3
+
+by a static input transformation yields exactly the dynamics given in ( GT F 3), completing the proof. APPENDIX II PROOF OF COROLLARY 1By assumption, we consider a control-affine three-input system of the form 
+
+˙x = f (x) + g1(x)ˆ u1 + g2(x)u2 + g3(x)u3
+
+with an x-flat output φ(x) = ( φ1(x), φ 2(x), φ 3(x)) that is 
+
+φ-SFL via minimal prolongations. To the given flat output, we associate the multi-indices K and R, and the differential difference ddiff (φ), which we briefly denote by d. According to Theorem 1, the components of φ can be relabeled such that (8) holds and the derivatives φ[0 ,R ] can be brought into the form (DS 3) with the integers p2 and p3. For simplicity, we assume the derivatives φ[0 ,R ] are already of the form ( DS 3) with s = drp , i.e., that means that item c) 
+
+of Theorem 1 is already satisfied with u2.With the multi-indices A(j), j = 0 , . . . , r 3 − k3 + 1 , see (13), one can construct the associated P- and Q-sequence (14) and (15). In the following, we show that a d-fold prolongation of each input of the considered system ensures integrability of the Q-sequence (15) of the extended system 
+
+˙x = f (x) + g1(x)ˆ u1 + g2(x)u2 + g3(x)u3,
+
+˙ˆu1[0 ,d −1] = ˆ u1[1 ,d ], ˙u2[0 ,d −1] = u2[1 ,d ], ˙u3[0 ,d −1] = u3[1 ,d ] ,
+
+(26) with state xe = (x, u [0 ,d −1] ) and input u[d], where 
+
+u = (ˆ u1, u 2, u 3). Note that the prolonged system admits the same flat output φ(x) with differential difference d. However, the corresponding multi-indices Ke = K + d, Re = R + d,and Ae(j) = A(j) + d, for j = 0 , . . . , r 3 − k3 + 1 , are increased by d.The structure of the time derivatives φ[0 ,R e] follows from (DS 3) with s = drp and its extension (DS 3e). By means of φ[0 ,R e] and the fact that flatness implies 
+
+⟨dx, du⟩ ⊂ ⟨ dφ[0 ,R ]⟩, it can be deduced that the P-sequence associated with the extended system (26) takes the form 
+
+PAe(1) = ⟨dφ[0 ,K e−1] (xe), dˆ u1[d], du3[drp ]⟩ ,
+
+...
+
+PAe(δ−1) = ⟨dφ[0 ,K e−1] (xe), dˆ u1[d,d +δ−2] , du3[drp ,d rp +δ−2] ⟩ ,
+
+PAe(δ) = ⟨dx, dˆ u1[0 ,d +δ−1] , du2[0 ,2drp +δ−1] , du3[0 ,d rp +δ−1] ⟩ ,
+
+PAe(δ+1) = ⟨dx, dˆ u1[0 ,d +δ], du2[0 ,2drp +δ], du3[0 ,d rp +δ]⟩ ,
+
+...
+
+PAe(p3−k3+1) = ⟨dx, dˆ u1[0 ,2dmax ], du2[0 ,d ], du3[0 ,d max ]⟩ ,
+
+...
+
+PAe(r3−k3) = ⟨dx, dˆ u1[0 ,d +dmax −1] , du2[0 ,d +dmin ], du3[0 ,d −1] ⟩ .
+
+(27) Intersecting the P-sequence (27) with 
+
+⟨dxe⟩ = ⟨dx, dˆ u1[0 ,d −1] , du2[0 ,d −1] , du3[0 ,d −1] ⟩ yields the associated Q-sequence (15), where each codistribution is solely spanned by exact differentials. 
+
+φ1[r1+1] = ˆ u1[dmax +1] φ2[r2+1] (x, ˆu1[0 ,d min +1] , u 2[0 ,d rp +1] , u 3[0 ,1] ) φ3[r3+1] (x, ˆu1[0 ,d max +1] , u 2[0 ,d rp +1] , u 3[0 ,1] )
+
+...... φ2[r2+drp ](x, ˆu1[0 ,r 2−k2+drp ], u 2[0 ,2drp ], u 3[0 ,d rp ]) ......
+
+φ1[k1+d] = ˆ u1[d] φ2[k2+d](x, ˆu1[0 ,d ], u 2[0 ,2drp +δ], u 3[0 ,d rp +δ]) φ3[k3+d](x, ˆu1[0 ,d ], u 2[0 ,2drp ], u 3[0 ,d rp ])
+
+... ...
+
+φ1[k1+d+δ] = ˆ u1[d+δ]
+
+... φ3[k3+d+δ](x, ˆu1[0 ,d +δ], u 2[0 ,2drp +δ], u 3[0 ,d rp +δ])
+
+... ...
+
+φ1[r1+d−1] = ˆ u1[dmax +d−1] φ2[r2+d−1] (x, ˆu1[0 ,d min +d−1] , u 2[0 ,d rp +d−1] , u 3[0 ,d −1] ) φ3[r3+d−1] (x, ˆu1[0 ,d max +d−1] , u 2[0 ,d rp +d−1] , u 3[0 ,d −1] )
+
+(DS 3e)

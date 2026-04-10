@@ -1,0 +1,23 @@
+{
+  "label": "2026-04-10",
+  "date": "2026-04-10",
+  "generated_at": "2026-04-10T20:02:01",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202604/10/2604.02510v1-a-structurally-flat-triangular-form-for-three-input-systems",
+      "section": "quick",
+      "title_en": "A Structurally Flat Triangular Form for Three-Input Systems",
+      "authors": "Georg Hartl, Conrad Gstöttner, Markus Schöberl",
+      "date": "2026-04-02",
+      "pdf": "https://arxiv.org/pdf/2604.02510v1",
+      "score": "6.0",
+      "evidence": "具有三个输入的控制仿射系统与结构平坦性",
+      "tldr": "本文针对具有三个输入的控制仿射系统，提出了一种结构平坦的三角形形式。基于平坦输出导数结构的最新研究，定义了该三角形形式及其保证结构平坦性的正则性条件。研究推导了系统与该形式在静态反馈下等价的充要条件，并给出了通过有限次输入延长使一般三输入x-平坦系统等价于该形式的充分条件，为复杂多输入系统的平坦性分析提供了理论框架。",
+      "tags": "query:pmsm",
+      "abstract_en": "We present a broadly applicable structurally flat triangular form for x-flat control-affine systems with three inputs. Building on recent results for the derivative structure of flat outputs, we define the triangular form together with regularity conditions that guarantee structural flatness, and derive necessary and sufficient conditions for a system with a given x-flat output to be static feedback equivalent to this form. Further, we present sufficient conditions under which general x-flat three-input systems can be rendered static feedback equivalent to the proposed triangular form after a finite number of input prolongations.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

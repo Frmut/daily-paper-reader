@@ -1,6 +1,9 @@
 * <a class="dpr-sidebar-root-link" href="#/">首页</a>
 * <a class="dpr-sidebar-root-link dpr-sidebar-noactive-link" href="javascript:void(0)" data-dpr-hash="#/tutorial/README">使用教程</a>
 * Daily Papers
+  * 2026-04-10 <!--dpr-date:20260410-->
+    * 速读区
+      * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202604/10/2604.02510v1-a-structurally-flat-triangular-form-for-three-input-systems" data-sidebar-item="{&quot;title&quot;: &quot;A Structurally Flat Triangular Form for Three-Input Systems&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2604.02510v1-a-structurally-flat-triangular-form-for-three-input-systems&quot;, &quot;score&quot;: &quot;6.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;pmsm&quot;}], &quot;evidence&quot;: &quot;具有三个输入的控制仿射系统与结构平坦性&quot;}">A Structurally Flat Triangular Form for Three-Input Systems</a>
   * 2026-04-09 <!--dpr-date:20260409-->
     * 速读区
       * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202604/09/2604.02503v1-nonlinear-system-identification-of-variable-pitch-propellers-using-a-wiener-model" data-sidebar-item="{&quot;title&quot;: &quot;Nonlinear System Identification of Variable-Pitch Propellers Using a Wiener Model&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2604.02503v1-nonlinear-system-identification-of-variable-pitch-propellers-using-a-wiener-model&quot;, &quot;score&quot;: &quot;6.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;pmsm&quot;}], &quot;evidence&quot;: &quot;电机及驱动链建模&quot;}">Nonlinear System Identification of Variable-Pitch Propellers Using a Wiener Model</a>
