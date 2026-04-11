@@ -1,0 +1,54 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-04-11T19:39:37.804071+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 1,
+    "quick_skim_target": 11,
+    "quick_selected": 1
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2604.05677v1",
+      "title": "Dynamic Control Allocation for Dual-Tilt UAV Platforms",
+      "abstract": "This paper focuses on dynamic control allocation for a hexarotor UAV platform, considering a trajectory tracking task as as case study. It is assumed that the platform is dual-tilting, meaning that it is able to tilt each propeller independently during flight, along two orthogonal axis. We present a hierarchical control structure composed of a high-level controller generating the required wrench for the tracking task, and a control allocation law ensuring that the actuators produce such wrench. The allocator imposes desired first-order dynamics on the actuators set, and exploits system redundancy to optimize the actuators state with respect to a given objective function. Unlike other studies on the subject, we explicitly model actuator saturation and provide theoretical insights on its effect on control performances. We also investigate the role of propeller tilt angles, by imposing asymmetric shapes in the objective function. Numerical simulations are presented to validate the allocation strategy.",
+      "authors": [
+        "Marcello Sorge",
+        "Federico Ciresola",
+        "Giulia Michieletto",
+        "Angelo Cenedese"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-04-07T10:27:47+00:00",
+      "link": "https://arxiv.org/pdf/2604.05677v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "dynamic control allocation and actuator redundancy",
+      "llm_evidence_cn": "动态控制分配与执行器冗余",
+      "llm_evidence": "动态控制分配与执行器冗余",
+      "canonical_evidence": "动态控制分配与执行器冗余",
+      "llm_tldr_en": "Proposes control allocation for redundant actuators, a method transferable to fault-tolerant motor control.",
+      "llm_tldr_cn": "提出冗余执行器的控制分配方法，可迁移至电机的容错控制研究。",
+      "llm_tldr": "提出冗余执行器的控制分配方法，可迁移至电机的容错控制研究。",
+      "llm_tags": [
+        "query:pmsm"
+      ],
+      "matched_query_tag": "query:pmsm",
+      "matched_query_text": "fault-tolerant control of multi-phase motors",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

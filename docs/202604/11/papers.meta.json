@@ -1,0 +1,23 @@
+{
+  "label": "2026-04-11",
+  "date": "2026-04-11",
+  "generated_at": "2026-04-11T19:40:03",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202604/11/2604.05677v1-dynamic-control-allocation-for-dual-tilt-uav-platforms",
+      "section": "quick",
+      "title_en": "Dynamic Control Allocation for Dual-Tilt UAV Platforms",
+      "authors": "Marcello Sorge, Federico Ciresola, Giulia Michieletto, Angelo Cenedese",
+      "date": "2026-04-07",
+      "pdf": "https://arxiv.org/pdf/2604.05677v1",
+      "score": "6.0",
+      "evidence": "动态控制分配与执行器冗余",
+      "tldr": "本研究针对具有双轴独立倾转旋翼的六旋翼无人机，提出了一种动态控制分配策略。该方法采用分层控制架构，由生成所需力矩的高层控制器和确保执行器输出的分配律组成。分配器为执行器集施加一阶动力学约束，并利用系统冗余度优化执行器状态。研究重点建模了执行器饱和效应并分析其对性能的影响，通过数值仿真验证了策略在轨迹跟踪任务中的有效性。",
+      "tags": "query:pmsm",
+      "abstract_en": "This paper focuses on dynamic control allocation for a hexarotor UAV platform, considering a trajectory tracking task as as case study. It is assumed that the platform is dual-tilting, meaning that it is able to tilt each propeller independently during flight, along two orthogonal axis. We present a hierarchical control structure composed of a high-level controller generating the required wrench for the tracking task, and a control allocation law ensuring that the actuators produce such wrench. The allocator imposes desired first-order dynamics on the actuators set, and exploits system redundancy to optimize the actuators state with respect to a given objective function. Unlike other studies on the subject, we explicitly model actuator saturation and provide theoretical insights on its effect on control performances. We also investigate the role of propeller tilt angles, by imposing asymmetric shapes in the objective function. Numerical simulations are presented to validate the allocation strategy.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

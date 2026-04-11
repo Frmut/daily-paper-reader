@@ -6,26 +6,26 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-04-10
-- 运行时间：2026-04-10 20:01:51 UTC
+- 最新运行日期：2026-04-11
+- 运行时间：2026-04-11 19:39:55 UTC
 - 运行状态：成功
 - 本次总论文数：1
 - 精读区：0
 - 速读区：1
 
 ### 今日简报（AI）
-今日聚焦多输入控制系统的结构化突破，深入探讨了三输入系统的平坦三角形式。
-研究给出了判定系统微分平坦性的具体几何条件，为复杂非线性系统的简化控制提供了新路径。
-推荐控制理论研究者关注该数学框架，以优化多变量系统的轨迹规划与反馈线性化设计。
-- 详情：[/202604/10/README](/202604/10/README)
+今日聚焦双倾转旋翼无人机的动态控制分配技术研究。
+该研究针对双倾转平台提出了动态分配方案，旨在优化飞行器在复杂任务中的控制响应与稳定性。
+建议关注无人机控制算法的读者参考其执行机构建模思路，以提升多自由度平台的操控精度。
+- 详情：[/202604/11/README](/202604/11/README)
 
 ### 精读区论文标签
 - 本次无精读推荐。
 
 ### 速读区论文标签
-1. [A Structurally Flat Triangular Form for Three-Input Systems](/202604/10/2604.02510v1-a-structurally-flat-triangular-form-for-three-input-systems)  
+1. [Dynamic Control Allocation for Dual-Tilt UAV Platforms](/202604/11/2604.05677v1-dynamic-control-allocation-for-dual-tilt-uav-platforms)  
    标签：评分：6.0/10、query:pmsm
-   evidence：具有三个输入的控制仿射系统与结构平坦性
+   evidence：动态控制分配与执行器冗余
 
 
 <div class="dpr-home-promo-card">

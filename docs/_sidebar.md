@@ -1,6 +1,9 @@
 * <a class="dpr-sidebar-root-link" href="#/">首页</a>
 * <a class="dpr-sidebar-root-link dpr-sidebar-noactive-link" href="javascript:void(0)" data-dpr-hash="#/tutorial/README">使用教程</a>
 * Daily Papers
+  * 2026-04-11 <!--dpr-date:20260411-->
+    * 速读区
+      * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202604/11/2604.05677v1-dynamic-control-allocation-for-dual-tilt-uav-platforms" data-sidebar-item="{&quot;title&quot;: &quot;Dynamic Control Allocation for Dual-Tilt UAV Platforms&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2604.05677v1-dynamic-control-allocation-for-dual-tilt-uav-platforms&quot;, &quot;score&quot;: &quot;6.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;pmsm&quot;}], &quot;evidence&quot;: &quot;动态控制分配与执行器冗余&quot;}">Dynamic Control Allocation for Dual-Tilt UAV Platforms</a>
   * 2026-04-10 <!--dpr-date:20260410-->
     * 速读区
       * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202604/10/2604.02510v1-a-structurally-flat-triangular-form-for-three-input-systems" data-sidebar-item="{&quot;title&quot;: &quot;A Structurally Flat Triangular Form for Three-Input Systems&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2604.02510v1-a-structurally-flat-triangular-form-for-three-input-systems&quot;, &quot;score&quot;: &quot;6.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;pmsm&quot;}], &quot;evidence&quot;: &quot;具有三个输入的控制仿射系统与结构平坦性&quot;}">A Structurally Flat Triangular Form for Three-Input Systems</a>
