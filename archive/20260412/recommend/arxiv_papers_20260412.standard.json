@@ -1,0 +1,130 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-04-12T19:32:06.634649+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 3,
+    "quick_skim_target": 11,
+    "quick_selected": 3
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2604.05566v1",
+      "title": "Accelerating Full-Scale Nonlinear Model Predictive Control via Surrogate Dynamics Optimization",
+      "abstract": "Driven by advances in hardware and software technologies, nonlinear model predictive control (NMPC) has gained increasing adoption in both industry and academia over the past decades. However, its practical deployment is often limited by the computational cost of simulating the embedded process model, especially for high-dimensional, multi-time-scale, or nonlinear systems commonly found in real-world applications. Thus, this paper introduces Surrogate Dynamics Optimization (SDO), a warm-start framework for full-scale NMPC to address the limitation of standard initialization strategies. The approach relies on a machine learning surrogate model to solve a lightweight auxiliary problem that approximates the original one. The methodology is reproducible and compatible with inhouse simulation and optimization tools, a key consideration in industrial contexts. Data efficiency of SDO, as well as the impact of surrogate design on the overall performance, are evaluated through a non-trivial simulation case study: 24-hour optimal load-following control of a pressurized water reactor. The results show consistent improvements in NMPC convergence speed within a fixed computational budget, while reducing training data generation costs by two orders of magnitude compared to behavior cloning.",
+      "authors": [
+        "Perceval Beja-Battais",
+        "Guillaume Dupré",
+        "Alain Grossetête",
+        "Nicolas Vayatis"
+      ],
+      "primary_category": "math.OC",
+      "categories": [
+        "math.OC"
+      ],
+      "published": "2026-04-07T08:07:21+00:00",
+      "link": "https://arxiv.org/pdf/2604.05566v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Nonlinear model predictive control for high-dimensional systems",
+      "llm_evidence_cn": "高维系统的非线性模型预测控制",
+      "llm_evidence": "高维系统的非线性模型预测控制",
+      "canonical_evidence": "高维系统的非线性模型预测控制",
+      "llm_tldr_en": "Accelerates NMPC using surrogate dynamics, applicable to complex multi-phase motor control optimization.",
+      "llm_tldr_cn": "利用代理动力学加速NMPC，可应用于复杂多相电机的控制优化。",
+      "llm_tldr": "利用代理动力学加速NMPC，可应用于复杂多相电机的控制优化。",
+      "llm_tags": [
+        "query:pmsm:composite"
+      ],
+      "matched_query_tag": "query:pmsm:composite",
+      "matched_query_text": "Papers central to 三相及双三相永磁同步电机相关研究检索, especially work that connects or combines: m; s; f; Permanent Magnet Synchronous Motor research; dual three-phase permanent magnet synchronous motor control and design; fault-tolerant control of multi-phase motors; recent advances in dual three phase permanent magnet synchronous motor control; fault tolerant strategies for multi phase permanent magnet synchronous motors.",
+      "matched_requirement_id": "req-composite-pmsm",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2604.06338v1",
+      "title": "Adaptive Control with Sparse Identification of Nonlinear Dynamics",
+      "abstract": "This paper develops a sparsity-promoting integral concurrent learning (SP-ICL) adaptation law for a linearly parametrized uncertain nonlinear control-affine system. The unknown parameters are learned using ICL with sparsity-promoting $\\ell_1$ regularization. The use of $\\ell_1$ regularization for sparsity promotion is common in system identification and machine learning; however, unlike existing approaches, this paper develops an online parameter update law that integrates the regularization penalty with ICL via sliding modes. Using the SP-ICL update law, we show via non-smooth Lyapunov analysis that the trajectories of the closed-loop system are ultimately bounded. Simulations verify the effectiveness of the sparsity penalty in the SP-ICL update law on recovering sparse dynamics during trajectory tracking.",
+      "authors": [
+        "Trivikram Satharasi",
+        "Tochukwu E. Ogri",
+        "Muzaffar Qureshi",
+        "Kyle Volle",
+        "Rushikesh Kamalapurkar"
+      ],
+      "primary_category": "math.OC",
+      "categories": [
+        "math.OC",
+        "eess.SY"
+      ],
+      "published": "2026-04-07T18:16:31+00:00",
+      "link": "https://arxiv.org/pdf/2604.06338v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Adaptive control for uncertain nonlinear systems",
+      "llm_evidence_cn": "不确定非线性系统的自适应控制",
+      "llm_evidence": "不确定非线性系统的自适应控制",
+      "canonical_evidence": "不确定非线性系统的自适应控制",
+      "llm_tldr_en": "Develops adaptive control with sparse identification, useful for PMSM parameter estimation and control.",
+      "llm_tldr_cn": "开发了具有稀疏识别的自适应控制，可用于永磁同步电机的参数估计与控制。",
+      "llm_tldr": "开发了具有稀疏识别的自适应控制，可用于永磁同步电机的参数估计与控制。",
+      "llm_tags": [
+        "query:pmsm:composite"
+      ],
+      "matched_query_tag": "query:pmsm:composite",
+      "matched_query_text": "Papers central to 三相及双三相永磁同步电机相关研究检索, especially work that connects or combines: m; s; f; Permanent Magnet Synchronous Motor research; dual three-phase permanent magnet synchronous motor control and design; fault-tolerant control of multi-phase motors; recent advances in dual three phase permanent magnet synchronous motor control; fault tolerant strategies for multi phase permanent magnet synchronous motors.",
+      "matched_requirement_id": "req-composite-pmsm",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2604.07281v1",
+      "title": "Active Propeller Fault Detection and Isolation in Multirotors Via Vibration Model",
+      "abstract": "In rotary-wing aircraft, rotating blades are exposed to collisions and subsequent damage. The detection and isolation of blade damage constitute the first step in fault mitigation; however, they are particularly challenging when considerable input redundancy is available, as in the case of multirotors. In this article, we propose an active model-based approach that deliberately perturbs the control inputs to isolate blade faults in multirotor vehicles. By exploiting a model that captures the vibrations caused by blade damage, the isolation method relies solely on vibration data from the onboard inertial measurement unit. The strategy is tested in simulation using an octarotor platform, and both time-domain and frequency-domain features are analyzed. Several accuracy-related metrics of the technique are evaluated on a set of 9600 simulations and compared with the most relevant variables.",
+      "authors": [
+        "Alessandro Baldini",
+        "Riccardo Felicetti",
+        "Alessandro Freddi",
+        "Andrea Monteriù"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY"
+      ],
+      "published": "2026-04-08T16:44:24+00:00",
+      "link": "https://arxiv.org/pdf/2604.07281v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "active fault detection and isolation in multi-rotor systems",
+      "llm_evidence_cn": "多旋翼系统中的主动故障检测与隔离",
+      "llm_evidence": "多旋翼系统中的主动故障检测与隔离",
+      "canonical_evidence": "多旋翼系统中的主动故障检测与隔离",
+      "llm_tldr_en": "Proposes an active model-based approach to isolate propeller faults in multirotors using vibration data.",
+      "llm_tldr_cn": "提出一种基于主动模型的方法，利用振动数据隔离多旋翼飞行器的螺旋桨故障。",
+      "llm_tldr": "提出一种基于主动模型的方法，利用振动数据隔离多旋翼飞行器的螺旋桨故障。",
+      "llm_tags": [
+        "query:pmsm"
+      ],
+      "matched_query_tag": "query:pmsm",
+      "matched_query_text": "fault tolerant strategies for multi phase permanent magnet synchronous motors",
+      "matched_requirement_id": "req-8",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

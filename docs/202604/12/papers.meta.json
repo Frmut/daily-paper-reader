@@ -1,0 +1,51 @@
+{
+  "label": "2026-04-12",
+  "date": "2026-04-12",
+  "generated_at": "2026-04-12T19:32:30",
+  "count": 3,
+  "papers": [
+    {
+      "paper_id": "202604/12/2604.05566v1-accelerating-full-scale-nonlinear-model-predictive-control-via-surrogate-dynamics-optimization",
+      "section": "quick",
+      "title_en": "Accelerating Full-Scale Nonlinear Model Predictive Control via Surrogate Dynamics Optimization",
+      "authors": "Perceval Beja-Battais, Guillaume Dupré, Alain Grossetête, Nicolas Vayatis",
+      "date": "2026-04-07",
+      "pdf": "https://arxiv.org/pdf/2604.05566v1",
+      "score": "6.0",
+      "evidence": "高维系统的非线性模型预测控制",
+      "tldr": "针对非线性模型预测控制（NMPC）在处理复杂高维系统时计算成本过高的问题，本文提出了一种名为代理动力学优化（SDO）的热启动框架。该框架利用机器学习代理模型构建并求解轻量级辅助问题，为原始NMPC提供高质量初始解。在压水反应堆负荷跟踪控制的案例研究中，SDO显著提升了收敛速度，且训练数据需求比行为克隆降低了两个数量级，展现了极高的工业应用价值。",
+      "tags": "query:pmsm",
+      "abstract_en": "Driven by advances in hardware and software technologies, nonlinear model predictive control (NMPC) has gained increasing adoption in both industry and academia over the past decades. However, its practical deployment is often limited by the computational cost of simulating the embedded process model, especially for high-dimensional, multi-time-scale, or nonlinear systems commonly found in real-world applications. Thus, this paper introduces Surrogate Dynamics Optimization (SDO), a warm-start framework for full-scale NMPC to address the limitation of standard initialization strategies. The approach relies on a machine learning surrogate model to solve a lightweight auxiliary problem that approximates the original one. The methodology is reproducible and compatible with inhouse simulation and optimization tools, a key consideration in industrial contexts. Data efficiency of SDO, as well as the impact of surrogate design on the overall performance, are evaluated through a non-trivial simulation case study: 24-hour optimal load-following control of a pressurized water reactor. The results show consistent improvements in NMPC convergence speed within a fixed computational budget, while reducing training data generation costs by two orders of magnitude compared to behavior cloning.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202604/12/2604.06338v1-adaptive-control-with-sparse-identification-of-nonlinear-dynamics",
+      "section": "quick",
+      "title_en": "Adaptive Control with Sparse Identification of Nonlinear Dynamics",
+      "authors": "Trivikram Satharasi, Tochukwu E. Ogri, Muzaffar Qureshi, Kyle Volle, Rushikesh Kamalapurkar",
+      "date": "2026-04-07",
+      "pdf": "https://arxiv.org/pdf/2604.06338v1",
+      "score": "6.0",
+      "evidence": "不确定非线性系统的自适应控制",
+      "tldr": "本文提出了一种稀疏促进积分并发学习（SP-ICL）自适应控制律，用于处理具有不确定性的非线性控制仿射系统。该方法通过在ICL框架中引入L1正则化，并结合滑模技术实现了参数的在线稀疏更新。研究通过非光滑Lyapunov分析证明了闭环系统的最终有界性，仿真结果表明该方法能有效在轨迹跟踪过程中恢复系统的稀疏动力学特征。",
+      "tags": "query:pmsm",
+      "abstract_en": "This paper develops a sparsity-promoting integral concurrent learning (SP-ICL) adaptation law for a linearly parametrized uncertain nonlinear control-affine system. The unknown parameters are learned using ICL with sparsity-promoting $\\ell_1$ regularization. The use of $\\ell_1$ regularization for sparsity promotion is common in system identification and machine learning; however, unlike existing approaches, this paper develops an online parameter update law that integrates the regularization penalty with ICL via sliding modes. Using the SP-ICL update law, we show via non-smooth Lyapunov analysis that the trajectories of the closed-loop system are ultimately bounded. Simulations verify the effectiveness of the sparsity penalty in the SP-ICL update law on recovering sparse dynamics during trajectory tracking.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202604/12/2604.07281v1-active-propeller-fault-detection-and-isolation-in-multirotors-via-vibration-model",
+      "section": "quick",
+      "title_en": "Active Propeller Fault Detection and Isolation in Multirotors Via Vibration Model",
+      "authors": "Alessandro Baldini, Riccardo Felicetti, Alessandro Freddi, Andrea Monteriù",
+      "date": "2026-04-08",
+      "pdf": "https://arxiv.org/pdf/2604.07281v1",
+      "score": "6.0",
+      "evidence": "多旋翼系统中的主动故障检测与隔离",
+      "tldr": "针对多旋翼无人机旋翼受损难以检测和隔离的问题，本文提出一种基于振动模型的主动故障诊断方法。该方法通过主动扰动控制输入，利用机载惯性测量单元（IMU）采集的振动数据，结合时域和频域特征分析，实现对冗余动力系统下特定旋翼故障的精准识别。在八旋翼平台上的大量仿真验证了该技术在故障隔离方面的有效性。",
+      "tags": "query:pmsm",
+      "abstract_en": "In rotary-wing aircraft, rotating blades are exposed to collisions and subsequent damage. The detection and isolation of blade damage constitute the first step in fault mitigation; however, they are particularly challenging when considerable input redundancy is available, as in the case of multirotors. In this article, we propose an active model-based approach that deliberately perturbs the control inputs to isolate blade faults in multirotor vehicles. By exploiting a model that captures the vibrations caused by blade damage, the isolation method relies solely on vibration data from the onboard inertial measurement unit. The strategy is tested in simulation using an octarotor platform, and both time-domain and frequency-domain features are analyzed. Several accuracy-related metrics of the technique are evaluated on a set of 9600 simulations and compared with the most relevant variables.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

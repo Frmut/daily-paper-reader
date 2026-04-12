@@ -6,26 +6,32 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-04-11
-- 运行时间：2026-04-11 19:39:55 UTC
+- 最新运行日期：2026-04-12
+- 运行时间：2026-04-12 19:32:22 UTC
 - 运行状态：成功
-- 本次总论文数：1
+- 本次总论文数：3
 - 精读区：0
-- 速读区：1
+- 速读区：3
 
 ### 今日简报（AI）
-今日聚焦双倾转旋翼无人机的动态控制分配技术研究。
-该研究针对双倾转平台提出了动态分配方案，旨在优化飞行器在复杂任务中的控制响应与稳定性。
-建议关注无人机控制算法的读者参考其执行机构建模思路，以提升多自由度平台的操控精度。
-- 详情：[/202604/11/README](/202604/11/README)
+今日聚焦非线性控制优化与无人机安全监测，探索提升复杂系统实时性与鲁棒性的前沿方案。
+重点推荐利用代理模型加速 NMPC 计算以及结合 SINDy 的自适应控制，有效解决了非线性动力学建模与求解的效率难题。
+建议关注数据驱动方法在无人机振动分析与故障隔离中的应用，以提升自动化系统的硬件可靠性。
+- 详情：[/202604/12/README](/202604/12/README)
 
 ### 精读区论文标签
 - 本次无精读推荐。
 
 ### 速读区论文标签
-1. [Dynamic Control Allocation for Dual-Tilt UAV Platforms](/202604/11/2604.05677v1-dynamic-control-allocation-for-dual-tilt-uav-platforms)  
+1. [Accelerating Full-Scale Nonlinear Model Predictive Control via Surrogate Dynamics Optimization](/202604/12/2604.05566v1-accelerating-full-scale-nonlinear-model-predictive-control-via-surrogate-dynamics-optimization)  
    标签：评分：6.0/10、query:pmsm
-   evidence：动态控制分配与执行器冗余
+   evidence：高维系统的非线性模型预测控制
+2. [Adaptive Control with Sparse Identification of Nonlinear Dynamics](/202604/12/2604.06338v1-adaptive-control-with-sparse-identification-of-nonlinear-dynamics)  
+   标签：评分：6.0/10、query:pmsm
+   evidence：不确定非线性系统的自适应控制
+3. [Active Propeller Fault Detection and Isolation in Multirotors Via Vibration Model](/202604/12/2604.07281v1-active-propeller-fault-detection-and-isolation-in-multirotors-via-vibration-model)  
+   标签：评分：6.0/10、query:pmsm
+   evidence：多旋翼系统中的主动故障检测与隔离
 
 
 <div class="dpr-home-promo-card">
