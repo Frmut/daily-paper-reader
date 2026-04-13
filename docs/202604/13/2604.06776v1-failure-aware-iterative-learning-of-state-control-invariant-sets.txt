@@ -1,0 +1,1007 @@
+Title: Failure-Aware Iterative Learning of State-Control Invariant Sets
+
+URL Source: https://arxiv.org/pdf/2604.06776v1
+
+Published Time: Thu, 09 Apr 2026 00:39:17 GMT
+
+Number of Pages: 8
+
+Markdown Content:
+# Failure-Aware Iterative Learning of State-Control Invariant Sets 
+
+Ahmad Amine, Nick-Marios T. Kokolakis, Ugo Rosolia, Truong X. Nghiem, and Rahul Mangharam 
+
+Abstract — In this paper, we address the problem of comput-ing maximal state-control invariant sets using failing trajecto-ries. We introduce the concept of state-control invariance, which extends control invariance from the state space to the joint state-control space. The maximal state-control invariant (MSCI) set simultaneously encodes the maximal control invariant set (MCI) and, for each state in the MCI, the set of control inputs that preserve invariance. We prove that the state projection of the MSCI is the MCI and the state-dependent sections of the MSCI are the admissible invariance-preserving inputs. Building on this framework, we develop a Failure-Aware Iterative Learn-ing (FAIL) algorithm for deterministic linear time invariant systems with polytopic constraints. The algorithm iteratively updates a constraint set in the state-control space by learning predecessor halfspaces from one-step failing state-input pairs, without knowing the dynamics. For each failure, FAIL learns the violated halfspaces of the predecessor of the constraint set by a regression on failing trajectories. We prove that the learned constraint set converges monotonically to the MSCI. Numerical experiments on a double integrator system validate the proposed approach. 
+
+I. I NTRODUCTION 
+
+Safety-critical control systems require that the system state remains within a prescribed set of admissible states at all times. Control invariant sets provide the foundational tool for this guarantee: the maximal control invariant (MCI) set X8
+
+characterizes the largest region of the state space from which admissible inputs can keep the system within constraints indefinitely [1]. These sets are central to model predictive control (MPC), where they serve as terminal constraints to ensure recursive feasibility [2], [3] and safety [4], and to safety filter design, where they certify the safety of learning-based controllers [5]. Classical algorithms compute the MCI set via the one-step predecessor operator, which iteratively removes states from which no admissible input can keep the system within the constraint set [3], [6]. For linear systems with polytopic con-straints, these algorithms are well-established and terminate in finite steps [1]. Extensions to nonlinear systems employ sum-of-squares programming [7] and neural certificates [8],                       
+
+> This work was partially supported by US DoT Safety21 National Univer-sity Transportation Center and NSF awards CISE-2431569 and 2514584. A. Amine, N.-M. T. Kokolakis and R. Mangharam are with the Department of Electrical and Systems Engineering, University of Pennsylvania, Philadelphia, PA 19104, USA
+
+{aminea, nmkoko }@seas.upenn.edu                    
+
+> U. Rosolia is with Lyric, Italia 152 Catania Italy. E-mail: ugo.rosolia@gmail.com T. X. Nghiem is with the Department of Electrical and Computer Engineering, University of Central Florida, Orlando, FL 32816, USA. E-mail: truong.nghiem@ucf.edu. This work has been submitted to the IEEE for possible publication. Copyright may be transferred without notice, after which this version may no longer be accessible.
+
+[9]. Nevertheless, all of these methods require an accurate dynamics model, which may be unavailable or expensive to obtain. Data-driven methods have emerged to address the model dependence of invariant set computation. Building on Willems’ fundamental lemma [10], behavioral approaches enable data-driven controller design with invariance guaran-tees for linear systems [11], [12]. Direct data-driven compu-tation of invariant sets has been explored for both linear [13] and nonlinear systems [14]. Despite these advances, existing methods, whether model-based or data-driven, compute only the set of safe states X8, discarding all information about which control inputs at each state preserve invariance and which cause the system to leave the safe region. Recent work has begun to address this limitation by defining safety directly in the joint state-action space. He et al. [15] introduce state-action control barrier functions (SACBFs) that evaluate both the state and the applied input, enabling a convex safety filter with reduced online com-putational cost. Learning from failures has been studied in reinforcement learning and imitation learning, where failures serve as negative evidence to shape rewards, constrain value functions, or bias exploration [16]–[20]. These approaches exploit failure information to learn improved policies or cost functions, but they do not generate explicit constraint sets that provably prevent the recurrence of observed failures. To the best of our knowledge, an approach that iteratively learns explicit invariant constraint sets in the joint state-control space from observed failures is absent from the literature. The contributions of this paper are twofold. First, we introduce joint state-control invariance and prove that the maximal state-control invariant (MSCI) set recovers both the MCI and the admissible invariance-preserving inputs. We derive a predecessor operator in the joint state-control space and establish convergence of a recursive algorithm for deriving the MSCI. Second, we develop a failure-aware iterative learning (FAIL) algorithm that learns the halfspaces that define the state-control invariant set from observed one-step failing state-input pairs. The algorithm converges monotonically to the MSCI without system identification, requiring only failing trajectories with sufficient excitation. The rest of this paper is organized as follows. Section II formulates the learning-from-failure problem. Section III introduces joint state-control invariance. Section IV presents the failure-aware learning algorithm. Section V provides numerical validation, and Section VI concludes the paper. 
+
+Notation: We denote by Z` and Z` the set of positive and non-negative integers respectively. For a set S Ď Rn, 2S
+
+> arXiv:2604.06776v1 [eess.SY] 8 Apr 2026
+
+denotes its power set. We use fi for definitional equalities. We use pCqj P R1ˆm to denote the jth row of a matrix 
+
+C P Rnˆm.II. P ROBLEM FORMULATION 
+
+In this section, we state the problem of using failing trajectories to learn the maximal control invariant set and the control inputs that ensure invariance at each state in this set. Consider the discrete-time controlled nonlinear time-invariant dynamical system given by 
+
+xpk ` 1q “ f pxpkq, u pkqq , xp0q “ x0, @k P Z`, (1) where xpkq P Rnx is the state and upkq P Rnu is the control input at time step k. The mapping f : Rnx ˆ Rnu Ñ
+
+Rnx is Lipschitz continuous with f p0, 0q “ 0. The state is constrained to a compact set X Ă Rnx containing the origin in its interior, and the control input is constrained to a compact set Upxq Ď Rnu , which depends on the state 
+
+x P Rnx , and satisfies 0 P Up0q.To state the learning-from-failure problem, we introduce the following definitions that introduce the concepts of 
+
+control invariance , maximal control invariance , and safety .
+
+Definition 1 (Control invariant set) . Consider system (1) with state and input constraints X and Upxq for all x P Rnx .A set C Ď X is called control invariant if, for every x P C,there exists u P Upxq such that f px, u q P C.
+
+Definition 2 (Maximal control invariant set) . A set X8 Ď X
+
+is called the MCI if (i) X8 is control invariant, and (ii) if C Ď X is any control invariant set, then C Ď X8.
+
+Definition 3 (Safety) . A set C Ď X is said to be safe if it is a control invariant set with respect to (1) and Upxq for all 
+
+x P C.It follows from Definitions 2 and 3 that, if the initial state 
+
+xp0q P X8, then there exists a sequence of admissible inputs that keeps the state in X indefinitely. Hence, X8 is safe. The MCI set can be computed via the one-step predecessor operator . For any set Ω Ď Rnx , define 
+
+Pre pΩq fi ␣x P Rnx : D u P Upxq s.t. f px, u q P Ω(, (2) as the set of all states from which there exists an admissible input that steers the system into Ω in one step. The MCI set can be obtained as the fixed point of the recursive iteration Ωk`1 “ Pre pΩkq X Ωk with Ω0 “ X and 
+
+k P Z`, where, under the compactness and continuity as-sumptions, it is ensured that lim kÑ8 
+
+Şki“0 Ωi is non-empty and X8 “ lim kÑ8 
+
+Şki“0 Ωi [21]. For deterministic linear time-invariant (LTI) systems with polytopic constraints, the recursion terminates in a finite number of steps [3]. It is important to note that the MCI set only characterizes 
+
+where the system can remain safe but not which inputs at each state ensure invariance. The existential quantifier in (2) discards all control information during the recursion. Given the dynamics f and the MCI X8, one can design a state-feedback controller π : X Ñ Rnu such that πpxq P 
+
+Upxq and f px, π pxqq P X8 for every x P X8 [22], thereby guaranteeing safety. However, when the system dynamics are unknown, a model-based controller must rely on an approximate model ˆf . In this case, for a given x P X , such a controller may select an input u P Upxq that drives the next state f px, u q outside X8, resulting in failure .Next, we define the notions of a one-step failing state-input pair and a failing trajectory .
+
+Definition 4 (One-step failing state-input pair) . Consider system (1) with state and input constraints X and Upxq for all 
+
+x P Rnx . A state-input pair px, u q with x P X and u P Upxq
+
+is called a one-step failing state-input pair if f px, u q R X .
+
+Definition 5 (Failing trajectory) . Consider system (1) with state and input constraints X and Upxq for all x P X . Let π :
+
+X Ñ Rnu be a state-feedback controller satisfying πpxq P 
+
+Upxq for all x P X . Given an initial state xp0q P X and a horizon L P Z`, define the trajectory of length L under π
+
+starting from xp0q as the sequence T fi ␣pxpkq, u pkqq (L´1 
+
+> k“0
+
+,where upkq “ πpxpkqq and xpk ` 1q “ f pxpkq, u pkqq for all 
+
+k P t 0, . . . , L ´ 1u. The trajectory T is a failing trajectory 
+
+if pxpL ´ 1q, u pL ´ 1qq is a one-step failing state-input pair and there is no k P t 0, . . . , L ´ 2u such that pxpkq, u pkqq is a failing state-input pair. A one-step failing state-input pair reveals that although the input is in Upxq, it yields a next state that is not in X .To learn from such events and prevent their recurrence, we need to characterize not only X8 but also, the set of inputs that keep the system within X8. Crucially, this should be accomplished without knowing f .Now, we define our learning-from-failure problem. 
+
+Problem 1 (Learning-from-failure) . Consider the dynamical system (1) with state constraints X and input constraints 
+
+Upxq for all x P Rnx . Let X8 Ď X be the MCI set with respect to (1) and Upxq for all x P Rnx . Assume that f and 
+
+X8 are unknown. Given trajectories that include one-step failing state-input pairs, determine the set X8 and, for each 
+
+x P X8, determine the set of control inputs u in Upxq, such that f px, u q is in X8.III. J OINT STATE -C ONTROL INVARIANCE 
+
+This section introduces the concept of joint state-control invariant sets and develops an algorithm to compute this set assuming that the dynamics f is known. This assumption will be relaxed in Section IV where we develop an algorithm for learning from failures. 
+
+A. From invariant sets to invariance-preserving inputs 
+
+The predecessor operator (2) discards all control informa-tion during the recursion, and hence only the set X8 is com-puted upon convergence. Note that the set X8 determines which states are safe, but not which control inputs ensure safety. To address this issue, we seek a characterization of the control inputs that render a given set of states safe. We now define the concept of invariance-preserving input sets .
+
+Definition 6 (Invariance-preserving input set) . Consider sys-tem (1) and a set C Ď Rnx . The invariance-preserving input set of C under dynamics f is the set-valued map 
+
+UfC : Rnx Ñ 2Rnu 
+
+defined by 
+
+UfC pxq fi ␣u P Rnu : f px, u q P C(, x P Rnx . (3) It follows from Definition 6 that for a given state x P Rnx ,
+
+UfC pxq is the set of control inputs under which the next state is in C. For convenience, we write Uf
+
+> 8
+
+pxq fi Uf 
+
+> X8
+
+pxq.Given an initial state xp0q P X8, a controller that selects 
+
+upkq from Uf
+
+> 8
+
+pxpkqq X Upxpkqq for all k P Z`, ensures that 
+
+xpkq remains in X8. We prove this result in the following lemma. 
+
+Lemma 1. Consider system (1) with state and input con-straints X Ă Rnx and Upxq Ă Rnu for all x P Rnx . Let 
+
+X8 Ď X be the MCI set and π : Rnx Ñ Rnu be a feedback controller such that πpxq P Uf
+
+> 8
+
+pxq X Upxq for all x P X8
+
+where Uf
+
+> 8
+
+pxq X Upxq is assumed to be non-empty. If xp0q P 
+
+X8, then under π, the solution sequence xpkq, k P Z`, to 
+
+(1) satisfies xpkq P X8 and upkq P Upxpkqq for all k P Z`.Proof. Note that xp0q P X8 holds by assumption. Suppose 
+
+xpkq P X8 for k P Z`. Since πpxpkqq P Uf
+
+> 8
+
+pxpkqq , it follows from (3) that xpk ` 1q “ f pxpkq, π pxpkqqq P X8.Moreover, πpxpkqq P Upxpkqq ensures that the applied input is admissible. Now, the result follows by induction. 
+
+Remark 1. Note that the intersection Uf
+
+> 8
+
+pxqX Upxq is ensured to be non-empty for all x P X8 since X8 is control invariant. In the next subsection, we show that both X8 and 
+
+Uf
+
+> 8
+
+pxq X Upxq can be obtained simultaneously by extending the computation of invariant sets to the joint state-control space .
+
+B. State-control sets 
+
+Let z “ “xJ uJ‰J P Rnx`nu denote a state-control vector, and let Z Ď Rnx`nu be a set in the joint state-control space. We now define the two operations that allow us to decompose Z into the state and control spaces, respectively. 
+
+Definition 7 (State projection) . Let Z Ď Rnx`nu be a set in the joint state-control space. The state projection of Z is the mapping Πx : 2 Rnx `nu 
+
+Ñ 2Rnx 
+
+given by 
+
+ΠxpZq fi ␣x P Rnx : D u P Rnu s.t “xJ uJ‰J P Z(.
+
+Definition 8 (x-section) . Let Z Ď Rnx`nu be a set in the joint state-control space and let ΠxpZq be the state projection of Z. For a given state x P ΠxpZq, the x-section of Z is the mapping UZ : Rnx Ñ 2Rnu 
+
+given by 
+
+UZ pxq fi ␣u P Rnu : “xJ uJ‰J P Z(.
+
+In other words, ΠxpZq encompasses the states for which there exists at least one control input u such that the state-control vector “xJ uJ‰J is in Z, while, for a given x P
+
+Rnx , UZ pxq encompasses all control inputs u for which the state-control vector “xJ uJ‰J is in Z.Note that we do not use the control projection ΠupZq
+
+since it would yield all control inputs in Z irrespective of the state. The x-section UZ pxq preserves the coupling between states and controls in Z. Using these operations and given the state and input constraint sets X and Upxq for all x P X ,we construct the joint constraint set in the state-control space 
+
+Z fi ␣z P Rnx`nu : x P X , u P Upxq(. (4) By construction, ΠxpZq “ X and UZ pxq “ Upxq for all 
+
+x P X .
+
+C. State-control invariance 
+
+In this subsection, we introduce the concept of state-control invariant sets and develop a recursive algorithm to compute these sets. We now define the notion of state-control invariant sets .
+
+Definition 9 (State-control invariant set) . Consider system (1) and the joint constraint set Z given by (4). A set C Ď Z
+
+is called state-control invariant if, for every z P C, there exists u` P Rnu such that “f px, u qJ pu`qJ‰J P C.Intuitively, Definition 9 implies that for a given state-control invariant set C, all state-control pairs px, u q in C
+
+yield next states f px, u q P ΠxpCq for which the x-section 
+
+UC pf px, u qq is non-empty. Using Definition 9, we now define the concept of maximal state-control invariant sets (MSCI). 
+
+Definition 10 (Maximal state-control invariant set) . A set 
+
+Z8 Ď Z is called the maximal state-control invariant set if (i) Z8 is state-control invariant, and (ii) if C Ď Z is any state-control invariant set, then C Ď
+
+Z8.Next, we compute Z8 for which the state projection yields the MCI set, that is, ΠxpZ8q “ X8, and its x-sections yield the admissible invariance-preserving inputs, that is, 
+
+UZ8 pxq “ Uf
+
+> 8
+
+pxq X Upxq for all x P X8. Similarly to the state-space case, Z8 can be computed using a predecessor operator in the joint state-control space. For any set Ω Ď
+
+Rnx`nu , define 
+
+Pre z pΩq fi 
+
+!
+
+z P Rnx`nu : D u` P Rnu
+
+s.t. “f px, u qJ pu`qJ‰J P Ω
+
+)
+
+, (5) that is, the set of all state-control vectors for which the next state f px, u q has a non-empty x-section, i.e., UΩpf px, u qq ‰ H. The MSCI is then obtained as the fixed point of the recursive iteration 
+
+Ωk`1 “ Pre z pΩkq X Ωk, Ω0 “ Z, @k P Z`. (6) At each step, Ωk`1 retains only those state-control vectors in 
+
+Ωk for which an input exists that, when paired with the next state, lies within Ωk. State-control vectors that lack such an input are discarded. Next, we show that under the same assumptions as in the state-space case, the recursion (6) converges to a non-empty limit set lim kÑ8 
+
+Şki“0 Ωi, which is the MSCI, that is, Z8 “
+
+lim kÑ8 
+
+Şki“0 Ωi.
+
+Lemma 2 (Convergence of predecessor recursion in state– control space) . Consider system (1) with joint constraint set 
+
+Z given by (4) . If Z is compact and contains the origin in its interior, and if f is Lipschitz continuous with f p0, 0q “ 0,then the recursion (6) converges to a non-empty limit set 
+
+lim kÑ8 
+
+Şki“0 Ωi, and this limit is the MSCI satisfying Z8 “
+
+lim kÑ8 
+
+Şki“0 Ωi contained in Z.Proof. By construction, tΩkukě0 is a nested sequence of sets, i.e., Ωk`1 Ď Ωk for all k ě 0. Since Ω0 “ Z
+
+is compact and each Ωk`1 is obtained as the intersection of Ωk with the closed set Pre z pΩkq (closedness follows from the continuity of f ), each Ωk is compact. Furthermore, since f p0, 0q “ 0 and the origin lies in the interior of Z,there exists a neighborhood of the origin that is state-control invariant, ensuring that Ωk is nonempty for all k ě 0.It remains to show that Z8 is state-control invariant. Let 
+
+z “ “xJ uJ‰J P Z8. Then z P Ωk for all k ě 0, and in particular z P Ωk`1 “ Pre z pΩkq X Ωk for all k ě 0. By the definition of Pre z , for each k there exists u` 
+
+> k
+
+P Rnu such that “f px, u qJ pu` 
+
+> k
+
+qJ‰J P Ωk. Since each Ωk is compact, the sequence tu` 
+
+> k
+
+u admits a convergent subsequence with limit u` P Rnu , and by the nested compactness of the 
+
+Ωk, “f px, u qJ pu`qJ‰J P Z8. Hence Z8 is state-control invariant. Maximality follows by the same argument as in the state-space case [3]: if C Ď Z is any state-control invariant set, then by induction C Ď Ωk for all k ě 0, and hence 
+
+C Ď Z8. By the finite intersection property for compact sets, Z8 “ Ş8 
+
+> k“0
+
+Ωk is nonempty and compact. The next lemma states that the projection of the MSCI Z8
+
+is the MCI set X8 and the x-sections of Z8, for all x P X8,are the admissible invariance-preserving inputs of X8.
+
+Lemma 3 (MCI and admissible invariance-preserving in-puts) . Consider system (1) with joint constraint set Z given by (4) . The MSCI Z8 admits the following properties: (i) ΠxpZ8q “ X8, and (ii) UZ8 pxq “ Uf
+
+> 8
+
+pxq X Upxq for all x P X8.Proof. We prove the claims separately. 
+
+Proof of (i). We show the equality by double inclusion. (Ď) Let x P ΠxpZ8q. Then there exists u P Rnu
+
+such that z “ “xJ uJ‰J P Z8 Ď Z, so x P X
+
+and u P Upxq. Since Z8 is state-control invariant, there exists u` P Rnu such that “f px, u qJ pu`qJ‰J P Z8. In particular, f px, u q P ΠxpZ8q. By induction, the state can be kept in ΠxpZ8q Ď X for all time via admissible inputs (i.e., by applying u` at x` “ f px, u q), so ΠxpZ8q is control invariant. By maximality of X8, we have ΠxpZ8q Ď X8.(Ě) Let x P X8. Since X8 is control invariant, there exists u P Upxq such that f px, u q P X8. Define the set C “
+
+␣ “ xJ uJ‰J : x P X8, u P Upxq, f px, u q P X8
+
+(. Then 
+
+C Ď Z and C is state-control invariant: for any z P C, the next state x` “ f px, u q P X8, so by control invariance of 
+
+X8 there exists u` P Upx`q with f px`, u `q P X8, yielding 
+
+“px`qJ pu`qJ‰J P C. By maximality of Z8, C Ď Z8, and hence x P ΠxpZ8q.
+
+Proof of (ii). Let x P X8.(Ď) Let u P UZ8 pxq. Then “xJ uJ‰J P Z8 Ď Z,so u P Upxq. Since Z8 is state-control invariant, there exists u` P Rnu such that “f px, u qJ pu`qJ‰J P Z8.In particular, f px, u q P ΠxpZ8q “ X8 by (i). Hence u P
+
+Uf
+
+> 8
+
+pxq by the definition of Uf
+
+> 8
+
+, and so u P Uf
+
+> 8
+
+pxq X Upxq.(Ě) Let u P Uf
+
+> 8
+
+pxq X Upxq. Then u P Upxq and f px, u q P 
+
+X8. Since x P X8 and u P Upxq and f px, u q P X8, we have “xJ uJ‰J P C Ď Z8, where C is as constructed in the proof of (i). Hence u P UZ8 pxq.IV. L EARNING FROM FAILURES 
+
+In this section, we develop an algorithm to learn the MSCI from failing trajectories for deterministic LTI systems with unknown parameters and polytopic constraints. 
+
+A. Specialization to linear systems with polytopic constraints 
+
+For the remainder of this paper, we consider the determin-istic LTI system 
+
+xpk ` 1q “ Ax pkq ` Bu pkq, xp0q “ x0, @k P Z`, (7) where A P Rnxˆnx and B P Rnxˆnu . Consider the polytopic constraints in the joint state-control space given in H-representation as 
+
+P “ t z P Rnx`nu : Hz z ď hz u, (8) where Hz P Rncˆp nx`nuq and hz P Rnc , with nc P
+
+Z` denoting the number of constraints. We partition the constraint matrix Hz as 
+
+Hz “ “Hzx Hzu 
+
+‰ ,
+
+where Hzx P Rncˆnx and Hzu P Rncˆnu , so that 
+
+pHzx qj x ` p Hzu qj u ď p hz qj , @j P t 1, . . . , n cu.
+
+For any x P ΠxpPq, the x-section of P takes the form 
+
+UP pxq “ ␣u P Rnu : Hzu u ď hz ´ Hzx x(, (9) which is a polytope in Rnu parameterized by x.The predecessor of a polytope Ω Ă Rnx`nu
+
+is given by Pre z pΩq “ ␣z P Rnx`nu :
+
+Du` s.t. “pAx ` Bu qJ pu`qJ‰J P Ω(, which can alternatively be written as 
+
+Pre z pΩq “ ␣z P Rnx`nu : “A B‰ z P ΠxpΩq(. (10) Similarly to computing the MCI [3], we can apply the recursion (6) to obtain the MSCI in a finite number of iterations. To show the connection between the constraints defined by ΠxpΩq and Pre z pΩq, let the H-representation of ΠxpΩq
+
+be given by 
+
+ΠxpΩq “ t x P Rnx : Hproj x ď gproj u (11) where Hproj P Rnpˆnx and gproj P Rnp , with np P Z`
+
+denoting the number of halfspaces of the projected polytope. Note that Ax ` Bu P ΠxpΩq if and only if 
+
+Hproj pAx ` Bu q ď gproj ,
+
+which, noting Ax ` Bu “ “A B‰ z and using (11), yields the H-representation of Pre z pΩq as 
+
+Pre z pΩq “ ␣z P Rnx`nu : Hproj 
+
+“A B‰ z ď gproj 
+
+(, (12) which is a polytope in the state-control space with np con-straints. Hence, there is a row-wise correspondence between the constraints defined by the projected polytope ΠxpΩq and those of the predecessor Pre z pΩq.
+
+B. Iterative constraint refinement 
+
+In this subsection, we develop an iterative learning algo-rithm for learning the MSCI Z8. Rather than computing 
+
+Z8 via predecessor recursion, which requires knowledge of 
+
+pA, B q, we iteratively refine a polytopic constraint set at each iteration using observed failures. Let the constraint set at iteration ℓ P Z` be 
+
+Pℓ fi tz P Rnx`nu : H ℓz z ď h ℓz u,
+
+with H ℓz P Rnℓ
+
+> cˆp nx`nuq
+
+, h ℓz P Rnℓ 
+
+> c
+
+, where nℓ 
+
+> c
+
+P Z`
+
+is the number of constraints at the ℓth iteration. Let the initial polytope P0 be tz : x P X , u P Upxqu . Using the state projection and x-section of Pℓ, the state and input constraints at iteration ℓ are 
+
+Xℓ fi ΠxpPℓq, Uℓpxq fi UPℓ pxq, @x P X ,
+
+so that Uℓpxq “ t u P Rnu : H ℓzu u ď h ℓz ´ H ℓzx xu for all x P
+
+Xℓ. The x-section Uℓpxq is the algorithm’s current estimate of the admissible invariance-preserving inputs at state x P Xℓ.The H-representation of Xℓ is 
+
+Xℓ “ t x P Rnx : H ℓ 
+
+> proj
+
+x ď g ℓ
+
+> proj
+
+u,
+
+where H ℓ 
+
+> proj
+
+P Rnℓ 
+
+> pˆnx
+
+and g ℓ 
+
+> proj
+
+P Rnℓ 
+
+> p
+
+where nℓ 
+
+> p
+
+P Z` is the number of constraints defined by Xℓ at the ℓth iteration. At iteration ℓ P Z`, a state-feedback controller π ℓ :
+
+Xℓ´1 Ñ Rnu satisfying π ℓpxq P Uℓ´1pxq for all x P
+
+Xℓ´1 is applied to system (7), generating a closed-loop trajectory defined by T ℓ fi tzℓpkqu kě0 with zℓpkq “
+
+“pxℓpkqq J puℓpkqq J‰J and uℓpkq “ π ℓpxℓpkqq for all 
+
+k ě 0. We assume that at every iteration ℓ the controller 
+
+πℓ generates a failing trajectory. 
+
+Assumption 1 (Permissible failure) . At each iteration ℓ, πℓ
+
+is permitted to generate a failing trajectory. Upon failure, the system is reset to an initial state xp0q P Xℓ.At iteration ℓ, a one-step failing state-input vector zℓ ““xℓ uℓ‰, with xℓ P Xℓ´1 and uℓ P Uℓ´1pxq, satisfies 
+
+zℓ P Pℓ´1 and zℓ R Pre z pPℓ´1q, (13) which implies that either uℓ is not in the invariance-preserving input set Uf
+
+> 8
+
+pxℓq at xℓ, or xℓ is not in X8.Our goal is to exclude such states and inputs from Pℓ, the polytope used in the next iteration. Now, we collect the failure time index and the correspond-ing one-step failing state-control pair from the trajectory at iteration ℓ as 
+
+V ℓ fi ␣k : zℓpkq P Pℓ´1, x ℓpk`1q R Xℓ´1
+
+(,
+
+F ℓ fi ␣zℓpkq : k P V ℓ(. (14) Since Pre z pPℓ´1q is a polytope, each z P F ℓ violates at least one of the nℓ´1p constraints associated with Pre z pPℓ´1q.By (12), the j-th constraint of Xℓ´1 induces the j-th constraint of Pre z pPℓ´1q given by 
+
+pH ℓ´1proj qj
+
+“A B‰ z ď p g ℓ´1proj qj . (15) Define the vector a˚ 
+
+> j
+
+fi “A B‰J pH ℓ´1proj qJ 
+
+> j
+
+P Rnx`nu as the 
+
+z-space normal of the halfspace that we seek to learn. When a failure occurs at time k, the observed next state 
+
+xℓpk`1q violates at least one constraint of Xℓ´1 which is associated with a halfspace in Pre z pPℓ´1q. Examining which constraints defined by Xℓ´1 were violated allows us to identify which predecessor constraints were violated and their corresponding pg ℓ´1proj qj without knowing the dynamics. Next, we learn a˚ 
+
+> j
+
+without knowing the dynamics. The 
+
+z-space normal a˚ 
+
+> j
+
+satisfies 
+
+a˚J  
+
+> j
+
+zptq “ p H ℓ´1proj qj
+
+“A B‰ zptq“ p H ℓ´1proj qj xpt`1q, (16) for every time step t along any trajectory of (7). The left-hand side involves the unknown a˚ 
+
+> j
+
+, while the right-hand side is computed using pH ℓ´1proj qj and xpt`1q. Hence, learning a˚ 
+
+> j
+
+is a linear regression with zptq being the regressor in Rnx`nu ,
+
+a˚ 
+
+> j
+
+being the parameter to estimate, and pH ℓ´1proj qj xpt`1q
+
+being a measurement. Let p fi nx ` nu. To learn a˚ 
+
+> j
+
+, we require p linearly independent state-control samples. We form a window of p
+
+samples from available trajectory data 
+
+Z “
+
+»———–
+
+zpt1qJ
+
+zpt2qJ
+
+...
+
+zptpqJ
+
+fi ffi ffi ffi fl P Rpˆp, s “
+
+»———–
+
+pH ℓ´1proj qj xpt1`1qpH ℓ´1proj qj xpt2`1q
+
+...
+
+pH ℓ´1proj qj xptp`1q
+
+fi ffi ffi ffi fl P Rp,
+
+(17) where t1, . . . , t p are time indices drawn from the failing trajectory or from other available trajectories. Since (7) is linear and deterministic, s “ Za ˚ 
+
+> j
+
+holds. If rank pZq “ p,the estimate of the normal vector paj is given by 
+
+paj “ a˚ 
+
+> j
+
+“ Z´1s. (18) Note that the rank condition rank pZq “ p is a persistence of excitation condition on the state-control data. 
+
+Remark 2 (Learning the dynamics) . The collected data Z
+
+could be used to learn the dynamics pA, B q. However, this involves learning nx ˆ p nx ` nuq parameters as opposed to 
+
+nx ` nu parameters per halfspace in our method. Further-more, recursion (6) would still need to be run after pA, B q
+
+are learned to compute Z8.We now prove that our learning algorithm does not elim-inate any state-control pairs lying in Z8.
+
+Lemma 4 (Exact recovery of predecessor constraint) . Given an iteration index ℓ P Z`, consider system (7) with state and input constraints Xℓ´1 and Uℓ´1pxq for all x P Rnx . Suppose the jth constraint of Xℓ´1 “ ΠxpPℓ´1q is violated by T ℓ,and let a˚ 
+
+> j
+
+“ “A B‰J pH ℓ´1proj qj . If rank pZq “ p, then the halfspace tz P Rnx`nu : pZ´1sqJz ď p g ℓ´1proj qj u is contained in Pre z pPℓ´1q, and every z P Z8 satisfies pZ´1sqJz ďpg ℓ´1proj qj .Proof. Since the dynamics (7) are linear, pH ℓ´1proj qj xpt`1q “ pH ℓ´1proj qj pAx ptq ` Bu ptqq “ a˚J  
+
+> j
+
+zptq for every t. Therefore, 
+
+s “ Za ˚ 
+
+> j
+
+holds. If rank pZq “ p, then Z is invertible and 
+
+paj “ Z´1s “ a˚ 
+
+> j
+
+by (18). By (12), the halfspace a˚J  
+
+> j
+
+z ďpg ℓ´1proj qj is one of the nℓ´1p constraints defining Pre z pPℓ´1q,establishing the first claim. For the second claim, note that Z8 is state-control in-variant and Z8 Ď Pℓ´1 since Z8 Ď P0 and the sequence 
+
+tPℓu is non-increasing. For any z “ “xJ uJ‰J P Z8, the next state satisfies Ax ` Bu P ΠxpZ8q Ď Xℓ´1 by the state-control invariance of Z8 and the nesting X8 Ď Xℓ´1. Hence 
+
+pH ℓ´1proj qj pAx ` Bu q ď p g ℓ´1proj qj , i.e., a˚J  
+
+> j
+
+z ď p g ℓ´1proj qj . No state-control pair in Z8 is excluded. Next, we prove that the learned halfspace paJ 
+
+> j
+
+z ď `gℓ´1
+
+> proj
+
+˘
+
+> j
+
+excludes the one-step failing state-input pair so that the same failure is not repeated in the next iteration. 
+
+Lemma 5 (Failure exclusion) . Given an iteration index 
+
+ℓ P Z`, consider system (7) with state and input constraints 
+
+Xℓ´1 and Uℓ´1pxq for all x P Rnx . Let k be a failure time index, and pH ℓ´1proj qj x ď p g ℓ´1proj qj be the corresponding violated constraint of Xℓ´1, and let paj “ a˚ 
+
+> j
+
+be learned as in Lemma 4. Then paJ 
+
+> j
+
+zℓpkq ą p g ℓ´1proj qj , and specifically 
+
+zℓpkq R Pℓ after the halfspace paJ 
+
+> j
+
+z ď p g ℓ´1proj qj is added to 
+
+Pℓ´1.Proof. By (16), paJ 
+
+> j
+
+zℓpkq “ a˚J  
+
+> j
+
+zℓpkq “ p H ℓ´1proj qj xℓpk`1q.Since k is a failure index, then pH ℓ´1proj qj xℓpk`1q ą p g ℓ´1proj qj ,and hence paJ 
+
+> j
+
+zℓpkq ą p g ℓ´1proj qj . Since Pℓ Ď t z : paJ 
+
+> j
+
+z ďpg ℓ´1proj qj u by construction, we have zℓpkq R Pℓ.At each iteration ℓ, for each failure point in Fℓ, a halfspace 
+
+ppaj , pg ℓ
+
+> proj
+
+qj q is learned if rank pZq “ p. The polytope Pℓ is updated by intersecting with the learned halfspace to generate the next iteration’s polytope 
+
+Pℓ`1 “ Pℓ X t z P Rnx`nu : paJ 
+
+> j
+
+z ď p g ℓ
+
+> proj
+
+qj u. (19) Failure is checked using the updated polytope until no new failures are identified. The algorithm terminates when a maximum number of iterations L is reached. Now we analyze the convergence of the algorithm to Z8.
+
+Theorem 1 (Monotone convergence) . Let tPℓuℓě0 be the sequence of polytopes generated by (19) . Then, the following statements hold: (i) Z8 Ď Pℓ Ď Pℓ´1 for all ℓ P Z`.(ii) Uf
+
+> 8
+
+pxq X Upxq Ď Uℓpxq Ď Uℓ´1pxq for all x P Xℓ and all ℓ P Z`.(iii) Suppose that for every ℓ P Z` with Pℓ ‰ Z8, the conditions of Lemma 4 hold and the learned halfspace is not already a constraint of Pℓ. Then Pℓ Ñ Z8 in a finite number of iterations. Proof. (i) The right inclusion Pℓ Ď Pℓ´1 holds by con-struction, since Pℓ is obtained by intersecting Pℓ´1 with additional halfspaces. The inclusion Z8 Ď P0 holds since 
+
+Z8 Ď Z “ P0. Suppose Z8 Ď Pℓ´1. By Lemma 4, every 
+
+z P Z8 satisfies each learned halfspace paJz ď g. Hence 
+
+Z8 Ď Pℓ holds by induction. 
+
+(ii) For any x P Xℓ, the inclusion Uℓpxq Ď Uℓ´1pxq follows from Pℓ Ď Pℓ´1 and the definition of the x-section. For any x P Xℓ and u P Uf
+
+> 8
+
+pxq X Upxq “ UZ8 pxq, we have 
+
+“xJ uJ‰J P Z8 Ď Pℓ, so u P UPℓ pxq “ Uℓpxq, then 
+
+Uf
+
+> 8
+
+pxq X Upxq Ď Uℓpxq Ď Uℓ´1pxq holds by induction. 
+
+(iii) By (i), the sequence tPℓu is non-increasing and bounded below by Z8. Since both Pℓ and Z8 are polytopes, and Z8 is obtained from P0 by adjoining a finite number of predecessor constraints, the total number of constraints defined by Pre z pPℓq not yet in Pℓ is finite and non-increasing across iterations. By assumption, at least one such constraint is learned at each iteration for which Pℓ ‰ Z8. Hence the process terminates with Pℓ “ Z8 in a finite number of iterations. 
+
+Algorithm 1 FAIL: Failure-Aware Iterative Learning 
+
+Require: Initial polytope P0, maximum number of itera-tions L, maximum trajectory length T . 
+
+> 1:
+
+ℓ Ð 1 
+
+> 2:
+
+while ℓ ď L do  
+
+> 3:
+
+Apply controller πℓ with πℓpxq P Uℓ´1pxq 
+
+> 4:
+
+Compute Xℓ´1 “ ΠxpPℓ´1q 
+
+> 5:
+
+Collect tzpkqu Tk“0, terminate when xpkq R Xℓ´1 
+
+> 6:
+
+while true do  
+
+> 7:
+
+ℓ1 Ð ℓ 
+
+> 8:
+
+Collect Fℓ1
+
+from tzpkqu using (14) using Xℓ´1 
+
+> 9:
+
+if Fℓ1
+
+is H then  
+
+> 10:
+
+break Ź no new failures from this trajectory  
+
+> 11:
+
+end if  
+
+> 12:
+
+for each zpkq P Fℓ1
+
+do  
+
+> 13:
+
+Identify failure pH ℓ´1proj qj x ą p g ℓ´1proj qj 
+
+> 14:
+
+Form Z, s from (17) using p samples  
+
+> 15:
+
+if rank pZq ‰ p then  
+
+> 16:
+
+Append data points until rank pZq “ p 
+
+> 17:
+
+end if  
+
+> 18:
+
+paj Ð Z´1s 
+
+> 19:
+
+Pℓ Ð Pℓ´1 X t z : paJ 
+
+> j
+
+z ď p g ℓ´1proj qj u 
+
+> 20:
+
+Xℓ Ð ΠxpPℓq 
+
+> 21:
+
+ℓ Ð ℓ ` 1 
+
+> 22:
+
+end for  
+
+> 23:
+
+end while  
+
+> 24:
+
+end while −15 −10 −5 0 5 10 15 
+
+𝑥 1   
+
+> −10 .0
+> −7.5
+> −5.0
+> −2.5
+> 0.0
+> 2.5
+> 5.0
+> 7.5
+> 10 .0
+> 𝑥 2
+> State Constraints X
+> MCI X∞
+> Π𝑥 (Z∞)
+
+Fig. 1: Projected maximal state-control invariant set matches the maximal control invariant set. −15 −10 −5 0 5 10 15 
+
+𝑥 1 −10 
+
+> −50510
+> 𝑥 2
+> −6
+> −4
+> −20246
+
+𝑢   
+
+> X×UZ∞
+
+Fig. 2: Maximal state-control invariant set. The Failure Aware Iterative Learning (FAIL) algorithm is summarized in Algorithm 1. 
+
+Remark 3 (Controller design) . The design of the controller 
+
+π ℓ is beyond the scope of this paper. We only require that the controller πℓ produces a failing trajectory and generates enough samples so that the condition rank pZq “ p holds. V. N UMERICAL RESULTS 
+
+To validate the proposed framework, we conduct numeri-cal experiments. Consider the discrete-time LTI system 
+
+xpk ` 1q “ 
+
+„1 10 1
+
+ȷ
+
+xpkq ` 
+
+„01
+
+ȷ
+
+upkq, x p0q “ x0, @k P Z`,
+
+which can be cast in the form of (7) with A “
+
+„1 10 1
+
+ȷ
+
+,
+
+B “
+
+„01
+
+ȷ
+
+, x “ r x1, x 2s, nx “ 2 and nu “ 1, so that p “
+
+nx ` nu “ 3. The state and input constraints are 
+
+|x1| ď 15 , |x2| ď 10 , |u| ď 5,
+
+yielding an initial polytope P0 Ă R3 with nc “ 6 constraints. The matrices pA, B q are assumed unknown to Algorithm 1 −15 −10 −5 0 5 10 15                                           
+
+> 𝑥 1−10
+> −50510
+> 𝑥 2
+> −6
+> −4
+> −20246
+> 𝑢
+> X×U
+> Learned Polytope P4
+> Z∞−15 −10 −50510 15
+> 𝑥 1
+> −10 .0
+> −7.5
+> −5.0
+> −2.5
+> 0.0
+> 2.5
+> 5.0
+> 7.5
+> 10 .0
+> 𝑥 2
+> Comparison of Π𝑥 (P4)and Π𝑥 (Z∞)
+> State Constraints X
+> Π𝑥 (P4)
+> Π𝑥 (Z∞)
+> T4−15 −10 −50510 15
+> 𝑥 1−10
+> −50510
+> 𝑥 2
+> −6
+> −4
+> −20246
+> 𝑢
+> X×U
+> Learned Polytope P8
+> Z∞−15 −10 −50510 15
+> 𝑥 1
+> −10 .0
+> −7.5
+> −5.0
+> −2.5
+> 0.0
+> 2.5
+> 5.0
+> 7.5
+> 10 .0
+> 𝑥 2
+> Comparison of Π𝑥 (P8)and Π𝑥 (Z∞)
+> State Constraints X
+> Learned Polytope P8
+> Z∞
+> Non-failing trajectory
+
+Fig. 3: Evolution of the learned polytope Pℓ, ℓ P t 0, . . . , 8u.Top row: learned set Pℓ and its state-projection ΠxpPℓq at iteration ℓ “ 4. Bottom row: final learned polytope P8 and its state-projection ΠxpP8q. Note that P8 coincides with Z8
+
+while ΠxpP8q coincides with X8.and are used only to simulate the closed-loop system and to compute Z8 for comparison. All experiments were con-ducted on a laptop with an Intel i9-11980HK CPU and an NVIDIA RTX 3080 GPU. 
+
+A. Computing Z8 using predecessor recursion 
+
+Using the dynamics pA, B q, we compute the MSCI Z8 via the recursion (6). The iteration is initialized with Ω0 “ P0.For validation, we compare the MSCI computation with the MCI computation described in [3]. The computed Z8 Ă R3, shown in Fig. 2, has 14 
+
+halfspace constraints: the initial 6 halfspace constraints and 
+
+8 halfspaces from the recursion (6). In comparison, the MCI X8 has 8 constraints: the initial 4 halfspace state constraints and 4 halfspaces from the recursion. We validate that ΠxpZ8q “ X8 with a Hausdorff distance of zero as is shown in Fig. 1, which confirms Lemma 3(i). It takes 
+
+0.26 seconds to compute the MSCI in R3 in three iterations, while it takes 0.19 seconds to compute the MCI in R2 in two iterations. 
+
+B. Learning Z8 from failures 
+
+We now validate Algorithm 1 with pA, B q unknown. The algorithm is initialized with P0 and uses a sequence of failing trajectories generated by different controllers. 
+
+Control Policies. Two types of controllers are used to gen-erate failures. First, two open-loop constant-input controllers, 
+
+upkq ” umin “ ´ 5 and upkq ” umax “ 5, are applied with 
+
+x0 “ “0 0‰J for T “ 15 steps each. Next, trajectories are generated by a random admissible controller for T “ 15 
+
+steps each. At each iteration ℓ P Z`, the initial state x0 is sampled from the current projected polytope ΠxpPℓq, then, at each time step k P Z`, the control input upkq is sampled uniformly from Uℓpxpkqq . In both cases, the trajectories are terminated when the state first exits ΠxpPℓq.
+
+Convergence of PL to Z8. From 6 failing trajectories, FAIL learns the 8 predecessor halfspaces added to the initial −15 −10 −5 0 5 10 15   
+
+> 𝑥 1
+> −10 .0
+> −7.5
+> −5.0
+> −2.5
+> 0.0
+> 2.5
+> 5.0
+> 7.5
+> 10 .0
+> 𝑥 2
+> State Constraints X
+> Π𝑥 (P8)
+> Z∞
+> Non-failing trajectories
+
+Fig. 4: Non-failing trajectories generated by the random admissible controller at the final iteration L “ 8. Each trajectory remains within ΠxpP8q.
+
+6 constraints defined by P0, recovering all 14 halfspaces of Z8 in 8 iterations. It takes 0.0353 seconds to learn the 8 halfspaces. For every iteration ℓ, we validate that 
+
+Z8 Ď Pℓ and that each learned halfspace is a halfspace constraint of Z8 to within numerical tolerance ( ă 10 ´3), as guaranteed by Lemma 4. Therefore, we have that PL “ Z8
+
+at termination. To terminate Algorithm 1, we check that no trajectory under the random admissible control policy exits 
+
+ΠxpPℓq, testing up to 1200 trajectories at each iteration ℓ.Fig. 4 shows the 1200 trajectories at the termination iteration 
+
+L “ 8, none of which exit ΠxpPLq. Finally, we validate that PL converges to Z8 with a Hausdorff distance of 0, consistent with Theorem 1. Note that this also shows that 
+
+ULpxq “ Uf
+
+> 8
+
+pxq X Upxq, and that Uf
+
+> 8
+
+pxq X Upxq is the set of invariance preserving inputs, consistent with Theorem 1 and Lemma 3 (ii). 
+
+Extracting X8. Fig. 3 compares the state projection of the learned polytope ΠxpPLq with X8. The state projection 
+
+ΠxpPLq coincides with X8, with a Hausdorff distance of zero. This demonstrates that FAIL also learns the MCI. VI. C ONCLUSION 
+
+In this paper, we introduced the concept of state-control invariance and developed a failure-aware iterative learning algorithm for computing the MSCI from observed failures. We proved that the MSCI Z8 simultaneously yields the MCI set through its state projection and the admissible invariance-preserving inputs through its x-sections. The FAIL algorithm learns the halfspaces defining Z8 from one-step failing state-input pairs, converging monotonically without requiring system identification. Future research will focus on extending the framework to LTI systems with Gaussian noise. GEN AI D ISCLOSURE 
+
+The Claude chatbot by Anthropic [23] was used to im-prove the syntax and grammar of the manuscript. REFERENCES [1] F. Blanchini, “Set invariance in control,” Automatica , vol. 35, no. 11, pp. 1747–1767, 1999. [2] D. Q. Mayne, J. B. Rawlings, C. V. Rao, and P. O. Scokaert, “Constrained model predictive control: Stability and optimality,” Au-tomatica , vol. 36, no. 6, pp. 789–814, 2000. [3] F. Borrelli, A. Bemporad, and M. Morari, Predictive control for linear and hybrid systems . Cambridge University Press, 2017. [4] Z. Zang, A. Amine, N.-M. T. Kokolakis, T. X. Nghiem, U. Rosolia, and R. Mangharam, “Sit-lmpc: Safe information-theoretic learning model predictive control for iterative tasks,” IEEE Robotics and Automation Letters , pp. 1–8, 2025. [5] A. D. Ames, S. Coogan, M. Egerstedt, G. Notomista, K. Sreenath, and P. Tabuada, “Control barrier functions: Theory and applications,” in 2019 18th European Control Conference (ECC) , 2019, pp. 3420– 3431. [6] I. Kolmanovsky and E. G. Gilbert, “Theory and computation of dis-turbance invariant sets for discrete-time linear systems,” Mathematical Problems in Engineering , vol. 4, no. 4, pp. 317–367, 1998. [7] M. Korda, D. Henrion, and C. N. Jones, “Convex computation of the maximum controlled invariant set for polynomial control systems,” 
+
+SIAM Journal on Control and Optimization , vol. 52, no. 5, pp. 2944– 2969, 2014. [8] C. Dawson, S. Gao, and C. Fan, “Safe control with learned certificates: A survey of neural Lyapunov, barrier, and contraction methods for robotics and control,” IEEE Transactions on Robotics , vol. 39, no. 3, pp. 1749–1767, 2023. [9] N.-M. T. Kokolakis, Z. Zhang, S. Liu, K. G. Vamvoudakis, J. Darbon, and G. E. Karniadakis, “Safe physics-informed machine learning for optimal predefined-time stabilization: A lyapunov-based approach,” 
+
+IEEE Transactions on Neural Networks and Learning Systems , 2025. [10] J. C. Willems, P. Rapisarda, I. Markovsky, and B. L. De Moor, “A note on persistency of excitation,” Systems & Control Letters , vol. 54, no. 4, pp. 325–329, 2005. [11] C. De Persis and P. Tesi, “Formulas for data-driven control: Stabi-lization, optimality, and robustness,” IEEE Transactions on Automatic Control , vol. 65, no. 3, pp. 909–924, 2020. [12] A. Bisoffi, C. De Persis, and P. Tesi, “Data-based guarantees of set invariance properties,” in IFAC-PapersOnLine , vol. 53, no. 2, 2020, pp. 3953–3958. [13] Y. Chen, H. Peng, J. Grizzle, and N. Ozay, “Data-driven computation of minimal robust control invariant set,” in IEEE Conference on Decision and Control (CDC) . IEEE, 2018, pp. 4052–4058. [14] A. Kashani and C. Danielson, “Data-driven invariant set for nonlinear systems with application to command governors,” 
+
+Automatica , vol. 172, p. 112010, 2025. [Online]. Available: https://www.sciencedirect.com/science/article/pii/S0005109824005041 [15] K. He, S. Shi, T. v. d. Boom, and B. De Schutter, “State-action control barrier functions: Imposing safety on learning-based control with low online computational costs,” IEEE Transactions on Automatic Control ,pp. 1–8, 2025. [16] K. Shiarlis, J. Messias, and S. Whiteson, “Inverse reinforcement learning from failure,” in Proceedings of the International Conference on Autonomous Agents and Multiagent Systems (AAMAS) , 2016. [Online]. Available: http://www.cs.ox.ac.uk/people/shimon.whiteson/pubs/shiarlisrss15.pdf [17] T. Silver et al. , “Reward-sensitive reinforcement learning with failure penalties,” in NIPS Workshop , 2017. [18] J. Lee, J. Hwangbo, and M. Hutter, “Learning from failures using demonstrations and active exploration,” in IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS) . IEEE, 2018. [19] F. Gao, D. Ghosh, and S. Levine, “Failures are part of the journey: Learning robust control with reinforcement learning and failure in-jection,” IEEE Robotics and Automation Letters , vol. 6, no. 2, pp. 3635–3642, 2021. [20] B. Hertel and S. R. Ahmadzadeh, “Learning from successful and failed demonstrations via optimization,” in 2021 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS) , 2021, pp. 7807– 7812. [21] D. P. Bertsekas and I. B. Rhodes, “Infinite time reachability of state-space regions by using feedback control,” IEEE Transactions on Automatic Control , vol. 17, no. 5, pp. 604–613, 1972. [22] E. C. Kerrigan, “Robust constraint satisfaction: Invariant sets and predictive control,” Ph.D. dissertation, University of Cambridge UK, 2001, aAI28126035. [23] Anthropic, “Claude,” https://claude.ai, 2025, large language model.

@@ -1,0 +1,37 @@
+{
+  "label": "2026-04-13",
+  "date": "2026-04-13",
+  "generated_at": "2026-04-13T19:55:10",
+  "count": 2,
+  "papers": [
+    {
+      "paper_id": "202604/13/2604.06776v1-failure-aware-iterative-learning-of-state-control-invariant-sets",
+      "section": "quick",
+      "title_en": "Failure-Aware Iterative Learning of State-Control Invariant Sets",
+      "authors": "Ahmad Amine, Nick-Marios T. Kokolakis, Ugo Rosolia, Truong X. Nghiem, Rahul Mangharam",
+      "date": "2026-04-08",
+      "pdf": "https://arxiv.org/pdf/2604.06776v1",
+      "score": "6.0",
+      "evidence": "故障感知迭代学习控制",
+      "tldr": "本研究针对确定性线性时不变系统，提出了一种利用失败轨迹计算最大状态-控制不变（MSCI）集的方法。通过引入状态-控制空间的不变性概念，研究开发了FAIL算法，该算法在无需已知动力学模型的情况下，通过回归分析失败的状态-输入对来迭代更新约束集。理论证明该算法能单调收敛至MSCI，并通过双积分器实验验证了其在安全控制中的有效性。",
+      "tags": "query:pmsm",
+      "abstract_en": "In this paper, we address the problem of computing maximal state-control invariant sets using failing trajectories. We introduce the concept of state-control invariance, which extends control invariance from the state space to the joint state-control space. The maximal state-control invariant (MSCI) set simultaneously encodes the maximal control invariant set (MCI) and, for each state in the MCI, the set of control inputs that preserve invariance. We prove that the state projection of the MSCI is the MCI and the state-dependent sections of the MSCI are the admissible invariance-preserving inputs. Building on this framework, we develop a Failure-Aware Iterative Learning (FAIL) algorithm for deterministic linear time invariant systems with polytopic constraints. The algorithm iteratively updates a constraint set in the state-control space by learning predecessor halfspaces from one-step failing state-input pairs, without knowing the dynamics. For each failure, FAIL learns the violated halfspaces of the predecessor of the constraint set by a regression on failing trajectories. We prove that the learned constraint set converges monotonically to the MSCI. Numerical experiments on a double integrator system validate the proposed approach.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202604/13/2604.08327v1-finite-time-reachability-for-constrained-partially-uncontrolled-nonlinear-systems",
+      "section": "quick",
+      "title_en": "Finite-time Reachability for Constrained, Partially Uncontrolled Nonlinear Systems",
+      "authors": "Ram Padmanabhan, Melkior Ornik",
+      "date": "2026-04-09",
+      "pdf": "https://arxiv.org/pdf/2604.08327v1",
+      "score": "6.0",
+      "evidence": "部分控制权丧失",
+      "tldr": "本研究针对部分控制失效的受限非线性系统，提出了一种在有限时间内实现目标状态可达的控制技术。该方法基于初始状态的线性无漂移近似模型，通过将有限时间跨度划分为逐次缩小的区间，并在各区间内设计控制输入，有效应对了控制权部分丧失带来的挑战。理论证明及战斗机仿真结果表明，随着时间划分的细化，系统能够克服不受控输入的影响，精确驱动状态至目标点。",
+      "tags": "query:pmsm",
+      "abstract_en": "This paper presents a technique to drive the state of a constrained nonlinear system to a specified target state in finite time, when the system suffers a partial loss in control authority. Our technique builds on a recent method to control constrained nonlinear systems by building a simple, linear driftless approximation at the initial state. We construct a partition of the finite time horizon into successively smaller intervals, and design controlled inputs based on the approximate dynamics in each partition. Under conditions that bound the length of the time horizon, we prove that these inputs result in bounded error from the target state in the original nonlinear system. As successive partitions of the time horizon become shorter, the error reduces to zero despite the effect of uncontrolled inputs. A simulation example on the model of a fighter jet demonstrates that the designed sequence of controlled inputs achieves the target state despite the system suffering a loss of control authority over one of its inputs.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

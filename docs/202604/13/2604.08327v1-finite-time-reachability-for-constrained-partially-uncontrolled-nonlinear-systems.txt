@@ -1,0 +1,1116 @@
+Title: Finite-time Reachability for Constrained, Partially Uncontrolled Nonlinear Systems
+
+URL Source: https://arxiv.org/pdf/2604.08327v1
+
+Published Time: Fri, 10 Apr 2026 01:14:10 GMT
+
+Number of Pages: 7
+
+Markdown Content:
+# Finite-time Reachability for Constrained, Partially Uncontrolled Nonlinear Systems 
+
+Ram Padmanabhan and Melkior Ornik 
+
+Abstract — This paper presents a technique to drive the state of a constrained nonlinear system to a specified target state in finite time, when the system suffers a partial loss in control authority. Our technique builds on a recent method to control constrained nonlinear systems by building a simple, linear drift-less approximation at the initial state. We construct a partition of the finite time horizon into successively smaller intervals, and design controlled inputs based on the approximate dynamics in each partition. Under conditions that bound the length of the time horizon, we prove that these inputs result in bounded error from the target state in the original nonlinear system. As successive partitions of the time horizon become shorter, the error reduces to zero despite the effect of uncontrolled inputs. A simulation example on the model of a fighter jet demonstrates that the designed sequence of controlled inputs achieves the target state despite the system suffering a loss of control authority over one of its inputs. 
+
+I. INTRODUCTION The challenges in controlling nonlinear dynamical systems are well-documented. While there exist a number of tech-niques to control such systems, each of these suffers from certain disadvantages that may limit their applicability. For instance, feedback linearization methods require an invertible coordinate transformation that may not exist [1]. Sliding-mode control may suffer from poor performance especially in the presence of actuation constraints [2], [3], and methods such as nonlinear model predictive control require extensive computations [4]. These challenges are compounded when such systems are subjected to undesirable effects such as ex-ogenous disturbances, modeled and unmodeled uncertainties. Such undesirable effects are often a consequence of operating in uncertain or adversarial environments, and may cause a control system to fail its objectives. The focus of this paper is on nonlinear control systems that suffer a loss in control authority over a subset of their actuators, thus becoming partially uncontrolled. This effect is practically motivated by the example of the Nauka research laboratory module, which suffered a loss in attitude control while docking to the International Space Station in 2021 [5]. A partial loss in control authority separates inputs into 
+
+controlled and uncontrolled components. Controlled inputs must be designed to compensate for the effect of uncontrolled inputs, which may take on any values in their admissible set and may be chosen by an adversary.         
+
+> The authors are with the University of Illinois Urbana-Champaign, Urbana, IL 61801, USA. Emails: {ramp3, mornik}@illinois.edu This work was supported in part by the Air Force Office of Scientific Research under Grant FA9550-23-1-0131 and in part by the NASA Uni-versity Leadership Initiative under Grant 80NSSC22M0070. Corresponding Author: Ram Padmanabhan.
+
+A partial loss in control authority can also be modeled under the paradigm of robust control theory [6], [7], which focuses on systems that are subjected to external perturba-tions. These external perturbations may model uncontrolled inputs that can be chosen by an adversary to prevent a control system from achieving its tasks. In the setting of nonlinear systems, the design of robust control laws is a well-studied problem. While the literature is far too extensive to ade-quately review here, a number of classical approaches [8]– [11] involve Lyapunov-based analysis that guarantee mini-mization of robustness metrics, such as H2 or H∞ norms [6]. At the same time, such approaches to nonlinear robust control often assume unconstrained inputs and external perturbations that affect the system in a linear manner. In contrast, the setting of a loss of control authority imposes actuation constraints on controlled and uncontrolled inputs. Further, and more importantly, uncontrolled inputs enter the system dynamics after being acted on by a nonlinear function of the state. A direct application of classical methods in robust control would require considering constraints on uncontrolled inputs that are state-dependent and potentially non-convex. Such problems are well-known to be difficult to address [12], [13]. Recent work in the setting of a partial loss of control authority has introduced quantitative metrics to analyze the effect of such a malfunction. These metrics have aimed to quantify the maximal additional time [14], [15] or energy [16], [17] used by a system to achieve a target state under this malfunction. While there has been some effort towards designing controlled inputs to achieve a task despite any adverse effects from uncontrolled inputs [18], that work considers only linear dynamical systems which are simpler to analyze. This paper addresses this gap by considering nonlinear systems. We present a method to control nonlinear systems that suffer a partial loss in control authority, in the presence of actuation constraints and over a finite horizon. Our method is based on a constrained nonlinear controller proposed in [19], where a linear driftless approximation to the original nonlinear system is constructed. It is proved in [19] that a sequence of optimal control inputs designed for this ap-proximation asymptotically stabilizes the nonlinear system to a target state, under an appropriate partition of the time horizon. We extend the method in [19] to the finite-horizon setting and for nonlinear systems that suffer a partial loss in control authority. We construct a similar linear driftless approximation, and under a partition of the finite horizon, propose a sequence of controlled inputs in each interval 
+
+> arXiv:2604.08327v1 [math.OC] 9 Apr 2026
+
+of this partition. Under conditions that bound the length of the time horizon, we prove that the controlled inputs satisfy actuation constraints, and the length of each interval in the partition directly impacts the error from the target state. As intervals in the partition become shorter, the error is driven to zero. We present a simulation example on the model of a fighter jet losing authority over one of its inputs, illustrating the proposed framework. The remainder of this paper is organized as follows. Sec-tion II introduces the problem we intend to solve and recalls the notion of the linear driftless approximation. Section III presents the sequence of controlled inputs that we design, and section IV proves that this method solves the proposed problem. Section IV also derives conditions under which actuation constraints are satisfied by the controlled input. Section V presents an example of a model of a fighter jet that loses authority over one of its inputs, and shows how the proposed sequence of controlled inputs achieves the target state despite uncontrolled effects. II. PROBLEM FORMULATION Consider a nonlinear dynamical system that evolves on a state space X, where X is a compact subset of R𝑑 :
+
+§𝑥 (𝑡 ) = 𝑓 (𝑥 (𝑡 )) + 𝑔 (𝑥 (𝑡 )) 𝑢 (𝑡 ), 𝑥 (0) = 𝑥 0 ∈ X (1) where the control input 𝑢 lies in the admissible set U, defined as 
+
+U := {𝑢 : R+ → R𝑚 + 𝑝 : 𝑢 is piecewise continuous in 𝑡 ,
+
+‖𝑢 (𝑡 )‖ ∞ ≤ 1 for all 𝑡 }, (2) and the functions 𝑓 : R𝑑 → R𝑑 and 𝑔 : R𝑑 → R𝑚 + 𝑝 are 
+
+𝐷 𝑓 - and 𝐷 𝑔 -Lipschitz continuous in the ∞-norm on the state space X. Then, there exist constants 𝐷 𝑓 and 𝐷 𝑔 such that for all 𝑥 1, 𝑥 2 ∈ X ,
+
+𝑓 (𝑥 1) − 𝑓 (𝑥 2) = 𝑑 𝑓 (𝑥 1, 𝑥 2), ‖𝑑 𝑓 (𝑥 1, 𝑥 2)‖ ∞ ≤ 𝐷 𝑓 ‖𝑥 1 − 𝑥 2 ‖∞;
+
+(3) 
+
+𝑔 (𝑥 1) − 𝑔 (𝑥 2) = 𝑑 𝑔 (𝑥 1, 𝑥 2), ‖𝑑 𝑔 (𝑥 1, 𝑥 2)‖ ∞ ≤ 𝐷 𝑔 ‖𝑥 1 − 𝑥 2 ‖∞.
+
+(4) We assume the system (1) undergoes a malfunction causing it to lose authority over 𝑝 of its 𝑚 + 𝑝 actuators: 
+
+§𝑥 (𝑡 ) = 𝑓 (𝑥 (𝑡 ))+ 𝑔 𝑐 (𝑥 (𝑡 )) 𝑢 𝑐 (𝑡 )+ 𝑔 𝑢𝑐 (𝑥 (𝑡 )) 𝑢 𝑢𝑐 (𝑡 ), 𝑥 (0) = 𝑥 0 ∈ X 
+
+(5) where the input 𝑢 splits into controlled and uncontrolled 
+
+components 𝑢 𝑐 and 𝑢 𝑢𝑐 respectively. Then, 𝑢 𝑐 and 𝑢 𝑢𝑐 lie in admissible sets Uc and Uuc which are defined as 
+
+Uc := {𝑢 𝑐 : R+ → R𝑚 : 𝑢 𝑐 is piecewise continuous in 𝑡 ,
+
+‖𝑢 𝑐 (𝑡 )‖ ∞ ≤ 1 for all 𝑡 }, (6) 
+
+Uuc := {𝑢 𝑢𝑐 : R+ → R𝑝 : 𝑢 𝑢𝑐 is piecewise continuous in 𝑡 ,
+
+‖𝑢 𝑢𝑐 (𝑡 )‖ ∞ ≤ 1 for all 𝑡 }. (7) The uncontrolled input 𝑢 𝑢𝑐 ∈ U uc represents either actuator faults or those suffering an adversarial attack. We are in-terested in the problem of achieving a target state in fixed . . . . . .
+
+Fig. 1: Partitioning the interval [0, 𝑡 𝑓 ] using the sequence 
+
+{𝑡 𝑛 }.time despite such a loss in control authority. This problem is formally stated below. 
+
+Problem 1. Given an initial state 𝑥 0 ∈ R𝑑 , a target state 𝑥 𝑡𝑔 ∈
+
+R𝑑 a fixed final time 𝑡 𝑓 and a prescribed radius 𝜀 > 0, design the controlled input 𝑢 𝑐 ∈ U c such that ‖𝑥 𝑡𝑔 − 𝑥 (𝑡 𝑓 )‖ ∞ ≤ 𝜀 
+
+despite the effect of 𝑢 𝑢𝑐 ∈ U uc .Define 𝑔 0 := 𝑔 (𝑥 0), 𝑔 𝑐  
+
+> 0
+
+:= 𝑔 𝑐 (𝑥 0) and 𝑔 𝑢𝑐  
+
+> 0
+
+:= 𝑔 𝑢𝑐 (𝑥 0).Then, we say that the dynamics 
+
+§𝑥 (𝑡 ) = 𝑔 𝑐  
+
+> 0
+
+𝑢 𝑐 (𝑡 ) + 𝑔 𝑢𝑐  
+
+> 0
+
+𝑢 𝑢𝑐 (𝑡 ), 𝑥 (0) = 𝑥 0 (8) are the linear driftless approximation to (5). We make the following assumption on 𝑔 𝑐  
+
+> 0
+
+, used in designing control laws in Section III. 
+
+Assumption 1. The matrix 𝑔 𝑐  
+
+> 0
+
+has full row rank 𝑑 .This assumption may be relaxed, but may result in some bounded steady-state error as discussed in [19]. Adapting our proposed method for any 𝑔 𝑐  
+
+> 0
+
+is an important avenue for future work. In the following section, we present our method to solve Problem 1 for the system (5). III. METHOD The key idea in our method is to partition the time horizon [0, 𝑡 𝑓 ] into successively smaller partitions as follows. Construct the sequence of time instants {𝑡 𝑛 } where 𝑡 0 = 0
+
+and 𝑡 𝑛 =
+
+( 2𝑛 −12𝑛 
+
+)
+
+𝑡 𝑓 , so that 𝑡 1 = 𝑡 𝑓  
+
+> 2
+
+, 𝑡 2 = 3𝑡 𝑓  
+
+> 4
+
+, and so on, as shown in Fig. 1. Let Δ𝑡 𝑛 = 𝑡 𝑛 − 𝑡 𝑛 −1 = 𝑡 𝑓  
+
+> 2𝑛
+
+. The sequence 
+
+{𝑡 𝑛 } is clearly a geometric sequence with lim 𝑛 →∞ 𝑡 𝑛 = 𝑡 𝑓 
+
+and lim 𝑛 →∞ Δ𝑡 𝑛 = 0.Let 𝑥 𝑛 := 𝑥 (𝑡 𝑛 ) ∈ X and ˜𝑥 𝑛 = 𝑥 𝑛 − 𝑥 𝑡𝑔 , denoting the error at 𝑡 𝑛 . The control law we propose is written as follows: 
+
+𝑢 𝑐 𝑛 (𝑡 ) = − 1
+
+Δ𝑡 𝑛 
+
+𝑔 𝑐  
+
+> 0
+> †
+
+( ˜𝑥 𝑛 −1 + 𝑔 𝑢𝑐  
+
+> 0
+
+𝛼 𝑛 
+
+) , 𝑡 ∈ [ 𝑡 𝑛 −1, 𝑡 𝑛 ] (9) for 𝑛 = 1, 2, . . . and where 𝛼 𝑛 ∈ R𝑝 is a vector-valued sequence to be designed. The controlled input 𝑢 𝑐 (𝑡 ) is then formed by applying 𝑢 𝑐 𝑛 (𝑡 ) in its corresponding interval 
+
+[𝑡 𝑛 −1, 𝑡 𝑛 ]. Clearly, 𝑢 𝑐 (𝑡 ) is piecewise constant, and is moti-vated by a similarly structured optimal control law for linear driftless systems discussed in [16]. We remark that in [16], 
+
+𝑢 𝑐 (𝑡 ) depended on the uncontrolled input 𝑢 𝑢𝑐 (𝑡 ), whereas we replace this dependence by the sequence 𝛼 𝑛 in (9). The undesired effects from 𝑢 𝑢𝑐 (𝑡 ) are compensated using the state through ˜𝑥 𝑛 −1 = 𝑥 𝑛 −1 − 𝑥 𝑡𝑔 .Applying (9) to (5) over [𝑡 𝑛 −1, 𝑡 𝑛 ],
+
+𝑥 𝑛 − 𝑥 𝑛 −1 =
+
+π 𝑡 𝑛 
+
+> 𝑡 𝑛 −1
+
+𝑓 (𝑥 (𝜏 )) d𝜏 +
+
+π 𝑡 𝑛 
+
+> 𝑡 𝑛 −1
+
+𝑑 𝑔 (𝑥 (𝜏 ), 𝑥 0)𝑢 𝑛 (𝜏 )d𝜏 + 𝑔 𝑐 
+
+> 0
+
+π 𝑡 𝑛 
+
+> 𝑡 𝑛 −1
+
+𝑢 𝑐 𝑛 (𝜏 )d𝜏 + 𝑔 𝑢𝑐 
+
+> 0
+
+π 𝑡 𝑛 
+
+> 𝑡 𝑛 −1
+
+𝑢 𝑢𝑐 (𝜏 )d𝜏 
+
+= −𝑣 (𝑡 𝑛 −1, 𝑡 𝑛 ) − ˜𝑥 𝑛 −1 − 𝑔 𝑢𝑐  
+
+> 0
+
+𝛼 𝑛 + 𝑔 𝑢𝑐  
+
+> 0
+
+Δ𝑡 𝑛 𝑢 𝑢𝑐 ,
+
+(10) where we define 
+
+𝑣 (𝑡 𝑎 , 𝑡 𝑏 ) := −
+
+π 𝑡 𝑏 
+
+> 𝑡 𝑎
+
+𝑓 (𝑥 (𝜏 )) d𝜏 −
+
+π 𝑡 𝑏 
+
+> 𝑡 𝑎
+
+𝑑 𝑔 (𝑥 (𝜏 ), 𝑥 0)𝑢 (𝜏 )d𝜏 
+
+(11) for the input 𝑢 (𝑡 ) in the interval [𝑡 𝑎 , 𝑡 𝑏 ]. We also define 
+
+𝑢 𝑢𝑐 := 1
+
+> Δ𝑡 𝑛
+
+∫ 𝑡 𝑛  
+
+> 𝑡 𝑛 −1
+
+𝑢 𝑢𝑐 (𝜏 )d𝜏 as the mean value of 𝑢 𝑢𝑐 (𝑡 ) in 
+
+[𝑡 𝑛 −1, 𝑡 𝑛 ]. In (10), we use the fact that 𝑢 𝑐 𝑛 (𝑡 ) is constant in the interval [𝑡 𝑛 −1, 𝑡 𝑛 ] in (9), and thus 𝑔 𝑐 
+
+> 0
+
+∫ 𝑡 𝑛  
+
+> 𝑡 𝑛 −1
+
+𝑢 𝑐 𝑛 (𝜏 )d𝜏 = − ˜𝑥 𝑛 −1 −
+
+𝑔 𝑢𝑐  
+
+> 0
+
+𝛼 𝑛 . In the expression for 𝑣 (𝑡 𝑛 −1, 𝑡 𝑛 ),
+
+𝑢 𝑛 (𝜏 ) =
+
+[ 𝑢 𝑐 𝑛 (𝜏 )
+
+𝑢 𝑢𝑐 (𝜏 )
+
+]
+
+, (12) consisting of both controlled and uncontrolled components. Substituting ˜𝑥 𝑛 −1 and rearranging, 
+
+𝑥 𝑡𝑔 − 𝑥 𝑛 = 𝑣 (𝑡 𝑛 −1, 𝑡 𝑛 ) + 𝑔 𝑢𝑐  
+
+> 0
+
+(𝛼 𝑛 − Δ𝑡 𝑛 𝑢 𝑢𝑐 ) . (13) In the following section, we show that the right-hand side of (13) converges to zero as 𝑛 increases. In this proof, we use the fact that Δ𝑡 𝑛 converges to zero, and design 𝛼 𝑛 to converge to zero at the same rate as Δ𝑡 𝑛 , i.e., 
+
+𝛼 𝑛 = 12𝑛 1𝑝 , (14) where 1𝑝 denotes the 𝑝 -dimensional vector of ones. This choice of 𝛼 𝑛 is not unique, but we restrict our analysis to this case. Investigating more general choices of 𝛼 𝑛 is an important avenue for future work. We remark that in practice, the sequence of inputs (9) would only be applied only until some 𝑛 = 𝑛 , where 𝑛 
+
+depends on 𝜀 in Problem 1. The final input 𝑢 𝑐 𝑛 would then be applied for the entire remaining interval [𝑡 𝑛 −1, 𝑡 𝑓 ] rather than the shorter interval [𝑡 𝑛 −1, 𝑡 𝑛 ]. We also discuss the choice of such 𝑛 in the following section. This choice avoids issues that occur when control inputs (9) change with increasing frequency as Δ𝑡 𝑛 → 0. Fast changes in control inputs can cause harm to physical components such as actuators in practical systems. IV. PROOF OF CONVERGENCE To prove convergence of the strategy proposed in Sec-tion III, we first let 𝐷 𝑆 = 𝐷 𝑓 + 𝐷 𝑔 , and define the following constants: 
+
+𝑐 := ‖ 𝑓 (𝑥 0)‖ ∞ + ‖ 𝑔 𝑢𝑐  
+
+> 0
+
+‖∞ + 𝐷 𝑆 ‖𝑥 𝑡𝑔 − 𝑥 0 ‖∞, (15) 
+
+𝑐 1 := 4𝑐 ‖𝑔 𝑐  
+
+> 0
+> †
+
+‖∞, , (16) and 𝑐 2 := 4𝐷 𝑆 ‖𝑔 𝑐  
+
+> 0
+> †
+
+‖∞ ‖𝑔 𝑢𝑐  
+
+> 0
+
+‖∞ ‖𝛼 2 ‖∞ (17) where 𝛼 2 is obtained from (14). We next present the follow-ing lemmas which are used in the proof of convergence. 
+
+Lemma 1. Consider the sequence 
+
+𝑒 𝑛 := 𝑐 𝐷 𝑆 
+
+(
+
+𝑒 Δ𝑡 𝑛 𝐷 𝑆 − 1
+
+)
+
+. (18) 
+
+Fig. 2: The function ℎ(𝑡 ) and its behavior based on 𝑑ℎ (𝑡 ) 
+
+> 𝑑𝑡
+
+.
+
+Then, the relation 𝑒 𝑛 +1 ≤ 12 𝑒 𝑛 holds, and lim 𝑛 →∞ 𝑒 𝑛 = 0.Given some 𝜀 > 0, there thus exists some 𝑛 1 such that 𝑒 𝑛 1 ≤
+
+𝜀 .Proof. Recall the properties Δ𝑡 𝑛 +1 = 12 Δ𝑡 𝑛 , lim 𝑛 →∞ Δ𝑡 𝑛 = 0.Using a Taylor series expansion, we know 
+
+𝑒 Δ𝑡 𝑛 +1 𝐷 𝑆 − 1 =
+
+> ∞
+
+’
+
+> 𝑘 =1
+
+(Δ𝑡 𝑛 +1 𝐷 𝑆 )𝑘 
+
+𝑘 ! =
+
+> ∞
+
+’
+
+> 𝑘 =1
+
+( 12
+
+) 𝑘 (Δ𝑡 𝑛 𝐷 𝑆 )𝑘 
+
+𝑘 !
+
+≤ 12
+
+> ∞
+
+’
+
+> 𝑘 =1
+
+(Δ𝑡 𝑛 𝐷 𝑆 )𝑘 
+
+𝑘 ! = 12
+
+(
+
+𝑒 Δ𝑡 𝑛 𝐷 𝑆 − 1
+
+)
+
+,
+
+since 
+
+( 12
+
+) 𝑘 
+
+≤ 12 for all 𝑘 ≥ 1 and the summation consists of only positive terms. From the definition of 𝑒 𝑛 in (18), the result 𝑒 𝑛 +1 ≤ 12 𝑒 𝑛 follows, and clearly lim 𝑛 →∞ 𝑒 𝑛 = 0. Thus, given an 𝜀 > 0, there exists some 𝑛 1 such that 𝑒 𝑛 1 ≤ 𝜀 . ■
+
+Lemma 2. Consider the function 
+
+ℎ(𝑡 ) = 𝑒 𝑡 𝐷 𝑆 /2 − 1 − 𝑡𝐷 𝑆 − 𝑐 2
+
+𝑐 1
+
+(19) 
+
+for 𝑡 ≥ 0. This function is non-positive in a range 𝑡 ∈ [ 𝑡, 𝑡 ]
+
+if and only if the conditions 
+
+𝑐 1 < 2, 𝑐 2 < 𝑐 1 − 2 (1 − log (2/𝑐 1)) (20) 
+
+are satisfied, where 𝑡 and 𝑡 satisfy ℎ(𝑡 ) = ℎ(𝑡 ) = 0.Proof. First, note that ℎ(0) = 𝑐 2 
+
+> 𝑐 1
+
+≥ 0 from (16), (17). For 
+
+ℎ(𝑡 ) to take on negative values, we require its derivative to be negative so that ℎ(𝑡 ) decreases sufficiently. Differentiating 
+
+ℎ(𝑡 ), 𝑑ℎ (𝑡 )
+
+𝑑𝑡 = 𝐷 𝑆 
+
+( 12 𝑒 𝑡 𝐷 𝑆 /2 − 1
+
+𝑐 1
+
+)
+
+. (21) We thus require 𝑐 1 < 2 so that 𝑑ℎ (𝑡 ) 
+
+> 𝑑𝑡
+
+< 0 for at least some values of 𝑡 , before increasing to arbitrarily large positive values. We also note that there exists only one point 𝑡 ∗ where    
+
+> 𝑑ℎ (𝑡 )
+> 𝑑𝑡 𝑡 ∗
+
+= 0. If we have ℎ(𝑡 ∗) < 0, then there exists some range 𝑡 ∈ [𝑡, 𝑡 ] where ℎ(𝑡 ) ≤ 0. The critical point 𝑡 ∗ is obtained by 
+
+𝑑ℎ (𝑡 )
+
+𝑑𝑡 𝑡 ∗ = 0 =⇒ 𝑒 𝑡 ∗ 𝐷 𝑆 /2 = 2
+
+𝑐 1
+
+or 𝑡 ∗ = 2
+
+𝐷 𝑆 
+
+log 
+
+( 2
+
+𝑐 1
+
+)
+
+.
+
+(22) Then, 
+
+ℎ(𝑡 ∗) = 2
+
+𝑐 1
+
+− 1 − 2 log (2/𝑐 1) − 𝑐 2
+
+𝑐 1
+
+and on rearranging, we see that ℎ(𝑡 ∗) < 0 if and only if 
+
+𝑐 1 < 2, 𝑐 2 < 𝑐 1 − 2 (1 − log (2/𝑐 1)) ,
+
+thus proving (20). Under conditions (20), the function ℎ(𝑡 )
+
+takes on non-positive values in some interval [𝑡, 𝑡 ]. This behavior of ℎ(𝑡 ) is illustrated in Fig. 2. ■
+
+We are now ready to state the central result of this paper. 
+
+Theorem 1 (Boundedness) . Assume (20) is satisfied. Then, the sequence of controlled inputs 𝑢 𝑐 𝑛 in (9) satisfies the constraint 𝑢 𝑐 𝑛 ∈ U c in (6) if 𝑡 𝑓 satisfies the conditions 
+
+𝑡 𝑓 ≥ 2‖𝑔 𝑐  
+
+> 0
+> †
+
+‖∞
+
+[
+
+‖ ˜𝑥 0 ‖∞ + 12 𝑔 𝑢𝑐  
+
+> 0∞
+
+]
+
+, (23a) 
+
+and 𝑡 𝑓 ∈ [𝑡, 𝑡 ] , (23b) 
+
+where [𝑡, 𝑡 ] is the interval where ℎ(𝑡 ) ≤ 0 in Lemma 2. Under these conditions, for all 𝑛 ≥ 1, 𝑥 𝑡𝑔 − 𝑥 𝑛 is bounded by 
+
+‖𝑥 𝑡𝑔 − 𝑥 𝑛 ‖∞ ≤ 𝑒 𝑛 := 𝑐 𝐷 𝑆 
+
+(
+
+𝑒 Δ𝑡 𝑛 𝐷 𝑆 − 1
+
+)
+
+. (24) 
+
+Proof. The proof is organized into two parts. In the first part, we consider the case of 𝑛 = 1, proving one part of condition (23) and the bound (24). In this part, we recall key arguments from [19, Theorem 1]. In the second part, we consider 𝑛 > 1,proving the rest of condition (23) and the general bound (24). 
+
+Part 1: Proof for 𝑛 = 1: Consider 
+
+𝑢 𝑐  
+
+> 1
+
+(𝑡 ) = − 1
+
+Δ𝑡 1
+
+𝑔 𝑐  
+
+> 0
+> †
+
+( ˜𝑥 0 + 𝑔 𝑢𝑐  
+
+> 0
+
+𝛼 1
+
+) , (25) where we know that Δ𝑡 1 = 𝑡 1 = 𝑡 𝑓 /2. Rearranging, we note that if the condition 
+
+𝑡 𝑓 ≥ 2‖𝑔 𝑐  
+
+> 0
+> †
+
+‖∞
+
+[
+
+‖ ˜𝑥 0 ‖∞ + 12 𝑔 𝑢𝑐  
+
+> 0∞
+
+]
+
+(26) is satisfied, then 𝑢 𝑐  
+
+> 1
+
+∈ U c, i.e., ‖𝑢 𝑐  
+
+> 1
+
+(𝑡 )‖ ∞ ≤ 1 for all 𝑡 , using 
+
+‖𝛼 1 ‖∞ = 12 from (14). This proves one part of condition (23). Next, we consider 
+
+𝑣 (0, 𝑡 ) = −
+
+π 𝑡 
+
+> 0
+
+𝑓 (𝑥 (𝜏 )) d𝜏 −
+
+π 𝑡 
+
+> 0
+
+𝑑 𝑔 (𝑥 (𝜏 ), 𝑥 0)𝑢 1 (𝜏 )d𝜏 (27) for some 𝑡 ∈ [0, 𝑡 1], according to (11). We first write 
+
+𝑓 (𝑥 (𝜏 )) = 𝑓 (𝑥 0) + 𝑑 𝑓 (𝑥 (𝜏 ), 𝑥 0), and note that condition (26) and the restriction 𝑢 𝑢𝑐 ∈ U uc on the uncontrolled input imply ‖𝑢 1 (𝜏 )‖ ∞ ≤ 1 for all 𝜏 , where 𝑢 1 (𝜏 ) is defined through (12). We then take norms on both sides of (27), use Jensen’s inequality to move the norm inside integrals, use properties (3), (4) and condition (26) and recall 𝐷 𝑆 = 𝐷 𝑓 + 𝐷 𝑔 to obtain 
+
+‖𝑣 (0, 𝑡 )‖ ∞ ≤ 𝑡 ‖ 𝑓 (𝑥 0)‖ ∞ + 𝐷 𝑆 
+
+π 𝑡 
+
+> 0
+
+‖𝑥 (𝜏 ) − 𝑥 0 ‖∞d𝜏 
+
+≤ 𝑡 (‖ 𝑓 (𝑥 0)‖ ∞ + 𝐷 𝑆 ‖𝑥 𝑡𝑔 − 𝑥 0 ‖∞
+
+)
+
++ 𝐷 𝑆 
+
+π 𝑡 
+
+> 0
+
+‖𝑥 𝑡𝑔 − 𝑥 (𝜏 )‖ ∞d𝜏, (28) where we use the triangle inequality of norms in the second line. We now attempt to bound the last term in (28). Writing out the solution to (5) for 𝑡 ∈ [ 0, 𝑡 1], we know 
+
+𝑥 (𝑡 ) − 𝑥 0 =
+
+π 𝑡 
+
+> 0
+
+𝑓 (𝑥 (𝜏 )) d𝜏 +
+
+π 𝑡 
+
+> 0
+
+𝑑 𝑔 (𝑥 (𝜏 ), 𝑥 0)𝑢 1 (𝜏 )d𝜏 
+
++ 𝑔 𝑐 
+
+> 0
+
+π 𝑡 
+
+> 0
+
+𝑢 𝑐  
+
+> 1
+
+(𝜏 )d𝜏 + 𝑔 𝑢𝑐 
+
+> 0
+
+π 𝑡 
+
+> 0
+
+𝑢 𝑢𝑐 (𝜏 )d𝜏 
+
+= −𝑣 (0, 𝑡 ) − 𝑡 
+
+Δ𝑡 1
+
+˜𝑥 0 + 𝑔 𝑢𝑐 
+
+> 0
+
+[π 𝑡 
+
+> 0
+
+𝑢 𝑢𝑐 (𝜏 )d𝜏 − 𝑡 
+
+Δ𝑡 1
+
+𝛼 1
+
+]
+
+,
+
+where we have substituted 𝑢 𝑐  
+
+> 1
+
+(𝜏 ) from (25), noting that 
+
+𝑔 𝑐  
+
+> 0
+
+𝑢 𝑐  
+
+> 1
+
+(𝑡 ) = − 1
+
+> Δ𝑡 1
+
+(
+
+˜𝑥 0 + 𝑔 𝑢𝑐  
+
+> 0
+
+𝛼 1
+
+)
+
+. Subtracting 𝑥 𝑡𝑔 on both sides and rearranging, 
+
+𝑥 𝑡𝑔 −𝑥 (𝑡 ) = 𝑣 (0, 𝑡 )− 𝑡 1 − 𝑡 
+
+Δ𝑡 1
+
+˜𝑥 0+𝑔 𝑢𝑐 
+
+> 0
+
+[ 𝑡 1 − 𝑡 
+
+Δ𝑡 1
+
+𝛼 1 −
+
+π 𝑡 
+
+> 0
+
+𝑢 𝑢𝑐 (𝜏 )d𝜏 
+
+]
+
+.
+
+(29) Taking norms on both sides and noting that 𝑡 1 −𝑡  
+
+> Δ𝑡 1
+
+≤ 1 for 
+
+𝑡 ∈ [ 0, 𝑡 1], we have 
+
+‖𝑥 𝑡𝑔 − 𝑥 (𝑡 )‖ ∞ ≤ ‖ 𝑣 (0, 𝑡 )‖ ∞ + ‖ ˜𝑥 0 ‖∞
+
++ 𝑔 𝑢𝑐 
+
+> 0
+
+[ 𝑡 1 − 𝑡 
+
+Δ𝑡 1
+
+𝛼 1 −
+
+π 𝑡 
+
+> 0
+
+𝑢 𝑢𝑐 (𝜏 )d𝜏 
+
+]
+
+> ∞
+
+≤ ‖ 𝑣 (0, 𝑡 )‖ ∞ + ‖ ˜𝑥 0 ‖∞
+
++ ‖ 𝑔 𝑢𝑐  
+
+> 0
+
+‖∞
+
+[
+
+‖𝛼 1 ‖∞ +
+
+π 𝑡 
+
+> 0
+
+‖𝑢 𝑢𝑐 (𝜏 )‖ ∞d𝜏 
+
+]
+
+≤ ‖ 𝑣 (0, 𝑡 )‖ ∞ + ‖ ˜𝑥 0 ‖∞ + ‖ 𝑔 𝑢𝑐  
+
+> 0
+
+‖∞
+
+(
+
+𝑡 + 12
+
+)
+
+,
+
+(30) where we use Jensen’s inequality [20] to move norms inside integrals once more, the constraint (7) and the fact that 
+
+‖𝛼 𝑛 ‖∞ ≤ 12 for all 𝑛 from (14). We now substitute (28) in (30) and obtain 
+
+‖𝑥 𝑡𝑔 − 𝑥 (𝑡 )‖ ∞ ≤ 𝑡 (‖ 𝑓 (𝑥 0)‖ ∞ + ‖ 𝑔 𝑢𝑐  
+
+> 0
+
+‖∞ + 𝐷 𝑆 ‖𝑥 𝑡𝑔 − 𝑥 0 ‖∞
+
+)︸ ︷︷ ︸
+
+> =𝑐
+
++‖ ˜𝑥 0 ‖∞ + 12 ‖𝑔 𝑢𝑐  
+
+> 0
+
+‖∞ + 𝐷 𝑆 
+
+π 𝑡 
+
+> 0
+
+‖𝑥 𝑡𝑔 − 𝑥 (𝜏 )‖ ∞d𝜏, 
+
+(31) recalling 𝑐 from (15). Let 𝑄 1 (𝑡 ) := ∫ 𝑡  
+
+> 0
+
+‖𝑥 𝑡𝑔 − 𝑥 (𝜏 )‖ ∞d𝜏 , so that §𝑄 1 (𝑡 ) = ‖𝑥 𝑡𝑔 −
+
+𝑥 (𝑡 )‖ ∞ [21]. Then, (31) can be rewritten as 
+
+§𝑄 1 (𝑡 ) ≤ 𝑐𝑡 + ‖ ˜𝑥 0 ‖∞ + 12 ‖𝑔 𝑢𝑐  
+
+> 0
+
+‖∞ + 𝐷 𝑆 𝑄 1 (𝑡 ). (32) We now invoke similar arguments to those made in [19, Theorem 1] which involve Grönwall’s inequality [1]. These arguments can be used to prove that 
+
+‖𝑥 𝑡𝑔 − 𝑥 (𝑡 )‖ ∞ ≤ 𝑐 𝐷 𝑆 
+
+(
+
+𝑒 𝑡 𝐷 𝑆 − 1
+
+)
+
+, 𝑡 ∈ [ 0, 𝑡 1],
+
+and in particular, 
+
+‖𝑥 𝑡𝑔 − 𝑥 1 ‖∞ ≤ 𝑒 1 := 𝑐 𝐷 𝑆 
+
+(
+
+𝑒 Δ𝑡 1 𝐷 𝑆 − 1
+
+)
+
+. (33) Equation (33) proves the bound (24) for 𝑛 = 1, bounding the error from 𝑥 𝑡𝑔 at time 𝑡 1.Part 2: Proof for 𝑛 > 1: We sketch the remainder of the proof for 𝑛 > 1 as the steps closely follow the arguments for 𝑛 = 1. Consider the second interval [𝑡 1, 𝑡 2], with 
+
+𝑢 𝑐  
+
+> 2
+
+(𝑡 ) = − 1
+
+Δ𝑡 2
+
+𝑔 𝑐  
+
+> 0
+> †
+
+( ˜𝑥 1 + 𝑔 𝑢𝑐  
+
+> 0
+
+𝛼 2
+
+) , (34) where we recall that ‖ ˜𝑥 1 ‖∞ = ‖𝑥 1 − 𝑥 𝑡𝑔 ‖∞ ≤ 𝑒 1 in (33). Substituting Δ𝑡 2 = 𝑡 𝑓  
+
+> 4
+
+and rearranging, the condition 
+
+‖𝑢 𝑐  
+
+> 2
+
+(𝑡 )‖ ∞ ≤ 1 is satisfied if 
+
+𝑡 𝑓 ≥ 4‖𝑔 𝑐  
+
+> 0
+> †
+
+‖∞
+
+[𝑒 1 + ‖ 𝑔 𝑢𝑐  
+
+> 0
+
+‖∞ ‖𝛼 2 ‖∞
+
+] ,
+
+or, using (33) and rearranging, 
+
+𝑒 𝑡 𝑓 𝐷 𝑆 /2 ≤ 𝑡 𝑓 𝐷 𝑆 − 𝑐 2
+
+𝑐 1
+
++ 1, (35) where we substitute Δ𝑡 1 = 𝑡 𝑓 /2 and the values of 𝑐 1 and 
+
+𝑐 2 from (16), (17). Using the definition of the function ℎ in (19), condition (35) can be rewritten as ℎ(𝑡 𝑓 ) ≤ 0, which is true when 
+
+𝑡 𝑓 ∈ [ 𝑡, 𝑡 ] (36) under the conditions (20) in Lemma 2. Thus, the input constraint 𝑢 𝑐  
+
+> 2
+
+∈ U c is satisfied when 𝑡 𝑓 ∈ [ 𝑡, 𝑡 ], forming the second part of condition (23). To prove the bound (24) for 𝑛 = 2, we follow identical steps to the case when 𝑛 = 1. We consider 𝑣 (𝑡 1, 𝑡 ) =
+
+− ∫ 𝑡 𝑡 1 𝑓 (𝑥 (𝜏 )) d𝜏 −∫ 𝑡 𝑡 1 𝑑 𝑔 (𝑥 (𝜏 ), 𝑥 0)𝑢 2 (𝜏 )d𝜏 for 𝑡 ∈ [ 𝑡 1, 𝑡 2] from (11). Similar to (28), we can obtain the following bound: 
+
+‖𝑣 (𝑡 1, 𝑡 )‖ ∞ ≤ ( 𝑡 − 𝑡 1) (‖ 𝑓 (𝑥 0)‖ ∞ + 𝐷 𝑆 ‖𝑥 𝑡𝑔 − 𝑥 0 ‖∞
+
+)
+
++ 𝐷 𝑆 
+
+π 𝑡 𝑡 1
+
+‖𝑥 𝑡𝑔 − 𝑥 (𝜏 )‖ ∞d𝜏, (37) and use this bound to obtain the following expression similar to (31): 
+
+‖𝑥 𝑡𝑔 − 𝑥 (𝑡 )‖ ∞ ≤ 𝑐 (𝑡 − 𝑡 1) + ‖ ˜𝑥 0 ‖∞ + 14 ‖𝑔 𝑢𝑐  
+
+> 0
+
+‖∞
+
++ 𝐷 𝑆 
+
+π 𝑡 𝑡 1
+
+‖𝑥 𝑡𝑔 − 𝑥 (𝜏 )‖ ∞d𝜏 (38) when 𝑡 ∈ [ 𝑡 1, 𝑡 2] and we use ‖𝛼 2 ‖∞ = 14 . Following similar steps to the case for 𝑛 = 1 which involve Grönwall’s inequality, we obtain the following bound for the error at 
+
+𝑡 2:
+
+‖𝑥 𝑡𝑔 − 𝑥 2 ‖∞ ≤ 𝑒 2 := 𝑐 𝐷 𝑆 
+
+(
+
+𝑒 Δ𝑡 2 𝐷 𝑆 − 1
+
+)
+
+. (39) For larger 𝑛 , the proof follows in a similar way, except condition (36) actually implies ‖𝑢 𝑐 𝑛 (𝑡 )‖ ∞ ≤ 1 for all 𝑛 .To show this, we first consider 𝑢 𝑐  
+
+> 3
+
+and note that ‖𝛼 3 ‖∞ = 
+
+> 12
+
+‖𝛼 2 ‖∞, Δ𝑡 3 = 12 Δ𝑡 2 and 𝑒 2 ≤ 12 𝑒 1 from Lemma 1. Then, 
+
+‖𝑢 𝑐  
+
+> 3
+
+(𝑡 )‖ ∞ ≤ 1
+
+Δ𝑡 3
+
+‖𝑔 𝑐  
+
+> 0
+> †
+
+‖∞
+
+[𝑒 2 + ‖ 𝑔 𝑢𝑐  
+
+> 0
+
+‖∞ ‖𝛼 3 ‖∞
+
+]
+
+≤ 2
+
+Δ𝑡 2
+
+‖𝑔 𝑐  
+
+> 0
+> †
+
+‖∞
+
+[ 12 𝑒 1 + ‖ 𝑔 𝑢𝑐  
+
+> 0
+
+‖∞
+
+12 ‖𝛼 2 ‖∞
+
+]
+
+= 1
+
+Δ𝑡 2
+
+‖𝑔 𝑐  
+
+> 0
+> †
+
+‖∞
+
+[𝑒 1 + ‖ 𝑔 𝑢𝑐  
+
+> 0
+
+‖∞ ‖𝛼 2 ‖∞
+
+]
+
+= ‖𝑢 𝑐  
+
+> 2
+
+(𝑡 )‖ ∞ ≤ 1
+
+Fig. 3: Illustrating the convergence behavior based on The-orem 1 and Corollary 1. At every 𝑡 𝑛 , the bound on the error between 𝑥 (𝑡 ) and 𝑥 𝑡𝑔 is halved. under (36). We then have a bound similar to (39) at 𝑡 3, and identical arguments can be used to prove the bound 
+
+‖𝑥 𝑡𝑔 − 𝑥 (𝑡 )‖ ∞ ≤ 𝑐 𝐷 𝑆 
+
+(
+
+𝑒 (𝑡 −𝑡 𝑛 −1 ) 𝐷 𝑆 − 1
+
+)
+
+, 𝑡 ∈ [ 𝑡 𝑛 −1, 𝑡 𝑛 ], (40) and in particular, 
+
+‖𝑥 𝑡𝑔 − 𝑥 𝑛 ‖∞ ≤ 𝑒 𝑛 := 𝑐 𝐷 𝑆 
+
+(
+
+𝑒 Δ𝑡 𝑛 𝐷 𝑆 − 1
+
+)
+
+for all 𝑛 , as required in (24). Summarizing, conditions (26) and (36) can be combined to form (23). Under (23) and (20), the input constraint 𝑢 𝑛 𝑐 ∈ U c
+
+is then satisfied for all 𝑛 . Then, the bound (24) holds for all 
+
+𝑛 , thus concluding the proof. ■
+
+Theorem 1 thus develops conditions on 𝑡 𝑓 under which the input constraint (6) is satisfied by the sequence of inputs 𝑢 𝑐 𝑛 
+
+in (9). Using this bound, we prove that Problem 1 is solved by the method presented in Section III, when the sequence of inputs is applied until some 𝑛 .
+
+Corollary 1 (Convergence) . Assume conditions (20) and 
+
+(23) hold and let 𝜀 > 0. Apply the sequence of inputs (9) 
+
+until some 𝑛 = 𝑛 − 1, where 𝑛 satisfies 𝑡 𝑓 − 𝑡 𝑛 −1 ≤ Δ𝑡 𝑛 1
+
+and 𝑛 1 is the smallest number such that 𝑒 𝑛 1 ≤ 𝜖 . In the remaining interval [𝑡 𝑛 −1, 𝑡 𝑓 ], apply the last input 𝑢 𝑐 𝑛 . Then, this sequence of inputs ensures ‖𝑥 𝑡𝑔 − 𝑥 (𝑡 𝑓 )‖ ∞ ≤ 𝜀 .Proof. Since the input 𝑢 𝑐 𝑛 is applied for the remaining interval [𝑡 𝑛 −1, 𝑡 𝑓 ], bound (40) holds for the entire interval 
+
+[𝑡 𝑛 −1, 𝑡 𝑓 ] rather than just the shorter interval [𝑡 𝑛 −1, 𝑡 𝑛 ]. Then, (40) can be written as 
+
+‖𝑥 𝑡𝑔 − 𝑥 (𝑡 )‖ ∞ ≤ 𝑐 𝐷 𝑆 
+
+(
+
+𝑒 (𝑡 −𝑡 𝑛 −1 ) 𝐷 𝑆 − 1
+
+)
+
+, 𝑡 ∈ [ 𝑡 𝑛 −1, 𝑡 𝑓 ]
+
+or ‖𝑥 𝑡𝑔 − 𝑥 (𝑡 𝑓 )‖ ∞ ≤ 𝑐 𝐷 𝑆 
+
+(
+
+𝑒 (𝑡 𝑓 −𝑡 𝑛 −1 ) 𝐷 𝑆 − 1
+
+)
+
+at 𝑡 = 𝑡 𝑓 .
+
+Next, we use the fact that 𝑡 𝑓 − 𝑡 𝑛 −1 ≤ Δ𝑡 𝑛 1 , where 𝑛 1 is the smallest number which satisfies 𝑒 𝑛 1 ≤ 𝜀 and exists from 0 5 10 15 20 
+
+Time     
+
+> -4 -2 0246
+> State trajectory (a) State trajectories 0510 15 20
+
+Time  
+
+> -0.5 00.5 1
+> Control inputs (b) Control inputs
+
+Fig. 4: State trajectories and control inputs for the ADMIRE fighter-jet model, reaching the target state 𝑥 𝑡𝑔 despite uncontrolled effects from the canard wing 𝑢 1.Lemma 1. Substituting 𝑡 𝑓 − 𝑡 𝑛 −1 ≤ Δ𝑡 𝑛 1 above, we have 
+
+‖𝑥 𝑡𝑔 − 𝑥 (𝑡 𝑓 )‖ ∞ ≤ 𝑐 𝐷 𝑆 
+
+(
+
+𝑒 Δ𝑡 𝑛 1 𝐷 𝑆 − 1
+
+)
+
+= 𝑒 𝑛 1 ≤ 𝜀 (41) as required, using the definition of 𝑒 𝑛 in (18). ■
+
+An illustration of the convergence behavior from Theo-rem 1 and Corollary 1 is provided in Fig. 3. At every 𝑡 𝑛 , the error between 𝑥 (𝑡 ) and 𝑥 𝑡𝑔 is halved, which is a consequence of the design of {𝑡 𝑛 } in Fig. 1 and 𝛼 𝑛 in (14). In the next section, we present an example illustrating the use of this method on the model of a fighter jet. V. ILLUSTRATIVE EXAMPLE We consider the dynamics of the ADMIRE fighter-jet model subjected to nonlinear wind effects, as considered in [17]. These dynamics are obtained from a linearized model established in [22], and models of nonlinear wind effects based on [23]. The dynamics can be written as 
+
+§𝑥 (𝑡 ) = 𝐴𝑥 (𝑡 ) + 𝑓 𝑤 (𝑥 (𝑡 )) + 𝐵 𝑐 𝑢 𝑐 (𝑡 ) + 𝐵 𝑢𝑐 𝑢 𝑢𝑐 (𝑡 ) (42) where 
+
+𝑥 =
+
+
+
+𝑝 𝑞 𝑟 
+
+
+
+; 𝐴 =
+
+
+
+−0.9967 0 0.6176 0 −0.5057 0
+
+−0.0939 0 −0.2127 
+
+
+
+;
+
+𝑓 𝑤 (𝑥 ) = 12
+
+[sin ( 𝑝 ) cos 2 ( 𝑝 ), − sin (2𝑞 ), 1]> ;
+
+𝐵 𝑐 =
+
+
+
+−4.2423 4.2423 1.4871 
+
+−1.2735 −1.2735 0.0024 
+
+−0.2805 0.2805 −0.8823 
+
+
+
+; 𝐵 𝑢𝑐 =
+
+
+
+01.6532 0
+
+
+
+.
+
+The states in this model consist of roll, pitch and yaw rates and the four control inputs correspond to the canard, left and right elevons and rudder. The wind effects are chosen as sinusoidal and constant expressions based on [23], such that their Lipschitz constant is no more than 1. In particular, these dynamics satisfy conditions (3) and (4) everywhere in 
+
+R3, with 𝐷 𝑓 = ‖ 𝐴 ‖∞ + 1 = 2.6143 and 𝐷 𝑔 = 0, since (42) is linear in the input. In line with prior work [15], [17], we consider a loss of authority over the canard wing. The matrix 𝐵 then splits into controlled and uncontrolled components 𝐵 𝑐 = 𝑔 𝑐  
+
+> 0
+
+and 𝐵 𝑢𝑐 =
+
+𝑔 𝑢𝑐  
+
+> 0
+
+, which are used to form the linear driftless approximation (8). We select a final time 𝑡 𝑓 = 20 , a randomly chosen initial state 𝑥 0 = [5.13 2.76 −3.07 ]> and the target state 𝑥 𝑡𝑔 =
+
+[0 0 0 ]>. The uncontrolled canard input is allowed to take on any values in the range [− 1, 1] according to constraint (7). We terminate the procedure in Section III at just 𝑛 = 8, i.e., partitioning the time horizon and designing the sequence (9) only until 𝑛 = 8.The results of our procedure are shown in Fig. 4. We can see that the state trajectories settle at the target state at exactly the desired time 𝑡 𝑓 = 20 , despite uncontrolled effects of the canard input 𝑢 1. This behavior is achieved while the controlled inputs stay within prescribed constraints (6). The piecewise nature of state and input trajectories is also clear, based on the partition of the time horizon and the sequence (9). A particular advantage of this method is its low compu-tational effort. Simulating the sequence of inputs (9) and graphing the state and input trajectories takes under 0.5
+
+seconds on a modern laptop, and even under 0.2 seconds when the uncontrolled input is fixed at a constant value as is common in some fault-tolerant control approaches [24], [25]. In contrast, certain modern techniques for nonlinear control require significantly more computational effort, often involving the solution of large-scale optimization problems. VI. CONCLUSIONS In this paper, we presented a method to drive a nonlinear system to a target state, under input constraints and when the system suffers a partial loss in control authority. We designed a sequence of controlled inputs that are based on a linear driftless approximation to the original nonlinear dynamics. We then partitioned the finite time horizon into successively shorter intervals, and proved that the sequence of designed controlled inputs results in bounded error from the target state in the original nonlinear system. As the length of each partition converges to zero, we proved that the error from the target state also reduces to zero. Simultaneously, we devel-oped conditions on the length of the horizon guaranteeing input constraints are satisfied. Using the model of a fighter jet losing authority over one of its inputs, we demonstrated how the designed inputs achieve the target state, despite the effect of the uncontrolled input. Future work will be dedicated to investigating more general sequences 𝛼 𝑛 in (14), and understanding how they impact the convergence result in Theorem 1. Further, we intend to develop a learning-based framework for such a method, where the linear driftless approximation can be learned from data over a small interval, before designing a sequence of controlled inputs. REFERENCES 
+
+[1] H. K. Khalil, Nonlinear Systems , 3rd ed. Upper Saddle River, NJ, USA: Prentice Hall, 2002. [2] V. I. Utkin, Sliding Modes in Control and Optimization , ser. Commu-nications and Control Engineering. Heidelberg, Germany: Springer-Verlag, 1992. [3] S. T. Venkataraman and S. Gulati, “Control of nonlinear systems using terminal sliding modes,” in 1992 American Control Conference ,Chicago, IL, USA, June 1992, pp. 891–893. [4] L. Grüne and J. Pannek, Nonlinear Model Predictive Control: Theory and Algorithms , 2nd ed., ser. Communcations and Control Engineer-ing. Cham, Switzerland: Springer Cham, 2018. [5] M. Bartels, “Russia’s Nauka module briefly tilts space station with unplanned thruster fire,” Aug. 2021. [Online]. Available: https://www.space.com/nauka-module-thruster-fire-tilts-space-station [6] K. Zhou, J. C. Doyle, and K. Glover, Robust and Optimal Control .Hoboken, NJ, USA: Prentice-Hall, 1996. [7] K. Zhou and J. C. Doyle, Essentials of Robust Control . Hoboken, NJ, USA: Prentice-Hall, 1997. [8] Z. Qu, Robust control of nonlinear uncertain systems . Hoboken, NJ, USA: John Wiley & Sons, Inc., 1998. [9] Q. Wang and R. F. Stengel, “Robust control of nonlinear systems with parametric uncertainty,” Automatica , vol. 38, no. 9, pp. 1591–1599, Sept. 2002. [10] F. Lin, R. D. Brandt, and J. Sun, “Robust control of nonlinear sys-tems: Compensating for uncertainty,” International Journal of Control ,vol. 56, no. 6, pp. 1453–1459, 1992. [11] Y. Wang, L. Xie, and C. E. De Souza, “Robust control of a class of uncertain nonlinear systems,” Systems & control letters , vol. 19, no. 2, pp. 139–149, Aug. 1992. [12] M. Leomanni, G. Costante, and F. Ferrante, “Time-optimal control of a multidimensional integrator chain with applications,” IEEE Control Systems Letters , vol. 6, pp. 2371–2376, Feb. 2022. [13] D. Liberzon, Calculus of Variations and Optimal Control Theory: A Concise Introduction . Princeton, NJ, USA: Princeton University Press, 2012. [14] J.-B. Bouvier, K. Xu, and M. Ornik, “Quantitative resilience of linear driftless systems,” in SIAM Conference on Control and its Applications , Spokane, WA, USA, July 2021, pp. 32–39. [15] J.-B. Bouvier and M. Ornik, “Resilience of linear systems to partial loss of control authority,” Automatica , vol. 152, June 2023. [16] R. Padmanabhan and M. Ornik, “Energetic resilience of linear driftless systems,” in 11th IFAC Symposium on Robust Control Design , Porto, Portugal, July 2025. [17] ——, “Approximate energetic resilience of nonlinear systems under partial loss of control authority,” Automatica , vol. 187, May 2026. [18] J.-B. Bouvier and M. Ornik, “Designing resilient linear systems,” IEEE Transactions on Automatic Control , vol. 67, no. 9, pp. 4832–4837, Sep. 2022. [19] R. Padmanabhan and M. Ornik, “Ignore drift, embrace simplicity: Constrained nonlinear control through driftless approximation,” 2025. [Online]. Available: https://arxiv.org/abs/2509.06188 [20] C. P. Niculescu and L.-E. Persson, Convex Functions and Their Applications: A Contemporary Approach . New York, NY, USA: Springer, 2006. [21] T. M. Apostol, Calculus: Volume 1 , 2nd ed. Hoboken, NJ, USA: John Wiley & Sons, Inc., 1967. [22] L. Forssell and U. Nilsson, “ADMIRE The aero-data model in a research environment version 4.0, model description,” FOI –Swedish Defence Research Agency, Tech. Rep. FOI-R–1624–SE, Dec. 2005. [Online]. Available: https://www.foi.se/rest-api/report/ FOI-R--1624--SE [23] Q. Wang, W. Wang, and S. Suzuki, “UAV trajectory tracking under wind disturbance based on novel antidisturbance sliding mode control,” 
+
+Aerospace Science and Technology , vol. 149, June 2024. [24] G. Tao, S. Chen, and S. Joshi, “An adaptive actuator failure com-pensation controller using output feedback,” IEEE Transactions on Automatic Control , vol. 47, no. 3, pp. 506–511, Mar. 2002. [25] A. A. Amin and K. M. Hasan, “A review of fault tolerant control systems: Advancements and applications,” Measurement , vol. 143, pp. 58–68, Sept. 2019.

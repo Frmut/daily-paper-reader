@@ -6,32 +6,29 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-04-12
-- 运行时间：2026-04-12 19:32:22 UTC
+- 最新运行日期：2026-04-13
+- 运行时间：2026-04-13 19:55:01 UTC
 - 运行状态：成功
-- 本次总论文数：3
+- 本次总论文数：2
 - 精读区：0
-- 速读区：3
+- 速读区：2
 
 ### 今日简报（AI）
-今日聚焦非线性控制优化与无人机安全监测，探索提升复杂系统实时性与鲁棒性的前沿方案。
-重点推荐利用代理模型加速 NMPC 计算以及结合 SINDy 的自适应控制，有效解决了非线性动力学建模与求解的效率难题。
-建议关注数据驱动方法在无人机振动分析与故障隔离中的应用，以提升自动化系统的硬件可靠性。
-- 详情：[/202604/12/README](/202604/12/README)
+今日聚焦非线性系统的安全控制，深入探讨了故障感知学习与有限时间可达性分析。
+研究重点在于如何通过迭代学习构建状态控制不变集，并解决受限且部分失控系统的复杂可达性难题。
+建议关注复杂约束下的系统鲁棒性设计，以提升自动化设备在极端工况下的安全生存能力。
+- 详情：[/202604/13/README](/202604/13/README)
 
 ### 精读区论文标签
 - 本次无精读推荐。
 
 ### 速读区论文标签
-1. [Accelerating Full-Scale Nonlinear Model Predictive Control via Surrogate Dynamics Optimization](/202604/12/2604.05566v1-accelerating-full-scale-nonlinear-model-predictive-control-via-surrogate-dynamics-optimization)  
+1. [Failure-Aware Iterative Learning of State-Control Invariant Sets](/202604/13/2604.06776v1-failure-aware-iterative-learning-of-state-control-invariant-sets)  
    标签：评分：6.0/10、query:pmsm
-   evidence：高维系统的非线性模型预测控制
-2. [Adaptive Control with Sparse Identification of Nonlinear Dynamics](/202604/12/2604.06338v1-adaptive-control-with-sparse-identification-of-nonlinear-dynamics)  
+   evidence：故障感知迭代学习控制
+2. [Finite-time Reachability for Constrained, Partially Uncontrolled Nonlinear Systems](/202604/13/2604.08327v1-finite-time-reachability-for-constrained-partially-uncontrolled-nonlinear-systems)  
    标签：评分：6.0/10、query:pmsm
-   evidence：不确定非线性系统的自适应控制
-3. [Active Propeller Fault Detection and Isolation in Multirotors Via Vibration Model](/202604/12/2604.07281v1-active-propeller-fault-detection-and-isolation-in-multirotors-via-vibration-model)  
-   标签：评分：6.0/10、query:pmsm
-   evidence：多旋翼系统中的主动故障检测与隔离
+   evidence：部分控制权丧失
 
 
 <div class="dpr-home-promo-card">
