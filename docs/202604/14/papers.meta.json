@@ -1,0 +1,65 @@
+{
+  "label": "2026-04-14",
+  "date": "2026-04-14",
+  "generated_at": "2026-04-14T20:07:06",
+  "count": 4,
+  "papers": [
+    {
+      "paper_id": "202604/14/2604.10640v1-driving-cycle-aware-shape-and-topology-optimization-of-an-interior-permanent-magnet-synchronous-machine-for-a-traction-drive",
+      "section": "deep",
+      "title_en": "Driving-Cycle-Aware Shape and Topology Optimization of an Interior Permanent Magnet Synchronous Machine for a Traction Drive",
+      "authors": "Alexander Schugardt",
+      "date": "2026-04-12",
+      "pdf": "https://arxiv.org/pdf/2604.10640v1",
+      "score": "10.0",
+      "evidence": "内置式永磁同步电机的优化设计",
+      "tldr": "本研究提出了一种针对牵引驱动用内置式永磁同步电机的工况感知型形状与拓扑优化工作流。通过k-means聚类简化复杂工况，结合二进制拓扑优化、高斯网络及样条形状优化，在满足电磁、机械超速及电压约束下实现同步优化。实验验证表明，该方法在保持扭矩和全工况效率的同时，可减少高达10%的永磁体用量，为高性能低成本电机设计提供了有效路径。",
+      "tags": "query:pmsm",
+      "abstract_en": "This paper presents a driving-cycle-aware shape and topology optimization workflow for interior permanent magnet synchronous machines used in traction drives. A k-means clustering approach reduces full driving cycles to representative operating points so that optimization remains computationally feasible while preserving realistic operating behavior. The workflow combines binary topology optimization, Normalized Gaussian Networks (NGnet), and spline-based shape optimization under electromagnetic, mechanical overspeed, and inverter voltage constraints. A Laplace-based mesh deformation strategy enables simultaneous optimization of magnet geometry and flux-barrier topology. Two optimized rotor designs are manufactured and tested experimentally. The central contribution is a validated, constraint-aware optimization pipeline that achieves permanent-magnet reduction of up to 10% while maintaining required torque capability and near-reference full-cycle efficiency.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202604/14/2604.06681v1-model-agnostic-energy-throughput-control-for-range-and-lifetime-extension-of-electric-vehicles-via-cell-level-inverters",
+      "section": "quick",
+      "title_en": "Model-Agnostic Energy Throughput Control for Range and Lifetime Extension of Electric Vehicles via Cell-Level Inverters",
+      "authors": "Shida Jiang, Shengyu Tao, Vincent Molina, Junzhe Shi, Scott Moura",
+      "date": "2026-04-08",
+      "pdf": "https://arxiv.org/pdf/2604.06681v1",
+      "score": "6.0",
+      "evidence": "用于电动汽车动力总成的电池级逆变器",
+      "tldr": "本研究针对传统电动汽车集中式逆变器限制单体电池控制的问题，提出了一种基于H桥的单体级逆变器拓扑及模型无关的能量吞吐控制策略。该策略通过在充电时允许电量差异以平衡健康状态（SOH），在放电时重新平衡电量（SOC）以最大化可用容量，从而延长续航里程和电池寿命。在多种电池体系下的仿真显示，该方法显著提升了电池组寿命，为软件定义电池管理提供了新路径。",
+      "tags": "query:pmsm",
+      "abstract_en": "A conventional electric vehicle (EV) powertrain relies on a centralized high-voltage DC-AC inverter, thereby limiting cell-level control and potentially reducing overall driving range and battery lifetime. This paper studies an H-bridge-based cell-level inverter topology that performs power conversion at the cell level, enabling independent control of individual cells and expanding the design space for battery management. Leveraging these additional degrees of freedom, we propose a model-agnostic energy-throughput control strategy that extends EV range while improving battery-pack lifetime. Because usable energy (and thus driving range) and lifetime are governed by the cells with the lowest state-of-charge (SOC) and state-of-health (SOH), respectively, the proposed controller preferentially routes energy throughput to healthier cells. Specifically, during charging, it permits cell SOCs to diverge to promote SOH equalization; during discharging, it rebalances SOC to maximize usable capacity under per-cell constraints. The proposed SOC-SOH-aware control strategy is evaluated on two aging models representing lithium manganese oxide and lithium iron phosphate chemistries, using a Tesla Model 3 charge-discharge profile across 14 different parameter settings. Simulations show a 7-38% improvement in lifetime relative to a conventional SOC-only balancing baseline. More broadly, the results suggest a software-defined pathway to extend EV pack life through routine charging, with minimal reliance on specific degradation models or discharge profiles.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202604/14/2604.10351v1-trajectory-based-actuator-identification-via-differentiable-simulation",
+      "section": "quick",
+      "title_en": "Trajectory-based actuator identification via differentiable simulation",
+      "authors": "Vyacheslav Kovalev, Ekaterina Chaikovskaia, Egor Davydenko, Roman Gorbachev",
+      "date": "2026-04-11",
+      "pdf": "https://arxiv.org/pdf/2604.10351v1",
+      "score": "6.0",
+      "evidence": "无需访问电机控制内部信息的执行器辨识",
+      "tldr": "针对机器人仿真与现实间的执行器模型差异，本文提出一种基于轨迹的可微分仿真识别方法。该方法仅利用编码器运动数据，通过轨迹匹配优化执行器参数，无需扭矩传感器或内部电流测量。实验表明，该方法显著提升了轨迹对齐精度，并在实际机器人行走任务中大幅增强了策略的迁移效果。",
+      "tags": "query:pmsm",
+      "abstract_en": "Accurate actuation models are critical for bridging the gap between simulation and real robot behavior, yet obtaining high-fidelity actuator dynamics typically requires dedicated test stands and torque sensing. We present a trajectory-based actuator identification method that uses differentiable simulation to fit system-level actuator models from encoder motion alone. Identification is posed as a trajectory-matching problem: given commanded joint positions and measured joint angles and velocities, we optimize actuator and simulator parameters by backpropagating through the simulator, without torque sensors, current/voltage measurements, or access to embedded motor-control internals. The framework supports multiple model classes, ranging from compact structured parameterizations to neural actuator mappings, within a unified optimization pipeline. On held-out real-robot trajectories under identical commands, the proposed torque-sensor-free identification achieves much tighter trajectory alignment than a supervised stand-trained baseline dominated by steady-state data, reducing mean absolute position error from 14.20 mrad to as low as 7.54 mrad (1.88 times). Finally, we demonstrate downstream impact in a real-robot locomotion study: training policies with the refined actuator model increases travel distance by 46% and reduces rotational deviation by 75% relative to the baseline.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202604/14/2604.11192v1-robust-neural-policy-distillation-of-long-horizon-fcs-mpc-for-flying-capacitor-three-level-boost-converters",
+      "section": "quick",
+      "title_en": "Robust Neural Policy Distillation of Long-Horizon FCS-MPC for Flying-Capacitor Three-Level Boost Converters",
+      "authors": "Jinjian Sheng, Kazumune Hashimoto, Shuang Zhao, Mahdieh S. Sadabadi",
+      "date": "2026-04-13",
+      "pdf": "https://arxiv.org/pdf/2604.11192v1",
+      "score": "6.0",
+      "evidence": "用于功率变换器的FCS-MPC控制",
+      "tldr": "本研究针对飞跨电容三电平升压变换器（FC-TLBC），提出一种鲁棒神经策略蒸馏方法，旨在解决长时域有限控制集模型预测控制（FCS-MPC）在高频下计算开销大的问题。通过使用束搜索专家策略，并结合参数随机化训练与改进的DAgger算法，训练出的前馈神经网络在保持高性能的同时显著降低了计算负担，且具备良好的鲁棒性和跨拓扑迁移能力。",
+      "tags": "query:pmsm",
+      "abstract_en": "Long-horizon finite-control-set model predictive control (FCS-MPC) can improve transient regulation and flying-capacitor balancing in flying-capacitor three-level boost converters (FC-TLBCs). However, searching over switching sequences becomes computationally expensive at high switching frequencies. We train a feedforward neural network to imitate an $N$-step FCS-MPC expert computed with beam search. To improve robustness, expert trajectories are generated under randomized input voltage, load resistance, and component parameters, and a disagreement-based DAgger variant is used to relabel on-policy states where the student and expert disagree. In simulation, the learned policy maintains stable voltage regulation and capacitor balancing under nominal conditions, operating-point changes, and perturbations of several physical parameters. We demonstrate the effectiveness of our approach by reducing the computational burden. We also demonstrate transfer to an NPC-type three-level buck converter, where initializing from the FC-TLBC network improves sample efficiency compared with training from scratch.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

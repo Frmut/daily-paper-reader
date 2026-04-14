@@ -6,29 +6,34 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-04-13
-- 运行时间：2026-04-13 19:55:01 UTC
+- 最新运行日期：2026-04-14
+- 运行时间：2026-04-14 20:06:54 UTC
 - 运行状态：成功
-- 本次总论文数：2
-- 精读区：0
-- 速读区：2
+- 本次总论文数：4
+- 精读区：1
+- 速读区：3
 
 ### 今日简报（AI）
-今日聚焦非线性系统的安全控制，深入探讨了故障感知学习与有限时间可达性分析。
-研究重点在于如何通过迭代学习构建状态控制不变集，并解决受限且部分失控系统的复杂可达性难题。
-建议关注复杂约束下的系统鲁棒性设计，以提升自动化设备在极端工况下的安全生存能力。
-- 详情：[/202604/13/README](/202604/13/README)
+今日深度探讨电动汽车核心组件优化，从电机拓扑设计到电池级逆变器控制实现全方位能效提升。
+满分论文揭示了结合行驶工况的永磁同步电机形状优化新路径，显著增强了牵引驱动的实际运行效率。
+建议关注微分仿真与策略蒸馏在复杂电力电子控制中的应用，探索更智能的硬件识别与长时域控制方案。
+- 详情：[/202604/14/README](/202604/14/README)
 
 ### 精读区论文标签
-- 本次无精读推荐。
+1. [Driving-Cycle-Aware Shape and Topology Optimization of an Interior Permanent Magnet Synchronous Machine for a Traction Drive](/202604/14/2604.10640v1-driving-cycle-aware-shape-and-topology-optimization-of-an-interior-permanent-magnet-synchronous-machine-for-a-traction-drive)  
+   标签：评分：10.0/10、query:pmsm
+   evidence：内置式永磁同步电机的优化设计
 
 ### 速读区论文标签
-1. [Failure-Aware Iterative Learning of State-Control Invariant Sets](/202604/13/2604.06776v1-failure-aware-iterative-learning-of-state-control-invariant-sets)  
+1. [Model-Agnostic Energy Throughput Control for Range and Lifetime Extension of Electric Vehicles via Cell-Level Inverters](/202604/14/2604.06681v1-model-agnostic-energy-throughput-control-for-range-and-lifetime-extension-of-electric-vehicles-via-cell-level-inverters)  
    标签：评分：6.0/10、query:pmsm
-   evidence：故障感知迭代学习控制
-2. [Finite-time Reachability for Constrained, Partially Uncontrolled Nonlinear Systems](/202604/13/2604.08327v1-finite-time-reachability-for-constrained-partially-uncontrolled-nonlinear-systems)  
+   evidence：用于电动汽车动力总成的电池级逆变器
+2. [Trajectory-based actuator identification via differentiable simulation](/202604/14/2604.10351v1-trajectory-based-actuator-identification-via-differentiable-simulation)  
    标签：评分：6.0/10、query:pmsm
-   evidence：部分控制权丧失
+   evidence：无需访问电机控制内部信息的执行器辨识
+3. [Robust Neural Policy Distillation of Long-Horizon FCS-MPC for Flying-Capacitor Three-Level Boost Converters](/202604/14/2604.11192v1-robust-neural-policy-distillation-of-long-horizon-fcs-mpc-for-flying-capacitor-three-level-boost-converters)  
+   标签：评分：6.0/10、query:pmsm
+   evidence：用于功率变换器的FCS-MPC控制
 
 
 <div class="dpr-home-promo-card">

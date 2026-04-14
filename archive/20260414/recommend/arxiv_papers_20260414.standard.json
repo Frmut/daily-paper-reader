@@ -1,0 +1,163 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-04-14T20:05:57.923695+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 1,
+    "deep_cap": 6,
+    "deep_selected": 1,
+    "quick_candidates": 3,
+    "quick_skim_target": 11,
+    "quick_selected": 3
+  },
+  "deep_dive": [
+    {
+      "id": "2604.10640v1",
+      "title": "Driving-Cycle-Aware Shape and Topology Optimization of an Interior Permanent Magnet Synchronous Machine for a Traction Drive",
+      "abstract": "This paper presents a driving-cycle-aware shape and topology optimization workflow for interior permanent magnet synchronous machines used in traction drives. A k-means clustering approach reduces full driving cycles to representative operating points so that optimization remains computationally feasible while preserving realistic operating behavior. The workflow combines binary topology optimization, Normalized Gaussian Networks (NGnet), and spline-based shape optimization under electromagnetic, mechanical overspeed, and inverter voltage constraints. A Laplace-based mesh deformation strategy enables simultaneous optimization of magnet geometry and flux-barrier topology. Two optimized rotor designs are manufactured and tested experimentally. The central contribution is a validated, constraint-aware optimization pipeline that achieves permanent-magnet reduction of up to 10% while maintaining required torque capability and near-reference full-cycle efficiency.",
+      "authors": [
+        "Alexander Schugardt"
+      ],
+      "primary_category": "cs.CE",
+      "categories": [
+        "cs.CE"
+      ],
+      "published": "2026-04-12T13:41:35+00:00",
+      "link": "https://arxiv.org/pdf/2604.10640v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 10.0,
+      "llm_evidence_en": "Optimization of interior permanent magnet synchronous machines",
+      "llm_evidence_cn": "内置式永磁同步电机的优化设计",
+      "llm_evidence": "内置式永磁同步电机的优化设计",
+      "canonical_evidence": "内置式永磁同步电机的优化设计",
+      "llm_tldr_en": "Presents a driving-cycle-aware shape and topology optimization workflow for traction drive PMSMs.",
+      "llm_tldr_cn": "提出一种针对牵引驱动永磁同步电机的工况感知形状与拓扑优化工作流。",
+      "llm_tldr": "提出一种针对牵引驱动永磁同步电机的工况感知形状与拓扑优化工作流。",
+      "llm_tags": [
+        "query:pmsm"
+      ],
+      "matched_query_tag": "query:pmsm",
+      "matched_query_text": "Permanent Magnet Synchronous Motor research",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2604.06681v1",
+      "title": "Model-Agnostic Energy Throughput Control for Range and Lifetime Extension of Electric Vehicles via Cell-Level Inverters",
+      "abstract": "A conventional electric vehicle (EV) powertrain relies on a centralized high-voltage DC-AC inverter, thereby limiting cell-level control and potentially reducing overall driving range and battery lifetime. This paper studies an H-bridge-based cell-level inverter topology that performs power conversion at the cell level, enabling independent control of individual cells and expanding the design space for battery management. Leveraging these additional degrees of freedom, we propose a model-agnostic energy-throughput control strategy that extends EV range while improving battery-pack lifetime. Because usable energy (and thus driving range) and lifetime are governed by the cells with the lowest state-of-charge (SOC) and state-of-health (SOH), respectively, the proposed controller preferentially routes energy throughput to healthier cells. Specifically, during charging, it permits cell SOCs to diverge to promote SOH equalization; during discharging, it rebalances SOC to maximize usable capacity under per-cell constraints. The proposed SOC-SOH-aware control strategy is evaluated on two aging models representing lithium manganese oxide and lithium iron phosphate chemistries, using a Tesla Model 3 charge-discharge profile across 14 different parameter settings. Simulations show a 7-38% improvement in lifetime relative to a conventional SOC-only balancing baseline. More broadly, the results suggest a software-defined pathway to extend EV pack life through routine charging, with minimal reliance on specific degradation models or discharge profiles.",
+      "authors": [
+        "Shida Jiang",
+        "Shengyu Tao",
+        "Vincent Molina",
+        "Junzhe Shi",
+        "Scott Moura"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY"
+      ],
+      "published": "2026-04-08T04:58:04+00:00",
+      "link": "https://arxiv.org/pdf/2604.06681v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Cell-level inverters for EV powertrains",
+      "llm_evidence_cn": "用于电动汽车动力总成的电池级逆变器",
+      "llm_evidence": "用于电动汽车动力总成的电池级逆变器",
+      "canonical_evidence": "用于电动汽车动力总成的电池级逆变器",
+      "llm_tldr_en": "Explores cell-level inverters for EVs, directly related to the power electronics of motor drives.",
+      "llm_tldr_cn": "探讨电动汽车电池级逆变器，与电机驱动的电力电子架构直接相关。",
+      "llm_tldr": "探讨电动汽车电池级逆变器，与电机驱动的电力电子架构直接相关。",
+      "llm_tags": [
+        "query:pmsm:composite"
+      ],
+      "matched_query_tag": "query:pmsm:composite",
+      "matched_query_text": "Papers central to 三相及双三相永磁同步电机相关研究检索, especially work that connects or combines: m; s; f; Permanent Magnet Synchronous Motor research; dual three-phase permanent magnet synchronous motor control and design; fault-tolerant control of multi-phase motors; recent advances in dual three phase permanent magnet synchronous motor control; fault tolerant strategies for multi phase permanent magnet synchronous motors.",
+      "matched_requirement_id": "req-composite-pmsm",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2604.10351v1",
+      "title": "Trajectory-based actuator identification via differentiable simulation",
+      "abstract": "Accurate actuation models are critical for bridging the gap between simulation and real robot behavior, yet obtaining high-fidelity actuator dynamics typically requires dedicated test stands and torque sensing. We present a trajectory-based actuator identification method that uses differentiable simulation to fit system-level actuator models from encoder motion alone. Identification is posed as a trajectory-matching problem: given commanded joint positions and measured joint angles and velocities, we optimize actuator and simulator parameters by backpropagating through the simulator, without torque sensors, current/voltage measurements, or access to embedded motor-control internals. The framework supports multiple model classes, ranging from compact structured parameterizations to neural actuator mappings, within a unified optimization pipeline. On held-out real-robot trajectories under identical commands, the proposed torque-sensor-free identification achieves much tighter trajectory alignment than a supervised stand-trained baseline dominated by steady-state data, reducing mean absolute position error from 14.20 mrad to as low as 7.54 mrad (1.88 times). Finally, we demonstrate downstream impact in a real-robot locomotion study: training policies with the refined actuator model increases travel distance by 46% and reduces rotational deviation by 75% relative to the baseline.",
+      "authors": [
+        "Vyacheslav Kovalev",
+        "Ekaterina Chaikovskaia",
+        "Egor Davydenko",
+        "Roman Gorbachev"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-04-11T21:36:34+00:00",
+      "link": "https://arxiv.org/pdf/2604.10351v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "actuator identification without internal motor-control access",
+      "llm_evidence_cn": "无需访问电机控制内部信息的执行器辨识",
+      "llm_evidence": "无需访问电机控制内部信息的执行器辨识",
+      "canonical_evidence": "无需访问电机控制内部信息的执行器辨识",
+      "llm_tldr_en": "Proposes a trajectory-based actuator identification method using differentiable simulation from encoder motion.",
+      "llm_tldr_cn": "提出了一种利用可微仿真从编码器运动中进行基于轨迹的执行器辨识方法。",
+      "llm_tldr": "提出了一种利用可微仿真从编码器运动中进行基于轨迹的执行器辨识方法。",
+      "llm_tags": [
+        "query:pmsm"
+      ],
+      "matched_query_tag": "query:pmsm",
+      "matched_query_text": "Permanent Magnet Synchronous Motor research",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2604.11192v1",
+      "title": "Robust Neural Policy Distillation of Long-Horizon FCS-MPC for Flying-Capacitor Three-Level Boost Converters",
+      "abstract": "Long-horizon finite-control-set model predictive control (FCS-MPC) can improve transient regulation and flying-capacitor balancing in flying-capacitor three-level boost converters (FC-TLBCs). However, searching over switching sequences becomes computationally expensive at high switching frequencies. We train a feedforward neural network to imitate an $N$-step FCS-MPC expert computed with beam search. To improve robustness, expert trajectories are generated under randomized input voltage, load resistance, and component parameters, and a disagreement-based DAgger variant is used to relabel on-policy states where the student and expert disagree. In simulation, the learned policy maintains stable voltage regulation and capacitor balancing under nominal conditions, operating-point changes, and perturbations of several physical parameters. We demonstrate the effectiveness of our approach by reducing the computational burden. We also demonstrate transfer to an NPC-type three-level buck converter, where initializing from the FC-TLBC network improves sample efficiency compared with training from scratch.",
+      "authors": [
+        "Jinjian Sheng",
+        "Kazumune Hashimoto",
+        "Shuang Zhao",
+        "Mahdieh S. Sadabadi"
+      ],
+      "primary_category": "math.OC",
+      "categories": [
+        "math.OC"
+      ],
+      "published": "2026-04-13T08:49:25+00:00",
+      "link": "https://arxiv.org/pdf/2604.11192v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "FCS-MPC control for power converters",
+      "llm_evidence_cn": "用于功率变换器的FCS-MPC控制",
+      "llm_evidence": "用于功率变换器的FCS-MPC控制",
+      "canonical_evidence": "用于功率变换器的FCS-MPC控制",
+      "llm_tldr_en": "Uses neural networks to accelerate FCS-MPC for power converters, relevant to motor drive control methods.",
+      "llm_tldr_cn": "利用神经网络加速功率变换器的FCS-MPC控制，与电机驱动控制方法相关。",
+      "llm_tldr": "利用神经网络加速功率变换器的FCS-MPC控制，与电机驱动控制方法相关。",
+      "llm_tags": [
+        "query:pmsm:composite"
+      ],
+      "matched_query_tag": "query:pmsm:composite",
+      "matched_query_text": "Papers central to 三相及双三相永磁同步电机相关研究检索, especially work that connects or combines: m; s; f; Permanent Magnet Synchronous Motor research; dual three-phase permanent magnet synchronous motor control and design; fault-tolerant control of multi-phase motors; recent advances in dual three phase permanent magnet synchronous motor control; fault tolerant strategies for multi phase permanent magnet synchronous motors.",
+      "matched_requirement_id": "req-composite-pmsm",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
