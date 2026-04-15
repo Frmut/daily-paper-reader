@@ -1,0 +1,23 @@
+{
+  "label": "2026-04-15",
+  "date": "2026-04-15",
+  "generated_at": "2026-04-15T19:54:37",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202604/15/2604.12297v1-modular-drive-architecture-for-software-defined-vehicles-enabled-by-power-packet-basedsensorless-control",
+      "section": "quick",
+      "title_en": "Modular Drive Architecture for Software-Defined Vehicles Enabled by Power-packet-basedSensorless Control",
+      "authors": "Shiu Mochiyama, Rikuto Kawasome",
+      "date": "2026-04-14",
+      "pdf": "https://arxiv.org/pdf/2604.12297v1",
+      "score": "7.0",
+      "evidence": "用于车辆电机驱动的无传感器控制方法",
+      "tldr": "针对软件定义汽车（SDV）中硬件标准化与布线复杂性的挑战，本文提出一种基于功率数据包调度的模块化驱动架构。该架构通过在车辆侧进行无传感器控制，仅凭物理量测量即可估算电机内部状态，从而彻底取消驱动模块内的物理传感器。这种设计实现了软硬件的完全解耦，简化了布线并集中了控制逻辑，为下一代电动出行提供了标准化的即插即用平台。",
+      "tags": "query:pmsm",
+      "abstract_en": "The transition toward Software-Defined Vehicles requires standardization and modularization of hardware decoupled from software, along with centralized electrical/electronic architectures. While electrified drive units, such as integrated in-wheel drives, are expected to realize the hardware standardization and unprecedented flexibility in vehicle design, their implementation remains constrained by complex signal wiring between the module and the vehicle body and by control units decentralized across them. This paper proposes a modular drive architecture that achieves complete hardware-software separation by leveraging the power packet dispatching system. We introduce a sensorless control method that estimates motor internal states, specifically winding current and rotor angle, solely from physical quantities measured on the vehicle side. This completely eliminates the need for physical sensors in the drive module, reducing it to a passive actuator governed by the vehicle-side power system via a standardized packet protocol. The proposed architecture significantly reduces wiring complexity and centralizes control logic, advancing fully standardized, plug-and-play platforms for next-generation electrified mobility.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
