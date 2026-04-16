@@ -1,6 +1,9 @@
 * <a class="dpr-sidebar-root-link" href="#/">首页</a>
 * <a class="dpr-sidebar-root-link dpr-sidebar-noactive-link" href="javascript:void(0)" data-dpr-hash="#/tutorial/README">使用教程</a>
 * Daily Papers
+  * 2026-04-16 <!--dpr-date:20260416-->
+    * 速读区
+      * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202604/16/2604.08240v1-from-cut-in-to-rated-multi-region-floating-offshore-wind-farm-control-for-secondary-frequency-regulation" data-sidebar-item="{&quot;title&quot;: &quot;From Cut-In to Rated: Multi-Region Floating Offshore Wind Farm Control for Secondary Frequency Regulation&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2604.08240v1-from-cut-in-to-rated-multi-region-floating-offshore-wind-farm-control-for-secondary-frequency-regulation&quot;, &quot;score&quot;: &quot;6.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;pmsm&quot;}], &quot;evidence&quot;: &quot;风电场发电机转矩控制器与转子转速调节&quot;}">From Cut-In to Rated: Multi-Region Floating Offshore Wind Farm Control for Secondary Frequency Regulation</a>
   * 2026-04-15 <!--dpr-date:20260415-->
     * 速读区
       * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202604/15/2604.12297v1-modular-drive-architecture-for-software-defined-vehicles-enabled-by-power-packet-basedsensorless-control" data-sidebar-item="{&quot;title&quot;: &quot;Modular Drive Architecture for Software-Defined Vehicles Enabled by Power-packet-basedSensorless Control&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2604.12297v1-modular-drive-architecture-for-software-defined-vehicles-enabled-by-power-packet-basedsensorless-control&quot;, &quot;score&quot;: &quot;7.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;pmsm&quot;}], &quot;evidence&quot;: &quot;用于车辆电机驱动的无传感器控制方法&quot;}">Modular Drive Architecture for Software-Defined Vehicles Enabled by Power-packet-basedSensorless Control</a>

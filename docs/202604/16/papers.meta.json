@@ -1,0 +1,23 @@
+{
+  "label": "2026-04-16",
+  "date": "2026-04-16",
+  "generated_at": "2026-04-16T20:28:11",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202604/16/2604.08240v1-from-cut-in-to-rated-multi-region-floating-offshore-wind-farm-control-for-secondary-frequency-regulation",
+      "section": "quick",
+      "title_en": "From Cut-In to Rated: Multi-Region Floating Offshore Wind Farm Control for Secondary Frequency Regulation",
+      "authors": "Stephen Ampleman, Dennice F. Gayme",
+      "date": "2026-04-09",
+      "pdf": "https://arxiv.org/pdf/2604.08240v1",
+      "score": "6.0",
+      "evidence": "风电场发电机转矩控制器与转子转速调节",
+      "tldr": "本研究针对漂浮式海上风电场提出了一种跨越切入至额定风速的多区域控制框架，旨在满足二次调频市场的功率跟踪需求。研究在单机层面设计了新型转矩与桨距控制器并实现平滑切换，在场群层面对比了非线性模型预测控制（NL-MPC）与线性参数变化模型预测控制（LPVTD-MPC）的性能。实验表明，该框架能有效应对波浪诱导的平台运动带来的风速波动，在PJM调频认证中表现优异，为漂浮式风电场参与电力辅助服务提供了高效的控制方案。",
+      "tags": "query:pmsm",
+      "abstract_en": "This paper describes a multi-region control framework for floating offshore wind farms. Specifically, we propose a novel generator torque controller that regulates rotor speed in Region 2, corresponding to wind speeds between the cut-in and rated values. In Region 3 (wind speeds at or above rated but below cut-out speed) we employ a PI-LQR for collective blade pitch. Control blending across the transitional wind speeds (Region 2.5) employs a sigmoid weighting function applied to the control variables. Two modeling paradigms are proposed for farm-level power tracking with rotor speed regularization: a nonlinear model predictive controller (NL-MPC) with a dynamic wake model, and a reduced order model predictive controller based on linear parameter varying turbine models with a time delay representation of wake advection (LPVTD-MPC). These approaches are evaluated over three wind inlet conditions using the PJM ancillary service certification criteria for participation in a secondary frequency regulation market. Results show that both approaches achieve scores of at least 89.9\\% for the three different testing scenarios, which are well above the qualification threshold of 75\\%. However, the LPVTD-MPC approach solves the problem in under half the time versus NL-MPC but with slightly larger fluctuations in farm-level power output, highlighting the trade-off between performance and computational tractability. The control framework is among the first to address multi-region wind turbine dynamics together with market driven power tracking objectives for floating offshore wind farms. Such multi-region control becomes increasingly necessary in the floating turbine setting where large (region spanning) wind speed variations are common due to wave induced platform pitching.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

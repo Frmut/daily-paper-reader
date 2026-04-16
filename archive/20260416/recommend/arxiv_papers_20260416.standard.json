@@ -1,0 +1,52 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-04-16T20:27:46.449076+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 1,
+    "quick_skim_target": 11,
+    "quick_selected": 1
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2604.08240v1",
+      "title": "From Cut-In to Rated: Multi-Region Floating Offshore Wind Farm Control for Secondary Frequency Regulation",
+      "abstract": "This paper describes a multi-region control framework for floating offshore wind farms. Specifically, we propose a novel generator torque controller that regulates rotor speed in Region 2, corresponding to wind speeds between the cut-in and rated values. In Region 3 (wind speeds at or above rated but below cut-out speed) we employ a PI-LQR for collective blade pitch. Control blending across the transitional wind speeds (Region 2.5) employs a sigmoid weighting function applied to the control variables. Two modeling paradigms are proposed for farm-level power tracking with rotor speed regularization: a nonlinear model predictive controller (NL-MPC) with a dynamic wake model, and a reduced order model predictive controller based on linear parameter varying turbine models with a time delay representation of wake advection (LPVTD-MPC). These approaches are evaluated over three wind inlet conditions using the PJM ancillary service certification criteria for participation in a secondary frequency regulation market. Results show that both approaches achieve scores of at least 89.9\\% for the three different testing scenarios, which are well above the qualification threshold of 75\\%. However, the LPVTD-MPC approach solves the problem in under half the time versus NL-MPC but with slightly larger fluctuations in farm-level power output, highlighting the trade-off between performance and computational tractability. The control framework is among the first to address multi-region wind turbine dynamics together with market driven power tracking objectives for floating offshore wind farms. Such multi-region control becomes increasingly necessary in the floating turbine setting where large (region spanning) wind speed variations are common due to wave induced platform pitching.",
+      "authors": [
+        "Stephen Ampleman",
+        "Dennice F. Gayme"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY"
+      ],
+      "published": "2026-04-09T13:31:18+00:00",
+      "link": "https://arxiv.org/pdf/2604.08240v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Generator torque controller and rotor speed regulation for wind farms",
+      "llm_evidence_cn": "风电场发电机转矩控制器与转子转速调节",
+      "llm_evidence": "风电场发电机转矩控制器与转子转速调节",
+      "canonical_evidence": "风电场发电机转矩控制器与转子转速调节",
+      "llm_tldr_en": "Develops a multi-region control framework for floating offshore wind farms using torque and pitch control.",
+      "llm_tldr_cn": "利用转矩和桨距控制开发了漂浮式海上风电场的多区域控制框架。",
+      "llm_tldr": "利用转矩和桨距控制开发了漂浮式海上风电场的多区域控制框架。",
+      "llm_tags": [
+        "query:pmsm"
+      ],
+      "matched_query_tag": "query:pmsm",
+      "matched_query_text": "Permanent Magnet Synchronous Motor research",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
