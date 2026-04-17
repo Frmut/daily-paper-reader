@@ -1,0 +1,51 @@
+{
+  "label": "2026-04-17",
+  "date": "2026-04-17",
+  "generated_at": "2026-04-17T20:21:17",
+  "count": 3,
+  "papers": [
+    {
+      "paper_id": "202604/17/2604.10680v1-resilient-and-effort-optimal-controller-synthesis-under-temporal-logic-specifications",
+      "section": "quick",
+      "title_en": "Resilient and Effort-Optimal Controller Synthesis under Temporal Logic Specifications",
+      "authors": "Youssef Ait Si, Ratnangshu Das, Negar Monir, Sadegh Soudjani, Pushpak Jagtap, Adnane Saoud",
+      "date": "2026-04-12",
+      "pdf": "https://arxiv.org/pdf/2604.10680v1",
+      "score": "6.0",
+      "evidence": "扰动和输入约束下的弹性控制器综合",
+      "tldr": "本研究探讨了在时序逻辑约束下动力系统的韧性与控制代价优化问题。韧性定义为系统满足规范时能承受的最大扰动，而代价定义为满足规范所需的最小控制输入。研究提出了一种鲁棒优化框架，旨在合成能最大化韧性或最小化代价的控制器，并分析了两者间的权衡。针对线性系统提供精确解，针对非线性系统利用场景优化提供概率保证，为复杂约束下的控制器设计提供了理论支撑。",
+      "tags": "query:pmsm",
+      "abstract_en": "In this paper, we consider the notions of effort and resilience of a dynamical control system defined by the maximum disturbance the system can withstand while satisfying given finite temporal logic specifications. Given a dynamical system and a specification, the objective is to synthesize the controller such that the system satisfies the specification while maximizing its resilience, taking into account input constraints. In addition, we introduce a new metric, called the effort metric, which characterizes the minimal input bound necessary to satisfy a given specification for a perturbed system. The problem for both metrics is formulated as a robust optimization program where the objective is to compute the maximum resilience for the system with input constraints or the minimal effort while simultaneously synthesizing the corresponding controller parameters. Moreover, we study the trade-off between resilience and effort, where we seek to maximize resilience and minimize the control effort. For linear systems and linear controllers, exact solutions are provided for the class of time-varying polytopic specifications for the closed-loop and open-loop systems. For the case of nonlinear systems, nonlinear controllers, and more general specifications, we leverage tools from the scenario optimization approach, offering a probabilistic guarantee of the solution as well as computational feasibility. Different case studies are presented to illustrate the theoretical results.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202604/17/2604.11336v1-divide-and-discard-fast-tightening-of-guaranteed-state-bounds-for-nonlinear-systems",
+      "section": "quick",
+      "title_en": "Divide and Discard: Fast Tightening of Guaranteed State Bounds for Nonlinear Systems",
+      "authors": "Nico Holzinger, Matthias Althoff",
+      "date": "2026-04-13",
+      "pdf": "https://arxiv.org/pdf/2604.11336v1",
+      "score": "6.0",
+      "evidence": "非线性离散时间系统的保证状态估计",
+      "tldr": "本文提出了一种名为“分而弃之”（DD）的非线性系统保证状态估计方法。该方法通过迭代细分区间包络并利用均值包络进行传播，核心在于通过简单集合的重复细化而非复杂集合表示来提高精度。通过早期丢弃无效集合并限制集合总数，该算法实现了随状态维度二次缩放的低计算复杂度，在保证估计紧致性的同时显著提升了计算效率。",
+      "tags": "query:pmsm",
+      "abstract_en": "We propose a simple yet effective divide-and-discard (DD) approach to guaranteed state estimation for nonlinear discrete-time systems. Our method iteratively subdivides interval enclosures of the state and propagates them forward in time using a mean-value enclosure. The central idea is to rely on repeated refinement of simple sets rather than on more complex set representations, yielding an observer that is straightforward to implement and easy to integrate into existing frameworks. Our divide-and-discard strategy exploits that many sets can be discarded early and limits the number of maintained sets, resulting in low computational cost with complexity that scales only quadratically in the state dimension. The proposed method is evaluated on nonlinear benchmark problems previously used to compare guaranteed observers, where it outperforms state-of-the-art approaches in terms of both computational efficiency and enclosure tightness.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202604/17/2604.12542v1-goal-oriented-safe-active-learning-for-predictive-control-using-bayesian-recurrent-neural-networks",
+      "section": "quick",
+      "title_en": "Goal-oriented safe active learning for predictive control using Bayesian recurrent neural networks",
+      "authors": "Laura Boca de Giuli, Alessio La Bella, Manish Prajapat, Johannes Köhler, Anna Scampicchio, Riccardo Scattolini, Melanie Zeilinger",
+      "date": "2026-04-14",
+      "pdf": "https://arxiv.org/pdf/2604.12542v1",
+      "score": "6.0",
+      "evidence": "用于系统动力学和模型自适应的模型预测控制",
+      "tldr": "针对学习型模型预测控制中在线数据采集与安全性、控制性能之间的权衡问题，本文提出一种基于贝叶斯循环神经网络的目标导向安全主动学习方案。该方法通过交替进行探索与目标达成阶段，在保证系统安全和递归可行性的前提下，利用贝叶斯学习在线更新模型参数。研究证明了算法的收敛性与安全性，并在能源系统仿真中实现了接近全知MPC的控制性能。",
+      "tags": "query:pmsm",
+      "abstract_en": "A key challenge in learning-based model predictive control (MPC) is to collect informative data online for model adaptation while ensuring safety and without penalising control performance. In this paper, we propose an online model adaptation scheme embedded within an MPC framework in which the last-layer parameters of a recurrent neural network are recursively updated via Bayesian learning. This is achieved by means of a goal-oriented safe active learning algorithm that alternates between an exploration phase, where the MPC actively explores system dynamics to collect informative data for model adaptation while still pursuing the main control objective, and a goal-reaching phase, where it focuses exclusively on the main control objective. The algorithm is complemented with theoretical guarantees of (i) recursive feasibility, (ii) safety, (iii) termination of exploration in finite time, and (iv) close-to-optimal performance. Simulation results on a benchmark energy system demonstrate that the proposed framework achieves economic performance comparable to that of an MPC with full system knowledge, while progressively improving model accuracy and respecting operational safety constraints with high probability.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

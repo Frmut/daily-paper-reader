@@ -1,0 +1,744 @@
+Title: Divide and Discard: Fast Tightening of Guaranteed State Bounds for Nonlinear Systems
+
+URL Source: https://arxiv.org/pdf/2604.11336v1
+
+Published Time: Tue, 14 Apr 2026 02:07:48 GMT
+
+Number of Pages: 8
+
+Markdown Content:
+# Divide and Discard: Fast Tightening of Guaranteed State Bounds for Nonlinear Systems 
+
+Nico Holzinger and Matthias Althoff 
+
+Abstract — We propose a simple yet effective divide-and-discard (DD) approach to guaranteed state estimation for non-linear discrete-time systems. Our method iteratively subdivides interval enclosures of the state and propagates them forward in time using a mean-value enclosure. The central idea is to rely on repeated refinement of simple sets rather than on more complex set representations, yielding an observer that is straightforward to implement and easy to integrate into existing frameworks. Our divide-and-discard strategy exploits that many sets can be discarded early and limits the number of maintained sets, resulting in low computational cost with complexity that scales only quadratically in the state dimension. The proposed method is evaluated on nonlinear benchmark problems previously used to compare guaranteed observers, where it outperforms state-of-the-art approaches in terms of both computational efficiency and enclosure tightness. 
+
+I. INTRODUCTION State estimation is a core component of control and mon-itoring systems, providing information about internal state variables that are not directly measurable. In many safety-critical applications, such as autonomous driving [1], or surgical robots [2], estimation errors may lead to constraint violations or unsafe behavior. While probabilistic estimators are widely used, they typically characterize uncertainty in terms of likelihood or confidence. In contrast, set-based state estimation computes state enclosures that are guaranteed to contain the true system state for all admissible disturbances and measurement errors, thereby enabling robust control [3], rigorous prediction of system behaviors [4], and robust fault detection [5], [6]. A broad range of guaranteed state estimation methods has been proposed for nonlinear systems, where the choice of set representation plays a decisive role. Simple representa-tions, such as intervals [7], [8], [9], ellipsoids [10], [11], or parallelotopes [12], [13] offer advantages in terms of computational efficiency, but often lead to overly conserva-tive enclosures when applied directly to nonlinear dynamics. More expressive representations, such as zonotopes [14], [15], [16], zonotope bundles [17], or constrained zonotopes [18], [19], typically provide tighter enclosures of the state, but at the cost of increased algorithmic complexity, nontrivial implementation effort, and additional tuning parameters. As a result, scalability and practical deployment can become challenging. While each class of methods has its merits, there is currently no approach that consistently outperforms           
+
+> This work was supported by the German Research Foundation (Deutsche Forschungsgemeinschaft, DFG) under grant GRK 2428. N. Holzinger and M. Althoff are with Faculty of Computer En-gineering, Technical University of Munich, 85748 Garching, Germany.
+
+nico.holzinger@tum.de; althoff@tum.de 
+
+all others. In particular, for highly nonlinear and higher-dimensional systems, many methods struggle to maintain tight enclosures, as demonstrated in [20]. We show that strong estimation performance does not necessarily require complex set representations by proposing a novel divide-and-discard (DD) observer combining sim-ple intervals with systematic refinement. The key idea is to control conservatism at its source: for standard mean-value enclosures, outer-approximation grows primarily with the diameter of the propagated set, so refinement directly improves tightness by keeping local domains small. While subdivision-based strategies are, in principle, susceptible to exponential growth with dimension, the proposed observer is not affected because (i) measurements discard many subsets and (ii) the number of active subsets is explicitly capped. The contribution of this paper is a guaranteed state ob-server for nonlinear discrete-time systems that combines reachability-based prediction, direct strip contraction, and persistent refinement in a novel divide-and-discard scheme. We develop a refinement strategy tailored to state estimation with a capped number of subsets, lightweight redundancy pruning, and immediate discarding of infeasible subsets. Our systematic evaluation shows that this combination yields consistently tight enclosures at favorable runtimes on the considered benchmarks. This paper is organized as follows. Section II introduces the problem formulation and required preliminaries, while Section III presents the proposed observer. The evaluation on established nonlinear benchmarks is given in Section IV, and concluding remarks are provided in Section V. II. PRELIMINARIES This section introduces the problem setting and the basic set-based methods required to formalize the proposed ob-server. We first recall standard set operations used in set-based state estimation, then define the estimation problem, and finally introduce range bounding techniques. 
+
+A. Basic Set Operations 
+
+Considering sets X , W ⊂ Rn, Y ⊂ Rp and a real matrix 
+
+C ∈ Rp×n, the basic set operations Minkowski sum, linear map and intersection are respectively defined as [18, Def. 2] 
+
+X ⊕ W := {x + w | x ∈ X , w ∈ W }, (1) 
+
+CX := {Cx | x ∈ X }, (2) 
+
+X ∩C Y := {x | x ∈ X , Cx ∈ Y }. (3) These operations are used throughout the paper within pre-diction and correction steps. 
+
+> This work has been submitted to the IEEE for possible publication. Copyright may be transferred without notice, after which this version may no longer be accessible.
+> arXiv:2604.11336v1 [eess.SY] 13 Apr 2026
+
+B. Problem Statement 
+
+We consider nonlinear discrete-time systems of the form 
+
+xk+1 = f (xk, uk, wk), (4) with state xk ∈ Rn, known input uk ∈ Rm, and unknown but bounded disturbance wk ∈ W ⊆ Rn. Measurements are given by 
+
+yk = Cx k + vk, (5) where C ∈ Rp×n and vk ∈ V ⊆ Rp denotes bounded mea-surement noise. The initial state satisfies x0 ∈ X0.Starting from X0, the set of all states consistent with the system dynamics, inputs, measurements, and bounded uncertainties at time step k + 1 is defined recursively as 
+
+X ⋆ 
+
+> k+1
+
+=
+
+n
+
+xk+1 xk ∈ X ⋆ 
+
+> k
+
+, wk ∈ W , vk+1 ∈ V ,
+
+xk+1 = f (xk, uk, wk), yk+1 = Cx k+1 + vk+1
+
+o
+
+.
+
+(6) The objective of guaranteed state estimation is to compute, at each time step k, a set Xk that outer-approximates X ⋆
+
+> k
+
+while remaining as tight as possible. 
+
+Remark 1: We focus on systems with linear measurement equations in this work since many practical examples are covered by this structure and to keep the correction step simple. There are several approaches in the literature to handle nonlinear measurement equations, e.g., by outer-approximating the set of measurement-consistent states as in [15, Property 2] or by using nonlinear contractors [21, Sec. 4]. The proposed observer can be extended to nonlinear measurements by adapting the correction step accordingly. 
+
+C. Intervals and Range Bounding 
+
+In this work, sets are represented using intervals. A scalar interval [ x, x ] ⊂ R is defined as 
+
+[ x, x ] := {x ∈ R | x ≤ x ≤ x}. (7) An interval in Rn is understood componentwise as an interval vector, 
+
+X = [x1, x1], . . . , [xn, xn]⊤, X ∈ IR n, (8) where IR n denotes the set of all interval vectors in Rn. In the following, the term interval is also used for elements of 
+
+IR n whenever the dimension is clear from the context. To compute the predicted set, range bounding of the nonlinear dynamics is required. Let Xk ⊂ Rn be a set and 
+
+f : Rn → Rn be a function, then f (Xk) = { f (x) | x ∈ Xk}.The goal is to compute a set X pk+1 such that 
+
+f (Xk) ⊆ X pk+1. (9) Several techniques for range bounding of nonlinear functions exist, including interval arithmetic and Taylor-model meth-ods, reviewed in [22]. In this work, nonlinear propagation is performed using a first-order mean-value enclosure. In particular, for any continuously differentiable mapping f and any interval X ∈ IR n [21, Sec. 2.4.3], 
+
+f (X ) ⊆ f (c) + J(X ) ( X − c), c ∈ X , (10) 
+
+Algorithm 1 Divide-and-Discard Observer 
+
+Require: Initial set X0, inputs {uk}, measurements {yk}
+
+Ensure: Guaranteed state enclosures {Xk} 
+
+> 1:
+
+X0 ← GSC ONTRACT (X0,C, V , y0, Imax ) 
+
+> 2:
+
+for k = 0, 1, . . . , N − 1 do  
+
+> 3:
+
+Refine Xk until Mmax subsets are active (Sec.III-B)  
+
+> 4:
+
+X pk+1 ← f (Xk, uk, W ) ▷ predict  
+
+> 5:
+
+Xk+1 ← GSC ONTRACT (X pk+1,C, V , yk+1, Imax ) 
+
+> 6:
+
+Xk+1 ← PRUNE (Xk+1) ▷ remove intervals fully contained in others  
+
+> 7:
+
+end for  
+
+> 8:
+
+function GSC ONTRACT (X ,C, V , y, Imax ) ▷ X is a collection of intervals Xb ∈ IR n 
+
+> 9:
+
+for each interval Xb ∈ X do  
+
+> 10:
+
+for t = 1, . . . , Imax do ▷ Gauss-Seidel iterations  
+
+> 11:
+
+for i = 1, . . . , p do ▷ measurement strips  
+
+> 12:
+
+for j = 1, . . . , n do ▷ state variables  
+
+> 13:
+
+if C(i, j)̸ = 0 then  
+
+> 14:
+
+compute admissible interval I (i)
+
+> j
+
+for x j using (17)  
+
+> 15:
+
+X ( j) 
+
+> b
+
+← X ( j) 
+
+> b
+
+∩ I (i) 
+
+> j
+> 16:
+
+end if  
+
+> 17:
+
+end for  
+
+> 18:
+
+end for  
+
+> 19:
+
+if Xb is empty then  
+
+> 20:
+
+discard Xb and break  
+
+> 21:
+
+end if  
+
+> 22:
+
+if nothing changed then break  
+
+> 23:
+
+end if  
+
+> 24:
+
+end for  
+
+> 25:
+
+end for  
+
+> 26:
+
+return remaining (tightened) intervals in X 
+
+> 27:
+
+end function 
+
+where J(X ) is an interval enclosure of the Jacobian of f
+
+over X .While first-order enclosures may be conservative for strongly nonlinear systems, this effect can be mitigated through systematic subdivision and repeated correction of interval sets, as employed by our observer. III. DIVIDE-AND-DISCARD OBSERVER This section presents the proposed divide-and-discard observer. We first introduce a single-set observer using a single interval and then extend it by a refinement strategy. Algorithm 1 summarizes the complete procedure. 
+
+A. Single-Set Observer 
+
+The single-set observer follows a classical prediction-correction procedure and represents the state at time step 
+
+k by a single interval enclosure Xk ∈ IR n. This observer provides a simple yet effective reference for assessing the benefits of additional refinement strategies. Starting from the state enclosure Xk, the prediction step performs a set-based evaluation of the dynamics (4) to compute a set of states reachable at the next time step prior to incorporating new measurement information, 
+
+X pk+1 = f (Xk, uk, W ). (11) Nonlinear propagation is carried out using the mean-value enclosure (10), applied to the augmented variable z =[x⊤ w⊤]⊤ over the joint domain Xk × W , while treating the known input uk as a fixed parameter, similar to [19, Thm. 2]. Measurement information is incorporated by tightening the predicted enclosure X pk+1 with measurement-consistent constraints. For linear measurement equations of the form (5), each measurement component induces a strip constraint in the state space. Writing yk+1 = [ y(1)
+
+> k+1
+
+, . . . , y(p)
+
+> k+1
+
+]⊤ and denoting by C(i,. ) ∈ R1×n the i-th row of C, the i-th strip is [15, Property 2] 
+
+S (i) 
+
+> k+1
+
+:=
+
+n
+
+x ∈ Rn y(i) 
+
+> k+1
+
+−C(i,. )x ∈ [vi, vi]
+
+o
+
+, i = 1, . . . , p.
+
+(12) Ideally, the correction step would compute the exact intersection of X pk+1 with these strips. Since this intersection is generally not representable as an interval, we compute an interval outer-approximation via a Gauss-Seidel (GS) tightening procedure (Alg. 1, Function GSContract). The GS tightening acts as an interval contractor for the linear strip inequalities [21, Chapter 4] and yields a tight interval enclosure of the exact intersection. Related ideas appear in observer designs based on constraint propagation, where the whole estimation problem is formulated as a constraint propagation problem as in [23]; here, in contrast, GS is used specifically as a lightweight contractor within the correction step. Let X pk+1 = [ x, x] ∈ IR n denote the predicted interval enclosure and consider a measurement strip induced by the 
+
+i-th measurement component, 
+
+y(i) 
+
+> k+1
+
+− vi ≤ C(i,. )x ≤ y(i) 
+
+> k+1
+
+− vi. (13) The enclosure is tightened componentwise. Fix a state variable x j with C(i, j)̸ = 0 and decompose the linear expres-sion as 
+
+C(i,. )x = C(i, j)x j + s, s := ∑ 
+
+> ℓ̸=j
+
+C(i,ℓ )xℓ. (14) Using the current bounds of X pk+1, the contribution of the remaining state variables is enclosed by interval arithmetic as 
+
+s ∈ ∑ 
+
+> ℓ̸=j
+
+C(i,ℓ )[ xℓ, xℓ ] = [ s, s ], (15) where s and s are obtained by evaluating the linear expression over the interval bounds. Substituting (14) and (15) into the strip constraint (13) yields 
+
+y(i) 
+
+> k+1
+
+− vi − s
+
+| {z } 
+
+> =:b
+
+≤ C(i, j)x j ≤ y(i) 
+
+> k+1
+
+− vi − s
+
+| {z } 
+
+> =:b
+
+. (16) Solving the inequality for x j amounts to dividing by C(i, j).Since sign (C(i, j)) is a priori unknown, we use the min and max operators to obtain the correct ordering of the bounds for both C(i, j) > 0 and C(i, j) < 0. Entries with C(i, j) = 0 are skipped in the construction of I (i) 
+
+> j
+
+. For C(i, j)̸ = 0 this leads to the interval 
+
+I (i) 
+
+> j
+
+=
+
+h
+
+min 
+
+ bC(i, j) , bC(i, j)
+
+
+
+, max 
+
+ bC(i, j) , bC(i, j)
+
+i 
+
+. (17) The GS contractor tightens bounds by intersecting the 
+
+j-th state variable interval of X pk+1 with I (i) 
+
+> j
+
+and repeats this sequentially over strips and components for up to Imax 
+
+Gauss-Seidel iterations (Alg. 1, Line 10), terminating early if an iteration yields no further tightening. This implements a sound strip contractor and yields a measurement-consistent interval correction. The proposed SSO is straightforward to implement and computationally efficient. However, since the tightness of interval-based propagation degrades as set diameters grow under nonlinear dynamics, we introduce a refinement strategy in the following subsection. 
+
+B. Refinement Strategy 
+
+Instead of enclosing the state by a single interval, the proposed approach maintains a finite collection of intervals whose union outer-approximates the set of possible states, 
+
+Xk =
+
+> Mk[
+> b=1
+
+X (b) 
+
+> k
+
+, X (b) 
+
+> k
+
+∈ IR n. (18) Refinement is performed by subdividing intervals while respecting the cap Mmax (Alg. 1, Line 3). Let the current collection be {X (b)}Mb=1 with X (b) = [ x(b), x(b)]. We intro-duce a componentwise scaling vector s ∈ Rn 
+
+> >0
+
+and measure widths as ˜wb, j := x(b) 
+
+> j
+
+− x(b)
+
+> j
+
+s j
+
+, b = 1, . . . , M, j = 1, . . . , n. (19) For each interval, we define 
+
+j⋆ 
+
+> b
+
+= arg max  
+
+> j∈{ 1,..., n}
+
+˜wb, j. (20) As long as 2 M ≤ Mmax , every active interval is bisected once along its widest scaled dimension j⋆
+
+> b
+
+, so that the number of subsets doubles. The scaling of the width avoids a bias towards state variables with larger physical units. If 
+
+M < Mmax < 2M, exactly Mmax − M intervals are split. To select them in linear time, the values ˜wb, j⋆ 
+
+> b
+
+are not sorted but grouped into Ksplit equal-width bins spanning their full range in the current collection, which yields a coarse ranking from small to large widths, similar in spirit to successive-binning selection methods for avoiding full sorting [24]; see Fig. 1. Starting from the largest-width bin, intervals are selected until the split budget is exhausted, taking intervals within each bin in encounter order. Each selected interval 
+
+X (b) is bisected at the midpoint of its j⋆
+
+> b
+
+-th dimension. This preserves the preference for refining wide intervals while keeping the splitting complexity linear in Mmax .All intervals are propagated using the SSO. Subsets that become empty after applying the GS contractor are discarded (a) Binning for Splitting 
+
+x1
+
+x2
+
+width bins 
+
+B1 B2
+
+(b) Binning for Pruning 
+
+x1
+
+x2
+
+center bins 
+
+B1 B2         
+
+> Fig. 1. Running example of the binning heuristics used for splitting and pruning. In (a), four two-dimensional intervals are binned by their largest scaled side lengths ˜wb,j⋆
+> b, shown as dotted lines. Here, Mmax =5 is chosen, so one interval from the large-width bin B2is selected for splitting; in this case, the green interval. The resulting five intervals are then propagated and corrected by the single-set observer; subfigure (b) illustrates how the intervals are binned again according to their centers along the state component with the largest spread according to (21). From each bin, only the interval with the largest scaled side length is selected as candidate container, indicated by the larger points in the bins. Since the purple interval is contained in the orange interval, it is pruned.
+
+(Alg. 1, Line 20). To reduce redundancy, a partial contain-ment check is performed, and intervals found to be contained in others are removed. Specifically, for two intervals X (b) =[x(b), x(b)] and X (c) = [ x(c), x(c)], we remove X (c) if there exists an index b̸ = c such that x(b) ≤ x(c) and x(c) ≤ x(b), i.e., 
+
+X (c) ⊆ X (b). Let cb denote the center of X (b), and let 
+
+j⋆ 
+
+> ctr
+
+= arg max 
+
+> j∈{ 1,..., n}
+
+
+
+max  
+
+> b=1,..., M
+
+cb, j − min  
+
+> b=1,..., M
+
+cb, j
+
+
+
+(21) be the state component with the largest spread of centers. To keep computational costs low, the scalar center values 
+
+cb, j⋆ 
+
+> ctr
+
+are partitioned into Kprune equal-width bins spanning their full range, analogously to the splitting step; see Fig. 1. Within each bin, only the interval with the largest scaled side length ˜wb, j⋆ 
+
+> b
+
+is retained as candidate container, and every other interval is checked only against this representative. After pruning, the remaining subsets are kept without being merged. This refinement mechanism is related to subdivision-based methods such as subpaving and SIVIA [25], [26]. However, its role here is different. Rather than recursively classify-ing boxes in a set-inversion framework, the intervals are propagated forward in time, contracted by the measurement update, and discarded if they become empty. In addition, overlaps between subsets are permitted, which avoids the repartitioning typically required in classical subpaving con-structions [21, Ch. 3]. 
+
+Theorem 1 (Soundness): Let X0 be an initial enclosure with x0 ∈ X0, and assume wk ∈ W and vk ∈ V for all k. The true state is contained in 
+
+Xk =
+
+> Mk
+
+[
+
+> b=1
+
+X (b) 
+
+> k
+
+, X (b) 
+
+> k
+
+∈ IR n.
+
+Proof: We show that each step in Sec. III preserves inclusion. Splitting: Each X (b) 
+
+> k
+
+is bisected into two children whose union equals the parent, hence no feasible state is re-moved. Prediction: At time step k, the input uk is fixed, while the state and disturbance vary over X (b) 
+
+> k
+
+and W , respec-tively. Applying (10) to the dynamics over X (b) 
+
+> k
+
+× W yields a predicted interval containing all states f (x, uk, w) with x ∈
+
+X (b) 
+
+> k
+
+and w ∈ W [21, Sec. 2.4.3]. Correction and discarding: 
+
+The Gauss-Seidel tightening implements a sound strip con-tractor for the linear inequalities [21, Thm. 4.2]. Therefore, contraction does not remove measurement-consistent states. If a contracted subset becomes empty, it contains no feasible state and can be discarded. Pruning: A subset is removed only if it is contained in another retained subset, which leaves the union Xk unchanged. Starting from x0 ∈ X0, the above implications yield xk ∈ Xk for all k by induction. 
+
+C. Computational Complexity 
+
+The computational complexity of one observer step is summarized in the following proposition. 
+
+Proposition 1 (Per-step worst-case complexity): The worst-case complexity per time step of Alg. 1 is 
+
+O Mmax pn 2.
+
+Proof: We bound the runtime by summing the worst-case costs of splitting, prediction, correction, and pruning. 
+
+Splitting: In Line 3, splitting one interval requires O(n)
+
+operations. Since the number of active intervals is capped by Mmax and the selection rule in the final partial round is linear, refinement requires O(nM max ) binary operations. Pre-diction and Correction: In Line 4, computing the mean-value enclosure for one interval requires O(n2) operations, due to the Jacobian evaluation and the subsequent interval update. In GSC ONTRACT , for all combinations of p measurement strips and n state components, an update involving an inner sum over n components is performed, resulting in O(pn 2) per GS iteration. Since the number of GS iterations is bounded by the fixed constant Imax , the correction cost per interval is 
+
+O(pn 2). As at most Mmax intervals are processed after Line 3, the total prediction and correction costs are O(Mmax n2)and O(Mmax pn 2), respectively. Pruning: In Line 6, intervals are partitioned into a fixed number of groups, and each interval is checked only against one representative. Since grouping is linear and each containment check costs O(n),pruning requires O(nM max ). Summing the bounds and dis-carding lower-order terms yields an overall complexity of 
+
+O(Mmax pn 2) binary operations, proving the claim. If Mmax is kept constant, the per-step complexity reduces to 
+
+O(pn 2). This compares favorably to many established classes of guaranteed observers, such as zonotope- and constrained-zonotope-based approaches, whose reported complexity ex-pressions often involve cubic or higher-order terms; see, for example, [19, Tab. 1]. IV. E XPERIMENTAL RESULTS 
+
+This section evaluates the proposed observer and analyzes its performance across different benchmark settings. 
+
+A. Evaluation Setup 
+
+Our observer is evaluated on two nonlinear benchmarks previously used for comparing guaranteed state estimators in [20]. The first is a discrete-time Van der Pol oscillator, representing a low-dimensional nonlinear system with tun-able nonlinearity parameter μ. The second is a nonlinear multi-tank system, providing a higher-dimensional scalability benchmark. Details on the benchmark dynamics, measure-ment models, and uncertainty sets are given in Appendix A. For all observers, parameters are tuned using Bayesian optimization as described in Appendix B. All algorithms are implemented in CORA [27] using MATLAB and will be made publicly available to ensure repeatability. Simulations are run on an AMD Ryzen 7 with 3.8 GHz and 64 GB RAM. We assess runtime (average time per step) and enclosure tightness. Ideally, tightness would be measured by the exact set volume, but this is not uniformly tractable across all set representations considered. We therefore report two comple-mentary surrogates. First, the interval-hull volume, ˜v = 1
+
+nsteps 
+
+> nsteps
+
+# ∑
+
+> k=1
+
+ vol (hull (Xk)) 1/n, (22) where hull (·) denotes the interval hull operator. This metric is deterministic, but it may disadvantage richer set repre-sentations. Second, a representation-independent mean-width measure, ˜w = 1
+
+N n steps 
+
+> nsteps
+
+# ∑
+
+> k=1
+> N
+
+# ∑
+
+> i=1
+
+
+
+ρ(Xk, di) + ρ(Xk, −di)
+
+
+
+, (23) with N = 10 n random unit directions di and support function 
+
+ρ(X , d) = max x∈X d⊤x. This metric better reflects geom-etry across methods, but it is approximated from sampled directions. To ease direct comparison, both ˜ v and ˜ w are nor-malized by the minimum value achieved across all compared observers. The best achieved absolute values of both metrics are also reported providing further insights. 
+
+B. Main Results 
+
+The proposed observer is compared against the best-performing methods from [20] on the two benchmark settings that form the main comparison in this work: the highly nonlinear Van der Pol oscillator with μ = 5 and the 30-tank system. Table I reports enclosure tightness and computation time; additional results are given in the ablation study. Methods that fail due to set explosion are listed separately below the tables. As shown in Table I, the proposed DD observer achieves the tightest enclosures and the lowest computation time on both benchmarks. For the highly nonlinear Van der Pol oscillator, the gain in tightness is particularly pronounced, indicating that repeated refinement effectively reduces the conservatism caused by strong nonlinearity. For the 30-tank system, the DD observer again attains the tightest enclosure while remaining the fastest method, showing that propagating multiple subsets does not compromise scalability in the higher-dimensional setting. This is consistent with the low cost of interval arithmetic and the efficient parallel treatment of intervals. Bayesian optimization selected Mmax = 251 for the Van der Pol oscillator and Mmax = 246 for the 30-tank system. 
+
+C. Ablation Study 
+
+To further assess the behavior of the proposed DD ob-server, we examine the effects of weaker nonlinearity, in-creased uncertainty, and the parameter Mmax .
+
+a) Van der Pol with μ = 0.1: We first revisit the Van der Pol benchmark in a weakly nonlinear regime by setting μ = 0.1. The results in Table II show that the pro-posed observer already improves substantially over the best-performing method from [20] in terms of enclosure tightness, while retaining highly competitive computation times, shown here for Mmax = 213. Thus, the proposed refinement strategy is beneficial not only in strongly nonlinear settings, but already in a comparatively mild regime. 
+
+b) Increased Uncertainty: To isolate the effect of stronger uncertainty, we additionally consider both bench-marks with tenfold process disturbances and fivefold mea-surement noise. For the Van der Pol oscillator with μ = 5, Table III shows that many competing methods fail to return usable enclosures over the full simulation horizon, whereas the DD observer remains stable. In this setting, Bayesian optimization selects the larger value Mmax = 659, indicating that under strong nonlinearity and increased uncertainty, maintaining more subsets remains beneficial for controlling overestimation. For the 30-tank system with increased uncertainty, Ta-ble IV shows that enclosure tightness deteriorates for all methods, and the competing approaches come closer to the DD observer. Here, the benefit of additional subsets is smaller than in the nominal setting, since the larger uncertainty reduces the chances of discarding subsets and thus limits the gains from more aggressive refinement. Ac-cordingly, the tuning procedure selects the much smaller value Mmax = 3. Nevertheless, the DD observer still attains TABLE I COMPARISON OF OBSERVER PERFORMANCE ON THE HIGHLY NONLINEAR VAN DER POL OSCILLATOR AND THE 30-TANK SYSTEM .Van der Pol oscillator 30-tank system Method Time [ms] ˆv ˆw Time [ms] ˆv ˆw Ref. 
+
+Intervals 
+
+pDTDI 15.00 3.61 7.34 71.88 1.47 2.32 [6] 
+
+Zonotopes 
+
+FRad-B 2.89 5.25 6.54 13.57 6.33 2.76 [28] FRad-C – – – 11.63 6.05 2.38 [29] VolMin-B 2.49 3.50 5.25 48.82 4.51 1.93 [30] 
+
+Constrained zonotopes 
+
+CZN-A 26.88 3.71 5.44 603.59 6.36 2.01 [18] CZMV 37.60 4.63 7.53 22197.41 2.34 1.25 [19] CZKH 3.61 3.03 3.92 396.17 3.87 2.08 [17] 
+
+Zonotope bundles 
+
+ZBKH 6.76 15.35 42.49 64.33 3.95 1.82 [17] 
+
+Ours 
+
+DD 1.24 1.00 1.00 7.65 1.00 1.00 –Best (abs.) 0.25 0.53 0.24 5.67 Set explosion occurred for ESO-E [11] on both benchmarks and for FRad-C on the Van der Pol benchmark. TABLE II RESULTS FOR THE VAN DER POL OSCILLATOR WITH μ = 0.1. Method Time [ms] ˆv ˆw Ref. 
+
+Intervals 
+
+pDTDI 11.08 2.41 3.43 [6] 
+
+Ellipsoids 
+
+ESO-E 6.43 1.43 1.29 [11] 
+
+Zonotopes 
+
+FRad-B 3.52 3.86 3.12 [28] FRad-C 1.69 4.03 3.15 [29] VolMin-B 2.05 4.27 5.47 [30] 
+
+Constr. zonotopes 
+
+CZN-A 15.50 2.69 2.31 [18] CZMV 15.65 1.58 1.38 [19] CZKH 3.52 2.41 2.11 [17] 
+
+Zonotope bundles 
+
+ZBKH 1.35 4.83 3.81 [17] 
+
+Ours 
+
+DD 1.64 1.00 1.00 –Best (abs.) 0.25 0.40 
+
+the tightest enclosure while maintaining a clear advantage in computation time. 
+
+c) Parameter Sweep: To study the role of Mmax more systematically, we sweep this parameter for the highly nonlinear Van der Pol benchmark and the nominal 30-tank system. Since Mmax = 1 corresponds to the underlying single-set observer, this directly quantifies the benefit of the divide-and-discard strategy. Figures 2 and 3 report average computation time per step and mean width; in each case, the best value achieved by the competing methods is shown as a reference. For the Van der Pol oscillator, Fig. 2 confirms the ap-proximately linear growth of computation time with Mmax 
+
+predicted by Prop. 1. At the same time, tightness improves rapidly for small values of Mmax : the DD observer already outperforms the best competing method at Mmax = 3, while gains beyond roughly 100 are marginal. Hence, a relatively small number of subsets already captures most of the benefit 
+
+TABLE III RESULTS FOR THE VAN DER POL OSCILLATOR WITH μ = 5 AND INCREASED UNCERTAINTY .Method Time [ms] ˆv ˆw Ref. 
+
+Intervals 
+
+pDTDI 39.91 3.46 6.14 [6] 
+
+Zonotopes 
+
+FRad-B 2.64 455.47 62 718.09 [28] VolMin-B 2.50 40.29 311.78 [30] 
+
+Constr. zonotopes 
+
+CZN-A 31.10 42.36 353.57 [18] CZMV 14.38 4.11 × 10 7 2.91 × 10 13 [19] 
+
+Ours 
+
+DD 3.17 1.00 1.00 –Best (abs.) 0.97 1.84 Set explosion: ESO-E, FRad-C, CZKH, ZBKH. 
+
+of refinement in this nonlinear benchmark. For the 30-tank system, Fig. 3 again shows a nearly linear increase in computation time with Mmax , while the improve-ment in tightness is more gradual. This is consistent with the weaker nonlinearity and more favorable measurement struc-ture of this benchmark, for which even the single-set observer already performs strongly relative to most competitors. Still, increasing Mmax reduces conservatism further, and the DD observer surpasses the best competing method once Mmax 
+
+is greater than 100. This sweep suggests that the proposed observer is comparatively robust to the choice of Mmax ,since strong performance is achieved over a broad range of values. This makes parameter tuning straightforward, as it mainly serves to refine the trade-off between tightness and computation time rather than to recover usable performance. V. CONCLUSIONS This paper presented a novel divide-and-discard observer for guaranteed state estimation of nonlinear discrete-time systems. Our approach combines simple interval-based pre-diction and intersection-based correction with a systematic TABLE IV RESULTS FOR THE 30-TANK BENCHMARK WITH INCREASED UNCERTAINTY .Method Time [ms] ˆv ˆw Ref.                                     
+
+> Intervals
+> pDTDI 70.87 1.15 1.37 [6]
+> Constr. zonotopes
+> CZMV 2408.14 4.01 1.33 [19] CZKH 531.97 3.71 1.60 [17]
+> Zonotope bundles
+> ZBKH 55.81 3.14 1.43 [17]
+> Ours
+> DD 1.39 1.00 1.00 –Best (abs.) 0.98 11.97 Set explosion: ESO-E, FRad-B, FRad-C, VolMin-B, CZN-A. 0500 1000 1500 2000 0246
+> Time per step [ms]
+> VolMin-B
+> 0500 1000 1500 2000
+> Mmax
+> 0510 15 20
+> Mean-width
+> CZKH
+> Fig. 2. Effect of maximum number of intervals Mmax on tightness and computation time for the Van der Pol oscillator with μ=5.
+
+refinement strategy that reduces conservatism through sub-division of the state space. The numerical evaluation shows that the proposed observer consistently achieves the tightest state enclosures across the considered comparisons and nonlinear systems. In particular, for strongly nonlinear dynamics, the refinement strategy sig-nificantly reduces conservatism relative to existing methods, yielding substantially improved estimation accuracy; this advantage persists in higher-dimensional settings, although the relative improvement is smaller for systems with weaker nonlinearities. A key reason for the observed computa-tional efficiency is that the underlying interval operations are inherently cheap, even in higher dimensions; moreover, maintaining multiple subsets per step does not substantially increase cost as long as the number of active intervals remains moderate, since the computations can be carried out in a vectorized manner. VI. ACKNOWLEDGMENTS The authors gratefully acknowledge the financial support from the research training group ConVeY funded by the 0 500 1000 1500 2000 010 20 30 40        
+
+> Time per step [ms]
+> FRad-C
+> 0500 1000 1500 2000
+> Mmax
+> 678910
+> Mean-width
+> CZMV
+> Fig. 3. Effect of maximum number of intervals Mmax on tightness and computation time for the 30-tank benchmark.
+
+German Research Foundation under grant GRK 2428. APPENDIX 
+
+A. Benchmark Details 
+
+This appendix summarizes the benchmark models and uncertainty settings used for the evaluation. 
+
+a) Van der Pol Oscillator: The first benchmark is an Euler-discretized Van der Pol oscillator with sampling time 
+
+h,
+
+x1,k+1 = x1,k + h x 2,k + w1,k,
+
+x2,k+1 = x2,k + h μ(1 − x21,k)x2,k − x1,k
+
+ + w2,k, (24) where μ > 0 is the nonlinearity parameter. The measurement equation is 
+
+yk = Cx k + vk, C = [ 1 0 ], vk ∈ V , (25) so only the first state component is measured. In the exper-iments, we use h = 0.025. The initial and uncertainty sets are 
+
+X0 = B2, W = 10 −3B2, V = 0.2 B, (26) where Bn denotes the unit box in Rn. By varying μ,this benchmark is used to assess how the observer handles increasing nonlinearity. 
+
+b) Multi-Tank System: The second benchmark is a non-linear multi-tank system with state xk ∈ Rn, whose dynamics follow Torricelli’s law. Using explicit Euler discretization with sampling time h gives 
+
+x1,k+1 = x1,k + h
+
+
+
+−κ1
+
+p2g√x1,k + ( Bu k)1
+
+
+
++ w1,k, (27) 
+
+x j,k+1 = x j,k + h
+
+
+
+κ j
+
+p2g √x j−1,k − √x j,k
+
+ + ( Bu k) j
+
+
+
+(28) 
+
++ w j,k, j = 2, . . . , n,
+
+with measurement model 
+
+yk = Cx k + vk, vk ∈ V . (29) TABLE V TANK INDICES WITH EXTERNAL INFLOW AND MEASUREMENTS FOR THE 
+
+30-TANK SYSTEM .   
+
+> Type Tank indices
+> Water inflow 1, 4, 5, 7, 9, 10, 13, 15, 16, 19, 21, 22, 25, 27, 28 Water level measurement 2, 4, 5, 7, 8, 10, 11, 13, 14, 16, 17, 19, 20, 21, 22, 23, 25, 26, 27, 28, 29
+
+The benchmark is used to assess scalability with increas-ing state dimension. In the experiments, we use h = 0.5, 
+
+g = 9.81 m /s2, and κ j = 0.015 for all j. The initial and uncertainty sets are 
+
+X0 = 20 1n ⊕ 4 Bn, W = 10 −3 Bn, V = 0.2 Bp,
+
+(30) where 1n is the all-ones vector. The tank indices with external inflow and available measurements for the 30-tank system are listed in Table V. 
+
+B. Parameter Tuning 
+
+Parameters for all observers are tuned using Bayesian optimization with a fixed budget to minimize a weighted combination of computation time and enclosure tightness. For the proposed DD observer, the main tuning parameter is the maximum number of intervals Mmax , varied in the range 1 to 2000. The influence of Mmax is examined separately in the corresponding study. Since the maximum number of Gauss–Seidel iterations and the numbers of bins used for splitting and pruning were found to have comparatively little influence, they are fixed throughout all experiments to 
+
+Imax = 5, Ksplit = Kprune = 20 . (31) For the competing methods, zonotope orders, the maximum number of constraints for constrained-zonotope observers, the H-set size for ZBKH and CZKH, and the number of splits for pDTDI are tuned analogously. REFERENCES [1] M. Althoff and J. M. Dolan, “Online Verification of Automated Road Vehicles Using Reachability Analysis,” IEEE Transactions on Robotics , vol. 30, no. 4, pp. 903–918, Aug. 2014. [2] T. Haidegger, “Autonomy for Surgical Robots: Concepts and Paradigms,” IEEE Transactions on Medical Robotics and Bionics ,vol. 1, no. 2, pp. 65–76, May 2019. [3] B. Schurmann, N. Kochdumper, and M. Althoff, “Reachset Model Predictive Control for Disturbed Nonlinear Systems,” in 2018 IEEE Conference on Decision and Control (CDC) . IEEE, Dec. 2018, pp. 3463–3470. [4] M. Althoff, G. Frehse, and A. Girard, “Set Propagation Techniques for Reachability Analysis,” Annual Review of Control, Robotics, and Autonomous Systems , vol. 4, no. 1, pp. 369–395, May 2021. [5] S. B. Chabane, “Fault detection techniques based on set-membership state estimation for uncertain systems,” Ph.D. dissertation, Universit´ eParis-Saclay, 2015. [6] B. Mu and J. K. Scott, “Set-based fault diagnosis for uncertain nonlinear systems,” Computers & Chemical Engineering , vol. 180, p. 108479, Jan. 2024. [7] L. Jaulin, “Nonlinear bounded-error state estimation of continuous-time systems,” Automatica , vol. 38, no. 6, pp. 1079–1082, Jun. 2002. [8] X. Yang and J. K. Scott, “Accurate Set-Based State Estimation for Nonlinear Discrete-Time Systems using Differential Inequalities with Model Redundancy,” in 2018 IEEE Conference on Decision and Control (CDC) . IEEE, Dec. 2018, pp. 680–685. [9] T. N. Dinh and G. Quoc Bao Tran, “A Unified KKL-Based Interval Observer for Nonlinear Discrete-Time Systems,” IEEE Control Sys-tems Letters , vol. 8, pp. 430–435, 2024. [10] S. Gollamudi, S. Nagaraj, S. Kapoor, and Y.-F. Huang, “Set-Membership State Estimation with Optimal Bounding Ellipsoids,” 
+
+International Symposium on Information Theory and its Applications ,Jul. 1998. [11] E. Scholte and M. E. Campbell, “A nonlinear set-membership filter for online applications,” International Journal of Robust and Nonlinear Control , vol. 13, no. 15, pp. 1337–1358, Dec. 2003. [12] L. Chisci, A. Garulli, and G. Zappa, “Recursive state bounding by parallelotopes,” Automatica , vol. 32, no. 7, pp. 1049–1055, Jul. 1996. [13] D. Qu, Z. Huang, Y. Zhao, G. Song, K. Yi, and X. Zhao, “Nonlinear state estimation by Extended Parallelotope Set-Membership Filter,” 
+
+ISA Transactions , vol. 128, pp. 414–423, Sep. 2022. [14] C. Combastel, “A State Bounding Observer for Uncertain Non-linear Continuous-time Systems based on Zonotopes,” in Proceedings of the 44th IEEE Conference on Decision and Control . IEEE, 2005, pp. 7228–7234. [15] T. Alamo, J. Bravo, and E. Camacho, “Guaranteed state estimation by zonotopes,” Automatica , vol. 41, no. 6, pp. 1035–1043, Jun. 2005. [16] V. T. H. Le, C. Stoica, T. Alamo, E. F. Camacho, and D. Dumur, “Zonotopic guaranteed state estimation for uncertain systems,” Auto-matica , vol. 49, no. 11, pp. 3418–3424, Nov. 2013. [17] M. Khajenejad, F. Shoaib, and S. Zheng Yong, “Guaranteed State Estimation via Indirect Polytopic Set Computation for Nonlinear Discrete-Time Systems,” in 2021 60th IEEE Conference on Decision and Control (CDC) . IEEE, Dec. 2021, pp. 6167–6174. [18] J. K. Scott, D. M. Raimondo, G. R. Marseglia, and R. D. Braatz, “Constrained zonotopes: A new tool for set-based estimation and fault detection,” Automatica , vol. 69, pp. 126–136, Jul. 2016. [19] B. S. Rego, G. V. Raffo, J. K. Scott, and D. M. Raimondo, “Guaranteed methods based on constrained zonotopes for set-valued state estimation of nonlinear discrete-time systems,” Automatica , vol. 111, p. 108614, Jan. 2020. [20] N. Holzinger and M. Althoff, “A comparison of set-based observers for nonlinear systems,” 2026. [Online]. Available: https: //arxiv.org/abs/2602.03646 [21] L. Jaulin, M. Kieffer, O. Didrit, and E. Walter, Applied Interval Analysis . Springer, 2001. [22] M. Althoff, D. Grebenyuk, and N. Kochdumper, “Implementation of Taylor models in CORA 2018,” 2018, pp. 145–115. [Online]. Available: https://easychair.org/publications/paper/9Tz3 [23] A. Gning and P. Bonnifait, “Constraints propagation techniques on intervals for a guaranteed localization using redundant data,” Auto-matica , vol. 42, no. 7, pp. 1167–1175, Jul. 2006. [24] R. J. Tibshirani, “Fast computation of the median by successive binning,” arXiv preprint arXiv:0806.3301 , 2008. [25] M. Kieffer, L. Jaulin, and E. Walter, “Guaranteed recursive nonlinear state estimation using interval analysis,” in Proceedings of the 37th IEEE Conference on Decision and Control , vol. 4. IEEE, 1998, pp. 3966–3971. [26] L. Jaulin and E. Walter, “Set inversion via interval analysis for nonlinear bounded-error estimation,” Automatica , vol. 29, no. 4, pp. 1053–1064, Jul. 1993. [27] M. Althoff, “An introduction to cora 2015,” ARCH14-15. 1st and 2nd International Workshop on Applied veRification of Continuous and Hybrid Systems , vol. 34, pp. 120–151, 2015. [28] Y. Wang, V. Puig, and G. Cembrano, “Set-membership approach and Kalman observer based on zonotopes for discrete-time descriptor systems,” Automatica , vol. 93, pp. 435–443, Jul. 2018. [29] C. Combastel, “Zonotopes and Kalman observers: Gain optimality under distinct uncertainty paradigms and robust convergence,” Auto-matica , vol. 55, pp. 265–273, May 2015. [30] J. Bravo, T. Alamo, and E. Camacho, “Bounded Error Identification of Systems With Time-Varying Parameters,” IEEE Transactions on Automatic Control , vol. 51, no. 7, pp. 1144–1150, Jul. 2006.

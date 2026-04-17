@@ -1,0 +1,131 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-04-17T20:20:53.409734+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 3,
+    "quick_skim_target": 11,
+    "quick_selected": 3
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2604.10680v1",
+      "title": "Resilient and Effort-Optimal Controller Synthesis under Temporal Logic Specifications",
+      "abstract": "In this paper, we consider the notions of effort and resilience of a dynamical control system defined by the maximum disturbance the system can withstand while satisfying given finite temporal logic specifications. Given a dynamical system and a specification, the objective is to synthesize the controller such that the system satisfies the specification while maximizing its resilience, taking into account input constraints. In addition, we introduce a new metric, called the effort metric, which characterizes the minimal input bound necessary to satisfy a given specification for a perturbed system. The problem for both metrics is formulated as a robust optimization program where the objective is to compute the maximum resilience for the system with input constraints or the minimal effort while simultaneously synthesizing the corresponding controller parameters. Moreover, we study the trade-off between resilience and effort, where we seek to maximize resilience and minimize the control effort. For linear systems and linear controllers, exact solutions are provided for the class of time-varying polytopic specifications for the closed-loop and open-loop systems. For the case of nonlinear systems, nonlinear controllers, and more general specifications, we leverage tools from the scenario optimization approach, offering a probabilistic guarantee of the solution as well as computational feasibility. Different case studies are presented to illustrate the theoretical results.",
+      "authors": [
+        "Youssef Ait Si",
+        "Ratnangshu Das",
+        "Negar Monir",
+        "Sadegh Soudjani",
+        "Pushpak Jagtap",
+        "Adnane Saoud"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY"
+      ],
+      "published": "2026-04-12T15:18:05+00:00",
+      "link": "https://arxiv.org/pdf/2604.10680v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Resilient controller synthesis under disturbances and input constraints",
+      "llm_evidence_cn": "扰动和输入约束下的弹性控制器综合",
+      "llm_evidence": "扰动和输入约束下的弹性控制器综合",
+      "canonical_evidence": "扰动和输入约束下的弹性控制器综合",
+      "llm_tldr_en": "Synthesizes controllers to maximize system resilience against disturbances under temporal logic specs.",
+      "llm_tldr_cn": "在时序逻辑规范下综合控制器，以最大化系统对扰动的抵御能力。",
+      "llm_tldr": "在时序逻辑规范下综合控制器，以最大化系统对扰动的抵御能力。",
+      "llm_tags": [
+        "query:pmsm"
+      ],
+      "matched_query_tag": "query:pmsm",
+      "matched_query_text": "fault-tolerant control of multi-phase motors",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2604.11336v1",
+      "title": "Divide and Discard: Fast Tightening of Guaranteed State Bounds for Nonlinear Systems",
+      "abstract": "We propose a simple yet effective divide-and-discard (DD) approach to guaranteed state estimation for nonlinear discrete-time systems. Our method iteratively subdivides interval enclosures of the state and propagates them forward in time using a mean-value enclosure. The central idea is to rely on repeated refinement of simple sets rather than on more complex set representations, yielding an observer that is straightforward to implement and easy to integrate into existing frameworks. Our divide-and-discard strategy exploits that many sets can be discarded early and limits the number of maintained sets, resulting in low computational cost with complexity that scales only quadratically in the state dimension. The proposed method is evaluated on nonlinear benchmark problems previously used to compare guaranteed observers, where it outperforms state-of-the-art approaches in terms of both computational efficiency and enclosure tightness.",
+      "authors": [
+        "Nico Holzinger",
+        "Matthias Althoff"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY"
+      ],
+      "published": "2026-04-13T11:37:19+00:00",
+      "link": "https://arxiv.org/pdf/2604.11336v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Guaranteed state estimation for nonlinear discrete-time systems",
+      "llm_evidence_cn": "非线性离散时间系统的保证状态估计",
+      "llm_evidence": "非线性离散时间系统的保证状态估计",
+      "canonical_evidence": "非线性离散时间系统的保证状态估计",
+      "llm_tldr_en": "Proposes a divide-and-discard approach for fast and guaranteed state estimation in nonlinear systems.",
+      "llm_tldr_cn": "提出一种分而治之的方法，用于非线性系统快速且有保证的状态估计。",
+      "llm_tldr": "提出一种分而治之的方法，用于非线性系统快速且有保证的状态估计。",
+      "llm_tags": [
+        "query:pmsm:composite"
+      ],
+      "matched_query_tag": "query:pmsm:composite",
+      "matched_query_text": "Papers central to 三相及双三相永磁同步电机相关研究检索, especially work that connects or combines: m; s; f; Permanent Magnet Synchronous Motor research; dual three-phase permanent magnet synchronous motor control and design; fault-tolerant control of multi-phase motors; recent advances in dual three phase permanent magnet synchronous motor control; fault tolerant strategies for multi phase permanent magnet synchronous motors.",
+      "matched_requirement_id": "req-composite-pmsm",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2604.12542v1",
+      "title": "Goal-oriented safe active learning for predictive control using Bayesian recurrent neural networks",
+      "abstract": "A key challenge in learning-based model predictive control (MPC) is to collect informative data online for model adaptation while ensuring safety and without penalising control performance. In this paper, we propose an online model adaptation scheme embedded within an MPC framework in which the last-layer parameters of a recurrent neural network are recursively updated via Bayesian learning. This is achieved by means of a goal-oriented safe active learning algorithm that alternates between an exploration phase, where the MPC actively explores system dynamics to collect informative data for model adaptation while still pursuing the main control objective, and a goal-reaching phase, where it focuses exclusively on the main control objective. The algorithm is complemented with theoretical guarantees of (i) recursive feasibility, (ii) safety, (iii) termination of exploration in finite time, and (iv) close-to-optimal performance. Simulation results on a benchmark energy system demonstrate that the proposed framework achieves economic performance comparable to that of an MPC with full system knowledge, while progressively improving model accuracy and respecting operational safety constraints with high probability.",
+      "authors": [
+        "Laura Boca de Giuli",
+        "Alessio La Bella",
+        "Manish Prajapat",
+        "Johannes Köhler",
+        "Anna Scampicchio",
+        "Riccardo Scattolini",
+        "Melanie Zeilinger"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY"
+      ],
+      "published": "2026-04-14T10:15:19+00:00",
+      "link": "https://arxiv.org/pdf/2604.12542v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Model predictive control for system dynamics and model adaptation",
+      "llm_evidence_cn": "用于系统动力学和模型自适应的模型预测控制",
+      "llm_evidence": "用于系统动力学和模型自适应的模型预测控制",
+      "canonical_evidence": "用于系统动力学和模型自适应的模型预测控制",
+      "llm_tldr_en": "Proposes a safe active learning MPC framework using Bayesian RNNs for online model adaptation.",
+      "llm_tldr_cn": "提出一种基于贝叶斯循环神经网络的安全主动学习模型预测控制框架，用于在线模型自适应。",
+      "llm_tldr": "提出一种基于贝叶斯循环神经网络的安全主动学习模型预测控制框架，用于在线模型自适应。",
+      "llm_tags": [
+        "query:pmsm:composite"
+      ],
+      "matched_query_tag": "query:pmsm:composite",
+      "matched_query_text": "Papers central to 三相及双三相永磁同步电机相关研究检索, especially work that connects or combines: m; s; f; Permanent Magnet Synchronous Motor research; dual three-phase permanent magnet synchronous motor control and design; fault-tolerant control of multi-phase motors; recent advances in dual three phase permanent magnet synchronous motor control; fault tolerant strategies for multi phase permanent magnet synchronous motors.",
+      "matched_requirement_id": "req-composite-pmsm",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
