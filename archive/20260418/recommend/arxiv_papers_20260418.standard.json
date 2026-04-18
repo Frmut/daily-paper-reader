@@ -1,0 +1,93 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-04-18T20:13:03.171030+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 2,
+    "quick_skim_target": 11,
+    "quick_selected": 2
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2604.10351v2",
+      "title": "Trajectory-based actuator identification via differentiable simulation",
+      "abstract": "Accurate actuation models are critical for bridging the gap between simulation and real robot behavior, yet obtaining high-fidelity actuator dynamics typically requires dedicated test stands and torque sensing. We present a trajectory-based actuator identification method that uses differentiable simulation to fit system-level actuator models from encoder motion alone. Identification is posed as a trajectory-matching problem: given commanded joint positions and measured joint angles and velocities, we optimize actuator and simulator parameters by backpropagating through the simulator, without torque sensors, current/voltage measurements, or access to embedded motor-control internals. The framework supports multiple model classes, ranging from compact structured parameterizations to neural actuator mappings, within a unified optimization pipeline. On held-out real-robot trajectories for a high-gear-ratio actuator with an embedded PD controller, the proposed torque-sensor-free identification achieves much tighter trajectory alignment than a supervised stand-trained baseline dominated by steady-state data, reducing mean absolute position error from 14.20 mrad to as low as 7.54 mrad (1.88 times). Finally, we demonstrate downstream impact for the same actuator class in a real-robot locomotion study: training policies with the refined actuator model increases travel distance by 46% and reduces rotational deviation by 75% relative to the baseline.",
+      "authors": [
+        "Vyacheslav Kovalev",
+        "Ekaterina Chaikovskaia",
+        "Egor Davydenko",
+        "Roman Gorbachev"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-04-11T21:36:34+00:00",
+      "link": "https://arxiv.org/pdf/2604.10351v2",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "actuator identification and motor-control modeling without internal access",
+      "llm_evidence_cn": "无需内部访问的执行器识别与电机控制建模",
+      "llm_evidence": "无需内部访问的执行器识别与电机控制建模",
+      "canonical_evidence": "无需内部访问的执行器识别与电机控制建模",
+      "llm_tldr_en": "Proposes a differentiable simulation method to identify actuator models from motion data without torque sensors.",
+      "llm_tldr_cn": "提出一种通过微分仿真从运动数据中识别执行器模型的方法，无需扭矩传感器或电机内部参数。",
+      "llm_tldr": "提出一种通过微分仿真从运动数据中识别执行器模型的方法，无需扭矩传感器或电机内部参数。",
+      "llm_tags": [
+        "query:pmsm"
+      ],
+      "matched_query_tag": "query:pmsm",
+      "matched_query_text": "Permanent Magnet Synchronous Motor research",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2604.14714v1",
+      "title": "Temporal Logic Resilience for Continuous-time Systems",
+      "abstract": "In this paper, we present a novel framework for quantifying a lower bound on resilience in continuous-time (non)linear systems subject to external disturbances while ensuring satisfaction of signal temporal logic specifications. Unlike robustness, which evaluates how well a system satisfies a specification under a given disturbance, resilience measures the maximum disturbance a system can tolerate from a given initial state while maintaining specification satisfaction. We first derive bounds on the perturbed trajectories and then use them to formulate a computational method based on scenario optimization to efficiently compute the maximum admissible disturbance. We validate our approach through case studies, including dc motor, temperature regulation, a nonlinear numerical example, and a vehicle collision avoidance case.",
+      "authors": [
+        "Ratnangshu Das",
+        "Negar Monir",
+        "Youssef Ait Si",
+        "Adnane Saoud",
+        "Sadegh Soudjani",
+        "Pushpak Jagtap"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY"
+      ],
+      "published": "2026-04-16T07:24:50+00:00",
+      "link": "https://arxiv.org/pdf/2604.14714v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Resilience framework validated on DC motor systems",
+      "llm_evidence_cn": "在直流电机系统上验证的弹性框架",
+      "llm_evidence": "在直流电机系统上验证的弹性框架",
+      "canonical_evidence": "在直流电机系统上验证的弹性框架",
+      "llm_tldr_en": "A framework for quantifying resilience in continuous-time systems, validated using motor case studies.",
+      "llm_tldr_cn": "一种量化连续时间系统弹性的框架，并通过电机案例研究进行了验证。",
+      "llm_tldr": "一种量化连续时间系统弹性的框架，并通过电机案例研究进行了验证。",
+      "llm_tags": [
+        "query:pmsm"
+      ],
+      "matched_query_tag": "query:pmsm",
+      "matched_query_text": "Permanent Magnet Synchronous Motor research",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

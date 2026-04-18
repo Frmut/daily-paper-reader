@@ -6,32 +6,29 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-04-17
-- 运行时间：2026-04-17 20:21:08 UTC
+- 最新运行日期：2026-04-18
+- 运行时间：2026-04-18 20:13:20 UTC
 - 运行状态：成功
-- 本次总论文数：3
+- 本次总论文数：2
 - 精读区：0
-- 速读区：3
+- 速读区：2
 
 ### 今日简报（AI）
-今日聚焦复杂系统控制的前沿突破，涵盖时序逻辑下的弹性合成、非线性系统状态界限的快速收紧及安全主动学习。
-核心亮点在于通过“分而治之”策略大幅提升非线性估计效率，以及利用贝叶斯循环神经网络实现目标导向的预测控制。
-推荐关注控制理论与深度学习结合中的安全性保障，这是提升自动化系统鲁棒性与执行效率的关键路径。
-- 详情：[/202604/17/README](/202604/17/README)
+今日聚焦控制系统前沿，深入探讨了微分模拟下的执行器识别与连续系统的时序逻辑韧性。
+核心结论展示了如何利用轨迹数据精准辨识硬件参数，并提升系统在复杂逻辑约束下的抗干扰恢复力。
+推荐关注微分模拟在系统建模中的潜力，以及时序逻辑在增强自动化系统鲁棒性方面的应用。
+- 详情：[/202604/18/README](/202604/18/README)
 
 ### 精读区论文标签
 - 本次无精读推荐。
 
 ### 速读区论文标签
-1. [Resilient and Effort-Optimal Controller Synthesis under Temporal Logic Specifications](/202604/17/2604.10680v1-resilient-and-effort-optimal-controller-synthesis-under-temporal-logic-specifications)  
+1. [Trajectory-based actuator identification via differentiable simulation](/202604/18/2604.10351v2-trajectory-based-actuator-identification-via-differentiable-simulation)  
    标签：评分：6.0/10、query:pmsm
-   evidence：扰动和输入约束下的弹性控制器综合
-2. [Divide and Discard: Fast Tightening of Guaranteed State Bounds for Nonlinear Systems](/202604/17/2604.11336v1-divide-and-discard-fast-tightening-of-guaranteed-state-bounds-for-nonlinear-systems)  
+   evidence：无需内部访问的执行器识别与电机控制建模
+2. [Temporal Logic Resilience for Continuous-time Systems](/202604/18/2604.14714v1-temporal-logic-resilience-for-continuous-time-systems)  
    标签：评分：6.0/10、query:pmsm
-   evidence：非线性离散时间系统的保证状态估计
-3. [Goal-oriented safe active learning for predictive control using Bayesian recurrent neural networks](/202604/17/2604.12542v1-goal-oriented-safe-active-learning-for-predictive-control-using-bayesian-recurrent-neural-networks)  
-   标签：评分：6.0/10、query:pmsm
-   evidence：用于系统动力学和模型自适应的模型预测控制
+   evidence：在直流电机系统上验证的弹性框架
 
 
 <div class="dpr-home-promo-card">

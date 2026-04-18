@@ -1,0 +1,37 @@
+{
+  "label": "2026-04-18",
+  "date": "2026-04-18",
+  "generated_at": "2026-04-18T20:13:28",
+  "count": 2,
+  "papers": [
+    {
+      "paper_id": "202604/18/2604.10351v2-trajectory-based-actuator-identification-via-differentiable-simulation",
+      "section": "quick",
+      "title_en": "Trajectory-based actuator identification via differentiable simulation",
+      "authors": "Vyacheslav Kovalev, Ekaterina Chaikovskaia, Egor Davydenko, Roman Gorbachev",
+      "date": "2026-04-11",
+      "pdf": "https://arxiv.org/pdf/2604.10351v2",
+      "score": "6.0",
+      "evidence": "无需内部访问的执行器识别与电机控制建模",
+      "tldr": "针对机器人仿真与现实间的执行器动力学差异，本文提出一种基于轨迹的可微仿真识别方法。该方法仅利用编码器运动数据，无需力矩传感器或电流测量，通过可微仿真器的反向传播优化执行器参数。该框架支持结构化和神经模型，在实际机器人轨迹匹配中将误差降低了近一倍，并显著提升了足式机器人运动策略的迁移效果。",
+      "tags": "query:pmsm",
+      "abstract_en": "Accurate actuation models are critical for bridging the gap between simulation and real robot behavior, yet obtaining high-fidelity actuator dynamics typically requires dedicated test stands and torque sensing. We present a trajectory-based actuator identification method that uses differentiable simulation to fit system-level actuator models from encoder motion alone. Identification is posed as a trajectory-matching problem: given commanded joint positions and measured joint angles and velocities, we optimize actuator and simulator parameters by backpropagating through the simulator, without torque sensors, current/voltage measurements, or access to embedded motor-control internals. The framework supports multiple model classes, ranging from compact structured parameterizations to neural actuator mappings, within a unified optimization pipeline. On held-out real-robot trajectories for a high-gear-ratio actuator with an embedded PD controller, the proposed torque-sensor-free identification achieves much tighter trajectory alignment than a supervised stand-trained baseline dominated by steady-state data, reducing mean absolute position error from 14.20 mrad to as low as 7.54 mrad (1.88 times). Finally, we demonstrate downstream impact for the same actuator class in a real-robot locomotion study: training policies with the refined actuator model increases travel distance by 46% and reduces rotational deviation by 75% relative to the baseline.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202604/18/2604.14714v1-temporal-logic-resilience-for-continuous-time-systems",
+      "section": "quick",
+      "title_en": "Temporal Logic Resilience for Continuous-time Systems",
+      "authors": "Ratnangshu Das, Negar Monir, Youssef Ait Si, Adnane Saoud, Sadegh Soudjani, Pushpak Jagtap",
+      "date": "2026-04-16",
+      "pdf": "https://arxiv.org/pdf/2604.14714v1",
+      "score": "6.0",
+      "evidence": "在直流电机系统上验证的弹性框架",
+      "tldr": "本文提出了一种量化连续时间（非）线性系统在外部扰动下满足信号时序逻辑（STL）规范的弹性下限框架。与衡量满足程度的鲁棒性不同，弹性定义为系统在保持规范满足的前提下能承受的最大扰动。研究通过推导扰动轨迹边界并结合场景优化方法，实现了最大容许扰动的有效计算，并在直流电机和车辆避障等案例中验证了其有效性。",
+      "tags": "query:pmsm",
+      "abstract_en": "In this paper, we present a novel framework for quantifying a lower bound on resilience in continuous-time (non)linear systems subject to external disturbances while ensuring satisfaction of signal temporal logic specifications. Unlike robustness, which evaluates how well a system satisfies a specification under a given disturbance, resilience measures the maximum disturbance a system can tolerate from a given initial state while maintaining specification satisfaction. We first derive bounds on the perturbed trajectories and then use them to formulate a computational method based on scenario optimization to efficiently compute the maximum admissible disturbance. We validate our approach through case studies, including dc motor, temperature regulation, a nonlinear numerical example, and a vehicle collision avoidance case.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
