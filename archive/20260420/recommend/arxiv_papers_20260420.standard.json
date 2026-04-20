@@ -1,0 +1,94 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-04-20T20:28:03.797092+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 2,
+    "quick_skim_target": 11,
+    "quick_selected": 2
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2604.15470v1",
+      "title": "Perron-Frobenius Contractive Operator Matching for Data-Driven Reachable Fault Identification and Recovery",
+      "abstract": "This paper focuses on data-driven fault detection, identification, and recovery (FDIR) for nonlinear control-affine systems under actuator faults. We create a unified framework in the space of probability densities, rather than on individual trajectories, using fault-indexed Perron--Frobenius (PF) operators to predict the evolution of state distributions under different fault profiles. By leveraging the probability-flow representation of the Fokker--Planck equation, we construct deterministic PF operators that reproduce exact stochastic marginals, define forward reachable density families, and establish certifiable 2-Wasserstein bounds on the divergence between fault-driven and nominal density evolutions. These provide quantitative conditions for the detectability and identifiability of various faults. The fault-indexed operators are learned from trajectory data via flow map matching (FMM), and we demonstrate that the observable FMM residual directly bounds the approximation error of the operator in the 2-Wasserstein metric. Additionally, we co-train a contraction certificate that bounds the gap between the learned operator family, the actual fault-driven density flow, and the nominal dynamics. The operator library is then used online for continuous fault parameter fitting over a continuous parameter space to generalize the learned operators to out-of-distribution (OOD) scenarios. To carry out the recovery control, we employ reachable density propagation and Gaussian mixture covariance steering. The proposed framework is validated on a 10-state spacecraft attitude-control system with four reaction wheels.",
+      "authors": [
+        "Joshua D. Ibrahim",
+        "Mahdi Taheri",
+        "Soon-Jo Chung",
+        "Fred Y. Hadaegh"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY",
+        "eess.SP"
+      ],
+      "published": "2026-04-16T18:44:02+00:00",
+      "link": "https://arxiv.org/pdf/2604.15470v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Data-driven fault identification and recovery for nonlinear systems",
+      "llm_evidence_cn": "非线性系统的数据驱动故障识别与恢复",
+      "llm_evidence": "非线性系统的数据驱动故障识别与恢复",
+      "canonical_evidence": "非线性系统的数据驱动故障识别与恢复",
+      "llm_tldr_en": "Develops a data-driven FDIR framework for nonlinear control-affine systems under actuator faults.",
+      "llm_tldr_cn": "为执行器故障下的非线性控制仿射系统开发了数据驱动的故障检测、识别与恢复框架。",
+      "llm_tldr": "为执行器故障下的非线性控制仿射系统开发了数据驱动的故障检测、识别与恢复框架。",
+      "llm_tags": [
+        "query:pmsm"
+      ],
+      "matched_query_tag": "query:pmsm",
+      "matched_query_text": "fault-tolerant control of multi-phase motors",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2604.15714v1",
+      "title": "Neuromorphic Parameter Estimation for Power Converter Health Monitoring Using Spiking Neural Networks",
+      "abstract": "Always-on converter health monitoring demands sub-mW edge inference, a regime inaccessible to GPU-based physics-informed neural networks. This work separates spiking temporal processing from physics enforcement: a three-layer leaky integrate-and-fire SNN estimates passive component parameters while a differentiable ODE solver provides physics-consistent training by decoupling the ODE physics loss from the unrolled spiking loop. On an EMI-corrupted synchronous buck converter benchmark, the SNN reduces lumped resistance error from $25.8\\%$ to $10.2\\%$ versus a feedforward baseline, within the $\\pm 10\\%$ manufacturing tolerance of passive components, at a projected ${\\sim}270\\times$ energy reduction on neuromorphic hardware. Persistent membrane states further enable degradation tracking and event-driven fault detection via a $+5.5$ percentage-point spike-rate jump at abrupt faults. With $93\\%$ spike sparsity, the architecture is suited for always-on deployment on Intel Loihi 2 or BrainChip Akida.",
+      "authors": [
+        "Hyeongmeen Baik",
+        "Hamed Poursiami",
+        "Maryam Parsa",
+        "Jinia Roy"
+      ],
+      "primary_category": "cs.NE",
+      "categories": [
+        "cs.NE",
+        "cs.LG",
+        "eess.SY"
+      ],
+      "published": "2026-04-17T05:34:53+00:00",
+      "link": "https://arxiv.org/pdf/2604.15714v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Health monitoring for synchronous power converters using SNNs",
+      "llm_evidence_cn": "使用脉冲神经网络对同步功率转换器进行健康监测",
+      "llm_evidence": "使用脉冲神经网络对同步功率转换器进行健康监测",
+      "canonical_evidence": "使用脉冲神经网络对同步功率转换器进行健康监测",
+      "llm_tldr_en": "Uses spiking neural networks for low-power parameter estimation in synchronous buck converters.",
+      "llm_tldr_cn": "利用脉冲神经网络对同步降压转换器进行低功耗参数估计，用于健康监测。",
+      "llm_tldr": "利用脉冲神经网络对同步降压转换器进行低功耗参数估计，用于健康监测。",
+      "llm_tags": [
+        "query:pmsm:composite"
+      ],
+      "matched_query_tag": "query:pmsm:composite",
+      "matched_query_text": "Papers central to 三相及双三相永磁同步电机相关研究检索, especially work that connects or combines: m; s; f; Permanent Magnet Synchronous Motor research; dual three-phase permanent magnet synchronous motor control and design; fault-tolerant control of multi-phase motors; recent advances in dual three phase permanent magnet synchronous motor control; fault tolerant strategies for multi phase permanent magnet synchronous motors.",
+      "matched_requirement_id": "req-composite-pmsm",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
