@@ -6,29 +6,35 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-04-20
-- 运行时间：2026-04-20 20:28:19 UTC
+- 最新运行日期：2026-04-21
+- 运行时间：2026-04-21 20:32:35 UTC
 - 运行状态：成功
-- 本次总论文数：2
+- 本次总论文数：4
 - 精读区：0
-- 速读区：2
+- 速读区：4
 
 ### 今日简报（AI）
-今日聚焦电力电子与系统故障诊断，探索数据驱动与类脑计算在设备运维中的前沿应用。
-重点关注利用 Perron-Frobenius 算子实现故障识别与恢复，以及脉冲神经网络在变流器健康监测中的参数估计潜力。
-建议关注数学算子与类脑模型如何跨界提升复杂硬件系统的实时监测与自愈能力。
-- 详情：[/202604/20/README](/202604/20/README)
+今日速读 4 篇前沿论文，聚焦软件定义汽车的模块化驱动架构与同步电机控制理论。
+重点关注基于电力数据包的无传感器控制方案，以及绕线转子同步电机最优电流参考理论的统一。
+建议深入了解电机驱动的模块化趋势，探索如何通过算法优化提升复杂系统的轻量化与容错性。
+- 详情：[/202604/21/README](/202604/21/README)
 
 ### 精读区论文标签
 - 本次无精读推荐。
 
 ### 速读区论文标签
-1. [Perron-Frobenius Contractive Operator Matching for Data-Driven Reachable Fault Identification and Recovery](/202604/20/2604.15470v1-perron-frobenius-contractive-operator-matching-for-data-driven-reachable-fault-identification-and-recovery)  
+1. [Modular Drive Architecture for Software-defined Vehicles Enabled by Power-packet-based Sensorless Control](/202604/21/2604.12297v2-modular-drive-architecture-for-software-defined-vehicles-enabled-by-power-packet-based-sensorless-control)  
    标签：评分：7.0/10、query:pmsm
-   evidence：非线性系统的数据驱动故障识别与恢复
-2. [Neuromorphic Parameter Estimation for Power Converter Health Monitoring Using Spiking Neural Networks](/202604/20/2604.15714v1-neuromorphic-parameter-estimation-for-power-converter-health-monitoring-using-spiking-neural-networks)  
+   evidence：针对电气化驱动单元和电机的无传感器控制方法
+2. [On the Unification of Optimal Current Reference Theory for Wound Rotor Synchronous Machines](/202604/21/2604.17165v1-on-the-unification-of-optimal-current-reference-theory-for-wound-rotor-synchronous-machines)  
+   标签：评分：7.0/10、query:pmsm
+   evidence：同步电机的最优电流给定
+3. [Time-Division Multiplexing Actuation in Tendon-Driven Arms: Lightweight Design and Fault Tolerance](/202604/21/2604.16887v1-time-division-multiplexing-actuation-in-tendon-driven-arms-lightweight-design-and-fault-tolerance)  
    标签：评分：6.0/10、query:pmsm
-   evidence：使用脉冲神经网络对同步功率转换器进行健康监测
+   evidence：电机驱动机器人手臂的容错性
+4. [Dissipative Latent Residual Physics-Informed Neural Networks for Modeling and Identification of Electromechanical Systems](/202604/21/2604.18277v1-dissipative-latent-residual-physics-informed-neural-networks-for-modeling-and-identification-of-electromechanical-systems)  
+   标签：评分：6.0/10、query:pmsm
+   evidence：机电系统的建模与辨识
 
 
 <div class="dpr-home-promo-card">

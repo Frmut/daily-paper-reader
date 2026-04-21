@@ -1,0 +1,65 @@
+{
+  "label": "2026-04-21",
+  "date": "2026-04-21",
+  "generated_at": "2026-04-21T20:32:46",
+  "count": 4,
+  "papers": [
+    {
+      "paper_id": "202604/21/2604.12297v2-modular-drive-architecture-for-software-defined-vehicles-enabled-by-power-packet-based-sensorless-control",
+      "section": "quick",
+      "title_en": "Modular Drive Architecture for Software-defined Vehicles Enabled by Power-packet-based Sensorless Control",
+      "authors": "Shiu Mochiyama, Rikuto Kawasome",
+      "date": "2026-04-14",
+      "pdf": "https://arxiv.org/pdf/2604.12297v2",
+      "score": "7.0",
+      "evidence": "针对电气化驱动单元和电机的无传感器控制方法",
+      "tldr": "针对软件定义汽车中硬件标准化与布线复杂性的挑战，本文提出一种基于功率数据包调度的模块化驱动架构。该架构通过在车辆端利用无传感器控制技术估算电机内部状态，彻底消除了驱动模块内的物理传感器，实现了软硬件的完全解耦。这种设计简化了布线并将控制逻辑集中化，为下一代电动出行提供了标准化的即插即用平台。",
+      "tags": "query:pmsm",
+      "abstract_en": "The transition toward software-defined vehicles requires standardization and modularization of hardware decoupled from software, along with centralized electrical/electronic architectures. While electrified drive units, such as integrated in-wheel drives, are expected to realize the hardware standardization and unprecedented flexibility in vehicle design, their implementation remains constrained by complex signal wiring between the module and the vehicle body and by control units decentralized across them. This paper proposes a modular drive architecture that achieves complete hardware-software separation by leveraging the power packet dispatching system. We introduce a sensorless control method that estimates motor internal states, specifically winding current and rotor angle, solely from physical quantities measured on the vehicle side. This completely eliminates the need for physical sensors in the drive module, reducing it to a passive actuator governed by the vehicle-side power system via a standardized packet protocol. The proposed architecture significantly reduces wiring complexity and centralizes control logic, advancing fully standardized, plug-and-play platforms for next-generation electrified mobility.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202604/21/2604.17165v1-on-the-unification-of-optimal-current-reference-theory-for-wound-rotor-synchronous-machines",
+      "section": "quick",
+      "title_en": "On the Unification of Optimal Current Reference Theory for Wound Rotor Synchronous Machines",
+      "authors": "Maxfield Parson-Scherban, Kasra Fallah, Navid Rahbariasr, Bernard Steyaert, James Anderson, Matthias Preindl",
+      "date": "2026-04-18",
+      "pdf": "https://arxiv.org/pdf/2604.17165v1",
+      "score": "7.0",
+      "evidence": "同步电机的最优电流给定",
+      "tldr": "本研究针对绕线转子同步电机（WRSM）提出了一种统一的最优电流基准理论。通过引入转子电流自由度，并综合考虑磁饱和、交叉耦合及速度相关的铁损，将电流基准寻找问题转化为仿射磁通区域内的二次约束二次规划（QCQP）。该方法利用有限元数据的分段仿射近似，在不同约束条件下提供闭式解或低维多项式解，实现了在全转矩-转速范围内的计算高效性与控制优化，并在物理原型机上得到了验证。",
+      "tags": "query:pmsm",
+      "abstract_en": "Controllers for motor drives typically require a current reference which will satisfy the requested torque subject to system constraints. This work generalizes existing current reference theory to the case of the Wound Rotor Synchronous Machine (WRSM). By incorporating the additional rotor-current degree-of-freedom, along with magnetic saturation, cross-coupling, and speed-dependent core losses, the problem of finding an optimal current reference is formulated within affine flux regions as a quadratically constrained quadratic program using a piecewise-affine approximation derived from finite-element data. The solution is characterized according to the active constraint regime, yielding closed-form or low-dimensional polynomial solutions in several cases, and a small semidefinite program in the voltage constrained regime. The proposed framework extends unified optimal current reference theory beyond the permanent-magnet setting to three degree-of-freedom WRSMs while remaining computationally tractable. Results on a physical WRSM prototype illustrate the effectiveness of the approach across the torque-speed operating envelope.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202604/21/2604.16887v1-time-division-multiplexing-actuation-in-tendon-driven-arms-lightweight-design-and-fault-tolerance",
+      "section": "quick",
+      "title_en": "Time-Division Multiplexing Actuation in Tendon-Driven Arms: Lightweight Design and Fault Tolerance",
+      "authors": "Shoujie Li, Changqing Guo, Jianle Xu, Hong Luo, Xueqian Wang, Wenbo Ding, Bin Liang",
+      "date": "2026-04-18",
+      "pdf": "https://arxiv.org/pdf/2604.16887v1",
+      "score": "6.0",
+      "evidence": "电机驱动机器人手臂的容错性",
+      "tldr": "本文针对航空航天机器人对轻量化和容错性的双重需求，提出了一种用于绳驱机械臂的时分复用驱动（TDMA）技术。通过垂直堆叠的选择结构和快速响应的电磁离合器，该方案在显著减少电机数量的同时保留了高输出扭矩。实验表明，基于此设计的MuxArm在自重仅2.17kg的情况下实现了10kg的驱动能力，并配合轨迹规划算法在部分失效时仍能保持高精度，为极端环境下的可靠作业提供了新思路。",
+      "tags": "query:pmsm",
+      "abstract_en": "Robotic manipulators for aerospace applications require a delicate balance between lightweight construction and fault-tolerant operation to satisfy strict weight limitations and ensure reliability in remote, hazardous environments. This paper presents Time-Division Multiplexing Actuation (TDMA), a practical approach for tendon-driven robots that significantly reduces actuator count while preserving high torque output and intrinsic fault tolerance. The key hardware employs a vertically-stacked rotational selection structure that integrates self-rotating TDM motors for rapid configuration, electromagnetic clutches enabling sub-0.1 second engagement, a worm gear reducer for enhanced load capacity and self-locking capability, and a dual-encoder system for precise, long-term positioning. Leveraging TDMA, the proposed MuxArm achieves a self-weight of 2.17 kg, supports an actuator driving capacity of 10 kg, and maintains end-effector accuracy up to 1% of its length, even under partial servo failure. Additionally, an actuation space trajectory planning algorithm is developed, enabling fault-tolerant control and reducing tendon load by up to 50% compared to conventional methods. Comprehensive experiments demonstrate MuxArm's robust performance in diverse settings, including free-space, cluttered, and confined environments.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202604/21/2604.18277v1-dissipative-latent-residual-physics-informed-neural-networks-for-modeling-and-identification-of-electromechanical-systems",
+      "section": "quick",
+      "title_en": "Dissipative Latent Residual Physics-Informed Neural Networks for Modeling and Identification of Electromechanical Systems",
+      "authors": "Youyuan Long, Gokhan Solak, Arash Ajoudani",
+      "date": "2026-04-20",
+      "pdf": "https://arxiv.org/pdf/2604.18277v1",
+      "score": "6.0",
+      "evidence": "机电系统的建模与辨识",
+      "tldr": "针对机电系统建模中第一性原理模型难以捕捉复杂耗散效应且传统残差PINN易违反能量守恒的问题，本文提出DiLaR-PINN。该方法通过在潜状态空间引入具有反对称-耗散结构的残差网络，确保系统能量非增，并结合课程学习策略提升训练稳定性。实验证明其在真实直升机系统上具有更强的物理一致性和长时外推能力。",
+      "tags": "query:pmsm",
+      "abstract_en": "Accurate dynamical modeling is essential for simulation and control of embodied systems, yet first-principles models of electromechanical systems often fail to capture complex dissipative effects such as joint friction, stray losses, and structural damping. While residual-learning physics-informed neural networks (PINNs) can effectively augment imperfect first-principles models with data-driven components, the residual terms are typically implemented as unconstrained multilayer perceptrons (MLPs), which may inadvertently inject artificial energy into the system.   To more faithfully model the dissipative dynamics, we propose DiLaR-PINN, a dissipative latent residual PINN designed to learn unmodeled dissipative effects in a physically consistent manner. Structurally, the residual network operates only on unmeasurable (latent) state components and is parameterized in a skew-dissipative form that guarantees non-increasing energy for any choice of network parameters. To enable stable and data-efficient training under partial measurability of the state, we further develop a recurrent rollout scheme with a curriculum-based sequence length extension strategy.   We validate DiLaR-PINN on a real-world helicopter system and compare it against four baselines: a pure physical model (without a residual network), an unstructured residual MLP, a DiLaR variant with a soft dissipativity constraint, and a black-box LSTM. The results demonstrate that DiLaR-PINN more accurately captures dissipative effects and achieves superior long-horizon extrapolation performance.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

@@ -1,0 +1,599 @@
+Title: Time-Division Multiplexing Actuation in Tendon-Driven Arms: Lightweight Design and Fault Tolerance
+
+URL Source: https://arxiv.org/pdf/2604.16887v1
+
+Published Time: Tue, 21 Apr 2026 00:38:40 GMT
+
+Number of Pages: 11
+
+Markdown Content:
+> 1
+
+# Time-Division Multiplexing Actuation in Tendon-Driven Arms: Lightweight Design and Fault Tolerance 
+
+Shoujie Li ∗, Changqing Guo ∗, Student Member, IEEE , Jianle Xu ∗, Hong Luo, Xueqian Wang, Member, IEEE ,Wenbo Ding, Member, IEEE , Bin Liang, Senior Member, IEEE 
+
+Abstract —Robotic manipulators for aerospace applications require a delicate balance between lightweight construction and fault-tolerant operation to satisfy strict weight limitations and ensure reliability in remote, hazardous environments. This paper presents Time-Division Multiplexing Actuation (TDMA), a practical approach for tendon-driven robots that significantly reduces actuator count while preserving high torque output and intrinsic fault tolerance. The key hardware employs a vertically-stacked rotational selection structure that integrates self-rotating TDM motors for rapid configuration, electromagnetic clutches enabling sub-0.1 second engagement, a worm gear reducer for enhanced load capacity and self-locking capability, and a dual-encoder system for precise, long-term positioning. Leveraging TDMA, the proposed MuxArm achieves a self-weight of 2.17 kg, supports an actuator driving capacity of 10 kg, and maintains end-effector accuracy up to 1% of its length, even under partial servo failure. Additionally, an actuation space trajectory planning algorithm is developed, enabling fault-tolerant control and reducing tendon load by up to 50% compared to conventional methods. Comprehensive experiments demonstrate MuxArm’s robust performance in diverse settings, including free-space, cluttered, and confined environments. 
+
+Index Terms —Tendon-Driven, Time-Division, Lightweight, Fault-Tolerant 
+
+I. I NTRODUCTION 
+
+# WITH the continuous advancement of aerospace technol-ogy, flexible robotic arms have shown great potential and value in space applications [1]. These robotic arms not only perform various tasks in complex space environments but also exhibit strong adaptability and operational flexibility. When designing space robotic arms, weight and stability are two critical factors [2]. A lightweight design not only helps reduce launch costs but also enhances the control performance and stability of the robotic arm in microgravity environments. Moreover, the complex radiation and electromagnetic interfer-ence in space pose significant challenges to the stability of the driving motors [3]. Therefore, designing a lightweight robotic 
+
+This work was supported by National Key R&D Program of China grant (2024YFB3816000), Guangdong Innovative and Entrepreneurial Re-search Team Program (2021ZT09L197), National Natural Science Foun-dation of China (62003188), Tsinghua Shenzhen International Graduate School-Shenzhen Pengrui Young Faculty Program of Shenzhen Pengrui Foundation (No. SZPR2023005) and Meituan. *Shoujie Li, Changqing Guo, and Jianle Xu contributed equally to this work. (Corresponding author: Xueqian Wang & Wenbo Ding, wang.xq@sz.tsinghua.edu.cn &ding.wenbo@sz.tsinghua.edu.cn) Shoujie Li, Changqing Guo, Jianle Xu, Hong Lu, Xueqian Wang, Wenbo Ding are with Shenzhen International Graduate School, Tsinghua University, Shenzhen 518055, China. Shoujie Li is also with the School of Mechanical and Aerospace Engineer-ing, Nanyang Technological University, Singapore 639956, Singapore. Bin Liang is with the Department of Automation, Tsinghua University, Beijing 100084, China. 
+
+Fig. 1. Overview of the tendon-driven robotic arm based Time-Division Multiplexing Actuation (TDMA). (a) Concept illustration of the robotic arm mounted on a satellite for space exploration with TDMA-based trajectory planning. (b–e) Key hardware modules enabling TDMA through vertically-stacked rotational selection structure: (b) Rotational TDM motors; (c) Rapid-switching clutches; (d) High-torque winding units; (e) Dual-encoder sensing systems. (f–h) Potential application scenarios: (f) Space debris cleanup; (g) Unmanned Aerial Vehicle (UAV) robotic arm grasping; (h) Radiation environment hazard management for autonomous vehicles. 
+
+arm with high payload capacity and fault tolerance is of great significance for advancing aerospace endeavours. To address lightweight and fault-tolerant design chal-lenges, researchers have explored structural solutions (origami-inspired guides [4], modular backbones [5]), routing opti-mizations (helical paths [6], constant-length routing [7]), and advanced actuators (magnetorheological clutches [8], base-mounted systems [9]). Redundant configurations [10], control algorithms [11], and reconfigurable designs [12] enhance reli-ability but increase complexity and mass. Recent time-shared actuation [13] reduces actuator count yet suffers from frequent switching and auxiliary dependencies. These limitations moti-vate a mechanism integrating lightweight design, high torque capacity, and intrinsic fault tolerance. To solve these problems, this paper introduces a vertically-stacked rotational Time-Division Multiplexing Actuation (TDMA), inspired by time-division communication principles, as shown in Fig. 1. TDMA employs a scheduler to dynami-cally multiplex multiple motors onto tendons, enabling multi-DOF control with reduced actuator count. This mechanism inherently improves fault tolerance by redistributing torque coupling among remaining servos during actuator failure. By reducing actuator count, TDMA enables integration of higher-capacity motors while the base-mounted configuration mini-mizes arm inertia, facilitating compact, lightweight, and cost-effective design for space exploration and orbital maintenance. 
+
+> arXiv:2604.16887v1 [cs.RO] 18 Apr 2026 2
+
+The innovation lies in a novel vertically-stacked rotational selection mechanism that enables time-multiplexed actuation through co-designed hardware and algorithms. The primary contributions of this work are:  
+
+> •
+
+Selection mechanism. A vertically-stacked rotational selection structure achieves efficient actuation, enabling control of more DOFs with fewer motors through rapid radial tendon selection via axial motor rotation. Criti-cal hardware includes self-rotating TDM motors, rapid-switching electromagnetic clutches, high-torque worm gear reducers, and dual-encoder sensing systems.  
+
+> •
+
+Robotic arm design. MuxArm features a disc-spring-backbone configuration enabling compliant multi-segment articulation, achieving 6-DOF control through 9 tendons with only 4 motors while maintaining 2.17 kg self-weight. The disc-spring-bearing assembly (25 bearings providing 44 passive DOFs + 6 active DOFs) offers structural support and passive compliance for high accuracy under actuator failures.  
+
+> •
+
+Trajectory planning. An actuation space trajectory plan-ning algorithm integrates BeamStep optimization with hardware scheduling, enhancing fault-tolerant control, actuation speed, and reducing tendon loads.  
+
+> •
+
+Experimental validation. Experimental validation in-cludes tests of control algorithms and fault tolerance, with successful completion of complex tasks such as obstacle-avoidance grasping and confined-space manip-ulation, demonstrating its application potential in space exploration and related missions. II. R ELATED WORKS 
+
+Lightweight and fault-tolerant tendon-driven robots are cru-cial for practical applications, particularly in aerospace where stringent mass budgets and reliability requirements must be met. Time-division multiplexing (TDM) offers a new paradigm by enabling actuator sharing across DOFs, potentially reducing the actuator-to-DOF ratio without introducing additional mass. Originating from communications engineering, TDM has been applied to tendon-driven systems. Ye et al. [22] achieved gait-synchronized path switching in soft exoskeletons, and Zuo et al. [23] used fast-response clutches ( <100 ms) for sequential joint actuation in 7 mm surgical robots. However, existing TDM implementations have critical limitations (Ta-ble I): thermal actuators [15]–[17] require 1–3 s switching and are temperature-sensitive; electromagnetic [18] and motor-driven [20] systems are bulky; magnetic [19] and electro-static [21] designs lack torque capacity or fault tolerance;                                                                  
+
+> TABLE I SUMMARY COMPARISON OF CONTINUUM ROBOT DRIVING SOLUTIONS
+> Work Self-lock Switch Spd. Torque Compact Temp. Sens. Fault Tol.
+> Ref. [14] ×N/A Medium Good Low ×
+> Ref. [15] ✓1-3s Low Good High ×
+> Ref. [16] ✓1-3s Low Good High ×
+> Ref. [17] ✓1-3s Low Good High ×
+> Ref. [18] ✓50-80ms Medium Poor Low ×
+> Ref. [19] ✓0.1-0.5s Medium Good Low ×
+> Ref. [20] ✓0.1-0.5s High Poor Low ×
+> Ref. [21] ✓50-100ms Low Good Medium ×
+> MuxArm ✓<0.1s High Good Low ✓
+
+base-mounted actuation [14] cannot self-lock. Fundamentally, these employ sequential single-tendon actuation unsuitable for continuum arms requiring coordinated multi-tendon control. Building upon our dexterous hand work [24], this paper extends TDM to continuum arms via a vertically-stacked ro-tational selection structure and BeamStep algorithm, enabling 1-3 concurrent actuators for coordinated multi-tendon control. III. H ARDWARE 
+
+In this section, we present the hardware architecture of the MuxArm, which integrates an innovative driver module and a tendon-driven manipulator to achieve efficient actuation, as shown in Fig. 2(a)-(b). The driver module implements a Time-Division Multiplexing (TDM) scheme with vertically-stacked rotational selection structure as illustrated in Fig. 2(c), in-cluding rotational TDM motors, rapid-switching clutch, high-torque winding and dual-encoder sensing. 
+
+A. TDMA Operation 
+
+The core concept of TDMA is to manage multiple DOFs by sequentially actuating the radial servos in discrete time slots. The operation includes two main steps: selecting and coupling .The selecting stage utilizing the axial motor to reposition radial servos and select the tendon, and an electromagnetic clutch couples servo torque to the selected tendon. The vertically-stacked rotational selection structure enables compact three-dimensional integration of the actuation system. As is illustrated in Fig. 3(a), positioning tasks of three servos are realized through three predefined positions controlled by the TDM motor configuration. The axial motor employs PID loops for both speed and position regulation, thereby accu-rately positioning the three radial servos. Accordingly, differ-ent tendons can be engaged, enabling flexible task execution. In scenarios where servo failure occurs, this mechanism can extend control positions to nine, thus providing redundancy of radial servos. As in shown in Fig. 3(b), torque engagement is facilitated by a electromagnetic clutching mechanism. Specifically, once the servo reaches its designated position, the solenoid will be energized to push the plug on the release rod into the slot on the servo disc. Conversely, when power is disengaged, a spring-loaded mechanism retracts the release rod, disconnect-ing the torque coupling path. After engagement, the torque is transferred via a gear train, consisting of four gears labeled 
+
+Z1–Z4, achieving an overall gear reduction ratio of 60. The winding wheel is driven by this amplified torque and its angle is measured by the encoder. Furthermore, unactuated tendon layers are inherently anchored by self-locking worm gears to prevent passive back-driving, while the transient clutch backlash is continuously compensated by the dual-encoder closed-loop system to maintain stable tension. 
+
+B. Actuation Module Design 
+
+Leveraging the TDMA scheme, the driver module of MuxArm uses three high-torque radial servos and an axial motor to sequentially actuate nine winding wheels, as shown 3          
+
+> Fig. 2. Mechanical design of the MuxArm. (a) Photograph of TDMA module. (b) Overall MuxArm assembly, comprising TDMA and manipulator module. (c) Four critical parts designed for TDMA. (d) Basic unit of the tendon-driven continuum robotic arm, with multiple such units forming a segment actuated by three tendons for bending. (e) Exploded view of the driver module: one axial motor repositions three radial servos, sequentially transmitting motion to nine winding wheels in the TDMA scheme.
+> Fig. 3. Structural overview of the TDMA scheme. (a) Cross-sectional view. Axial motor positions three radial servos among nine evenly spaced plugs (shading denotes active positions). (b) Transmission assembly. The electromagnetic clutch and geartrain transmit servo torque to the winding wheel, with spring-loaded disengagement.
+
+in Fig. 2(c). A vertically-stacked rotational selection structure is designed to integrate those innovative hardware modules, enabling compact three-dimensional arrangement of the actu-ation system. 
+
+1) Rotational TDM motors. : Primarily, the TDM mo-tors with self-rotation capability allows rapid selection of actuator positions, ensuring flexibility and adaptability dur-ing operation. One axial motor (HTM4538, Harmonic Drive LLC) is fixed in the center, which drives three radial servos (RX8U50HM, Feetech RC Model Co., Ltd.) placed 120° apart. This vertically-stacked rotational layout is markedly more compact compared to linear design, maximizing space efficiency through three-dimensional integration. Power and signal communication cables are passed through a conductive slip ring to avoid cable torsion. The CAN protocol is used for signal communication due to its robustness, real-time capability, and noise immunity. 
+
+2) Rapid-Switching Clutches. : Subsequently, the electro-magnetic clutches enable rapid engagement and disengage-ment within 0.1 seconds, which facilitates swift switching be-tween servos. The clutch operates via a chamfered cylindrical plug moving into a slot, with pre-engagement motor oscil-lation, spring-loaded insertion, and dual-encoder verification ensuring reliable engagement. The electromagnetic clutches adopt a normally open design and are energized only during torque transmission, effectively reducing power consumption and temperature rise (approximately 0.45A per coil, tempera-ture around 40°C). The main support carries the driver board that controls the axial motor and the solenoid. The solenoid is fixed coaxial with the magnets mounted on the release rod. The opposite end of the release rod carries a plug for mating with the servo and a cylindrical gear that couples to one end of the transmission shaft, which pass through linear bearings mounted on the main support.Compared to motors, solenoids exhibit superior durability due to their simple binary operation, which reduces mechanical wear and enhances reliability in aerospace applications. 4
+
+3) High-Torque Winding. : Furthermore, the worm gear reducers increase the winding torque (The force can be trans-mitted to each tendon by the actuation) and provides self-locking, which maintains stability under power-off conditions and reduces effective reflected inertia at the motor shafts. The opposite end of each transmission shaft connects to the worm gear sets, which then drive the winding wheel. The nine winding wheels in the actuation module are vertically stacked and used to tension the cables, which in turn bend the MuxArm. The winding wheel is mounted vertically using the inner and outer support. An encoder is installed on the inner side and connects to the decoder board to read the winding wheel angle. The wound tendons exit through the connector and run along the manipulator to their attachment points, where they transmit actuation forces to each joint. 
+
+4) Dual-Encoder Sensing. : Moreover, the servo encoders and winding wheel encoders are employed to guarantee high positioning accuracy during operation. Highly integrated PCB boards are designed for compact structure. The control board hosts an STM32F446-RET6 microcontroller running at 180 MHz, performing task scheduling, power conversion, and CAN-bus arbitration while tolerating up to 60 V DC. All nodes exchange data over the 1 Mbps CAN backbone. Moreover, it provides a USB serial interface through which high-level kinematic control can be implemented seamlessly. For the winding wheel, each wheel shaft integrates a magnetic encoder (AS5047P) that offers 14-bit resolution (0.02°). Angle data are transferred over SPI at 9 Mbps to the decoder MCU, which forwards the packets to the CAN network. 
+
+5) Lightweight Design : Finally, several design choices tar-get weight reduction. An apertured plastic–steel main support lowers mass while maintaining strength, and aluminum trans-mission shafts further reduce inertia. The vertically-stacked rotational structure inherently minimizes the system footprint while enabling efficient three-dimensional space utilization. The copper column between modules are acted simultaneously as structural supports and electrical conductors for passing power and signal. This dual-function arrangement reduces cable routing complexity while achieving compact design and ensuring structural stability through lightweight measures, including integrated connectors and hollowed structures. 
+
+C. Manipulator Module Design 
+
+As illustrated in Fig. 2(c), the manipulator module of the MuxArm features a lightweight modular design composed of 25 repeating backbone disc units, organized into three segments consisting of 9, 9, and 7 backbone discs, respectively. Each backbone disc consists of two centrally raised Ti–Mg alloy components to achieve high strength while maintaining low weight. A ball bearing accommodates relative angular displacement and interconnects consecutive discs as the central backbone, allowing each segment to achieve multi-directional bending motions. Around each disc pair, twelve sets of sym-metrically arranged springs are installed by dedicated hold-ers, providing structural stiffness. Furthermore, three tendon groups, each comprising three evenly spaced tendons, are distributed circumferentially along each backbone disc. These tendons run continuously from winding wheels at the base of the manipulator up to the top of each respective segment, allowing controlled bending along the manipulator length. IV. K INEMATICS 
+
+In this section, we derive the forward kinematics (FK) and inverse kinematics (IK) between task, configuration and actuation space [25]. MuxArm is modeled as three seri-ally connected continuum segments, each with a constant-curvature [26], [27] backbone of fixed length Li (i = 1 , 2, 3) ,as is depicted in Fig. 4(a) and Table 1. The base frame {T0}
+
+is fixed to the mounting flange, whereas {T1}, {T2}, and 
+
+{T3} are attached to the distal discs of segments 1, 2, and 3, respectively. For segment i we adopt the joint coordinates 
+
+qi = [ θi, ϕi]⊤, where θi is the bending angle and ϕi is the bending azimuth. The complete joint vector (configuration space) is q = [ q⊤ 
+
+> 1
+
+, q⊤ 
+
+> 2
+
+, q⊤ 
+
+> 3
+
+]⊤.
+
+A. Task-Configuration Transformation 
+
+Fig. 4 illustrates the constant curvature modeling for each segment. Eqn. (1)–(6) follow directly from this model by mapping the segment arc parameters (θ, ϕ, L ) to tendon length changes via the routing geometry. For brevity, we omit the intermediate derivation steps. The yellow centerline is an arc of length L and radius R = L/θ , subtending bending angle θ
+
+in the plane with azimuth ϕ. The local frame {Tn−1} is fixed to the proximal disc and {Tn} to the distal disc. The curvature center On lies in the xn−1 −yn−1 plane at distance R from the backbone. Angle θ is measured about zn−1 and ϕ from 
+
+xn−1 toward yn−1.
+
+1) Forward : The homogeneous transformation from 
+
+{Tn−1} to {Tn} is: 
+
+T(θ, ϕ, L ) = 
+
+
+
+c 2 
+
+> ϕ
+
+cθ + s 2 
+
+> ϕ
+
+sϕcϕ(cθ − 1) cϕsθ
+
+L c ϕ(1 − cθ )
+
+θsϕcϕ(cθ − 1) c 2 
+
+> ϕ
+
++ s 2 
+
+> ϕ
+
+cθ sϕsθ
+
+L s ϕ(1 − cθ )
+
+θ
+
+−cϕsθ −sϕsθ cθ
+
+L s θ
+
+θ
+
+0 0 0 1
+
+
+
+, (1) where cθ = cos θ, s θ = sin θ, c ϕ = cos ϕ, s ϕ = sin ϕ. The end effector pose follows from chaining three segments, which forms the forward kinematics: 
+
+T3(q) = T(θ1, ϕ 1, L 1) T(θ2, ϕ 2, L 2) T(θ3, ϕ 3, L 3), (2) with q collecting all joint variables. Eqn. (2) maps the six dimensional configuration space to T3 ∈ SE(3) .
+
+2) Inverse : Given the current and desired pose Tu = Ru pu
+
+01×3 1
+
+
+
+, Td =
+
+ Rd pd
+
+01×3 1
+
+
+
+, where R ∈ SO(3) 
+
+and p ∈ R3, the solution of inverse kinematics uses a damped pseudoinverse iteration. The 6 × 6 Jacobian 
+
+J(q) is assembled recursively from segment level angular and linear blocks. At each iteration, the pose error ε = pd − pu 
+
+> 12
+
+(R⊤ 
+
+> u
+
+Rd − R⊤ 
+
+> d
+
+Ru)∨
+
+
+
+[28] is projected through J† =
+
+J⊤(JJ ⊤)−1 to obtain: 
+
+∆q = λ J†ε, (3) 5 
+
+> Fig. 4. Hierarchical kinematic representation of the MuxArm. (a) Complete backbone assembly of three serial segments. (b) Individual segment model with constant curvature. (c) Cross-sectional view of the backbone unit.
+
+with gain λ initialized at 1 and halved on non-descent steps. Joint limits on θi are enforced after each update, and con-vergence is declared when position and orientation errors fall below 10 −10 .To enhance robustness and avoid local minima, a null space term ∆qnull = ( I − J†J)μ resolves redundancy, where μ
+
+denotes a null-space bias. Moreover, a parallel multi start scheme launches many local solves randomly, retaining the best collision free configuration for full pose only objectives. 
+
+B. Configuration–Actuation Transformation 
+
+Fig. 4(a) highlights each segment i ∈ { 1, 2, 3} driven by three tendons sets in red. These tendons follow the yellow backbone arc and attach to every backbone disc, as shown in Fig. 4(b). A cross section in Fig. 4(c) shows three anchor points at a common radius ra, each separated by 120 ◦. The tendons are indexed by j ∈ { 1, 2, 3}. In total, nine tendons are evenly distributed to match the nine winding wheels, although only three are marked in the cross-section. The tendon azimuth is defined as ψi,j = αi + 2π 
+
+> 3
+
+(j − 1) , where αi is the base angular offset (segment i’s tendon-triad orientation) and ψi,j 
+
+is the azimuthal angle of tendon j within segment i.
+
+1) Forward : Let ∆li be measured tendon displacements. First compute an intermediate azimuth ˜ϕi in the local disc frame: Based on the discrete constant-curvature framework, the bending parameters can be geometrically decoupled. We first compute an intermediate azimuth ˜ϕi in the local disc frame: 
+
+˜ϕi = tan −1
+
+√3 (∆ li, 2 − ∆li, 3)2∆ li, 1 − ∆li, 2 − ∆li, 3
+
+, (4) and the global bending azimuth is ϕi = ˜ϕi + αi (mod 2π).Subsequently, by substituting ˜ϕi into the geometric projection and utilizing the sum of the tendon displacements to isolate the bending magnitude, it follows as: 
+
+θi =
+
+p3(∆ li, 2−∆li, 3)2 + 3(∆ li, 2+∆ li, 3−2∆ li, 1)2 Li
+
+ra
+
+q
+
+1 + 2 cos 2 ˜ϕi
+
+3Li+(∆ li, 1+∆ li, 2+∆ li, 3) . (5) 
+
+> Fig. 5. Control framework of the MuxArm. Environmental inputs are mapped to actuation space trajectories, then optimized by the TDMA algorithm into actuator commands, and finally executed by an onboard STM32 controller.
+
+2) Inverse : The length change of tendon j in segment i is: 
+
+∆li,j =
+
+> i
+
+X
+
+> n=1
+
+
+
+2ξ sin 
+
+ θn
+
+2ξ
+
+ Ln
+
+θn
+
+−racos( ψn,j −ϕn)
+
+
+
+−Ln
+
+
+
+, (6) where ξ is the number of backbone discs per segment. The tendons pass through discrete guides on these discs, so the tendon path is modeled as ξ straight segments, while the backbone still follows a constant-curvature arc. The tendons in the same section are denoted as ∆li = [∆ li, 1, ∆li, 2, ∆li, 3]⊤.Eqn. (4)-(6) provide a bijective mapping between configu-ration space q = [ θ1, ϕ 1, θ 2, ϕ 2, θ 3, ϕ 3]⊤ and actuation space 
+
+∆l = [∆ l⊤ 
+
+> 1
+
+, ∆l⊤ 
+
+> 2
+
+, ∆l⊤ 
+
+> 3
+
+]⊤, forming the analytical bridge be-tween the actuation space planner and the hardware actuation strategy. V. TDMA A LGORITHM 
+
+This section outlines the algorithmic framework of TDMA for MuxArm. As illustrated in Fig. 5, environmental sensing provides the obstacle map and desired end-effector pose in task space. The IK solver converts this into an optimal joint configuration, which is then mapped into actuation space. We formulate tendon trajectory planning as a mixed-integer optimization problem, solved incrementally using the Beam-Step method to produce discrete tendon length update se-quences. A time-division multiplexing scheduler converts these updates into executable motor commands respecting hardware transmission constraints. The command sequence is delivered to the onboard STM32 controller, driving the axial motor, radial servos, and electromagnets to realize planned motion. Encoders on the winding wheels provide feedback for closed-loop control. 
+
+A. Optimization 
+
+The trajectory planning problem aims to determine a se-quence of incremental adjustments of the tendons subject to movement constraints. The manipulator is actuated by nine tendons with lengths l = [ l1, . . . , l 9]⊤.1 Given an initial state 
+
+l0 and a target state l⋆ in the actuation space, the trajectory    
+
+> 1To simplify notation in this section, we use flattened single subscripts lc
+> instead of the double-index form li,j for the the nine individual tendons. 6
+
+is modeled as a piecewise-linear path {lk}Kk=0 with K steps. Each increment lies in the span of the standard basis vectors indexed by hardware availability Ik:
+
+∆lk = X
+
+> c∈I k
+
+∆lkc ec ∈ span {ec : c ∈ I k}, (7) where ec denotes standard basis vector in R9, and Ik can be stated as the layer constraint. Let the tendon indices be grouped as P1 = {1, 2, 3}, P2 = {4, 5, 6}, P3 = {7, 8, 9} ac-cording to the TDMA design. At step k, motions are restricted to a single active layer Pik determined by the available servos 
+
+s ∈ Σ ⊆ { 1, 2, 3}. And only the one tendon group associated with a single segment is actuated, while the other two groups are held constant in the actuation space. The available tendon set Ik must lie within that layer:  
+
+> •
+
+|s| = 1 : |I k| = 1 , with Ik ⊆ Pik ; 
+
+> •
+
+|s| = 2 : |I k| = 2 , both in the same layer, Ik ⊆ Pik ; 
+
+> •
+
+|s| = 3 : |I k| = 3 , the whole layer, Ik = Pik .Additionally, we add a step size constrain. Per–step scalar increments ∆lkc are clipped with step size ∆max . For the cost function, we formulates travel distance, bending energy, and motor switches of the manipulator as: 
+
+J =
+
+> K
+
+X
+
+> k=1
+
+X
+
+> c∈I k
+
+∆lkc + λb
+
+> K
+
+X
+
+> k=1
+
+∥θ(lk)∥2 + λsw Wsw , (8) where lk = l0 + Pkn=1 ∆ln is the intermediate state, θ(lk)
+
+is the forward kinematics of the pose angles, and λb, λ sw are tunable weights, Wsw is the switches count of axial motor. In this way, trajectory planning is posed as the following optimization: 
+
+min   
+
+> {I k,∆lk}Kk=1
+
+J , (9a) s.t. |∆lkc | ≤ ∆max , ∀ c, k, (9b) 
+
+Ik ⊆ Pik , ∀ k, (9c) where K is a also decision variable and constraints encode the layer restriction and the per step size bound stated above. We adopt the BeamStep procedure to solve this mixed-integer optimization problem, due to the discrete sets Ik and 
+
+Algorithm 1 BeamStep. BEAM STEP (l0, l⋆, ∆max , λ b, λ w, B, tol) 
+
+H ← min-heap with (l0, J = 0) 
+
+while H not empty do 
+
+Keep top B in H
+
+(l, J ) ← pop lowest-cost from H
+
+if ∥l − l⋆∥∞ ≤ tol then return reconstructed trajectory 
+
+end if for each valid tendon set Ik do 
+
+Compute ∆lk
+
+Evaluate cost contribution using Eqn. (8) Insert (l + ∆ lk, updated J ) into H
+
+end for end while 
+
+continuous variables ∆lkc . It utilises the Beam search [29] that keeps the B lowest-cost partial trajectories at each expansion with step constraint ∆max . Starting from l0, the algorithm repeatedly enumerates feasible Ik ⊆ Pik to obtain ∆lk, (iii) evaluates the cost in Eqn. (8) and keeps the best B candidates in a min-heap, and (iv) advances until ∥lk − l⋆∥∞ ≤ tol . The retained increments are then chained to produce the executable sequence l0, . . . , lK . Algorithm 1 summarizes the procedure. 
+
+B. Scheduler 
+
+To execute tendon trajectories on hardware, incremental tendon motions in actuation space must be translated into servo commands that respect the TDMA scheme. We describe the scheduler in three parts: (1) index mapping among tendons, axial positions and radial servos, (2) fusion of consecutive motions, and (3) the final plan. 
+
+1) Mapping : Let a ∈ A = {1, . . . , 9} be the axial positions. With the tendons as lc, the TDMA scheme can be modeled as a surjective deterministic map c = F (a, s ). At step k, each required tendon lkc is realized by choosing: 
+
+(ak, s k) ∈ F −1(ck), (10) where F −1(l) = {(a, s ) | F (a, s ) = l}. Among all feasible selections, the scheduler chooses the one that minimizes expected axial motor switches (e.g., by reusing ak−1) and bal-ances future TDMA constraints. In this way, each commanded tendon lc is converted into a concrete pair (a, s ).
+
+2) Fusion : Consecutive slices that use the same axial position are accumulated and merged. After this fusion, the original K actuation steps are reduced to Kh hardware stages (Kh ≤ K). For axial position a and servo s, the fused tendon displacement is: 
+
+∆l∗(a, s ) = X  
+
+> k:ak=ak−1
+
+∆lkF (a,s ), (11) where commands with |∆l∗(a, s )| < tol are discarded. 
+
+3) Final plan : After fusion, the net tendon displacements 
+
+∆l∗(a, s ) could be converted into servo rotation angles ∆βs
+
+by a scale factor N determined by the transmission ratio, i.e., 
+
+∆βs = N ∆l∗(a, s ). Moreover, each clutch g corresponds one-to-one with its actuated tendon lc. The scheduler then emits an ordered list of Kh hardware instructions: 
+
+(ak, g k, [ ( sk, ∆βks ) ] s∈Σ) Kh
+
+> k=1
+
+, (12) where each instruction includes the axial position ak, the clutch gk to engage, and the commanded angle ∆βks for servo 
+
+s. This plan is compact because axial motor switches are minimized and all motions at the same axial position are fused before streaming to the STM32 controller. VI. E XPERIMENTS 
+
+In this section, first, we benchmark TDMA through tra-jectory analysis and statistical study. Second, we assess fault tolerance by emulating servo failures with optical motion tracking. MuxArm’s performance is quantified via load tests and workspace validation. Finally, we demonstrate manipu-lation in cluttered and confined settings reflecting on-orbit servicing scenarios like debris capture and equipment access. 7
+
+> Fig. 6. Experimental validation of TDMA-based trajectory planning for MuxArm, evaluated by tendon length and bending angle variation during the evolution process. (a) Illustration of the initial and target configuration of MuxArm. (b), (c), and (g) Results of the proposed BeamStep method under different numbers of available servos (1–3). (d), (e), and (f) Results of three baseline methods with one servo available.
+
+A. Algorithm Validation 
+
+We benchmark the TDMA actuation space planner on MuxArm against three baseline policies. For segment i ∈{1, 2, 3} with joint coordinates qi = [ θi, ϕ i]⊤, the tendon length changes are ∆li = [∆ li, 1, ∆li, 2, ∆li, 3]⊤.
+
+1) Baselines : Let π(k) be the policy to select the tendon actuated at step k. The update applies only to the selected ten-don; others are zero. We consider three policies: a sequential scan cycling 1 →9 (Eqn. (13a)), a reverse scan cycling 9 →1(Eqn. (13b)), and a greedy rule that selects the tendon with the largest absolute residual to its target (Eqn. (13c)). The policies are as follows: 
+
+πseq (k) = 1 +  (k − 1) mod 9 , (13a) 
+
+πrev (k) = 9 −  (k − 1) mod 9 , (13b) 
+
+πgreedy (k, ∆max ) = arg max  
+
+> (i,j )
+
+l∗ 
+
+> i,j
+
+− lk−1 
+
+> i,j
+
+, (13c) after which, the scheduler converts the net tendon displace-ments into servo commands according to Eqn. (12). 
+
+2) Metrics : We evaluate each plan by execution time T and transient quality ρduration  
+
+> i
+
+, and ρpeak  
+
+> i
+
+. During hardware instruc-tion k, engaged servos are synchronized with proportionally scaled speed under a global speed limit ω. The motion time and total time are: 
+
+tk 
+
+> move
+
+= max 
+
+> s∈Σk
+
+|∆βks |
+
+ω , T =
+
+> Kh
+
+X
+
+> k=1
+
+ tsw + tk
+
+> move
+
+, (14) where tsw denotes the time of repositioning and engagement. For each segment i ∈ { 1, 2, 3} with bending angle θi(t) and steady value θ∞ 
+
+> i
+
+, we report two overshoot ratios: 
+
+ρduration  
+
+> i
+
+= 1
+
+T
+
+Z T
+
+> 0
+
+1{ | θi(t)| > |θ∞ 
+
+> i
+
+| } dt, (15a) 
+
+ρpeak  
+
+> i
+
+=max  
+
+> t∈[0 ,T ]
+
+ |θi(t)| − | θ∞ 
+
+> i
+
+|
+
+> +
+
+|θ∞ 
+
+> i
+
+| , (x)+ = max( x, 0) . (15b) 
+
+3) Single-trajectory case study : Fig. 6(a) illustrates the motion from the straight state to the target q∗, with the three segments colour-coded and the TCP marked. BeamStep combines high performance with efficiency. Panels (b), (c), and (g) show BeamStep with the scheduler for 3, 2, and 1 available servos. Between three and two servos, the time shortens by 34.9%, which is smaller than the 50% difference in actuator count. The same holds between one and two servos with a 40.1% speed gain. This will be further supported by the statistical study and the fault tolerance evaluation. BeamStep suppresses overshoot and reduces execution time. Panels (d)–(f) present the baselines with one servo. Greedy requires the longest time and induces zigzag tendon updates. Sequential and reversed sequential complete the fastest among the baselines; however, the former generates large intermediate angles on the distal segment, while the latter shows even more pronounced overshoot. These patterns indicate higher transient tendon load. In contrast, BeamStep exhibits a smooth and shortened tendon evolution, reducing tension by up to 50% with suppressed overshoot. 
+
+4) Statistical analysis across tasks : We evaluate 15 ran-domly sampled feasible targets. For each method and for one to three available servos, we report the median and interquartile range of total hardware stages Kh, total time T
+
+and the per–segment overshoot ratios ρi. Table II summarises the results (best in bold). Qualitatively, the control strategy tends to use the proximal layer for coarse positioning to reduce switching, and reserves distal-layer updates for late-stage ori-entation refinement. Moreover, including the switching penalty discourages frequent layer changes; without this term, the behavior approaches the Greedy baseline with noticeably more axial toggling and zigzag tendon updates. BeamStep also produces smaller transients on all segments. With one servo, overshoot on segment 1 is consistently negli-gible because it is closest to the base and most constrained by the structure, while segments 2–3 show larger transients that 8
+
+TABLE II COMPARISON OF DIFFERENT PLANNING METHODS ACROSS VARIOUS SERVO COUNT . V ALUES ARE REPORTED AS MEDIAN (IQR).                                                                                                                            
+
+> BeamStep (Ours) Reversed Sequential Sequential Greedy
+> One Servo Total Time [s] 114.6 (41.8) 114.6 (35.8) 114.6 (35.8) 141.6 (48.0) Total Stage 10.0 (2.5) 10.0 (0.0) 10.0 (0.0) 17.0 (4.5) Overshoot Duration [%] Peak [%] Duration [%] Peak [%] Duration [%] Peak [%] Duration [%] Peak [%] Segment 1 0.0 (0.0) 0.0 (0.0) 0.0 (0.0) 0.0 (0.0) 0.0 (0.0) 0.0 (0.0) 0.0 (0.0) 0.0 (0.0) Segment 2 0.0 (7.3) 0.0 (24.3) 20.5 (33.4) 39.2 (72.1) 23.2 (41.3) 21.3 (117.0) 19.3 (13.3) 14.1 (24.7) Segment 3 9.5 (25.1) 0.0 (19.0) 13.0 (49.6) 14.7 (91.6) 70.2 (28.0) 49.9 (55.6) 25.2 (26.6) 14.7 (21.0) Two Servos Total Time [s] 96.2 (23.1) 81.3 (20.8) 79.8 (20.3) 74.2 (26.0) Total Stage 7.0 (1.0) 8.0 (1.0) 7.0 (0.0) 10.0 (2.0) Overshoot Duration [%] Peak [%] Duration [%] Peak [%] Duration [%] Peak [%] Duration [%] Peak [%] Segment 1 0.0 (0.0) 0.0 (0.0) 0.0 (0.0) 0.0 (0.0) 0.0 (0.0) 0.0 (0.0) 0.0 (0.0) 0.0 (0.0) Segment 2 22.2 (46.0) 15.8 (76.2) 23.5 (36.3) 28.7 (66.9) 28.6 (35.8) 21.3 (118.8) 24.4 (25.0) 18.4 (19.5) Segment 3 28.0 (49.0) 0.0 (31.2) 19.3 (52.2) 11.1 (91.6) 67.4 (20.1) 49.9 (59.4) 23.7 (30.9) 18.5 (20.1) Three Servos Total Time [s] 55.8 (18.5) 52.8 (17.9) 52.8 (17.9) 64.8 (23.9) Total Stage 5.0 (1.0) 4.0 (0.0) 4.0 (0.0) 8.0 (2.0) Overshoot Duration [%] Peak [%] Duration [%] Peak [%] Duration [%] Peak [%] Duration [%] Peak [%] Segment 1 0.0 (0.0) 0.0 (0.0) 0.0 (0.0) 0.0 (0.0) 0.0 (0.0) 0.0 (0.0) 0.0 (0.0) 0.0 (0.0) Segment 2 7.4 (28.6) 1.7 (18.5) 26.3 (46.5) 28.7 (67.3) 29.8 (37.4) 15.8 (118.8) 24.2 (19.8) 16.1 (38.2) Segment 3 28.9 (40.3) 14.1 (23.9) 23.9 (50.8) 11.1 (91.6) 55.6 (16.1) 49.9 (59.4) 38.8 (32.7) 21.8 (44.4)
+
+Fig. 7. Validating fault tolerance control of MuxArm. (a) Experimental setup with motion capture system. (b) Snapshots of the MuxArm’s forward and backward movement between the relaxed state and the target. (c) Clutching of the actuation module. (d) End-effector trajectories in task space under different numbers of active servos. (e) Decomposed trajectories over time, demonstrating that all configurations achieve the same target pose with high accuracy. 
+
+decay as available servos increase; In contrast, the baselines show longer durations and larger peaks with medians often above 50% and peaks that can exceed the steady value, especially on the distal segment. This follows from respecting tendon coupling and ordering updates to avoid antagonistic interactions, which lowers transient tendon load. The statistics also confirm the performance and efficiency. As available servos decrease, BeamStep’s median operational time grows less than proportionally, with one–servo times well below three times of the three–servo reference. In con-trast, baselines require more hardware stages or suffer longer transients. This shows that under time-division scheduling, our hardware and algorithm deliver high performance with multiple motors and maintain efficiency with few motors. The minimized total execution time effectively demonstrates the prevention of geometrically inefficient paths. Given the time-multiplexed nature of TDMA, it concurrently serves as an effective indicator to validate low task-space deviations. 
+
+B. Fault Tolerance 
+
+Our fault-tolerance approach primarily addresses winding servo failures. While the axial motor represents a single point of failure for layer switching, its significantly lower load, duty cycle, and use of brushless motor results in higher reliability. To evaluate the fault tolerance by TDMA, we emulate partial servo failures on MuxArm and track closed-loop motion. As shown in Fig. 7(a), experiments run inside a motion capture system (OptiTrack V120 Trio) at 120 Hz with rigidly mounted MuxArm. Four marker triads are attached to the base and to the distal end of each section to estimate key-point poses (Fig. 7(b)). Each trial starts from the straight configuration, reaches a target, and returns. We repeat the protocol with one, two, and three active servos. Across five independent trials and all failure conditions (3/2/1 active servos), the mean target RMSE remained low at 4.6 mm in position and 7.2◦ in orientation, indicating only minor accuracy degradation under partial actuation. We report one representative trial. Fig. 7(c) highlights the selecting and clutching hardware. In Fig. 7(d)–(e), solid curves denote forward motion, dashed curves denote the return, and colour encodes the number of available servos. From the capture data, the position RMSE at the target is 4.7 mm, about 1% of the arm length, and the orientation is 6.6 ◦, while it’s slightly 9 
+
+> Fig. 8. Performance evaluation of MuxArm. (a) Self-weight measurement of 2.17 kg. (b) Lifting test with a 10 kg payload. (c) Workspace demonstration. The color map indicates the dexterity across the reachable workspace. Selected sample points illustrate the accuracy and time-to-reach performance.
+
+higher over the full motion. The key positions marked in Fig. 7(d) show nearly coincident targets, indicating that TDMA maintains high accuracy under faults. For the result, the accuracy remains high because MuxArm retains full-DOF actuation. The source of error is the clutch slip and coupling mismatch during axial switches, which are amplified by the gear train and result in approximately 
+
+0.5 mm of tendon length change per switch. Fewer servos imply more switches, yet the cumulative error remains modest, which explains the tight clustering in Fig. 7(d)–(e). These observations verify intrinsic hardware robustness and effective redundant control under partial servo failures. 
+
+C. Load Test & Workspace Validation 
+
+To substantiate the enhanced performance enabled by TDMA, we conduct payload tests and workspace verification. Fig. 8(a) shows the self-weight of MuxArm as 2.17 kg. In Fig. 8(b), the driver module sustains a 10 kg payload, achieving a payload-to-weight ratio of 4.6. TDMA enables the selection of higher-torque motors by reducing actuator count under the same weight constraint. The chosen servo provides 0.88 N m rated torque, 2.26 N m peak dynamic torque, and 4.90 N m stall torque. Combined with the transmission design, this results in higher actuation force and payload capacity compared to conventional mechanisms. The workspace of the MuxArm were evaluated via Monte Carlo sampling ( 10 9 samples), constrained by the geomet-ric limits of the backbone discs. Dexterity, defined as the orientation-coverage ratio within a 10 ◦ tolerance, is projected onto the XZ plane due to the manipulator’s central symmetry (Fig. 8(c)). It peaks in the mid-radius region but diminishes near the workspace boundaries, such as in deeply folded or fully extended configurations. For physical validation, MuxArm executed representative spatial patterns, including opposing bends, C-, and S-shapes (Fig. 9(a)). All measured poses accurately fall within the pre-dicted theoretical envelope. Quantitative repeatability evalua-tions (Fig. 8(c)) further demonstrate high accuracy in extended poses. The expected error increase at deeply folded boundaries stems from unmodeled friction and compliance under extreme bending, rather than TDMA switching limits. This confirms that the TDMA mechanism provides reliable, full-DOF au-thority and decoupled control for each section. We also open-sourced a Python-based simulator (https://github.com/guo-cq/ MuxArm). It includes the dynamic visualization of configura-tion transitions and kinematics validation of MuxArm. 
+
+D. Cost Analysis 
+
+The system is low-cost, with a total cost of only $541.85. Motors account for most of the cost. The TDMA reduces actuator cost by about 88% compared with using individual high-torque compact servos, e.g., nine DYNAMIXEL XM540-W270-T units at $482.89 each.                                     
+
+> TABLE III COST OF TDMA MODULE (USD)
+> Type Item Num Price
+> Motors HTM4538 motor 1$109.60 RX8U50HM servos 3$338.02 Standard Parts Cylindrical gears 18 $14.82 Worm gears 18 $13.58 Releasing rods 9$2.64 Copper columns 14 $0.55 Magnets 9$1.50 Bearings 9$2.86 Springs 9$1.50 Screws $0.55 Non-standard Parts PCB boards 5$6.25 Enameled wire coils 9$4.32 Plastic-steel support 1$28.17 3D-printed parts $12.35 PTFE tube $0.14 Other materials $5.00
+> Total Cost $541.85
+
+E. Manipulation Tasks 
+
+To assess the practicality of TDMA, we conduct two ma-nipulation tasks in real environments. The tasks demonstrate redundancy-based obstacle avoidance in clutter, and operation in a confined pipe using a mobile manipulator. 
+
+Task 1: cluttered grasping. MuxArm is fixed on a frame and equipped with a parallel gripper. A raised cabinet serves as the obstacle, and an adjacent box holds several objects. The goal is to grasp the yellow ball and place it above the obstacle. Fig. 9(b) shows steps i–vi: the arm grasps the object, retracts by posture control, then rotates and places it on the target. In particular, steps iv–v show the extreme, tight S-shaped posture required for the task. 
+
+Task 2: confined mobile manipulation. Leveraging the lightweight structure, MuxArm is mounted as the end effector of a mobile manipulator (AgileX Ranger Mini 2.0), as shown in Fig. 9(c). A transparent S-shaped pipe lies on the floor with a small ball at the bottom. The mobile platform navigates with onboard lidar, and the manipulator aligns to the pipe mouth using an RGB–D camera (Intel D435i). The platform then holds position while the manipulator and MuxArm execute insertion (ii–iii), grasping (iv), extraction (v), releasing and departure (vi). A high-level planner uses the pipe shape for a coarse path, the manipulator provides gross motion, and MuxArm regulates local shape. For example, the sections bend sequentially while the arm first descends and then ascends to follow the local curvature in the insertion process. Both tasks were completed successfully, demonstrating the system’s capability to operate effectively in challenging en-vironments. TDMA provides reliable multi-DOF control that 10 
+
+> Fig. 9. Experimental demonstrations validating the versatility of MuxArm. (a) Workspace validation showing the large reachable end-effector space. (b) Object grasping in a cluttered environment with obstacles. (c) Grasping and extraction inside an S-shaped bent pipe using a mobile manipulator.
+
+exploits redundancy for obstacle avoidance and shape confor-mity in narrow passages. The manipulator actively adapts its configuration to conform to environmental constraints while executing planned trajectories. VII. C ONCLUSION 
+
+This paper presents a practical approach for tendon-driven continuum robots that addresses the tradeoff be-tween lightweight construction and fault-tolerant operation in aerospace applications. Implemented through a vertically-stacked rotational selection structure, TDMA enables four motors to control nine tendons across six degrees of freedom, achieving 55% actuator reduction and 88% cost reduction. The MuxArm manipulator demonstrates a self-weight of 2.17 kg, actuator driving capacity of 10 kg, and positioning accuracy up to 1% of arm length. Statistical validation confirms the system maintains full kinematic accuracy under partial servo failures. TDMA represents a time-for-space tradeoff, as it introduces longer execution times but achieves mass efficiency and fault-tolerant ability, which is suitable for aerospace applications. Future work will advance TDMA toward practical deploy-ment in three aspects. First, dynamic modeling research will establish comprehensive models accounting for cable elastic-ity, friction, and time-varying inertia to improve control ac-curacy under varying loads. Second, reliability enhancements including dual-axial-motor redundancy, fail-safe mechanisms, inline force sensors for real-time tension monitoring, and cable health monitoring will address aerospace safety requirements, while optimized scheduling algorithms will reduce task ex-ecution time. Third, field trials in aerospace environments and platform integration are essential for system certification. Beyond aerospace, further exploration will investigate its ap-plications in other weight-constrained domains including aerial manipulation, mobile robotics, and hazardous environment operations. REFERENCES [1] Y. Zhang, P. Li, J. Quan, L. Li, G. Zhang, and D. Zhou, “Progress, challenges, and prospects of soft robotics for space applications,”                       
+
+> Advanced Intelligent Systems , vol. 5, no. 3, p. 2200071, 2023. [2] F. Manara, A. Poka, D. Ludovico, A. Pistone, L. D. M. C. D. Verme, C. Canali, G. Berselli, and D. G. Caldwell, “Tendon-driven hyper-redundant manipulators: A review on design solutions,” IEEE/ASME Transactions on Mechatronics , pp. 1–16, 2025. [3] A. Flores-Abad, O. Ma, K. Pham, and S. Ulrich, “A review of space robotics technologies for on-orbit servicing,” Progress in aerospace sciences , vol. 68, pp. 1–26, 2014. [4] Y. Xu, Q. Peyron, J. Kim, and J. Burgner-Kahrs, “Design of Lightweight and Extensible Tendon-Driven Continuum Robots using Origami Pat-terns,” in 2021 IEEE 4th International Conference on Soft Robotics (RoboSoft) .New Haven, CT, USA: IEEE, Apr. 2021, pp. 308–314. [5] P. T. Dewi, P. Rao, and J. Burgner-Kahrs, “A Lightweight Modu-lar Segment Design for Tendon-Driven Continuum Robots with Pre-Programmable Stiffness,” in 2024 IEEE 7th International Conference on Soft Robotics (RoboSoft) .San Diego, CA, USA: IEEE, Apr. 2024, p. 531–536. [6] M. Russo, S. Wild, X. Dong, and D. Axinte, “Helical Routing: De-coupling Segments of Tendon-Driven Continuum Robots,” IEEE/ASME Transactions on Mechatronics , vol. 30, no. 3, pp. 2257–2269, Jun. 2025. [7] S. Sakurai and S. Katsura, “Development of Fully Tendon-Driven Lightweight Manipulator with Constant Tendon-Length Routing,” in
+> 2024 IEEE 18th International Conference on Advanced Motion Control (AMC) .Kyoto, Japan: IEEE, Feb. 2024, p. 1–6. 11
+
+[8] J. Viau, P. Chouinard, J.-P. L. Bigue, G. Julio, F. Michaud, and J.-S. Plante, “Tendon-Driven Manipulator Actuated by Magnetorheological Clutches Exhibiting Both High-Power and Soft Motion Capabilities,” 
+
+IEEE/ASME Transactions on Mechatronics , vol. 22, no. 1, pp. 561–571, Feb. 2017. [9] S. Guist, J. Schneider, H. Ma, L. Chen, V. Berenz, J. Martus, H. Ott, F. Gr¨ uninger, M. Muehlebach, J. Fiene, B. Sch¨ olkopf, and D. B¨ uchler, “Safe & Accurate at Speed with Tendons: A Robot Arm for Exploring Dynamic Motion,” in Robotics: Science and Systems . Robotics: Science and Systems Foundation, Jul. 2024. [10] J.-B. Sheu, T. Liu, and J.-J. Lee, “On the fail-safe design of tendon-driven manipulators with redundant tendons,” Journal of Mechanical Science and Technology , vol. 26, no. 6, pp. 1911–1920, Jun. 2012. [11] A. Raman, I. Walker, V. Krovi, and M. Schmid, “Cable failure tolerant control and planning in a planar reconfigurable cable driven parallel robot,” Frontiers in Robotics and AI , vol. 10, p. 1070627, May 2023. [12] E. Khoshbin, M. J.-D. Otis, and R. Meziane, “Reconfigurable cable-driven parallel mechanism design: physical constraints and control,” 
+
+Robotica , vol. 42, no. 10, pp. 3592–3638, Oct. 2024. [13] Y. Wang, C. Song, T. Zheng, D. Lau, K. Yang, and G. Yang, “Cable Routing Design and Performance Evaluation for Multi-Link Cable-Driven Robots With Minimal Number of Actuating Cables,” IEEE Access , vol. 7, pp. 135 790–135 800, 2019. [14] ——, “Cable routing design and performance evaluation for multi-link cable-driven robots with minimal number of actuating cables,” IEEE Access , vol. 7, pp. 135 790–135 800, 2019. [15] C. Bishop, M. Russo, X. Dong, and D. Axinte, “A novel underactu-ated continuum robot with shape memory alloy clutches,” IEEE/ASME Transactions on Mechatronics , vol. 27, no. 6, pp. 5339–5350, 2022. [16] A. Firouzeh, S. S. Mirrazavi Salehian, A. Billard, and J. Paik, “An under actuated robotic arm with adjustable stiffness shape memory polymer joints,” in 2015 IEEE International Conference on Robotics and Automation (ICRA) , 2015, pp. 2536–2543. [17] F. Alambeigi, R. Seifabadi, and M. Armand, “A continuum manipulator with phase changing alloy,” in 2016 IEEE International Conference on Robotics and Automation (ICRA) , 2016, pp. 758–764. [18] Z. Jiang, Y. Luo, and Y. Jin, “New cable-driven continuun robot with only one actuator,” in 2017 IEEE International Conference on Cybernetics and Intelligent Systems (CIS) and IEEE Conference on Robotics, Automation and Mechatronics (RAM) , 2017, pp. 693–698. [19] Q. Zhang, X. Chen, Z. Xiao, D. Shen, and X. Wang, “Multi-joint actuation of robotic arm using a switchable tendon-sheath drive system,” 
+
+IEEE Robotics and Automation Letters , vol. 10, no. 9, pp. 9534–9541, 2025. [20] B. Lin, S. Song, and J. Wang, “Reconfigurable tendon-driven robots: Eliminating intersegmental coupling via independently lockable joints,” 
+
+IEEE/ASME Transactions on Mechatronics , pp. 1–12, 2025. [21] P. Lancaster, C. Mavrogiannis, S. Srinivasa, and J. R. Smith, “Electro-static brakes enable individual joint control of underactuated, highly articulated robots,” The International Journal of Robotics Research ,vol. 43, no. 14, pp. 2204–2220, 2024. [22] X. Ye, C. Chen, Y. Shi, L. Chen, Z. Wang, Z. Zhang, Y. Liu, and X. Wu, “A time division multiplexing inspired lightweight soft exoskeleton for hip and ankle joint assistance,” Micromachines , vol. 12, no. 10, p. 1150, 2021. [23] Y. Zuo, G. Merritt, and X. Wang, “Design of a novel surgical robot with rigidity-adjustable joints based on time-division multiplexing actuation,” in 2020 8th IEEE RAS/EMBS International Conference for Biomedical Robotics and Biomechatronics (BioRob) . IEEE, 2020, pp. 885–890. [24] J. Xu, S. Li, H. Luo, H. Liu, X. Wang, W. Ding, and C. Xia, “Muxhand: A cost-effective and compact dexterous robotic hand using time-division multiplexing mechanism,” in 2025 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS) , 2025, pp. 12 333–12 340. [25] R. J. Webster III and B. A. Jones, “Design and kinematic modeling of constant curvature continuum robots: A review,” The International Journal of Robotics Research , vol. 29, no. 13, pp. 1661–1683, 2010. [26] D. B. Camarillo, C. F. Milne, C. R. Carlson, M. R. Zinn, and J. K. Salisbury, “Mechanics modeling of tendon-driven continuum manipula-tors,” IEEE Transactions on Robotics , vol. 24, no. 6, pp. 1262–1273, Dec. 2008. [27] P. Rao, Q. Peyron, S. Lilge, and J. Burgner-Kahrs, “How to model tendon-driven continuum robots and benchmark modelling perfor-mance,” Frontiers in Robotics and AI , vol. 7, p. 630245, Feb. 2021. [28] J. L. Blanco-Claraco, “A tutorial on SE(3) transformation parameteriza-tions and on-manifold optimization,” arXiv preprint , 2021. [29] C. Meister, T. Vieira, and R. Cotterell, “Best-first beam search,” Trans-actions of the Association for Computational Linguistics , vol. 8, pp. 795–809, 2020. 
+
+Shoujie Li received the B.Eng. degree in elec-tronic information engineering from the College of Oceanography and Space Informatics, China Uni-versity of Petroleum, Tsingtao, China, in 2020. He received Ph.D. degree from Tsinghua Shenzhen In-ternational Graduate School, Tsinghua University, Shenzhen, China, in 2025. He is working as a re-search fellow at Nanyang Technological University. His research interests include tactile perception, grasping, and machine learning. 
+
+Chanqing Guo received the B.Eng. degree in Robotic Engineering from Shien-Ming Wu School of Intelligent Engineering, South China University of Technology, Guangzhou, China. He is currently pur-suing the M.S. degree in Data Science and Informa-tion Technology at Tsinghua Shenzhen International Graduate School, Tsinghua University, Shenzhen, China. His research interests include robotic manipula-tion and tactile perception. 
+
+Jianle Xu received the B.S. degree in Agricultural Mechanisation and Automation from Hainan Univer-sity, Hainan, China, in 2023. He is currently work-ing toward the M.S.degree in Tsinghua Shenzhen International Graduate School, Tsinghua University, Shenzhen, China. His research interests include robot dexterous hands and electronic devices. 
+
+Hong Luo received the B.S. degree in Mechani-cal Design, Manufacturing, and Automation from Harbin Institute of Technology, Harbin, China. He is currently working toward the M.S. degree at Tsinghua Shenzhen International Graduate School, Tsinghua University, Shenzhen, China. His research interests include the design and con-trol methods of cable-driven robotic arms. 
+
+Xueqian Wang received the B.E. degree in mechan-ical design, manufacturing and Automation, Harbin University of Science and Technology, Harbin, China, in 2003, the M.Sc. degree in mechatronic engineering and the Ph.D. degree in control science and engineering from the Harbin Institute of Tech-nology (HIT), Harbin, China, in 2005 and 2010, respectively. From June 2010 to February 2014, he was the Postdoc Research Fellow with the HIT. His research interests include dynamics modeling, control, and teleoperation of robotic systems. 
+
+Wenbo Ding received the B.S. and Ph.D degrees (Hons.) from Tsinghua University in 2011 and 2016, respectively. He worked as a postdoctoral research fellow at Georgia Tech under the supervision of Professor Z. L. Wang from 2016 to 2019. He is now an associate professor and PhD supervisor at Tsinghua Shenzhen International Graduate School, Tsinghua University. His research interests include flexible electronics, tactile sensors, embodied intelligence and AI4S. 
+
+Bin Liang (Senior Member, IEEE) received the Ph.D. degree in mechanical automation from the Department of Precision Instrument, Tsinghua Uni-versity, Beijing, China, in 1994. Since 2007, he has been a Professor with the Department of Automa-tion,Tsinghua University. His research interests include modeling and con-trol of dynamic systems.
