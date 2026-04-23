@@ -1,0 +1,23 @@
+{
+  "label": "2026-04-23",
+  "date": "2026-04-23",
+  "generated_at": "2026-04-23T20:01:58",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202604/23/2604.20234v1-robust-fixed-time-model-reference-adaptive-control",
+      "section": "quick",
+      "title_en": "Robust Fixed-Time Model Reference Adaptive Control",
+      "authors": "Chayan Kumar Paul, Krishanu Nath, Indra Narayan Kar, Denis Efimov, Rosane Ushirobira",
+      "date": "2026-04-22",
+      "pdf": "https://arxiv.org/pdf/2604.20234v1",
+      "score": "6.0",
+      "evidence": "鲁棒固定时间模型参考自适应控制",
+      "tldr": "本文针对未知线性时不变系统，提出一种鲁棒固定时间模型参考自适应控制（MRAC）策略。该方法通过引入新型参数更新律，在不依赖严格持续激励（PE）条件的情况下，利用更易实现的初始/区间激励（IE）条件，实现了参数估计和跟踪误差的固定时间收敛。研究不仅简化了自适应控制的工程应用要求，还显著提升了系统应对参数不确定性和外部扰动的鲁棒性，并通过仿真验证了其优越性。",
+      "tags": "query:pmsm",
+      "abstract_en": "This article proposes a Model Reference Adaptive Control (MRAC) strategy to achieve fixed-time convergence of parameter estimation and tracking errors for unknown linear time-invariant systems, without relying on the persistence of excitation condition. Instead, it employs a less restrictive initial/interval excitation condition on the regressor matrix, enhancing practicality and ease of implementation in real-world scenarios. Our primary contribution is a novel parameter update law within the indirect MRAC framework, ensuring that parameter estimates converge within a fixed time, once the initial/interval excitation condition is met. This approach simplifies the practical requirements for adaptive control while guaranteeing robust performance against parameter uncertainty and external disturbances. Simulation results provide a comparison with the current literature to validate the effectiveness of this approach.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

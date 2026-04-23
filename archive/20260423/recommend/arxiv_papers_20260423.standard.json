@@ -1,0 +1,55 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-04-23T20:01:30.994142+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 1,
+    "quick_skim_target": 11,
+    "quick_selected": 1
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2604.20234v1",
+      "title": "Robust Fixed-Time Model Reference Adaptive Control",
+      "abstract": "This article proposes a Model Reference Adaptive Control (MRAC) strategy to achieve fixed-time convergence of parameter estimation and tracking errors for unknown linear time-invariant systems, without relying on the persistence of excitation condition. Instead, it employs a less restrictive initial/interval excitation condition on the regressor matrix, enhancing practicality and ease of implementation in real-world scenarios. Our primary contribution is a novel parameter update law within the indirect MRAC framework, ensuring that parameter estimates converge within a fixed time, once the initial/interval excitation condition is met. This approach simplifies the practical requirements for adaptive control while guaranteeing robust performance against parameter uncertainty and external disturbances. Simulation results provide a comparison with the current literature to validate the effectiveness of this approach.",
+      "authors": [
+        "Chayan Kumar Paul",
+        "Krishanu Nath",
+        "Indra Narayan Kar",
+        "Denis Efimov",
+        "Rosane Ushirobira"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY"
+      ],
+      "published": "2026-04-22T06:34:49+00:00",
+      "link": "https://arxiv.org/pdf/2604.20234v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "robust fixed-time model reference adaptive control",
+      "llm_evidence_cn": "鲁棒固定时间模型参考自适应控制",
+      "llm_evidence": "鲁棒固定时间模型参考自适应控制",
+      "canonical_evidence": "鲁棒固定时间模型参考自适应控制",
+      "llm_tldr_en": "A robust MRAC strategy for fixed-time convergence, applicable to high-performance PMSM parameter estimation.",
+      "llm_tldr_cn": "一种实现固定时间收敛的鲁棒MRAC策略，适用于高性能永磁同步电机参数辨识。",
+      "llm_tldr": "一种实现固定时间收敛的鲁棒MRAC策略，适用于高性能永磁同步电机参数辨识。",
+      "llm_tags": [
+        "query:pmsm"
+      ],
+      "matched_query_tag": "query:pmsm",
+      "matched_query_text": "Permanent Magnet Synchronous Motor research",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

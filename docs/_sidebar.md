@@ -1,6 +1,9 @@
 * <a class="dpr-sidebar-root-link" href="#/">首页</a>
 * <a class="dpr-sidebar-root-link dpr-sidebar-noactive-link" href="javascript:void(0)" data-dpr-hash="#/tutorial/README">使用教程</a>
 * Daily Papers
+  * 2026-04-23 <!--dpr-date:20260423-->
+    * 速读区
+      * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202604/23/2604.20234v1-robust-fixed-time-model-reference-adaptive-control" data-sidebar-item="{&quot;title&quot;: &quot;Robust Fixed-Time Model Reference Adaptive Control&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2604.20234v1-robust-fixed-time-model-reference-adaptive-control&quot;, &quot;score&quot;: &quot;6.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;pmsm&quot;}], &quot;evidence&quot;: &quot;鲁棒固定时间模型参考自适应控制&quot;}">Robust Fixed-Time Model Reference Adaptive Control</a>
   * 2026-04-21 <!--dpr-date:20260421-->
     * 速读区
       * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202604/21/2604.12297v2-modular-drive-architecture-for-software-defined-vehicles-enabled-by-power-packet-based-sensorless-control" data-sidebar-item="{&quot;title&quot;: &quot;Modular Drive Architecture for Software-defined Vehicles Enabled by Power-packet-based Sensorless Control&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2604.12297v2-modular-drive-architecture-for-software-defined-vehicles-enabled-by-power-packet-based-sensorless-control&quot;, &quot;score&quot;: &quot;7.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;pmsm&quot;}], &quot;evidence&quot;: &quot;针对电气化驱动单元和电机的无传感器控制方法&quot;}">Modular Drive Architecture for Software-defined Vehicles Enabled by Power-packet-based Sensorless Control</a>
