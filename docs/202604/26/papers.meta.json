@@ -1,0 +1,37 @@
+{
+  "label": "2026-04-26",
+  "date": "2026-04-26",
+  "generated_at": "2026-04-26T19:37:11",
+  "count": 2,
+  "papers": [
+    {
+      "paper_id": "202604/26/2604.21294v1-analytical-pi-tuning-for-second-order-plants-with-monotonic-response-and-minimum-settling-time",
+      "section": "quick",
+      "title_en": "Analytical PI Tuning for Second-Order Plants with Monotonic Response and Minimum Settling Time",
+      "authors": "Senol Gulgonul",
+      "date": "2026-04-23",
+      "pdf": "https://arxiv.org/pdf/2604.21294v1",
+      "score": "7.0",
+      "evidence": "二阶对象的解析PI调优",
+      "tldr": "本研究针对二阶受控对象，提出了一种旨在实现单调阶跃响应和最小调节时间的解析式PI参数整定方法。通过在Astrom和Hagglund框架下利用极点配置，研究发现将闭环极点设计得比受控对象快速极点更慢，可自然实现慢极点的零极点抵消。该方法提供了无自由参数的显式公式，在保证系统临界阻尼的同时，展现了优异且通用的鲁棒性指标，适用于所有具有两个实极点的稳定二阶系统。",
+      "tags": "query:pmsm",
+      "abstract_en": "Background: Tuning proportional-integral (PI) controllers for second-order plants to achieve monotonic step response with minimum settling time is an important problem in analytical control design. Existing methods address these objectives only partially or require numerical optimization. Methods: A closed-form analytical solution is derived through pole placement in the framework of Astrom and Hagglund. The key insight is that designing the closed-loop poles slower than the fast plant pole forces pole-zero cancellation of the slow plant pole as a consequence, not an assumption. The critically damped condition is then applied to minimize settling time. Results: The optimal PI parameters are K=T1/(4KpT2), Ti=T1, where T1 and T2 are the plant time constants and Kp is the plant gain. No free parameter remains. The resulting closed-loop system possesses universal robustness properties independent of plant parameters: maximum complementary sensitivity Mt = 1, maximum sensitivity Ms = 1.155, and phase margin PM = 76.35 degree. Conclusions: The proposed tuning formulas are explicit, analytically proven, and apply directly to any stable second-order plant with two real poles. Simulation results across six plant configurations confirm the analytical predictions exactly. The notation follows Astrom and Hagglund [5] throughout. Keywords: PI controller; second-order plant; pole placement; critically damped; monotonic response; settling time; robustness",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202604/26/2604.18765v1-multi-level-temporal-graph-networks-with-local-global-fusion-for-industrial-fault-diagnosis",
+      "section": "quick",
+      "title_en": "Multi-Level Temporal Graph Networks with Local-Global Fusion for Industrial Fault Diagnosis",
+      "authors": "Bibek Aryal, Gift Modekwe, Qiugang Lu",
+      "date": "2026-04-20",
+      "pdf": "https://arxiv.org/pdf/2604.18765v1",
+      "score": "6.0",
+      "evidence": "利用时序图网络进行工业故障诊断",
+      "tldr": "针对工业过程故障诊断中传感器间复杂的局部、全局及动态非欧几里得关系，本文提出一种结合局部-全局特征融合的多级时空图网络。该方法利用皮尔逊相关系数动态构建图结构，结合LSTM提取时间特征，并通过多级池化机制捕捉不同层级的空间依赖，最后融合局部与全局特征以提升诊断精度。在TEP数据集上的实验证明，该模型在处理复杂故障场景时表现优异。",
+      "tags": "query:pmsm",
+      "abstract_en": "Fault detection and diagnosis are critical for the optimal and safe operation of industrial processes. The correlations among sensors often display non-Euclidean structures where graph neural networks (GNNs) are widely used therein. However, for large-scale systems, local, global, and dynamic relations extensively exist among sensors, and traditional GNNs often overlook such complex and multi-level structures for various problems including the fault diagnosis. To address this issue, we propose a structure-aware multi-level temporal graph network with local-global feature fusion for industrial fault diagnosis. First, a correlation graph is dynamically constructed using Pearson correlation coefficients to capture relationships among process variables. Then, temporal features are extracted through long short-term memory (LSTM)-based encoder, whereas the spatial dependencies among sensors are learned by graph convolution layers. A multi-level pooling mechanism is used to gradually coarsen and learn meaningful graph structures, to capture higher-level patterns while keeping important fault related details. Finally, a fusion step is applied to combine both detailed local features and overall global patterns before the final prediction. Experimental evaluations on the Tennessee Eastman process (TEP) demonstrate that the proposed model achieves superior fault diagnosis performance, particularly for complex fault scenarios, outperforming various baseline methods.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

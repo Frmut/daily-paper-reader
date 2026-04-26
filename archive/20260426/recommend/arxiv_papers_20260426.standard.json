@@ -1,0 +1,88 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-04-26T19:36:44.689413+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 2,
+    "quick_skim_target": 11,
+    "quick_selected": 2
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2604.21294v1",
+      "title": "Analytical PI Tuning for Second-Order Plants with Monotonic Response and Minimum Settling Time",
+      "abstract": "Background: Tuning proportional-integral (PI) controllers for second-order plants to achieve monotonic step response with minimum settling time is an important problem in analytical control design. Existing methods address these objectives only partially or require numerical optimization. Methods: A closed-form analytical solution is derived through pole placement in the framework of Astrom and Hagglund. The key insight is that designing the closed-loop poles slower than the fast plant pole forces pole-zero cancellation of the slow plant pole as a consequence, not an assumption. The critically damped condition is then applied to minimize settling time. Results: The optimal PI parameters are K=T1/(4KpT2), Ti=T1, where T1 and T2 are the plant time constants and Kp is the plant gain. No free parameter remains. The resulting closed-loop system possesses universal robustness properties independent of plant parameters: maximum complementary sensitivity Mt = 1, maximum sensitivity Ms = 1.155, and phase margin PM = 76.35 degree. Conclusions: The proposed tuning formulas are explicit, analytically proven, and apply directly to any stable second-order plant with two real poles. Simulation results across six plant configurations confirm the analytical predictions exactly. The notation follows Astrom and Hagglund [5] throughout. Keywords: PI controller; second-order plant; pole placement; critically damped; monotonic response; settling time; robustness",
+      "authors": [
+        "Senol Gulgonul"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY"
+      ],
+      "published": "2026-04-23T05:15:10+00:00",
+      "link": "https://arxiv.org/pdf/2604.21294v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "analytical PI tuning for second-order plants",
+      "llm_evidence_cn": "二阶对象的解析PI调优",
+      "llm_evidence": "二阶对象的解析PI调优",
+      "canonical_evidence": "二阶对象的解析PI调优",
+      "llm_tldr_en": "Provides analytical PI tuning for second-order systems, highly applicable to PMSM speed and current loops.",
+      "llm_tldr_cn": "提供二阶系统的解析PI调优方法，非常适用于永磁同步电机的速度环和电流环。",
+      "llm_tldr": "提供二阶系统的解析PI调优方法，非常适用于永磁同步电机的速度环和电流环。",
+      "llm_tags": [
+        "query:pmsm"
+      ],
+      "matched_query_tag": "query:pmsm",
+      "matched_query_text": "Permanent Magnet Synchronous Motor research",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2604.18765v1",
+      "title": "Multi-Level Temporal Graph Networks with Local-Global Fusion for Industrial Fault Diagnosis",
+      "abstract": "Fault detection and diagnosis are critical for the optimal and safe operation of industrial processes. The correlations among sensors often display non-Euclidean structures where graph neural networks (GNNs) are widely used therein. However, for large-scale systems, local, global, and dynamic relations extensively exist among sensors, and traditional GNNs often overlook such complex and multi-level structures for various problems including the fault diagnosis. To address this issue, we propose a structure-aware multi-level temporal graph network with local-global feature fusion for industrial fault diagnosis. First, a correlation graph is dynamically constructed using Pearson correlation coefficients to capture relationships among process variables. Then, temporal features are extracted through long short-term memory (LSTM)-based encoder, whereas the spatial dependencies among sensors are learned by graph convolution layers. A multi-level pooling mechanism is used to gradually coarsen and learn meaningful graph structures, to capture higher-level patterns while keeping important fault related details. Finally, a fusion step is applied to combine both detailed local features and overall global patterns before the final prediction. Experimental evaluations on the Tennessee Eastman process (TEP) demonstrate that the proposed model achieves superior fault diagnosis performance, particularly for complex fault scenarios, outperforming various baseline methods.",
+      "authors": [
+        "Bibek Aryal",
+        "Gift Modekwe",
+        "Qiugang Lu"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-04-20T19:20:29+00:00",
+      "link": "https://arxiv.org/pdf/2604.18765v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Industrial fault diagnosis using temporal graph networks",
+      "llm_evidence_cn": "利用时序图网络进行工业故障诊断",
+      "llm_evidence": "利用时序图网络进行工业故障诊断",
+      "canonical_evidence": "利用时序图网络进行工业故障诊断",
+      "llm_tldr_en": "Proposes a multi-level temporal graph network for fault detection and diagnosis in industrial processes.",
+      "llm_tldr_cn": "提出一种多级时序图网络，用于工业过程中的故障检测与诊断。",
+      "llm_tldr": "提出一种多级时序图网络，用于工业过程中的故障检测与诊断。",
+      "llm_tags": [
+        "query:pmsm"
+      ],
+      "matched_query_tag": "query:pmsm",
+      "matched_query_text": "fault tolerant strategies for multi phase permanent magnet synchronous motors",
+      "matched_requirement_id": "req-8",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
