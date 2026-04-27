@@ -1,0 +1,127 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-04-27T20:34:13.580666+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 3,
+    "quick_skim_target": 11,
+    "quick_selected": 3
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2604.18783v1",
+      "title": "A Dynamic Mode Decomposition Approach to Parameter Identification",
+      "abstract": "This paper presents a data-driven algorithm for simultaneous system identification and parameter estimation in control-affine nonlinear systems. Parameter estimation is achieved by training a data-driven predictive model using state-action measurements and various known values at the parameters of interest. The predictive model is then used in conjunction with state-action data corresponding to unknown values of the parameters to estimate the said unknown value. Numerical experiments on the controlled Duffing oscillator with unknown damping, stiffness, and nonlinearity coefficients demonstrate accurate recovery of both the system trajectories and the unknown parameter values from data collected under open-loop excitation.",
+      "authors": [
+        "Moad Abudia",
+        "Opeyemi Owolabi",
+        "Joel A. Rosenfeld",
+        "Rushikesh Kamalapurkar"
+      ],
+      "primary_category": "math.OC",
+      "categories": [
+        "math.OC",
+        "eess.SY"
+      ],
+      "published": "2026-04-20T19:47:10+00:00",
+      "link": "https://arxiv.org/pdf/2604.18783v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Parameter identification for control-affine nonlinear systems like PMSM",
+      "llm_evidence_cn": "适用于永磁同步电机等控制仿射非线性系统的参数辨识",
+      "llm_evidence": "适用于永磁同步电机等控制仿射非线性系统的参数辨识",
+      "canonical_evidence": "适用于永磁同步电机等控制仿射非线性系统的参数辨识",
+      "llm_tldr_en": "Presents a data-driven algorithm for simultaneous system identification and parameter estimation.",
+      "llm_tldr_cn": "提出一种用于系统辨识和参数估计的数据驱动算法。",
+      "llm_tldr": "提出一种用于系统辨识和参数估计的数据驱动算法。",
+      "llm_tags": [
+        "query:pmsm"
+      ],
+      "matched_query_tag": "query:pmsm",
+      "matched_query_text": "Permanent Magnet Synchronous Motor research",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2604.20240v1",
+      "title": "LMI Approach for Sliding Mode Control and Analysis of DC-DC Converters",
+      "abstract": "Circuits' and in particular DC/DC converters' switching behavior is analyzed in this paper using the equivalent control modeling of the dynamic systems' sliding mode regime. As a representative example and also being one of the most complex circuits among DC/DC converters, the Ćuk converter is chosen. It is shown how the converter's behavior in the steady state regime can be studied and analyzed by the linear matrix inequalities based stability conditions for linear dynamic systems with nonlinear sector bounded perturbations. The maximization of the nonlinear sector bound provides a limit for applying the linear ripple approximation in the converter operation analysis. Furthermore, our approach is validated by providing simulation results for two different switching surfaces of practical interest.",
+      "authors": [
+        "Aleksandra Lekić",
+        "Dušan Stipanović"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY"
+      ],
+      "published": "2026-04-22T06:45:35+00:00",
+      "link": "https://arxiv.org/pdf/2604.20240v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Sliding mode control for power converters used in motor drives",
+      "llm_evidence_cn": "用于电机驱动功率变换器的滑模控制",
+      "llm_evidence": "用于电机驱动功率变换器的滑模控制",
+      "canonical_evidence": "用于电机驱动功率变换器的滑模控制",
+      "llm_tldr_en": "Applies LMI-based sliding mode control to DC-DC converters, relevant for motor drive power stages.",
+      "llm_tldr_cn": "将基于LMI的滑模控制应用于DC-DC变换器，与电机驱动功率级相关。",
+      "llm_tldr": "将基于LMI的滑模控制应用于DC-DC变换器，与电机驱动功率级相关。",
+      "llm_tags": [
+        "query:pmsm"
+      ],
+      "matched_query_tag": "query:pmsm",
+      "matched_query_text": "dual three-phase permanent magnet synchronous motor control and design",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2604.20509v1",
+      "title": "Approximate Simulation-based Hierarchical Control of Nonlinear Systems",
+      "abstract": "Controlling complex dynamical systems to satisfy sophisticated specifications remains a significant challenge in modern engineering. A promising approach to this problem is the approximate simulation-based hierarchical control (ASHC) technique. In this method, a simplified representation of the complex system, called the abstract system, is first designed and controlled. An interface function is then designed to translate the control law into the input of the complex system, thereby achieving approximate control synthesis. However, most existing results in ASHC are only for linear systems. This paper proposes a constructive method for solving the ASHC problem for nonlinear systems. To this end, we propose invariance equation-based methods to achieve the two classical requirements of the ASHC technique, namely the bounded output discrepancy and the $m$-relation. We then study the solvability conditions of the problem and summarise the overall design procedures. We illustrate the results with a practical example, providing step-by-step solutions to the ASHC problem of a DC-to-DC Ćuk converter.",
+      "authors": [
+        "Zirui Niu",
+        "Antoine Girard",
+        "Giordano Scarciotti"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY",
+        "math.OC"
+      ],
+      "published": "2026-04-22T12:52:35+00:00",
+      "link": "https://arxiv.org/pdf/2604.20509v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Hierarchical control of nonlinear systems applicable to motor dynamics",
+      "llm_evidence_cn": "适用于电机动力学的非线性系统分层控制",
+      "llm_evidence": "适用于电机动力学的非线性系统分层控制",
+      "canonical_evidence": "适用于电机动力学的非线性系统分层控制",
+      "llm_tldr_en": "Develops a constructive method for hierarchical control of nonlinear systems using abstract representations.",
+      "llm_tldr_cn": "开发了一种利用抽象表示对非线性系统进行分层控制的构造性方法。",
+      "llm_tldr": "开发了一种利用抽象表示对非线性系统进行分层控制的构造性方法。",
+      "llm_tags": [
+        "query:pmsm"
+      ],
+      "matched_query_tag": "query:pmsm",
+      "matched_query_text": "Permanent Magnet Synchronous Motor research",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

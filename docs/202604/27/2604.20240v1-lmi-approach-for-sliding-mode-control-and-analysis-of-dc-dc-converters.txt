@@ -1,0 +1,1529 @@
+Title: 2604.20240v1.pdf
+
+URL Source: https://arxiv.org/pdf/2604.20240v1
+
+Published Time: Thu, 23 Apr 2026 00:33:16 GMT
+
+Number of Pages: 9
+
+Markdown Content:
+A. LEKIĆ at al. LMI APPROACH FOR SLIDING MODE CONTROL AND ANALYSIS... 
+
+TEHNIKA – ELEKTROTEHNIKA 65 (2016) 5 715 
+
+# LMI Approach for Sliding Mode Control and Analysis of DC -DC Converter s
+
+ALEKSANDRA D. LEKI Ć, University of Belgrade, Original scientific paper 
+
+School of Electrical Engineering, Belgrade UDC : 621.314.1 
+
+DUŠAN M. STIPANOVIĆ , University of Illinois, DOI : 10.5937/tehnika1605715L 
+
+Coordinated Science Laboratory, Urbana, IL USA 
+
+Circuits’ and in particular DC/DC converters’ switching behavior is analyzed in this paper using the 
+
+equivalent control modeling of the dynamic systems’ sliding mode regime. As a representative example 
+
+and also being one of the most complex circuits among DC/DC converters, the Ćuk converter is chosen. 
+
+It is shown how the converter ’s behavior in the steady state regime can be studied and analyzed by the 
+
+linear matrix inequalities based stability conditions for linear dynamic systems with nonlinear sector 
+
+bounded perturbations. The maximization of the nonlinear sector bound pr ovides a limit for applying 
+
+the linear ripple approximation in the converter operation analysis. Furthermore, our approach is vali -
+
+dated by providing simulation results for two different switching surfaces of practical interest. 
+
+Key words : DC/DC converter , Ćuk converter, sliding mode, linear matrix inequalities 
+
+1. INTRODUCTION 
+
+In this work, we study a sliding mode regime as a 
+
+nonlinear (due to switching) system modeling beha -
+
+vior [1 -2] of DC/DC converters using the concept of 
+
+equivalent control as introduced and developed by 
+
+Utkin (see, for example, [1, 3]). In particular, we con -
+
+sider the Ćuk converter as a representative, one of the 
+
+most complex, and important example of DC/ DC con -
+
+verters [12] . We propose an approach in which a non -
+
+linear dynamic model resulting from applying so ca -
+
+lled equivalent control [1], is linearized around its equ -
+
+ilibria and represented as the sum of its linearized por -
+
+tion and the remainder which is nonlinear. This repre -
+
+sentation is known to be well suited for a Lyapunov 
+
+stability analysis based on Lin ear Matrix Inequalities 
+
+(LMI ) [ 4]. 
+
+LMI represent a special class of convex optimi -
+
+zation formulations [ 5] which thus inherit all the 
+
+benefits of convex programming algorithms such as 
+
+uniqueness of solutions, convergence to a solution if it 
+
+exists, and a definite test for feasibility of problems 
+
+where the answer depends on whether or not convex 
+
+algorithms c onverge. In particular, the LMI formu la -
+
+Aut hor’s address: Aleksandra Lekić, University of 
+
+Belgrade, School of Electrical Engineering, Belgrade ,
+
+Bulevar kralja Aleksandra 73 
+
+Paper received: 11.05.2016. 
+
+Paper accepted: 28.09.2016. 
+
+tion enables an application of convex programming in 
+
+computing a quadr atic Lyapunov function which pro -
+
+ves stability of the overall nonlinear system as well as 
+
+switched systems [ 6]. 
+
+(a) 
+
+(b) 
+
+Figure 1 – Ćuk converter containing (a) unidirectional 
+
+switch S and a diode D; (b) bidirectional 
+
+switches S1 and S2. 
+
+One of the key ingredients in this formulation is 
+
+the sector bounding of the additive non linearity which 
+
+is thus treated as a perturbation [7]. Fu rthermore we 
+
+obtain a relationship between the simu lation results 
+
+and the domain in which the nonlinearity is sector 
+
+boun ded with the sector being maximized using LMI A. LEKIĆ at al. LMI APPROACH FOR SLIDING MODE CONTROL AND ANALYSIS... 
+
+716 TEHNIKA – ELEKTROTEHNIKA 65 (2016) 5
+
+formulation. This relationship enables us to estimate a 
+
+size of the hysteresis used to design a switching se -
+
+quence for which the converter operates in a proper 
+
+steady state regime. 
+
+Most of the research on cont rol of the Ćuk con -
+
+verter has been focusing on controlling two state 
+
+var iables, as in [8 ] where it is related to the sliding 
+
+mode control under an assumption that 21 CC  (for 
+
+the capacitors C1 and C2 denoted as in Fig. 1) which 
+
+results in an overall system reduction. 
+
+This reduction was performed in some particular 
+
+cases by exactly one reactive element elimination [ 9]. 
+
+However, there are some other works concerning 
+
+sliding mode control of the Ćuk converter which 
+
+incorporated a full -order system model as reported in 
+
+[1 0]. 
+
+Publica tion [10 ] describes sliding mode controls of 
+
+the Ćuk converter built with bidirectional switches, 
+
+which do not produce any discontinuous regimes. LMI 
+
+approach has been already used for a d esign of the 
+
+sliding -mode controlled buck converter [1 1]. 
+
+In this paper we show how the sliding mode 
+
+control of the Ćuk converter in its all continuous and 
+
+discontinuous regimes can be analyzed using an LMI 
+
+based stability analysis for linear systems with an 
+
+additive nonlinearity. Stability conditions in the case 
+
+of each switching surface are formulated using LMI 
+
+and the additive nonlinearity (treated as a perturbation) 
+
+bound is computed. The sector bounded nonlinearity is 
+
+shown to be in a direct connection with the linear ripple 
+
+approximation [12 ]. 
+
+The paper is org anized as follows. In Section 2 , the 
+
+sliding mode analysis and how to compute equivalent 
+
+control for a class of dynamic systems which model 
+
+DC/DC circuits’ switching behavior are presented. Dy -
+
+nam ic properties of the Ćuk converter and its modeling 
+
+are described and developed in Sec tion 3 . In Section 4,
+
+a switching surface analysis for two diffe rent surfaces 
+
+of interest as well as corresponding simulation results 
+
+are provided. Finally, some conclud ing remarks are 
+
+sum marized in Section 5 .
+
+2. SLIDING MODE ANALYSI S, STABILITY AND 
+
+CONTROL 
+
+For a switching system such as DC/DC converter 
+
+[1 3], the concept of the sliding mode control is 
+
+materialized through an ON -OFF operation of a
+
+controllable switch. Considering that for any converter 
+
+there is only one switching signal, there are two 
+
+subsystems in the continuous conduction mode which 
+
+can be rewritten in a compact matrix form as 
+
+( ) u   x A x B C x D (1) 
+
+where x denotes the state v ector consisting of n state 
+
+variables and {0,1} u  is the scalar indicator showing 
+
+whether the controllable switch is conducting or not. 
+
+Matrices A, B, C and D are of appropriate dimensions 
+
+determined by dimensions of x and u. Essentially the 
+
+system (1) represents a set of n linear differential 
+
+equations with a switching variable. For the control of 
+
+DC/DC converters, the switching law is given by 
+
+1, switch to 1 when ( ) 0, switch to 0 when ( ) ,
+
+Su S
+
+      
+
+xx (1)
+
+where we assume that the sliding surface is of a 
+
+linear form ( ) ( )S     
+
+> xM x x
+
+with the coefficients bei -
+
+ng entries of a row vector  nmm 1M ,  is a 
+
+positive number and a constant column vector  
+
+> x
+
+is an 
+
+equilibrium point and steady -state vector. 
+
+Sliding mode control technique is applied in order 
+
+to analyze the converter’s behavior on the switching 
+
+surface using the concept of equivalent control [1]. 
+
+The system’s motion in the sliding mode is 
+
+restricted to the switching surface 0)( xS if the 
+
+surface is at tractive. In the steady -state is also 0)( xS
+
+, [1], and thus, the equivalent control can be obtained 
+
+from the vector equ ation 
+
+#  
+
+> 1
+
+( ) ,eq 
+
+S Su
+
+> 
+
+        
+
+Cx D A x Bx x (2)
+
+if ( )   
+
+> SCx Dx
+
+is nonsingular, which will be satisfied in 
+
+the cases of our interest. After substituting eq u in Eq. 
+
+(1) we obtain 
+
+( ) .eq u   x A x B C x D (4) 
+
+An equilibrium and steady -state vector  
+
+> x
+
+can 
+
+now be computed as a constant solution to Eq. (4). 
+
+Furthermore, we represent the system as the sum of the 
+
+linear part ( )   
+
+> 1Axx
+
+(computed using Taylor’s 
+
+expansion) and the exact nonlinear remainder 
+
+computed as 
+
+( ) ( )
+
+  1h x x A x x (5) 
+
+where x is given in the Eq. (4). 
+
+The sliding surface equation 0)( xS enables an 
+
+elimination of one state variable, in general. By 
+
+introducing the change of variables   
+
+> xxy
+
+, where  
+
+> 
+> x
+
+is an equilibrium, and denoting as z the vector of A. LEKIĆ at al. LMI APPROACH FOR SLIDING MODE CONTROL AND ANALYSIS... 
+
+TEHNIKA – ELEKTROTEHNIKA 65 (2016) 5 717 
+
+variables iy which are not eliminated, the reduced sy -
+
+stem dynamics can be written as     
+
+> (1) ( 1) (1) 1
+
+( ) n n n     
+
+> 
+
+ z A z h z , (6) 
+
+where matrix  
+
+> A
+
+and nonlinearity  
+
+> h
+
+are obtained 
+
+after one state variable is eliminated using the sliding 
+
+surface equation. 
+
+System stability on the desired sliding surface is 
+
+determined by finding a Lyapunov function candidate 
+
+of the quadratic type 
+
+( ) T
+
+V z z Pz , (3)
+
+where P is a constant positive definite matrix. The 
+
+next step is to compute )(zV as follows:                     
+
+> ( ) ()2( ) TTTT
+> V
+> zzAPPA zz P h z
+
+(4)
+
+The stability analysis is performed using LMI [ 4]
+
+which is an efficient and alm ost the only way to 
+
+compute Lyap unov functions for systems whose dyna -
+
+mics are represented by a linear and a sector bounded 
+
+nonlinear part. The LMI problem is formulated using 
+
+the S -procedure [1 4] which maximizes the bound on 
+
+the nonlinear part. This approach due to being based 
+
+on convex programming will always provide a solution 
+
+if the problem is feasible and the convergence in the 
+
+case when the solution exists is fast. Now, the LMI 
+
+problem to examine systems stability can be formu -
+
+lated as fol lows [7 ]: 
+
+> .00subject to minimize
+> 
+> 
+> I0HY 0IIYH IYA YAY
+> 
+> TT
+
+(5)
+
+A solution would provide matrix 1   
+
+> PY
+
+, for 
+
+some positive value τ (see [7] for more details ), which 
+
+maximizes the sector bound  1 
+
+> 
+
+so the system is 
+
+Lya punov stable. Lyapunov function derivative is then               
+
+> ( ) 2( ) 0, 0TT
+> V
+>   zz Qz z Ph zz
+
+, (6)
+
+where ( ) 0T T       
+
+>   QAPPA
+
+and the nonlinear 
+
+term/remainder satisfies the following sector bound  
+
+> 2
+
+.T T T
+
+  h h z H Hz (7)
+
+The nonlinear remainder’s sector bound shape is 
+
+determined by a matrix H and a positive parameter 
+
+0  . The following nonsingular trans formation [7 ]
+
+,x Tx  (8)
+
+with matrix T being formed from the eigenvectors of 
+
+the matrix  
+
+> A
+
+provides larger values for α, that is, a 
+
+better sector bound . Therefor e, the LMI formulation in 
+
+the transformed space 
+
+,H HT  (9)
+
+for the preselected matrix H
+
+~ results in sect or bound 
+
+value denoted as ~ , which is related to α as  
+
+> 1
+
+.
+
+ 
+
+ T
+
+ (10 )
+
+The maximization of the sector bound provides a 
+
+limit for applying the linear ripple approximation, that 
+
+is, a limit for considering state variables time constants 
+
+to be negligible. 
+
+3. MODELING BEHAVIORS O F THE ĆUK 
+
+CONVERTER 
+
+The Ćuk converter depicted in Fig. 1 is a complex 
+
+fourth order DC/DC convert er [12 ] which for those 
+
+reasons is chosen to illustrate our approach. In parti -
+
+cular, Fig ure 1a shows a Ćuk converter which applies 
+
+switches realized by an unidirectional switch and a 
+
+diode, while Fig ure 1b shows a synchronous Ćuk con -
+
+verter employing current and voltage bidirectional 
+
+switches. For the synchronous converter bidirectional 
+
+switches are controlled with state(S2)=¬state(S1), 
+
+where ¬ denotes negation. 
+
+A. Sliding domain and operating modes 
+
+Depending on the Ćuk converter’s switches r eali -
+
+zation, a few operating modes can be determined and 
+
+analyzed. Both realizations of the Ćuk converter depi -
+
+cted in Fig. 1 operate in two continuous modes, that is, 
+
+the first one being when switch S is on and a diode isn’t 
+
+(in Figure 1b switch S1 is on and S2 is off ) and the 
+
+second one being when switch S is off and diode D is 
+
+conducting (switch S1 is off and S2 is on where again 
+
+we refer to Figure 1b). 
+
+In the continuous conduction mode the state space 
+
+equations are given by                                                       
+
+> 1121211221221221122
+> (1 ), ,(1 ),,
+> IN CCCLLCCCLLL
+> vvvvdi di uudt LLdt LLdv dv viiiuudt CCdt CRC
+>   
+
+(15) 
+
+where 1u is when S is on and D is off and 0u
+
+when S is off and diode D is on. Additionally, switch 
+
+S1 from Fig. 1b is controlled with signal u and switch A. LEKIĆ at al. LMI APPROACH FOR SLIDING MODE CONTROL AND ANALYSIS... 
+
+718 TEHNIKA – ELEKTROTEHNIKA 65 (2016) 5
+
+S2 with u . Eq. (15) can be rewritten in the compact 
+
+matrix form suitable for applying sliding mode control 
+
+as in Eq. (1), with matrices defined as follows:                                 
+
+> 100010001110001100020210000110010111100000022
+
+, ,                                      
+
+> LLvIN LLLCCCCRC
+> 
+> 
+
+  A B C
+
+(11 )
+
+with matrix D being zero matrix and thus omitted in 
+
+what follows. Vector of the state space variables 
+
+#  TCCLL vvii 2121x is defined as 11 Lix  , 
+
+> 22L
+
+ix  , 13 Cvx  and 24 Cvx  , with the prescribed 
+
+syntax steady -state values being 
+
+ 11 xiL , 
+
+ 22 xiL ,
+
+> 
+
+ 31 xvC and 
+
+ 42 xvC .
+
+A synchronous converter depicted in Fig ure 1b can 
+
+operate only in the continuous modes. Additionally, 
+
+the Ćuk converter shown in Figure 1a operates in two 
+
+discontinuous modes, discontinuous inductor current 
+
+mode (DICM) and discontinuous capacitor voltage 
+
+mode (DCVM). 
+
+DICM occurs when the switch S is turned off and 
+
+the sum of the inductor currents goes to zero, that is, 
+
+021  LL ii , which turns off the diode. State space 
+
+equations in DICM are as follows:             
+
+> 121212121212222122
+
+,, .      
+
+> IN CCLLCCCLL
+
+v v vdi di dt dt L L L L L Ldv dv vi idt C dt C RC 
+
+          
+
+(12 )
+
+DCVM occurs in the state when swith S is on and 
+
+the diode is off and capacitor voltage 1Cv reaches zero. 
+
+That creates conditions for the diode to turn on and 
+
+converter enters DCVM resulting in the following state 
+
+space equations:      
+
+> 21212122222
+
+, ,0, .    
+
+> IN CLLCCCL
+
+v vdi di dt L dt Ldv dv vidt dt C RC 
+
+    
+
+(18) 
+
+In order to apply the sliding mode control techni -
+
+que to the Ćuk converter, inverting hysteresis regulator 
+
+with thresholds  is used. 
+
+Regulator produces controlling signal u as defined 
+
+in Eq. (2) with the sliding surface determined using the 
+
+following equation:       
+
+> 1 1 223 3 445
+
+( ) S x m x m x m x m x m     (13 )
+
+where 5m becomes a weighted sum of the refere nce 
+
+values multiplied by the corresponding coefficients  
+
+> 41
+
+,, mm  given with expression       
+
+> 51 1 223 3 44
+
+m m x m x m x m x    
+
+    . (14 )
+
+We primarily consider a Ćuk converter containing 
+
+a switch and a diode which can operate in all 
+
+continuous and discontinuous modes. For such a con -
+
+verter, state variable 3x is posit ive and 4x is negative, 
+
+in the steady state, respectively. Thus, it is assumed 
+
+that 1 0m  , 2 0m  , 3 0m  , 4 0m  and 5 0m  .
+
+Now, an equivalent control is 4 4/ ( )eq IN u x v x 
+
+  
+
+and the corresponding steady -state 1 24 / ( )IN x x Rv  
+
+
+
+, 2 4 /x x R 
+
+  ,   43 xvx IN , where 
+
+> 4
+
+x is 
+
+determined by the switching surface. 
+
+B. Ripple approximation 
+
+The characteristic values of the DC/DC conve -
+
+rters’ are adjusted so that the time constants of the 
+
+capacitors and the inductors are much longer than the 
+
+switching period. Thus, the capacitors’ voltages and 
+
+inductors’ currents steady -state values are consid ered 
+
+when the ripple is computed [1 2]. This means that , by 
+
+using the linear ripple approximation , inductors’ cur -
+
+rents of the Ćuk converter either linearly increase or 
+
+decrease during a switching period. When the switch S 
+
+is on , for eq Su T time interval, then the inductors’ cur -
+
+rents increase as                      
+
+> 1134222
+> ,,
+> IN Leq SIN Leq Seq S
+> viuTLxxviuTuTLL
+> 
+> 
+
+(21) 
+
+while when the diode is on during the rest of the period , 
+
+> Seq
+
+Tu )1(  long , the currents decrease by the same 
+
+amount. Similarly, for the capacitors’ currents we 
+
+apply linear ripple approximation [1 2] and obtain that 
+
+ca pacitor C1’s voltage ripple is equal to  
+
+> 121
+
+,SC eq 
+
+Tv x u C
+
+> 
+
+ 
+
+(15 )
+
+while the volta ge ripple on capacitor C2 is very small 
+
+comparing to absolute ripple change of the inductor s’ 
+
+currents 1Li and 2Li and capacitor voltage 1Cv .
+
+Ca pacitor C2’s current during the switching period 
+
+equals Rvii CLC 222  , so the capacitor’s voltage 
+
+variation is A. LEKIĆ at al. LMI APPROACH FOR SLIDING MODE CONTROL AND ANALYSIS... 
+
+TEHNIKA – ELEKTROTEHNIKA 65 (2016) 5 719  
+
+> 222
+
+.8 
+
+> LCS
+
+iv TC
+
+  (16 )
+
+Using the steady state equations and the ripple of 
+
+the state variables given in Eqs. (21), (22) and (23) one 
+
+can determine the hysteresis value ∆.
+
+4. SWITCHING SURFACE AN ALYSIS 
+
+In this section w e are going to provide analysis for 
+
+the Ćuk converters’ behavior on the switching surfaces  
+
+> 15
+
+( ) S x m x and 2 2 51 1 
+
+( ) S m x m x m  x as 
+
+representative ones, yet the procedure is general and 
+
+thus can be applied to any other switching surface in 
+
+the same way. One of the surfaces of the importance is   
+
+> 4451 1
+
+( ) S m x m x m  x which can be used for con -
+
+troling output voltage disturbance as well as the input 
+
+current [15], but it won’t be analyzes in this paper. In 
+
+terms of simulations, we used PLECS [1 6] with 
+
+specif ic values 10 V IN v  , 1 2 1 mH L L  , 
+
+> 1
+
+1 FC  , 2 20 FC  and 5R   . Signal u has 
+
+been produced using a hysteresis type of control with 
+
+ , for  m100 m, 10 m, 1 , wher e m denotes 310 
+
+and we do not include units in  to simplify the 
+
+notation yet it is obvious they match the corresponding 
+
+variables, such as volts for voltages .
+
+A. Switching surface 51)( mxS x
+
+Sliding surface 1 5( ) S x m x controls and limits 
+
+converter’s input current with coefficients 1 1m  and   
+
+> 24
+
+0m   . The equivalent control can be computed for 
+
+> IN
+
+vx 3 as 33
+
+xvxu IN eq  , wh ich results in the 
+
+following steady -state:      
+
+> 51523545
+
+, ,, .  
+
+> IN IN IN IN
+
+m v x m x Rx v m v R x m v R  
+
+> 
+
+    
+
+
+
+(17 )
+
+In order to achieve 03 x and 04 x , th e second 
+
+solution is chosen. The first solution is negative and 
+
+thus physically unacceptable. 
+
+The system’s stability on the sliding surface can be 
+
+verified through the introduced approach of 
+
+linearization and by finding matrix P as in Eq. (9) to 
+
+establish Lyapunov stability. 
+
+On the sliding surface 1 5( ) S x m x , variable 1x
+
+is constant and thus the equation for 1x can be 
+
+eliminated. The stability analysis is then performed in 
+
+terms of variables  Tyyy 432z and the remainder 
+
+nonlinearity                 
+
+> 223233331
+> ( ) 00()
+> TIN vy y x y yxxC
+> 
+> 
+
+    
+
+> hz
+
+During the switching subinterval when the switch 
+
+S is on and the diode is off, the inductor current 1Li ,
+
+presenting controlling variable, linearly changes, acco -
+
+rding to the linear ripple approximation: 
+
+.2  
+
+> 11Seq IN L
+
+TuLvi  (18 )
+
+Using Eq. (25), the switching period ST can be 
+
+computed and then used in the ripple calculation for 
+
+other state variables as given in Eqs. (21), (22) and 
+
+(23). 
+
+In Fig ure 2, steady state waveforms for different 
+
+values of the regulator hysteresis bound 
+
+#  m100 m, 10  when 5.05 m , are shown. Steady -
+
+state values are then  TV5V15 A1A0.5 
+
+x .
+
+(a) Calculated and measured values are 6 sST 
+
+, mA 20 21  LiLi , 1 2 V Cv  and 2 750 VCv   .
+
+(b) Calculated values are 60 sST  ,      
+
+> 200 mA 12iiLL  
+
+, 1 20 V Cv  and  
+
+> 2
+
+75 mV Cv  . Measured is 57.55 sST  .
+
+Figure 2 – Steady -state waveforms for regular 
+
+hysteresis bound (a) 10 m   ; (b) 100 m   .
+
+Furthermore, the diagrams in Fig. 2a show a high 
+
+level of linear behavior and fit well the linear ripple 
+
+approximation analysis. In Fig. 2b, the nonlinearity in A. LEKIĆ at al. LMI APPROACH FOR SLIDING MODE CONTROL AND ANALYSIS... 
+
+720 TEHNIKA – ELEKTROTEHNIKA 65 (2016) 5
+
+the ripple becomes evident especially in the waveform 
+
+for 1Li . It shows that the time constants caused by real 
+
+parts of eigenvalues are comparable to the switching 
+
+period. 
+
+The system stability is verified using the LMI 
+
+approach and computing the nonlinearity bound α. The 
+
+nonlinear remainder )(zh has nonzero expre ssion on -
+
+ly at the location 3 3 3( ) ( )h y y 
+
+ h . By choosing ma -
+
+trix H to be a 3 by 3 matrix with all entries equal to 
+
+zero except the one at position (2,2) being equal to 1, 
+
+and using the LMI convex program as in Eq. (9) we 
+
+obtain the maximized sector size. In particular , one can 
+
+show that the nonlinear term satisfies 
+
+#  3 2 3
+
+ˆh y  T , where 2
+
+ˆT is the second column of 
+
+the inverse of a transformation matrix T as in Eq. (14). 
+
+The nonlinearity pertur bation bound is computed as 
+
+> 3
+
+10 4995 .9  .
+
+Figure 3 – The nonlinear term  
+
+> 3h
+
+is plotted in red and 
+
+the sector bound 3y is plotted in blue for 
+
+different values of ∆ in subfigures (a) -(d). 
+
+In Figure 3, diagrams )( 33 yh for different values 
+
+for ∆ are shown. It can be seen that the error 
+
+> 3
+
+h lies 
+
+inside the perturbation limit when  m10 m, 1 and 
+
+exceeds the sector bound when m100  . A domi -
+
+nan t time constant that causes nonlinearity influencing 
+
+waveforms is due to eigenvalues    
+
+> 222222,124
+> LRCRCLL
+
+of the system model when the 
+
+switch S is off and the diode D is on. The case when 
+
+m100  shows a large nonlinear behavior especially 
+
+in the waveform for 1Li when 0u , as depicted in 
+
+Figure 2b. It can be also observed that the le ft side of 
+
+the diagram in Figure 3c shows steeper increasing of 
+
+the error whil e decreasing 3y . In this case the error 
+
+forces the system to approach the other infeasible 
+
+equilibrium (the first solution in Eq. (24)) .
+
+Considering obtained sector bound α in Eq. (11), 
+
+the limit for applying line ar ripple approximation can 
+
+be determined as crossing point of nonlinearity *3h and 
+
+the sector bound 3y . It can be seen that 
+
+V4.313  Cvy is a limit for considering linear 
+
+ripple approximation in this example and fr om Eq. 
+
+(21), the following can be derived:  
+
+> 1112
+
+1 ,2 
+
+> IN C
+
+v v CLx
+
+  
+
+(19 )
+
+which provides m17  as a limit. In Figure 3d this 
+
+is depicted as a limit ripple confirming the LMI pro ce -
+
+dure computation. Clearly the calculated error for all 
+
+simulated cases shows when and if the linear ripple 
+
+approximation can be used. 
+
+B. Switching surface 52211)( mxmxmxS 
+
+The sliding surface 52211)( mxmxmxS  al -
+
+lows hysteresis window current mode control [12 ] in 
+
+which the average of a weighted sum of inductors’ 
+
+currents is kept at a desired constant value. The equi -
+
+valent control produces equilibria                                           
+
+> 152251112221223411
+> 2(),,2,,22
+> IN IN IN IN IN IN IN
+> m m R mm v vEmm x xxmRm m v vEm v vExvxmm
+> 
+> 
+
+(20 )
+
+for RmmvmE IN 5122  . Of our interest is the second 
+
+solution because it provides a positive value for 3x and 
+
+a negative value fo r 4x . This choice results in 
+
+EmmvvmEu 
+
+> IN IN eq
+
+ )2( 212
+
+.
+
+For the case of the switching surface 
+
+> 52211
+
+)( mxmxmxS  we can eliminate state 
+
+variable 2y and get reduced state vector  Tyyy 431z
+
+. The nonlinear remainder 3( ) 0 0 T
+
+h    
+
+h z is given 
+
+by 
+
+#                       
+
+> 243121321331221321 4 124213
+
+( )( ).
+
+> IN IN IN
+
+m x y Rv m m yh m C Rv x x m L m L y m L x m L v y m L x  
+
+> 
+
+      (21 )
+
+We can compute ST , which is then used to 
+
+compute inductors currents’ and capacitors voltages’ 
+
+ripple as described by Eq s. (21), (22) and (23) based 
+
+on A. LEKIĆ at al. LMI APPROACH FOR SLIDING MODE CONTROL AND ANALYSIS... 
+
+TEHNIKA – ELEKTROTEHNIKA 65 (2016) 5 721                             
+
+> 12112212
+> 2.LLIN eq S
+> mmmimivuTLL
+>   
+
+(22 )
+
+In order to demonstrate a bound for the linear 
+
+ripple approximation particular , the values for 
+
+switching surface 52211)( mxmxmxS  are chosen 
+
+as 121  mm , 25 m , which produce the following 
+
+steady -state values .  
+
+> T
+> V15510 30 V)15(5A15526A)53(x
+
+Using the LMI convex program we obtain the se -
+
+ctor size parameter value as 32
+
+ˆ 7.5308 10    T .
+
+Figure 4 – The nonlinear term  
+
+> 3h
+
+is plotted in red and 
+
+the sector bound 3y is plotted in blue for 
+
+different values of ∆ in subfigures (a) -(d). 
+
+The nonlinear remainder term is computed based 
+
+on simulations when  m100 m, 10 m, 1 and s hown 
+
+in Figure 4. One may notice an effect of nonlinearity 
+
+when m100  , as depicted in Figure 4c. We can also 
+
+observe maximal ∆ for which the influence of the sy -
+
+stem eigenvalues is negligible comparing to the swit -
+
+ching period and estimate V1.11 max ,1  Cv . By us -
+
+ing the following expression:      
+
+> 1112212
+
+2 
+
+> CIN
+
+v v C m mx L L
+
+  
+
+#     (23 )
+
+we compute m90  . We can confirm that this is 
+
+indeed the boundary value as depicted in Figure 5d The 
+
+resulting phase dia gram for this sliding surface is given 
+
+in Figure 5. At a start up the system’s trajectory 
+
+follows 2 0x  and 1u , before it gets to the 
+
+switching surface 052211  mxmxm . Then the re is 
+
+a small overshoot when 0u until a steady state is 
+
+reached. After that the system’s motion stays on 
+
+052211  mxmxm . When 5m is large enough so 
+
+that DCVM occurs, after reaching the sliding surface, 
+
+then voltage 1Cv drops to zero, so the system’s motion 
+
+in DCVM returns to the switching surface via yellow 
+
+trajectories as depicted in Figure 6 (with 1u ). In the 
+
+case of the bidirectional realization there is no dis -
+
+continuous regime, so when 5m is very large the return 
+
+to the switching surface occurs as depicted by green 
+
+trajectories in Fig ure 5, that is, 1u .
+
+Figure 5 – Phase diagram x 2(x 1) in the case when 
+
+S(x)=m 1x1+m 2x2-m5
+
+In order to see the difference between the case of 
+
+unidirectional switch S and a diode and bidirectional 
+
+switches, in Figure 6 time diagrams when 
+
+4)( 21  xxS x are provided. One may also observe 
+
+that DCVM redu ces significantly the inductor cu -
+
+rrents ’ ripple and the capacitor C1’s voltage . In ad -
+
+dition , th e phase diagrams shown in Fig. 7 confirm the 
+
+previous analysis and agree with t he phase plot from 
+
+Fig ure 5.
+
+5. CONCLUSION 
+
+In this paper we applied an equivalent control 
+
+model of a sliding (or switching) surface to chara -
+
+cterize the steady -state analysis of DC/DC converters. 
+
+This is done by linearizing nonlinear sliding mode 
+
+dynamics and representing it by a linear part and a 
+
+sector bounded nonlinear remainder. Furthermore, 
+
+using the linear matrix inequalities stability approach 
+
+we estimated the size and the shape of the sector which 
+
+the nonlinear remainder satisfies. The nonlinear sector 
+
+bound is then used to determine the limit for applying 
+
+linear ripple approximation in the converter operation 
+
+analysis. This approach is demonstr ated of the Ćuk 
+
+converter’s example for two switching surfaces of the 
+
+practical importance. 
+
+(a) (b) 
+
+Figure 6 – State variables versus time in the case when        
+
+> 12( ) 4Sxxx
+
+when the switches are rea lized 
+
+as (a) an unidrectional switch and a diode; (b) 
+
+bidirectional A. LEKIĆ at al. LMI APPROACH FOR SLIDING MODE CONTROL AND ANALYSIS... 
+
+722 TEHNIKA – ELEKTROTEHNIKA 65 (2016) 5
+
+(a) (b) 
+
+Figure 7 – Phase diagram )( 12 LL ii in the case when        
+
+> 12( ) 4Sxxx
+
+when the switches are rea -
+
+lized 
+
+6. ACKNOWLEDGEMENT 
+
+The authors would like to thank Professor Vujo 
+
+Drndarević for his generous support and valuable 
+
+comments which greatly increased the quality of this 
+
+paper. 
+
+REFERENCES 
+
+[1] Vadim I. U. Survey paper variable structure systems 
+
+with sliding modes . IEEE Transactions on Automatic 
+
+control. 1977 Apr;22(2) :212 -222 .
+
+[2] DeCarlo R, Zak SH, Matthews GP. Variable 
+
+structure control of nonlinear mu ltivariable systems: 
+
+a tutorial, Proceedings of the IEEE. Mar; 76(3):212 -
+
+32 , 1988 .
+
+[3] Filippov A . F. Differential equations with disco nti -
+
+nuous right -hand side. Matematicheskii sbornik .
+
+93(1):99 -128 , 1960 .
+
+[4] El Ghaoui L, Feron E, Balakrishnan V. Linear matrix 
+
+inequalities in system and control theory , Philade -
+
+lphia: Society for industrial and applied mathematics; 
+
+1994 Jun. 
+
+[5] Boyd S, Vandenberghe L. Convex optimization , Ca -
+
+mbridge university press; Mar 8 2004 .
+
+[6] Chesi G, Colaneri P, Geromel J . C, Middleton R, 
+
+Shorten R, A nonconservative LMI condition for sta -
+
+bility of switched systems with guaranteed dwell ti -
+
+me , Automatic Control, IEEE Transactions on. 2012 
+
+May;57(5):1297 -302. 
+
+[7] Šiljak D . D, St ipanovic D . M. Robust stabilization of 
+
+nonlinear systems: the LMI approach , Mathematical 
+
+problems in Engineering , 6(5):461 -93 , 2000 .
+
+[8] Huang S . P, Xu H . Q, Liu Y . F, Sliding -mode 
+
+controlled Cuk switching regulator with fast 
+
+response and first -order dynamic characteristic , In 
+
+Power Electronics Specialists Conference, 1989. 
+
+PESC’89 Record., 20th Annual IEEE (pp. 124 -129) ,
+
+Jun 26 1989 .
+
+[9] Oppenheimer M, Husain I, Elbuluk M, De Abreu 
+
+Garcia J . A. Sliding mode control of the Cuk conve -
+
+rter , In Power Electronics Specialists Conference, 
+
+1996. PESC’96 Record, 27th Annual IEEE (Vol. 2, 
+
+pp. 1519 -1526) , Jun 23 1996 .
+
+[10] Martinez -Salamero L, Calvente J, Giral R, Poveda A, 
+
+Fossas E. Analysis of a bidirectional coupled -indu -
+
+ctor Cuk converter operating i n sliding mode. Circu -
+
+its and Systems I: Fundamental Theory and Appli -
+
+cations, IEEE Transactions on. 45(4):355 -63 , Apr 
+
+1998 .
+
+[1] Martínez -Salamero L, García G, Orellana M, Lahore 
+
+C, Estibals B, Alonso C, Carrejo C . E, Analysis and 
+
+design of a sliding -mode strategy for start -up control 
+
+and voltage regulation in a buck converter , IET Po -
+
+wer Electronics. 6(1):52 -9, Jan 2013 .
+
+[2] Erickson R . W, Maksimovic D , Fundamentals of 
+
+power electronics , Springer Science & Business 
+
+Media; May 8 2007 .
+
+[3] Utkin V. Sliding mode cont rol of DC/DC conve rters ,
+
+Journal of the Franklin Institute. 31;350(8):2146 -65 ,
+
+Oct 2013 .
+
+[4] Yakubovich V . A, S-procedure in nonlinear control 
+
+theory , Vestnik Leningrad University , 1:62 -77 , 1971 .
+
+[5] Chen Z, PI and sliding mode control of a Cuk con -
+
+verter , IEEE Transactions on Power Electronics ,
+
+27(8):3695 -703 , Aug 2012 .
+
+[6] Alimeling J . H, Hammer W . P, PLECS -piece -wise 
+
+linear electrical circuit simulation for Simulink , In 
+
+Power Electronics and Drive Systems, 1999. 
+
+PEDS’99. Proceedin gs of the IEEE 1999 International 
+
+Conference on 1999 (Vol. 1, pp. 355 -360) .A. LEKIĆ at al. LMI APPROACH FOR SLIDING MODE CONTROL AND ANALYSIS... 
+
+TEHNIKA – ELEKTROTEHNIKA 65 (2016) 5 723 
+
+## REZIME 
+
+LMI PRSTUP U PROJEKT OVANJU SLIDING -MODE KONTROL E I ANALIZ I DC -DC 
+
+KONVERTORA 
+
+Prekidačko ponašanje kola, specijalno DC -DC konvertora je analizirano u ovom radu korišćenjem 
+
+ekvivalentne kontrole za modelovanje sliding -mode režima dinamičkih sistema. Kao reprezentativni 
+
+primer i jedan od najkompleksinijih DC -DC konvertora, izabran je Ćuk konvertor. Pokazuje se da se 
+
+ponašanje konvertora u ustaljenom stanju može posmatrati i an alizirati korišćenjem uslova stabilnosti 
+
+baziranih na linearnim matričnim nejednačinama sa nelinearnom perturbacijom ograničenom u 
+
+sektoru. Maksimizacija nelinearnog ograničenja u sektoru daje granicu za primenu linear ripple 
+
+aproksimacije u analizi rada k onvertora. Štaviše, naš pristup je potvrđen simulacijama za dve različite 
+
+prekidačke površine od interesa. 
+
+Ključne reči : DC/DC konvertor , Ćuk konvertor, sliding -mode, linearne matrične nejednačine

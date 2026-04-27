@@ -1,0 +1,51 @@
+{
+  "label": "2026-04-27",
+  "date": "2026-04-27",
+  "generated_at": "2026-04-27T20:34:35",
+  "count": 3,
+  "papers": [
+    {
+      "paper_id": "202604/27/2604.18783v1-a-dynamic-mode-decomposition-approach-to-parameter-identification",
+      "section": "quick",
+      "title_en": "A Dynamic Mode Decomposition Approach to Parameter Identification",
+      "authors": "Moad Abudia, Opeyemi Owolabi, Joel A. Rosenfeld, Rushikesh Kamalapurkar",
+      "date": "2026-04-20",
+      "pdf": "https://arxiv.org/pdf/2604.18783v1",
+      "score": "7.0",
+      "evidence": "适用于永磁同步电机等控制仿射非线性系统的参数辨识",
+      "tldr": "本文提出一种基于数据的算法，用于控制仿射非线性系统的同步系统辨识与参数估计。该方法通过利用已知参数下的状态-动作测量值训练预测模型，并结合未知参数下的观测数据来推断参数值。研究在受控 Duffing 振子上进行了验证，证明了该方法能从开环激励数据中准确恢复系统轨迹和未知的物理参数，为非线性动力学建模提供了新思路。",
+      "tags": "query:pmsm",
+      "abstract_en": "This paper presents a data-driven algorithm for simultaneous system identification and parameter estimation in control-affine nonlinear systems. Parameter estimation is achieved by training a data-driven predictive model using state-action measurements and various known values at the parameters of interest. The predictive model is then used in conjunction with state-action data corresponding to unknown values of the parameters to estimate the said unknown value. Numerical experiments on the controlled Duffing oscillator with unknown damping, stiffness, and nonlinearity coefficients demonstrate accurate recovery of both the system trajectories and the unknown parameter values from data collected under open-loop excitation.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202604/27/2604.20240v1-lmi-approach-for-sliding-mode-control-and-analysis-of-dc-dc-converters",
+      "section": "quick",
+      "title_en": "LMI Approach for Sliding Mode Control and Analysis of DC-DC Converters",
+      "authors": "Aleksandra Lekić, Dušan Stipanović",
+      "date": "2026-04-22",
+      "pdf": "https://arxiv.org/pdf/2604.20240v1",
+      "score": "6.0",
+      "evidence": "用于电机驱动功率变换器的滑模控制",
+      "tldr": "本研究针对DC-DC变换器（以复杂的Ćuk变换器为例）的开关行为，提出了一种基于等效控制建模的滑动模态分析方法。通过引入线性矩阵不等式（LMI）来评估具有非线性扇形有界扰动的系统稳定性，并以此确定线性纹波近似的适用范围。该方法不仅深化了对变换器稳态特性的理解，还通过多种切换表面的仿真验证了其在实际控制设计中的有效性与鲁棒性。",
+      "tags": "query:pmsm",
+      "abstract_en": "Circuits' and in particular DC/DC converters' switching behavior is analyzed in this paper using the equivalent control modeling of the dynamic systems' sliding mode regime. As a representative example and also being one of the most complex circuits among DC/DC converters, the Ćuk converter is chosen. It is shown how the converter's behavior in the steady state regime can be studied and analyzed by the linear matrix inequalities based stability conditions for linear dynamic systems with nonlinear sector bounded perturbations. The maximization of the nonlinear sector bound provides a limit for applying the linear ripple approximation in the converter operation analysis. Furthermore, our approach is validated by providing simulation results for two different switching surfaces of practical interest.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202604/27/2604.20509v1-approximate-simulation-based-hierarchical-control-of-nonlinear-systems",
+      "section": "quick",
+      "title_en": "Approximate Simulation-based Hierarchical Control of Nonlinear Systems",
+      "authors": "Zirui Niu, Antoine Girard, Giordano Scarciotti",
+      "date": "2026-04-22",
+      "pdf": "https://arxiv.org/pdf/2604.20509v1",
+      "score": "6.0",
+      "evidence": "适用于电机动力学的非线性系统分层控制",
+      "tldr": "针对复杂非线性系统控制难题，本文提出了一种基于近似仿真分层控制（ASHC）的构造性方法。该方法通过设计简化的抽象系统和界面函数，利用不变性方程实现有界输出偏差和m-关系，填补了以往ASHC主要局限于线性系统的空白。研究探讨了求解条件并总结了设计流程，通过DC-DC Ćuk变换器实例验证了其在实际工程中的有效性。",
+      "tags": "query:pmsm",
+      "abstract_en": "Controlling complex dynamical systems to satisfy sophisticated specifications remains a significant challenge in modern engineering. A promising approach to this problem is the approximate simulation-based hierarchical control (ASHC) technique. In this method, a simplified representation of the complex system, called the abstract system, is first designed and controlled. An interface function is then designed to translate the control law into the input of the complex system, thereby achieving approximate control synthesis. However, most existing results in ASHC are only for linear systems. This paper proposes a constructive method for solving the ASHC problem for nonlinear systems. To this end, we propose invariance equation-based methods to achieve the two classical requirements of the ASHC technique, namely the bounded output discrepancy and the $m$-relation. We then study the solvability conditions of the problem and summarise the overall design procedures. We illustrate the results with a practical example, providing step-by-step solutions to the ASHC problem of a DC-to-DC Ćuk converter.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
