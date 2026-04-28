@@ -1,0 +1,315 @@
+Title: Unified Energy Function Tailored to Inverter-Based Resources with PI Controllers for Transient Stability Analysis
+
+URL Source: https://arxiv.org/pdf/2604.23697v1
+
+Published Time: Tue, 28 Apr 2026 01:13:19 GMT
+
+Number of Pages: 4
+
+Markdown Content:
+IEEE TRANSACTIONS ON POWER ELECTRONICS 1
+
+# Unified Energy Function Tailored to Inverter-Based Resources with PI Controllers for Transient Stability Analysis 
+
+Yifan Zhang, Student Member, IEEE , Hsiao-Dong Chiang, Fellow, IEEE ,Yitong Li, Member, IEEE , Yang Wu, Member, IEEE 
+
+Abstract —The increasing penetration of inverter-based re-sources (IBRs) has fundamentally altered the transient stability characteristics of modern power systems. IBRs typically rely on proportional–integral (PI) controllers for synchronization and regulation, resulting in nonlinear swing equations that differ significantly from those of synchronous generators (SGs) and exhibit state-dependent damping. Consequently, although the classical energy function is often adopted in IBR analysis by analogy with SGs, it cannot be directly applied to IBRs with PI controller. A new energy function explicitly tailored to PI controller is proposed in this letter. It admits a unified form and can be applied to a class of nonlinear systems with PI controllers. Two representative cases are considered, including a grid-following (GFL) inverter and a DC-voltage-controlled grid-forming (GFM) inverter, demonstrating less conservative and more effective estimation of the region of attraction (ROA). All findings are verified through hardware-in-the-loop (HIL) experiments. 
+
+Index Terms —Transient stability, energy function, phase-locked loop, grid-forming inverters, grid-following inverters. 
+
+I. I NTRODUCTION 
+
+Electric power systems are undergoing a fundamental tran-sition from being dominated by synchronous generators (SGs) to inverter-based resources (IBRs) as renewable generation continues to expand. The transient synchronization stability of IBRs—i.e., the ability to maintain or regain synchronization with the bulk grid after large disturbances—has therefore attracted increasing attention in recent years [1], [2]. Among available assessment methods, the direct method based on Lyapunov/energy functions has been widely adopted due to its mathematical rigor, clear physical interpretation, and ability to provide conservative stability criteria [3]. By estimating the region of attraction (ROA), this direct method enables transient stability assessment without extensive time-domain simulations or repeated critical clearing time (CCT) searches. Recent studies have attempted to extend energy-function-based direct methods to IBR systems, including grid-forming (GFM) inverters [4], [5] and grid-following (GFL) inverters [5]–[8]. Unlike SGs, IBRs achieve synchronization through software-based control loops, whose phase-angle outputs di-rectly determine post-fault synchronism. For GFM inverters, synchronization dynamics can resemble those of SGs when a low-pass filter (LPF) is introduced in the control loop [9]. By contrast, GFL inverters synchronize with the point of common coupling (PCC) voltage through phase-locked loops (PLLs) implemented with proportional–integral (PI) controllers [1], [10]. However, energy-function construction is nontrivial due to control-based synchronization, particularly with PI con-trollers. By deriving an equivalent swing equation for GFL inverters, [6] constructed a classical energy function analogous to that of SG systems. However, the state-dependent damping induced by PLL nonlinearities may become negative in certain regions, leading to non-conservative stability evaluation [5], [8]. Al-though numerical Lyapunov functions can also be computed using sum-of-squares [11] or iterative methods [12], they offer limited physical insight and poor scalability. Consequently, for IBRs with PI-controlled synchronization, the conventional swing-equation-based energy function yields an indefinite dis-sipation term, preventing direct ROA estimation through a critical energy level set. PI-controlled synchronization structures are also being adopted in emerging IBR designs. A representative example is the DC-voltage-controlled GFM inverter – also referred to matching control [13] or frequency-following voltage-forming inverter [14]. This converter enables GFM operation with power-tracking capability through DC-voltage regulation and has emerged as a promising IBR configuration [15]. Existing transient stability studies of this converter mainly rely on phase-portrait analysis [15], [16], which does not provide quantitative ROA characterization. Although [17] compared LPF- and PI-controlled GFM structures by deriving swing-equation models, the resulting energy dissipation remains indefinite because of the PI controller. This letter addresses the above gap by developing a unified 
+
+PI-controller energy function . By incorporating the integrator-state energy into the Lyapunov construction, the proposed formulation eliminates the dependence on state-dependent damping and yields a unified energy function with a globally non-positive derivative. Consequently, the unstable equilibrium point (UEP) energy can be directly used as a valid level set for ROA estimation, enabling less conservative transient stability assessment for PI-controlled IBRs. II. U NIFIED PI-C ONTROLLER ENERGY FUNCTION 
+
+In general, the nonlinear system with feedback controller can be abstracted to Fig. 1, which is also known as Lur’e sys-tem [18]. Two mainstream controllers are considered here: the low-pass filter (LPF) controller and the proportional–integral (PI) controller, shown in Fig. 1 (a) and (b), respectively. The nonlinear system is represented by f (δ).
+
+(a) LPF controller. (b) PI controller. Fig. 1. Control block diagram of the nonlinear system. 
+
+> arXiv:2604.23697v1 [eess.SY] 26 Apr 2026
+
+IEEE TRANSACTIONS ON POWER ELECTRONICS 2                              
+
+> TABLE I DUALITY BETWEEN CLASSICAL & PI-C ONTROLLER ENERGY FUNCTIONS
+> Classical (LPF-based) Proposed (PI-based) System structure Fig. 1 (a) Fig. 1 (b) Quadratic term 12Jω 212kix2
+> int
+> Potential energy −R(yref −f(δ)) dδ −R(yref −f(δ)) dδ
+> Dissipation −Dω 2−kp(yref −f(δ)) 2
+> Equivalent circuit
+
+For the LPF controller, the system can be readily expressed in a swing-equation form. The LPF time constant and gain act as equivalent inertia and damping, respectively. Specifically, the system in Fig. 1 (a) can be written 
+
+( ˙δ = ωJ ˙ω = [ yref − f (δ)] − Dω (1) 
+
+where yref − f (δ) serves as the synchronizing torque. The LPF therefore naturally realizes damping and inertia, and the corresponding classical energy function is 
+
+W = 12 Jω 2
+
+| {z } 
+
+> kinetic energy
+
+−
+
+Z
+
+[yref − f (δ)] dδ 
+
+| {z }
+
+> potential energy
+
+(2) 
+
+with derivative ˙W = −Dω 2 (3) 
+
+Recalling the GFM inverter or SG, yref = Pref denotes the power reference, and the nonlinear system corresponds to the output power EU g /X g sin δ. In this case, (2) reduces to the typical form 
+
+W = 12 Jω 2 − Pref δ − EU g 
+
+> Xg
+
+cos δ. 
+
+For another widely used controller — the PI controller in Fig. 1 (b) — the input y = yref − f (δ) is processed by the PI structure rather than the LPF. Let the integrator output be xint .The sum of the proportional and integral terms is then passed through another integrator to drive the nonlinear system f (δ).The dynamics of Fig. 1 (b) can be rearranged into a swing-equation form as in prior works: 
+
+
+
+˙δ = ω
+
+1
+
+ki
+
+|{z} 
+
+> Jeq
+
+˙ω = f (δ) − kp
+
+ki
+
+∂f (δ)
+
+∂δ 
+
+| {z }
+
+> Deq
+
+ω (4) 
+
+However, the equivalent damping Deq is not constant but depends on ∂f (δ) 
+
+> ∂δ
+
+. As a result, if the classical energy function is directly applied, the derivative of the energy function becomes indefinite and not necessarily non-positive, owing to the variation of Deq .To overcome this issue, this letter proposes the following energy function for PI-controlled systems: 
+
+W = 12ki
+
+xint 2 −
+
+Z
+
+[yref − f (δ)] dδ (5) 
+
+Compared with (2), the kinetic energy term 12ki x2 
+
+> int
+
+captures the contribution of the PI controller. The derivative of the energy function (5) with respect to time is 
+
+˙W = −kp [yref − f (δ)] 2 ≤ 0 (6) 
+
+which is non-positive, and { ˙W = 0 } contains no complete trajectory other than the equilibrium. This shows that the PI controller introduces an inherent dissipative mechanism. The duality between the proposed PI controller energy function and the classical one is further summarized in Table I. For physical interpretation, equivalent circuits for both energy functions are also illustrated, inspired by [19]. In both cases, 
+
+yref is modeled as an independent current source and f (δ) as a controlled current source, whose output energy corresponds to the potential energy term. The quadratic term is associated with the capacitor energy, with J in the classical case and 
+
+1/k i in the proposed one, while the dissipation is represented by resistive elements with coefficients D and kp, respectively. Notably, the proposed energy function has a unified form and applies to nonlinear systems of the form shown in Fig. 1 (b). III. R EPRESENTATIVE APPLICATIONS 
+
+This section presents two representative PI-controlled IBR systems to demonstrate ROA estimation and transient stability analysis using the proposed energy function, although the approach is not limited to these cases. 
+
+A. Case I: PLL of a Grid-Following Inverter 
+
+A typical example is the PLL in a GFL inverter, whose system and control structures are shown in Fig. 2 (a)(b) and follow the general form in Fig. 1 (b). In this case, the PI-controller input yref − f (δ) is the q-axis voltage vq , given by 
+
+vq = Xg Id + Rg Iq − Ug sin δ + ωL g Id
+
+ωs
+
+(7) 
+
+The integrator state is 
+
+xint = ω − kp,pll vq (8) 
+
+Substituting (7) (8) into (5) yields the energy function    
+
+> (a) Grid-connected inverter system. (b) PLL in GFL inverter. (c) DC-voltage-controlled GFM inverter. Fig. 2. Grid-connected inverter system and synchronization control loops.
+
+IEEE TRANSACTIONS ON POWER ELECTRONICS 3 
+
+> Fig. 3. ROA estimation for transient stability of a GFL inverter using the proposed PI-controller energy function and comparison with existing methods.
+
+W (δ, ω ) = 12ki
+
+ ω − kp,pll vq
+
+2 − (Xg Id + Rg Iq )δ
+
+− Ug cos δ −
+
+Z ωL g Id
+
+ω0
+
+dδ. 
+
+(9) 
+
+The ROA is then estimated by the level set {(δ, ω ) |
+
+W (δ, ω ) < W cri }, where the critical energy is defined as 
+
+Wcri = W (δuep , 0) . In (9), the term R ωL g Id 
+
+> ωs
+
+dδ is path-dependent introduced by transmission-line dynamics and is commonly approximated along the critical trajectory passing through the UEP [20]: 
+
+Z
+
+> C:( δuep ,0) →(δ,ω )
+
+Lg Id
+
+ωs
+
+ω dδ ≈ − ω(δuep − δ)2 · Lg Id
+
+ωs
+
+. (10) 
+
+The estimated ROA is plotted in Fig. 3 as the shaded region bounded by the red curve. In comparison, ROA estimation based on classical energy functions, such as [6] (blue dashed curve) and [5], [7] (blue solid curve), can be inaccurate, because the equivalent damping Deq may become negative. The proposed method yields a larger stability region without overestimation. 
+
+B. Case II: DC-Voltage-Controlled Grid-Forming Inverter 
+
+The system and control structure are illustrated in Fig. 2 (a)(c), which also follows the general form in Fig. 1 (b). Here, the input to the PI controller yref − f (δ) corresponds to the active-power difference between the DC-side input power 
+
+Pin and the grid-side output power Pe
+
+Pe = Xg
+
+R2 
+
+> g
+
++ X2
+
+> g
+
+EU g sin δ + Rg
+
+R2 
+
+> g
+
++ X2
+
+> g
+
+
+
+E2 − EU g cos δ
+
+
+
+(11) 
+
+The integrator state is 
+
+xint = ki∆(vdc )2 (12) 
+
+where (∆ vdc )2 = v2 
+
+> dc
+
+− V 2 
+
+> dc,ref
+
+denotes the squared DC-voltage error. Substituting (11) and (12) into (5) yields     
+
+> W δ, ∆ (vdc )2=C
+> 4ki
+
+∆(vdc )2 − Pin δ + Rg E2              
+
+> R2
+> g+X2
+> g
+> δ
+> −XgEU g
+> R2
+> g+X2
+> g
+> cos δ−RgUgER2
+> g+X2
+> g
+> sin δ
+
+(13) 
+
+Similarly, the critical energy is defined as Wcri = W (δuep , 0) ,and the ROA is estimated by the level set {(δ, (∆ vdc )2) |
+
+W (δ, (∆ vdc )2) < W cri }. The result is shown in Fig. 4 (red shaded region). The detailed parameters for all cases are listed in Table A1.  
+
+> Fig. 4. ROA estimation for transient stability of a DC-voltage-controlled GFM inverter using the proposed PI-controller energy function.
+
+IV. HIL E XPERIMENTAL VALIDATION 
+
+A hardware-in-the-loop (HIL) platform is built to validate the proposed PI-controller energy function and the correspond-ing ROA estimation, as shown in Fig. 5. The single-inverter infinite-bus system is implemented in a PLECS RT Box 3 real-time simulator, while the controller is executed on a DSP (TMS320F28379D) to generate PWM signals. Detailed parameters are listed in Table A1. A voltage sag of 0.1 pu is applied at t = 0 s. 
+
+A. Case I: PLL of a Grid-Following Inverter 
+
+The critical energy is obtained as Wcri = 0 .68 pu, corre-sponding to a theoretical CCT of 18.2 ms. The time-domain responses under this fault duration are shown in Fig. 6 (a), where the system remains stable and agrees well with the theoretical prediction. The energy trajectory in Fig. 6 (b) (blue line) approaches Wcri (black dashed line) at the fault-clearing instant, slightly exceeding it due to deviations between the theoretical model and the practical system. Since the proposed energy function provides a conservative estimate, the result remains conservative. In the HIL experiment, the measured CCT is 19.7 ms. When the fault duration increases to tfault =19 .8 ms, the system becomes unstable, as shown by the red energy trajectory in Fig. 6 (b), where the energy exceeds Wcri 
+
+and fails to return to the origin. 
+
+B. Case II: DC-Voltage-Controlled Grid-Forming Inverter 
+
+Similarly, the critical energy is obtained as Wcri = 2 .036 pu, which gives a theoretical CCT of 72.1 ms. Under this fault duration, the time-domain responses are shown in Fig. 7 (a). It is shown that the system remains stable, and the HIL  
+
+> Fig. 5. HIL experimental platform.
+
+IEEE TRANSACTIONS ON POWER ELECTRONICS 4
+
+(a) Time domain when fault duration tfault = 18 .2 ms. 
+
+(b) Value of PI-controller energy function W when fault duration tfault = 18 .2 ms and 19 .8 ms respectively (CCT = 19.7 ms). 
+
+Fig. 6. Experiment results of GFL inverter. 
+
+(a) Time domain when fault duration tfault = 72 .1 ms. 
+
+(b) Value of PI-controller energy function W when fault duration tfault = 72 .1 ms and 78 .1 ms respectively (CCT = 78 ms). 
+
+Fig. 7. Experiment results of DC-voltage-controller GFM inverter. TABLE A1 DETAILED SYSTEM PARAMETERS 
+
+Parameters Value a
+
+Grid impedance Zg 0.5j + 0 .08 pu Voltage sag depth 0.1 pu Grid voltage Ug 1 pu Base frequency ω0/2π 50 Hz HIL Setup Base capacity Sb 100 kV ·ABase voltage Vb 690 V Base current Ib 145 A LC filter of Inverter Lf 0.05 pu LC filter of Inverter Cf 0.02 pu DC voltage reference Vdc,ref 2.5 pu Switching & DSP control frequency 10 kHz Case I - PLL in GFL PLL controller kp,pll 10 × 2π pu PLL controller ki,pll 1000 × 2π pu Frequency limit of PLL ωlimit ±0.3 pu Current reference Id + jI q 1 pu Inner current control loop bandwidth 1 kHz Case II - DC-voltage-controlled GFM DC capacitor Cdc 12.5 pu PI controller kp 2 × 2π pu PI controller ki 15 pu AC voltage reference E 1 pu Input power Pin 1 pu Inner voltage control bandwidth 200 Hz Inner current control bandwidth 1 kHz  
+
+> a
+
+The same per-unit (pu) system is adopted through-out this letter. 
+
+experimental results closely match the theoretical model. The value of the PI energy function is shown in Fig. 7 (b) (blue solid line). At the fault-clearing instant, the energy is nearly equal to Wcri (black dashed line), but slightly higher due to experimental imperfections. Since the proposed energy function provides a conservative estimate, the result remains conservative. In the HIL experiment, the measured CCT is 78 ms. An additional experiment is performed with tfault =78 .1 ms, where the system becomes critically unstable. The corresponding energy trajectory is also shown in Fig. 7 (b) (red solid line). When the fault duration is too large and the energy rises above Wcri , the system loses stability and the energy cannot return to the origin. V. C ONCLUSIONS 
+
+This letter proposes a unified PI-controller energy function for transient synchronization stability analysis of IBRs. The proposed formulation reveals the inherent dissipation mecha-nism introduced by the PI controller, leading to a non-positive energy derivative. The method is not limited to the GFL inverter or the DC-voltage-controlled GFM inverter, which is investigated in the letter, but is generally applicable to a class of IBR systems employing PI-based synchronization structures. The effectiveness of the proposed approach and the validity of the analysis are further confirmed by HIL experiments. APPENDIX 
+
+The detailed parameters are listed in Table A1. REFERENCES 
+
+[1] X. Wang, M. G. Taul, H. Wu, Y. Liao, F. Blaabjerg, and L. Harnefors, “Grid-synchronization stability of converter-based resources—an overview,” IEEE Open Journal of Industry Applications , vol. 1, pp. 115–134, 2020. [2] Y. Gu and T. C. Green, “Power system stability with a high penetration of inverter-based resources,” Proceedings of the IEEE , 2022. [3] H.-D. Chiang, Direct Methods for Stability Analysis of Electric Power Systems: Theoretical Foundation, BCU Methodologies, and Applications . John Wiley & Sons, 2011. [4] Z. Shuai, C. Shen, X. Liu, Z. Li, and Z. J. Shen, “Transient angle stability of virtual synchronous generators using lyapunov’s direct method,” IEEE Transactions on Smart Grid , vol. 10, no. 4, pp. 4648–4661, 2018. [5] X. Fu, J. Sun, M. Huang, Z. Tian, H. Yan, H. H.-C. Iu, P. Hu, and X. Zha, “Large-signal stability of grid-forming and grid-following controls in voltage source converter: A comparative study,” IEEE Transactions on Power Electronics , vol. 36, no. 7, pp. 7832–7840, 2020. [6] Q. Hu, L. Fu, F. Ma, and F. Ji, “Large signal synchronizing instability of pll-based vsc connected to weak ac grid,” IEEE Transactions on Power Systems , vol. 34, no. 4, pp. 3220–3229, 2019. [7] M. Z. Mansour, S. P. Me, S. Hadavi, B. Badrzadeh, A. Karimi, and B. Bahrani, “Nonlinear transient stability analysis of phased-locked loop-based grid-following voltage-source converters using lyapunov’s direct method,” IEEE Journal of emerging and selected topics in Power Electronics , vol. 10, no. 3, pp. 2699–2709, 2021. [8] Y. Zhang, C. Zhang, and X. Cai, “Large-signal grid-synchronization stability analysis of pll-based vscs using lyapunov’s direct method,” IEEE Transactions on Power Systems , vol. 37, no. 1, pp. 788–791, 2021. [9] S. D’Arco and J. A. Suul, “Equivalence of virtual synchronous machines and frequency-droops for converter-based microgrids,” IEEE Transactions on Smart Grid , vol. 5, no. 1, pp. 394–395, 2013. [10] Y. Li, Y. Gu, and T. C. Green, “Revisiting grid-forming and grid-following inverters: A duality theory,” IEEE Transactions on Power Systems , vol. 37, no. 6, pp. 4541–4554, 2022. [11] C. Zhang, M. Molinas, Z. Li, and X. Cai, “Synchronizing stability analysis and region of attraction estimation of grid-feeding vscs using sum-of-squares programming,” Frontiers in Energy Research , vol. 8, p. 56, 2020. [12] X. Li, Z. Tian, X. Zha, P. Sun, Y. Hu, and M. Huang, “An iterative equal area criterion for transient stability analysis of grid-tied converter systems with varying damping,” IEEE Transactions on Power Systems , vol. 39, no. 1, pp. 1771–1784, 2024. [13] C. Arghir and F. Dörfler, “The electronic realization of synchronous machines: Model matching, angle tracking, and energy shaping techniques,” IEEE Transac-tions on Power Electronics , vol. 35, no. 4, pp. 4398–4410, 2020. [14] C. Ai, Y. Li, Z. Zhao, Y. Gu, and J. Liu, “An extension of grid-forming: A frequency-following voltage-forming inverter,” IEEE Transactions on Power Electronics , vol. 39, no. 10, pp. 12 118–12 123, 2024. [15] L. Zhao, Z. Jin, and X. Wang, “Transient stability of grid-forming converters with flexible dc-link voltage control,” in 2022 International Power Electronics Conference (IPEC-Himeji 2022- ECCE Asia) , 2022, pp. 1648–1653. [16] C. Luo, T. Liu, X. Wang, and X. Ma, “Design-oriented analysis of dc-link voltage control for transient stability of grid-forming inverters,” IEEE Transactions on Industrial Electronics , vol. 71, no. 4, pp. 3698–3707, 2023. [17] T. Liu and X. Wang, “Physical insight into hybrid-synchronization-controlled grid-forming inverters under large disturbances,” IEEE Transactions on Power Electronics , vol. 37, no. 10, pp. 11 475–11 480, 2022. [18] H. K. Khalil, Nonlinear Systems . USA: Prentice-Hall, 1996. [19] N. Baeckeland, D. Pal, G.-S. Seo, B. Johnson, and S. Dhople, “Large-signal stability analysis of grid-forming inverters with equivalent-circuit models,” IEEE Transactions on Energy Conversion , 2025. [20] Q. Qu, X. Xiang, J. Lei, W. Li, and X. He, “Transient stability analysis for paralleled system of virtual synchronous generators based on damping energy vi-sualization and approximation,” IEEE Transactions on Power Electronics , vol. 39, no. 12, pp. 15 785–15 799, 2024.
