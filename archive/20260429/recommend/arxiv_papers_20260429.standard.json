@@ -1,0 +1,168 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-04-29T20:46:56.195275+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 4,
+    "quick_skim_target": 11,
+    "quick_selected": 4
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2604.25473v1",
+      "title": "Complex-Vector Power and Cross-Phase Unbalance in Three-Phase Systems",
+      "abstract": "Unbalanced three-phase systems still lack a compact phasor-domain representation of power that makes phase asymmetry explicit while remaining consistent with established apparent-power definitions. This paper addresses that point through a complex-vector power formulation for sinusoidal steady-state operation. The proposed representation supplements the classical dot-product expression of complex power with the cross product of voltage and current phasors, thereby retaining the usual active and reactive terms while making explicit a cross-phase unbalance vector that captures antisymmetric interphase relations. In this way, apparent power is separated into intraphase and cross-phase contributions, and its norm is preserved under the power-invariant Fortescue transformation. The formulation is extended to three-phase four-wire systems by introducing equivalent coordinates that preserve the effective apparent-power norm for the chosen voltage reference. Only standard complex numbers and matrices are required. Numerical examples show operating conditions in which a non-negligible part of the apparent-power structure is associated with cross-phase unbalance and cannot be inferred from active and reactive power alone. The proposed formulation thus provides a compact phasor-based descriptor of unbalance that complements established apparent-power theories by making explicit a component that is not accessible from scalar apparent-power representations.",
+      "authors": [
+        "Juan Carlos Bravo-Rodríguez",
+        "Juan Carlos del-Pino-López",
+        "Francisco Casado-Machado"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY"
+      ],
+      "published": "2026-04-28T10:24:27+00:00",
+      "link": "https://arxiv.org/pdf/2604.25473v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "complex-vector power in three-phase systems",
+      "llm_evidence_cn": "三相系统中的复矢量功率",
+      "llm_evidence": "三相系统中的复矢量功率",
+      "canonical_evidence": "三相系统中的复矢量功率",
+      "llm_tldr_en": "Introduces a complex-vector power formulation to explicitly represent unbalance in three-phase systems.",
+      "llm_tldr_cn": "引入复矢量功率公式，以明确表示三相系统中的不平衡。",
+      "llm_tldr": "引入复矢量功率公式，以明确表示三相系统中的不平衡。",
+      "llm_tags": [
+        "query:pmsm:composite"
+      ],
+      "matched_query_tag": "query:pmsm:composite",
+      "matched_query_text": "Papers central to 三相及双三相永磁同步电机相关研究检索, especially work that connects or combines: m; s; f; Permanent Magnet Synchronous Motor research; dual three-phase permanent magnet synchronous motor control and design; fault-tolerant control of multi-phase motors; recent advances in dual three phase permanent magnet synchronous motor control; fault tolerant strategies for multi phase permanent magnet synchronous motors.",
+      "matched_requirement_id": "req-composite-pmsm",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2604.23142v1",
+      "title": "An Algebraic State Observer for a Class of Physical Systems",
+      "abstract": "In this paper we present a radically new approach to design state observers for nonlinear systems, with particular emphasis on physical ones. Our objective is to obtain an algebraic relation between the unmeasurable part of the state and filtered versions of the systems inputs and outputs, which holds true for all $t \\geq 0$. The latter qualifier should be contrasted with the usual asymptotic (or fixed/finite time) objective. The standing assumption for our design is the availability -- or possibility of constructing, via coordinate change -- state components with measurable derivatives. In the physical systems studied in the paper this condition is naturally satisfied. The next step in the design is the application of the Swapping Lemma to pull out from the dynamics the derivative of one of these signals. The design is completed replacing the latter by the measurable signals and arranging the remaining terms. The algebraic observer constitutes a refreshing major departure from classical asymptotic observer designs, even in the case of electrical motors and mechanical systems that have been exhaustively studied. Particularly notable is the fact that no observability or excitation condition is imposed for the construction of the algebraic observer.",
+      "authors": [
+        "Alexey Bobtsov",
+        "Jose Guadalupe Romero",
+        "Romeo Ortega",
+        "Anton Pyrkin"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY"
+      ],
+      "published": "2026-04-25T04:49:40+00:00",
+      "link": "https://arxiv.org/pdf/2604.23142v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Algebraic state observer for physical systems",
+      "llm_evidence_cn": "物理系统的代数状态观测器",
+      "llm_evidence": "物理系统的代数状态观测器",
+      "canonical_evidence": "物理系统的代数状态观测器",
+      "llm_tldr_en": "Presents a new algebraic approach for state observation in nonlinear physical systems like motors.",
+      "llm_tldr_cn": "提出了一种用于电机等非线性物理系统状态观测的新代数方法。",
+      "llm_tldr": "提出了一种用于电机等非线性物理系统状态观测的新代数方法。",
+      "llm_tags": [
+        "query:pmsm:composite"
+      ],
+      "matched_query_tag": "query:pmsm:composite",
+      "matched_query_text": "Papers central to 三相及双三相永磁同步电机相关研究检索, especially work that connects or combines: m; s; f; Permanent Magnet Synchronous Motor research; dual three-phase permanent magnet synchronous motor control and design; fault-tolerant control of multi-phase motors; recent advances in dual three phase permanent magnet synchronous motor control; fault tolerant strategies for multi phase permanent magnet synchronous motors.",
+      "matched_requirement_id": "req-composite-pmsm",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2604.23269v1",
+      "title": "WSINDy for Model Predictive Control with Applications to Fusion, Drones, and Chaos",
+      "abstract": "The control of complex dynamical systems remains a fundamental challenge in science and engineering, where strong nonlinearities, the presence of noise, and computational constraints often pose significant obstacles in traditional control approaches. Recent advances in data-driven methods, particularly system identification techniques, have shown a powerful alternative by providing fast, parsimonious, interpretable models that are well-suited for model predictive control (MPC). Building on these developments, the present article embeds WSINDy with actuation inputs (WSINDYc) within a MPC framework. Compared to benchmark data-driven methods, WSINDYc enables a more robust identification of the governing dynamics, particularly in the presence of high noise levels, resulting in more accurate and efficient control. The capabilities of the proposed WSINDY-MPC framework are demonstrated on a range of problems, including a tokamak plasma boundary model that includes main ion gas puff actuation, drone tracking and collision avoidance, the chaotic Lorenz system, and a simplified flight control model for an F-8 aircraft. The proposed framework achieves superior performance in the presence of noise, enabling longer prediction horizons, lower trajectory tracking error, and a more reliable obstacle clearance, while simultaneously achieving lower MPC cost values compared to the baseline methods.",
+      "authors": [
+        "Cristian López",
+        "Mckenna Partridge",
+        "Sebastian De Pascuale",
+        "Jeremy Lore",
+        "Andrew Christlieb",
+        "Stephen Becker",
+        "David M. Bortz"
+      ],
+      "primary_category": "math.DS",
+      "categories": [
+        "math.DS",
+        "math.OC"
+      ],
+      "published": "2026-04-25T12:22:13+00:00",
+      "link": "https://arxiv.org/pdf/2604.23269v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Data-driven model predictive control for nonlinear systems",
+      "llm_evidence_cn": "非线性系统的数据驱动模型预测控制",
+      "llm_evidence": "非线性系统的数据驱动模型预测控制",
+      "canonical_evidence": "非线性系统的数据驱动模型预测控制",
+      "llm_tldr_en": "Integrates system identification with MPC for robust control of complex nonlinear dynamical systems.",
+      "llm_tldr_cn": "将系统辨识与模型预测控制相结合，实现对复杂非线性动力系统的鲁棒控制。",
+      "llm_tldr": "将系统辨识与模型预测控制相结合，实现对复杂非线性动力系统的鲁棒控制。",
+      "llm_tags": [
+        "query:pmsm:composite"
+      ],
+      "matched_query_tag": "query:pmsm:composite",
+      "matched_query_text": "Papers central to 三相及双三相永磁同步电机相关研究检索, especially work that connects or combines: m; s; f; Permanent Magnet Synchronous Motor research; dual three-phase permanent magnet synchronous motor control and design; fault-tolerant control of multi-phase motors; recent advances in dual three phase permanent magnet synchronous motor control; fault tolerant strategies for multi phase permanent magnet synchronous motors.",
+      "matched_requirement_id": "req-composite-pmsm",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2604.25527v1",
+      "title": "Multi-layer barrier adaptation of the discrete-time super-twisting controller",
+      "abstract": "In digital sliding mode control implementations, discretization-induced chattering and inter-sample blindness can severely degrade the closed-loop performance, especially in case of fast perturbations. This paper addresses these challenges for a discrete-time implementation of the super-twisting sliding mode controller. Building upon recent results on barrier-function-modulated super-twisting algorithms, a nested architecture employing multiple barriers is discretized using an eigenvalue-based exact matching approach. The resulting discrete-time controller preserves the adaptive and robustness properties established in continuous time, while ensuring consistent stability behavior at the sampling level. The proposed framework is validated through numerical simulations. The results highlight the effectiveness of multi-layer barrier adaptation for discrete-time sliding mode control applications.",
+      "authors": [
+        "Antoine Thibault Vié",
+        "Leonid Fridman",
+        "Roberto Galeazzi",
+        "Dimitrios Papageorgiou"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY"
+      ],
+      "published": "2026-04-28T11:52:29+00:00",
+      "link": "https://arxiv.org/pdf/2604.25527v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Discrete-time super-twisting sliding mode control",
+      "llm_evidence_cn": "离散时间超螺旋滑模控制",
+      "llm_evidence": "离散时间超螺旋滑模控制",
+      "canonical_evidence": "离散时间超螺旋滑模控制",
+      "llm_tldr_en": "Proposes a discrete-time adaptive sliding mode controller to reduce chattering in digital control systems.",
+      "llm_tldr_cn": "提出了一种离散时间自适应滑模控制器，以减少数字控制系统中的抖振。",
+      "llm_tldr": "提出了一种离散时间自适应滑模控制器，以减少数字控制系统中的抖振。",
+      "llm_tags": [
+        "query:pmsm:composite"
+      ],
+      "matched_query_tag": "query:pmsm:composite",
+      "matched_query_text": "Papers central to 三相及双三相永磁同步电机相关研究检索, especially work that connects or combines: m; s; f; Permanent Magnet Synchronous Motor research; dual three-phase permanent magnet synchronous motor control and design; fault-tolerant control of multi-phase motors; recent advances in dual three phase permanent magnet synchronous motor control; fault tolerant strategies for multi phase permanent magnet synchronous motors.",
+      "matched_requirement_id": "req-composite-pmsm",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

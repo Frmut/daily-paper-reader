@@ -1,0 +1,813 @@
+Title: Complex-Vector Power and Cross-Phase Unbalance in Three-Phase Systems
+
+URL Source: https://arxiv.org/pdf/2604.25473v1
+
+Published Time: Wed, 29 Apr 2026 01:19:43 GMT
+
+Number of Pages: 8
+
+Markdown Content:
+> 1
+
+# Complex-Vector Power and Cross-Phase Unbalance in Three-Phase Systems 
+
+Juan Carlos Bravo-Rodr´ ıguez, Juan Carlos del-Pino-L´ opez, Francisco Casado-Machado 
+
+Abstract —Unbalanced three-phase systems still lack a compact phasor-domain representation of power that makes phase asymme-try explicit while remaining consistent with established apparent-power definitions. This paper addresses that point through a complex-vector power formulation for sinusoidal steady-state operation. The proposed representation supplements the classical dot-product expression of complex power with the cross product of voltage and current phasors, thereby retaining the usual active and reactive terms while making explicit a cross-phase unbalance vector that captures antisymmetric interphase relations. In this way, apparent power is separated into intraphase and cross-phase contributions, and its norm is preserved under the power-invariant Fortescue transformation. The formulation is extended to three-phase four-wire systems by introducing equivalent coordinates that preserve the effective apparent-power norm for the chosen voltage reference. Only standard complex numbers and matrices are required. Numerical examples show operating conditions in which a non-negligible part of the apparent-power structure is associated with cross-phase unbalance and cannot be inferred from active and reactive power alone. The proposed formulation thus provides a compact phasor-based descriptor of unbalance that complements established apparent-power theories by making explicit a component that is not accessible from scalar apparent-power representations. 
+
+Index Terms —three-phase unbalance, symmetrical components, apparent power, complex-vector power, phasor-based methods, three-phase four-wire systems, power quality 
+
+I. I NTRODUCTION 
+
+Three-phase systems are meant to operate under balanced conditions, but real networks rarely do. Unequal single-phase loading, conductor asymmetries, and faults disturb the voltage and current sets and alter the way apparent power and power factor must be interpreted. In those situations, the conventional active and reactive power pair does not fully describe the structure of the electrical regime. The method of symmetrical components, introduced by Fortescue [1], [2], remains the standard tool for analyzing unbalanced three-phase phasors. By splitting the system into positive-, negative-, and zero-sequence subsystems, it provides an effective description of asymmetry. This work deliberately focuses on sinusoidal steady-state unbalance. This is not in-tended as a simplification of the general power-quality problem, but as an isolation of one of its fundamental components: the description of apparent power when voltage and current phasors are asymmetric while waveform distortion is absent. Establishing a clear phasor-based formulation for this case is  
+
+> Juan Carlos Bravo-Rodr ´ıguez, Juan Carlos del-Pino-L ´opez, Francisco Casado-Machado are with the Department of Electrical Engineering, University of Seville, Seville, Spain (e-mail: carlos bravo@us.es).
+
+a necessary step before additional effects such as harmonic distortion or time-varying behavior are introduced. Several established theories deal with apparent power under imbalance. Classical effective-apparent-power formulations such as the Fryze–Buchholz–Depenbrock (FBD) method [3], the Currents’ Physical Components (CPC) framework [4], and the practical line of work developed by Emanuel [5]– [7] and later reflected in IEEE Std. 1459–2010 [8] provide scalar measures and useful component decompositions. Other contributions have explored vector representations in the sinusoidal regime [9]–[12], while broader algebraic approaches have extended the discussion to nonsinusoidal and multiphase settings [13], [14]. However, within the conventional sinusoidal phasor frame-work, these approaches do not simultaneously provide a compact quantity built directly from phasors that retains the classical complex-power interpretation, makes interphase antisymmetry explicit, and preserves the apparent-power norm under the power-invariant Fortescue transformation. This combined representation is the main focus of the present work. To address this point, the paper introduces the Complex-Vector Power (CVP), obtained by complementing the classical dot-product expression of complex power with the cross product of voltage and current phasors. The dot-product term yields the usual active and reactive powers, whereas the cross product gives rise to a cross-phase unbalance (CPU) vector, interpreted not as a new physical form of power, but as a structural descriptor of interphase asymmetry that becomes explicit when the phase-domain voltage–current relation is considered as a whole. The formulation remains fully within the standard phasor framework used in power-system analysis. No advanced algebraic machinery is required: the construction relies only on complex arithmetic and elementary matrix operations. This makes the approach directly compatible with conventional engineering practice while providing explicit information about cross-phase asymmetry that is not available from scalar apparent-power representations alone. The CVP norm is preserved under the power-invariant Fortescue transformation, providing a consistent link between phase and sequence representations. Within this structure, apparent power can be written as the orthogonal combination of an intraphase contribution, associated with the dot-product term, and a cross-phase contribution associated with the CPU vector. The formulation is also extended to three-phase four-wire systems by introducing equivalent coordinates that preserve the effective apparent-power norm associated with the selected voltage reference, in agreement with IEEE 1459 in 
+
+> arXiv:2604.25473v1 [eess.SY] 28 Apr 2026 2
+
+the sinusoidal steady-state regime. The main contributions of this paper are therefore fourfold. First, it defines a Complex-Vector Power that combines the dot and cross products of voltage and current phasors in a single compact representation. Second, it identifies the cross-phase unbalance vector and clarifies its role as a structural descriptor of interphase asymmetry. Third, it proves that the CVP norm is invariant under the power-invariant Fortescue transformation. Finally, it extends the construction to three-phase four-wire sys-tems through equivalent coordinates compatible with effective apparent power. These contributions are developed progressively in the remainder of the paper. Section II introduces the CVP and formulates it for three-phase systems. Section III extends the approach to four-wire configurations. Section IV derives an instantaneous representation of the cross-phase term. Section V presents numerical examples, after which the main implications of the formulation are discussed and summarized. II. CVP IN THREE -P HASE SYSTEMS 
+
+A. Definition 
+
+In sinusoidal steady-state operation, voltages and currents in a three-phase system are represented by the phasor vectors 
+
+V =
+
+
+
+¯V1
+
+¯V2
+
+¯V3
+
+ , I =
+
+
+
+¯I1
+
+¯I2
+
+¯I3
+
+ , (1) which, in this section, are assumed to be defined with respect to an arbitrary but fixed voltage reference; a specific choice is introduced only when the CVP is aligned with a particular effective apparent - power definition, as discussed in Section III. The classical complex power follows from the dot product 
+
+V · I∗ =
+
+> 3
+
+X
+
+> k=1
+
+¯Vk ¯I∗ 
+
+> k
+
+= P + jQ, (2) which aggregates intraphase active and reactive contributions. However, the dot product does not capture antisymmetric phase-to-phase relations between voltage and current phasors that arise when the system departs from balanced operation. These relations are captured by the cross product of the phasors, which defines a cross-phase unbalance (CPU) vector 
+
+D = V × I, (3) whose components are 
+
+¯D1 = ¯V2 ¯I3 − ¯V3 ¯I2,
+
+¯D2 = ¯V3 ¯I1 − ¯V1 ¯I3,
+
+¯D3 = ¯V1 ¯I2 − ¯V2 ¯I1. (4) The Complex-Vector Power (CVP) is defined by 
+
+S ≜ V · I∗ + V × I = P + jQ + D. (5) The norm of the CVP satisfies the complex Lagrange identity (see Appendix A), 
+
+∥S∥2 = P 2 + Q2 + ∥D∥2, (6) which establishes an orthogonal intraphase/cross-phase decom-position and defines an associated apparent-power magnitude. For balanced linear loads, the phasors are complex -proportional (I = α V with α ∈ C), hence D = 0 and the CVP reduces to the classical complex power. The decomposition is consistent with the additive behavior of power at a common three-phase terminal. In particular, for parallel loads sharing the same phase voltages, both the dot-product term P + jQ and the cross-phase term D add linearly with the corresponding current contributions. 
+
+B. Norm Preservation of CVP under Symmetrical Components 
+
+Since the CVP in (5) is defined in the phase domain, it is necessary to establish whether its properties are preserved when voltages and currents are expressed in a different coordinate system. For the analysis of unbalanced three-phase systems, the natural choice is the symmetrical-components (SC) transformation introduced by Fortescue. Using the power-invariant form, the phase-domain phasors are mapped as 
+
+V± = AV , I± = AI , (7) with 
+
+A = 1
+
+√3
+
+1 a a2
+
+1 a2 a
+
+1 1 1
+
+ , a = ej2π/ 3. (8) This matrix satisfies the power-invariance condition 
+
+AT A∗ = I, (9) which directly implies preservation of the dot product, 
+
+V± · I∗± = V · I∗. (10) Consequently, the classical complex power P + jQ —including contributions from positive-, negative-, and zero-sequence components—remains unchanged under the symmetrical-components transformation. The cross product requires special attention, since it is not preserved under a general linear mapping. However, for the Fortescue matrix it can be shown that 
+
+(AV ) × (AI ) = det( A) A∗(V × I). (11) Because | det( A)| = 1 and A is unitary, the transformation preserves the norm of the cross component. As a result, 
+
+D± = det( A) A∗D, ∥D±∥ = ∥D∥. (12) Although the orientation of the cross-phase component depends on the coordinate system, its norm remains unchanged (see Appendix B). Since both the dot and cross components maintain their norms, the norm of the CVP is preserved, 
+
+∥S∥2 = V± · I∗± 
+
+> 2
+
++ ∥V± × I±∥2 = |V · I∗|2 + ∥V × I∥2.
+
+(13) From a geometric perspective, the dot product V · I∗ repre-sents the intraphase projection of voltage and current phasors, whereas the cross product V × I represents their antisymmetric 3
+
+interphase relation. The symmetrical-components transforma-tion changes the coordinate representation but preserves the norms of both contributions, and therefore preserves the metric structure of the CVP. In three-phase three-wire (3P–3W) systems, Kirchhoff’s current law forces the homopolar-sequence current to vanish (Ih = 0 ), yielding 
+
+P = P+ + P−, Q = Q+ + Q−. (14) However, a nonzero homopolar-sequence voltage may still exist; in such cases, although Ih = 0 , the cross component D
+
+generally retains a three-dimensional structure. A reduction to the (+ , −) plane occurs only under perfectly balanced voltages. This possibility of dimensional reduction motivates the use of the symmetrical-components basis as an intermediate analytical space for extending the formulation to three-phase four-wire systems, addressed in the next section. III. E XTENSION OF THE 3P–3W CVP TO 3P–4W S YSTEMS 
+
+Three-phase four-wire (3P–4W) networks require an explicit and properly defined voltage reference, since the presence of a neutral conductor introduces an additional degree of freedom that is not naturally constrained by the three-dimensional CVP structure. While Kirchhoff’s current law limits the number of independent line currents to three, no analogous constraint exists for voltages in a four-terminal configuration; the reference must therefore be specified so as to satisfy a suitable compatibility condition. Measurements at the point of common coupling (POC) provide the phase voltages 
+
+V =
+
+
+
+¯V1N
+
+¯V2N
+
+¯V3N
+
+ , (15) but these quantities depend on the adopted reference. To obtain a three-coordinate representation consistent with the CVP framework and with the effective-apparent-power formulation of IEEE 1459, the phase voltages are referred to an artificial (virtual) neutral O defined by the generalized barycentric condition 
+
+¯V1O + ¯V2O + ¯V3O + ¯VN O 
+
+ρ = 0 , (16) with neutral-to-phase resistance ratio ρ = RN /R S . This condition specifies the uniform shift that maps the measured line-to-neutral voltages onto the line-to-O voltages, 
+
+VO = V + ¯VN O 1, 1 =
+
+
+
+111
+
+ , (17) where the shift ¯VN O follows explicitly as 
+
+¯VN O = − ( ¯V1N + ¯V2N + ¯V3N )3 + 1
+
+> ρ
+
+. (18) This construction restores a three -coordinate voltage represen-tation compatible with the CVP framework. The shifted voltages and line currents are then expressed in symmetrical components using the power-invariant Fortescue matrix A,
+
+V±O = AV O , I± = AI . (19) To ensure consistency with IEEE Std. 1459 under sinusoidal steady-state conditions, a metric correction is applied to the homopolar components within the CVP framework, defining the equivalent quantities 
+
+¯Vhe = p1 + 3 ρ ¯VhO , ¯Ihe = p1 + 3 ρ ¯Ih. (20) The resulting equivalent sequence vectors are 
+
+V±e =  ¯V+O ¯V−O ¯Vhe 
+
+T , I±e =  ¯I+ ¯I− ¯Ihe 
+
+T .
+
+(21) In these coordinates, the dot and cross components of the CVP retain their forms, 
+
+V±e · I∗±e = P + jQ, V±e × I±e = D±e, (22) and the norm of the cross-phase unbalance component is preserved within the equivalent metric. Applying the inverse transformation provides equivalent phase-domain phasors 
+
+Ve = A−1V±e, Ie = A−1I±e, (23) which, in terms of the measured line-to-neutral phasors, admit the explicit expressions 
+
+Ve = VO − k(ρ) ¯VN O 1, Ie = I + ρ k (ρ) ¯IN 1, (24) where 
+
+¯IN = ¯I1 + ¯I2 + ¯I3, k(ρ) = 
+
+√ 1 + 3 ρ − 13ρ . (25) To avoid ambiguity, we note that the subscript e is used in two complementary ways: when attached to scalars ( Ve, Ie, Se)it denotes the effective rms quantities defined in IEEE 1459, whereas in vector form ( Ve, Ie, Se) it denotes the equivalent CVP coordinates whose norms reproduce those effective values in this regime. These equivalents preserve the CVP metric and power structure: 
+
+∥Ve∥ = ∥V±e∥, ∥Ie∥ = ∥I±e∥ (26) 
+
+Ve · I∗ 
+
+> e
+
+= P + jQ, ∥De∥ = ∥Ve × Ie∥ = ∥D±e∥ (27) Consequently, 
+
+∥Se∥ = pP 2 + Q2 + ∥De∥2 = ∥S±e∥. (28) Moreover, given that the equivalent voltage and current vectors have been constructed to match the corresponding effective rms quantities prescribed by IEEE 1459 in this regime, the equivalent apparent - power norm likewise coincides, by construction, with the IEEE 1459 effective apparent power Se.4
+
+Limiting operating conditions Balanced supply: If the supply is balanced, the ar-tificial–neutral shift vanishes ( ¯VN O = 0) and the homopolar - sequence voltage is zero ( ¯VhO = 0 ). In 3P–4W systems, however, unbalanced loads may still give rise to a nonzero homopolar current ( ¯Ih̸ = 0 ) through the neutral. Since 
+
+¯VhO = 0 , this homopolar current component does not affect the dot -product term P + jQ , but still plays a role in the cross-phase structure captured by De.
+
+Identical conductor resistances ( ρ = 1 ): The generalized barycentric condition reduces to the classical virtual-star-point condition of the FBD method [3]: 
+
+¯V1O + ¯V2O + ¯V3O + ¯VN O = 0 , (29) which implies the uniform shift 
+
+¯VN O = − ( ¯V1N + ¯V2N + ¯V3N )4 . (30) In the equivalent-phase construction one has k(1) = 13 .
+
+Perfect neutral ( ρ = 0 ): The physical and artificial neutrals coincide ( N ≡ O), hence ¯VN O = 0 and Ve = V, Ie = I.Although k(ρ) → 12 , the correction is immaterial because it multiplies a vanishing shift. 
+
+Three-phase three-wire ( ρ → ∞ ): The artificial-neutral shift tends to the barycentric average 
+
+¯VN O = − ( ¯V1N + ¯V2N + ¯V3N )3 , (31) the homopolar current vanishes ( ¯Ih = 0 ), and k(ρ) → 0. The formulation collapses to the standard 3P–3W model based on positive- and negative-sequence components. IV. I NSTANTANEOUS REPRESENTATION OF THE 
+
+CROSS -P HASE TERM 
+
+Consider a three-phase system operating under sinusoidal steady-state conditions, with instantaneous phase voltages and currents expressed with respect to the adopted POC reference. Although different reference choices would modify the numerical values of the phase quantities and the resulting cross-product terms, the algebraic structure of the CVP relations remains unchanged. The instantaneous voltages and currents are therefore written as 
+
+vk(t) = √2 Vk sin( ωt + αk), ik(t) = √2 Ik sin( ωt + βk),
+
+(32) These instantaneous quantities define not only the scalar instantaneous power 
+
+p(t) = 
+
+> 3
+
+X
+
+> k=1
+
+vk(t)ik(t), (33) but also the antisymmetric term 
+
+d(t) ≜ v(t) × i(t), (34) with 
+
+v(t) = 
+
+
+
+v1(t)
+
+v2(t)
+
+v3(t)
+
+ , i(t) = 
+
+
+
+i1(t)
+
+i2(t)
+
+i3(t)
+
+ . (35) Its components are the antisymmetric combinations 
+
+d1(t) = v2(t)i3(t) − v3(t)i2(t),d2(t) = v3(t)i1(t) − v1(t)i3(t),d3(t) = v1(t)i2(t) − v2(t)i1(t), (36) an arrangement also considered in [15] from a different perspective. Decomposing d(t) into mean and oscillatory parts, 
+
+˜d(t) = d(t) − ⟨ d⟩, (37) each component of ˜d(t) is a double-frequency sinusoid, 
+
+˜dk(t) = Dk cos(2 ωt + ψdk ), k = 1 , 2, 3. (38) The amplitudes and phase angles are determined by the cross-product coefficients 
+
+¯Dk = ¯Vℓ ¯Im − ¯Vm ¯Iℓ, Dk = | ¯Dk|, ψdk = arg( ¯Dk),
+
+(39) where (k, ℓ, m ) denotes any cyclic permutation of (1 , 2, 3) .Hence, these coefficients coincide with the components of the phasor cross product 
+
+D = V × I, (40) i.e., the CPU term defined in Section II. The vector D therefore represents the amplitude and phase of the corresponding 2ω oscillatory terms, in parallel with Steinmetz’s observation that products of alternating quantities generate double-frequency components [16]. Since each ˜dk(t) has zero mean, its amplitude is character-ized by its rms value, 
+
+σk =
+
+s
+
+1
+
+T
+
+Z T
+
+> 0
+
+˜d2
+
+> k
+
+(t) dt = Dk
+
+√2 . (41) Accordingly, the rms magnitude of the full cross-phase term is 
+
+σd =
+
+vuut 3X
+
+> k=1
+
+σ2 
+
+> k
+
+= ∥D∥√2 . (42) Hence, the norm ∥D∥ obtained from the phasor cross product is directly related to the rms magnitude of its instantaneous counterpart. The cross-phase term represents the antisymmetric inter-phase correlation between voltages and currents. V. N UMERICAL EXAMPLES 
+
+This section presents two numerical examples illustrating the application of the proposed Complex-Vector Power (CVP) to three-phase four-wire systems under sinusoidal steady-state conditions. Each example reports the phase-domain phasors, the corresponding equivalent coordinates (Ve, Ie), the dot -product term P + jQ , the cross-phase vector De, and the resulting apparent power ∥Se∥ and power factor (PF). 5
+
+A. Example 1 — Purely Reactive Asymmetric Load 
+
+Example 1 presents a conceptual configuration intended to illustrate the structural behavior of the proposed formulation under ideal conditions. A balanced three-phase source feeds a star-connected load composed of three purely reactive impedances expressed in per-unit with respect to a common reactance X. The load neutral is directly connected to the source neutral. The per-unit system uses V as the voltage base, 
+
+I = V /X as the current base, and V I as the base for all power components. In particular, the phase impedances are 
+
+¯Z1 = jX, ¯Z2 = −j5X, ¯Z3 = −j1.25 X. (43) The system is fed by balanced line-to-neutral voltage phasors 
+
+V = V V ∠ − 120 ◦ V ∠120 ◦T . (44) Since the supply is symmetrical, the artificial-neutral shift is zero ( ¯VN O = 0 ), and the phase voltages coincide with those referred to the virtual neutral. Although each branch is purely reactive, the load is strongly asymmetric. The resulting phase currents are therefore unbal-anced and produce a nonzero neutral current ( ¯IN̸ = 0 ). The scalar powers satisfy 
+
+P = 0 , Q = 0 , (45) Although the total reactive power is zero, the individual phase contributions remain nonzero and cancel algebraically, while the cross-phase unbalance vector remains nonzero, 
+
+De̸ = 0. (46) In this configuration, the CVP is entirely determined by the cross-phase term; consequently, the apparent power reduces to 
+
+∥Se∥ = ∥De∥ = ∥Ve∥ ∥ Ie∥. (47) This example illustrates that the apparent-power norm may remain nonzero even when the dot-product contribution P +jQ 
+
+vanishes, provided that the phase currents are not symmetrically distributed. Within the CVP framework, this residual apparent power is entirely associated with cross-phase unbalance. The corresponding phasors and power quantities are reported in Tables I and II. 
+
+B. Example 2 — Unbalanced supply with unequal load and conductor resistances 
+
+Example 2 considers a more realistic four-wire distribution configuration in which supply asymmetry, load unbalance, and unequal conductor parameters are simultaneously present, inspired by the circuit configuration discussed in [17, p. 175]. The system is modeled as a three-phase feeder with finite conductor impedances. The phase conductors have RS = 1 .0 Ω 
+
+and LS = 7 .6 mH, while the neutral conductor has the same inductance LN = LS but a higher resistance RN = 2 .40 Ω ,yielding ρ = 2 .4.The load consists of a strongly unbalanced line-to-neutral resistive set R1 = 100 Ω , R2 = 500 Ω , and R3 = 1000 Ω ,in parallel with a balanced delta-connected impedance ˜ZL =70+ j70 .48 Ω . On the load side, the neutral conductor includes 
+
+RN L = 0 .04 Ω (Fig. 1).                                                             
+
+> TABLE I EXAMPLE 1: P HASOR VECTORS AND NORMS (PER -UNIT VALUES )Quantity Example 1
+> V=Ve
+> 11∠−120 ◦
+> 1∠120 ◦
+> 
+> V±e
+> 
+> √300
+> 
+> ∥V∥√3
+> I
+> 1∠−90 ◦
+> 0.2∠−30 ◦
+> 0.8∠−150 ◦
+> 
+> ¯IN
+> √63 5∠−109 .107 ◦
+> Ie
+> 
+> √57 5∠−96 .587 ◦
+> 0.6∠−90 ◦
+> √39 5∠−133 .898 ◦
+> 
+> I±
+> 
+> 0√21 5∠−70 .893 ◦
+> √21 5∠−109 .107 ◦
+> 
+> I±e
+> 
+> 0√21 5∠−70 .893 ◦
+> 2√21 5∠−109 .107 ◦
+> 
+> ∥I±e∥=∥Ie∥√105 5
+> TABLE II EXAMPLE 1: P OWER COMPONENTS AND NORMS (PER -UNIT VALUES )Power Component Example 1
+> P0
+> Q0
+> De
+> 
+> √39 5∠133 .898 ◦
+> √183 5∠33 .67 ◦
+> √93 5∠−51 .052 ◦
+> 
+> D±e
+> 
+> 02√63 5∠70 .893 ◦
+> √63 5∠1.587 ◦
+> 
+> ∥De∥=∥Se∥3√35 5
+
+The source provides asymmetric 60-Hz line-to-neutral volt-ages. Using the artificial-neutral reference and the proposed equivalent coordinates, the resulting power quantities are con-sistent with the effective apparent-power definition prescribed in IEEE Std. 1459: 
+
+P = 648 .655 W, Q = 542 .717 var , (48) 
+
+∥De∥ = 228 .403 VA , ∥Se∥ = 876 .05 VA , PF = 0 .74 .
+
+(49) 6                                                   
+
+> Fig. 1. Example 2: Unbalanced supply with unequal load and conductor resistances. TABLE III EXAMPLE 2 ( ρ= 2 .4): P HASE AND EQUIVALENT PHASORS (V, A). Quantity Example 2
+> V
+> "91 .50 ∠−5.50 ◦
+> 94 .78 ∠−123 .81 ◦
+> 89 .62 ∠121 .25 ◦
+> #
+> ¯VN O 3.985 ∠53 .214 ◦
+> VO
+> "93 .63 ∠−3.42 ◦
+> 90 .80 ∠−123 .68 ◦
+> 91 .19 ∠118 .93 ◦
+> #
+> k(ρ)0.621
+> Ve
+> "93 .07 ∠−3.95 ◦
+> 91 .83 ∠−123 .71 ◦
+> 91 .19 ∠118 .93 ◦
+> #
+> V±e
+> "159 .10 ∠−2.73 ◦
+> 3.79 ∠−20 .47 ◦
+> 2.75 ∠126 .79 ◦
+> #
+> ∥V±e∥=∥Ve∥159 .163
+> I
+> "3.562 ∠−38 .28 ◦
+> 2.863 ∠−166 .17 ◦
+> 2.822 ∠74 .76 ◦
+> #
+> ¯IN0.776 ∠−12 .52 ◦
+> Ie
+> "4.0∠−35 .28 ◦
+> 2.44 ∠−161 .14 ◦
+> 2.89 ∠65 .15 ◦
+> #
+> I±e
+> "5.33 ∠−42 .85 ◦
+> 0.51 ∠−11 .5◦
+> 1.28 ∠12 .52 ◦
+> #
+> ∥I±e∥=∥Ie∥5.504
+
+Computation in the modified symmetrical - components do-main yields identical dot - product and cross - product norms, confirming preservation of the CVP metric under the coordinate transformation. The resulting phasors and power quantities for Example 2 are reported in Tables III and IV. 
+
+Discussion of Numerical Examples 
+
+The numerical examples show that cross-phase contributions can significantly affect apparent power under both balanced and unbalanced conditions, particularly in four-wire systems with asymmetric loads. In such cases, reactive power alone does not explain the observed power-factor reduction. In Example 1, the apparent-power norm is entirely associated with the cross-phase term, with P = Q = 0 and ∥De∥ = ∥Se∥.                      
+
+> TABLE IV EXAMPLE 2 ( ρ= 2 .4): P OWER COMPONENTS AND NORMS (W, VAR , VA). Power Component Example 2
+> P648 .66
+> Q542 .72
+> De
+> 83 .6∠−109 .13 ◦
+> 156 .62 ∠126 .392 ◦
+> 143 .70 ∠30 .663 ◦
+> 
+> D±e
+> 5.4∠−18 .52 ◦
+> 217 .5∠166 .42 ◦
+> 69 .53 ∠−1.57 ◦
+> 
+> ∥De∥=∥D±e∥228 .40
+> ∥Se∥876 .05
+> PF 0.74
+
+In Example 2, active, reactive, and cross-phase components coexist while preserving ∥Se∥2 = P 2 + Q2 + ∥De∥2.These results illustrate how the CVP formulation makes cross-phase effects explicit through D while remaining consis-tent with standard apparent-power definitions. VI. D ISCUSSION 
+
+The proposed CVP provides a structured interpretation of three-phase apparent power by combining the conventional complex power P + jQ with a cross-product term D that captures interphase antisymmetry. Their norms satisfy 
+
+∥S∥2 = P 2 + Q2 + ∥D∥2,
+
+so the apparent-power magnitude is decomposed into intraphase and cross-phase contributions. From an engineering viewpoint, the CVP clarifies sources of power-factor degradation in unbalanced systems. It can distinguish operating conditions with similar values of P and Q
+
+but different internal phase structure, since part of the apparent-power norm may be associated with interphase asymmetry through ∥D∥. In such cases, reactive-power compensation alone does not necessarily address the full apparent-power demand. The proposed representation therefore assists the interpretation of unbalanced feeders, loads, and compensation strategies by separating intraphase phase-shift effects from cross-phase unbalance effects. The cross-phase term also connects with the instantaneous picture: D determines the amplitudes and phases of the asso-ciated 2ω oscillatory components, and its norm relates to their rms magnitude. This is consistent with classical observations that products of sinusoidal quantities generate double-frequency terms [16]. The present formulation expresses these phase relationships through conventional complex arithmetic, without requiring additional algebraic machinery. Another point made explicit by the CVP is the role of the voltage reference in apparent-power representations. The algebraic values and orientation of D depend on that choice, whereas its norm is preserved under the power-invariant Fortescue transformation. Thus, the internal structure of the representation is reference sensitive, while the associated apparent-power metric remains well defined, in agreement 7
+
+with previous discussions on voltage reference selection [19], [20]. For three-phase four-wire systems, the equivalent-coordinate construction introduced in Section III provides a consistent way of working within a three-coordinate setting without losing the effective apparent-power norm. This allows the CVP to remain compatible with IEEE 1459 in the sinusoidal steady-state regime while preserving the same multicomponent structure used in the three-wire case. The present formulation is developed for sinusoidal unbal-anced conditions; harmonic distortion, nonlinear loads, and time-varying regimes are outside its scope. 
+
+Relation to IEEE 1459 unbalance power: Under si-nusoidal steady-state conditions, IEEE 1459 defines S2 
+
+> e
+
+=
+
+S2+ + S2
+
+> u
+
+. In the CVP formulation, 
+
+∥S∥2 = P 2 + Q2 + ∥D∥2, ∥S∥ = Se.
+
+The two decompositions are therefore consistent at the level of the effective apparent-power norm, but they differ in structure. IEEE 1459 defines the unbalance power Su with respect to the positive-sequence apparent power, thereby aggregating different effects of asymmetry into a scalar quantity. In contrast, the CVP separates the total phase-domain interaction into an intraphase contribution, represented by P + jQ , and an explicitly interphase contribution, represented by D.Accordingly, Su does not in general coincide with ∥D∥.Rather than replacing IEEE 1459 quantities, the CVP comple-ments them by making explicit the cross-phase contribution that remains implicit in scalar apparent-power descriptions. Importantly, the CVP does not postulate a new energetic carrier or an additional physical kind of power. The cross-product term should be interpreted as a structural descriptor of how the voltage–current relation is distributed across phases under unbalanced conditions. In this sense, the CVP does not redefine the physical mechanisms of energy transfer, but makes explicit a component of the phase relations that is not accessible from scalar apparent-power representations. VII. C ONCLUSIONS 
+
+This work introduces the Complex-Vector Power (CVP) as a phasor-based formulation for sinusoidal unbalanced three-phase systems. By extending the classical complex power with a cross-product term, the approach makes cross-phase unbalance explicit while preserving the apparent-power norm. The CVP norm satisfies the complex Lagrange identity and is preserved under the power-invariant Fortescue transformation, providing a consistent link between phase and sequence representations. The formulation also extends to three-phase four-wire systems through equivalent coordinates compatible with effective apparent power. From a practical perspective, the CVP helps interpret cases where apparent power and power-factor degradation cannot be attributed to reactive power alone. The cross-product term should therefore be understood as a structural descriptor of interphase unbalance embedded in the voltage–current relation, rather than as an additional physical power mechanism. APPENDIX ALAGRANGE ’S IDENTITY IN COMPLEX FORM 
+
+Let V, I ∈ Cn be complex vectors endowed with the Euclidean norm ∥ · ∥ . Lagrange’s identity in complex form reads 
+
+∥V∥2 ∥I∥2 =
+
+
+
+> n
+
+X
+
+> j=1
+
+| ¯Vj |2
+
+
+
+> n
+
+X
+
+> k=1
+
+| ¯Ik|2
+
+!
+
+. (50) This product can be decomposed as 
+
+∥V∥2 ∥I∥2 =
+
+> n
+
+X
+
+> j=1
+
+¯Vj ¯I∗
+
+> j
+> 2
+
++ X
+
+> 1≤j<k ≤n
+
+¯Vj ¯Ik − ¯Vk ¯Ij 
+
+> 2
+
+. (51) To see this, note that 
+
+X
+
+> 1≤j<k ≤n
+
+¯Vj ¯Ik − ¯Vk ¯Ij 
+
+> 2
+
+= 12
+
+> n
+
+X
+
+> j=1
+> n
+
+X
+
+> k=1
+
+¯Vj ¯Ik − ¯Vk ¯Ij
+
+> 2
+
+= 12
+
+> n
+
+X
+
+> j=1
+> n
+
+X
+
+> k=1
+
+
+
+| ¯Vj |2| ¯Ik|2 + | ¯Vk|2| ¯Ij |2 − 2 ℜ{ ¯Vj ¯I∗ 
+
+> j
+
+¯V ∗ 
+
+> k
+
+¯Ik}
+
+
+
+.
+
+(52) Rearranging terms yields 
+
+X
+
+> 1≤j<k ≤n
+
+¯Vj ¯Ik − ¯Vk ¯Ij 
+
+> 2
+
+=
+
+
+
+> n
+
+X
+
+> j=1
+
+| ¯Vj |2
+
+
+
+> n
+
+X
+
+> k=1
+
+| ¯Ik|2
+
+!
+
+−ℜ 
+
+
+
+> n
+
+X
+
+> j=1
+> n
+
+X
+
+> k=1
+
+¯Vj ¯I∗ 
+
+> j
+
+( ¯Vk ¯I∗ 
+
+> k
+
+)∗
+
+ . (53) Finally, 
+
+ℜ
+
+
+
+> n
+
+X
+
+> j=1
+> n
+
+X
+
+> k=1
+
+¯Vj ¯I∗ 
+
+> j
+
+( ¯Vk ¯I∗ 
+
+> k
+
+)∗
+
+ =
+
+> n
+
+X
+
+> j=1
+
+¯Vj ¯I∗
+
+> j
+> 2
+
+. (54) Substitution of (54) into (53) yields (51). This identity provides the mathematical basis for decom-posing the norm of the Complex -Vector Power into dot - and cross-product contributions. APPENDIX BDOT AND CROSS PRODUCTS UNDER THE FORTESCUE 
+
+TRANSFORMATION 
+
+For completeness, this appendix derives the relations between the phase-domain quantities (V, I) and their symmetrical components (V±, I±) that support the norm-preservation properties of the CVP discussed in the main text. 
+
+A. Symmetrical Components 
+
+Let the phase-domain current vector be 
+
+I =  ¯I1 ¯I2 ¯I3
+
+T . (55) The symmetrical components are obtained through the power-invariant Fortescue transformation 
+
+I± = AI , A = 1
+
+√3
+
+
+
+1 a a2
+
+1 a2 a
+
+1 1 1
+
+ , a = ej2π/ 3.
+
+(56) 8
+
+Explicitly, 
+
+¯I+ = 1
+
+√3
+
+  ¯I1 + a ¯I2 + a2 ¯I3
+
+ , (57) 
+
+¯I− = 1
+
+√3
+
+  ¯I1 + a2 ¯I2 + a ¯I3
+
+ , (58) 
+
+¯Ih = 1
+
+√3
+
+  ¯I1 + ¯I2 + ¯I3
+
+ . (59) and the same relations apply to the voltages. Since A is invertible, 
+
+I = A−1I±, V = A−1V±. (60) 
+
+B. Dot Product 
+
+The dot product in symmetrical coordinates is 
+
+V± · I∗± = ¯V+ ¯I∗ 
+
+> +
+
++ ¯V− ¯I∗− + ¯Vh ¯I∗
+
+> h
+
+. (61) Using 1 + a + a2 = 0 and a3 = 1 , a direct expansion yields 
+
+V± · I∗± = ¯V1 ¯I∗ 
+
+> 1
+
++ ¯V2 ¯I∗ 
+
+> 2
+
++ ¯V3 ¯I∗ 
+
+> 3
+
+= V · I∗. (62) Hence, the dot-product contribution to the CVP is preserved under the Fortescue transformation. 
+
+C. Cross Product 
+
+Unlike the dot product, which is preserved under unitary transformations, the cross product is not generally preserved under linear mappings and must therefore be evaluated explic-itly. The cross product in symmetrical components is 
+
+V± × I± =
+
+
+
+¯V− ¯Ih − ¯Vh ¯I−
+
+¯Vh ¯I+ − ¯V+ ¯Ih
+
+¯V+ ¯I− − ¯V− ¯I+
+
+ . (63) Expressing these terms in phase coordinates and grouping yields 
+
+V± × I± = 13 (a2 − a)
+
+1 a2 a
+
+1 a a2
+
+1 1 1
+
+ (V × I). (64) Since 
+
+det( A) = a2 − a
+
+√3 = −j, A∗ = 1
+
+√3
+
+1 a2 a
+
+1 a a2
+
+1 1 1
+
+ ,
+
+(65) the transformation can be written compactly as 
+
+V± × I± = det( A) A∗(V × I). (66) 
+
+D. Consequence: Invariance of the Norm 
+
+Because | det( A)| = 1 and A is unitary, 
+
+∥V± × I±∥ = ∥V × I∥. (67) Thus, the norm of the cross - phase component of the Complex -Vector Power is preserved under the Fortescue transformation. REFERENCES [1] C. L. Fortescue, “Method of symmetrical co-ordinates applied to the solution of polyphase networks,” Proc. Amer. Inst. Electr. Eng. , vol. 37, no. 6, pp. 629–716, Dec. 1918. [2] C. L. Fortescue, “Polyphase power representation by means of symmetri-cal coordinates,” Trans. Amer. Inst. Electr. Eng. , vol. 39, pp. 1481–1484, 1920. [3] M. Depenbrock, “The FBD-method, a generally applicable tool for analyzing power relations,” IEEE Trans. Power Syst. , vol. 8, no. 2, pp. 381–387, 1993. [4] L. S. Czarnecki, “Currents’ physical components (CPC) in circuits with nonsinusoidal voltages and currents. Part 2: Three-phase three-wire linear circuits,” Electr. Power Qual. Util. J. , vol. 12, no. 1, pp. 3–13, 2006. [5] A. E. Emanuel, “On the definition of power factor and apparent power in unbalanced polyphase circuits with sinusoidal voltage and currents,” IEEE Trans. Power Deliv. , vol. 8, no. 3, pp. 841–852, 1993, doi: 10.1109/61.252612. [6] A. E. Emanuel, “The Buchholz-Goodhue apparent power definition: The practical approach for nonsinusoidal and unbalanced systems,” IEEE Trans. Power Deliv. , vol. 13, no. 2, pp. 344–348, 1998. [7] A. E. Emanuel, “Apparent power definitions for three-phase systems,” 
+
+IEEE Trans. Power Deliv. , vol. 14, no. 3, pp. 767–772, 1999. [8] IEEE Standard Definitions for the Measurement of Electric Power Quantities Under Sinusoidal, Nonsinusoidal, Balanced, or Unbalanced Conditions , IEEE Std. 1459–2010, Mar. 2010. [9] V. Le ´on-Mart ´ınez, J. Montan ˜ana-Romeu, A. Cazorla-Navarro, J. Giner-Garcia, and J. Roger-Folch, “Phasor total unbalance power: Formulation and some properties,” in Proc. IEEE Instrum. Meas. Technol. Conf. (IMTC) , 2007, pp. 1–6. [10] J. M. Diez, P. A. Blasco, and R. Montoya, “Formulation of phasor unbalance power: Application to sinusoidal power systems,” IET Gener. Transm. Distrib. , vol. 10, no. 16, pp. 4178–4186, 2016. [11] V. Le ´on-Mart ´ınez and J. Montan ˜ana-Romeu, “Formulations for the apparent and unbalanced power vectors in three-phase sinusoidal systems,” 
+
+Electr. Power Syst. Res. , vol. 160, pp. 37–43, 2018. [12] P. A. Blasco, R. Montoya-Mira, J. M. Diez, and R. Montoya, “An alternate representation of the vector of apparent power and unbalanced power in three-phase electrical systems,” Appl. Sci. , vol. 10, no. 11, Art. no. 3756, Jun. 2020, doi: 10.3390/app10113756. [13] H. Lev-Ari and A. M. Stankovi ´c, “Instantaneous power quantities in polyphase systems—A geometric algebra approach,” in Proc. IEEE Energy Convers. Congr. Expo. (ECCE) , 2009, pp. 592–596. [14] F. G. Montoya, J. Ventura, A. Alcayde, and F. M. Arrabal-Campos, “Geometric power theory in the frequency domain for non-sinusoidal and unbalanced multiphase AC systems,” Int. J. Electr. Power Energy Syst. ,vol. 165, Art. no. 110454, 2025, doi: 10.1016/j.ijepes.2025.110454. [15] F. Z. Peng and J.-S. Lai, “Generalized instantaneous reactive power theory for three-phase power systems,” IEEE Trans. Instrum. Meas. ,vol. 45, no. 1, pp. 293–297, 1996. [16] C. P. Steinmetz, “Symbolic representation of general alternating waves and of double frequency vector products,” AIEE Trans. , vol. XVI, pp. 269– 296, 1899. [17] A. E. Emanuel, Power Definitions and the Physical Mechanism of Power Flow . Hoboken, NJ, USA: Wiley–IEEE Press, 2011. [18] A. I. Petroianu, Bridging Circuits and Fields: Foundational Questions in Power Theory . Boca Raton, FL, USA: CRC Press, 2021. [19] J. L. Willems and J. A. Ghijselen, “The relation between the generalized apparent power and the voltage reference,” in Proc. 6th Int. Workshop on Power Definitions and Measurements under Nonsinusoidal Conditions ,Milan, Italy, Oct. 13–15, 2003, pp. 37–45. [20] V. Le ´on-Mart ´ınez, J. Monta ˜nana-Romeu, E. Pe ˜nalvo-L ´opez, and C. M. ´Alvarez-Bel, “Effects of the selected point of voltage reference on the apparent power measurement in three-phase Star Systems,” Appl. Sci. ,vol. 10, no. 3, Art. no. 1036, 2020, doi: 10.3390/app10031036.

@@ -1,0 +1,65 @@
+{
+  "label": "2026-04-29",
+  "date": "2026-04-29",
+  "generated_at": "2026-04-29T20:47:27",
+  "count": 4,
+  "papers": [
+    {
+      "paper_id": "202604/29/2604.25473v1-complex-vector-power-and-cross-phase-unbalance-in-three-phase-systems",
+      "section": "quick",
+      "title_en": "Complex-Vector Power and Cross-Phase Unbalance in Three-Phase Systems",
+      "authors": "Juan Carlos Bravo-Rodríguez, Juan Carlos del-Pino-López, Francisco Casado-Machado",
+      "date": "2026-04-28",
+      "pdf": "https://arxiv.org/pdf/2604.25473v1",
+      "score": "7.0",
+      "evidence": "三相系统中的复矢量功率",
+      "tldr": "针对三相系统不平衡表征不明确的问题，本文提出了一种复矢量功率公式。该方法在传统复功率点积基础上引入电压与电流相量的叉积，定义了“跨相不平衡矢量”，从而将视在功率分解为相内和跨相贡献。该公式在Fortescue变换下保持范数不变，并适用于四线制系统，为不平衡分析提供了比传统标量视在功率更丰富的相量描述。",
+      "tags": "query:pmsm",
+      "abstract_en": "Unbalanced three-phase systems still lack a compact phasor-domain representation of power that makes phase asymmetry explicit while remaining consistent with established apparent-power definitions. This paper addresses that point through a complex-vector power formulation for sinusoidal steady-state operation. The proposed representation supplements the classical dot-product expression of complex power with the cross product of voltage and current phasors, thereby retaining the usual active and reactive terms while making explicit a cross-phase unbalance vector that captures antisymmetric interphase relations. In this way, apparent power is separated into intraphase and cross-phase contributions, and its norm is preserved under the power-invariant Fortescue transformation. The formulation is extended to three-phase four-wire systems by introducing equivalent coordinates that preserve the effective apparent-power norm for the chosen voltage reference. Only standard complex numbers and matrices are required. Numerical examples show operating conditions in which a non-negligible part of the apparent-power structure is associated with cross-phase unbalance and cannot be inferred from active and reactive power alone. The proposed formulation thus provides a compact phasor-based descriptor of unbalance that complements established apparent-power theories by making explicit a component that is not accessible from scalar apparent-power representations.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202604/29/2604.23142v1-an-algebraic-state-observer-for-a-class-of-physical-systems",
+      "section": "quick",
+      "title_en": "An Algebraic State Observer for a Class of Physical Systems",
+      "authors": "Alexey Bobtsov, Jose Guadalupe Romero, Romeo Ortega, Anton Pyrkin",
+      "date": "2026-04-25",
+      "pdf": "https://arxiv.org/pdf/2604.23142v1",
+      "score": "6.0",
+      "evidence": "物理系统的代数状态观测器",
+      "tldr": "针对非线性物理系统，本文提出了一种全新的代数状态观测器设计方法。该方法通过坐标变换或利用物理特性，寻找具有可测导数的状态分量，并利用交换引理（Swapping Lemma）建立不可测状态与输入输出滤波信号之间的代数关系。与传统的渐近观测器不同，该方法在所有时刻均有效，且无需满足观测性或激励条件，为电机和机械系统等物理系统的状态估计提供了新思路。",
+      "tags": "query:pmsm",
+      "abstract_en": "In this paper we present a radically new approach to design state observers for nonlinear systems, with particular emphasis on physical ones. Our objective is to obtain an algebraic relation between the unmeasurable part of the state and filtered versions of the systems inputs and outputs, which holds true for all $t \\geq 0$. The latter qualifier should be contrasted with the usual asymptotic (or fixed/finite time) objective. The standing assumption for our design is the availability -- or possibility of constructing, via coordinate change -- state components with measurable derivatives. In the physical systems studied in the paper this condition is naturally satisfied. The next step in the design is the application of the Swapping Lemma to pull out from the dynamics the derivative of one of these signals. The design is completed replacing the latter by the measurable signals and arranging the remaining terms. The algebraic observer constitutes a refreshing major departure from classical asymptotic observer designs, even in the case of electrical motors and mechanical systems that have been exhaustively studied. Particularly notable is the fact that no observability or excitation condition is imposed for the construction of the algebraic observer.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202604/29/2604.23269v1-wsindy-for-model-predictive-control-with-applications-to-fusion-drones-and-chaos",
+      "section": "quick",
+      "title_en": "WSINDy for Model Predictive Control with Applications to Fusion, Drones, and Chaos",
+      "authors": "Cristian López, Mckenna Partridge, Sebastian De Pascuale, Jeremy Lore, Andrew Christlieb, Stephen Becker, David M. Bortz",
+      "date": "2026-04-25",
+      "pdf": "https://arxiv.org/pdf/2604.23269v1",
+      "score": "6.0",
+      "evidence": "非线性系统的数据驱动模型预测控制",
+      "tldr": "本研究针对复杂动力系统控制中存在的强非线性、高噪声和计算限制等挑战，提出了一种将带有驱动输入的弱稀疏识别算法（WSINDYc）与模型预测控制（MPC）相结合的新框架。该方法通过在积分形式下进行系统辨识，显著提升了在噪声环境下的建模鲁棒性。实验证明，该框架在核聚变等离子体控制、无人机避障及混沌系统等多种复杂场景中，均实现了比基准方法更低的跟踪误差和更高的控制效率，为复杂系统的实时控制提供了兼具可解释性与高性能的解决方案。",
+      "tags": "query:pmsm",
+      "abstract_en": "The control of complex dynamical systems remains a fundamental challenge in science and engineering, where strong nonlinearities, the presence of noise, and computational constraints often pose significant obstacles in traditional control approaches. Recent advances in data-driven methods, particularly system identification techniques, have shown a powerful alternative by providing fast, parsimonious, interpretable models that are well-suited for model predictive control (MPC). Building on these developments, the present article embeds WSINDy with actuation inputs (WSINDYc) within a MPC framework. Compared to benchmark data-driven methods, WSINDYc enables a more robust identification of the governing dynamics, particularly in the presence of high noise levels, resulting in more accurate and efficient control. The capabilities of the proposed WSINDY-MPC framework are demonstrated on a range of problems, including a tokamak plasma boundary model that includes main ion gas puff actuation, drone tracking and collision avoidance, the chaotic Lorenz system, and a simplified flight control model for an F-8 aircraft. The proposed framework achieves superior performance in the presence of noise, enabling longer prediction horizons, lower trajectory tracking error, and a more reliable obstacle clearance, while simultaneously achieving lower MPC cost values compared to the baseline methods.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202604/29/2604.25527v1-multi-layer-barrier-adaptation-of-the-discrete-time-super-twisting-controller",
+      "section": "quick",
+      "title_en": "Multi-layer barrier adaptation of the discrete-time super-twisting controller",
+      "authors": "Antoine Thibault Vié, Leonid Fridman, Roberto Galeazzi, Dimitrios Papageorgiou",
+      "date": "2026-04-28",
+      "pdf": "https://arxiv.org/pdf/2604.25527v1",
+      "score": "6.0",
+      "evidence": "离散时间超螺旋滑模控制",
+      "tldr": "针对数字滑模控制中离散化引起的抖振和采样间盲区问题，本文提出了一种多层障碍自适应离散时间超螺旋控制器。该方法基于嵌套障碍函数架构，并采用基于特征值的精确匹配方法进行离散化，在保证系统稳定性的同时，保留了连续时间下的自适应与鲁棒特性，并通过仿真验证了其有效性。",
+      "tags": "query:pmsm",
+      "abstract_en": "In digital sliding mode control implementations, discretization-induced chattering and inter-sample blindness can severely degrade the closed-loop performance, especially in case of fast perturbations. This paper addresses these challenges for a discrete-time implementation of the super-twisting sliding mode controller. Building upon recent results on barrier-function-modulated super-twisting algorithms, a nested architecture employing multiple barriers is discretized using an eigenvalue-based exact matching approach. The resulting discrete-time controller preserves the adaptive and robustness properties established in continuous time, while ensuring consistent stability behavior at the sampling level. The proposed framework is validated through numerical simulations. The results highlight the effectiveness of multi-layer barrier adaptation for discrete-time sliding mode control applications.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
