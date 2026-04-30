@@ -1,0 +1,685 @@
+Title: Local Shifted Passivity Analysis of the Single-Machine Infinite-Bus System
+
+URL Source: https://arxiv.org/pdf/2604.25738v1
+
+Published Time: Wed, 29 Apr 2026 01:07:20 GMT
+
+Number of Pages: 14
+
+Markdown Content:
+# Local Shifted Passivity Analysis of the Single-Machine Infinite-Bus System 
+
+Xinyuan Jiang 
+
+> Independent Researcher, State College, PA 16803, USA
+
+Abstract 
+
+This letter presents a shifted passivity analysis of the single-machine infinite-bus system in the stationary ( αβ ) reference frame. We study the attractivity of a periodic synchronous steady state with constant rotor frequency and formulate shifted passivity with respect to this motion. A port-Hamiltonian representation of the machine dynamics is used to construct a local shifted passivity condition from the error Hamiltonian and a correction term adapted to the synchronous steady state. For the infinite-bus interconnection, the resulting dissipation inequality leads to a sufficient stability condition expressed in terms of field excitation magnitude, damping, inertia, and steady-state current. This condition implies local asymptotic stability of the synchronous steady state and yields a sublevel-set estimate of its region of attraction under an additional small-inertia condition. A distinctive feature of the analysis is that it preserves the periodic structure of the rotor angle and provides a compact passivity-based stability certificate for the stationary-frame model. 
+
+Keywords: Synchronous generators; Power system stability; Port-Hamiltonian systems; Shifted passivity; Periodic solutions 
+
+1. Introduction 
+
+Characterizing when a power system returns to synchronous operation after a disturbance is a basic problem in stability theory. For synchronous generators, Lyapunov and energy-based methods have long been the main analytical tools because they directly connect the physical model to rigorous stability certificates. In the classical lossless setting, the electrical power balance can be embedded into an energy function, and local stability is then tied to the geometry of this function around a synchronous operating point [1, 2]. This perspective underlies the standard direct methods and also more recent passivity- and Bregman-based formulations [3, 4, 5, 6]. A limitation of the usual energy-function approach is that the mechanical power input is often handled through angle-linear terms. To account for the mechanical power source that destroys the monotonic decay of candidate Lyapunov functions, one often introduces terms that are linear in the rotor angles [3, 4]. These terms are natural in Euclidean coordinates, but the angle variables themselves are periodic. As a result, the energy function is discontinuous in the physical angle space, and one must recover stability through local convexity arguments or additional bounds on the angular motion [7, 8, 1]. In this sense, the analytical convenience of the construction can obscure the underlying periodic geometry of the model. A related difficulty is that many local stability certificates encode the operating point through angle-difference or power-transfer constraints [9, 4, 6]. While such conditions are insightful from a   
+
+> Email address: j_jxy@outlook.com (Xinyuan Jiang)
+> arXiv:2604.25738v1 [eess.SY] 28 Apr 2026
+
+power-flow perspective, they are not always expressed directly in terms of the power supply and dissipation structure of the machine, so they cannot be enforced for each machine. This letter revisits the classical single-machine infinite-bus (SMIB) system from a different angle. We work in the stationary αβ frame and consider a synchronous steady state not as an equilibrium in rotating coordinates, but as a periodic motion with constant rotor frequency. For this reference motion, the natural system theoretic property to prove is a shifted dissipation inequality with respect to a periodic trajectory rather than with respect to an equilibrium point. The key observation is that shifted dissipation can be implemented in a way that preserves the periodicity of the rotor angle. Using the complex phasor to embed the rotor angle, we express the machine dynamics in a port-Hamiltonian form and start from the physical stored energy. By introducing a suitable correction term, we obtain a shifted storage function whose derivative along trajectories can be estimated by a quadratic dissipation inequality. For the infinite-bus interconnec-tion, the supply term vanishes, and the remaining condition can be written explicitly in terms of field excitation magnitude, damping, inertia, and steady-state current. This yields a local shifted passivity condition for the stationary-frame model of a constantly excited synchronous generator. From this condition, we obtain local asymptotic stability of the synchronous steady state and a sublevel-set estimate of its region of attraction. The resulting argument is based on the physical dissipation structure of the model and avoids introducing angle-linear energy terms that break the natural periodicity of the state. The main contribution is proving the local shifted passivity condition relative to a periodic synchronous motion of the stationary-frame SMIB model. Unlike usual energy functions with angle-linear terms, the proposed storage is defined on the embedded angle manifold and remains periodic in the rotor angle. The resulting certificate does not explicitly impose angle-difference or coupling-strength constraints of the type appearing in some energy-function analyses [9, 4]. In view of port-Hamiltonian modeling of large-scale power networks, this dissipativity-based form may serve as a building block for future interconnection-based analyses of multimachine systems with suitable load models [10, 11, 12, 13]. 
+
+2. Preliminaries Notation. The set of positive real numbers is R>0. The real inner product ⟨x, y⟩ = ℜ{ x∗y} for 
+
+Cn is assumed throughout this letter, where (·)∗ is Hermitian transpose. Regular transpose is denoted by (·)T. A vector is denoted by lower-case bold (e.g., x), and a matrix is denoted by uppercase bold (e.g., J). The complex gradient of a C1 function g : Cn → R is ∇g(x) = 2  ∂g ∂x ∗
+
+> 1
+
+, . . . , ∂g ∂x ∗
+
+> n
+
+T, where partial derivatives with respect to scalar complex variables (e.g., ∂g ∂x ∗
+
+> k
+
+) are Wirtinger derivatives [14]. The imaginary unit is j.
+
+Definition 1 (Shifted passive system [15]) . Consider a system ˙x = F (t, x, u), y = G(t, x, u), where 
+
+x ∈ M ⊂ Cn, y, u ∈ Cm. Assume (¯ x(t), ¯u(t)) is a periodic solution with output ¯y(t). The system is said to be locally shifted passive in a subset Ω ⊂ M relative to the periodic solution (¯ x(t), ¯u(t)) ,where ¯x(t) ∈ Ω, if there exists a C1 function S : Ω × Ω → R such that, for some ε > 0 and for all 
+
+x(t) ∈ Ω and u(t) ∈ Cm,
+
+˙S(x(t), ¯x(t)) = ⟨∇ xS(x(t), ¯x(t)) , ˙x(t)⟩ + ⟨∇ ¯xS(x(t), ¯x(t)) , ˙¯x(t)⟩≤ − ε∥x(t) − ¯x(t)∥2 + ⟨y(t) − ¯y(t), u(t) − ¯u(t)⟩. (1) 
+
+3. Single-Machine Infinite-Bus Model 
+
+The SMIB model consists of the swing equation and the stator dynamics. We make the usual assumptions: constant field current, no damper circuit, linear magnetic materials, one pole pair per phase, and a round rotor [16, 8]. 2The swing equation is written as 
+
+J ˙ω = −Kω + Tm − Te (2a) 
+
+˙θ = ω, (2b) where J, T m, K ∈ R>0 are the inertia constant, the mechanical torque, and the frequency droop coefficient, respectively. The variables include the following: ω ∈ R is the rotor frequency, θ ∈ R is the rotor angle, and Te ∈ R is the electrical torque. We work in a stationary ( αβ ) reference frame and represent balanced three-phase quantities as complex space vectors [17]. The equation for the stator circuit is 
+
+L ˙I = −RI − E + V, (3) where L, R ∈ R>0 are the stator inductance and resistance, respectively. The variables include 
+
+I, V, E ∈ C, which are space vectors for the stator current (inward), the terminal voltage, and the electromotive force, respectively. For the infinite bus, 
+
+V = ¯V = √3Vsejω st, (4) where ωs, V s ∈ R>0 are the frequency and per-phase line-to-neutral RMS voltage of the stiff bulk grid, respectively. Denote the field flux magnitude by λ ∈ R>0. The electrical torque Te is 
+
+Te = −λℜ{ I∗je jθ }, (5) and the electromotive force (EMF) E is 
+
+E = λjωe jθ . (6) 
+
+Remark 1. In this letter, we use the Clarke transformation, so the positive direction of rotation is counterclockwise. In contrast, the convention in [8] is for the space vectors to rotate clockwise in the positive direction. It is worth noting that [8] is aligned with the historical convention when working in the dq frame (see its rationale in [18]). The Clarke convention is consistent with the standard counterclockwise angle orientation of the complex plane. 
+
+3.1. Synchronous Steady State 
+
+Definition 2. A synchronous steady state of the SMIB system (2)–(6) is a periodic motion such that ω = ωs, ∥I∥ is constant, and ddt arg( I) = ωs. Synchronous steady-state variables are denoted by ¯(·). In particular, ¯ω = ωs.The existence of synchronous steady states is characterized in [8]. For completeness, the condition is recalled below. 
+
+Proposition 1 (Proposition 1 of [8]) . Define 
+
+P := −λ2ωsR + ( Tm − Kω s)( L2ω2 
+
+> s
+
++ R2)
+
+λV s
+
+pL2ω2 
+
+> s
+
++ R2 .
+
+The SMIB system admits two synchronous steady states if |P| < 1. It admits one synchronous steady state if |P| = 1 . It admits no synchronous steady state if |P| > 1.
+
+Remark 2. The existence of multiple synchronous motions is due to the periodicity of the rotor angle 
+
+θ. As such, it is impossible for the SMIB system to be globally asymptotically stable. Therefore, the goal is to prove local stability with a region of attraction estimate. 3To simplify notation, define ξ = ejθ , i.e., the unit phasor associated with θ. The steady-state reactive power output at the machine terminal is 
+
+¯Q := −ℑ{ ¯I∗ ¯V } = −ℑ{ ¯I∗(jλ ¯ω ¯ξ + ( R + j ¯ωL ) ¯I)}
+
+= −λ¯ωℜ{ ¯I∗ ¯ξ} − ¯ωL ∥ ¯I∥2.
+
+The steady-state real power output at the machine terminal is 
+
+¯P := −ℜ{ ¯I∗ ¯V } = −ℜ{ ¯I∗(jλ ¯ω ¯ξ + ( R + j ¯ωL ) ¯I)}
+
+= −λ¯ωℜ{ ¯I∗j ¯ξ} − R∥ ¯I∥2.
+
+Hence, if ¯Q > 0, then ℜ{ ¯I∗ ¯ξ} < 0; if ¯P > 0, then ℜ{ ¯I∗j ¯ξ} < 0.
+
+4. Local Shifted Passivity Analysis 
+
+The goal is to find a suitable storage function for proving shifted passivity. Our proof proceeds in three steps: derive an energy balance for the port-Hamiltonian form, modify the storage to cancel the periodic-drift term, and prove local positive definiteness plus dissipation. 
+
+4.1. Port-Hamiltonian System 
+
+To separate the contribution of the mechanical-power injection in the storage derivative, we decompose (2a) into two parts: 
+
+J ˙ω = −Kω + λℜ{ I∗jξ }, (7) and 
+
+J ˙ω = Tm. (8) We denote by Xdiss (V ) the vector field comprising (7), (2b)–(6) which is modulated by the bus voltage V ∈ C, and denote by Xmech the vector field comprising (8). The SMIB dynamics can be decomposed as 
+
+X = Xdiss (V ) + Xmech .
+
+Since the derivative of any smooth storage function S along a vector field is linear in the vector field, 
+
+LX S = LXdiss S + LXmech S, 
+
+the two contributions may be evaluated separately without changing the dynamics. Hence, the anal-ysis proceeds by first considering the contribution of Xdiss (V ) to the time derivative of a candidate storage function. The contribution from Xmech is deferred to (16). To put Xdiss (V ) into a port-Hamiltonian system, we rewrite (7) as 
+
+J ddt (jωξ ) = −K(jωξ ) + λℜ{ I∗jξ }jξ − Jω 2ξ
+
+= −K(jωξ ) + λI − λℜ{ I∗ξ}ξ − Jω 2ξ. (9) We choose the state vector to be 
+
+x = x1 x2
+
+T = Jjωξ LI T . (10) In the ambient space C2, define the Hamiltonian function as 
+
+H(x) = 12 J−1∥x1∥2 + 12 L−1 ∥x2∥2 . (11) 4The complex gradient of H(x) is 
+
+∇H(x) = J−1x1 L−1x2
+
+T = jωξ IT .
+
+We can express Xdiss (x; V ) as the port-Hamiltonian system 1
+
+Xdiss (x; V ) = ( J − R)∇H(x) + Gu , (12a) 
+
+y = G∗∇H(x), (12b) with 
+
+J =
+
+j ¯ωJ λ
+
+−λ 0
+
+
+
+, R =
+
+K 00 R
+
+
+
+, G =
+
+0 1 11 0 0
+
+
+
+,
+
+and the input–output pair is 
+
+u =
+
+
+
+V
+
+−J(ω − ¯ω)ωξ 
+
+−λℜ{ I∗ξ}ξ
+
+ , y =
+
+
+
+Ijωξ jωξ 
+
+ .
+
+Define the shifted Hamiltonian as 
+
+H(x, ¯x) = 12 J−1∥x1 − ¯x1∥2 + 12 L−1∥x2 − ¯x2∥2.
+
+We can write the shifted energy balance as 
+
+⟨∇ xH(x, ¯x), X diss (x; V )⟩ + ⟨∇ ¯xH(x, ¯x), X diss (¯ x; ¯V )⟩
+
+= ⟨∇ H(x) − ∇ H(¯ x), (J − R)( ∇H(x) − ∇ H(¯ x)) + G(u − ¯u)⟩
+
+= −⟨∇ H(x) − ∇ H(¯ x), R(∇H(x) − ∇ H(¯ x)) ⟩ + ⟨I − ¯I, V − ¯V ⟩− ⟨ J(ω − ¯ω)ωξ, jωξ − j ¯ω ¯ξ⟩ − λ⟨ℜ{ I∗ξ}ξ − ℜ{ ¯I∗ ¯ξ} ¯ξ, jωξ − j ¯ω ¯ξ⟩. (13) For a free parameter η ∈ R≥0, we can bound the last two terms to obtain 
+
+⟨∇ xH(x, ¯x), X diss (x; V )⟩ + ⟨∇ ¯xH(x, ¯x), X diss (¯ x; ¯V )⟩≤ −⟨∇ H(x) − ∇ H(¯ x), R(∇H(x) − ∇ H(¯ x)) ⟩ + ⟨I − ¯I, V − ¯V ⟩
+
++
+
+
+
+η − J ¯ω2 + λℜ{ ¯I∗ ¯ξ}
+
+ ddt ⟨ξ, ¯ξ⟩ + η|ω − ¯ω| ∥ ξ − ¯ξ∥
+
++ K jωξ ¯ξ∗ − j ¯ω 2 − K ¯ωω ξ ¯ξ∗ − 1 2 − (K − J ¯ω)( ω − ¯ω)2
+
++ λ¯ω I ¯ξ∗ − ¯I ¯ξ∗ ξ ¯ξ∗ − 1 + λ¯ω∥ ¯I∥ ξ ¯ξ∗ − 1 2 . (14) The derivation from (13) to (14) is given in Appendix A. 
+
+4.2. Storage Function and Local Shifted Passivity 
+
+Define the co-energy state as 
+
+s = s1 s2 s3
+
+T = jωξ ¯ξ∗ ξ ¯ξ∗ I ¯ξ∗T .
+
+By construction, s is invariant on the Riemannian manifold 
+
+M := 
+
+n
+
+s ∈ C3 | ∥ s2∥ = 1 , ω = s1/(js 2) ∈ R
+
+o
+
+.
+
+> 1This is meant as a formal expression, not a physical input–output model with independently assignable inputs.
+
+5In the coordinates s, the steady state ¯s is an isolated equilibrium point. We consider the candidate storage function 
+
+S(s, ¯s) = H(x, ¯x) −
+
+
+
+η − J ¯ω2 + λℜ{ ¯I∗ ¯ξ}
+
+  ⟨ξ, ¯ξ⟩ − 1
+
+= 12 J jωξ − j ¯ω ¯ξ 2 + 12 L∥I − ¯I∥2
+
++ 12 (η − J ¯ω2 + λℜ{ ¯I∗ ¯ξ})∥ξ − ¯ξ∥2
+
+= 12 J ¯ω(ω − ¯ω)∥ξ − ¯ξ∥2 + 12 J(ω − ¯ω)2
+
++ 12 L∥I − ¯I∥2 + 12
+
+ η + λℜ{ ¯I∗ ¯ξ} ∥ξ − ¯ξ∥2. (15) 
+
+Remark 3. Note that the storage function S(s, ¯s) depends on the angular term ∥ξ − ¯ξ∥2 = 2 −
+
+2 cos( θ − ¯θ), and hence is 2π-periodic in θ. This is the key distinction from the angle-linear terms in the usual energy functions [1], which are locally valid but not periodic (discontinuous) on the angle manifold [19]. The vector field Xmech (x) ⊕ Xmech (¯ x) contributes to the time derivative of S(s, ¯s) by 
+
+∂∂ω S(s, ¯s) Tm
+
+J + ∂∂ ¯ω S(s, ¯s) Tm
+
+J = 12 Tm(ω − ¯ω)∥ξ − ¯ξ∥2. (16) Combining (14) and (16), we obtain that along 
+
+ Xdiss (x; V ) + Xmech (x) ⊕  Xdiss (¯ x; ¯V ) + Xmech (¯ x) ,
+
+the directional derivative of S(s, ¯s) is 
+
+˙S(s, ¯s) ≤ − v(s)TQ(ω)v(s) + ⟨I − ¯I, V − ¯V ⟩, (17) where 
+
+v(s) = 
+
+∥s1/s 2 − ¯s1/¯s2∥∥s2 − ¯s2∥∥s3 − ¯s3∥
+
+ ,
+
+and 
+
+Q(ω) = 
+
+
+
+K − J ¯ω −η/ 2 0
+
+−η/ 2 K ¯ωω − λ¯ω∥ ¯I∥ − Tm(ω − ¯ω)/2 −λ¯ω/ 20 −λ¯ω/ 2 R
+
+ .
+
+Assumption 1. Define 
+
+ˆK := K − λ∥ ¯I∥
+
+¯ω − λ2
+
+4R − η2
+
+4( K ¯ω2 − J ¯ω3) , c := 1 − K ¯ω/T m.
+
+Assume there exists η ∈ R≥0 such that 
+
+K > J ¯ω and ˆK > 0 and c < 1/2. (18) 
+
+Remark 4. Assumption 1 is a dissipation-margin condition for Q(ω) ≻ 0 around ¯ω. The first two inequalities are exactly the Schur-complement conditions for Q(¯ ω) ≻ 0. The parameter η enters both the storage function and the dissipation estimate: Larger η increases the coefficient of the angular term ∥ξ − ¯ξ∥2 in the storage but decreases the dissipation margin ˆK. The third inequality is used only in Lemma 2 to obtain the explicit inequality in terms of ω.6Remark 5. From a power-system viewpoint, Assumption 1 requires the damping coefficient K to dominate the inertial coupling introduced by the stationary-frame periodic reference and the elec-tromagnetic coupling terms associated with field excitation and steady-state current. The constant 
+
+c in (18) represents the speed regulation; that is, the percentage drop in frequency, from no load to nominal load [20, Sec. 2.3]. It is typically set to 5% in the U.S. ( 4% in Europe), which is well below 
+
+1/2.
+
+Lemma 1. Under Assumption 1, there exists ε > 0 such that Q(ω) ≻ 0 for each s ∈ B(¯ s, ε ).
+
+Proof. Since the smallest eigenvalue of Q(ω) depends continuously on ω [21, Sec. 6.3], there exists 
+
+ε > 0 such that Q(ω) ≻ 0 for each ω ∈ B(¯ ω, ε ) if Q(¯ ω) ≻ 0. This is equivalent to 
+
+K − J ¯ω > 0 and K ¯ω2 − λ¯ω∥ ¯I∥ − λ2 ¯ω2
+
+4R − η2
+
+4( K − J ¯ω) > 0,
+
+which is equivalent to the first two conditions in (18). 
+
+Lemma 2. Under Assumption 1, Q(ω) ≻ 0 if 
+
+ω > ¯ω − ρ (19) with 
+
+ρ := ˆK ¯ω2
+
+K ¯ω − Tm/2 .
+
+Proof. We expand the condition Q(ω) ≻ 0 and simplify it as 
+
+0 <
+
+
+
+K ¯ω − Tm
+
+2
+
+
+
+(ω − ¯ω) + K ¯ω2 − λ¯ω∥ ¯I∥ − λ2 ¯ω2
+
+4R − η2
+
+4( K − J ¯ω) .
+
+Since K ¯ω − Tm/2 > 0 from Assumption 1, this is equivalent to (19). 
+
+Corollary 1. Under Assumption 1, the synchronous machine system is shifted passive (with respect to the supply rate ⟨I − ¯I, V − ¯V ⟩) on the set 
+
+Ω =  s ∈ M | ω = s1/(js 2) > ¯ω − ρ + δ
+
+for a small δ ∈ (0 , ρ ) to guarantee uniformity. 
+
+4.3. Stability Results 
+
+The main stability results of this letter are stated below with their proofs given in the Appendix. 
+
+Proposition 2. Assume η satisfies 
+
+η > −λℜ{ ¯I∗ ¯ξ}. (20) Then the Riemannian Hessian Hess MS(s, ¯s) is positive definite at s = ¯ s.
+
+Remark 6. Condition (20) has a direct power-system interpretation. Using the steady-state reactive-power identity 
+
+¯Q = −λ¯ωℜ{ ¯I∗ ¯ξ} − ¯ωL ∥ ¯I∥2,
+
+condition (20) implies ¯Q < η ¯ω − ¯ωL ∥ ¯I∥2. If η ≥ 0 is small, then condition (20) can be satisfied for underexcited conditions when the machine produces little reactive power or absorbs reactive power. From Assumption 1, a larger η ≥ 0 can be used if the frequency damping K is large enough. 7Proposition 3 (Local stability) . Assume there exists η ∈ R≥0 such that Assumption 1 and (20) both hold. Then the synchronous steady state ¯s of the SMIB system is locally asymptotically stable. 
+
+Proposition 4 (Estimated region of attraction) . Assume there exists η ∈ R≥0 such that Assump-tion 1 and 
+
+η > −λℜ{ ¯I∗ ¯ξ} + J ¯ω2 (21) hold. Define 
+
+ˆρ := min { ρ, ¯ω } .
+
+Then the synchronous steady state ¯s is attractive on the connected component Comp ¯s(L) (containing 
+
+¯s) of the sublevel set 
+
+L := 
+
+n
+
+s ∈ M | S(s, ¯s) < J ˆρ2/2
+
+o
+
+.
+
+Remark 7. The stricter condition (21) is used only for the explicit sublevel-set attraction estimate. Beyond the local positive definiteness assumed in Proposition 3, condition (21) ensures that the storage function S(s, ¯s) is positive definite on M with respect to ¯s. Note that (21) becomes less restrictive when J is smaller, because the lower bound on η decreases. 
+
+Remark 8. The existing almost-global stability analyses [8, 22] rely, respectively, on a Lyapunov-like analysis combined with boundedness arguments and on an exact swing-equation reduction with a contraction condition. In comparison, Propositions 3 and 4 provide a periodicity-preserving shifted-passivity certificate directly in the stationary frame. Although the certificate is local and conser-vative, its dissipativity-based form is well suited for interconnection-based analysis and suggests a possible route toward multimachine extensions. 
+
+5. Numerical Example 
+
+A key question is whether conditions (18) and (20) can be verified for realistic synchronous ma-chine parameters. This section checks these conditions using the synchronous generator parameters in [20, Example 4.2]. The nominal parameter set and operating point are listed in Table 1, where the values are per unit. The frequency damping K is set so that the frequency regulation is equal to 5% [20, Sec. 2.3]. In Sections 3–4, the dot denotes differentiation with respect to physical time t, and angular frequencies are in the SI unit rad/s. In the per-unit system, frequencies are normalized by ωbase =2π60 rad/s, so ωSI = ωbase ωpu . Since η originates from ddt ⟨ξ, ¯ξ⟩ (see Appendix A), the corresponding per-unit expression contains the time-scaling factor ωbase . Hence, the per-unit normalization of the second inequality of (18) becomes 
+
+K − λ∥ ¯I∥
+
+¯ω − λ2
+
+4R − (ωbase η)2
+
+4( K ¯ω2 − J ¯ω3) > 0,
+
+with (20) staying unchanged. Based on Table 1, the two synchronous steady states are 
+
+¯ξ1 = 0 .5920 − j0.8060 , ¯I1 = −0.1983 − j0.2054 ,
+
+and 
+
+¯ξ2 = 0 .5757 + j0.8177 , ¯I2 = −0.1872 − j0.7548 .
+
+The first synchronous steady state satisfies both conditions with η1 = 0 and 
+
+ℜ{ ¯I∗ 
+
+> 1
+
+¯ξ1} = 0 .0482 > 0.
+
+8Table 1: Synchronous Machine Parameters from [20, Example 4.2] 
+
+Parameter Value [p.u.] Parameter Value [p.u.] 
+
+¯ω 1 J ¯ω2/2 1.765 
+
+R 0.0211 λ¯ω 0.7107 
+
+L 2.1 ¯V 1
+
+K 19 ¯Te ¯ω 0.2
+
+By Proposition 3, the first steady state is locally asymptotically stable. For the second one, 
+
+ℜ{ ¯I∗ 
+
+> 2
+
+¯ξ2} = −0.725 < 0,
+
+so condition (20) requires 
+
+η2 > −λℜ{ ¯I∗ 
+
+> 2
+
+¯ξ2} = 0 .5152 .
+
+On the other hand, the second inequality of (18) requires 
+
+η2 < 0.0737 .
+
+Hence, no η2 ≥ 0 satisfies both conditions, and Proposition 3 is inconclusive about the local stability of the second synchronous steady state. To compare the certificate with the local linear behavior, we also compute the eigenvalues of the linearized model in the synchronous rotating frame. Define the real coordinates 
+
+z = θ − ¯ωt ω ℜ{ I∗ej ¯ωt } ℑ{ I∗ej ¯ωt }T ∈ R4.
+
+The linearized eigenvalues at the first and second synchronous steady states are 
+
+−5.3679 , −0.01450 , −0.01006 ± j0.99994 ,
+
+and 
+
+−5.3968 , 0.01442 , −0.01006 ± j0.99994 .
+
+Thus, the linearization is consistent with Proposition 3: The certified first steady state is locally stable, whereas the second steady state is unstable and is not certified by the proposed sufficient condition. 
+
+6. Conclusion 
+
+This letter examined the local shifted passivity of a single-machine infinite-bus system with respect to a synchronous periodic orbit in the stationary frame. The analysis addresses a feature that is absent from the usual equilibrium-shifted setting: the reference motion exchanges nonzero steady-state power with the bus, and phase displacement relative to this motion produces residual electromagnetic coupling terms. The main result is a local shifted passivity condition for this periodic setting. Starting from a port-Hamiltonian representation, a correction term is added to the shifted Hamiltonian to cancel a drift term induced by the rotating electromagnetic coupling. The resulting storage function remains periodic in the rotor angle and yields a local dissipation inequality. For the infinite-bus intercon-nection, this inequality implies local asymptotic stability of the synchronous motion and gives a sublevel-set estimate of its region of attraction. Beyond the specific inequalities obtained here, the analysis suggests that shifted passivity can provide a complementary viewpoint to classical energy-function arguments for synchronous-machine models with periodic state variables. In particular, it avoids introducing angle-dependent terms that are convenient analytically but do not respect the natural geometry of the state space. From this viewpoint, the present result should be understood less as a global characterization of SMIB stability and more as a local geometric certificate that is connected to the dissipative structure of the machine. 9Appendix A. Energy Balance Derivation 
+
+The goal is to obtain (14) from (13) by bounding the last two terms on the right-hand side of (13), denoted by T . Expanding the inner products and using 
+
+⟨ξ, jξ ⟩ = ⟨ ¯ξ, j ¯ξ⟩ = 0 , ⟨ ¯ξ, jξ ⟩ = −⟨ ξ, j ¯ξ⟩,
+
+we obtain 
+
+T = J(ω − ¯ω)ω ¯ω⟨ξ, j ¯ξ⟩ + λ¯ωℜ{ I∗ξ}⟨ ξ, j ¯ξ⟩ − λω ℜ{ ¯I∗ ¯ξ}⟨ ξ, j ¯ξ⟩
+
+=
+
+
+
+J ¯ω2 − λℜ{ ¯I∗ ¯ξ}
+
+
+
+(ω − ¯ω)⟨ξ, j ¯ξ⟩ + J(ω − ¯ω)2 ¯ω⟨ξ, j ¯ξ⟩
+
++ λ¯ω  ℜ{ I∗ξ} − ℜ{ ¯I∗ ¯ξ} ⟨ξ, j ¯ξ⟩
+
+= −
+
+
+
+η − J ¯ω2 + λℜ{ ¯I∗ ¯ξ}
+
+
+
+(ω − ¯ω)⟨ξ, j ¯ξ⟩ + η(ω − ¯ω)⟨ξ, j ¯ξ⟩
+
++ J(ω − ¯ω)2 ¯ω⟨ξ, j ¯ξ⟩ + λ¯ω  ℜ{ I∗ξ} − ℜ{ ¯I∗ ¯ξ} ⟨ξ, j ¯ξ⟩,
+
+where η ∈ R≥0 is a free parameter. Note that 
+
+|⟨ ξ, j ¯ξ⟩| ≤ ∥ ξ∥ ∥ j ¯ξ∥ = 1 ,
+
+and 
+
+ℜ{ I∗ξ} − ℜ{ ¯I∗ ¯ξ} = ℜ{ (I − ¯I)∗ξ} + ℜ{ ¯I∗(ξ − ¯ξ)}
+
+≤ ℜ{ (I − ¯I)∗ξ} + ℜ{ ¯I∗(ξ − ¯ξ)}
+
+≤ ∥ (I − ¯I)∗ξ∥ + ∥ ¯I∗(ξ − ¯ξ)∥ = ∥I − ¯I∥ + ∥ ¯I∥ ∥ ξ − ¯ξ∥,
+
+and 
+
+|⟨ ξ, j ¯ξ⟩| = |⟨ ξ − ¯ξ, j ¯ξ⟩| ≤ ∥ ξ − ¯ξ∥ ∥ j ¯ξ∥ = ∥ξ − ¯ξ∥.
+
+Using these bounds and ddt ⟨ξ, ¯ξ⟩ = −(ω − ¯ω)⟨ξ, j ¯ξ⟩, we obtain 
+
+T ≤ 
+
+
+
+η − J ¯ω2 + λℜ{ ¯I∗ ¯ξ}
+
+ ddt ⟨ξ, ¯ξ⟩ + η|ω − ¯ω| ∥ ξ − ¯ξ∥
+
++ J ¯ω(ω − ¯ω)2 + λ¯ω  ∥I − ¯I∥ + ∥ ¯I∥ ∥ ξ − ¯ξ∥ ∥ξ − ¯ξ∥
+
+=
+
+
+
+η − J ¯ω2 + λℜ{ ¯I∗ ¯ξ}
+
+ ddt ⟨ξ, ¯ξ⟩ + η|ω − ¯ω| ∥ ξ − ¯ξ∥
+
++ J ¯ω(ω − ¯ω)2 + λ¯ω∥I − ¯I∥ ∥ ξ − ¯ξ∥ + λ¯ω∥ ¯I∥ ∥ ξ − ¯ξ∥2. (A.1) Moreover, using 
+
+(ω − ¯ω)2 = jωξ − j ¯ω ¯ξ 2 − ω ¯ω∥ξ − ¯ξ∥2, (A.2) we obtain 
+
+J ¯ω(ω − ¯ω)2 = K(ω − ¯ω)2 − (K − J ¯ω)( ω − ¯ω)2
+
+= K jωξ ¯ξ∗ − j ¯ω 2 − K ¯ωω ξ ¯ξ∗ − 1 2
+
+− (K − J ¯ω)( ω − ¯ω)2.
+
+Substituting this into (A.1) and then (A.1) into (13), we obtain (14). 10 Appendix B. Proof of Proposition 2 
+
+Proof. Let 
+
+r = η + λℜ{ ¯I∗ ¯ξ}.
+
+By assumption, r > 0. By the definition of the manifold M, every point s ∈ M can be written as 
+
+s2 = ejφ ¯s2, s1 = jωe jφ ¯s2, s3 = ¯ s3 + z, 
+
+where φ ∈ R, ω ∈ R, and z ∈ C. The point ¯s corresponds to 
+
+φ = 0 , ω = ¯ ω, z = 0 .
+
+Using the expression of S in (15), we have, on M,
+
+S(s, ¯s) = 12 J ¯ω(ω − ¯ω)∥s2 − ¯s2∥2 + 12 J(ω − ¯ω)2
+
++ 12 L∥s3 − ¯s3∥2 + 12 r∥s2 − ¯s2∥2.
+
+Moreover, 
+
+∥s2 − ¯s2∥2 = ∥ejφ − 1∥2 = 2(1 − cos φ),
+
+and 
+
+∥s3 − ¯s3∥2 = ∥z∥2.
+
+Hence 
+
+S(s, ¯s) = 12 J(ω − ¯ω)2 +  J ¯ω(ω − ¯ω) + r (1 − cos φ) + 12 L∥z∥2.
+
+Let 
+
+δω = ω − ¯ω. 
+
+Since 
+
+1 − cos φ = 12 φ2 + O(φ4),
+
+we obtain 
+
+S(s, ¯s) = 12 J(δω )2 + 12 rφ 2 + 12 J ¯ω(δω )φ2 + 12 L∥z∥2 + O(φ4).
+
+The term 12 J ¯ω(δω )φ2
+
+is of third order and hence does not contribute to the Hessian at ¯s. Hence the second variation of S
+
+on M at ¯s is 
+
+δ2S = J(δω )2 + rφ 2 + L∥z∥2.
+
+Since 
+
+J > 0, L > 0, r > 0,
+
+we have 
+
+δ2S > 0
+
+for every nonzero tangent perturbation 
+
+δω φ zT̸ = 0 .
+
+Hence the Riemannian Hessian of S at ¯s is positive definite. 11 Appendix C. Proof of Proposition 3 
+
+Proof. By Proposition 2, the Riemannian Hessian Hess MS(s, ¯s) at s = ¯ s is positive definite. Hence 
+
+¯s is a strict local minimum of S(s, ¯s) on M. Hence there exists a neighborhood U ⊂ M of ¯s such that 
+
+S(s, ¯s) > 0, ∀s ∈ U \{ ¯s}, and S(¯ s, ¯s) = 0 .
+
+Next, by Lemma 1, there exists ε > 0 such that Q(ω) ≻ 0 for each s ∈ B(¯ s, ε ). Shrinking ε > 0,if necessary, assume B(¯ s, ε ) ∩ M ⊂ U , where S is positive definite. Since the SMIB system is driven by the infinite bus voltage V = ¯V , the supply term in (17) drops, and therefore, for all 
+
+s ∈ B(¯ s, ε ) ∩ M\{ ¯s},
+
+˙S(s, ¯s) ≤ − v(s)TQ(ω)v(s) ≤ 0. (C.1) Since Q(ω) ≻ 0 on B(¯ s, ε ) ∩ M , the right-hand side of (C.1) is strictly negative whenever v(s)̸ = 0 .The latter vector is zero if and only if s = ¯ s. Hence 
+
+˙S(s, ¯s) < 0, ∀s ∈ B(¯ s, ε ) ∩ M\{ ¯s}.
+
+Therefore, s 7 → S(s, ¯s) is a strict local Lyapunov function for ¯s. By the standard Lyapunov theorem, 
+
+¯s is locally asymptotically stable. 
+
+Appendix D. Proof of Proposition 4 
+
+Proof. 1. Under (21), we have 
+
+S(s, ¯s) ≥ 12 J∥jωξ ¯ξ∗ − j ¯ω∥2.
+
+For each s ∈ L ,
+
+∥jωξ ¯ξ∗ − j ¯ω∥2 < ˆρ2.
+
+We first show that ω̸ = 0 for each s ∈ L . Suppose there is some ˆs ∈ L with ˆω = 0 . Then 
+
+∥j ˆωξ ¯ξ∗ − j ¯ω∥2 = ¯ ω2,
+
+so 
+
+S(ˆ s, ¯s) ≥ J ¯ω2/2 ≥ J ˆρ2/2,
+
+which contradicts ˆs ∈ L . Hence ω̸ = 0 for each s ∈ L . Since ω is continuous on Comp ¯s(L) and 
+
+¯s ∈ Comp ¯s(L) satisfies ω = ¯ ω > 0, it follows that ω > 0 on Comp ¯s(L). Hence from (A.2), for all 
+
+s ∈ Comp ¯s(L),
+
+(ω − ¯ω)2 ≤ ∥ jωξ ¯ξ∗ − j ¯ω∥2 < ˆρ2,
+
+and hence 
+
+ω ∈ (¯ ω − ˆρ, ¯ω + ˆ ρ).
+
+2. Under (21), we have 
+
+S(s, ¯s) > 0, ∀s ∈ Comp ¯s(L)\{ ¯s}, and S(¯ s, ¯s) = 0 .
+
+By Lemma 2, we have ˙S(s, ¯s) < 0 ∀s ∈ Comp ¯s(L)\{ ¯s}.
+
+Hence s 7 → S(s, ¯s) is a strict Lyapunov function on its sublevel set Comp ¯s(L). Hence ¯s is attractive on Comp ¯s(L).12 Declaration of Generative AI and AI-Assisted Technologies in the Manuscript Prepa-ration Process 
+
+During the preparation of this work, the author used ChatGPT to improve the readability and language of the manuscript. The author reviewed and edited the content as needed and takes full responsibility for the content of this article. 
+
+References 
+
+[1] H.-D. Chiang, Direct Methods for Stability Analysis of Electric Power Systems: Theoretical Foundation, BCU Methodologies, and Applications, John Wiley & Sons, 2011. [2] V. Venikov, V. Stroev, V. Idelchick, V. Tarasov, Estimation of electrical power system steady-state stability in load flow calculations, IEEE Transactions on Power Apparatus and Systems 94 (3) (1975) 1034–1041. [3] C. De Persis, N. Monshizadeh, Bregman storage functions for microgrid control, IEEE Trans-actions on Automatic Control 63 (1) (2017) 53–68. [4] J. Schiffer, R. Ortega, A. Astolfi, J. Raisch, T. Sezi, Conditions for stability of droop-controlled inverter-based microgrids, Automatica 50 (10) (2014) 2457–2469. [5] M. Anghel, F. Milano, A. Papachristodoulou, Algorithmic construction of Lyapunov functions for power system stability analysis, IEEE Transactions on Circuits and Systems I: Regular Papers 60 (9) (2013) 2533–2546. [6] T. Nishino, A. Chakrabortty, T. Ishizaki, A necessary and sufficient condition for equilibrium-independent passivity of power systems with two-axis generators, IEEE Transactions on Auto-matic Control 71 (2) (2026) 1381–1388. [7] J. Schiffer, D. Efimov, R. Ortega, Global synchronization analysis of droop-controlled micro-grids—a multivariable cell structure approach, Automatica 109 (2019) 108550. [8] N. Barabanov, J. Schiffer, R. Ortega, D. Efimov, Conditions for almost global attractivity of a synchronous generator connected to an infinite bus, IEEE Transactions on Automatic Control 62 (10) (2017) 4905–4916. [9] F. Dörfler, F. Bullo, Synchronization and transient stability in power networks and nonuniform Kuramoto oscillators, SIAM Journal on Control and Optimization 50 (3) (2012) 1616–1642. [10] S. Fiaz, D. Zonetti, R. Ortega, J. M. Scherpen, A. Van der Schaft, A port-Hamiltonian approach to power network modeling and analysis, European Journal of Control 19 (6) (2013) 477–485. [11] F. Strehle, P. Nahata, A. J. Malan, S. Hohmann, G. Ferrari-Trecate, A unified passivity-based framework for control of modular islanded AC microgrids, IEEE Transactions on Control Sys-tems Technology 30 (5) (2021) 1960–1976. [12] S. Y. Caliskan, P. Tabuada, Compositional transient stability analysis of multimachine power networks, IEEE Transactions on Control of Network Systems 1 (1) (2014) 4–14. [13] S. Y. Caliskan, P. Tabuada, Correction to “Compositional transient stability analysis of mul-timachine power networks”, IEEE Transactions on Control of Network Systems 4 (3) (2016) 676–677. [14] R. Remmert, Theory of Complex Functions, Vol. 122, Springer Science & Business Media, 1991. 13 [15] N. Monshizadeh, P. Monshizadeh, R. Ortega, A. van der Schaft, Conditions on shifted passivity of port-Hamiltonian systems, Systems & Control Letters 123 (2019) 55–61. [16] IEEE Guide for synchronous generator modeling practices and parameter verification with applications in power system stability analyses, IEEE Std 1110-2019 (Revision of IEEE Std 1110-2002) (2020) 1–92. [17] H. Akagi, E. H. Watanabe, M. Aredes, Instantaneous Power Theory and Applications to Power Conditioning, John Wiley & Sons, 2017. [18] J. Szablya, Recommended phasor diagram for synchronous machines, IEEE Transactions on Power Apparatus and Systems 88 (1) (1969) 1603–1605. [19] S. P. Bhat, D. S. Bernstein, A topological obstruction to continuous global stabilization of rotational motion and the unwinding phenomenon, Systems & Control Letters 39 (1) (2000) 63–70. [20] P. M. Anderson, A. A. Fouad, Power System Control and Stability, John Wiley & Sons, 2008. [21] R. A. Horn, C. R. Johnson, Matrix Analysis, Cambridge University Press, 2012. [22] V. Natarajan, G. Weiss, A method for proving the global stability of a synchronous genera-tor connected to an infinite bus, in: 2014 IEEE 28th Convention of Electrical & Electronics Engineers in Israel (IEEEI), IEEE, 2014, pp. 1–5. 14

@@ -1,0 +1,90 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-04-30T20:16:43.474303+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 1,
+    "deep_cap": 6,
+    "deep_selected": 1,
+    "quick_candidates": 1,
+    "quick_skim_target": 11,
+    "quick_selected": 1
+  },
+  "deep_dive": [
+    {
+      "id": "2604.25738v1",
+      "title": "Local Shifted Passivity Analysis of the Single-Machine Infinite-Bus System",
+      "abstract": "This letter presents a shifted passivity analysis of the single-machine infinite-bus system in the stationary ($αβ$) reference frame. We study the attractivity of a periodic synchronous steady state with constant rotor frequency and formulate shifted passivity with respect to this motion. A port-Hamiltonian representation of the machine dynamics is used to construct a local shifted passivity condition from the error Hamiltonian and a correction term adapted to the synchronous steady state. For the infinite-bus interconnection, the resulting dissipation inequality leads to a sufficient stability condition expressed in terms of field excitation magnitude, damping, inertia, and steady-state current. This condition implies local asymptotic stability of the synchronous steady state and yields a sublevel-set estimate of its region of attraction under an additional small-inertia condition. A distinctive feature of the analysis is that it preserves the periodic structure of the rotor angle and provides a compact passivity-based stability certificate for the stationary-frame model.",
+      "authors": [
+        "Xinyuan Jiang"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY"
+      ],
+      "published": "2026-04-28T15:04:47+00:00",
+      "link": "https://arxiv.org/pdf/2604.25738v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "synchronous steady state analysis in stationary frame",
+      "llm_evidence_cn": "静止坐标系下的同步稳态分析",
+      "llm_evidence": "静止坐标系下的同步稳态分析",
+      "canonical_evidence": "静止坐标系下的同步稳态分析",
+      "llm_tldr_en": "Analyzes stability of synchronous machines in alpha-beta frames, directly applicable to PMSM modeling.",
+      "llm_tldr_cn": "分析静止坐标系下同步电机的稳定性，直接适用于永磁同步电机建模。",
+      "llm_tldr": "分析静止坐标系下同步电机的稳定性，直接适用于永磁同步电机建模。",
+      "llm_tags": [
+        "query:pmsm"
+      ],
+      "matched_query_tag": "query:pmsm",
+      "matched_query_text": "Permanent Magnet Synchronous Motor research",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2604.23863v1",
+      "title": "Cooptimizing Safety and Performance Using Safety Value-Constrained Model Predictive Control",
+      "abstract": "Autonomous systems are increasingly deployed in real-world environments, where they must achieve high performance while maintaining safety under state and input constraints. Although Model Predictive Control (MPC) provides a principled framework for constrained optimal control, guaranteeing safety beyond its finite planning horizon remains a fundamental challenge. In this work, we augment MPC with a safety value function-based terminal constraint that enforces membership in a control-invariant safe set at the end of each planning horizon. This formulation enables real-time synthesis of trajectories that are both high-performing and provably safe. We show that, under an exact safety value function and a feasible initialization, the proposed MPC scheme is recursively feasible, thereby ensuring persistent safety. In contrast to traditional terminal set constructions that rely on local linearizations or conservative approximations, our approach incorporates a reachability-based safety value function for terminal constraints, yielding less conservative and more expressive safety guarantees. We validate the proposed framework through simulation and hardware experiments on a Flexiv Rizon 10s manipulator. Results demonstrate improved constraint satisfaction and robustness compared to standard state-constrained MPC and reactive safety filtering, while maintaining competitive task performance. The full implementation and experiments are available on the project website.",
+      "authors": [
+        "Hao Wang",
+        "Nam Nguyen",
+        "Armand Jordana",
+        "Ludovic Righetti",
+        "Somil Bansal"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "eess.SY"
+      ],
+      "published": "2026-04-26T20:10:03+00:00",
+      "link": "https://arxiv.org/pdf/2604.23863v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "safety value-constrained model predictive control",
+      "llm_evidence_cn": "安全值约束模型预测控制",
+      "llm_evidence": "安全值约束模型预测控制",
+      "canonical_evidence": "安全值约束模型预测控制",
+      "llm_tldr_en": "Enhances MPC with safety constraints, a core method used in advanced PMSM drive control.",
+      "llm_tldr_cn": "增强带安全约束的MPC，是永磁同步电机先进驱动控制的核心方法。",
+      "llm_tldr": "增强带安全约束的MPC，是永磁同步电机先进驱动控制的核心方法。",
+      "llm_tags": [
+        "query:pmsm"
+      ],
+      "matched_query_tag": "query:pmsm",
+      "matched_query_text": "Permanent Magnet Synchronous Motor research",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

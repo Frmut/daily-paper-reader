@@ -1,0 +1,37 @@
+{
+  "label": "2026-04-30",
+  "date": "2026-04-30",
+  "generated_at": "2026-04-30T20:17:41",
+  "count": 2,
+  "papers": [
+    {
+      "paper_id": "202604/30/2604.25738v1-local-shifted-passivity-analysis-of-the-single-machine-infinite-bus-system",
+      "section": "deep",
+      "title_en": "Local Shifted Passivity Analysis of the Single-Machine Infinite-Bus System",
+      "authors": "Xinyuan Jiang",
+      "date": "2026-04-28",
+      "pdf": "https://arxiv.org/pdf/2604.25738v1",
+      "score": "8.0",
+      "evidence": "静止坐标系下的同步稳态分析",
+      "tldr": "本研究针对静止坐标系下的单机无穷大系统（SMIB），提出了一种局部移位无源性分析方法。通过构建基于端口受控哈密顿表示的误差哈密顿量及修正项，研究了周期性同步稳态的吸引性。该方法推导出了包含励磁、阻尼和惯性等参数的稳定性判据，证明了同步稳态的局部渐近稳定性，并估算了吸引域，同时有效保留了转子角的周期性结构。",
+      "tags": "query:pmsm",
+      "abstract_en": "This letter presents a shifted passivity analysis of the single-machine infinite-bus system in the stationary ($αβ$) reference frame. We study the attractivity of a periodic synchronous steady state with constant rotor frequency and formulate shifted passivity with respect to this motion. A port-Hamiltonian representation of the machine dynamics is used to construct a local shifted passivity condition from the error Hamiltonian and a correction term adapted to the synchronous steady state. For the infinite-bus interconnection, the resulting dissipation inequality leads to a sufficient stability condition expressed in terms of field excitation magnitude, damping, inertia, and steady-state current. This condition implies local asymptotic stability of the synchronous steady state and yields a sublevel-set estimate of its region of attraction under an additional small-inertia condition. A distinctive feature of the analysis is that it preserves the periodic structure of the rotor angle and provides a compact passivity-based stability certificate for the stationary-frame model.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202604/30/2604.23863v1-cooptimizing-safety-and-performance-using-safety-value-constrained-model-predictive-control",
+      "section": "quick",
+      "title_en": "Cooptimizing Safety and Performance Using Safety Value-Constrained Model Predictive Control",
+      "authors": "Hao Wang, Nam Nguyen, Armand Jordana, Ludovic Righetti, Somil Bansal",
+      "date": "2026-04-26",
+      "pdf": "https://arxiv.org/pdf/2604.23863v1",
+      "score": "6.0",
+      "evidence": "安全值约束模型预测控制",
+      "tldr": "针对自主系统在复杂约束下难以兼顾性能与长期安全性的问题，本文提出了一种基于安全价值约束的模型预测控制（MPC）框架。该方法通过在MPC终端引入基于可达性分析的安全价值函数作为约束，确保系统在规划时域结束时仍处于控制不变安全集内。实验证明，该方案在保证递归可行性和持续安全性的同时，比传统方法更具灵活性，并在机械臂平台上验证了其优越的约束满足能力和鲁棒性。",
+      "tags": "query:pmsm",
+      "abstract_en": "Autonomous systems are increasingly deployed in real-world environments, where they must achieve high performance while maintaining safety under state and input constraints. Although Model Predictive Control (MPC) provides a principled framework for constrained optimal control, guaranteeing safety beyond its finite planning horizon remains a fundamental challenge. In this work, we augment MPC with a safety value function-based terminal constraint that enforces membership in a control-invariant safe set at the end of each planning horizon. This formulation enables real-time synthesis of trajectories that are both high-performing and provably safe. We show that, under an exact safety value function and a feasible initialization, the proposed MPC scheme is recursively feasible, thereby ensuring persistent safety. In contrast to traditional terminal set constructions that rely on local linearizations or conservative approximations, our approach incorporates a reachability-based safety value function for terminal constraints, yielding less conservative and more expressive safety guarantees. We validate the proposed framework through simulation and hardware experiments on a Flexiv Rizon 10s manipulator. Results demonstrate improved constraint satisfaction and robustness compared to standard state-constrained MPC and reactive safety filtering, while maintaining competitive task performance. The full implementation and experiments are available on the project website.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
