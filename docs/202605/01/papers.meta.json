@@ -1,0 +1,23 @@
+{
+  "label": "2026-05-01",
+  "date": "2026-05-01",
+  "generated_at": "2026-05-01T20:38:53",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202605/01/2604.27509v1-stability-analysis-and-data-driven-state-estimation-for-generalized-persidskii-systems-with-time-delays-theory-and-experimental-validation-on-pmsm-drives",
+      "section": "deep",
+      "title_en": "Stability Analysis and Data-Driven State Estimation for Generalized Persidskii Systems with Time Delays: Theory and Experimental Validation on PMSM Drives",
+      "authors": "Syed Pouladi",
+      "date": "2026-04-30",
+      "pdf": "https://arxiv.org/pdf/2604.27509v1",
+      "score": "10.0",
+      "evidence": "在永磁同步电机驱动器上进行了实验验证",
+      "tldr": "本研究针对具有时变延迟和外部干扰的广义Persidskii系统，提出了一种结合稳定性分析与数据驱动状态估计的综合框架。通过Lyapunov-Krasovskii泛函建立了输入状态稳定性（ISS）的LMI条件，并设计了鲁棒观测器。利用Koopman提升技术从数据中识别系统矩阵，并将其应用于ICODE-MPPI控制器。在1.5 kW永磁同步电机（PMSM）上的实验验证了该方法在速度估计和跟踪精度上的显著提升。",
+      "tags": "query:pmsm",
+      "abstract_en": "This paper addresses the stability analysis and state estimation of generalized Persidskii systems subject to time-varying delays and external disturbances. The generalized Persidskii class, which couples linear dynamics with sector-bounded nonlinear feedback loops, offers a tractable yet expressive framework for modeling electromechanical and neural network systems. We develop delay-dependent conditions for input-to-state stability (ISS) via Lyapunov--Krasovskii functionals incorporating Persidskii-type integral terms, and cast these conditions as linear matrix inequalities (LMIs). A structured robust observer is proposed for systems with partial state measurement, and its convergence is guaranteed through an $H_\\infty$ synchronization criterion. To handle plant uncertainty, the system matrices are identified from trajectory data using a stability-preserving Koopman lifting procedure, in which the ISS-LMI constraint is embedded as a convex side condition during parameter regression. The identified model populates the prediction horizon of an ICODE-MPPI (Input-dependent Control-oriented Dynamical Estimation -- Model Predictive Path Integral) controller. The complete framework is validated on a 1.5 kW Permanent Magnet Synchronous Motor (PMSM) drive equipped with a programmable load brake. Experimental results confirm a 35\\% reduction in velocity estimation RMSE relative to an Extended Kalman Filter and a 67\\% improvement in speed-tracking accuracy relative to standard Field-Oriented Control, corroborating the theoretical ISS bounds established herein.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

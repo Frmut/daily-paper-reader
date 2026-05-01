@@ -1,0 +1,50 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-05-01T20:38:12.949279+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 1,
+    "deep_cap": 6,
+    "deep_selected": 1,
+    "quick_candidates": 0,
+    "quick_skim_target": 11,
+    "quick_selected": 0
+  },
+  "deep_dive": [
+    {
+      "id": "2604.27509v1",
+      "title": "Stability Analysis and Data-Driven State Estimation for Generalized Persidskii Systems with Time Delays: Theory and Experimental Validation on PMSM Drives",
+      "abstract": "This paper addresses the stability analysis and state estimation of generalized Persidskii systems subject to time-varying delays and external disturbances. The generalized Persidskii class, which couples linear dynamics with sector-bounded nonlinear feedback loops, offers a tractable yet expressive framework for modeling electromechanical and neural network systems. We develop delay-dependent conditions for input-to-state stability (ISS) via Lyapunov--Krasovskii functionals incorporating Persidskii-type integral terms, and cast these conditions as linear matrix inequalities (LMIs). A structured robust observer is proposed for systems with partial state measurement, and its convergence is guaranteed through an $H_\\infty$ synchronization criterion. To handle plant uncertainty, the system matrices are identified from trajectory data using a stability-preserving Koopman lifting procedure, in which the ISS-LMI constraint is embedded as a convex side condition during parameter regression. The identified model populates the prediction horizon of an ICODE-MPPI (Input-dependent Control-oriented Dynamical Estimation -- Model Predictive Path Integral) controller. The complete framework is validated on a 1.5 kW Permanent Magnet Synchronous Motor (PMSM) drive equipped with a programmable load brake. Experimental results confirm a 35\\% reduction in velocity estimation RMSE relative to an Extended Kalman Filter and a 67\\% improvement in speed-tracking accuracy relative to standard Field-Oriented Control, corroborating the theoretical ISS bounds established herein.",
+      "authors": [
+        "Syed Pouladi"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY"
+      ],
+      "published": "2026-04-30T07:08:02+00:00",
+      "link": "https://arxiv.org/pdf/2604.27509v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 10.0,
+      "llm_evidence_en": "Experimental validation on PMSM drives",
+      "llm_evidence_cn": "在永磁同步电机驱动器上进行了实验验证",
+      "llm_evidence": "在永磁同步电机驱动器上进行了实验验证",
+      "canonical_evidence": "在永磁同步电机驱动器上进行了实验验证",
+      "llm_tldr_en": "Stability analysis and state estimation for Persidskii systems with validation on PMSM drives.",
+      "llm_tldr_cn": "针对广义Persidskii系统提出稳定性分析与状态估计方法，并在永磁同步电机驱动器上验证。",
+      "llm_tldr": "针对广义Persidskii系统提出稳定性分析与状态估计方法，并在永磁同步电机驱动器上验证。",
+      "llm_tags": [
+        "query:pmsm"
+      ],
+      "matched_query_tag": "query:pmsm",
+      "matched_query_text": "Permanent Magnet Synchronous Motor research",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": []
+}
