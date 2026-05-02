@@ -1,0 +1,37 @@
+{
+  "label": "2026-05-02",
+  "date": "2026-05-02",
+  "generated_at": "2026-05-02T20:01:49",
+  "count": 2,
+  "papers": [
+    {
+      "paper_id": "202605/02/2604.26335v1-real-time-minimum-energy-operating-point-tracking-for-battery-powered-micro-dc-motors-under-dynamically-variable-loading",
+      "section": "quick",
+      "title_en": "Real-Time Minimum-Energy Operating-Point Tracking for Battery-Powered Micro DC Motors Under Dynamically Variable Loading",
+      "authors": "Tzu-Hsiang Huang, Haojian Lu, Hen-Wei Huang, Tan Rong",
+      "date": "2026-04-29",
+      "pdf": "https://arxiv.org/pdf/2604.26335v1",
+      "score": "6.0",
+      "evidence": "电机运行点跟踪与效率优化",
+      "tldr": "针对电池供电的生物医学微型直流电机在动态负载下能效低的问题，本文提出了一种实时最小能量工作点跟踪方法。研究发现电机每机械周期的能耗与驱动电压呈非单调关系，且最优电压随负载变化。通过提取电流波形特征作为负载指标，并结合两阶段自适应电压策略，实现了电机在变负载下的自主能效优化。实验证明该方法能有效跟踪最优工作点，显著提升系统能效。",
+      "tags": "query:pmsm",
+      "abstract_en": "Micro DC brushed motors are widely deployed in battery-powered biomedical systems, where limited energy budgets and variable physiological loading impose stringent efficiency and safety constraints. However, conventional actuation strategies rely on conservative voltage margins to avoid stalling, leading to systematic energy inefficiency. Furthermore, existing methods primarily optimize steady-state performance, neglecting the energy required to complete individual actuation cycles under dynamic conditions. This paper reveals that the energy consumption per mechanical cycle of a DC motor exhibits a non-monotonic dependence on driving voltage, with a load-dependent minimum that shifts with external loading. Based on this insight, we propose a real-time operating-point tracking method that enables the motor to autonomously converge to its minimum-energy condition. A lightweight load metric derived from current waveform features is introduced to detect load variation, and a two-phase adaptive voltage strategy is developed to track the optimal operating point online. Experimental results demonstrate that the proposed method can track the new minimum-energy operating region under both low-to-high and high-to-low loading transitions. With 3-cycle averaging, the mean response time is 11.55s for the low-to-high case and 11.16s for the high-to-low case, while the mean convergence voltage is 2.73V and 2.0V, respectively.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202605/02/2604.26682v1-model-free-dynamic-mode-adaptive-control-for-data-driven-control-synthesis",
+      "section": "quick",
+      "title_en": "Model-Free Dynamic Mode Adaptive Control for Data-Driven Control Synthesis",
+      "authors": "Parham Oveissi, Ankit Goel",
+      "date": "2026-04-29",
+      "pdf": "https://arxiv.org/pdf/2604.26682v1",
+      "score": "6.0",
+      "evidence": "无模型数据驱动控制综合",
+      "tldr": "针对数学模型缺失或难以建模的系统，本文提出了一种名为动态模态自适应控制（DMAC）的无模型数据驱动控制方法。该方法通过矩阵递推最小二乘法在线近似局部线性动力学，并据此合成具有全状态反馈和积分作用的自适应控制器。理论分析证明了算法的收敛性与闭环系统的稳定性，数值仿真验证了其在处理非线性及偏微分方程系统时的有效性与鲁棒性。",
+      "tags": "query:pmsm",
+      "abstract_en": "This paper presents a model-free, data-driven control synthesis method called dynamic mode adaptive control (DMAC) for systems whose mathematical models are unavailable or unsuitable for classical control design. The proposed approach combines data-driven dynamics approximation with adaptive control synthesis to enable online controller design using measured system data. DMAC comprises two main components: a dynamics-approximation module and a controller-synthesis module. The dynamics approximation module estimates a local linear representation of the system dynamics directly from measurements using a matrix recursive least-squares algorithm with a forgetting factor. The estimated dynamics are then used to compute an online stabilizing controller with full-state feedback and integral action. Theoretical analysis establishes convergence properties of the recursive dynamics approximation and boundedness of the closed-loop system under the DMAC controller. The performance of the proposed method is demonstrated through numerical examples involving representative dynamical systems, including an unstable linear system, the Van der Pol oscillator, and the Burgers' equation. Sensitivity studies further demonstrate the robustness of DMAC with respect to both algorithm hyperparameters and variations in system parameters.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

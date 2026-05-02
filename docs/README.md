@@ -6,26 +6,29 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-05-01
-- 运行时间：2026-05-01 20:38:43 UTC
+- 最新运行日期：2026-05-02
+- 运行时间：2026-05-02 20:01:40 UTC
 - 运行状态：成功
-- 本次总论文数：1
-- 精读区：1
-- 速读区：0
+- 本次总论文数：2
+- 精读区：0
+- 速读区：2
 
 ### 今日简报（AI）
-今日深度解析广义 Persidskii 系统在永磁同步电机驱动中的稳定性分析与数据驱动状态估计。
-该研究成功攻克了含时滞系统的状态估计难题，并通过实验验证了其在电机控制中的卓越性能。
-推荐关注控制理论与工业驱动交叉领域的读者精读此文，掌握复杂动力系统的高精度建模方法。
-- 详情：[/202605/01/README](/202605/01/README)
+今日聚焦数据驱动与能效优化，深入探讨微型直流电机与无模型自适应控制的最新进展。
+核心结论涵盖了动态负载下电池供电电机的实时最低能耗追踪，以及提升控制合成灵活性的无模型动态模式自适应技术。
+建议关注自动化设备能效提升及复杂系统数据驱动控制的工程落地。
+- 详情：[/202605/02/README](/202605/02/README)
 
 ### 精读区论文标签
-1. [Stability Analysis and Data-Driven State Estimation for Generalized Persidskii Systems with Time Delays: Theory and Experimental Validation on PMSM Drives](/202605/01/2604.27509v1-stability-analysis-and-data-driven-state-estimation-for-generalized-persidskii-systems-with-time-delays-theory-and-experimental-validation-on-pmsm-drives)  
-   标签：评分：10.0/10、query:pmsm
-   evidence：在永磁同步电机驱动器上进行了实验验证
+- 本次无精读推荐。
 
 ### 速读区论文标签
-- 本次无速读推荐。
+1. [Real-Time Minimum-Energy Operating-Point Tracking for Battery-Powered Micro DC Motors Under Dynamically Variable Loading](/202605/02/2604.26335v1-real-time-minimum-energy-operating-point-tracking-for-battery-powered-micro-dc-motors-under-dynamically-variable-loading)  
+   标签：评分：6.0/10、query:pmsm
+   evidence：电机运行点跟踪与效率优化
+2. [Model-Free Dynamic Mode Adaptive Control for Data-Driven Control Synthesis](/202605/02/2604.26682v1-model-free-dynamic-mode-adaptive-control-for-data-driven-control-synthesis)  
+   标签：评分：6.0/10、query:pmsm
+   evidence：无模型数据驱动控制综合
 
 
 <div class="dpr-home-promo-card">
