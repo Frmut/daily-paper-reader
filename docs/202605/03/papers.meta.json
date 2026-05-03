@@ -1,0 +1,65 @@
+{
+  "label": "2026-05-03",
+  "date": "2026-05-03",
+  "generated_at": "2026-05-03T20:21:32",
+  "count": 4,
+  "papers": [
+    {
+      "paper_id": "202605/03/2604.24549v1-gradmap-gradient-based-multi-agent-proximal-learning-for-grid-edge-flexibility",
+      "section": "quick",
+      "title_en": "GradMAP: Gradient-Based Multi-Agent Proximal Learning for Grid-Edge Flexibility",
+      "authors": "Yihong Zhou, Hongtai Zeng, Thomas Morstyn",
+      "date": "2026-04-27",
+      "pdf": "https://arxiv.org/pdf/2604.24549v1",
+      "score": "6.0",
+      "evidence": "三相交流配电网物理模型与原对偶学习",
+      "tldr": "本研究针对大规模电网边缘设备协调难题，提出GradMAP算法。该方法在离线训练中嵌入可微三相交流潮流模型，通过隐式微分处理物理约束，并利用动作空间中的近端代理加速训练。GradMAP实现了完全去中心化的部署，无需参数共享或通信。实验表明，在管理1000个智能体时，其训练速度比现有基准快3-5倍，且在降低运行成本和减少约束违反方面表现优异，为配电网灵活性资源管理提供了高效方案。",
+      "tags": "query:pmsm",
+      "abstract_en": "Coordinating large populations of grid-edge devices requires learning methods that remain fully decentralised in deployment while still respecting three-phase AC distribution-network physics. This paper proposes gradient-based multi-agent proximal learning (GradMAP) to address this challenge. GradMAP trains independent neural-network policies for each agent without any parameter sharing, and each agent uses only its own local observation for online decision-making without communication. During offline training, GradMAP embeds a differentiable three-phase AC power-flow model in a primal-dual learning loop and uses implicit differentiation to propagate exact network-constraint violations to update the policy parameters. To speed up training, GradMAP reuses expensive environment gradients through a proximal surrogate within a trust region defined in the more direct policy-output (action) space, instead of the probability distribution space used in other works, such as PPO. In case studies with 1,000 agents managing batteries, heat pumps, and controllable generators on the IEEE 123-bus feeder, GradMAP learns decentralised policies that minimise three-phase AC load-flow constraint violations within 15 minutes of training on a single workstation-class NVIDIA RTX PRO 5000 Blackwell 48GB GPU. This is a 3--5x training speed-up over gradient-based self-supervised learning benchmarks and substantially better training efficiency than multi-agent reinforcement-learning benchmarks. In out-of-sample tests, GradMAP also delivers among the lowest operating cost and constraint violations.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202605/03/2604.26172v1-co-learning-port-hamiltonian-systems-and-optimal-energy-shaping-control",
+      "section": "quick",
+      "title_en": "Co-Learning Port-Hamiltonian Systems and Optimal Energy-Shaping Control",
+      "authors": "Ankur Kamboj, Biswadip Dey, Vaibhav Srivastava",
+      "date": "2026-04-28",
+      "pdf": "https://arxiv.org/pdf/2604.26172v1",
+      "score": "6.0",
+      "evidence": "端口哈密顿系统的能量整形控制",
+      "tldr": "本研究提出了一种物理信息驱动的学习框架，用于从轨迹数据中实现端口哈密顿（pH）系统的能量整形控制。该方法通过交替优化和策略感知的数据收集，协同学习pH系统模型和最优能量平衡无源性控制（EB-PBC）。利用神经网络嵌入物理结构，确保了系统的可解释性、无源性和稳定性。通过耗散正则化增强了鲁棒性，并在单摆系统的调节和起摆任务中验证了其有效性。",
+      "tags": "query:pmsm",
+      "abstract_en": "We develop a physics-informed learning framework for energy-shaping control of port-Hamiltonian (pH) systems from trajectory data. The proposed approach {co-learns} a pH system model and an optimal energy-balancing passivity-based controller (EB-PBC) through alternating optimization with policy-aware data collection. At each iteration, the system model is refined using trajectory data collected under the current control policy, and the controller is re-optimized on the updated model. Both components are parameterized by neural networks that embed the pH {dynamics} and EB-PBC structure, ensuring interpretability in terms of energy {interactions}. The learned controller renders the closed-loop system inherently passive and provably stable, and exploits passive plant dynamics without canceling the natural potential. A dissipation regularization enforces strict energy decay during training, thereby enhancing robustness to sim-to-real gaps. The proposed framework is validated on state-regulation and swing-up tasks for planar and torsional pendulum systems.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202605/03/2604.26595v1-exploring-converter-control-duality-in-microgrids-ac-grid-forming-vs-dc-droop-control",
+      "section": "quick",
+      "title_en": "Exploring Converter Control Duality in Microgrids: AC Grid-Forming vs DC Droop Control",
+      "authors": "Jovan Krajacic, Ognjen Stanojev, Mario Schweizer, Orcun Karaca, Gabriela Hug, Vladan Lazarević",
+      "date": "2026-04-29",
+      "pdf": "https://arxiv.org/pdf/2604.26595v1",
+      "score": "6.0",
+      "evidence": "微网中的电力电子变换器控制策略与对偶性",
+      "tldr": "本研究探讨了交流微电网中的构网型控制与直流微电网中的下垂控制之间的对偶性。通过引入对偶性视角，揭示了两者在小信号模型、内环电流控制、功率分配机制（交流摆动方程与直流电容功率平衡）以及动态响应方面的同构关系。该研究为跨领域的统一控制设计提供了理论基础，并通过仿真验证了这些对偶特性，有助于深化对变换器控制逻辑的理解。",
+      "tags": "query:pmsm",
+      "abstract_en": "Power electronic converters are fundamental building blocks of both AC and DC microgrids, enabling the integration of renewable energy sources, energy storage systems, electronic loads, and electric vehicles. In contrast, converter control in DC microgrids has developed along the path of droop control, which is widely adopted for decentralized DC-bus voltage regulation and power sharing. Although these control strategies share certain characteristics, their similarities remain largely unexplored due to the distinct physical domains in which they operate. To bridge this gap, we introduce a novel perspective based on the concept of duality to reveal the underlying isomorphism between the two control approaches. We show that AC grid-forming and DC I--V droop control are duals of each other in several aspects, including: (i) the small-signal model of the converter; (ii) the inner current control structure; (iii) power-sharing mechanisms based on the AC swing equation and DC capacitor power balance; and (iv) disturbance signals and dynamic response. Theoretical analysis, validated through simulations on simple converter setups, illustrates these dualities and provides new insights towards a unified control design.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202605/03/2604.27587v1-robust-constrained-optimization-via-sliding-mode-control",
+      "section": "quick",
+      "title_en": "Robust Constrained Optimization via Sliding Mode Control",
+      "authors": "Shyam Kamal, Baby Diana, Sunidhi Pandey, Sandip Ghosh, Thach Ngoc Dinh",
+      "date": "2026-04-30",
+      "pdf": "https://arxiv.org/pdf/2604.27587v1",
+      "score": "6.0",
+      "evidence": "用于鲁棒约束优化的滑模控制",
+      "tldr": "本研究提出一种基于滑模控制（SMC）的等式约束优化框架，通过将KKT条件重构为控制仿射动力系统，将优化变量视为状态，拉格朗日乘子视为控制输入。该方法实现了约束的精确执行和有限时间收敛，且对匹配扰动和测量噪声具有鲁棒性。通过引入非奇异终端滑模，进一步加速了向最优解的收敛，在多种基准测试中表现出优于传统连续时间优化方法的准确性。",
+      "tags": "query:pmsm",
+      "abstract_en": "This paper develops a sliding mode control based frame work for equality constrained optimization by reformulation the first order Karush Kuhn Tucker conditions as control affine dynamical system. The optimization variables are treated as states and the Lagrange multipliers as control input, with equality constraints defined as sliding manifold. The resulting design guarantees exact constraint enforcement with finite time convergence, independent of objective convexity, and exhibits robustness to matched disturbance, structural uncertainty and bounded measurement noise. To accelerate the convergence, a nonsingular terminal sliding mode based normed gradient flow is introduced, ensuring both finite time convergence to optimal solution and constraint satisfaction. Rigorous Lyapunov analysis establishes closed loop stability and convergence. Numerical studies across diverse benchmark problems demonstrate superior accuracy and robustness over classical continuous time optimization method, highlighting effectiveness under disturbance.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

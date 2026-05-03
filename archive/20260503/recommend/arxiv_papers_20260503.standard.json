@@ -1,0 +1,172 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-05-03T20:21:08.214410+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 4,
+    "quick_skim_target": 11,
+    "quick_selected": 4
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2604.24549v1",
+      "title": "GradMAP: Gradient-Based Multi-Agent Proximal Learning for Grid-Edge Flexibility",
+      "abstract": "Coordinating large populations of grid-edge devices requires learning methods that remain fully decentralised in deployment while still respecting three-phase AC distribution-network physics. This paper proposes gradient-based multi-agent proximal learning (GradMAP) to address this challenge. GradMAP trains independent neural-network policies for each agent without any parameter sharing, and each agent uses only its own local observation for online decision-making without communication. During offline training, GradMAP embeds a differentiable three-phase AC power-flow model in a primal-dual learning loop and uses implicit differentiation to propagate exact network-constraint violations to update the policy parameters. To speed up training, GradMAP reuses expensive environment gradients through a proximal surrogate within a trust region defined in the more direct policy-output (action) space, instead of the probability distribution space used in other works, such as PPO. In case studies with 1,000 agents managing batteries, heat pumps, and controllable generators on the IEEE 123-bus feeder, GradMAP learns decentralised policies that minimise three-phase AC load-flow constraint violations within 15 minutes of training on a single workstation-class NVIDIA RTX PRO 5000 Blackwell 48GB GPU. This is a 3--5x training speed-up over gradient-based self-supervised learning benchmarks and substantially better training efficiency than multi-agent reinforcement-learning benchmarks. In out-of-sample tests, GradMAP also delivers among the lowest operating cost and constraint violations.",
+      "authors": [
+        "Yihong Zhou",
+        "Hongtai Zeng",
+        "Thomas Morstyn"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-04-27T14:43:02+00:00",
+      "link": "https://arxiv.org/pdf/2604.24549v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "three-phase AC distribution-network physics and primal-dual learning",
+      "llm_evidence_cn": "三相交流配电网物理模型与原对偶学习",
+      "llm_evidence": "三相交流配电网物理模型与原对偶学习",
+      "canonical_evidence": "三相交流配电网物理模型与原对偶学习",
+      "llm_tldr_en": "A gradient-based multi-agent learning method respecting three-phase AC network physics for grid flexibility.",
+      "llm_tldr_cn": "一种遵循三相交流网络物理特性的梯度多智能体学习方法，用于电网灵活性调节。",
+      "llm_tldr": "一种遵循三相交流网络物理特性的梯度多智能体学习方法，用于电网灵活性调节。",
+      "llm_tags": [
+        "query:pmsm:composite"
+      ],
+      "matched_query_tag": "query:pmsm:composite",
+      "matched_query_text": "Papers central to 三相及双三相永磁同步电机相关研究检索, especially work that connects or combines: m; s; f; Permanent Magnet Synchronous Motor research; dual three-phase permanent magnet synchronous motor control and design; fault-tolerant control of multi-phase motors; recent advances in dual three phase permanent magnet synchronous motor control; fault tolerant strategies for multi phase permanent magnet synchronous motors.",
+      "matched_requirement_id": "req-composite-pmsm",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2604.26172v1",
+      "title": "Co-Learning Port-Hamiltonian Systems and Optimal Energy-Shaping Control",
+      "abstract": "We develop a physics-informed learning framework for energy-shaping control of port-Hamiltonian (pH) systems from trajectory data. The proposed approach {co-learns} a pH system model and an optimal energy-balancing passivity-based controller (EB-PBC) through alternating optimization with policy-aware data collection. At each iteration, the system model is refined using trajectory data collected under the current control policy, and the controller is re-optimized on the updated model. Both components are parameterized by neural networks that embed the pH {dynamics} and EB-PBC structure, ensuring interpretability in terms of energy {interactions}. The learned controller renders the closed-loop system inherently passive and provably stable, and exploits passive plant dynamics without canceling the natural potential. A dissipation regularization enforces strict energy decay during training, thereby enhancing robustness to sim-to-real gaps. The proposed framework is validated on state-regulation and swing-up tasks for planar and torsional pendulum systems.",
+      "authors": [
+        "Ankur Kamboj",
+        "Biswadip Dey",
+        "Vaibhav Srivastava"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY",
+        "cs.AI",
+        "cs.LG",
+        "math.OC",
+        "stat.ML"
+      ],
+      "published": "2026-04-28T23:27:10+00:00",
+      "link": "https://arxiv.org/pdf/2604.26172v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "energy-shaping control of port-Hamiltonian systems",
+      "llm_evidence_cn": "端口哈密顿系统的能量整形控制",
+      "llm_evidence": "端口哈密顿系统的能量整形控制",
+      "canonical_evidence": "端口哈密顿系统的能量整形控制",
+      "llm_tldr_en": "Co-learns system models and energy-shaping controllers for stable port-Hamiltonian dynamics.",
+      "llm_tldr_cn": "共同学习系统模型和能量整形控制器，以实现稳定的端口哈密顿动力学。",
+      "llm_tldr": "共同学习系统模型和能量整形控制器，以实现稳定的端口哈密顿动力学。",
+      "llm_tags": [
+        "query:pmsm"
+      ],
+      "matched_query_tag": "query:pmsm",
+      "matched_query_text": "Permanent Magnet Synchronous Motor research",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2604.26595v1",
+      "title": "Exploring Converter Control Duality in Microgrids: AC Grid-Forming vs DC Droop Control",
+      "abstract": "Power electronic converters are fundamental building blocks of both AC and DC microgrids, enabling the integration of renewable energy sources, energy storage systems, electronic loads, and electric vehicles. In contrast, converter control in DC microgrids has developed along the path of droop control, which is widely adopted for decentralized DC-bus voltage regulation and power sharing. Although these control strategies share certain characteristics, their similarities remain largely unexplored due to the distinct physical domains in which they operate. To bridge this gap, we introduce a novel perspective based on the concept of duality to reveal the underlying isomorphism between the two control approaches. We show that AC grid-forming and DC I--V droop control are duals of each other in several aspects, including: (i) the small-signal model of the converter; (ii) the inner current control structure; (iii) power-sharing mechanisms based on the AC swing equation and DC capacitor power balance; and (iv) disturbance signals and dynamic response. Theoretical analysis, validated through simulations on simple converter setups, illustrates these dualities and provides new insights towards a unified control design.",
+      "authors": [
+        "Jovan Krajacic",
+        "Ognjen Stanojev",
+        "Mario Schweizer",
+        "Orcun Karaca",
+        "Gabriela Hug",
+        "Vladan Lazarević"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY"
+      ],
+      "published": "2026-04-29T12:26:41+00:00",
+      "link": "https://arxiv.org/pdf/2604.26595v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Power electronic converter control strategies and duality in microgrids",
+      "llm_evidence_cn": "微网中的电力电子变换器控制策略与对偶性",
+      "llm_evidence": "微网中的电力电子变换器控制策略与对偶性",
+      "canonical_evidence": "微网中的电力电子变换器控制策略与对偶性",
+      "llm_tldr_en": "Explores the duality between AC grid-forming and DC droop control for power electronic converters.",
+      "llm_tldr_cn": "探讨了电力电子变换器中交流构网控制与直流下垂控制之间的对偶性。",
+      "llm_tldr": "探讨了电力电子变换器中交流构网控制与直流下垂控制之间的对偶性。",
+      "llm_tags": [
+        "query:pmsm"
+      ],
+      "matched_query_tag": "query:pmsm",
+      "matched_query_text": "dual three-phase permanent magnet synchronous motor control and design",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2604.27587v1",
+      "title": "Robust Constrained Optimization via Sliding Mode Control",
+      "abstract": "This paper develops a sliding mode control based frame work for equality constrained optimization by reformulation the first order Karush Kuhn Tucker conditions as control affine dynamical system. The optimization variables are treated as states and the Lagrange multipliers as control input, with equality constraints defined as sliding manifold. The resulting design guarantees exact constraint enforcement with finite time convergence, independent of objective convexity, and exhibits robustness to matched disturbance, structural uncertainty and bounded measurement noise. To accelerate the convergence, a nonsingular terminal sliding mode based normed gradient flow is introduced, ensuring both finite time convergence to optimal solution and constraint satisfaction. Rigorous Lyapunov analysis establishes closed loop stability and convergence. Numerical studies across diverse benchmark problems demonstrate superior accuracy and robustness over classical continuous time optimization method, highlighting effectiveness under disturbance.",
+      "authors": [
+        "Shyam Kamal",
+        "Baby Diana",
+        "Sunidhi Pandey",
+        "Sandip Ghosh",
+        "Thach Ngoc Dinh"
+      ],
+      "primary_category": "math.OC",
+      "categories": [
+        "math.OC",
+        "eess.SY"
+      ],
+      "published": "2026-04-30T08:40:30+00:00",
+      "link": "https://arxiv.org/pdf/2604.27587v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Sliding mode control for robust constrained optimization",
+      "llm_evidence_cn": "用于鲁棒约束优化的滑模控制",
+      "llm_evidence": "用于鲁棒约束优化的滑模控制",
+      "canonical_evidence": "用于鲁棒约束优化的滑模控制",
+      "llm_tldr_en": "Develops a sliding mode control framework for optimization with exact constraint enforcement and robustness.",
+      "llm_tldr_cn": "开发了一种滑模控制框架，用于具有精确约束执行和鲁棒性的优化问题。",
+      "llm_tldr": "开发了一种滑模控制框架，用于具有精确约束执行和鲁棒性的优化问题。",
+      "llm_tags": [
+        "query:pmsm:composite"
+      ],
+      "matched_query_tag": "query:pmsm:composite",
+      "matched_query_text": "Papers central to 三相及双三相永磁同步电机相关研究检索, especially work that connects or combines: m; s; f; Permanent Magnet Synchronous Motor research; dual three-phase permanent magnet synchronous motor control and design; fault-tolerant control of multi-phase motors; recent advances in dual three phase permanent magnet synchronous motor control; fault tolerant strategies for multi phase permanent magnet synchronous motors.",
+      "matched_requirement_id": "req-composite-pmsm",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
