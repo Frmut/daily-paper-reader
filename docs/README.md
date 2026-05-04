@@ -6,33 +6,26 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-05-03
-- 运行时间：2026-05-03 20:21:24 UTC
+- 最新运行日期：2026-05-04
+- 运行时间：2026-05-04 21:03:35 UTC
 - 运行状态：成功
-- 本次总论文数：4
-- 精读区：0
-- 速读区：4
+- 本次总论文数：1
+- 精读区：1
+- 速读区：0
 
 ### 今日简报（AI）
-今日聚焦电力电子与智能电网前沿，速览了多智能体学习、哈密顿系统控制及微网对偶性
-- 详情：[/202605/03/README](/202605/03/README)
+今日深度解析广义 Persidskii 系统在永磁同步电机（PMSM）驱动中的稳定性与数据驱动状态估计。
+该研究通过严谨的理论推导与实验验证，攻克了含时滞系统的状态估计难题，获 10 分满分推荐。
+建议关注数据驱动技术在提升工业电机控制精度与系统鲁棒性方面的实际应用价值。
+- 详情：[/202605/04/README](/202605/04/README)
 
 ### 精读区论文标签
-- 本次无精读推荐。
+1. [Stability Analysis and Data-Driven State Estimation for Generalized Persidskii Systems with Time Delays: Theory and Experimental Validation on PMSM Drives](/202605/04/2604.27509v2-stability-analysis-and-data-driven-state-estimation-for-generalized-persidskii-systems-with-time-delays-theory-and-experimental-validation-on-pmsm-drives)  
+   标签：评分：10.0/10、query:pmsm
+   evidence：永磁同步电机驱动器的实验验证
 
 ### 速读区论文标签
-1. [GradMAP: Gradient-Based Multi-Agent Proximal Learning for Grid-Edge Flexibility](/202605/03/2604.24549v1-gradmap-gradient-based-multi-agent-proximal-learning-for-grid-edge-flexibility)  
-   标签：评分：6.0/10、query:pmsm
-   evidence：三相交流配电网物理模型与原对偶学习
-2. [Co-Learning Port-Hamiltonian Systems and Optimal Energy-Shaping Control](/202605/03/2604.26172v1-co-learning-port-hamiltonian-systems-and-optimal-energy-shaping-control)  
-   标签：评分：6.0/10、query:pmsm
-   evidence：端口哈密顿系统的能量整形控制
-3. [Exploring Converter Control Duality in Microgrids: AC Grid-Forming vs DC Droop Control](/202605/03/2604.26595v1-exploring-converter-control-duality-in-microgrids-ac-grid-forming-vs-dc-droop-control)  
-   标签：评分：6.0/10、query:pmsm
-   evidence：微网中的电力电子变换器控制策略与对偶性
-4. [Robust Constrained Optimization via Sliding Mode Control](/202605/03/2604.27587v1-robust-constrained-optimization-via-sliding-mode-control)  
-   标签：评分：6.0/10、query:pmsm
-   evidence：用于鲁棒约束优化的滑模控制
+- 本次无速读推荐。
 
 
 <div class="dpr-home-promo-card">
