@@ -1,0 +1,23 @@
+{
+  "label": "2026-05-05",
+  "date": "2026-05-05",
+  "generated_at": "2026-05-05T20:16:53",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202605/05/2604.24518v1-sliding-mode-control-for-safe-trajectory-tracking-with-moving-obstacles-avoidance-experimental-validation-on-planar-robots",
+      "section": "quick",
+      "title_en": "Sliding Mode Control for Safe Trajectory Tracking with Moving Obstacles Avoidance: Experimental Validation on Planar Robots",
+      "authors": "Shubham Sawarkar, P Sangeerth, S Saharsh, Pushpak Jagtap",
+      "date": "2026-04-27",
+      "pdf": "https://arxiv.org/pdf/2604.24518v1",
+      "score": "6.0",
+      "evidence": "用于机器人鲁棒参考跟踪的滑模控制",
+      "tldr": "本研究提出了一种统一的控制框架，旨在实现移动机器人的鲁棒轨迹跟踪与动态避障。通过广义运动学变换将多种车辆动力学转化为严格反馈形式，并结合滑模控制（SMC）与碰撞锥控制屏障函数（C3BF）设计安全滤波器。该架构在存在外部扰动的情况下保证了渐近跟踪性能，并严格遵守避障约束。其创新点在于首次为阿克曼驱动机器人设计了滑模控制器，并在多种机器人平台上通过实验验证了其通用性。",
+      "tags": "query:pmsm",
+      "abstract_en": "This paper presents a unified control framework for robust trajectory tracking and moving obstacle avoidance applicable to a broad class of mobile robots. By formulating a generalized kinematic transformation, we convert diverse vehicle dynamics into a strict feedback form, facilitating the design of a Sliding Mode Control (SMC) strategy for precise and robust reference tracking. To ensure operational safety in dynamic environments, the tracking controller is integrated with a Collision Cone Control Barrier Function (C3BF) based safety filter. The proposed architecture guarantees asymptotic tracking in the presence of external disturbances while strictly enforcing collision avoidance constraints. The novelty of this work lies in designing a sliding mode controller for ground robots like the Ackermann drive, which has not been done before. The efficacy and versatility of the approach are validated through numerical simulations and extensive real-world experiments on three distinct platforms: an Ackermann-steered vehicle, a differential drive robot, and a quadrotor drone. Video of the experiments are available at https://youtu.be/dWcxwum96vk",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

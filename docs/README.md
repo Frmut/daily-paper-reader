@@ -6,26 +6,26 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-05-04
-- 运行时间：2026-05-04 21:03:35 UTC
+- 最新运行日期：2026-05-05
+- 运行时间：2026-05-05 20:16:43 UTC
 - 运行状态：成功
 - 本次总论文数：1
-- 精读区：1
-- 速读区：0
+- 精读区：0
+- 速读区：1
 
 ### 今日简报（AI）
-今日深度解析广义 Persidskii 系统在永磁同步电机（PMSM）驱动中的稳定性与数据驱动状态估计。
-该研究通过严谨的理论推导与实验验证，攻克了含时滞系统的状态估计难题，获 10 分满分推荐。
-建议关注数据驱动技术在提升工业电机控制精度与系统鲁棒性方面的实际应用价值。
-- 详情：[/202605/04/README](/202605/04/README)
+今日聚焦平面机器人动态避障，通过滑模控制成功实现安全轨迹跟踪的实验验证。
+该研究证实了滑模控制在应对移动障碍物时的鲁棒性，为复杂动态环境下的机器人安全行驶提供了实证支持。
+建议关注此类算法在工业自动化场景中的落地表现，重点考察其在实时避障与高精度跟踪间的平衡。
+- 详情：[/202605/05/README](/202605/05/README)
 
 ### 精读区论文标签
-1. [Stability Analysis and Data-Driven State Estimation for Generalized Persidskii Systems with Time Delays: Theory and Experimental Validation on PMSM Drives](/202605/04/2604.27509v2-stability-analysis-and-data-driven-state-estimation-for-generalized-persidskii-systems-with-time-delays-theory-and-experimental-validation-on-pmsm-drives)  
-   标签：评分：10.0/10、query:pmsm
-   evidence：永磁同步电机驱动器的实验验证
+- 本次无精读推荐。
 
 ### 速读区论文标签
-- 本次无速读推荐。
+1. [Sliding Mode Control for Safe Trajectory Tracking with Moving Obstacles Avoidance: Experimental Validation on Planar Robots](/202605/05/2604.24518v1-sliding-mode-control-for-safe-trajectory-tracking-with-moving-obstacles-avoidance-experimental-validation-on-planar-robots)  
+   标签：评分：6.0/10、query:pmsm
+   evidence：用于机器人鲁棒参考跟踪的滑模控制
 
 
 <div class="dpr-home-promo-card">
