@@ -1,0 +1,720 @@
+Title: Negative Imaginary and Passivity Properties of Synchronous Machine Systems
+
+URL Source: https://arxiv.org/pdf/2605.04796v1
+
+Published Time: Thu, 07 May 2026 00:52:54 GMT
+
+Number of Pages: 7
+
+Markdown Content:
+# Negative Imaginary and Passivity Properties of Synchronous Machine Systems 
+
+Maryam Khodabakhshloo ∗ Elizabeth L. Ratnam ∗∗ 
+
+Ian R. Petersen ∗∗ School of Engineering, The Australian National University, Canberra, Australia (e-mail: maryam.khodabakhshloo, ian.petersen)@anu.edu.au.  
+
+> ∗∗
+
+Department of Electrical and Computer Systems Engineering, Monash University, Melbourne, Australia (e-mail: liz.ratnam@monash.edu). 
+
+Abstract: The recent rapid proliferation of renewable energy is fundamentally changing the dynamic operations of power systems, necessitating new approaches to assess stability for these highly nonlinear systems. In this paper, we prove that synchronous machine systems, modeled in the nonlinear dq -frame, possess fundamental dissipativity properties. Specifically, we show passivity from current input to voltage output and a nonlinear negative imaginary property from torque input to rotor angle output. For the nonlinear system shifted around an equilibrium point, we derive explicit conditions for both passivity and the NI property to hold. Finally, we demonstrate that interconnection with passive droop controllers preserves these dissipativity properties with identical supply rates, thereby ensuring closed-loop stability. 
+
+Keywords: power system stability, passivity, negative imaginary systems, synchronous machines, dissipativity 1. INTRODUCTION The transition towards inverter-based renewable energy resources is introducing new dynamic behaviors and in-stability modes in power systems, demanding analytical methods capable of handling their highly nonlinear nature Kundur et al. (2004). Consequently, classical approaches to transient stability analysis, as detailed in foundational books Kundur (2007); Sauer et al. (2017); Machowski et al. (2020), rely heavily on energy-based and Lyapunov-based methods. These have been extended in recent years using concepts from passivity and distributed control theory Yang et al. (2019); Trip et al. (2016). A common thread among these studies is the use of simplified synchronous machine models, such as the swing equation or the one-axis model. These models are derived using Singular Perturba-tion Approximations (SPA), which neglects fast electrical transients like flux and voltage dynamics due to their shorter time constants. While this simplification is valid for studying slow electromechanical oscillations, it fails to capture the fast transients that dominate during short-term disturbances Monshizadeh et al. (2018), limiting the models’ accuracy for detailed stability analysis. Recent research has pursued more detailed modeling ap-proaches. Notably, Nishino and Ishizaki (2025) utilizes the full Park model with comprehensive field and damper winding dynamics in a linearized setting, establishing equilibrium-independent passivity properties. By contrast, our analysis is fully nonlinear with a simplified but physically interpretable model (constant field current; no subtransient flux). This formulation preserves the essen-tial electromechanical coupling while enhancing analyti-cal tractability, enabling energy-based nonlinear negative-imaginary (NNI) and passivity analysis. Also, Arghir et al. (2018) prove incremental passivity for a converter system using a similar approach to the shifted passivity result presented in this paper. In this work, we consider a nonlinear model of a syn-chronous machine and analyze its energy-based properties using passivity and nonlinear negative-imaginary (NNI) theory. First, we prove that the system is passive from the current input to the voltage output. This analysis is then extended to a shifted equilibrium model, for which we derive explicit conditions on the system parameters and steady-state operating points that guarantee the passivity of the shifted system. Second, we show that the system exhibits a nonlinear negative-imaginary property from the torque input to the rotor angle output and that this property is also preserved for the shifted system under specific parameter conditions. Furthermore, we analyze the interconnection with passive droop controllers and demon-strate that passivity is preserved under identical supply rates. Together, these analytical results reveal explicit relationships between physical parameters and stability guarantees, providing a theoretical foundation for assess-ing the stability of modern power systems. This analysis bridges classical reduced-order models and full Park rep-resentations, enabling tractable, energy-based assessment of low-inertia power networks while maintaining physical interpretability. 
+
+> arXiv:2605.04796v1 [eess.SY] 6 May 2026
+
+The remainder of the paper is organized as follows. Sec-tion 2 reviews preliminaries on passivity and nonlinear negative-imaginary (NNI) systems. Section 3 presents the synchronous machine system model, Section 4 provides the main passivity and NNI results for both the original and shifted systems and analyzes their interconnection with a passive/NI droop controller. Section 5 concludes the paper. 2. PRELIMINARIES This section reviews fundamental dissipativity concepts Willems (1972) that form the theoretical foundation for our analysis. We begin with classical passivity theory defined with respect to a fixed equilibrium point. We also consider the nonlinear negative imaginary (NNI) property, which generalizes the negative-imaginary concept from linear systems to nonlinear systems. Consider the system Σ as a general nonlinear dynamical system: ˙x = f (x, u ), x ∈ Rn, u ∈ Rm, (1a) 
+
+y = g(x, u ), y ∈ Rm, (1b) where f : Rn × Rm → Rn and g : Rn × Rm → Rm are locally Lipschitz functions. The input u(·) is assumed to be piecewise continuous and bounded. 
+
+Definition 1. The set of admissible equilibria for system (1) is defined as: 
+
+E := {(x⋆, u ⋆) ∈ Rn × Rm | f (x⋆, u ⋆) = 0 } .
+
+For any equilibrium pair ( x⋆, u ⋆) ∈ E , the corresponding equilibrium output is y⋆ = g(x⋆, u ⋆). Without loss of generality, the following assumption is made to simplify the analysis. 
+
+Assumption 1. There exists an equilibrium point ( x⋆, u ⋆) ∈E such that the corresponding output vanishes; i.e., y⋆ =
+
+g(x⋆, u ⋆) = 0. The classical notion of passivity is defined with respect to a specific equilibrium point. 
+
+Definition 2. The system (1) is passive Brogliato et al. (2007) about the equilibrium ( x⋆, u ⋆, y ⋆) = (0 , 0, 0), if there exists a continuously differentiable storage function 
+
+V : Rn → R≥0 with V (0) = 0 such that ˙V (x) ≤ y⊤u. (2) Furthermore, if the inequality ˙V (x) ≤ y⊤u − ρy ⊤y. 
+
+holds for some ρ > 0, the system is output strictly passive. The negative imaginary (NI) property was first introduced for linear systems Petersen and Lanzon (2010) and has been used in the analysis of lightly damped mechanical and electrical networks. Both passivity and the NI prop-erties characterize systems that do not generate energy. In the case of mechanical systems, the passivity property describes systems with force inputs and velocity outputs, whereas the NI property describes systems with force inputs and position outputs. To extend the NI property beyond linear systems, the nonlinear negative imaginary (NNI) property Ghallab et al. (2025) is defined. 
+
+Definition 3. Suppose that ( x⋆, u ⋆) = (0 , 0) is an equilib-rium of (1) with y⋆ = g(0 , 0) = 0. The system is nonlinear negative imaginary (NNI) if there exists a continuously differentiable, nonnegative storage function V : Rn → R≥0
+
+such that, for all t ≥ 0˙V (x) ≤ ˙y⊤u. (3) This inequality is similar to the classical passivity condi-tion, but with the supply rate ˙ y⊤u instead of y⊤u. Hence, passivity is related to the energy exchange between input and output, whereas the NNI property is related to the energy exchange between the input and the rate of change of the output. 3. MODEL OF A SYNCHRONOUS MACHINE CONNECTED TO A CURRENT SOURCE The mathematical modeling of synchronous machines (SMs) has been widely studied in the literature, with vari-ous levels of simplification depending on the intended anal-ysis Kundur (2007); Grainger (1999); Sauer et al. (2017). Most of the conventional models are typically derived under steady-state and balanced conditions to simplify the analysis. In this study, following the electromechanical modeling approaches presented in Zhong and Weiss (2010), we consider a simplified representation of a cylindrical-rotor synchronous generator with one pole pair per phase. The following assumptions are made to reduce model complex-ity, while capturing the essential dynamic behavior: (i) The field current, if , is constant; (ii) Damper windings, magnetic saturation, and eddy current effects are neglected; (iii) The stator windings are balanced, sinusoidally dis-tributed, and star-connected without a neutral con-nection. The considered system consists of a synchronous machine connected to an external network, as illustrated in Figure 1. The stator terminals are linked to a load bus through a transmission line modeled by a series impedance with resistance Rl and inductance Ll. At the load bus, aconstant current source operates in parallel with a resistive load RL.
+
+> SM
+> (T, ω )
+> Ib
+> Ia
+> Ic
+> RL
+> RL
+> RL
+> Rs
+> Rs
+> Rs
+> Ls
+> Ls
+> Ls
+> Rl
+> Rl
+> Rl
+> Ll
+> Ll
+> Ll
+> vb
+> va
+> vc
+> Vb
+> Va
+> Vc
+> ia
+> ib
+> ic
+
+Fig. 1. SM connected to an impedance load via transmis-sion line Ll, a current source Iabc representing the external network. To model the electrical dynamics of the SM, θ and ω = ˙θ
+
+denote the rotor angle and angular velocity, respectively. The stator winding resistance and inductance are repre-sented by Rs and Ls. The rotor carries a field winding that produces a magnetic field characterized by the field current 
+
+if . The magnetic coupling between the constant rotor field and the stator windings is represented by the mutual inductance Mf . Three-phase stator quantities, such as the current iabc = [ ia, i b, i c]⊤ and the induced voltage eabc =[ea, e b, e c]⊤, are represented as vectors in the abc reference frame. Consequently, the back electromotive force (EMF) induced in the stator windings is expressed as 
+
+eabc = Mf if ω
+
+ sin θ
+
+sin( θ − 2π 
+
+> 3
+
+)sin( θ − 4π 
+
+> 3
+
+)
+
+ .
+
+The external current source is assumed to operate at a fixed angular velocity ωs. Choosing the phase reference as zero gives θs = ωst, leading to the following current vector 
+
+Iabc = Is
+
+
+
+sin θs
+
+sin 
+
+
+
+θs − 2π
+
+3
+
+
+
+sin 
+
+
+
+θs − 4π
+
+3
+
+ .
+
+where Is is the current amplitude, and Iabc = [ Ia, I b, I c]⊤
+
+denotes the three-phase current source vector. Applying Kirchhoff’s current law, yields the stator current dynamics 
+
+L di abc 
+
+dt = −(Rs + Rl)iabc + eabc − RL(iabc + Iabc ).
+
+where L = Ls + Ll represents the total inductance of the stator and transmission line. The mechanical dynamics of the rotor follow Newton’s second law 
+
+J ˙ω = −Dω + Tm − Te,
+
+where J is the rotor moment of inertia, D is the damping coefficient, Tm is the mechanical input torque, and Te is the electromagnetic torque. For a constant field current, the electromagnetic torque can be expressed as Zhong and Weiss (2010) 
+
+Te = 1
+
+ω e⊤
+
+> abc
+
+iabc .
+
+By combining the electrical and mechanical subsystems, the complete system model in the abc -frame is ˙θ = ω, J ˙ω = −Dω − 1
+
+ω e⊤
+
+> abc
+
+iabc + Tm,L di abc 
+
+dt = −Ri abc + eabc − RLIabc ,
+
+(4) where R = Rs + Rl + RL represents the total series resis-tance of the stator, transmission line, and load. The model (4) captures the essential electromechanical interaction between the SM and the external network, which includes a current source at the load bus. For the analysis of the three-phase model derived in (4), we describe all of the electrical quantities in the dq -reference frame. This transformation converts the time-varying sinusoidal signals into constant quantities, thereby simplifying the analysis and interpretation of the system dynamics. The standard Park transformation Tdq (ϱ) is defined as 
+
+Tdq (ϱ) = 
+
+r 23
+
+
+
+cos( ϱ) cos 
+
+
+
+ϱ − 2π
+
+3
+
+
+
+cos 
+
+
+
+ϱ − 4π
+
+3
+
+
+
+sin( ϱ) sin 
+
+
+
+ϱ − 2π
+
+3
+
+
+
+sin 
+
+
+
+ϱ − 4π
+
+3
+
+ ,
+
+where ϱ is the transformation angle. Generally, any rotat-ing reference angle can be used. However, in this study, we choose as the instantaneous rotor angle: 
+
+ϱ := θ(t).
+
+By applying the dq transformation, the reference frame is aligned with the rotor magnetic field, such that the d-axis coincides with the field axis. The derivative of the current vector in the dq coordinate satisfies 
+
+di dq 
+
+dt = dT dq (ϱ)
+
+dt iabc + Tdq (ϱ) di abc 
+
+dt 
+
+= ˙ ϱ
+
+−iq
+
+id
+
+
+
++ Tdq (ϱ) di abc 
+
+dt = ω
+
+−iq
+
+id
+
+
+
++ Tdq (ϱ) di abc 
+
+dt .
+
+Similarly, the external current source is expressed in the dq-reference frame as follows, where the magnitude is redefined as I =
+
+q 32 Is:
+
+Idq =
+
+Id
+
+Iq
+
+
+
+= Tdq (ϱ)Iabc = I
+
+sin( θs − θ)cos( θs − θ)
+
+
+
+.
+
+and the voltage at the load bus is defined as 
+
+Vdq =
+
+Vd
+
+Vq
+
+
+
+= Tdq (ϱ)Vabc = RLI
+
+sin( θs − θ)cos( θs − θ)
+
+
+
+.
+
+By substitution, the stator current dynamics become 
+
+L di dq 
+
+dt = −Ri dq + Lω 
+
+−iq
+
+id
+
+
+
+− RLIdq .
+
+Defining the constant b = Mf if
+
+p3/2, the complete elec-tromechanical model in the dq -coordinates is ˙δ = ω − ωs,J ˙ω = −Dω − bi q + Tm,L˙id = −Ri d + Lωi q − RLI sin δ, L˙iq = −Ri q − Lωi d + bω − RLI cos δ. 
+
+(5) where δ = θs − θ represents the rotor angle deviation with respect to the angle of the external current source. 
+
+Remark 1. The classical swing equation, which describes the rotor dynamics of a synchronous machine connected to an infinite bus, can be derived from the above electrome-chanical model using suitable approximations. To derive this model, the electrical subsystem is assumed to evolve much faster than the mechanical subsystem. Consequently, the current dynamics are assumed to reach their steady-state values almost instantaneously relative to the slower mechanical variables. Thus, we set the derivatives ˙ id, ˙iq
+
+equal to zero, implying that the fast electrical subsystem is replaced by its quasi–steady-state manifold, consistent with the approximations in Sauer et al. (2017). Further-more, by neglecting the small resistance of the stator and transmission line; i.e., Rl + Rs ≈ 0 and considering an infinite bus, the electrical subsystem reduces to 0 = Lωi q − V sin δ, 
+
+0 = −Lωi d + bω − V cos δ. 
+
+Substituting the corresponding expression for iq into the mechanical equation yields the improved swing equation in Zhou and Ohsawa (2008): 
+
+J ˙ω = −Dω − bV sin δLω + Tm.Deriving the classical swing equation requires two addi-tional approximations. (1) The rotor speed ω in the denominator of the elec-trical torque term is approximated by the constant synchronous speed ωs. This approximation is valid for small frequency deviations around the operating point. (2) The equation is multiplied through by ωs to convert it from a torque balance equation to a power balance equation using the relation P = T ω s.Performing these steps, and defining the new damping coefficient ˜D = Dω s and the mechanical power Pm =
+
+Tmωs, we arrive at the classical form of the swing equation where Pmax = Mf if VωsLs is the maximum synchronizing power. This demonstrates that, under the standard as-sumptions of fast stator dynamics, negligible resistance, and small speed deviations, the proposed electromechani-cal model reduces to the classical swing equation. 4. MAIN RESULTS The following section considers the inherent robustness of the electromechanical model (5) using dissipativity theory. We prove that the system shows several energy-based properties under different input–output configurations, in-cluding passivity, passivity of the shifted system, nonlinear negative-imaginary behavior, and the NNI property of the shifted system. Furthermore, we show that both passivity and NNI properties are preserved under interconnection with passive or negative-imaginary controllers, such as various droop-type controllers. The equilibrium state of system (5) is denoted by (δs, ω s, i sd, i sq ), corresponding to the steady-state inputs represented by ( Isd , I sq ). At the equilibrium, all time deriva-tives vanish: ˙ω = 0 , ˙id = 0 , ˙iq = 0 . (6) Substituting the conditions in (6) into the system equa-tions yields the steady-state relations 
+
+ω = ωs,
+
+0 = −Dω s − bi sq + Tm,
+
+0 = −Ri sd + Lω sisq − RLI sin δs,
+
+0 = −Ri sq − Lω sisd + bω s − RLI cos δs.
+
+(7) 
+
+Theorem 1. Consider the system (5) with state variables (δ, ω, i d, i q ) and input current source Idq , where the me-chanical torque input is set to zero ( Tm = 0). Let the output be the load-bus voltage ( Vdq ), and define 
+
+u1 := I
+
+sin( θs − θ)cos( θs − θ)
+
+
+
+=
+
+Id
+
+Iq
+
+
+
+,y1 := RL
+
+ id
+
+iq
+
+
+
++ I
+
+sin( θs − θ)cos( θs − θ)
+
+ 
+
+=
+
+Vd
+
+Vq
+
+
+
+.
+
+Then, the system is passive with respect to the input-output pair ( u1, y 1). 
+
+Proof. Let the storage function represent the total stored energy of the system, consisting of the rotor’s kinetic energy and the magnetic energy stored in the inductors: 
+
+V (x) = 12 Jω 2 + 12 Li 2 
+
+> d
+
++ 12 Li 2 
+
+> q
+
+. (8) Taking the time derivative of V (x) along the system trajectories (5) gives ˙V (x) = − Dω 2 − bi q ω − Ri 2 
+
+> d
+
++ Lωi q id − RLIi d sin δ
+
+− Ri 2 
+
+> q
+
+− Lωi diq + bωi q − RLIi q cos δ. (9) The supplied power is given by 
+
+y⊤ 
+
+> 1
+
+u1 = V ⊤ 
+
+> dq
+
+Idq = RLidI sin δ + RLI2 sin 2 δ
+
++ RLiq I cos δ + RLI2 cos 2 δ. 
+
+The dissipation inequality becomes ˙V (x) − y⊤ 
+
+> 1
+
+u1 = −Dω 2 − Ri 2 
+
+> d
+
+− Ri 2 
+
+> q
+
+− 2RLidI sin δ
+
+− 2RLiq I cos δ − RLI2(sin 2 δ + cos 2 δ).
+
+Since R = Rs +Rl +RL > 0, the expression is non-positive after completing the squares for the terms in id and iq . This leads to the inequality ˙V (x) ≤ y⊤ 
+
+> 1
+
+u1,
+
+which establishes the passivity condition. That is, the system is passive with respect to the input-output pair (u1, y 1). 2
+
+Next, we demonstrate the same physical system exhibits the nonlinear negative-imaginary property when viewed from a torque input and rotor angle output. 
+
+Theorem 2. Consider the system (5) with state variables (δ, ω, i d, i q ), where the input is the electromagnetic torque and the output is the rotor angle: 
+
+u2 = Te = VdId + Vq Iq
+
+ω , y2 = θ. 
+
+Then, the system is nonlinear negative imaginary with respect to the input-output pair ( u2, y 2). 
+
+Proof. Using the same energy-based storage function as in (8), the NNI property requires that ˙V (x) ≤ ˙y⊤ 
+
+> 2
+
+u2.
+
+Since ˙ y2 = ˙θ = ω, this condition simplifies to ˙V (x) ≤ VdId + Vq Iq . (10) The time derivative of V (x) along the system trajectories is given by (9). Substituting (9) and rearranging yields ˙V (x) − (VdId + Vq Iq ) = − Dω 2 − (Rs + Rl)( i2 
+
+> d
+
++ i2 
+
+> q
+
+)
+
+− RL(id + I sin( δ)) 2
+
+− RL(iq + I cos( δ)) 2.
+
+The right-hand side is non-positive because all coefficients are positive. Therefore, the inequality (10) holds for all trajectories of the system. Hence, the system satisfies the NNI property with respect to the input-output pair (u2, y 2). 2
+
+To analyze the system behavior in a neighborhood of the equilibrium point, we introduce the shifted variables, defined as the deviations from the equilibrium point cor-responding to (5), 
+
+δ := ˜δ + δs, ω := ˜ ω + ωs, id := ˜ id + isd, iq := ˜ iq + isq .
+
+Substituting the shifted variables into the electromechan-ical modeling of the system (5) yields ˙˜δ = ˜ ω, 
+
+˙˜ω = −D(˜ ω + ωs) − b(˜ iq + isq ),
+
+˙˜id = −R(˜ id + isd) − L(˜ ω + ωs)(˜ iq + isq ) − RLI sin( ˜δ + δs),
+
+˙˜iq = −R(˜ iq + isq ) + L(˜ ω + ωs) + b(˜ ω + ωs)
+
+− RLI cos( ˜δ + δs).
+
+using the equilibrium conditions (7), the resulting per-turbed system dynamics are ˙˜δ = ˜ ω, 
+
+˙˜ω = −D ˜ω − b˜iq ,
+
+˙˜id = −R˜id − L˜ω ˜iq − L˜ω i sq − Lω s˜iq
+
+− RLI  sin( ˜δ + δs) − sin δs,
+
+˙˜iq = −R˜iq + L˜ω ˜id + L˜ω i sd + Lω s˜id + b˜ω
+
+− RLI  cos( ˜δ + δs) − cos δs.
+
+(11) 
+
+Theorem 3. Consider the shifted system (11) with the state variables ˜ x = [ ˜δ, ˜ω, ˜id, ˜iq ]⊤. Define the correspond-ing shifted input and output as ˜u1 =
+
+" I  sin( ˜δ + δs) − sin δs
+
+I  cos( ˜δ + δs) − cos δs#
+
+,
+
+˜y1 = RL
+
+"I  sin( ˜δ + δs) − sin δs + ˜ id
+
+I  cos( ˜δ + δs) − cos δs + ˜ iq
+
+#
+
+.
+
+(12) Then, the shifted system is passive from the input ˜ u1 to the output ˜ y1 if the condition (isd)2 + ( isq )2 ≤ 4D(Rs + Rl)
+
+L2 . (13) is satisfied. Moreover, the system is strictly passive when the inequality in (13) is strict. 
+
+Proof. Consider the storage function representing the energy of the shifted system as 
+
+V (˜ x) = 12 J ˜ω2 + 12 L˜i2 
+
+> d
+
++ 12 L˜i2 
+
+> q
+
+. (14) The trigonometric differences are defined as follows cos ∆ = cos( ˜δ + δs) − cos δs, sin ∆ = sin( ˜δ + δs) − sin δs.
+
+Differentiating (14) along the trajectories of the shifted system yields ˙V = − D ˜ω2 − R(˜ i2 
+
+> d
+
++ ˜ i2 
+
+> q
+
+) + L˜ω(˜ iq isd − ˜idisq )
+
+− RLI ˜id sin ∆ + ˜ iq cos ∆ ,
+
+and the supplied power is given as ˜u⊤ 
+
+> 1
+
+˜y1 =RL
+
+I sin ∆ ( I sin ∆ + ˜ id) + I cos ∆ ( I cos ∆ + ˜ iq )
+
+= RLI2(sin ∆) 2 + (cos ∆) 2 + RLI ˜id sin ∆ + ˜ iq cos ∆ .
+
+Subtracting the supplied power from the storage rate gives ˙V − ˜u⊤ 
+
+> 1
+
+˜y1 = − RL
+
+(˜ id + I sin ∆) 2 + (˜ iq + I cos ∆) 2 − D ˜ω2
+
+− (Rs + Rl)(˜ i2 
+
+> d
+
++ ˜ i2 
+
+> q
+
+) − L˜ω(−˜idisq + ˜ iq isd).
+
+The first term, −RL
+
+(˜ id + I sin ∆) 2 + (˜ iq + I cos ∆) 2,is strictly negative, and the remaining terms can be expressed in the following quadratic form where Rs +
+
+Rl = Rsl :
+
+− D ˜ω2 − Rsl (˜ i2 
+
+> d
+
++ ˜ i2 
+
+> q
+
+) − L˜ω(−˜idisq + ˜ iq isd)= −
+
+
+
+˜id
+
+˜iq
+
+˜ω
+
+
+
+> ⊤
+
+
+
+Rsl 0 Li sq
+
+> 2
+
+0 Rsl − Li sd 
+
+> 2
+> Li sq
+> 2
+
+− Li sd 
+
+> 2
+
+D
+
+
+
+˜id
+
+˜iq
+
+˜ω
+
+ .
+
+Applying the Schur complement, a sufficient condition for this quadratic form to be negative semidefinite is 
+
+D ≥ L2 (isd)2 + ( isq )2
+
+4Rsl 
+
+. (15) When condition (15) holds, the dissipation inequality ˙V ≤ ˜u⊤ 
+
+> 1
+
+˜y1 is satisfied, implying passivity of the shifted system. If the inequality (15) is strict, the system is strictly passive. 2
+
+Building on the shifted model (11), we now examine its nonlinear negative-imaginary property. The output is defined as the shifted rotor angle from the equilibrium, and the input is taken as the electromagnetic torque, expressed as the ratio of the electrical power to the angular velocity: ˜u2 := RL
+
+ ˜Id( ˜Id − ˜id) + ˜Iq ( ˜Iq − ˜iq )
+
+˜ω = Te − T se ,
+
+˜y2 := ˜δ. 
+
+(16) The supply rate is therefore given by ˙˜y2 ˜u2 = RL
+
+ ˜Id( ˜Id − ˜id) + ˜Iq ( ˜Iq − ˜id). (17) 
+
+Theorem 4. Consider the shifted system (11) with the in-put–output pair (˜ u2, ˜y2). The system is nonlinear negative-imaginary (NNI) if the condition (13) holds. Moreover, if the inequality in (13) is strict, the system is strictly nonlinear negative-imaginary. 
+
+Proof. The proof follows directly from the storage func-tion (14) and the same energy-balance argument employed in proving the passivity of the shifted system. When the quadratic form associated with the dissipation term is negative semidefinite, the inequality ˙V ≤ ˙˜y2 ˜u2
+
+holds, thereby establishing the NNI property for the shifted system. If the condition in (13) is strict, the quadratic form becomes negative definite, implying the strict NNI property. 2
+
+In what follows, we show that the passivity of the shifted system is preserved when the SM is interconnected with a droop-based torque controller. Importantly, the same supply rate is retained, which shows that the controller maintains the system’s inherent passivity. Figure 2 illustrates the feedback interconnection between the plant ( P ) that representing the SM and a torque controller ( C) at the mechanical port. The electromechanical modeling of SM is interpreted as a two-port system: an electrical port with the shifted pair (˜ ue, ˜ye), as defined in (12), and a mechanical port defined by 
+
+um := ˜Tm = Tm − T sm, ym := ˜ ω. 
+
+For the shifted model (11), the storage function Vp is defined similarly to (14). As shown earlier, the shifted P
+
+C
+
+( ˜Idq ) ˜Vdq 
+
+(− ˜Tm)
+
+˜Tm
+
+˜ω
+
+˜ω
+
+−1
+
+Fig. 2. Feedback interconnection of the SM ( P ) and a torque controller ( C). The plant includes both an electrical port (˜ ue, ˜ye) and a mechanical port (˜ um, ˜ym)system is passive under the condition (15) for the input-output pair (˜ ue, ˜ye). Next, consider a torque controller that is passive, such as a droop-based PI controller, defined by ˜Tm = kp ˜ω + ki ˜z, ˙˜z = ˜ ω, kp, k i ≥ 0. (18) This PI controller admits the storage function Vc = 12 ki ˜z2,for which ˙Vc = ki ˜z ˙˜z = ( ˜Tm − kp ˜ω)˜ ω ≤ ˜Tm ˜ω = umym.
+
+Hence, the controller is passive from the input um = ˜ ω to the output ym = ˜Tm.
+
+Theorem 5. Consider the shifted system (11) intercon-nected with the passive controller (18) via negative feed-back, with total storage function Vt = Vp + Vc. Then, the closed-loop system is passive with respect to the original input-output pair defined in (12), provided the condition in (15) holds. Furthermore, if the condition (15) is strict, the closed-loop system is strictly passive. 
+
+Proof. Consider the storage function as the summation of the energy of the shifted system and the controller 
+
+Vt(˜ x) = 12 J ˜ω2 + 12 L˜i2 
+
+> d
+
++ 12 L˜i2 
+
+> q
+
++ 12 ki ˜z2. (19) Differentiating (19) along the trajectories of the closed loop system results in ˙Vt(x) = − D ˜ω2 − R(˜ i2 
+
+> d
+
++ ˜ i2 
+
+> q
+
+) + L˜ω(˜ iq isd − ˜idisq )
+
+− RI  ˜id sin ∆ + ˜ iq cos ∆  − ˜Tm ˜ω
+
++ ( ˜Tm − kp ˜ω)˜ ω, 
+
+and the supplied power is not changed ˜u⊤ 
+
+> e
+
+˜ye = RI 2(sin ∆) 2 + (cos ∆) 2 − RI  ˜id sin ∆ + ˜ iq cos ∆ .
+
+Subtracting the supplied power from the storage rate gives ˙V − ˜u⊤ 
+
+> e
+
+˜ye = − RI 2(sin ∆) 2 + (cos ∆) 2 − D ˜ω2
+
+− R(˜ i2 
+
+> d
+
++ ˜ i2 
+
+> q
+
+) − L˜ω(−˜idisq + ˜ iq isd) − kp ˜ω2.
+
+Again, we have a similar condition as in (15) for the preservation of the passivity property. 2
+
+5. CONCLUSION AND FUTURE WORK This paper presented a nonlinear model of a synchronous machine connected to a transmission line, a resistive load, and a current source representing the remainder of a network. This model derived from three phase abc equa-tions and then expressed in a rotor-aligned dq reference frame. Using the electromechanical model, we established passivity from the current input to a voltage output. We also prove the passivity of a shifted system under ex-plicit conditions on the parameters and steady-state values (D, R, L, i sdq ). In addition, we demonstrate a nonlinear neg-ative imaginary property from an electrical torque input to rotor angle output. We further showed that incorpo-rating a passive droop controller at the mechanical port preserves the passivity property. Future work will extend the analysis to include voltage and field dynamics. REFERENCES Arghir, C., Jouini, T., and D¨ orfler, F. (2018). Grid-forming control for power converters based on matching of synchronous machines. Automatica , 95, 273–282. Brogliato, B., Lozano, R., Maschke, B., Egeland, O., et al. (2007). Dissipative systems analysis and control. Theory and applications , 2, 2–5. Ghallab, A.G., Mabrok, M.A., and Petersen, I.R. (2025). Negative imaginary systems theory for nonlinear sys-tems: A dissipativity approach. IEEE Transactions on Automatic Control .Grainger, J.J. (1999). Power system analysis . McGraw-Hill. Kundur, P. (2007). Power system stability. Power system stability and control , 10(1), 7–1. Kundur, P., Paserba, J., Ajjarapu, V., Andersson, G., Bose, A., Canizares, C., Hatziargyriou, N., Hill, D., Stankovic, A., Taylor, C., et al. (2004). Definition and classification of power system stability ieee/cigre joint task force on stability terms and definitions. IEEE transactions on Power Systems , 19(3), 1387–1401. Machowski, J., Lubosny, Z., Bialek, J.W., and Bumby, J.R. (2020). Power system dynamics: stability and control .John Wiley & Sons. Monshizadeh, P., Monshizadeh, N., De Persis, C., and van der Schaft, A. (2018). Output impedance diffusion into lossy power lines. IEEE Transactions on Power Systems , 34(3), 1659–1668. Nishino, T. and Ishizaki, T. (2025). Equilibrium-independent passivity of power systems composed of park synchronous generator models. In 2025 American Control Conference (ACC) , 748–753. IEEE. Petersen, I.R. and Lanzon, A. (2010). Feedback control of negative-imaginary systems. IEEE Control Systems Magazine , 30(5), 54–72. Sauer, P.W., Pai, M.A., and Chow, J.H. (2017). Power system dynamics and stability: with synchrophasor mea-surement and power system toolbox . John Wiley & Sons. Trip, S., B¨ urger, M., and De Persis, C. (2016). An internal model approach to (optimal) frequency regulation in power grids with time-varying voltages. Automatica , 64, 240–253. Willems, J.C. (1972). Dissipative dynamical systems part i: General theory. Archive for rational mechanics and analysis , 45(5), 321–351. Yang, P., Liu, F., Wang, Z., and Shen, C. (2019). Dis-tributed stability conditions for power systems with het-erogeneous nonlinear bus dynamics. IEEE Transactions on Power Systems , 35(3), 2313–2324. Zhong, Q.C. and Weiss, G. (2010). Synchronverters: Inverters that mimic synchronous generators. IEEE transactions on industrial electronics , 58(4), 1259–1267. Zhou, J. and Ohsawa, Y. (2008). Improved swing equation and its properties in synchronous generators. IEEE Transactions on Circuits and Systems I: Regular Papers ,56(1), 200–209.

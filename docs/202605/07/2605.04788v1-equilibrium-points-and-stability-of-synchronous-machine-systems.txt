@@ -1,0 +1,2003 @@
+Title: Equilibrium points and stability of synchronous machine systems
+
+URL Source: https://arxiv.org/pdf/2605.04788v1
+
+Published Time: Thu, 07 May 2026 01:06:00 GMT
+
+Number of Pages: 9
+
+Markdown Content:
+# Equilibrium points and stability of synchronous machine systems 
+
+Maryam Khodabakhshloo ∗ Elizabeth L. Ratnam ∗∗ 
+
+Ian R. Petersen ∗∗ School of Engineering, The Australian National University, Canberra, Australia (e-mail: maryam.khodabakhshloo, ian.petersen)@anu.edu.au.  
+
+> ∗∗
+
+Department of Electrical and Computer Systems Engineering, Monash University, Melbourne, Australia (e-mail: liz.ratnam@monash.edu). 
+
+Abstract: This paper investigates equilibrium points and stability in two synchronous machine configurations: (i) a single generator with an impedance load and (ii) two interconnected machines with co-located loads. We consider both abc and dq reference frames to show that the equilibrium condition reduces to a cubic polynomial in the single-machine case and to an 18th-degree polynomial in the two-machine case. For the single-machine system, Lyapunov stability analysis and linearization based stability analysis are carried out. For the two-machine system, local stability is assessed through linearization and eigenvalue analysis. Illustrative examples confirm the existence of multiple equilibria and illustrate the impact of parameter variation on stability. Our results provide insight into the stability of synchronous machine systems. 
+
+Keywords: Electromechanical systems, power system dynamics, nonlinear systems, equilibria analysis, frequency-dependent load. 1. INTRODUCTION Rapid growth in grid-connected renewable energy zones and behind-the-meter, inverter-based resources are trans-forming grid dynamics. Accordingly, the Stable operation of modern power systems is increasingly difficult to en-sure. Historically, power systems have been dominated by synchronous machines (SMs), with stability assessments limited to transmission-level models or otherwise, steady-state assumptions. While these approaches provide useful insights, it can be difficult to capture the fast and nonlinear behaviors that emerge during large disturbances under renewable-dominated power grids Anderson and Fouad (2008); Machowski et al. (2020). This limitation highlights the need for analytical tools that can deliver fast, reliable, and physically interpretable stability assessments for fu-ture low-inertia grids, where power-electronics dynamics play a central role. Synchronous machines have historically been the founda-tion of power system operation and are commonly mod-eled by reduced-order representations, such as the classi-cal second-order swing equation Machowski et al. (2020); Schiffer et al. (2016). These models greatly simplify anal-ysis, but at the cost of neglecting the electrical transients associated with stator dynamics and network impedance effects. Moreover, they rely on linearizations around nom-inal operating points, which obscure important nonlinear phenomena. As a result, such models can misrepresent sta-bility margins when synchronous generators interact with converter-interfaced renewable sources or with frequency-dependent loads Zhou and Ohsawa (2008); Bergen and Hill (2007). Consequently, there has been renewed interest in high-fidelity electromechanical models that preserve the nonlinearities necessary for rigorous analysis Leonov Gen-nady Alexeyevich (2006); Zhong and Weiss (2010). To assess the stability of synchronous machine systems, many authors have considered the dq -transformation, which was developed for instantaneous power analysis of three-phase systems Hirofumi et al. (2007); Teodorescu et al. (2011). The dq -transformation simplifies the equa-tions representing electromechanical interactions, and has inspired the development of converter-based control that mimics the behavior of conventional SMs through power-electronics Zhong and Weiss (2010). However, the litera-ture in Du et al. (2019); Gholami and Sun (2020); Ma et al. (2021); Qiu et al. (2020) applies linearization techniques to assess the local stability of power systems. In contrast, the authors in Oh (2019); Trip et al. (2016) construct Lyapunov-based energy functions for simplified reduced-order models. Accordingly, such methods are restricted to small-signal analysis or to cases where suitable Lyapunov functions can be explicitly derived. In this paper, we consider a detailed equilibrium and sta-bility analysis for two fundamental synchronous machine system configurations. First, we derive exact equilibrium conditions for; (i) a single synchronous machine with an impedance load, which reduces to a cubic polynomial in the equilibrium angular frequency, and (ii) two inter-connected synchronous machines with local loads, which lead to an 18th-degree polynomial. Next, for the single-machine case, we apply both Lyapunov analysis—using an energy-based candidate Lyapanov function to obtain sufficient conditions for global stability—and linearization to characterize local stability around the equilibria. For the two-machine case, we focus on linearization and eigen-
+
+> arXiv:2605.04788v1 [eess.SY] 6 May 2026
+
+value analysis to assess local stability. Illustrative examples validate the analytical results and reveal a parameter-dependent multiplicity of equilibria. The remainder of this paper is organized as follows. Sec-tion 2 introduces the synchronous machine systems and applies the dq -transformation. Section 3 derives the equi-librium conditions. In Section 4, we consider conditions for the stability of synchronous machine systems together with illustrative examples. Section 5 provides concluding remarks. 2. SYNCHRONOUS MACHINE SYSTEMS In this section, we present the electromechanical equations for a synchronous machine (SM). Specifically, we introduce the dq -coordinate transformation, and its application for two circuit configurations: 1) an SM connected to an impedance load; 2) two SMs interconnected via a trans-mission line, each with a co-located impedance load. For both configurations, the electromechanical equations are developed in the abc and dq reference frames. 
+
+2.1 Synchronous Machine 
+
+We consider a synchronous machine that generates elec-tricity and incorporates a stator and a rotor. The stator windings are where alternating current (AC) flows, pro-ducing an alternating magnetic field at the same frequency. The rotor is cylindrical, and we consider a synchronous machine with one pole pair per phase. We neglect effects such as damper windings, magnetic saturation, and eddy currents. We assume the rotor current if is constant. The stator is excited by a balanced three-phase signal in a star-connected configuration without a neutral wire. The stator windings are sinusoidally distributed and symmet-ric, resulting in a smoothly rotating magnetic field. The generator’s reference direction is chosen so that the current flowing out of the generator is considered positive. The following notation largely follows that of Zhong and Weiss (2010). The stator resistance and inductance are denoted by Rs and Ls, respectively, and if is the constant rotor current (see in Figure 1). The rotor electrical phase angle, angular velocity and the corresponding stator cur-rent; and voltage are denoted by θ ∈ R, ω = ˙θ ∈ R,
+
+iabc ∈ R3, and vabc ∈ R3, respectively.  
+
+> vf
+> Rs
+> Rs
+> Rs
+> Lf
+> Ls
+> Ls
+> Ls
+> va
+> vb
+> vc
+> ifia
+> ib
+> ic
+
+Fig. 1. Synchronous Machine equivalent circuit. The electromotive force eabc induced in the stator by the rotating magnetic field generated by the rotor motion is given by: 
+
+eabc = Mf if ω
+
+
+
+sin( θ)sin 
+
+
+
+θ − 2π
+
+3
+
+
+
+sin 
+
+
+
+θ − 4π
+
+3
+
+ (1) where Mf is the mutual inductance between the stator and the rotor, and θ is the rotor angle with respect to the fixed reference angle and ω is the rotor angular velocity, also referred to as the frequency. By applying Ohm’s law and the inductor law, the voltages 
+
+vabc at each terminal abc of the stator satisfy the equations: 
+
+vabc = −Rsiabc − Ls
+
+di abc 
+
+dt + eabc .
+
+Thus, the electrical equations describing the dynamics of the three-phase stator current are: 
+
+Ls
+
+di abc 
+
+dt = −Rsiabc + eabc − vabc .
+
+The mechanical dynamics of the rotor are described by Newton’s second law, equating the net electromagnetic and mechanical torques to the inertial torque. Specifically, 
+
+J ˙ω = −Dω + Tm − Te,
+
+where J is the rotor moment of inertia, D is a damping coefficient and Tm is the input mechanical torque. The electrical torque Te, with the assumption of constant field current, is derived as in Zhong and Weiss (2010); Caliskan and Tabuada (2014) as 
+
+Te = ˙θ−1⟨eabc , i abc ⟩ = ω−1e⊤
+
+> abc
+
+iabc . (2) The next section begins with a brief overview of the dq 
+
+framework. Then we introduce two synchronous machine system configurations and transform the electromechanical equations from the abc frame into the dq frame, simplifying further dynamical analysis. 
+
+2.2 dq-Coordinate Transformation 
+
+The dq -coordinate, also known as the rotating reference frame Schiffer et al. (2016), is a mathematical transforma-tion that maps three-phase abc quantities into two orthog-onal components. This transformation simplifies the analy-sis of balanced electrical systems and is widely employed in power system control applications. The dq -transformation is given by, 
+
+U (η) = 
+
+r 23
+
+
+
+cos( η) cos 
+
+
+
+η − 2π
+
+3
+
+
+
+cos 
+
+
+
+η − 4π
+
+3
+
+
+
+sin( η) sin 
+
+
+
+η − 2π
+
+3
+
+
+
+sin 
+
+
+
+η − 4π
+
+3
+
+ .
+
+where η is the reference angle. We use the following properties of the dq -transformation in subsequent sections: (i) 
+
+idq = U (η)iabc , iabc = U (η)⊤idq .
+
+(ii) time-derivative relationship; 
+
+di dq 
+
+dt = ˙ η
+
+0 −11 0
+
+
+
+U (η) iabc + U (η) di abc 
+
+dt . (3) 
+
+2.3 Synchronous generator with an impedance load 
+
+In Figure 2, we consider a synchronous generator (SG) connected through a transmission line to an impedance SG  
+
+> (T, ω )RL
+> RL
+> RL
+> Rs
+> Rs
+> Rs
+> Ls
+> Ls
+> Ls
+> Rl
+> Rl
+> Rl
+> Ll
+> Ll
+> Ll
+> va
+> vb
+> vc
+
+Fig. 2. SG connected to an impedance load via a transmis-sion line. load. The circuit consists of the stator resistance Rs and inductance Ls, the line resistance Rl and inductance Ll,and the load resistance RL. Since the inductances and resistances are connected in series, we define equivalent parameter values by R = Rs + Rl + RL and L = Ls + Ll.Figure 2 presents the electromechanical system, where the three-phase abc frame, is expressed by equations ˙θ = ω, J ˙ω = −Dω − ω−1e⊤
+
+> abc
+
+iabc + Tm,L di abc 
+
+dt = −Ri abc + eabc .
+
+(4) Next, we transform the abc model in (4) into the dq 
+
+reference frame. We choose the transformation angle η to be equal to the rotor angle, η = θ. Accordingly, using the relation iabc = U ⊤(η)idq , we substitute iabc into the mechanical dynamics in (4) to obtain the dynamics in the 
+
+dq -frame: 
+
+ω−1e⊤
+
+> abc
+
+iabc = ω−1e⊤
+
+> abc
+
+U ⊤(η)idq =
+
+r 32 Mf if
+
+01
+
+
+
+idq .
+
+Also, the electrical equation is premultiplied by U (η) and using (3), results in the following dq -frame model: ˙θ = ω, J ˙ω = −Dω − bi q + Tm,L˙id = −Ri d − Lωi q ,L˙iq = Lωi d − Ri q + bω, 
+
+(5) where b =
+
+q 32 Mf if .
+
+2.4 Two SMs Interconnected via a Transmission Line with co-located Resistive Loads 
+
+In Figure 3, we present two identical synchronous machines (SMs) that are connected through a transmission line, and each supplies power to resistive loads.          
+
+> SM 1SM 2
+> (Tm1, ω 1)(Tm2, ω 2)
+> RLRLRLRLRLRL
+> R
+> R
+> R
+> L
+> L
+> L
+> L3
+> L3
+> L3
+> R
+> R
+> R
+> L
+> L
+> L
+> ia1
+> ib1
+> ic1
+> ia3
+> ib3
+> ic3
+> ia2
+> ib2
+> ic2
+
+Fig. 3. Two SMs supplying resistive loads and connected via a transmission line. We assume all electrical parameters are balanced. The stator of each synchronous machine is identical, each characterized by a stator resistance R ≥ 0 and stator inductance L ≥ 0. The transmission line is represented by an inductance L3, and the load is represented by a resistance RL > 0. For each SM, the damping coefficient and moment of inertia are denoted by D > 0, J >
+
+0, respectively. The mechanical torque input, the rotor angle, electrical angular velocity, and generated current of the j-th SM is denoted by Tmj ≥ 0 , θj (t) ∈ R,
+
+ωj (t) ∈ R, and iabc,j (t) ∈ R3, respectively, where j = 1 , 2represents the indices of the machines. The electromotive forces eabc 1 , e abc 2 are defined in Equation (1), and the electrical torques Te1 , T e2 are defined in Equation (2). The electromechanical dynamics of the system shown in Figure 3, expressed in abc -coordinates, are given by: ˙θ1 = ω1,
+
+˙θ2 = ω2,J ˙ω1 = −Dω 1 − ω−11 e⊤ 
+
+> abc 1
+
+iabc 1 + Tm1 ,J ˙ω2 = −Dω 2 − ω−12 e⊤ 
+
+> abc 2
+
+iabc 2 + Tm2 ,L di abc 1
+
+dt = −(R + RL)iabc 1 + eabc 1 + RLiabc 3 ,L di abc 2
+
+dt = −(R + RL)iabc 2 + eabc 2 − RLiabc 3 ,L3
+
+di abc 3
+
+dt = −2RLiabc 3 + RL(iabc 1 − iabc 2 ).
+
+(6) Next, we transform the system equations in (6) into the 
+
+dq reference frame. The transformation angle η is taken to be the average of the two SMs rotor angles, defined by 
+
+η = 12 (θ1 + θ2). (7) Accordingly, we represent the average angular velocity by ˙η = 12 ( ˙θ1 + ˙θ2) = 12 (ω1 + ω2).
+
+The angle difference between each SM and the rotating reference frame is defined by: 
+
+δ := θ2 − η = −(θ1 − η) = 12 (θ2 − θ1), (8) where δ denotes the relative angle between the two gener-ators with respect to the reference frame (7). To derive the system equations (6) in the dq frame, we consider the transformation angle η = 12 (θ1 + θ2), such that iabc =
+
+U ⊤(η)idq . The mechanical equation in (6) is rewritten by substituting iabc , and the electrical equation is multiplied by U (η). After substituting and simplifying, and using the definition in (8), the dq -frame representation of the interconnected SMs follows. The mechanical subsystem in this model is defined by the equations ˙δ = 12 (ω2 − ω1),J ˙ω1 = −Dω 1 + b(− sin δ i d1 + cos δ i q1 ) + Tm1 ,J ˙ω2 = −Dω 2 + b(sin δ i d2 − cos δ i q2 ) + Tm2 .
+
+(9) The electrical subsystem in this model is defined by the equations L˙id1 = −Ri d1 − Lωi q1 − b sin δ ω 1 + RLid3 ,L˙iq1 = −Ri q1 + Lωi d1 + b cos δ ω 1 + RLiq3 ,L˙id2 = −Ri d2 − Lωi q2 + b sin δ ω 2 − RLid3 ,L˙iq2 = −Ri q2 + Lωi d2 − b cos δ ω 2 − RLiq3 ,L3 ˙id3 = −2RLid3 + RL(id1 − id2 ) − L3ωi q3 ,L3 ˙iq3 = −2RLiq3 + RL(iq1 − iq2 ) + L3ωi d3 .
+
+(10) In equations (10), ω = 12 (ω1 + ω2) is the average angular velocity. The mechanical states ( δ, ω 1, ω 2) are directly cou-pled to the electrical currents through the trigonometric terms involving δ. The cross terms ( ±Lω ) capture the 
+
+dq cross-coupling, while the resistive interactions appear through the symmetric coupling R, R L. The parameter 
+
+b is defined by b =
+
+q 32 Mf if , where Mf is the mutual inductance and if is the rotor current. 3. EQUILIBRIUM POINTS FOR SYNCHRONOUS MACHINE SYSTEMS This section derives the equilibrium points for the two configurations introduced above. For each circuit, the equilibrium is obtained by setting the time derivatives in the corresponding system equations to zero and then solving the resulting algebraic equations. 
+
+3.1 Synchronous generator connected to an impedance load 
+
+Here we set the time derivatives in (5) to zero; which yields 0 = −Dω e − bi eq + Tm,
+
+0 = −Ri ed − Lω eieq ,
+
+0 = Lω eied − Ri eq + bω e.
+
+(11) From the second equation in (11), we obtain 
+
+ied = − Lω e
+
+R ieq . (12) Substituting into the third equation of (11) yields 
+
+ieq = bω eL2ωe2 
+
+> R
+
++ R . (13) Substituting ieq into the first equation of (11) yields the following polynomial equation in ωe:
+
+DL 2ωe3 − TmL2ωe2 + ( b2R2 + DR 2)ωe − TmR2 = 0 . (14) The signs of the coefficients in (14) alternate in the pattern (+, –, +, –), which, according to Descartes’ rule of signs, implies that the equation admits either one or three positive real roots. Since all coefficients are real and the leading coefficient is positive while the constant term is negative, the existence of at least one positive real root is guaranteed. To express the equation in standard cubic form, we divide by DL 2 and rewrite (14) as 
+
+ωe3 − Tm
+
+D ωe2 + R2(b2 + D)
+
+DL 2 ωe − TmR2
+
+DL 2 = 0 .
+
+We let ωe = y + Tm  
+
+> 3D
+
+, and eliminating the quadratic term, we obtain 
+
+y3 + py + q = 0 ,
+
+where 
+
+p = − T 2
+
+> m
+
+3D2 + R2(b2 + D)
+
+DL 2 , q = − 2T 3
+
+> m
+
+27 D3 + TmR2(b2 − 2D)3D2L2 .
+
+Using Cardano’s formula Tokunaga (1991), the real root of the original cubic equation (14) is 
+
+ωe = Tm
+
+3D + 3
+
+r
+
+− q
+
+2 + √∆ + 3
+
+r
+
+− q
+
+2 − √∆. (15) Here ∆ = 
+
+ q
+
+2
+
+2
+
++
+
+ p
+
+3
+
+3
+
+.
+
+Expanding the formula for ∆, we obtain a rational expres-sion as follows:            
+
+> ∆ = 4T4
+> mR2L4+T2
+> mR4L2(8 D2−b4−20 b2D) + 4 R6D(b2+D)3
+> 108 D4L6.
+> (16)
+
+The nature of the roots of (14) depends on the sign of ∆ as follows: (i) ∆ > 0: one real root, two complex roots; (ii) ∆ = 0: all roots real, with at least two equal; (iii) ∆ < 0: three distinct real roots. 
+
+3.2 Two interconnected SMs supplying resistive loads 
+
+To calculate the equilibrium points in this case, we obtain the following set of equations: 
+
+ω1 = ω2 = ωe, (17a) 
+
+−Dω e + b sin( δe)ied1 − b cos( δe)ieq1 + Tm1 = 0 , (17b) 
+
+−Dω e − b sin( δe)ied2 − b cos( δe)ieq2 + Tm2 = 0 , (17c) 
+
+−b sin( δe)ωe − Ri ed1 − Lω eieq1 + RLied3 = 0 , (17d) 
+
+b sin( δe)ωe − Ri ed2 − Lω eieq2 − RLied3 = 0 , (17e) 
+
+b cos( δe)ωe + Lω eied1 − Ri eq1 + RLieq3 = 0 , (17f) 
+
+b cos( δe)ωe + Lω eied2 − Ri eq2 − RLieq3 = 0 , (17g) 
+
+RLied1 − RLied2 − 2RLied3 − L3ωeieq3 = 0 , (17h) 
+
+RLieq1 − RLieq2 + L3ωeied3 − 2RLieq3 = 0 , (17i) Rearranging (17h) and (17i), we obtain 
+
+ied3 = 2R2
+
+> L
+
+(ied1 − ied2 ) − L3ωeRL(ieq1 − ieq2 )4R2 
+
+> L
+
++ ( L3ωe)2 ,ieq3 = L3ωeRL(ied1 − ied2 ) + 2 R2
+
+> L
+
+(ieq1 − ieq2 )4R2 
+
+> L
+
++ ( L3ωe)2 .
+
+Next, we substitute ied3 , i eq3 into equations (17d)–(17g) to obtain 
+
+X = 4 R2 
+
+> L
+
++ ( L3ωe)2.
+
+We now express these equations in matrix form 
+
+A B B A 
+
+  i1
+
+i2
+
+
+
+=
+
+s1
+
+s2
+
+
+
+,
+
+where, the sub-matrices A and B are given by 
+
+A =
+
+
+
+−R + 2R3
+
+> L
+
+X −Lω e − L3ωeR2
+
+> L
+
+XLω e + L3ωeR2
+
+> L
+
+X −R + 2R3
+
+> L
+
+X
+
+ ,B =
+
+
+
+− 2R3
+
+> L
+
+XL3ωeR2
+
+> L
+
+X
+
+− L3ωeR2
+
+> L
+
+X − 2R3
+
+> L
+
+X
+
+ .Also, the current and source vectors are defined by 
+
+iej∈{ 1,2} =
+
+iedj
+
+ieqj
+
+
+
+, s 1 =
+
+ b sin( δe)ωe
+
+−b cos( δe)ωe
+
+
+
+, s 2 =
+
+−b sin( δe)ωe
+
+−b cos( δe)ωe
+
+
+
+.
+
+To decouple the equations, we define the sum and differ-ence variables 
+
+v = i1 + i2, w = i1 − i2,
+
+which provides the relationships (A + B)v = s1 + s2, (A − B)w = s1 − s2.
+
+Accordingly, 
+
+v = ( A + B)−1(s1 + s2), w = ( A − B)−1(s1 − s2),
+
+and the original currents are recovered as 
+
+i1 = 12 (v + w), i2 = 12 (v − w).
+
+After substituting and simplifying, the currents can be expressed in closed form using the parameters 
+
+a = −R + 4R3
+
+> L
+
+X , e = −Lω e − 2L3ωeR2
+
+> L
+
+X , R = Rs + RL,
+
+as 
+
+ied1 = bω e
+
+2
+
+ −Lω e cos δe
+
+R2 + L2ωe2 + a sin δe
+
+a2 + e2
+
+
+
+,ieq1 = bω e
+
+2
+
+ R cos δe
+
+R2 + L2ωe2 − e sin δe
+
+a2 + e2
+
+
+
+,ied2 = bω e
+
+2
+
+ −Lω e cos δe
+
+R2 + L2ωe2 − a sin δe
+
+a2 + e2
+
+
+
+,ieq2 = bω e
+
+2
+
+ R cos δe
+
+R2 + L2ωe2 + e sin δe
+
+a2 + e2
+
+
+
+.
+
+By substituting the expressions for the currents into the summation and difference of equations (17b)–(17c), the following relationships are obtained. From the sum, we obtain 
+
+−2Dω e +b2ωe
+
+ a sin 2 δe
+
+a2 + e2 − R cos 2 δe
+
+R2 + L2ωe2
+
+
+
++Tm1 +Tm2 = 0 ,
+
+and from the difference, we obtain 
+
+b2ωe
+
+ −Lω e sin δe cos δe
+
+R2 + L2ωe2 + e sin δe cos δe
+
+a2 + e2
+
+
+
++Tm1 −Tm2 = 0 .
+
+From the difference, we can explicitly solve for sin δe cos δe
+
+as sin δe cos δe = Tm2 − Tm1
+
+b2ωe
+
+ −Lω e
+
+R2 + L2ωe2 + ea2 + e2
+
+ . (18) From the sum and using the trigonometric identity sin 2 δe + cos 2 δe = 1, and defining 
+
+Td = Tm2 − Tm1 , Ts = Tm2 + Tm1 ,
+
+we obtain sin 2 δe = (2 Dω e − Ts) ( R2 + L2ωe2) + Rb 2ωe
+
+(a(R2 + L2ωe2) + R(a2 + e2)) · a2 + e2
+
+b2ωe ,
+
+(19) cos 2 δe = ab 2ωe + ( Ts − 2Dω e)( a2 + e2)(a(R2 + L2ωe2) + R(a2 + e2)) · R2 + L2ωe2
+
+b2ωe .
+
+(20) To obtain a polynomial in terms of ωe, we use the equality (sin δe cos δe)2 = cos 2 δe sin 2 δe. Then, simplifying and rearranging this equality we obtain 
+
+
+
+(2 Dω e − Ts)( R2 + L2ωe2) + Rb 2ωe
+
+
+
+×
+
+h
+
+(−R(4 R2 
+
+> L
+
++ L23ωe2) + 4 R3
+
+> L
+
+)b2ωe
+
++ ( Ts − 2Dω e)
+
+
+
+(R2 + L2ωe2)(4 R2 
+
+> L
+
++ L23ωe2)+ R2
+
+> L
+
+(4 LL 3ωe2 − 8RR L) + 4 R4
+
+> L
+
+i 
+
+×
+
+h
+
+− 2Lω e(R2 + L2ωe2)(4 R2 
+
+> L
+
++ L23ωe2)
+
+− 2L3ωeR2
+
+> L
+
+(R2 + L2ωe2)
+
+− Lω e
+
+
+
+R2
+
+> L
+
+(4 LL 3ωe2 − 8RR L) + 4 R4
+
+> L
+
+i 2
+
+= T 2 
+
+> d
+
+(R2 + L2ωe2)
+
+h
+
+(R2 + L2ωe2)(4 R2 
+
+> L
+
++ L23ωe2)+ R2
+
+> L
+
+(4 LL 3ωe2 − 8RR L) + 4 R4
+
+> L
+
+i
+
+×
+
+h
+
+4R3
+
+> L
+
+(R2 + L2ωe2) + R
+
+
+
+R2
+
+> L
+
+(4 LL 3ωe2 − 8RR L) + 4 R4
+
+> L
+
+i 2
+
+.
+
+The resulting polynomial is of order 18 with coefficients that depend on the system parameters. Due to the compli-cated form, the full expression is provided in the appendix, and a simplified version is as follows: 
+
+− H0 + ( K0G2 − H2)ωe2 + K1G2ωe3+(K0G4 + K2G2 − H4)ωe4 + ( K1G4 + K3G2)ωe5+(K0G6 + K2G4 + K4G2 − H6)ωe6
+
++ ( K1G6 + K3G4 + K5G2)ωe7
+
++ ( K0G8 + K2G6 + K4G4 + K6G2 − H8)ωe8+(K1G8 + K3G6 + K5G4 + K7G2)ωe9+(K0G10 + K2G8 + K4G6 + K6G4 + K8G2 − H10 )ωe10 +(K1G10 + K3G8 + K5G6 + K7G4)ωe11 +(K2G10 + K4G8 + K6G6 + K8G4)ωe12 +(K3G10 + K5G8 + K7G6)ωe13 
+
++ ( K4G10 + K6G8 + K8G6)ωe14 
+
++ ( K5G10 + K7G8)ωe15 + ( K6G10 + K8G8)ωe16 
+
++ K7G10 ωe17 − K8G10 ωe18 = 0 .
+
+(21) An analytical solution of equation (21) is not possible; therefore, its roots must be determined numerically. For the solutions to be physically meaningful, the system parameters must satisfy the following conditions. (i) The absolute magnitude of the expression in equa-tion (18) must be less than or equal to 0.5. (ii) The sum of the expressions in equations (19) and (20) must equal one. (iii) The solution ωe must be a positive real number. 4. STABILITY ANALYSIS FOR SYNCHRONOUS MACHINE SYSTEMS This section examines the stability of the equilibrium points for the two synchronous machine systems. Specif-ically, the SG connected to an impedance load and two SMs serving resistive loads. For the SG connected to an impedance load, Lyapunov’s direct method is used as well as a linearization method. In contrast, for the two synchronous generator system, we consider specific param-eter values and then linearize the corresponding equations around the equilibrium points. 4.1 SG connected to impedance load 
+
+Here we use the Lyapunov direct method, and obtain the perturbed system dynamics by substituting δ = ˜δ +
+
+δe, ω = ˜ ω + ωe, i d = ˜ id + ied, i q = ˜ iq + ieq as follows ˙˜δ = ˜ ω, J ˙˜ω = −D(˜ ω + ωe) − b(˜ iq + ieq ) + Tm,L˙˜id = −R(˜ id + ied) − L(˜ ω + ωe)(˜ iq + ieq ),L˙˜iq = b(˜ ω + ωe) + L(˜ ω + ωe)(˜ id + ied) − R(˜ iq + ieq ).
+
+At the equilibrium point, −Dω e − bi eq + Tm = 0 , −Ri ed −
+
+Lω eieq = 0 , bω e +Lω eied −Ri eq = 0, and hence the perturbed system dynamics are: ˙˜δ = ˜ ω, J ˙˜ω = −D ˜ω − b˜iq ,L˙˜id = −R˜id − L˜ω˜iq − Lω e˜iq − L˜ωi eq ,L˙˜iq = b˜ω + L˜ω˜id + Lω e˜id + L˜ωi ed − R˜iq .
+
+(22) A candidate Lyapunov function is constructed as the sum of the kinetic energy and the energy stored in the inductor, L, given by the quadratic form 
+
+V (˜ ω, ˜id,˜iq ) = J
+
+2 ˜ω2 + L
+
+2 (˜ i2 
+
+> d
+
++ ˜ i2 
+
+> q
+
+).
+
+The derivative of the candidate Lyapunov function can be written as ˙V = ˜ω ˜id ˜iq
+
+ Q
+
+
+
+˜ω
+
+˜id
+
+˜iq
+
+ , Q =
+
+
+
+−D − Li eq
+
+2
+
+Li ed
+
+2
+
+− Li eq
+
+2 −R 0
+
+Li ed
+
+2 0 −R
+
+ .
+
+To determine the negative semi-definiteness of the matrix 
+
+Q, we analyze its leading principal minors, noting that Q
+
+is symmetric: (i) The first leading principal minor is negative if and only if: 
+
+D ≥ 0.
+
+(ii) The second leading principal minori is positive if and only if: 
+
+−D − Li eq
+
+2
+
+− Li eq
+
+2 −R
+
+= DR −
+
+ Li eq
+
+2
+
+2
+
+≥ 0,
+
+which is equivalent to the condition 
+
+DR ≥ L2(ieq )2
+
+4 .
+
+(iii) The third leading principal minor is negative if and only if: 
+
+−DR 2 + L2R
+
+4
+
+ (ieq )2 − (ied)2 ≤ 0,
+
+which is equivalent to 
+
+DR ≥ L2
+
+4
+
+ (ied)2 − (ieq )2 .
+
+Combining these conditions, we conclude that the matrix 
+
+Q is negative semi-definite if and only if the following inequality holds: 
+
+D ≥ L2
+
+4R
+
+ (ieq )2 + ( ied)2 . (23) Substituting ied and ieq from (12), (13) into the inequality (23) yields the condition 
+
+D ≥ b2
+
+4R
+
+ L2ωe2
+
+R2 + L2ωe2
+
+
+
+. (24) The inequality (24) indicates that an increase in the damping coefficient D enhances system stability. More-over, lower values of the ωe contribute to a larger stability margin compared to higher angular velocities. In addition, an increase in the excitation current b enlarges the right-hand side of the inequality, thereby reducing the overall region of stability. These trends are physically intuitive and align well with practical observations in real-world systems. Linearizing the system around the equilibrium point (ωe, i ed, i eq ) and neglecting second-order terms gives: 
+
+J ˙˜ω = −D ˜ω − b˜iq ,L˙˜id = −R˜id − Lω e ˜iq − Li eq ˜ω, L˙˜iq = b ˜ω + Lω e ˜id + Li ed ˜ω − R˜iq .
+
+(25) The linearized perturbed system in state space form is as follows: 
+
+
+
+˙˜ω
+
+˙˜id
+
+˙˜iq
+
+ =
+
+
+
+− DJ 0 − bJ
+
+− ieq
+
+L − RL −ωe
+
+b + ied
+
+L ωe − RL
+
+
+
+˜ω
+
+˜id
+
+˜iq
+
+ ,
+
+where ied and ieq are given by (12) and (13), respectively. To assess the stability of the linearized system, we apply the Routh–Hurwitz criterion to its characteristic polyno-mial, which can be expressed as: 
+
+P (λ) = λ3 + a2λ2 + a1λ + a0,
+
+where 
+
+a2 = 2RL + DJ ,a1 = R2
+
+L2 + ( ωe)2 + 2RD LJ + b2R2
+
+JL  L2(ωe)2 + R2 ,a0 = D R2 + L2(ωe)2
+
+JL 2 + b2R R2 − L2(ωe)2
+
+JL 2 L2(ωe)2 + R2 .
+
+According to the Routh-Hurwitz stability criterion, the system is asymptotically stable if and only if: 
+
+a2 > 0, a1 > 0, a0 > 0, a2a1 > a 0. (26) 
+
+4.2 Two interconnected synchronous machines serving loads 
+
+The nonlinear system of equations in (9)–(10) is linearized around the equilibrium point 
+
+xe =  δe, ω e 
+
+> 1
+
+, ω e 
+
+> 2
+
+, i ed1 , i eq1 , i ed2 , i eq2 , i ed3 , i eq3
+
+,
+
+where the steady-state condition ˙x = 0 holds. Next, we obtain the following linearized state-space model ∆ ˙ x = A ∆x + B ∆u, 
+
+where ∆ x = x − xe and ∆ u = u − ue. The state and input vectors are defined by 
+
+x = [ δ ω 1 ω2 id1 iq1 id2 iq2 id3 iq3 ]⊤ ,u =
+
+h Tm 1
+
+> JTm 2
+> J
+
+i⊤
+
+.The corresponding Jacobian matrices are calculated as 
+
+A = ∂f ∂x xe, u e
+
+, B = ∂f ∂u xe, u e
+
+,
+
+where A has the block structure: 
+
+A =
+
+Amm Ame 
+
+Aem Aee 
+
+
+
+> 9×9
+
+,
+
+with the submatrices defined as follows: (i) mechanical subsystem 
+
+Amm =
+
+
+
+0 −0.5 0.5
+
+b(cos δeied1 + sin δeieq1 )
+
+J − DJ 0
+
+b(− cos δeied2 + sin δeieq2 )
+
+J 0 − DJ
+
+ ,
+
+(ii) mechanical–electrical coupling 
+
+Ame =
+
+
+
+0 0 0 0 0 0 
+
+b sin δe
+
+J
+
+−b cos δe
+
+J 0 0 0 0 0 0 −b sin δe
+
+J
+
+−b cos δe
+
+J 0 0 
+
+ ,
+
+(iii) electrical–mechanical coupling 
+
+Aem =
+
+
+
+− bω e cos δe
+
+L − b sin δe
+
+L − ieq1
+
+2 − ieq1
+
+2
+
+− bω e sin δe
+
+Lb cos δe
+
+L + ied1
+
+2
+
+ied1
+
+2
+
+bω e cos δe
+
+L − ieq2
+
+2
+
+b sin δe
+
+L − ieq2
+
+2
+
+− bω e sin δe
+
+Lied2
+
+2
+
+b cos δe
+
+L + ied2
+
+20 − ieq3
+
+2 − ieq3
+
+20 ied3
+
+2
+
+ied3
+
+2
+
+
+
+,
+
+(iv) electrical subsystem 
+
+Aee =
+
+
+
+− RL −ωe 0 0 RL
+
+L 0
+
+ωe − RL 0 0 0 RL
+
+L
+
+0 0 − RL −ωe − RL
+
+L 00 0 ωe − RL 0 − RL
+
+LRL
+
+L3
+
+0 − RL
+
+L3
+
+0 −2 RL
+
+L3
+
+−ωe
+
+0 RL
+
+L3
+
+0 − RL
+
+L3
+
+ωe − 2RL
+
+L3
+
+
+
+.
+
+4.3 Illustrative Examples 
+
+Case 1: Synchronous generator connected to a resistive load The sign of ∆ in (16) determines the number of equilib-rium points. It is possible to obtain one, two, or three real equilibria based on selection of the circuit parameters. For the parameter set 
+
+D = L = R = 1 , b = 4 , Tm = 9 ,
+
+the cubic equation (14) governing the equilibrium angular velocity reduces to 
+
+ωe3
+
+−9ωe2
+
++17 ωe −9 = 0 ⇒ (ωe −1)( ωe2
+
+−8ωe +9) = 0 ,
+
+which yields three distinct positive real roots: 
+
+ωe = 1 , ωe = 4 ± √7.
+
+For these parameter values, the Routh–Hurwitz conditions in (26) are satisfied at two equilibrium points, ωe = 1 and 
+
+ωe = 4 + √7, confirming local stability. In contrast, at the equilibrium point ωe = 4 − √7, the condition a0 < 0 is violated, indicating that this operating point is unstable. 
+
+Remarks It is important to note that Lyapunov’s direct method provides only sufficient conditions for stability. Consequently, failure to satisfy the Lyapunov condition does not necessarily imply instability. In this example, while Lyapunov’s method cannot guarantee stability for certain equilibria, the linearized analysis confirms that two operating points are indeed locally stable. In a numerical simulation with the initial condition ω0 =4.5, although this value lies closer to the equilibrium 
+
+ωe = 4 + √7, the trajectory converges to the equilibrium point ωe = 1. Case 2: Two synchronous machines serving loads We select the parameter set 
+
+J = 1 , R = 1010 , L = 0 .041 , D = 9 , Tm1 = 2910 ,Tm2 = 2800 , b = 5 , RL = 1000 , L3 = 0 .04 .
+
+In this case, the system admits 18 equilibrium points. Among them, only solutions 
+
+ωe 
+
+> 1
+
+= 315 .5902 rad /s, ωe 
+
+> 2
+
+= 309 .0166 rad /s,
+
+satisfy the positive-real condition together with condi-tions (18), (19), and (20). It is found that the equilibrium point ωe 
+
+> 1
+
+is locally stable, as all eigenvalues of the Jacobian have negative real parts, while ωe 
+
+> 2
+
+is not locally stable. These examples highlight the crucial role of grid param-eters can play in shaping power system behavior. Even in relatively simple configurations, multiple equilibria can arise. In practical scenarios, the coexistence of nearby equilibria—particularly if more than one is stable—may cause operational challenges. Such situations can make the system sensitive to perturbations, potentially driving the dynamics toward an unintended equilibrium point. 5. CONCLUSION This paper has presented a detailed study of equilib-rium points and stability for two synchronous machine systems: (1) a single generator with an impedance load, and (2) two interconnected machines with resistive loads. By formulating the models in both abc and dq reference frames, we showed that the equilibrium conditions reduce to a cubic polynomial in the single-machine case and to an 18th order polynomial in the two-machine case. For the single-machine system, Lyapunov analysis and a linearization analysis were carried out. For the two-machine system, where nonlinearities hinder the construc-tion of an energy-based Lyapunov function, stability was investigated through linearization and eigenvalue analysis. Numerical simulations further confirmed the analytical findings and illustrated the dependence of equilibria and stability on system parameters. Appendix A. COEFFICIENTS OF EQUATION (21) The following are formulas for the coefficients of the polynomial (21) in terms of the system parameters: 
+
+K0 = −4R4
+
+> L
+
+R2T 2 
+
+> s
+
++ 8 R3
+
+> L
+
+R3T 2 
+
+> s
+
+− 4R2
+
+> L
+
+R4T 2 
+
+> s
+
+,K1 = 4 b2R4
+
+> L
+
+RT s − 12 b2R3
+
+> L
+
+R2Ts + 16 DR 4
+
+> L
+
+R2Ts
+
++ 8 b2R2
+
+> L
+
+R3Ts − 32 DR 3
+
+> L
+
+R3Ts + 16 DR 2
+
+> L
+
+R4Ts,K2 = 4 b4R3
+
+> L
+
+R − 8b2DR 4
+
+> L
+
+R − 4b4R2
+
+> L
+
+R2 + 24 b2DR 3
+
+> L
+
+R2
+
+− 16 D2R4
+
+> L
+
+R2 − 16 b2DR 2
+
+> L
+
+R3 + 32 D2R3
+
+> L
+
+R3
+
+− 16 D2R2
+
+> L
+
+R4 − 4L2R4
+
+> L
+
+T 2 
+
+> s
+
++ 8 L2R3
+
+> L
+
+RT 2
+
+> s
+
+− 4L3LR 2
+
+> L
+
+R2T 2 
+
+> s
+
+− 8L2R2
+
+> L
+
+R2T 2 
+
+> s
+
++ R4T 2
+
+> s
+
+K3 = −4b2L2R3
+
+> L
+
+Ts + 16 DL 2R4
+
+> L
+
+Ts + 4 L3b2LR 2
+
+> L
+
+RT s
+
++ 8 b2L2R2
+
+> L
+
+RT s − 32 DL 2R3
+
+> L
+
+RT s + 16 L3DLR 2
+
+> L
+
+R2Ts
+
++ 32 DL 2R2
+
+> L
+
+R2Ts − 2b2R3Ts − 4DR 4Ts,K4 = 8 b2DL 2R3 
+
+> L
+
+− 16 D2L2R4 
+
+> L
+
+− 8L3b2DLR 2
+
+> L
+
+R
+
+− 16 b2DL 2R2
+
+> L
+
+R + 32 D2L2R3
+
+> L
+
+R + b4R2
+
+− 16 L3D2LR 2
+
+> L
+
+R2 − 32 D2L2R2
+
+> L
+
+R2 + 4 b2DR 3
+
++ 4 D2R4 − 4L3L3R2
+
+> L
+
+T 2 
+
+> s
+
+− 4L4R2
+
+> L
+
+T 2 
+
+> s
+
++ 2 L2R2T 2 
+
+> s
+
+,K5 = 16 L3DL 3R2
+
+> L
+
+Ts + 16 DL 4R2
+
+> L
+
+Ts
+
+− 2b2L2RT s − 8DL 2R2Ts,K6 = −16 L3D2L3R2 
+
+> L
+
+− 16 D2L4R2
+
+> L
+
++ 4 b2DL 2R + 8 D2L2R2 + L4T 2 
+
+> s
+
+,K7 = −4DL 4Ts,K8 = 4 D2L4.G10 = 4 L6,G8 = −32 L6R2 
+
+> L
+
+− 24 L3L5R2 
+
+> L
+
++ 8 L4R2,G6 = 64 L6R4 
+
+> L
+
++ 96 L3L5R4 
+
+> L
+
+− 52 L4R4 
+
+> L
+
++ 32 L4R3
+
+> L
+
+R
+
+− 64 L4R2
+
+> L
+
+R2 − 32 L3L3R2
+
+> L
+
+R2 + 4 L2R4,G4 = −8L3LR 2
+
+> L
+
+R4 + 64 L4R6 
+
+> L
+
+− 128 L4R5
+
+> L
+
+R + 128 L4R4
+
+> L
+
+R2
+
++ 48 L3L3R6 
+
+> L
+
+− 96 L3L3R5
+
+> L
+
+R + 128 L3L3R4
+
+> L
+
+R2 − 40 L2R4
+
+> L
+
+R2
+
++ 32 L2R3
+
+> L
+
+R3 − 32 L2R2
+
+> L
+
+R4,G2 = 16 L2R8 
+
+> L
+
+− 64 L2R7
+
+> L
+
+R + 128 L2R6
+
+> L
+
+R2 − 128 L2R5
+
+> L
+
+R3
+
++ 64 L2R4
+
+> L
+
+R4 + 16 L3LR 6
+
+> L
+
+R2 − 32 L3LR 5
+
+> L
+
+R3 + 32 L3LR 4
+
+> L
+
+R4
+
+− 4R4
+
+> L
+
+R4.H10 = −16 L8T 2 
+
+> d
+
+R6 
+
+> L
+
+− 32 L3L7T 2 
+
+> d
+
+RR 5 
+
+> L
+
++ 16 L6T 2 
+
+> d
+
+R2R4
+
+> L
+
+,H8 = 64 L8T 2 
+
+> d
+
+R8 
+
+> L
+
++ 64 L3L7T 2 
+
+> d
+
+R8 
+
+> L
+
+− 160 L6T 2 
+
+> d
+
+RR 7
+
+> L
+
++ 128 L3L7T 2 
+
+> d
+
+RR 7 
+
+> L
+
+− 64 L6T 2 
+
+> d
+
+R2R6 
+
+> L
+
+− 96 L3L5T 2 
+
+> d
+
+R2R6
+
+> L
+
+− 32 L3L5T 2 
+
+> d
+
+R3R5 
+
+> L
+
++ 32 L4T 2 
+
+> d
+
+R4R4
+
+> L
+
+,H6 = 64 L6T 2 
+
+> d
+
+R10  
+
+> L
+
+− 208 L4T 2 
+
+> d
+
+R2R8 
+
+> L
+
+− 192 L3L5T 2 
+
+> d
+
+R2R8
+
+> L
+
++ 256 L3L5T 2 
+
+> d
+
+RR 9 
+
+> L
+
++ 128 L3L5T 2 
+
+> d
+
+R3R7 
+
+> L
+
++ 96 L4T 2 
+
+> d
+
+R3R7
+
+> L
+
+− 96 L4T 2 
+
+> d
+
+R4R6 
+
+> L
+
+− 128 L3L3T 2 
+
+> d
+
+R4R6
+
+> L
+
++ 32 L3L3T 2 
+
+> d
+
+R5R5 
+
+> L
+
++ 16 L2T 2 
+
+> d
+
+R6R4
+
+> L
+
+,H4 = 128 L4T 2 
+
+> d
+
+RR 11  
+
+> L
+
+− 256 L4T 2 
+
+> d
+
+R2R10  
+
+> L
+
++ 192 L3L3T 2 
+
+> d
+
+R2R10 
+
+> L
+
++ 256 L4T 2 
+
+> d
+
+R3R9 
+
+> L
+
+− 256 L3L3T 2 
+
+> d
+
+R3R9 
+
+> L
+
+− 128 L4T 2 
+
+> d
+
+R4R8
+
+> L
+
++ 192 L3L3T 2 
+
+> d
+
+R4R8 
+
+> L
+
+− 224 L2T 2 
+
+> d
+
+R4R8 
+
+> L
+
+− 128 L3L3T 2 
+
+> d
+
+R5R7
+
+> L
+
++ 288 L2T 2 
+
+> d
+
+R5R7 
+
+> L
+
+− 64 L2T 2 
+
+> d
+
+R6R6 
+
+> L
+
+− 32 L3LT 2 
+
+> d
+
+R6R6
+
+> L
+
++ 32 L3LT 2 
+
+> d
+
+R7R5
+
+> L
+
+,H2 = 64 L2T 2 
+
+> d
+
+R2R12  
+
+> L
+
+− 128 L2T 2 
+
+> d
+
+R3R11  
+
+> L
+
++ 64 L2T 2 
+
+> d
+
+R4R10 
+
+> L
+
++ 192 L3LT 2 
+
+> d
+
+R4R10  
+
+> L
+
+− 512 L3LT 2 
+
+> d
+
+R5R9 
+
+> L
+
++ 448 L3LT 2 
+
+> d
+
+R6R8
+
+> L
+
+− 16 T 2 
+
+> d
+
+R6R8 
+
+> L
+
+− 128 L3LT 2 
+
+> d
+
+R7R7 
+
+> L
+
++ 32 T 2 
+
+> d
+
+R7R7 
+
+> L
+
+− 16 T 2 
+
+> d
+
+R8R6
+
+> L
+
+,H0 = 64 T 2 
+
+> d
+
+R4R12  
+
+> L
+
+− 256 T 2 
+
+> d
+
+R5R11  
+
+> L
+
++ 384 T 2 
+
+> d
+
+R6R10 
+
+> L
+
+− 256 T 2 
+
+> d
+
+R7R9 
+
+> L
+
++ 64 T 2 
+
+> d
+
+R8R8
+
+> L
+
+.
+
+REFERENCES Anderson, P.M. and Fouad, A.A. (2008). Power system control and stability . John Wiley & Sons. Bergen, A.R. and Hill, D.J. (2007). A structure preserving model for power system stability analysis. IEEE trans-actions on power apparatus and systems , (1), 25–35. Caliskan, S.Y. and Tabuada, P. (2014). Compositional transient stability analysis of multimachine power net-works. IEEE Transactions on Control of Network sys-tems , 1(1), 4–14. Du, W., Fu, Q., and Wang, a.F. (2019). Power sys-tem small-signal angular stability affected by virtual synchronous generators. IEEE Transactions on Power Systems , 34(4), 3209–3219. Gholami, A. and Sun, X.A. (2020). A fast certificate for power system small-signal stability. In 2020 59th IEEE Conference on Decision and Control (CDC) , 3383–3388. Hirofumi, A., Edson, H.W., and Aredes, M. (2007). In-stantaneous power theory and applications to power conditioning. Hoboken New Jersy: John Willey & Sons Inc. Publications .Leonov Gennady Alexeyevich (2006). Phase synchroniza-tion: Theory and applications. Automation and Remote Control , 67(10), 1573–1609. Ma, R., Li, J., Kurths, J., Cheng, S., and Zhan, M. (2021). Generalized swing equation and transient synchronous stability with PLL-based VSC. IEEE Transactions on Energy Conversion , 37(2), 1428–1441. Machowski, J., Lubosny, Z., Bialek, J.W., and Bumby, J.R. (2020). Power system dynamics: stability and control .John Wiley & Sons. Oh, H. (2019). Analytical solution to swing equations in power grids. Plos one , 14(11), e0225097. Qiu, Q., Ma, R., Kurths, J., and Zhan, M. (2020). Swing equation in power systems: Approximate analytical so-lution and bifurcation curve estimate. Chaos: An Inter-disciplinary Journal of Nonlinear Science , 30(1). Schiffer, J., Zonetti, D., Ortega, R., Stankovi´ c, A.M., Sezi, T., and Raisch, J. (2016). A survey on modeling of microgrids—from fundamental physics to phasors and voltage sources. Automatica , 74, 135–150. Teodorescu, R., Liserre, M., and Rodriguez, P. (2011). 
+
+Grid converters for photovoltaic and wind power sys-tems . John Wiley & Sons. Tokunaga, H. (1991). Triple coverings of algebraic surfaces according to the Cardano formula. Journal of Mathe-matics of Kyoto University , 31(2), 359–375. Trip, S., B¨ urger, M., and De Persis, C. (2016). An internal model approach to (optimal) frequency regulation in power grids with time-varying voltages. Automatica , 64, 240–253. Zhong, Q.C. and Weiss, G. (2010). Synchronverters: Inverters that mimic synchronous generators. IEEE transactions on industrial electronics , 58(4), 1259–1267. Zhou, J. and Ohsawa, Y. (2008). Improved swing equation and its properties in synchronous generators. IEEE Transactions on Circuits and Systems I: Regular Papers ,56(1), 200–209.

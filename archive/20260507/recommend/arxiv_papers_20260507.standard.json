@@ -1,0 +1,197 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-05-07T20:44:17.664087+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 2,
+    "deep_cap": 6,
+    "deep_selected": 2,
+    "quick_candidates": 3,
+    "quick_skim_target": 11,
+    "quick_selected": 3
+  },
+  "deep_dive": [
+    {
+      "id": "2605.05001v1",
+      "title": "Unlocking Embodied Probabilistic Computational Features in Motor Drives",
+      "abstract": "Artificial intelligence (AI)-driven fault diagnosis in motor drives often requires significant computational efforts and time for re-training, in addition to the limited knowledge behind the model and suitability of training and learning mechanisms. This work bridges this gap by proposing a structured mechanism of transforming untapped labeled fault data into AI parameters to leverage probabilistic data-driven learning. This novel AI reservoir modeling framework for power electronics not only eliminates exogenous efforts behind learning data patterns and its optimization, but also provides intuitive guidelines for power electronics engineers behind sizing of AI models. This alignment between data and system physics makes the proposed model transparent and interpretable, bridging practical understanding with data-driven learning. Its computational efficiency is demonstrated using experimental data that structured, physics-aware reservoirs achieve higher diagnostic accuracy and clearer explanations than conventional black-box AI methods.",
+      "authors": [
+        "Subham Sahoo",
+        "Huai Wang",
+        "Frede Blaabjerg"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY"
+      ],
+      "published": "2026-05-06T15:02:08+00:00",
+      "link": "https://arxiv.org/pdf/2605.05001v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "AI-driven fault diagnosis in motor drives and power electronics",
+      "llm_evidence_cn": "电机驱动和电力电子中的AI驱动故障诊断",
+      "llm_evidence": "电机驱动和电力电子中的AI驱动故障诊断",
+      "canonical_evidence": "电机驱动和电力电子中的AI驱动故障诊断",
+      "llm_tldr_en": "Proposes an AI reservoir modeling framework for transparent fault diagnosis in motor drives.",
+      "llm_tldr_cn": "提出了一种用于电机驱动透明故障诊断的AI水库建模框架。",
+      "llm_tldr": "提出了一种用于电机驱动透明故障诊断的AI水库建模框架。",
+      "llm_tags": [
+        "query:pmsm"
+      ],
+      "matched_query_tag": "query:pmsm",
+      "matched_query_text": "fault-tolerant control of multi-phase motors",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2605.04788v1",
+      "title": "Equilibrium points and stability of synchronous machine systems",
+      "abstract": "This paper investigates equilibrium points and stability in two synchronous machine configurations: (i) a single generator with an impedance load and (ii) two interconnected machines with co-located loads. We consider both abc and dq reference frames to show that the equilibrium condition reduces to a cubic polynomial in the single-machine case and to an 18th- degree polynomial in the two-machine case. For the single-machine system, Lyapunov stability analysis and linearization based stability analysis are carried out. For the two-machine system, local stability is assessed through linearization and eigenvalue analysis. Illustrative examples confirm the existence of multiple equilibria and illustrate the impact of parameter variation on stability. Our results provide insight into the stability of synchronous machine systems.",
+      "authors": [
+        "Maryam Khodabakhshloo",
+        "Elizabeth L. Ratnam",
+        "Ian R. Petersen"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY"
+      ],
+      "published": "2026-05-06T11:40:07+00:00",
+      "link": "https://arxiv.org/pdf/2605.04788v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "stability of synchronous machine systems in dq frames",
+      "llm_evidence_cn": "dq坐标系下同步电机系统的稳定性",
+      "llm_evidence": "dq坐标系下同步电机系统的稳定性",
+      "canonical_evidence": "dq坐标系下同步电机系统的稳定性",
+      "llm_tldr_en": "Analyzes equilibrium points and stability of synchronous machines using abc and dq reference frames.",
+      "llm_tldr_cn": "利用abc和dq参考坐标系分析了同步电机系统的平衡点和稳定性。",
+      "llm_tldr": "利用abc和dq参考坐标系分析了同步电机系统的平衡点和稳定性。",
+      "llm_tags": [
+        "query:pmsm:composite"
+      ],
+      "matched_query_tag": "query:pmsm:composite",
+      "matched_query_text": "Papers central to 三相及双三相永磁同步电机相关研究检索, especially work that connects or combines: m; s; f; Permanent Magnet Synchronous Motor research; dual three-phase permanent magnet synchronous motor control and design; fault-tolerant control of multi-phase motors; recent advances in dual three phase permanent magnet synchronous motor control; fault tolerant strategies for multi phase permanent magnet synchronous motors.",
+      "matched_requirement_id": "req-composite-pmsm",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2605.04796v1",
+      "title": "Negative Imaginary and Passivity Properties of Synchronous Machine Systems",
+      "abstract": "The recent rapid proliferation of renewable energy is fundamentally changing the dynamic operations of power systems, necessitating new approaches to assess stability for these highly nonlinear systems. In this paper, we prove that synchronous machine systems, modeled in the nonlinear dq-frame, possess fundamental dissipativity properties. Specifically, we show passivity from current input to voltage output and a nonlinear negative imaginary property from torque input to rotor angle output. For the nonlinear system shifted around an equilibrium point, we derive explicit conditions for both passivity and the NI property to hold. Finally, we demonstrate that interconnection with passive droop controllers preserves these dissipativity properties with identical supply rates, thereby ensuring closed-loop stability.",
+      "authors": [
+        "Maryam Khodabakhshloo",
+        "Elizabeth L. Ratnam",
+        "Ian R. Petersen"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY"
+      ],
+      "published": "2026-05-06T11:47:55+00:00",
+      "link": "https://arxiv.org/pdf/2605.04796v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Synchronous machine systems in nonlinear dq-frame",
+      "llm_evidence_cn": "非线性dq坐标系下的同步电机系统",
+      "llm_evidence": "非线性dq坐标系下的同步电机系统",
+      "canonical_evidence": "非线性dq坐标系下的同步电机系统",
+      "llm_tldr_en": "Proves fundamental dissipativity and passivity properties for synchronous machine systems in dq-frame.",
+      "llm_tldr_cn": "证明了dq坐标系下同步电机系统的基本耗散性和钝感特性。",
+      "llm_tldr": "证明了dq坐标系下同步电机系统的基本耗散性和钝感特性。",
+      "llm_tags": [
+        "query:pmsm"
+      ],
+      "matched_query_tag": "query:pmsm",
+      "matched_query_text": "Permanent Magnet Synchronous Motor research",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2604.28084v1",
+      "title": "Intelligent Self-tuning Active EMI Filtering for Electrified Automotive Power Systems Using Reinforcement Learning",
+      "abstract": "The rapid electrification and intelligence of modern transportation systems place stringent demands on the electromagnetic compatibility, reliability, and adaptability of automotive power electronics. In electric and autonomous vehicles, electromagnetic interference (EMI) generated by high-frequency switching power converters can compromise safety-critical functions, in-vehicle communications, and system efficiency under dynamic operating conditions. Conventional passive EMI filters, while robust, are often oversized and lack adaptability, leading to increased weight, volume, and energy losses. This paper proposes an intelligent self-tuning active EMI filtering approach for electrified automotive power systems based on reinforcement learning (RL). The EMI mitigation problem is formulated as a Markov decision process, enabling an RL agent to continuously adapt filter parameters in response to time-varying interference characteristics. To improve robustness and generalisation under complex and non-stationary conditions, a variational autoencoder is employed for compact state representation, while a noise-based exploration mechanism enhances learning efficiency and prevents suboptimal convergence. The proposed method is evaluated using experimentally measured EMI spectra from an automotive electric drive unit within a MATLAB/Simulink co-simulation framework. Results demonstrate consistent EMI attenuation improvements of 25-30 dB across a wide frequency range compared with conventional control strategies and passive filtering solutions. By reducing reliance on oversized passive components and enabling adaptive EMI suppression, the proposed framework supports lightweight, energy-efficient, and reliable power-electronic systems for intelligent and green transportation applications.",
+      "authors": [
+        "Mahuizi Lu",
+        "Kelin Jia",
+        "Rajib Goswami",
+        "Yukun Hu"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY"
+      ],
+      "published": "2026-04-30T16:30:29+00:00",
+      "link": "https://arxiv.org/pdf/2604.28084v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "active EMI filtering for electrified automotive power systems",
+      "llm_evidence_cn": "电动汽车电源系统的有源EMI滤波",
+      "llm_evidence": "电动汽车电源系统的有源EMI滤波",
+      "canonical_evidence": "电动汽车电源系统的有源EMI滤波",
+      "llm_tldr_en": "Introduces RL-based self-tuning active EMI filters for automotive power electronics.",
+      "llm_tldr_cn": "介绍了用于汽车电力电子设备的基于强化学习的自整定有源EMI滤波器。",
+      "llm_tldr": "介绍了用于汽车电力电子设备的基于强化学习的自整定有源EMI滤波器。",
+      "llm_tags": [
+        "query:pmsm:composite"
+      ],
+      "matched_query_tag": "query:pmsm:composite",
+      "matched_query_text": "Papers central to 三相及双三相永磁同步电机相关研究检索, especially work that connects or combines: m; s; f; Permanent Magnet Synchronous Motor research; dual three-phase permanent magnet synchronous motor control and design; fault-tolerant control of multi-phase motors; recent advances in dual three phase permanent magnet synchronous motor control; fault tolerant strategies for multi phase permanent magnet synchronous motors.",
+      "matched_requirement_id": "req-composite-pmsm",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2605.05032v1",
+      "title": "Quantized Probabilistic AI for Gear Fault Diagnosis in Motor Drives",
+      "abstract": "Deploying large artificial intelligence (AI) models in power electronics often demands high computational resources. Driven by the quantization paradigm, this digest proposes a quantization-aware training (QAT) principle to substantially minimize the number of bits required and simultaneously maximize the accuracy of computations in pre-trained AI models. Considering a pre-trained probabilistic Bayesian Neural Network (BNN) for gear fault diagnosis in motor drives as an example, we quantize its weights and activation functions from floating-point FP32 to low-precision INT8 values, which enhances the computational efficiency by a significant margin of 30-45% (for different model versions) without any compromise in the accuracy and uncertainty estimates. This substantiates a sustainable mechanism of deploying most quantized light-weight AI models into low-cost edge processors for power electronic applications.",
+      "authors": [
+        "Subham Sahoo",
+        "Huai Wang",
+        "Frede Blaabjerg"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY"
+      ],
+      "published": "2026-05-06T15:27:15+00:00",
+      "link": "https://arxiv.org/pdf/2605.05032v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "fault diagnosis in motor drives using AI",
+      "llm_evidence_cn": "电机驱动中的AI故障诊断",
+      "llm_evidence": "电机驱动中的AI故障诊断",
+      "canonical_evidence": "电机驱动中的AI故障诊断",
+      "llm_tldr_en": "Proposes a quantization-aware training method for AI-based gear fault diagnosis in motor drives to improve efficiency.",
+      "llm_tldr_cn": "提出一种用于电机驱动齿轮故障诊断的量化感知训练方法，在不损失精度的前提下提高计算效率。",
+      "llm_tldr": "提出一种用于电机驱动齿轮故障诊断的量化感知训练方法，在不损失精度的前提下提高计算效率。",
+      "llm_tags": [
+        "query:pmsm:composite"
+      ],
+      "matched_query_tag": "query:pmsm:composite",
+      "matched_query_text": "Papers central to 三相及双三相永磁同步电机相关研究检索, especially work that connects or combines: m; s; f; Permanent Magnet Synchronous Motor research; dual three-phase permanent magnet synchronous motor control and design; fault-tolerant control of multi-phase motors; recent advances in dual three phase permanent magnet synchronous motor control; fault tolerant strategies for multi phase permanent magnet synchronous motors.",
+      "matched_requirement_id": "req-composite-pmsm",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}

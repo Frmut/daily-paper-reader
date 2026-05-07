@@ -1,0 +1,357 @@
+Title: Unlocking Embodied Probabilistic Computational Features in Motor Drives
+
+URL Source: https://arxiv.org/pdf/2605.05001v1
+
+Published Time: Thu, 07 May 2026 01:07:10 GMT
+
+Number of Pages: 7
+
+Markdown Content:
+The 2026 International Power Electronics Conference (IPEC-Nagasaki 2026 -ECCE Asia-) 
+
+# Unlocking Embodied Probabilistic Computational Features in Motor Drives 
+
+Subham Sahoo 1*, Huai Wang 1, Frede Blaabjerg 1
+
+1 Department of Energy, Aalborg University, Denmark *email: sssa@energy.aau.dk 
+
+Abstract —Artificial intelligence (AI)-driven fault diagnosis in motor drives often requires significant computational efforts and time for re-training, in addition to the limited knowledge behind the model and suitability of training and learning mechanisms. This work bridges this gap by proposing a structured mechanism of transforming untapped labeled fault data into AI parameters to leverage probabilistic data-driven learning. This novel AI reservoir modeling framework for power electronics not only eliminates exogenous efforts behind learning data patterns and its optimization, but also provides intuitive guidelines for power electronics engineers behind sizing of AI models. This alignment between data and system physics makes the proposed model transparent and interpretable, bridging practical understand-ing with data-driven learning. Its computational efficiency is demonstrated using experimental data that structured, physics-aware reservoirs achieve higher diagnostic accuracy and clearer explanations than conventional black-box AI methods. 
+
+Index Terms —Artificial intelligence, Fault diagnosis, Motor drives. 
+
+I. I NTRODUCTION 
+
+Model based fault detection in motor drives can be an intractable challenge, since heterogeneous degradation of components leads to inaccurate residuals for fault indicator [1], [2]. Hence, artificial intelligence (AI) methods–primarily deep learning (CNNs, LSTMs, Transformers) and hybrid ap-proaches that transform vibration/current/time–frequency sig-nals into image-like representations for end-to-end classifica-tion [3], [4] are increasingly used to provide a structured as-sessment for classification of faults using historic data [5], [6]. However, the lack of scientific knowhow behind suitability of AI training and learning mechanisms, as shown in Fig. 1(a), for different features in the power electronics (PE) dataset is still 
+
+limited . Furthermore, their sensitivity to changing load/speed conditions require multiple sensors and heavy pre-processing, exhibiting limited interpretability [5]. Hence, unstructured data-driven exploration of fault/degradation signatures in PE leads to: 1) Over-confident results: Over-designed AI models may lead to misinterpret/overfitting correlations as causation without proper domain PE knowledge constraints. This usually results in over-confident predictions without any traces of uncertainties. 2) High computations: Regardless of the dataset size, over-designing of AI models often lead to large-scale models, resulting in high computational time and resources [5]. Condition 3 Condition 3 
+
+> Condition 2 Condition 2
+> Target Decision
+> Metrics
+> Condition 1 Condition 1
+> Condition 3 Condition 3
+> Condition 2 Condition 2
+> Condition 1 Condition 1
+> AI Model
+> Sizing
+> Datasets
+> Full Training
+> Lack of clear
+> guidelines
+> Limited know -
+> how in PE
+> Accuracy
+> Uncertainty
+> Interpretability Single Layer
+> Training
+> Custom -PE
+> guidelines
+> Leveraging know -
+> how in PE
+> Probabilistic
+> weights
+> (b) Probabilistic Physics -Aware Modeling
+> Datasets
+> (a) Conventional AI Modeling
+
+Fig. 1. Proposed physics-aware reservoir modeling to bridge the scientific know-how between power electronics (PE) and AI modeling–this circumvents the unclear model sizing and training guidelines for PE applications. 
+
+From a PE perspective, each operating condition of a mo-tor drive—defined by load, speed, and fault state—produces characteristic patterns in measurable signals such as stator currents, torque, and DC-link voltage. Rather than treating these signals as abstract data points, they can be interpreted as realizations of an underlying dynamical system. Over time, these realizations form statistical distributions that capture the intrinsic variability of the system under each fault condition. To bridge this design gap, this paper proposes a novel mechanism that transforms the motor drive fault data into probabilistic weights and biases collected under different load-ing conditions, as shown in Fig. 1(b) – to exploit them as untapped AI model parameters . Since each labeled dataset (fault type, operating condition, etc.) represents a distribution of responses rather than a single point, its empirical histogram can define the probability density for weights connecting fea-tures to that fault condition. For instance, a consistent increase in torque variance under a chipped tooth fault directly encodes a physical relationship between mechanical degradation and electromagnetic response. By mapping these histograms into probabilistic weights, the proposed approach transforms measured system behavior into model parameters without requiring extensive optimization. In this sense, the motor drive itself acts as an embodied computational system , where the dynamics of the physical process define a high-dimensional feature space. The AI model does not learn this space from scratch; instead, it extracts and organizes it into a structured representation. This perspective aligns with reservoir computing principles [8], [9], where (C)2026IEEJ 
+
+> arXiv:2605.05001v1 [eess.SY] 6 May 2026
+
+The 2026 International Power Electronics Conference (IPEC-Nagasaki 2026 -ECCE Asia-)   
+
+> Fig. 2. Experimental testbed with SpectraQuest Gearbox Dynamic Simulator and Danfoss VLT Drive FC-103 for collection of data in Table I. Stator
+> Reactive
+> current (A)
+> Active
+> current (A)
+> DC
+> Voltage
+> (V)
+> Drive
+> Programmable
+> Load (Dynamic
+> Braking)
+
+MMM
+
+> Gearbox
+> Faults
+> Fig. 3. Detailed schematic of Fig. 2 – Layout of Gearbox Dynamic Simulator [15] for collection of different gear fault (re-configurable) data, obtained under different loading conditions.
+
+complex system dynamics are leveraged as a computational resource. However, unlike conventional reservoir approaches that rely on randomly initialized networks, the proposed method constructs the reservoir using physics-aware statistical representations derived directly from measured data. As a result:  
+
+> •
+
+Each weight then represents a statistical confidence in a particular dynamic relationship (e.g., current–torque coupling) observed under that fault.  
+
+> •
+
+When used in a Bayesian or reservoir framework, this provides transparent fault sensitivity, because the model’s uncertainty or activation can be traced back to physical histogram features (e.g., skewness, variance under fault). The inherent fault signatures in motor drive datasets are leveraged to converge with physics-aware training of a single readout layer for fine tuning of their embodied probabilistic dependencies. In this manner, this tailored design mechanism not only reduces the computational efforts and dependence on data science preliminaries, but also bridges the knowledge gap between the modeling of AI in power electronics. II. S YSTEM SPECIFICATIONS 
+
+SpectraQuest’s Gearbox Dynamics Simulator (GDS), shown in Fig. 1, is used to simulate industrial gearboxes and emulate gear faults. More details on this setup can be found in [10]. Gear faults, that typically manifest as cracks on the gear or wear and tear of the gear teeth, were pre-configured for a dynamic brake as programmable load for data collection under different conditions. Hence, the gearbox in Fig. 1 can be easily swapped and reconfigured to the faults in Table I.                
+
+> TABLE I GEAR FAULT DATA PRELIMINARIES
+> Fault Label Fault Intrinsic Data
+> 1Missing tooth Speed 2Chipped tooth Motor Torque 3Root crack DC link voltage 4Surface crack Active stator current 5Eccentricity Reactive stator current
+
+Two types of sensors were used in this project, intrinsic 
+
+(within the drive) and extrinsic (exterior to the drive). The setup in Fig. 2 and 3 was modified with a Danfoss VLT Drive FC-103 to provide the intrinsic measurements listed in Table I, each sampled at a frequency of 5 kHz. On the other hand, a pair of extrinsic orthogonally aligned analogue accelerometers ADXL1001 are mounted on the gearbox. III. I NTEGRATING AI AND PHYSICS IN PE Recent advances in physics-informed AI [11], [12] have demonstrated the potential of combining domain physics in PE with data-driven modeling to improve prediction accuracy and interpretability. Such fusion allows learning architectures to capture nonlinear relations in vibration, current, and torque signatures while constraining the solution space through gov-erning physics. In the Bayesian Neural Network (BNN) shown in Fig. 4(a), probabilistic modeling of weights: 
+
+wi ∼ N (μi, σ 2 
+
+> i
+
+) (1) encodes uncertainty in gear fault prediction [5], while physics-based differentiation regularizes the loss function as: 
+
+LBNN = Ldata + λ ∇θ fphys − gobs 
+
+> 2
+
+, (2) where, fphys denotes the physics-derived response, and gobs the measured behavior. Although effective, this approach requires computationally expensive backpropagation across all layers with limited interpretability. This leads to high training time with lack of comprehensive guideline on optimal sizing of BNNs in line with accuracy guarantees. As shown in Fig. 4(a), the forward and backward pass for optimizing BNN are exten-sively reliant on data science knowledge and methodologies – without any physical reflection on the system data. On the other hand, the proposed reservoir-inspired method 
+
+in Fig. 4(b) restructures this process by transforming gear fault–labeled datasets into empirical histograms conditioned on multiple operating states. Each input vector is mapped through fixed internal dynamics, and only the readout layer re-quires dedicated training efforts. Different from Fig. 4(a), this formulation retains physics fidelity while drastically reducing training complexity. Combined with SHAP explainability-based ranking of important features [13] and their sensitivity, the proposed method achieves high interpretability, enabling transparent, physics-oriented learning for embedded imple-mentations. To facilitate adoption of the proposed framework in PE applications, we summarizes key design guidelines derived from the preceding discussions: (C)2026IEEJ The 2026 International Power Electronics Conference (IPEC-Nagasaki 2026 -ECCE Asia-) Gear fault 
+
+labeled datasets 
+
+> Data science -oriented
+> Physics -informed
+> Forward pass
+> Backward pass
+
+Bayesian Neural Network [5]  
+
+> 16 x 12
+> Random and
+> unstructured
+> 16 x 12
+> Computation
+> heavy
+> Moderate
+> Data science
+> oriented
+> Network Size
+> (Layers x Neurons)
+> Training
+> Interpretability
+> Physics -based
+> differentiation
+
+Condition 3 Condition 3 
+
+Condition 2 Condition 2 
+
+Condition 1 Condition 1 
+
+Condition 2 Condition 2 
+
+Condition 1 Condition 1   
+
+> Forward pass
+> Weights smoothing Readout layer
+> C1 C2
+
+SHAP 
+
+Explainability Feature 
+
+> Sensitivity
+
+Proposed Method     
+
+> Network Size
+> (Layers x Neurons)
+> Training
+> Interpretability
+> 6(Faults + Readout) x
+> 5Features
+> Structured
+> 4Faults x1Readout
+> Light
+> High
+> PE Oriented
+> Probabilistic
+> modeling
+> Conditioning empirical
+> histograms
+> (a)
+> (b)
+> Fig. 4. Comparison between (a) conventional physics-informed Bayesian Neural Networks (BNNs) [5], and (b) the proposed reservoir-inspired approach for fault diagnosis in motor drives–the network size of the proposed method is opportunistically reduced to the number of fault classes.
+
+A. Model Sizing Based on Physical Structure 
+
+Unlike conventional AI models that require heuristic tuning of network depth and width, the proposed approach enables direct sizing of the model based on system characteristics. As illustrated in Fig. 4(b) , the number of reservoir nodes can be aligned with the number of fault classes and dominant features, given by:  
+
+> •
+
+The number of output neurons corresponds to the number of fault categories.  
+
+> •
+
+The number of input connections is determined by the available measurements. This results in a compact architecture with significantly re-duced design complexity. 
+
+B. Feature Selection via Physical Relevance 
+
+The integration of SHAP-based feature ranking, as shown in Fig. 5 , provides a systematic method for selecting the most informative signals. This allows:  
+
+> •
+
+Reduction in sensor count without significant loss in accuracy  
+
+> •
+
+Prioritization of measurements with high diagnostic value 
+
+C. Training Efficiency and Computational Benefits 
+
+A major advantage of the proposed framework is that only the readout layer requires training. This leads to reduced com-putational complexity, faster convergence due to physics-aware initialization and lower memory requirements for embedded implementation. This makes it particularly suitable for real-time diagnostics in industrial drives. IV. P ROBABILISTIC PHYSICS -A WARE LEARNING THEORY FOR DRIVES 
+
+Before formalizing the probabilistic framework, it is im-portant to interpret the role of feature distributions in the context of motor drive physics. Under each fault condition 
+
+k, the measured signals do not converge to a single de-terministic trajectory but instead exhibit variability due to switching dynamics, load fluctuations, and measurement noise. This variability is not merely stochastic noise; it reflects the underlying physics of the system. Consequently, the empirical distribution of a feature x under fault k, denoted as p(x |k) , captures both the dominant system behavior (through its mean) and its uncertainty (through its variance). This statistical paradigm provide an intuitive bridge between physical observations and probabilistic modeling:  
+
+> •
+
+Mean represents the expected system response under a given fault condition.  
+
+> •
+
+Variance quantifies the sensitivity of that response to operating variations. By embedding the abovementioned variables into the prior distribution of model weights, the proposed approach ensures that each parameter encodes physically meaningful informa-tion. This contrasts with conventional neural networks, where weights are initialized randomly and acquire meaning only after extensive training. For comparative evaluation of computational resources, an uncertainty-aware framework using Bayesian Neural Networks (BNNs) in [5] for gear fault diagnosis is considered. Labeled fault datasets collected under distinct operating conditions inherently define condition-dependent feature dis-tributions corresponding to each fault. These empirical distri-butions can serve as probabilistic priors for model weights, allowing the network parameters to embody the physics and variability of the underlying system behind faulty signatures in gears. This transforms purely random initializations into physically meaningful, probabilistic representations that im-prove interpretability. (C)2026IEEJ The 2026 International Power Electronics Conference (IPEC-Nagasaki 2026 -ECCE Asia-) Let each operating condition or fault type k generate a labeled dataset 
+
+Dk = {(xi, y i = k)}nk 
+
+> i=1
+
+(3) where, xi denotes a feature vector extracted from measured intrinsic data in Table I. The empirical histogram of these features under fault k provides an estimate of the conditional probability density: 
+
+ˆp(x | k) = 1
+
+nknkX
+
+> i=1
+
+δ(x − xi) ≈ hk(x) (4) where, hk(x) represents either a normalized histogram or its smoothed kernel density estimate. 
+
+1) Mapping the Dataset Histogram to a Probabilistic Weight Prior: The histogram hk(x) can be interpreted as a 
+
+conditional prior over the connection strengths w that link each feature component to the output neuron representing fault class k. A simple and effective mapping is obtained through moment matching between the measured feature distribution and the prior parameters: 
+
+μk = Ehk [x], (5) 
+
+σ2 
+
+> k
+
+= Var hk [x]. (6) These moments define a Gaussian prior for each weight: 
+
+p(w | k) = N  w; μk, σ 2 
+
+> k
+
++ τ 2 (7) where, τ is a small regularization constant that accounts for measurement noise or modeling error. Each weight’s mean and variance therefore inherit the statistical structure of the measured fault responses. 
+
+A. SHAP-Guided Placement of Probabilistic Weight Layers 
+
+Following the physics-aware initialization of probabilistic weights, SHAP (SHapley Additive exPlanations) analysis was used to rank the influence of individual reservoir nodes on the final fault classification output. Each SHAP value represents the average contribution of a node’s activation to the model de-cision, providing a transparent measure of physical relevance. As shown in Fig. 5, Torque followed by the accelerometers suggests the most important features consistently for each faults. These finalized ranks are then used as a structuring mechanism of the hidden layer placement and dimension as shown in Fig. 6, where the proposed reservoir model transforms input signals into a rich set of temporal features. The only trainable readout layer, introduced in Fig. 6, serves two main purposes:  
+
+> •
+
+To map the dynamic, high-dimensional reservoir states (i.e., activations of the internal reservoir nodes) to the target output.  
+
+> •
+
+To select and combine the most relevant features for final classification. Fault Labels Fault Labels      
+
+> Rank
+> Determination
+> Fault 1
+> Fault 2
+> Fault 3
+> Operating
+> Conditions
+> Rank 1
+> Rank 2
+> Fig. 5. SHAP explanations to rank the important features for gear fault diagnosis–As torque ranks highest in terms of output sensitivity, it features first in reservoir design. .
+> .
+> .
+> .
+> .
+> .Rank 1 Rank 2
+> Readout Layer
+> Testing
+> Data
+> Dropout
+> Optimization
+> Posterior
+> Distribution
+> Metropolis -Hastings
+> Smoothing Fine
+> Tuning
+> (b) (c)
+> Fig. 6. Learning of the readout layer only–this reduces the computational cost, time significantly, and enhances interpretability.
+
+1) Bayesian Readout Training via Bayes-by-Backprop: 
+
+After ranking the reservoir nodes using SHAP values, the probabilistic weight layer was concentrated on the most infor-mative nodes identified in Fig. 4. The subsequent readout layer was trained using the Bayes-by-Backprop (BBB) algorithm [14], which refines the model’s probabilistic representation without altering the fixed or smoothly regularized weights in earlier layers. Training minimizes the variational free energy (evidence lower bound), 
+
+LBBB = Eq(w)[− log p(y | x, w )] + β KL[ q(w) ∥ p(w)] (8) where, q(w) = N (μ, σ 2) is the approximate posterior, p(w)
+
+is the physics-aware prior defined in (7), and β controls the relative weight of the regularization term. The key idea is to make the internal dynamics rich enough to separate and transform the input signals into linearly separable patterns, which the readout layer can easily exploit. Since the proba-bilistic layer already constrains the lower-level weights, BBB primarily smoothens their influence, yielding a compact and interpretable probabilistic readout that condenses the drive’s dynamic behavior into a calibrated fault likelihood. Dropout is implemented via the widely used Metropolis-Hastings algo-rithm [16] to approximate posterior distributions. This stage acts as a rapid evaluation of the maximum likelihood for each hidden neuron in Fig. 6. V. P ERFORMANCE EVALUATION 
+
+As shown in Fig. 7, the reservoir model designed using fault data labeled {1,2,3,4 } (Case 1) is tested on Fault 5 ( unseen 
+
+data), providing a representative test of model robustness under unseen conditions. In Fig. 7(a), the predicted probability (C)2026IEEJ The 2026 International Power Electronics Conference (IPEC-Nagasaki 2026 -ECCE Asia-) (b)     
+
+> Seen Faults
+> Unseen Fault 5
+> (a) (c)
+> (d)
+> (e)
+> (f)
+> Fig. 7. Performance of the proposed reservoir trained on datasets labeled from Fault 1-4 in Table I: (a) Classification accuracy for seen as compared to unseen fault 5, (b) uncertainty plot, (c) without readout layer, (d) with readout layer, (e) interpretability, (f) weight smoothing after training epochs.
+> Fig. 8. (a) Predictive uncertainty and (b) Classification accuracy under con-trolled distribution mismatch. While classification accuracy remains relatively stable, the predictive uncertainty increases with distribution shift, indicating reliable detection of out-of-distribution conditions.
+
+distributions for the seen gear faults are sharply peaked around their true classes, indicating confident and well-calibrated recognition of Fault 2 during testing. In contrast, when the unseen fault (Fault 5) is tested, it produces a broader and lower probability response, reflecting the model’s awareness of uncertainty. This confirms that the physics-aware probabilis-tic initialization and Bayesian readout prevent overconfident predictions on untrained/unseen conditions. Furthermore, Fig. 7(b) decomposes the total predictive uncertainty into aleatoric and epistemic components. The clear rise in epistemic un-certainty for out-of-distribution samples demonstrates that the reservoir effectively encodes the unseen Fault 5. Fig. 7(c) and (d) compare the classification performance of the proposed reservoir model without and with the Bayesian readout layer for the four seen fault cases. Without the readout layer, the probability distributions are dispersed across mul-tiple fault classes, showing overlapping confidence and poor class separation. This indicates that the unrefined reservoir ac-tivations capture the temporal dynamics but lack a condensed probabilistic representation. When the Bayesian readout layer is introduced in Fig. 7(d), the class probabilities become sharply peaked around their respective fault types, with minimal overlap between distributions. This demonstrates that the readout effectively condenses the reservoir’s rich dynamics into well-calibrated fault likelihoods, improving both accuracy and interpretability. Fig. 6(e) visualizes the uncertainty distribution of the prob-abilistic weights across neuron classes and layers. The marker size denotes the relative magnitude of each weight, while the color scale represents its associated uncertainty. This layer-wise map allows design engineers to interpret which connections (and fault data) dominate the decision process and how uncertainty is distributed across the customized model. Fig. 7(f) tracks the evolution of a representative probabilistic weight w52 during training. The progressive narrowing of its probability density for the highest deviating item in Fig. 7(e) demonstrates minimal weight smoothening efforts achieved through Bayesian optimization. As training proceeds, the variance decreases while the mean stabilizes, signifying con-vergence toward a physically meaningful and well-calibrated weight. The results in Fig. 8(b) illustrate the behavior of the (C)2026IEEJ The 2026 International Power Electronics Conference (IPEC-Nagasaki 2026 -ECCE Asia-) 
+
+TABLE II QUALITATIVE COMPARISON OF AI-B ASED DIAGNOSIS FOR POWER 
+
+ELECTRONICS 
+
+Method Training Effort Interpretability PE Alignment CNN/LSTM ++ – –BNN ++ + +
+
+Proposed – ++ ++ Notation: ++ (High), + (Moderate), – (Low) 
+
+proposed probabilistic framework under controlled distribution mismatch between training and testing data. As the distribution shift level increases, the classification accuracy exhibits only a gradual decline, indicating that the model retains robust fault discrimination capabilities despite moderate variations in operating conditions. More importantly, the predictive un-certainty in Fig. 8(a) shows a consistent upward trend with increasing mismatch. This behavior reflects the model’s ability to recognize deviations from learned distributions, thereby avoiding overconfident predictions under unseen or out-of-distribution scenarios. Hence, it can be concluded that the proposed approach not only generalizes well but also provides a reliable measure of confidence aligned with the underlying physical variability in the system. The comparative summary in Table II highlights conven-tional deep learning approaches such as CNNs and LSTMs rely on extensive training and large-scale parameter opti-mization, which often results in limited interpretability and weak alignment with the underlying physical system. While Bayesian Neural Networks (BNNs) introduce uncertainty quantification, they still depend on computationally intensive backpropagation across multiple layers [5] and require careful tuning of model architecture. In contrast, the proposed physics-aware reservoir framework significantly reduces training effort by embedding system knowledge directly into probabilistic weight initialization derived from empirical feature distri-butions. This results in a compact model where only the readout layer is optimized, leading to lower computational cost and faster deployment. More importantly, the direct linkage between statistical features and physical behavior enables high interpretability, allowing engineers to trace model decisions back to measurable system dynamics and achieving a stronger alignment with power electronic principles. VI. C ONCLUSION 
+
+This paper introduced a physics-aware probabilistic reser-voir modeling framework for motor drive fault diagno-sis, where labeled datasets are transformed into statistically grounded model parameters. By mapping empirical feature distributions into probabilistic weights, the proposed method eliminates the need for extensive training while preserving interpretability. The key contributions of this work can be summarized as follows:  
+
+> •
+
+A novel mechanism to convert power electronic system data into probabilistic AI parameters  
+
+> •
+
+A structured reservoir-inspired architecture with minimal training requirements  
+
+> •
+
+Integration of SHAP-based feature ranking for physically interpretable model design  
+
+> •
+
+Demonstration of improved uncertainty awareness and robustness under unseen fault conditions The results confirm that the proposed approach not only re-duces computational complexity but also provides transparent insights into the relationship between system dynamics and fault signatures. Future work will focus on extending this framework to a broader class of power electronic applications. ACKNOWLEDGMENT 
+
+This work is supported by Innovation Fund Denmark un-der the Project of Artificial Intelligence for Next-Generation Power Electronics (AI-Power). REFERENCES [1] Y. Liao and Y. Zhang, ”Rethinking Model-Based Fault Detection: Uncertainties, Risks, and Optimization Based on a Multilevel Converter Case Study,” IEEE Trans. Power Electron. , vol. 39, no. 11, pp. 14229-14239, Nov. 2024. [2] F. Rojas, C. Jerez, C. M. Hack, O. Kalmbach, J. Pereda, and J. Lillo, “Faults in modular multilevel cascade converters—Part II: Fault tolerance, fault detection & diagnosis and system reconfiguration,” IEEE Open J. Ind. Electron. , vol. 3, pp. 594–614, Oct. 2022. [3] Y. Wang, J. Zhou, L. Zheng, L., & C. Gogu, “An end-to-end fault diagnostics method based on convolutional neural network for rotating machinery with multiple case studies,” Journ. Intel. Manufact. , vol. 33. no. 3, pp. 809-830, 2022. [4] W. Lang, Y. Hu, C. Gong, X. Zhang, H. Xu, and J. Deng, ”Artificial intelligence-based technique for fault detection and diagnosis of EV motors: A review,” IEEE Trans. Trans. Elect. , vol. 8, no. 1, pp. 384-406, 2021. [5] S. Sahoo, H. Wang, and F. Blaabjerg, “Uncertainty-aware artificial intelligence for gear fault diagnosis in motor drives,” 2025 IEEE Applied Power Electronics Conference and Exposition (APEC) , pp. 912–918, 2025. [6] L. Kou, C. Liu, G.-w. Cai, and Z. Zhang, “Fault diagnosis for power electronics converters based on deep feedforward network and wavelet compression,” Electric Power Systems Research , vol. 185, p. 106370, 2020. [7] G. Li, J. Wu, C. Deng, Z. Chen, and X. Shao, ”Convolutional neural network-based Bayesian Gaussian mixture for intelligent fault diagnosis of rotating machinery,” IEEE Trans. Instr. and Meas. , vol. 70, pp. 1-10, 2021. [8] M. Yan, C. Huang, P. Bienstman, P. Tino, W. Lin, and J. Sun, “Emerging opportunities and challenges for the future of reservoir computing,” 
+
+Nature Communications , vol. 15, no. 1, pp. 2056, 2024. [9] D. J. Gauthier, E. Bollt, A. Griffith, and W. A. Barbosa, “Next generation reservoir computing,” Nature communications , vol. 12, no. 1, pp. 5564, 2021. [10] A. Biswas, “Intelligent motor fault detection ”, Master’s thesis , Univer-sity of South Denmark, 2023. [11] S. Sahoo, “Physics-informed neural network-based control of power electronic converters,” Control of Power Electronic Converters and Systems , pp. 309-331, 2024. [12] S. Zhao, Y. Peng, Y. Zhang and H. Wang, ”Parameter Estimation of Power Electronic Converters With Physics-Informed Machine Learning,” 
+
+IEEE Trans. Power Electron. , vol. 37, no. 10, pp. 11567-11578, Oct. 2022. [13] A. Beattie, P. Mulinka, S. Sahoo, I. Christou, C. Kalalas, D. Gutierrez-Rojas, & P. Nardelli, “A robust and explainable data-driven anomaly detection approach for power electronics,” 2022 IEEE International Conference on Communications, Control, and Computing Technologies for Smart Grids (SmartGridComm) , pp. 296-301, 2022. [14] D. J. MacKay, “A practical bayesian framework for backpropagation networks,” Neural computation , vol. 4, no. 3, pp. 448–472, 1992. 
+
+(C)2026IEEJ The 2026 International Power Electronics Conference (IPEC-Nagasaki 2026 -ECCE Asia-) 
+
+[15] [Online] SpectraQuest gearbox dynamics simulator,” https://spectraquest.com/gearbox-dynamics-simulator/, accessed: 2025-11-03. [16] J. Mena, O. Pujol, and J. Vitria, “A survey on uncertainty estimation in deep learning classification systems from a bayesian perspective,” ACM Computing Surveys (CSUR) , vol. 54, no. 9, pp. 1–35, 2021. 
+
+(C)2026IEEJ

@@ -1,0 +1,79 @@
+{
+  "label": "2026-05-07",
+  "date": "2026-05-07",
+  "generated_at": "2026-05-07T20:45:17",
+  "count": 5,
+  "papers": [
+    {
+      "paper_id": "202605/07/2605.05001v1-unlocking-embodied-probabilistic-computational-features-in-motor-drives",
+      "section": "deep",
+      "title_en": "Unlocking Embodied Probabilistic Computational Features in Motor Drives",
+      "authors": "Subham Sahoo, Huai Wang, Frede Blaabjerg",
+      "date": "2026-05-06",
+      "pdf": "https://arxiv.org/pdf/2605.05001v1",
+      "score": "9.0",
+      "evidence": "电机驱动和电力电子中的AI驱动故障诊断",
+      "tldr": "本研究针对电机驱动故障诊断中AI模型计算量大、重训练耗时及缺乏可解释性等问题，提出了一种将故障数据转化为AI参数的结构化概率学习机制。该方法构建了物理感知的储备池计算框架，消除了传统学习过程中的复杂优化，为电力电子工程师提供了模型设计的直观指导。实验证明，该模型在提高诊断准确性的同时，实现了物理一致性与透明度，显著优于传统黑盒AI方法。",
+      "tags": "query:pmsm",
+      "abstract_en": "Artificial intelligence (AI)-driven fault diagnosis in motor drives often requires significant computational efforts and time for re-training, in addition to the limited knowledge behind the model and suitability of training and learning mechanisms. This work bridges this gap by proposing a structured mechanism of transforming untapped labeled fault data into AI parameters to leverage probabilistic data-driven learning. This novel AI reservoir modeling framework for power electronics not only eliminates exogenous efforts behind learning data patterns and its optimization, but also provides intuitive guidelines for power electronics engineers behind sizing of AI models. This alignment between data and system physics makes the proposed model transparent and interpretable, bridging practical understanding with data-driven learning. Its computational efficiency is demonstrated using experimental data that structured, physics-aware reservoirs achieve higher diagnostic accuracy and clearer explanations than conventional black-box AI methods.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202605/07/2605.04788v1-equilibrium-points-and-stability-of-synchronous-machine-systems",
+      "section": "deep",
+      "title_en": "Equilibrium points and stability of synchronous machine systems",
+      "authors": "Maryam Khodabakhshloo, Elizabeth L. Ratnam, Ian R. Petersen",
+      "date": "2026-05-06",
+      "pdf": "https://arxiv.org/pdf/2605.04788v1",
+      "score": "8.0",
+      "evidence": "dq坐标系下同步电机系统的稳定性",
+      "tldr": "本研究探讨了同步电机系统在单机带阻抗负载及两机互联两种配置下的平衡点与稳定性。通过在abc和dq坐标系下的建模，研究发现单机系统的平衡条件可简化为三次多项式，而两机系统则为18次多项式。利用李雅普诺夫函数和线性化方法分析了稳定性，揭示了多重平衡点的存在及其受参数变化的影响，为同步电机系统的稳定性分析提供了理论见解。",
+      "tags": "query:pmsm",
+      "abstract_en": "This paper investigates equilibrium points and stability in two synchronous machine configurations: (i) a single generator with an impedance load and (ii) two interconnected machines with co-located loads. We consider both abc and dq reference frames to show that the equilibrium condition reduces to a cubic polynomial in the single-machine case and to an 18th- degree polynomial in the two-machine case. For the single-machine system, Lyapunov stability analysis and linearization based stability analysis are carried out. For the two-machine system, local stability is assessed through linearization and eigenvalue analysis. Illustrative examples confirm the existence of multiple equilibria and illustrate the impact of parameter variation on stability. Our results provide insight into the stability of synchronous machine systems.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202605/07/2605.04796v1-negative-imaginary-and-passivity-properties-of-synchronous-machine-systems",
+      "section": "quick",
+      "title_en": "Negative Imaginary and Passivity Properties of Synchronous Machine Systems",
+      "authors": "Maryam Khodabakhshloo, Elizabeth L. Ratnam, Ian R. Petersen",
+      "date": "2026-05-06",
+      "pdf": "https://arxiv.org/pdf/2605.04796v1",
+      "score": "7.0",
+      "evidence": "非线性dq坐标系下的同步电机系统",
+      "tldr": "针对可再生能源接入导致的电力系统非线性稳定性问题，本文研究了非线性dq坐标系下同步电机的耗散特性。研究证明了系统在电流-电压输入输出下具有钝感性，在转矩-转子角下具有非线性负虚特性，并给出了平衡点附近的显式成立条件。此外，证明了与下垂控制器的互连能保持这些特性，从而确保了闭环系统的稳定性。",
+      "tags": "query:pmsm",
+      "abstract_en": "The recent rapid proliferation of renewable energy is fundamentally changing the dynamic operations of power systems, necessitating new approaches to assess stability for these highly nonlinear systems. In this paper, we prove that synchronous machine systems, modeled in the nonlinear dq-frame, possess fundamental dissipativity properties. Specifically, we show passivity from current input to voltage output and a nonlinear negative imaginary property from torque input to rotor angle output. For the nonlinear system shifted around an equilibrium point, we derive explicit conditions for both passivity and the NI property to hold. Finally, we demonstrate that interconnection with passive droop controllers preserves these dissipativity properties with identical supply rates, thereby ensuring closed-loop stability.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202605/07/2605.05032v1-quantized-probabilistic-ai-for-gear-fault-diagnosis-in-motor-drives",
+      "section": "quick",
+      "title_en": "Quantized Probabilistic AI for Gear Fault Diagnosis in Motor Drives",
+      "authors": "Subham Sahoo, Huai Wang, Frede Blaabjerg",
+      "date": "2026-05-06",
+      "pdf": "https://arxiv.org/pdf/2605.05032v1",
+      "score": "7.0",
+      "evidence": "电机驱动中的AI故障诊断",
+      "tldr": "针对电力电子领域中大型AI模型计算资源消耗大的问题，本文提出了一种量化感知训练（QAT）原则，并以电机驱动齿轮故障诊断的贝叶斯神经网络（BNN）为例，将模型从FP32量化至INT8。该方法在保持诊断准确性和不确定性估计的同时，显著提升了30-45%的计算效率，为在低成本边缘处理器上部署轻量化AI模型提供了可持续方案。",
+      "tags": "query:pmsm",
+      "abstract_en": "Deploying large artificial intelligence (AI) models in power electronics often demands high computational resources. Driven by the quantization paradigm, this digest proposes a quantization-aware training (QAT) principle to substantially minimize the number of bits required and simultaneously maximize the accuracy of computations in pre-trained AI models. Considering a pre-trained probabilistic Bayesian Neural Network (BNN) for gear fault diagnosis in motor drives as an example, we quantize its weights and activation functions from floating-point FP32 to low-precision INT8 values, which enhances the computational efficiency by a significant margin of 30-45% (for different model versions) without any compromise in the accuracy and uncertainty estimates. This substantiates a sustainable mechanism of deploying most quantized light-weight AI models into low-cost edge processors for power electronic applications.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202605/07/2604.28084v1-intelligent-self-tuning-active-emi-filtering-for-electrified-automotive-power-systems-using-reinforcement-learning",
+      "section": "quick",
+      "title_en": "Intelligent Self-tuning Active EMI Filtering for Electrified Automotive Power Systems Using Reinforcement Learning",
+      "authors": "Mahuizi Lu, Kelin Jia, Rajib Goswami, Yukun Hu",
+      "date": "2026-04-30",
+      "pdf": "https://arxiv.org/pdf/2604.28084v1",
+      "score": "6.0",
+      "evidence": "电动汽车电源系统的有源EMI滤波",
+      "tldr": "针对电动汽车电力电子系统中的电磁干扰（EMI）问题，本文提出一种基于强化学习（RL）的智能自整定有源EMI滤波方法。该方法将EMI抑制建模为马尔可夫决策过程，利用变分自编码器（VAE）提取状态特征，并结合噪声探索机制优化滤波参数。实验结果表明，该方法在动态工况下能显著提升滤波性能，相比传统方案可实现25-30 dB的额外衰减，为实现轻量化、高效且可靠的车载电力系统提供了新思路。",
+      "tags": "query:pmsm",
+      "abstract_en": "The rapid electrification and intelligence of modern transportation systems place stringent demands on the electromagnetic compatibility, reliability, and adaptability of automotive power electronics. In electric and autonomous vehicles, electromagnetic interference (EMI) generated by high-frequency switching power converters can compromise safety-critical functions, in-vehicle communications, and system efficiency under dynamic operating conditions. Conventional passive EMI filters, while robust, are often oversized and lack adaptability, leading to increased weight, volume, and energy losses. This paper proposes an intelligent self-tuning active EMI filtering approach for electrified automotive power systems based on reinforcement learning (RL). The EMI mitigation problem is formulated as a Markov decision process, enabling an RL agent to continuously adapt filter parameters in response to time-varying interference characteristics. To improve robustness and generalisation under complex and non-stationary conditions, a variational autoencoder is employed for compact state representation, while a noise-based exploration mechanism enhances learning efficiency and prevents suboptimal convergence. The proposed method is evaluated using experimentally measured EMI spectra from an automotive electric drive unit within a MATLAB/Simulink co-simulation framework. Results demonstrate consistent EMI attenuation improvements of 25-30 dB across a wide frequency range compared with conventional control strategies and passive filtering solutions. By reducing reliance on oversized passive components and enabling adaptive EMI suppression, the proposed framework supports lightweight, energy-efficient, and reliable power-electronic systems for intelligent and green transportation applications.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
