@@ -1,0 +1,56 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-05-08T20:40:14.490149+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 1,
+    "quick_skim_target": 11,
+    "quick_selected": 1
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2605.05853v1",
+      "title": "Investigation of Wound Field Synchronous Machines using Soft Magnetic Composites for Automotive Applications",
+      "abstract": "This paper investigates the application of soft magnetic composites (SMCs) in the stators of wound field synchronous machines for automotive traction. While SMCs are traditionally employed in axial flux topologies, this study examines their use in radial-flux electrically excited synchronous machines (EESMs). Multiple SMC materials and lamination thicknesses are evaluated, with the optimal configuration combining a SMC material in the stator and 0.35 mm NO35 laminated steel in the rotor. This combination delivers improved torque and efficiency compared to conventional designs. When integrated into a full electric drive unit (EDU), this motor achieves 89.7% efficiency over the WLTP drive cycle, representing a 1.4 percentage point improvement over a reference permanent magnet synchronous machine-based EDU. The proposed solution eliminates rare-earth materials, reduces cost through thicker laminations, and offers environmental benefits through SMC utilization. This novel material combination, previously unexplored for radial EESMs, presents a promising direction for affordable, high-efficiency, rare-earth-free automotive traction machines.",
+      "authors": [
+        "Andreas Carlsson",
+        "Christian Sandström",
+        "Viktor Josefsson",
+        "Lisa Kjellén",
+        "Taha El Hajji",
+        "Marcus Lenberg"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY"
+      ],
+      "published": "2026-05-07T08:25:42+00:00",
+      "link": "https://arxiv.org/pdf/2605.05853v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "synchronous machines for automotive traction",
+      "llm_evidence_cn": "用于汽车牵引的同步电机",
+      "llm_evidence": "用于汽车牵引的同步电机",
+      "canonical_evidence": "用于汽车牵引的同步电机",
+      "llm_tldr_en": "Investigates wound field synchronous machines using soft magnetic composites for automotive use.",
+      "llm_tldr_cn": "研究了在汽车牵引中使用软磁复合材料的励磁同步电机。",
+      "llm_tldr": "研究了在汽车牵引中使用软磁复合材料的励磁同步电机。",
+      "llm_tags": [
+        "query:pmsm"
+      ],
+      "matched_query_tag": "query:pmsm",
+      "matched_query_text": "Permanent Magnet Synchronous Motor research",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}

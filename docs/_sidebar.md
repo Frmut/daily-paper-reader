@@ -1,6 +1,9 @@
 * <a class="dpr-sidebar-root-link" href="#/">首页</a>
 * <a class="dpr-sidebar-root-link dpr-sidebar-noactive-link" href="javascript:void(0)" data-dpr-hash="#/tutorial/README">使用教程</a>
 * Daily Papers
+  * 2026-05-08 <!--dpr-date:20260508-->
+    * 速读区
+      * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202605/08/2605.05853v1-investigation-of-wound-field-synchronous-machines-using-soft-magnetic-composites-for-automotive-applications" data-sidebar-item="{&quot;title&quot;: &quot;Investigation of Wound Field Synchronous Machines using Soft Magnetic Composites for Automotive Applications&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2605.05853v1-investigation-of-wound-field-synchronous-machines-using-soft-magnetic-composites-for-automotive-applications&quot;, &quot;score&quot;: &quot;7.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;pmsm&quot;}], &quot;evidence&quot;: &quot;用于汽车牵引的同步电机&quot;}">Investigation of Wound Field Synchronous Machines using Soft Magnetic Composites for Automotive Applications</a>
   * 2026-05-07 <!--dpr-date:20260507-->
     * 精读区
       * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202605/07/2605.05001v1-unlocking-embodied-probabilistic-computational-features-in-motor-drives" data-sidebar-item="{&quot;title&quot;: &quot;Unlocking Embodied Probabilistic Computational Features in Motor Drives&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2605.05001v1-unlocking-embodied-probabilistic-computational-features-in-motor-drives&quot;, &quot;score&quot;: &quot;9.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;pmsm&quot;}], &quot;evidence&quot;: &quot;电机驱动和电力电子中的AI驱动故障诊断&quot;}">Unlocking Embodied Probabilistic Computational Features in Motor Drives</a>

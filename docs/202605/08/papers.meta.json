@@ -1,0 +1,23 @@
+{
+  "label": "2026-05-08",
+  "date": "2026-05-08",
+  "generated_at": "2026-05-08T20:40:46",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202605/08/2605.05853v1-investigation-of-wound-field-synchronous-machines-using-soft-magnetic-composites-for-automotive-applications",
+      "section": "quick",
+      "title_en": "Investigation of Wound Field Synchronous Machines using Soft Magnetic Composites for Automotive Applications",
+      "authors": "Andreas Carlsson, Christian Sandström, Viktor Josefsson, Lisa Kjellén, Taha El Hajji, Marcus Lenberg",
+      "date": "2026-05-07",
+      "pdf": "https://arxiv.org/pdf/2605.05853v1",
+      "score": "7.0",
+      "evidence": "用于汽车牵引的同步电机",
+      "tldr": "本研究探讨了软磁复合材料（SMC）在汽车牵引电机——径向磁通电励磁同步电机（EESM）定子中的应用。通过对比多种SMC材料与叠钢片厚度，提出了一种定子采用SMC、转子采用0.35mm硅钢片的优化组合方案。该设计不仅消除了对稀土材料的依赖，还显著提升了扭矩和效率，在WLTP工况下效率达89.7%，优于传统永磁同步电机，为低成本、高性能的绿色汽车驱动提供了新方向。",
+      "tags": "query:pmsm",
+      "abstract_en": "This paper investigates the application of soft magnetic composites (SMCs) in the stators of wound field synchronous machines for automotive traction. While SMCs are traditionally employed in axial flux topologies, this study examines their use in radial-flux electrically excited synchronous machines (EESMs). Multiple SMC materials and lamination thicknesses are evaluated, with the optimal configuration combining a SMC material in the stator and 0.35 mm NO35 laminated steel in the rotor. This combination delivers improved torque and efficiency compared to conventional designs. When integrated into a full electric drive unit (EDU), this motor achieves 89.7% efficiency over the WLTP drive cycle, representing a 1.4 percentage point improvement over a reference permanent magnet synchronous machine-based EDU. The proposed solution eliminates rare-earth materials, reduces cost through thicker laminations, and offers environmental benefits through SMC utilization. This novel material combination, previously unexplored for radial EESMs, presents a promising direction for affordable, high-efficiency, rare-earth-free automotive traction machines.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
