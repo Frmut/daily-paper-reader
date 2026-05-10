@@ -1,0 +1,2735 @@
+Title: Calculating Domain of Attraction Boundary of Power Systems Based on the Gentlest Ascent Dynamics
+
+URL Source: https://arxiv.org/pdf/2605.04197v1
+
+Published Time: Thu, 07 May 2026 00:06:59 GMT
+
+Number of Pages: 34
+
+Markdown Content:
+# Calculating Domain of Attraction Boundary of Power Systems Based on the Gentlest Ascent Dynamics 
+
+Sixu Wu ∗1 , Chenmin Zhang †2 , Aiqing Zhu ‡1 , Yang Liu §2 , Jianxi Lin ¶3 and Yifa Tang ‖∗∗1,4 
+
+> 1
+
+State Key Laboratory of Mathematical Sciences, Academy of Mathematics and Systems Science, Chinese Academy of Sciences, Beijing 100190, China 
+
+> 2
+
+School of Electric Power Engineering, South China University of Technology, Guangzhou 510640, China 
+
+> 3
+
+Energy Development Research Institute, China Southern Power Grid, Guangzhou 510530, China 
+
+> 4
+
+School of Mathematical Sciences, University of Chinese Academy of Sciences, Beijing 100049, China 
+
+Abstract 
+
+The power system, a fundamental public utility, is increasingly important due to growing global electricity demand. Recent large-scale blackouts (e.g., Iberian Peninsula, UK) have raised concerns about transient stability under impact faults. Transient stability is determined by post-disturbance synchronizing capability of synchronous generators, formulated as identifying the domain of attraction (DOA) boundary of the asymptotically stable equilibrium. Using a benchmark model of synchronous-generator-dominated power systems, this report employs a gentlest as-cent dynamics (GAD) method for 1-saddle points, an adjoint operator method for periodic orbits, and stable manifold algorithms to compute the DOA boundary. These algorithms transform DOA boundary determination into constructing unsta-ble critical elements (saddle points and periodic orbits) and their stable manifolds. Theoretically, under certain assumptions we prove that the DOA boundary is the closure of the union of stable manifolds of index-1 critical elements, and establish a stability theory for a perturbed GAD system. Numerical experiments on two-machine and three-machine systems (with only saddle points or with periodic orbits) validate the effectiveness and accuracy. Results show the algorithms accurately cap-ture the geometric structure of the DOA boundary, providing a new numerical tool 
+
+> ∗
+
+lucaswu@amss.ac.cn 
+
+> †
+
+202510183372@mail.scut.edu.cn 
+
+> ‡
+
+zaq@lsec.cc.ac.cn 
+
+> §
+
+epyangliu@scut.edu.cn 
+
+> ¶
+
+linjianxi@csg.cn 
+
+> ‖
+
+tyf@lsec.cc.ac.cn 
+
+> ∗∗
+
+corresponding author 
+
+1 
+
+> arXiv:2605.04197v1 [math.DS] 5 May 2026 for transient stability analysis.
+> Keywords: Synchronous generator systems, Domain of attraction boundary, Gen-tlest ascent dynamics, Adjoint operator method, Stable manifold, Periodic orbit, Geometric algorithm
+
+# 1 Introduction 
+
+Transient stability of the power system is a major concern in electrical engineering, i.e., whether a stably operating power system can reach a new steady state after experiencing an unstable transient process caused by the tripping of generators, transmission lines, or a large amount of loads in a fault event. Transient stability depends on both the initial state of the system and the post-disturbance state. An usual method is to determine, through numerical simulation, whether a system subject to a specific disturbance from a given initial state can reach a new stable state — a time-domain simulation approach. From a different perspective, one may find all states that evolve to a given stable state of a power system, i.e., finding the analytical description for the boundary of the domain of attraction of its stable equilibrium point — the direct method. Current direct methods for solving domains of attraction often provide a conservative estimate of the true domain of attraction, such as Lyapunov function methods [1, 2, 3, 4, 5], energy function methods [6, 7, 8], SOS programming-based methods [9, 10, 11], etc; these approaches also suffer from high computational cost and slow speed. Therefore this paper applies the theory mentioned above to transform the exact determination of the power system domain of attraction boundary into the problem of solving for the unstable equilibrium points of the system and their stable manifolds. In fact, after proposing the theory, [12, 13] also gave a brute-force search method for numerically solving unstable equilibrium points, but such an approach is clearly impractical for higher-dimensional power systems. In view of this, this paper applies for the first time the gentlest ascent dynamics method (GAD) for solving 1-saddle points from [14] to the numerical computation of the domain of attraction boundary of power systems, achieving results far faster than the brute-force search method. In addition, this paper uses a descent method based on the adjoint operator [15] to numerically solve unstable periodic orbits on the domain of attraction boundary and constructs a perturbed gentlest ascent dynamics method for computing the stable manifolds of periodic orbits. Numerical experiments validate the effectiveness of these methods. 
+
+# 2 Synchronous Generators-based Multi-Machine Power Sys-tems 
+
+Consider a multi-machine power system consists of n + 1 synchronous generators, each abstractly simplified as a rotating mass. Thus, it can be described by n + 1 angles and the corresponding n + 1 angular velocities. In engineering practice, one generator is often chosen as the reference machine, and the differences in angle and angular velocity of the other generators with respect to it are of interest, thereby reducing the system to 22n dimensions. Under the electromechanical transient model, the system is governed by the following dynamics [16] 
+
+
+
+˙δ1 = ω1
+
+. . . 
+
+˙δn = ωn
+
+˙ω1 = πf n
+
+H1
+
+(Pm1 − Pe1 (δ)) − D1
+
+2H1
+
+ω1
+
+. . . 
+
+˙ωn = πf n
+
+Hn
+
+(Pmn − Pen(δ)) − Dn
+
+2Hn
+
+ωn.
+
+(2.1) Here δ = ( δ1, . . . , δ n)⊤ and ω = ( ω1, . . . , ω n)⊤ denote the relative angles and angular velocities, respectively. The constant fn > 0 represents the nominal frequency of the system in Hz, Hi > 0 is the inertia time constant of the i-th generator in seconds, 
+
+Di ≥ 0 is the friction coefficient of the i-th generator, and Pmi is the mechanical power of the i-th generator. The variable Pei is the electromagnetic output power of the i-th generator, given by 
+
+Pei =
+
+> n+1
+
+∑
+
+> j=1
+
+EiEj (Gij cos( δi − δj ) + Bij sin( δi − δj )) , ∀1 ≤ i ≤ n
+
+where δn+1 = 0 is the reference machine angle, the constant Ei > 0 is the internal voltage of the i-th generator, the constant Gij ∈ R represents the reduced network conductance between generators i and j, and the constant Bij ∈ R is the reduced network susceptance between generators i and j, with both matrices G and B symmetric. It is easy to see that one equilibrium point of system (2.1) is δ = ω = 0 ; this is because the original system has been translated in variables for computational conve-nience. Under actual operating conditions, the parameters are chosen so that δ = ω = 0 
+
+becomes an asymptotically stable equilibrium point of (2.1). Moreover, Di/H i reflects the relative relationship between the damping intensity and the inertia magnitude of the i-th generator rotor; when the generators operate under similar conditions, this ra-tio is nearly constant. Therefore, we assume there exists a constant η > 0 such that 
+
+η = Di/(2 Hi) for all 1 ≤ i ≤ n. Under this assumption, it has been proved [16] that the 
+
+k-saddles of system (2.1) correspond exactly to the k-saddles of the reduced system 
+
+
+
+˙δ1 = πf n
+
+H1
+
+(Pm1 − Pe1 (δ)) 
+
+. . . 
+
+˙δn = πf n
+
+Hn
+
+(Pmn − Pen(δ)) 
+
+(2.2) i.e., (δ∗, 0) is a k-saddle of (2.1) if and only if δ∗ is a k-saddle of (2.2). Furthermore, it is easy to see that the eigen-directions of (δ∗, 0) are completely determined by those 3of δ∗. Indeed, let J be the Jacobian matrix of (2.2) at δ∗, and let (2.1) have the left eigen-direction (0 J⊤
+
+I −η
+
+) ( ξw
+
+)
+
+= μ
+
+( ξw
+
+)
+
+, (2.3) then J⊤w = μ(η + μ)w and ξ = ( η + μ)w, so w is a left eigen-direction of (2.2) with respect to μ(η + μ). Conversely, suppose Jw = λw , choose μ ∈ C satisfying μ(η + μ) = λ
+
+and set ξ = ( η + μ)w, then (2.3) also holds. Thus, if δ∗ is a 1-saddle of the reduced system, the tangent spaces of the stable manifolds of the original and reduced systems satisfy 
+
+T(δ∗,0) W s(δ∗, 0) = 
+
+((η + μ)ww
+
+)⊥
+
+This shows that understanding the boundary of the region of attraction for the reduced system at δ = 0 will greatly enhance our understanding of the boundary of the region of attraction for the original system at δ = ω = 0 . Moreover, numerical experiments have shown [16] that for small n, the critical clearing time of the reduced system is close to that of the original system. Based on these two reasons, this chapter focuses on the numerical computation of the boundary of the region of attraction for the reduced system (2.2) at the asymptotically stable 1 equilibrium point δ = 0 .
+
+# 3 Stable Manifolds and the Domain of Attraction Bound-ary 
+
+Under certain hyperbolicity and transversality conditions, the domain of attraction boundary is precisely the union of the stable manifolds of the unstable equilibrium points and unstable periodic orbits on it — a geometric phenomenon first proposed by Chiang Hsiao-Dong in his 1988 paper [17], later corrected by Michael W. Fisher et al., who identified a flaw in the lemma and strengthened the conditions while preserving the conclusion [18, 19]. This section briefly presents the corrected version, which will serve as the fundamental assumption for the numerical examples that follow. If p is an equilibrium point, the set 
+
+W s(p) := 
+
+{
+
+x ∈ Rn : lim  
+
+> t→+∞
+
+φ(t, x ) = p
+
+}
+
+is called the stable manifold of p. The tangent space of the stable manifold has the following properties. Suppose p is a hyperbolic k-saddle point. For s1 + 2 s2 = n − k,
+
+λ1, . . . , λ s1 < 0,μ1, μ 1, . . . , μ s2 , μ s2 ∈ C − R
+
+are all eigenvalues of Df (p) with negative real parts, with corresponding eigenvectors 
+
+Df (p)ui = λiui, ui ∈ Rn − 0, ∀1 ≤ i ≤ s1,
+
+> 1Both systems are assumed to be hyperbolic.
+
+4Df (p)vj = μj vj , vj ∈ Cn − Rn, ∀1 ≤ j ≤ s2.
+
+For k1 + 2 k2 = k,
+
+α1, . . . , α k1 > 0,β1, β 1, . . . , β k2 , β k2 ∈ C − R
+
+are all eigenvalues of Df (p) with positive real parts, with corresponding eigenvectors 
+
+Df (p)wi = αiwi, wi ∈ Rn − 0, ∀1 ≤ i ≤ k1,Df (p)ξj = βj ξj , ξj ∈ Cn − Rn, ∀1 ≤ j ≤ k2.
+
+Then there exists an (n−k)-dimensional differentially embedded submanifold S ⊂ Rn
+
+such that p ∈ S,
+
+TpS = span {u1, . . . , u s1 , Re v1, Im v1, . . . , Re vs2 , . . . , Im vs2 } ,
+
+and for any t ≥ 0, φ(t, S ) ⊂ S,
+
+lim  
+
+> s→+∞
+
+φ(s, q ) = p, ∀q ∈ S. 
+
+Similarly, there exists a k-dimensional differentially embedded submanifold U ⊂ Rn
+
+such that p ∈ U ,
+
+TpU = span {w1, . . . , w k1 , Re ξ1, Im ξ1, . . . , Re ξk2 , . . . , Im ξk2 } .
+
+and for any t ≤ 0, φ(t, U ) ⊂ U ,
+
+lim  
+
+> s→−∞
+
+φ(s, q ) = p, ∀q ∈ U. 
+
+Here span denotes the real vector space spanned by the vectors. Michael W. Fisher et al. showed that under the following assumptions, the domain of attraction boundary of an asymptotically stable equilibrium point is formed by the stable manifolds of the critical elements on it [19]. 
+
+A1 There exists an open neighborhood N of ∂A(p) and a natural number k such that 
+
+Ω( f ) ∩ N = {Xi : 1 ≤ i ≤ k} ,
+
+where Xi are critical elements. 
+
+A2 For any q ∈ ∂A(p), its forward time flow {φ(t, q ) : t ≥ 0} is bounded. 
+
+A3 All critical elements on ∂A(p) are hyperbolic, where critical elements refer only to saddle points and periodic orbits. 
+
+A4 For any two critical elements Yi, Y j (possibly the same) on ∂A(p), the stable man-ifold W s (Yi) and the unstable manifold W u (Yj ) intersect transversely. 5Transverse intersection is defined as follows. Let M be a smooth manifold, S1, S 2 ⊂ M
+
+two immersed submanifolds, and i1 : S1 ↪→ M, i 2 : S2 ↪→ M the inclusion maps. S1 and 
+
+S2 are said to intersect transversely at p ∈ S1 ∩ S2 if the tangent spaces satisfy 
+
+(i1)∗ (TpS1) + ( i2)∗ (TpS2) = TpM, 
+
+where (i1)∗ (TpS1) denotes the image of TpS1 in TpM . If they intersect transversely at every p ∈ S1 ∩ S2, then S1 and S2 are said to intersect transversely. Systems satisfying assumptions A1 –A4 have the following property [19]. 
+
+Theorem 3.1. Let M be a compact Riemannian manifold or Euclidean space Rn, f acomplete C1 vector field on it, and p a stable equilibrium point of f . If A1 –A4 hold, then 
+
+∂A(p) = ⋃
+
+> i∈I
+
+W s (Yi) ,
+
+where {Yi : i ∈ I} are all critical elements on ∂A(p).
+
+From Theorem 3.1, computing the domain of attraction boundary reduces to com-puting the stable manifolds of all (hyperbolic) critical elements on it. Moreover the stable manifold of a critical element with index k, as an immersed submanifold of Rn,has dimension n − k. Intuitively, similar to the relationship between a plane and a line, the highest-dimensional manifold will occupy the entire area (measure), while lower-dimensional manifolds have measure zero; therefore, it suffices to compute only the sta-ble manifolds of critical elements with index 1. Below we introduce a new assumption 
+
+A5 and prove that under this assumption, the above intuition holds topologically. 
+
+A5 There exists a homeomorphism h : Rn → Rn such that M := h(∂A (p)) is an 
+
+(n − 1) -dimensional embedded submanifold of Rn and for every critical element Yi
+
+on ∂A(p),
+
+Mi := h (W s (Yi)) 
+
+is still an immersed submanifold of Rn of the same dimension as W s (Yi).To prove Theorem 3.2, we need some preliminaries on null sets in manifolds. A subset A
+
+of Rn is called a null set if it is Lebesgue measurable and its Lebesgue measure is zero. Equivalently, for any  > 0, there exist countably many open rectangles whose union contains A and the sum of their volumes is less than . A subset S of an n-dimensional manifold M is called a null set if for every chart (U, ϕ ) of M , ϕ(S ∩ U ) is a null set in 
+
+Rn. It is easy to see that a countable union of null sets in a manifold is again a null set. 
+
+Theorem 3.2. With the same notation as in Theorem 3.1 and assuming conditions 
+
+A1 –A5 hold, then 2
+
+∂A(p) = cl 
+
+ ⋃
+
+> i∈I1
+
+W s (Yi)
+
+ ,             
+
+> 2In this paper, cl ( A)denotes the closure of A, and Adenotes the set {z:z∈A}. When using the latter, it is assumed that A⊂C.
+
+6where I1 = {i ∈ I : Yi has index 1}. That is, ∂A(p) is the closure in Rn of the union of the stable manifolds of the critical elements with index 1 on it. Proof. Suppose not. Then there exists an open set U in the subspace topology of ∂A(p)
+
+induced from Rn such that 
+
+U ∩ ⋃
+
+> i∈I1
+
+W s (Yi) = ∅,
+
+hence by Theorem 3.1, 
+
+U = ⋃
+
+> i∈I−I1
+
+U ∩ W s (Yi) .
+
+Since h is a homeomorphism, 
+
+h(U ) = ⋃
+
+> i∈I−I1
+
+h(U ) ∩ Mi.
+
+is an open set in M := ∂A(p) with the subspace topology from Rn, where Mi := 
+
+h (W s (Yi)) .On one hand, by assumption A5 , M is an embedded submanifold of Rn, so the subspace topology induced from Rn coincides with the manifold topology of M . There-fore, there exists a chart (V, ψ ) such that V ⊂ h(U ). Since ψ(V ) has positive Lebesgue measure in Rn−1, h(U ) is not a null set. On the other hand, by assumption A5 , Mi is an immersed submanifold of Rn and therefore also an immersed submanifold of M . When i / ∈ I1, dim Mi < n − 1, so by Corollary 6.11 of [20], Mi is a null set. Consequently, h(U ) ∩ Mi is also a null set. Since 
+
+h(U ) is the union of finitely many null sets, it is also a null set, a contradiction. 
+
+# 4 Numerical Algorithms for the Domain of Attraction Bound-ary 
+
+4.1 1-Saddle Points and Their Stable Manifolds 
+
+To solve for a 1-saddle point of the system ˙x = f (x), intuitively, if we reverse the component in the direction of the eigenvector corresponding to the eigenvalue with the largest real part at each point of Rn while keeping the components in other directions un-changed, then, since the eigen-direction corresponding to the largest real part eigenvalue is precisely the unique unstable direction of a 1-saddle point, one might expect that the 1-saddle point of f becomes a stable equilibrium point of the transformed new system, having only stable directions. However, this is not feasible because if we could compute the above quantities at each point, we would have already computed all equilibrium points and their indices. This is the basic idea of the GAD method in [14] proposed by Weinan E et al. The key is that the direction of the eigenvector corresponding to the largest real part eigenvalue 7does not need to be directly computed; instead, it should automatically “flow out” over time, which requires the augmented system 
+
+˙x = f (x) − 2 ⟨f (x), w ⟩⟨w, v ⟩ · v
+
+˙v = Df (x)v − α(x, v ) · v
+
+˙w = Df (x)⊤w − β(x, v, w ) · w, 
+
+(4.1) where x, v, w : R → Rn, ⟨· , ·⟩ is the standard inner product, and 
+
+α(x, v ) = ⟨v, Df (x)v⟩ ,β(x, v, w ) = 2 ⟨w, Df (x)v⟩ − α(x, v ). (4.2) We have the following theorem [14]. 
+
+Theorem 4.1. Assume p is a 1-saddle point of the system ˙x = f (x), Df (p) has n
+
+distinct eigenvalues λ1, . . . , λ n ∈ C with 
+
+λ1 > 0 > Re λi, ∀i ≥ 2,
+
+and vectors v1, w 1 ∈ Rn − 0 are the eigenvectors of Df (p) and Df (p)⊤ corresponding to 
+
+λ1, respectively, satisfying ⟨v1, v 1⟩ = ⟨v1, w 1⟩ = 1 . Then (p, v 1, w 1) is an asymptotically stable equilibrium point of system (4.1) .Conversely, assume (p, v ∗, w ∗) is a stable equilibrium point of system (4.1) (hence 
+
+p, v ∗, w ∗ are all real vectors) satisfying ⟨v∗, v ∗⟩ = ⟨v∗, w ∗⟩ = 1 . Also assume Df (p) has 
+
+n distinct eigenvalues λ1, . . . , λ n ∈ C with non-zero real parts. Then, after appropriate ordering, 
+
+λ1 > 0 > Re λi, ∀i ≥ 2,
+
+and Df (p)v∗ = λ1v∗, Df (p)⊤w∗ = λ1w∗.
+
+Hence the tangent space of the stable manifold at p is 
+
+TpW s(p) = span {Re vi, Im vi : i > 1} = span {w1}⊥ ,
+
+i.e., the orthogonal complement of w1 in Rn.Based on this, the numerical algorithm used in this paper to compute 1-saddle points and their stable manifolds is: 
+
+4.2 Periodic Orbit Localization Algorithm 
+
+Unlike 1-saddle points, which only require computing their position and unstable eigendi-rection, a periodic orbit of index one also requires computing its period T . Therefore, this paper adopts a two-step approach to numerically solve for periodic orbits: the first step is to compute the period and the positions of points on it, and the second step is to compute its unstable eigendirection using the GAD method similar to that of the 8Table 1: GAD algorithm for 1-saddle points and stable manifolds. 
+
+S1 Take several points appropriately on a small sphere ∂B (x∗, δ ) centered at the asymptotically stable equilibrium point x∗. Integrate along the reversed vector field −f for a long time starting from these points, and denote the endpoints as x1, . . . , x m.
+
+S2 For each xi, appropriately select initial unit directions v0 
+
+> i
+
+, w 0 
+
+> i
+
+(e.g., v0 
+
+> i
+
+=
+
+w0 
+
+> i
+
+= ( xi − x∗)/∥xi − x∗∥). Integrate along the vector field (4.1) for a long time, and denote the converged endpoints as (pj , v j , w j ).
+
+S3 Remove duplicates from all (pj , v j , w j ). For each j, uniformly sample points 
+
+ξj, 1, . . . , ξ j,N on ∂B (0 , δ ) ∩ w⊥ 
+
+> j
+
+.
+
+S4 For each j and 1 ≤ k ≤ N , integrate along the vector field f starting from 
+
+pj + ξj,k until convergence. 
+
+S5 Observe whether the integral curves in S4 enclose x∗. If not, repeat step 
+
+S1 .previous subsection. This subsection introduces the adjoint operator method [15] used for the first step, which can transform a periodic orbit of any index into a local minimum point of a numerical algorithm without requiring foreseeing the period. A smooth map x : R → Rn is a T -periodic orbit if 
+
+f (x) − ω dx dτ = 0 ,
+
+where ω := 1 /T is the frequency and τ := ωt is the scaled time parameter. Denote the extended variable X := ( x; ω). The goal of the numerical algorithm is to minimize the residual 
+
+J[X] := ⟨r[X], r [X]⟩ =
+
+∫ 10
+
+(
+
+f (x) − ω dx dτ 
+
+)2
+
+dτ, 
+
+where 
+
+r[X] = r
+
+(
+
+X, dX dτ 
+
+)
+
+=
+
+(
+
+f (x) − ω dx dτ 
+
+0
+
+)
+
+.
+
+Introducing an artificial evolution time s, i.e., x = x(s, τ ), ω = ω(s), and assuming the evolution equation for x is ∂X ∂s (s, τ ) = g[X]( s, τ ),
+
+then dJ [X]
+
+ds = 2 
+
+〈 ∂∂s r
+
+(
+
+X, ∂X ∂τ 
+
+)
+
+, r 
+
+〉
+
+= 2 ⟨A(X, g ), r ⟩ ,
+
+9where the directional derivative A(X, g ) is 
+
+A(X, Y ) := dd 
+
+∣∣∣∣ϵ=0 
+
+r[X + g ] = 
+
+(
+
+Df (x)y1 − y2
+
+∂x ∂τ − ω ∂y 1
+
+∂τ 
+
+0
+
+)
+
+,
+
+for any Y = ( y1; y2), y 1 ∈ Rn, y 2 ∈ R. Note that A(X, Y ) is a linear operator in Y , so there exists an adjoint operator A∗(X, ·) satisfying 
+
+⟨A(X, Y ), Z ⟩ = ⟨Y, A ∗(X, Z )⟩ , ∀Z =
+
+(z1
+
+z2
+
+)
+
+∈ Rn × R.
+
+In fact, 
+
+⟨A(X, Y ), Z ⟩ =
+
+∫ 10
+
+(
+
+Df (x)y1 − y2
+
+∂x ∂τ − ω ∂y 1
+
+∂τ 
+
+)
+
+· z1 dτ 
+
+=
+
+∫ 10
+
+(
+
+Df (x)⊤z1 + ω ∂z 1
+
+∂τ 
+
+)
+
+· y1 dτ 
+
+− y2
+
+∫ 10
+
+∂x ∂τ · z1 dτ 
+
+thus 
+
+A∗(X, Z ) = 
+
+
+
+Df (x)⊤z1 + ω ∂z 1
+
+∂τ 
+
+−
+
+∫ 10
+
+∂x ∂τ · z1 dτ 
+
+ .
+
+Then we have dJ [X]
+
+dτ = 2 ⟨A(X, g ), r ⟩ = 2 ⟨g, A ∗(X, r )⟩ .
+
+Choose 
+
+g[X] := −A∗(X, r ) = 
+
+
+
+−Df (x)⊤f (x) + ω (Df (x)⊤ − Df (x)) ∂x ∂τ + ω2 ∂2x∂τ 2
+
+∮
+
+f (x) · dx − ω
+
+∫ 10
+
+( ∂x ∂τ 
+
+)2
+
+dτ 
+
+ ,
+
+where the loop integral is taken around x itself, then dJ/dτ = −2∥g∥2 ≤ 0.Taking the normalized time τ = t/T and a truncated Fourier expansion 
+
+x(s, τ ) = a0(s)2 +
+
+> N
+
+∑
+
+> k=1
+
+(ak(s) cos(2 πkτ ) + bk(s) sin(2 πkτ )) .
+
+Fix m ≥ 1, denote τj = j/m, x j = x(s, τ j ), f j = f (xj ) and 
+
+Df j = Df (xj ), Pj = −Df ⊤ 
+
+> j
+
+fj + ω(Df ⊤ 
+
+> j
+
+− Df j ) ∂τ xj ,
+
+10 then the coefficients and frequency satisfy the equations 
+
+da 0
+
+ds = 2
+
+m
+
+> m−1
+
+∑
+
+> j=0
+
+Pj ,da k
+
+ds = 2
+
+m
+
+> m−1
+
+∑
+
+> j=0
+
+Pj cos(2 πkτ j ) − ω2(2 πk )2ak,db k
+
+ds = 2
+
+m
+
+> m−1
+
+∑
+
+> j=0
+
+Pj sin(2 πkτ j ) − ω2(2 πk )2bk,dω ds = 1
+
+m
+
+> m−1
+
+∑
+
+> j=0
+
+fj · ∂τ xj − ω
+
+2
+
+> N
+
+∑
+
+> k=1
+
+(2 πk )2(a2 
+
+> k
+
++ b2
+
+> k
+
+).
+
+(4.3) Based on this, the numerical algorithm for locating periodic orbits used in this paper is: Table 2: Periodic orbit localization algorithm. 
+
+S1 Guess the initial frequency ω0 and initial shape coefficients a0
+
+> k
+
+, b 0 
+
+> k
+
+of the periodic orbit. 
+
+S2 Starting from the initial values a0
+
+> k
+
+, b 0
+
+> k
+
+, ω 0, integrate along the vector field (4.3) for a long time and observe convergence. If not, repeat step S1 .
+
+4.3 Numerical Algorithm for the Stable Manifold of a Periodic Orbit with One Unstable Direction 
+
+Using the algorithm from the previous subsection, assume we have already located the 
+
+T -periodic orbit γ with index 1. This subsection uses the GAD method to compute its stable manifold. To reduce the dimension of the subsequent sampling algorithm, we introduce a simplified version of the GAD method [21]. Consider the two augmented systems derived from ˙x = f (x):
+
+˙x = f (x) − 2 ⟨f (x), v ⟩⟨v, v ⟩ · v (4.4a) 
+
+˙v = Df (x)v − ⟨ v, Df (x)v⟩ · v (4.4b) and 
+
+˙x = f (x) − 2 ⟨f (x), w ⟩⟨w, w ⟩ · w (4.5a) 
+
+˙w = Df (x)⊤w −
+
+〈
+
+w, Df (x)⊤w
+
+〉
+
+· w (4.5b) 11 Similar to the previous section, under the assumptions of Theorem 4.1, it is easy to prove that the point p is a 1-saddle point of f and v1, w 1 are the left and right eigenvectors of the Jacobian matrix Df (p) corresponding to the eigenvalue λ1 > 0 if and only if 
+
+(p, v 1) and (p, w 1) are asymptotically stable equilibrium points of (4.4b) and (4.5b), respectively. Now we attempt to apply the simplified GAD to compute the stable manifold of a periodic orbit. The periodic orbit is an equilibrium point of the evolution equation 
+
+∂x (s, t )
+
+∂s = f (x(s, t )) − ∂x (s, t )
+
+∂t , x(s, t ) = x(s, t + T )
+
+where s is the artificial evolution time. Assuming the periodic orbit γ has exactly one unstable eigendirection, then formally, the linearized operator L0 (corresponding to the Jacobian matrix Df (x) in (4.4b)) and its adjoint L∗ 
+
+> 0
+
+(corresponding to Df (x)⊤ in (4.5b)) at the periodic orbit γ are respectively 
+
+L0v : = dd 
+
+∣∣∣∣ϵ=0 
+
+f (γ + v ) − df (γ + v )
+
+dt 
+
+= Df (γ)v − dv dt .
+
+and 
+
+L∗
+
+> 0
+
+w = Df (γ)⊤w + dw dt .
+
+The latter is obtained by noting the definition of the adjoint operator 
+
+∫ T
+
+> 0
+
+v · L∗
+
+> 0
+
+w dt =
+
+∫ T
+
+> 0
+
+L0v · w dt 
+
+=
+
+∫ T
+
+> 0
+
+(
+
+Df (γ)v − dv dt 
+
+)
+
+· w dt 
+
+=
+
+∫ T
+
+> 0
+
+v ·
+
+(
+
+Df (γ)⊤w + dw dt 
+
+)
+
+dt, 
+
+where v, w are T -periodic functions. Just as analyzing the stability of equilibrium points of real-coefficient ordinary dif-ferential equations requires considering the complex eigenvalues of the Jacobian matrix, we first need to complexify the system and the operators. Let the Hilbert space be 
+
+H = L2 ((0 , T ), Cn) ,
+
+where T = R/(T Z) is the circle of circumference T , equipped with the standard inner product ⟨· , ·⟩ and the complex bilinear form ⟨⟨· , ·⟩⟩ ⟨u, v ⟩ =
+
+∫ T
+
+> 0
+
+⟨u(t), v (t)⟩ dt =
+
+∫ T
+
+> 0
+
+u(t) · v(t) dt, 
+
+12 ⟨⟨ u, v ⟩⟩ =
+
+∫ T
+
+> 0
+
+⟨⟨ u(t), v (t)⟩⟩ dt =
+
+∫ T
+
+> 0
+
+u(t) · v(t) dt. 
+
+The domains of the linear operators L0, L ∗ 
+
+> 0
+
+are the periodic Sobolev spaces 
+
+D (L0) = D (L∗
+
+> 0
+
+) = H1
+
+> per
+
+((0 , T ), Cn)= {v ∈ H : weak derivative v′ ∈ H, v (0) = v(T )}.
+
+For any v, w ∈ D (L0), we have ⟨v, w ′⟩ = − ⟨ v′, w ⟩ and ⟨⟨ v, w ′⟩⟩ = −⟨⟨ v′, w ⟩⟩ , hence 
+
+⟨⟨ v, v ′⟩⟩ = 0 .It is easy to verify that after complexification, the expression for L∗ 
+
+> 0
+
+remains un-changed, while (4.4b) and (4.5b) correspond respectively to 
+
+∂v (s, t )
+
+∂s = F [v] : = L0v − ⟨⟨ v, L 0v⟩⟩ · v
+
+= L0v − ⟨⟨ v, Df (γ)v⟩⟩ · v
+
+(4.6) and ∂w (s, t )
+
+∂s = F ∗[w] : = L∗
+
+> 0
+
+w − ⟨⟨ w, L ∗
+
+> 0
+
+w⟩⟩ · w
+
+= L∗
+
+> 0
+
+w − ⟨⟨ w, Df (γ)w⟩⟩ · w. 
+
+(4.7) Since the periodic orbit γ itself has already been computed, we only need to compute 
+
+v or w. This section will show that the stable equilibrium point v of (4.6) is precisely the unstable eigendirection of γ. Similarly, the stable equilibrium point w of (4.7) is the adjoint unstable eigendirection of γ.To facilitate energy estimates, we introduce a new Hilbert inner product on the whole 
+
+H that is equivalent to the original one, such that {ηα} becomes an orthonormal basis. Specifically, {ηα} forms a Riesz basis for H, so there exists a linear homeomorphism 
+
+U : H → H mapping some orthonormal basis {eα} to {ηα}. Define 
+
+⟨u, v ⟩∗ := 〈U −1u, U −1v〉 , ∀u, v ∈ H. 
+
+Then ⟨· , ·⟩ ∗ is an inner product on H and is equivalent to the original inner product. Under this new inner product, 
+
+⟨ηα, η β ⟩∗ = ⟨eα, e β ⟩ = δαβ ,
+
+i.e., {ηα} is an orthonormal basis. Consequently, X and Y , as closed subspaces spanned by certain ηα, are orthogonal to each other. Let u = x + y with x ∈ X, y ∈ Y ; then 
+
+⟨u, u ⟩∗ = ⟨x, x ⟩∗ + ⟨y, y ⟩∗ ≥ ⟨ x, x ⟩∗.For any x = ∑ 
+
+> α∈Λ0
+
+bαηα ∈ X ∩ D(Lj ), we have Lj x = ∑ 
+
+> α∈Λ0
+
+bακαηα. Hence 
+
+⟨x, L j x⟩∗ = ∑
+
+> α∈Λ0
+
+κα · | bα|2,
+
+13 and taking the real part yields 
+
+Re ⟨x, L j x⟩∗ = λ0
+
+∑
+
+> α∈Λ0
+
+|bα|2 = λ0∥x∥2
+
+> ∗
+
+. (4.8) Similarly, for any y = ∑ 
+
+> α∈Λ1
+
+cαηα ∈ Y ∩ D(Lj ), we have Lj y = ∑ 
+
+> α∈Λ1
+
+cακαηα. Thus 
+
+⟨y, L j y⟩∗ = ∑
+
+> α∈Λ1
+
+κα · | cα|2,
+
+and taking the real part gives 
+
+Re ⟨y, L j y⟩∗ = ∑
+
+> α∈Λ1
+
+Re κα|cα|2 ≤ (λ0 − δ) · ∥ y∥2
+
+> ∗
+
+. (4.9) Take the perturbation u(s) = v(s) − vj , where v ∈ D(L0) satisfies (4.6). Then u satisfies 
+
+du ds = Lj u + R[u], (4.10) where the remainder R[u] is given by 
+
+R[u] = F [vj + u] − Lj u
+
+= −⟨⟨ vj , L 0u⟩⟩ u − λj ⟨⟨ u, v j ⟩⟩ u
+
+− ⟨⟨ u, Df (γ)u⟩⟩ vj − ⟨⟨ u, Df (γ)u⟩⟩ u
+
+= −⟨⟨ Df (γ)⊤vj + v′ 
+
+> j
+
+, u ⟩⟩ u − λj ⟨⟨ u, v j ⟩⟩ u
+
+− ⟨⟨ u, Df (γ)u⟩⟩ vj − ⟨⟨ u, Df (γ)u⟩⟩ u. 
+
+Let h = Df (γ)⊤vj + v′ 
+
+> j
+
+and C = max t∈[0 ,T ] ∥Df (γ(t)) ∥H . Then we have the estimate 
+
+∥R[u]∥H ≤ (∥h∥H + |λj | + C)∥u∥2 
+
+> H
+
++ C∥u∥3 
+
+> H
+
+.
+
+Thus there exists a constant K > 0 such that when ∥u∥H ≤ 1,
+
+∥R[u]∥H ≤ K∥u∥2 
+
+> H
+
+.
+
+Since ∥ · ∥ ∗ is equivalent to ∥ · ∥ H , there exists a constant c > 0 such that 
+
+c∥u∥H ≤ ∥ u∥∗ ≤ c−1∥u∥H . (4.11) Therefore, when ∥u∥∗ ≤ c, we have ∥R[u]∥∗ ≤ c−3K∥u∥2
+
+> ∗
+
+, which we denote simply as 
+
+∥R[u]∥∗ ≤ K∥u∥2
+
+> ∗
+
+.Let x = PX u, y = ( I − PX )u. Applying PX to both sides of (4.10) yields 
+
+
+
+dx ds = Lj x + PX R[x + y],dy ds = Lj y + ( I − PX )R[x + y].
+
+Clearly ∥PX ∥∗ = ∥I − PX ∥∗ = 1 , so when ∥x + y∥∗ ≤ c,
+
+∥PX R[x + y]∥∗ ≤ K(∥x∥2 
+
+> ∗
+
++ ∥y∥2
+
+> ∗
+
+),
+
+∥(I − PX )R[x + y]∥∗ ≤ K(∥x∥2 
+
+> ∗
+
++ ∥y∥2
+
+> ∗
+
+). (4.12) 14 Theorem 4.2. The stable real unit eigendirection vj of the periodic orbit γ is an unstable equilibrium point of the GAD system (4.6) , and the adjoint stable real unit eigendirection 
+
+wj of γ is an unstable equilibrium point of the GAD system (4.7) .Proof. Clearly F [vj ] = 0 . Assume vj is stable. Choose 
+
+η = min 
+
+{
+
+c, λ0
+
+4K , δ
+
+4K
+
+}
+
+> 0,
+
+where the constant c > 0 satisfies (4.11), so that for any ∥u∥∗ < c , ∥R[u]∥∗ ≤ K∥u∥2
+
+> ∗
+
+.Note that 0 < δ < λ 0/2, hence η = min {c, δ/ (4 K)} > 0. Then there exists 0 <  < η 
+
+such that when ∥u0∥∗ ≤ , the solution u(s) exists for all s ≥ 0 and satisfies ∥u(s)∥∗ < η .Note that λ0 = max {λ1 − λj , −2λj } > 0 is an eigenvalue of Lj . Choose φ ∈ X to be a unit real eigenvector for λ0. Take the initial perturbation u0 = φ . Then the stability condition holds. Thus ∥x(s)∥∗ ≤ ∥ u(s)∥∗ < η for all s ≥ 0.Let a(s) = ∥x(s)∥∗, b(s) = ∥y(s)∥∗, and define the set 
+
+S = {s ≥ 0 : b(τ ) ≤ η−1a2(τ ), ∀τ ∈ [0 , s ]} .
+
+Since y(0) = 0 , x(0) = φ , and by continuity, 0 ∈ S, so s0 := sup S > 0.
+
+Step 1. s0 is finite. By the definition of S, on [0 , s 0) we have b ≤ η−1a2. Combined with the stability assumption a < η , we have b ≤ a. Hence for any s ∈ [0 , s 0),
+
+da 2
+
+ds = 2 Re 
+
+〈
+
+x, dx ds 
+
+〉
+
+> ∗
+
+= 2 Re ⟨x, L j x⟩∗ + 2 Re ⟨x, P X R[x + y]⟩∗
+
+≥ 2 Re ⟨x, L j x⟩∗ − 2 |⟨ x, P X R[x + y]⟩∗|≥ 2λ0a2 − 2aK (a2 + b2)
+
+≥ 2λ0a2 − 4Ka 3,
+
+where the second inequality follows from (4.8) and (4.12), noting that ∥x + y∥∗ < η ≤ c.Since a < η ≤ λ0/(4 K), we have 4Ka 3 ≤ λ0a2, so 
+
+da 2
+
+ds ≥ λ0a2, ∀s ∈ [0 , s 0),
+
+thus 
+
+a(s) ≥  exp 
+
+( λ0s
+
+2
+
+)
+
+, ∀s ∈ [0 , s 0).
+
+By continuity, 
+
+s0 ≤ 2
+
+λ0
+
+ln 
+
+( η
+
+)
+
+In particular, a is positive on [0 , s 0]. This shows that a is at most non-differentiable at 
+
+s = 0 , so da ds ≥ λ0
+
+2 a, a.e. s ∈ [0 , s 0). (4.13) 15 Step 2. Derive a contradiction. Since s0 is finite, by the definition of s0 and continuity, we must have b(s0) = η−1a2(s0). Similarly, for all s ∈ [0 , s 0),
+
+db 2
+
+ds = 2 Re 
+
+〈
+
+y, dy ds 
+
+〉
+
+> ∗
+
+= 2 Re ⟨y, L j y⟩∗ + 2 Re ⟨y, (I − PX )R[x + y]⟩∗
+
+≤ 2 Re ⟨y, L j y⟩∗ + 2 |⟨ y, P X R[x + y]⟩∗|≤ 2( λ0 − δ)b2 + 2 bK (a2 + b2)
+
+≤ 2( λ0 − δ)b2 + 4 Ka 2b, 
+
+where the second inequality follows from (4.9) and (4.12). Since y ∈ C1([0 , +∞), H ), for 
+
+0 ≤ s1 < s 2,
+
+|b(s1) − b(s2)| = ∣∣∥y(s1)∥∗ − ∥ y(s2)∥∗
+
+∣∣
+
+≤ ∥ y(s1) − y(s2)∥∗
+
+≤ max 
+
+> s∈[s1,s 2]
+
+∥∥∥∥
+
+dy ds 
+
+∥∥∥∥∗
+
+· | s1 − s2|,
+
+so b is locally Lipschitz, hence differentiable almost everywhere. At points of differen-tiability where b(s) > 0, we have 
+
+db ds ≤ (λ0 − δ)b + 2 Ka 2, a.e. s ∈ [0 , s 0), (4.14) and at points where b(s) = 0 , b′(s) = 0 , so the inequality also holds. Let 
+
+r(s) = b(s)
+
+a2(s) , ∀s ∈ [0 , s 0],
+
+Since b is locally Lipschitz and a ≥ , r is locally Lipschitz. Combining (4.13) and (4.14), we obtain 
+
+dr ds = db ds · 1
+
+a2 − 2ba3 · da ds 
+
+≤ (λ0 − δ)b + 2 Ka 2
+
+a2 − 2ba3 · λ0
+
+2 a
+
+= −δr + 2 K, a.e. s ∈ [0 , s 0).
+
+Noting that r(0) = 0 , by Gronwall’s inequality, 
+
+r(s) ≤ 2Kδ (1 − e−δs ), ∀s ∈ [0 , s 0).
+
+By continuity, 
+
+η−1 = r(s0) ≤ 2Kδ (1 − e−δs 0 ) < 2Kδ ,
+
+16 which contradicts the choice η = min {c, δ/ (4 K)}.This shows that the initial assumption ( vj stable) is false; hence vj is an unstable equilibrium point of the nonlinear evolution equation (4.6). The instability of wj follows similarly. For sufficiently small  > 0, define the perturbed operators 
+
+Lϵ
+
+> 0
+
+v := L0v + ∆v = Df (γ)v − dv dt +  d2vdt 2 , ∀v ∈ H2
+
+> per
+
+,Lϵ, ∗ 
+
+> 0
+
+w := L∗
+
+> 0
+
+w + ∆w = Df (γ)w + dw dt +  d2wdt 2 , ∀w ∈ H2
+
+> per
+
+,
+
+The corresponding perturbed GAD systems are then 
+
+∂v (s, t )
+
+∂s = F ϵ[v] := Lϵ
+
+> 0
+
+v(s, t ) − ⟨⟨ v, L ϵ
+
+> 0
+
+v⟩⟩ v(s, t ),∂w (s, t )
+
+∂s = F ϵ, ∗[w] := Lϵ, ∗ 
+
+> 0
+
+w(s, t ) − ⟨⟨ w, L ϵ, ∗ 
+
+> 0
+
+w⟩⟩ w(s, t ).
+
+(4.15) Direct calculation gives 
+
+dds ⟨⟨ v, v ⟩⟩ = 2 ⟨⟨ v, L ϵ
+
+> 0
+
+v⟩⟩ (1 − ⟨⟨ v, v ⟩⟩ ),
+
+hence the perturbed GAD system still preserves unit norm for real vectors v ∈ Rn.This section will prove the asymptotic stability of the perturbed GAD system, i.e., Theorem 4.3. To this end, we make the following assumptions: 
+
+A6 . The eigenvalues of the operators Lϵ
+
+> 0
+
+, L ϵ, ∗ 
+
+> 0
+
+can be listed as {λϵj,k : 1 ≤ j ≤ n, k ∈ Z}
+
+and are analytic functions of , i.e., 
+
+λϵj,k = λj,k + λ (1)  
+
+> j,k
+
++ 2λ(2)  
+
+> j,k
+
++ · · · .
+
+The corresponding eigenvectors can also be listed as {vϵj,k : 1 ≤ j ≤ n, k ∈ Z} and 
+
+{wϵj,k : 1 ≤ j ≤ n, k ∈ Z}, respectively, and have analytic expansions 
+
+vϵj,k = vj,k + v (1)  
+
+> j,k
+
++ 2v(2)  
+
+> j,k
+
++ · · · ,wϵj,k = wj,k + w (1)  
+
+> j,k
+
++ 2w(2)  
+
+> j,k
+
++ · · · .
+
+A7 . There exists 0 > 0 such that for all 0 <  <  0, Lϵ 
+
+> 0
+
+retains the following properties of L0: the eigenvalues of Lϵ 
+
+> 0
+
+have algebraic multiplicity 1, the eigenvectors form a Riesz basis for H, and additionally, λϵ
+
+> 1,0
+
+, v ϵ
+
+> 1,0
+
+, w ϵ 
+
+> 1,0
+
+remain real-valued. 
+
+If Lϵ
+
+> 0
+
+vϵ = λϵvϵ, substituting into the definition (similarly for Lϵ, ∗ 
+
+> 0
+
+) yields 
+
+L0v + (L0v(1) + v′′ ) + O(2) = λv + (λv (1) + λ(1) v) + O(2),
+
+Equating zeroth-order terms gives L0v = λv . Equating first-order coefficients gives 
+
+(L0 − λ)v(1) = −v′′ + λ(1) v. 
+
+17 Acting on both sides with w ∈ ker( L∗ 
+
+> 0
+
+− λ) and taking ⟨⟨ w, v ⟩⟩ = ⟨v, w ⟩ = 1 , we obtain 
+
+λ(1) = ⟨⟨ w, v ′′ ⟩⟩ . Applying this to λj,k gives 
+
+λ(1)  
+
+> j,k
+
+= ⟨⟨ wj,k , v ′′ 
+
+> j,k
+
+⟩⟩ ,
+
+which is the first-order expansion coefficient. Denote the subscript j = ( j, 0) for simplicity, and normalize such that ⟨⟨ v1, w j ⟩⟩ = 1 .Integrating by parts yields 
+
+⟨⟨ w1,k , v ′′ 
+
+> 1,k
+
+⟩⟩ = ⟨⟨ w1, v ′′  
+
+> 1
+
+⟩⟩ − ω2 
+
+> k
+
+− 2i · ωk⟨⟨ w1, v ′
+
+> 1
+
+⟩⟩ ,
+
+where the frequency ωk = 2 πk/T . Note that w1, v 1 are real vectors, hence 
+
+Re( λ(1) 1,k − λ(1) 1 ) = −ω2 
+
+> k
+
+≤ − 4π2
+
+T < 0, ∀k̸ = 1 .
+
+This implies 
+
+Re( λϵ 
+
+> 1,k
+
+− λϵ
+
+> 1
+
+) = −ω 2 
+
+> k
+
++ O(2) ≤ − 4π2T + O(2).
+
+Using similar methods, for all j ≥ 2, we can compute 
+
+Re( λϵj,k − λϵ
+
+> 1
+
+) = ( λj − λ1) − (ω2 
+
+> k
+
++ αj ωk + βj ) + O(2)
+
+≤ − λ1 + O(),
+
+where αj = 2 Im ⟨⟨ wj , v ′ 
+
+> j
+
+⟩⟩ , β j = ⟨⟨ w1, v ′′  
+
+> 1
+
+⟩⟩ − Re ⟨⟨ wj , v ′′  
+
+> j
+
+⟩⟩ .Therefore, to facilitate the stability analysis, we make the following regularity as-sumption: 
+
+A8 . There exists 0 > 0 such that for all 0 <  <  0 and 1 ≤ j ≤ n, k ∈ Z,
+
+Re( λϵj,k − λϵ
+
+> 1
+
+) ≤ − δ() < 0.
+
+The linearization of the nonlinear functional F ϵ at vϵ 
+
+> 1
+
+is the operator Lϵ : H2 
+
+> per
+
+⊂
+
+H → H given by 
+
+Lϵv : = ddh 
+
+∣∣∣∣h=0 
+
+F [vϵ 
+
+> 1
+
++ hv ]= Lϵ
+
+> 0
+
+v − λϵ
+
+> 1
+
+v − ⟨⟨ vϵ
+
+> 1
+
+, L ϵ
+
+> 0
+
+v⟩⟩ vϵ 
+
+> 1
+
+− λϵ
+
+> 1
+
+⟨⟨ v, v ϵ
+
+> 1
+
+⟩⟩ vϵ
+
+> 1
+
+.
+
+(4.16) Similarly, the linearization of F ϵ, ∗ at wϵ 
+
+> 1
+
+is Lϵ, ∗ : H2 
+
+> per
+
+⊂ H → H given by 
+
+Lϵ, ∗w : = ddh 
+
+∣∣∣∣h=0 
+
+F ∗[wϵ 
+
+> 1
+
++ hw ]= Lϵ, ∗w − λϵ
+
+> 1
+
+w − ⟨⟨ wϵ
+
+> 1
+
+, L ϵ, ∗ 
+
+> 0
+
+w⟩⟩ wϵ 
+
+> 1
+
+− λϵ
+
+> 1
+
+⟨⟨ w, w ϵ
+
+> 1
+
+⟩⟩ wϵ
+
+> 1
+
+.
+
+(4.17) Fix  and denote the eigenvalues of Lϵ as κα : α ∈ Z with corresponding eigenvectors eα.To introduce an equivalent inner product on H such that {eα} forms an orthonormal basis: 
+
+⟨eα, e β ⟩∗ = δα,β .
+
+18 Then for any u = ∑ cαeα ∈ H2
+
+> per
+
+,
+
+Re ⟨u, L ϵu⟩∗ = ∑ Re κα|cα|2 ≤ − σ() · ∥ u∥2
+
+> ∗
+
+, (4.18) and for u ∈ H3
+
+> per
+
+,
+
+Re ⟨∂tu, L ϵ∂tu⟩∗ ≤ − σ() · ∥ ∂tu∥2
+
+> ∗
+
+. (4.19) Consider the commutator 
+
+[∂t, L ϵ]u = ∂t(Lϵu) − Lϵ(∂tu), ∀u ∈ H3
+
+> per
+
+(0 , T ),
+
+Since Lϵ 
+
+> 0
+
+= Df (γ) − ∂t + ∂ 2 
+
+> t
+
+, we have [∂t, L ϵ
+
+> 0
+
+] = [ ∂t, Df (γ)] = ∂tDf (γ).Using Lϵ = Lϵ 
+
+> 0
+
+− λϵ 
+
+> 1
+
+− A1 − λϵ
+
+> 1
+
+A2, where 
+
+A1u = ⟨⟨ vϵ
+
+> 1
+
+, L ϵ
+
+> 0
+
+u⟩⟩ vϵ
+
+> 1
+
+, A2u = ⟨⟨ u, v ϵ
+
+> 1
+
+⟩⟩ vϵ
+
+> 1
+
+,
+
+we obtain 
+
+[∂t, L ϵ] = ∂tDf (γ) − [∂t, A 1] − [∂t, A 2].
+
+For any u ∈ H3
+
+> per
+
+, noting that Lϵ
+
+> 0
+
+u ∈ H1
+
+> per
+
+, integration by parts gives 
+
+[∂t, A 1]u = ∂t(A1u) − A1(∂tu)= ⟨⟨ vϵ
+
+> 1
+
+, L ϵ
+
+> 0
+
+u⟩⟩ · ∂tvϵ 
+
+> 1
+
+− ⟨⟨ vϵ
+
+> 1
+
+, L ϵ
+
+> 0
+
+(∂tu)⟩⟩ · vϵ
+
+> 1
+
+= ⟨⟨ vϵ
+
+> 1
+
+, L ϵ
+
+> 0
+
+u⟩⟩ · ∂tvϵ 
+
+> 1
+
+− ⟨⟨ vϵ
+
+> 1
+
+, ∂ t(Lϵ
+
+> 0
+
+u)⟩⟩ vϵ 
+
+> 1
+
++ ⟨⟨ vϵ
+
+> 1
+
+, (∂tDf (γ)) u⟩⟩ vϵ
+
+> 1
+
+= ⟨⟨ Df (γ)⊤vϵ 
+
+> 1
+
++ ∂tvϵ 
+
+> 1
+
++ ∂ 2 
+
+> t
+
+vϵ
+
+> 1
+
+, u ⟩⟩ · ∂tvϵ
+
+> 1
+
++ ⟨⟨ Df (γ)⊤∂tvϵ 
+
+> 1
+
++ ∂2 
+
+> t
+
+vϵ 
+
+> 1
+
++ ∂ 3 
+
+> t
+
+vϵ
+
+> 1
+
+, u ⟩⟩ · vϵ
+
+> 1
+
++ ⟨⟨ (∂tDf (γ)⊤)vϵ
+
+> 1
+
+, u ⟩⟩ · vϵ
+
+> 1
+
+,
+
+hence ∥[∂t, A 1]u∥2 
+
+> H
+
+≤ K∥u∥2 
+
+> H
+
+.Similarly, 
+
+[∂t, A 2]u = ∂t(A2u) − A2(∂tu)= ⟨⟨ u, v ϵ
+
+> 1
+
+⟩⟩ · ∂tvϵ 
+
+> 1
+
+− ⟨⟨ ∂tu, v ϵ
+
+> 1
+
+⟩⟩ vϵ
+
+> 1
+
+= ⟨⟨ u, v ϵ
+
+> 1
+
+⟩⟩ · ∂tvϵ 
+
+> 1
+
++ ⟨⟨ u, ∂ tvϵ
+
+> 1
+
+⟩⟩ vϵ
+
+> 1
+
+,
+
+also yielding ∥[∂t, A 2]u∥2 
+
+> H
+
+≤ K∥u∥2 
+
+> H
+
+. Therefore [∂t, L ϵ] is a bounded linear operator on 
+
+H. Without loss of generality, denote its bound in the ∥ · ∥ ∗ norm also by K.Assume v ∈ H3 
+
+> per
+
+is a solution of the perturbed GAD system (4.15). Let u(s, t ) = 
+
+v(s, t ) − vϵ
+
+> 1
+
+(t). Then u ∈ H3 
+
+> per
+
+satisfies the equation 
+
+du ds = Lϵu + R[u],
+
+where the remainder term R[u] is 
+
+R[u] = F ϵ[vϵ 
+
+> 1
+
++ u] − Lϵu
+
+19 = −⟨⟨ vϵ
+
+> 1
+
+, L ϵ
+
+> 0
+
+u⟩⟩ u − λϵ
+
+> 1
+
+⟨⟨ u, v ϵ
+
+> 1
+
+⟩⟩ u
+
+− ⟨⟨ u, L ϵ
+
+> 0
+
+u⟩⟩ vϵ 
+
+> 1
+
+− ⟨⟨ u, L ϵ
+
+> 0
+
+u⟩⟩ u. 
+
+Let C = max {∥vϵ
+
+> 1
+
+∥H , ∥∂tvϵ
+
+> 1
+
+∥H , ∥∂2 
+
+> t
+
+vϵ
+
+> 1
+
+∥H , max t∈[0 ,T ] ∥Df (γ(t)) ∥}. Using integration by parts, we estimate 
+
+|⟨⟨ vϵ
+
+> 1
+
+, L ϵ
+
+> 0
+
+u⟩⟩| = |⟨⟨ Df (γ)⊤vϵ 
+
+> 1
+
++ ∂tvϵ 
+
+> 1
+
++ ∂ 2 
+
+> t
+
+vϵ
+
+> 1
+
+, u ⟩⟩| ≤ ∥ h∥H · ∥ u∥H
+
+|⟨⟨ u, L ϵ
+
+> 0
+
+u⟩⟩| = |⟨⟨ u, Df (γ)u⟩⟩ − ⟨⟨ ∂tu, ∂ tu⟩⟩| ≤ C∥u∥2 
+
+> H
+
++ ∥∂tu∥2
+
+> H
+
+where h = Df (γ)⊤vϵ 
+
+> 1
+
++ ∂tvϵ 
+
+> 1
+
++ ∂ 2 
+
+> t
+
+vϵ
+
+> 1
+
+.Thus, there exists a constant K such that for all ∥u∥H ≤ 1,
+
+∥R[u]∥H ≤ K(∥u∥2 
+
+> H
+
++ ∥∂tu∥2 
+
+> H
+
+).
+
+Using a completely analogous method, for all max {∥ u∥H , ∥∂tu∥H } ≤ 1,
+
+∥∂tR[u]∥H ≤ K(∥u∥2 
+
+> H
+
++ ∥∂tu∥2 
+
+> H
+
+).
+
+Since ∥ · ∥ ∗ is equivalent to ∥ · ∥ H , by (4.11), there exists a constant c > 0 such that when 
+
+max {∥ u∥∗, ∥∂tu∥∗} ≤ c,
+
+max {∥ ∂tR[u]∥∗, ∥R[u]∥∗} ≤ K(∥u∥2 
+
+> ∗
+
++ ∥∂tu∥2
+
+> ∗
+
+). (4.20) At this point, we can state the stability theorem for the perturbed GAD system. 
+
+Theorem 4.3. Under assumptions A6 –A8 , for any 0 <  <  0, the real directions 
+
+(vϵ
+
+> 1
+
+, ∂ tvϵ
+
+> 1
+
+) and (wϵ
+
+> 1
+
+, ∂ twϵ
+
+> 1
+
+) are asymptotically stable equilibrium points of the perturbed GAD system (F ϵ[v], ∂ tF ϵ[v]) and the adjoint perturbed GAD system (F ϵ, ∗[w], ∂ tF ϵ, ∗[w]) ,respectively, where both vϵ 
+
+> 1
+
+and wϵ 
+
+> 1
+
+are unit vectors. More precisely, (vϵ
+
+> 1
+
+, ∂ tvϵ
+
+> 1
+
+) and (wϵ
+
+> 1
+
+, ∂ twϵ
+
+> 1
+
+) are asymptotically stable equilibrium points on the infinite-dimensional manifold 
+
+M := {(x, y ) ∈ H3 
+
+> per
+
+× H2 
+
+> per
+
+: y = ∂tx}
+
+for the evolution equations 
+
+∂x ∂s = F ϵ[x], ∂y ∂s = ∂tF ϵ[x]
+
+and ∂x ∂s = F ϵ, ∗[x], ∂y ∂s = ∂tF ϵ, ∗[x],
+
+respectively. Proof. Define the energy functional 
+
+E(s) = 12
+
+(∥u(s)∥2 
+
+> ∗
+
++ α∥∂tu(s)∥2
+
+> ∗
+
+) ,
+
+20 where α > 0 is to be determined. 
+
+Step 1. Energy estimate . Differentiating with respect to s,
+
+dE ds = Re ⟨u, ∂ su⟩∗ + α Re ⟨∂tu, ∂ s∂tu⟩∗ .
+
+Substituting ∂su = Lϵu + R[u] and using ∂s∂tu = Lϵ∂tu + [ ∂t, L ϵ]u + ∂tR[u], we obtain 
+
+dE ds = Re ⟨u, L ϵu⟩∗ + Re ⟨u, R [u]⟩∗ + α Re ⟨∂tu, L ϵ∂tu⟩∗
+
++ α Re ⟨∂tu, [∂t, L ϵ]u⟩∗ + α Re ⟨∂tu, ∂ tR[u]⟩∗ .
+
+Using the boundedness of [∂t, L ϵ] and the estimates (4.18), (4.19), (4.20), we get 
+
+dE ds ≤ − σE + αK ∥∂tu∥∗ · ∥ u∥∗ + K∥u∥∗(∥u∥2 
+
+> ∗
+
++ ∥∂tu∥2
+
+> ∗
+
+)+ αK ∥∂tu∥∗(∥u∥2 
+
+> ∗
+
++ ∥∂tu∥2
+
+> ∗
+
+)
+
+≤ − σE + ασ 
+
+4 ∥∂tu∥2 
+
+> ∗
+
++ αK 2
+
+σ ∥u∥2 
+
+> ∗
+
++ Kη (∥u∥2 
+
+> ∗
+
++ ∥∂tu∥2
+
+> ∗
+
+)+ αKη (∥u∥2 
+
+> ∗
+
++ ∥∂tu∥2
+
+> ∗
+
+)= −σE +
+
+( αK 2
+
+σ + (1 + α)Kη 
+
+)
+
+∥u∥2 
+
+> ∗
+
++
+
+( ασ 
+
+4 + (1 + α)Kη 
+
+)
+
+∥∂tu∥2
+
+> ∗
+
+.
+
+It can be seen that when 
+
+0 < α ≤ min 
+
+{
+
+1, σ2
+
+16 K2
+
+}
+
+, max {∥ u∗∥, ∥∂tu∥∗} < η ≤ min 
+
+{
+
+c, ασ 
+
+8(1 + α)K
+
+}
+
+we have dE ds ≤ − σ
+
+2 E. 
+
+Step 2. A priori estimate and continuation . We now prove that ∥u∥∗ and ∥∂tu∥∗
+
+remain below η during the evolution, so that the above estimate holds for all s ≥ 0.Choose the initial perturbation sufficiently small such that 
+
+∥u(0) ∥∗ ≤ 12
+
+√α η, ∥∂tu(0) ∥∗ ≤ 12 η. 
+
+Then E(0) = ∥u(0) ∥2 
+
+> ∗
+
++ α∥∂tu(0) ∥2 
+
+> ∗
+
+≤ 12 αη 2. Define 
+
+s0 = sup {s ≥ 0 : max {∥ u(τ )∥∗, ∥∂tu(τ )∥∗} < η, ∀τ ∈ [0 , s ]}.
+
+By the initial conditions and continuity of solutions, s0 > 0. On the interval [0 , s 0), the conditions hold, so the derived estimate is valid, giving 
+
+dE ds ≤ − σ
+
+2 E, ∀s ∈ [0 , s 0).
+
+21 Thus E(s) ≤ E(0) exp( − σ 
+
+> 2
+
+s) holds on [0 , s 0). Consequently, 
+
+∥u(s)∥2 
+
+> ∗
+
+≤ E(s) ≤ E(0) ≤ 12 αη 2, α∥∂tu(s)∥2 
+
+> ∗
+
+≤ E(s) ≤ E(0) ≤ 12 αη 2,
+
+which yields 
+
+∥u(s)∥∗ ≤
+
+√ 12 α η < η, ∥∂tu(s)∥∗ ≤
+
+√ 12 η < η. 
+
+Therefore, for all s ∈ [0 , s 0), max {∥ u(s)∥∗, ∥∂tu(s)∥∗} ≤ ˜η < η .If s0 < +∞, by continuity of the solution at s = s0, we also have max {∥ u(s0)∥∗, ∥∂tu(s0)∥∗} ≤ 
+
+˜η < η , contradicting the definition of s0. Hence s0 = + ∞. Thus the energy estimate holds for all s ≥ 0.
+
+Step 3. Asymptotic stability . Then, 
+
+∥u(s)∥2 
+
+> ∗
+
++ α∥∂tu(s)∥2 
+
+> ∗
+
+= E(s) ≤ E(0) exp 
+
+(
+
+− σ
+
+2 s
+
+)
+
+, ∀s ≥ 0.
+
+By the equivalence of the inner products, ∥u(s)∥H and ∥∂tu(s)∥H also decay exponen-tially to zero, proving that (vϵ
+
+> 1
+
+, ∂ tvϵ
+
+> 1
+
+) is asymptotically stable. The asymptotic stability of (wϵ
+
+> 1
+
+, ∂ twϵ
+
+> 1
+
+) follows similarly. Now assume that a T -periodic orbit with one unstable direction has been located using the algorithm in table 2: 
+
+γ(τ ) = a0
+
+2 +
+
+> N
+
+∑
+
+> k=1
+
+(ak cos(2 πkτ ) + bk sin(2 πkτ )) ,
+
+where τ = t/T is the normalized time. Let the unknown adjoint unstable direction be 
+
+w(s, τ ) = α0(s)2 +
+
+> N
+
+∑
+
+> k=1
+
+(αk(s) cos(2 πkτ ) + βk(s) sin(2 πkτ )) .
+
+Fix m ≥ 1 and a perturbation coefficient  > 0. Denote τj = j/m, w j = w(s, τ j ) and 
+
+Qj = Df (x(τj )) ⊤ wj − Tm
+
+(m−1∑
+
+> i=0
+
+w⊤ 
+
+> i
+
+Df (x(τi)) ⊤ wi
+
+)
+
+wj ,S = T
+
+2
+
+> N
+
+∑
+
+> k=1
+
+(2 πk )2(α2 
+
+> k
+
++ β2 
+
+> k
+
+),
+
+then the coefficients satisfy the perturbed GAD equations 
+
+dα 0
+
+ds = 2
+
+m
+
+> m−1
+
+∑
+
+> j=0
+
+Qj + Sα 0,dα k
+
+ds = 2
+
+m
+
+> m−1
+
+∑
+
+> j=0
+
+Qj cos(2 πkτ j ) + 2πk T βk − (2 πk )2αk + Sα k,dβ k
+
+ds = 2
+
+m
+
+> m−1
+
+∑
+
+> j=0
+
+Qj sin(2 πkτ j ) − 2πk T αk − (2 πk )2βk + Sβ k,
+
+(4.21) 22 Based on this, the numerical algorithm used in this paper to compute the stable manifold of a periodic orbit with one unstable direction is: Table 3: Numerical algorithm for the stable manifold of a periodic orbit γ with one unstable direction. 
+
+S1 Guess the initial shape coefficients α0
+
+> k
+
+, β 0 
+
+> k
+
+of the adjoint unstable direction of γ.
+
+S2 Starting from the initial values α0
+
+> k
+
+, β 0 
+
+> k
+
+, integrate along the vector field (4.21) for a long time and observe convergence. If not, repeat step S1 .
+
+# 5 Numerical Experiments 
+
+This section presents three numerical experiments: a two-machine system, a three-machine system containing only saddles, and a three-machine system with a periodic orbit. In all three systems, we uniformly take p = 50 Hz. 
+
+5.1 Two-Machine System 
+
+First, we give the parameters for n = 2 :
+
+H = (6 .5, 6.5) , D = (0 .1, 0.1) , P = (0 , 0) , E = (1 , 1, 1) ,G =
+
+
+
+0 −0.02 0.02 
+
+−0.02 −0.05 0.03 0.02 0.03 0
+
+ , B =
+
+
+
+0 0.4996 0.9998 0.4996 0 0.4991 0.9998 0.4991 0
+
+ . (5.1) Applying the algorithm in table 1 to system (2.2) with the above parameters, we ob-tain three 1-saddles near the asymptotically stable equilibrium point (0 , 0) (due to the periodicity of the vector field, there are actually six 1-saddles; see Figure 1b) and their associated unstable eigen-directions, and then compute the boundary of the region of attraction. The experimental results are shown in Figure 1. 
+
+5.2 Three-Machine System 
+
+First, we give the parameters for n = 3 :
+
+H = (6 .5, 6.5, 6.5) , D = (0 .1, 0.1, 0.1) , P = (0 , 0, 0) ,E = (1 , 1, 1, 1) , G =
+
+
+
+0 0 0 00 0 0 00 0 0 00 0 0 0
+
+ , B =
+
+
+
+1 1 1 11 1 1 11 1 1 11 1 1 1
+
+ . (5.2) Applying the algorithm in Table 1 to system (2.2) with the above parameters, we ob-tain four 1-saddles near the asymptotically stable equilibrium point (0 , 0, 0) and their 23 Figure 1: Two-machine system. -4 -3 -2 -1 0 1 2 3 4 
+
+> 1
+
+(rad) 
+
+> -3 -2 -1 0123
+> 2 (rad)
+> Asymptotically Stable Equilibrium 1-Saddles Adjoint Unstable Directions
+
+(a) 1-saddles and their associated unstable eigen-directions. -6 -4 -2 0 2 4 6 
+
+> 1
+
+(rad)  
+
+> -5 -4 -3 -2 -1 01234
+> 2 (rad)
+
+(b) Boundary of the region of attraction. 
+
+associated unstable eigen-directions, and then compute the boundary of the region of attraction. The experimental results are shown in Figure 2. Figure 2: Three-machine system. 5-2 0
+
+> 3 (rad)
+
+52 
+
+> 2
+
+(rad) 
+
+0 
+
+> 1
+
+(rad) 
+
+0-5 -5 
+
+> Asymptotically Stable Equilibrium 1-Saddles Adjoint Unstable Directions
+
+(a) 1-saddles and their associated unstable eigen-directions. -6 -4 5-2 05 
+
+> 3 (rad)  2
+> 2
+
+(rad)  
+
+> 04
+> 1
+
+(rad)   
+
+> 60-5 -5
+
+(b) Boundary of the region of attraction. 
+
+24 5.3 Three-Machine System with a Periodic Orbit 
+
+First, we give the parameters for n = 3 :
+
+H = (6 .5, 6.5, 6.175) ,D = (0 .1, 0.1, 0.095) ,P = (0 , 0, 0, 0) ,E = (1 .071 , 1.0599 , 1.0692 , 1.0528) ,G =
+
+
+
+0.1516 0.1698 0.0470 0.0846 0.1698 0.3574 0.0847 0.1517 0.0470 0.0847 0.2147 0.2745 0.0846 0.1517 0.2745 0.5309 
+
+ ,B =
+
+
+
+−1.2583 0.9712 0.0625 0.1077 0.9712 −1.4828 0.1078 0.1775 0.0652 0.1078 −1.2944 0.9044 0.1077 0.1775 0.9044 −1.6044 
+
+ .
+
+(5.3) Applying the algorithm in table 1 to system (2.2) with the above parameters, we obtain one 1-saddle near the asymptotically stable equilibrium point (0 , 0, 0) and its associated unstable eigen-direction, and then compute the stable manifold of this saddle. The experimental results are shown in Figure 3. Figure 3: 1-saddle and its stable manifold for the three-machine system with a periodic orbit. -2 -1 20   
+
+> 3 (rad)
+> 120
+> 2(rad)
+> -2 21
+> 1(rad)
+> -4 0-1 -2 -3 -4 -5
+> Asymptotically Stable Equilibrium 1-Saddle Adjoint Unstable Directions
+
+(a) 1-saddle and its associated unstable eigen-direction. -4 5-2 0    
+
+> 3 (rad)
+> 02
+> 2(rad)
+> 4-5 4
+> 1(rad)
+> 20-2 -4 -10 -6 -8 -10
+
+(b) Stable manifold of the 1-saddle. 
+
+It can be seen that the stable manifold of the 1-saddle forms only two faces of the boundary of the region of attraction; it is conjectured that each of the remaining four 25 faces contains a periodic orbit of index one 3. Using the algorithm in Table 2 to locate the periodic orbit and the algorithm in Table 3 to compute its associated unstable eigen-direction, the experimental results are shown in Figure 4. Using the unstable eigen-Figure 4: Periodic orbit and its associated unstable eigen-direction for the three-machine system with a periodic orbit. 014232    
+
+> 3 (rad)  45
+> 2(rad)
+> 60-2 4
+> 1(rad)
+> 20-4 -2 -4
+> Asymptotically Stable Equilibrium Period Orbit Adjoint Unstable Directions
+
+(a) Periodic orbit located on the upper side of the region of attraction. 00.05 10 0.1 0.15    
+
+> 3 (rad)  0.2 0.25
+> 2(rad)
+> 0.3 56
+> 1(rad)
+> 4200-2
+> Asymptotically Stable Equilibrium Period Orbit Adjoint Unstable Directions
+
+(b) Periodic orbit located on the left side of the region of attraction. 
+
+direction of the periodic orbit, its stable manifold is computed, and the experimental results are shown in Figure 5. The stable manifolds of the six faces together constitute the boundary of the region of attraction, as shown in Figure 6. When applying the algorithm in table 3 to obtain Figure 4a, we specifically set the perturbation coefficient  = 0 .07 , the number of sampling points on the periodic orbit 
+
+m = 30 , and the truncation order of the Fourier series N = 5 . In theory, the adjoint unstable eigen-direction w(t) is orthogonal to γ′(t) at every point. Table 4 gives the cosines of the angles between w(τj ) and γ′(τj ), where 1 ≤ j ≤ 30 .Table 4: Cosines of the angles between the adjoint unstable eigen-direction and the tangent vector of the periodic orbit for Figure 4a. 
+
+−0.105 752 −0.141 213 −0.137 720 −0.096 649 −0.046 490 −0.012 324 0.003 312 0.008 898 0.010 685 0.009 790 0.005 925 0.001 326 
+
+−0.000 596 0.000 124 −0.000 573 −0.005 352 −0.011 280 −0.013 309 
+
+−0.011 165 −0.009 956 −0.012 732 −0.014 305 −0.004 559 0.021 497 0.055 455 0.077 118 0.071 835 0.042 727 −0.000 561 −0.052 543 
+
+> 3
+
+Due to the periodicity of the vector field (2.2) in each direction with period 2π, the term periodic orbit here actually refers to x(τ ) = 2 πτ d + y(τ ), where τ = t/T is normalized time, d ∈ {− 1, 0, 1}n
+
+is a spatial periodic direction of x in (2.2), and y(0) = y(1) . Thus y is a genuine periodic orbit. The period, location, and stable manifold of y can be computed numerically, from which the corresponding geometric quantities of x are naturally obtained. 
+
+26 Figure 5: Stable manifolds of the periodic orbits for the three-machine system with a periodic orbit. -4 5-2 0   
+
+> 3 (rad)
+> 02
+> 2(rad)
+> 4-5 4
+> 1(rad)
+> 20-2 -4 -10 -6 -8 -10
+
+(a) Stable manifolds of the periodic orbits on the upper and lower faces. -4 -3 5-2 -1 0   
+
+> 3 (rad)
+> 012
+> 2(rad)
+> -5 4
+> 1(rad)
+> 20-2 -4 -10 -6 -8 -10
+
+(b) Stable manifolds of the periodic orbits on the left and right faces. 
+
+Figure 6: Boundary of the region of attraction for the three-machine system with a periodic orbit. -4 5-2 0   
+
+> 3 (rad)
+> 02
+> 2(rad)
+> 4-5 4
+> 1(rad)
+> 20-2 -4 -10 -6 -8 -10
+
+27 For the reversed vector field −f and the time-reversed periodic orbit γ(T − t), using an algorithm similar to that in Table 3 we compute the unstable eigen-direction v(T − t)
+
+of γ(T − t), which is precisely the stable eigen-direction of the forward-time periodic orbit γ(t). In theory w(t) is orthogonal to v(t) at every point. Table 5 gives the cosines of the angles between w(τj ) and v(τj ).Table 5: Cosines of the angles between the adjoint unstable eigen-direction and the stable eigen-direction for Figure 4a.                          
+
+> 0.000 753 0.000 084 −0.000 471 −0.000 815 −0.000 871 −0.000 705
+> −0.000 472 −0.000 281 −0.000 161 −0.000 095 −0.000 055 −0.000 032
+> −0.000 025 −0.000 042 −0.000 079 −0.000 127 −0.000 176 −0.000 238
+> −0.000 335 −0.000 460 −0.000 545 −0.000 492 −0.000 246 0.000 206 0.000 947 0.001 976 0.002 812 0.002 918 0.002 348 0.001 527
+
+Similarly, when applying the algorithm in Table 3 to obtain Figure 4b, we specifically set the perturbation coefficient  = 0 .005 , the number of sampling points on the periodic orbit m = 30 , and the truncation order of the Fourier series N = 5 . Tables 6 and 7 give the cosines of the angles between w(τj ) and γ′(τj ), and between w(τj ) and v(τj ),respectively. Table 6: Cosines of the angles between the adjoint unstable eigen-direction and the tangent vector of the periodic orbit for Figure 4b.                          
+
+> 0.000 629 0.000 600 0.000 622 0.000 653 0.000 619 0.000 501 0.000 330 0.000 127 −0.000 134 −0.000 452 −0.000 745 −0.000 900
+> −0.000 890 −0.000 795 −0.000 710 −0.000 649 −0.000 571 −0.000 460
+> −0.000 361 −0.000 305 −0.000 257 −0.000 155 0.000 012 0.000 187 0.000 316 0.000 406 0.000 499 0.000 604 0.000 676 0.000 677
+
+Table 7: Cosines of the angles between the adjoint unstable eigen-direction and the stable eigen-direction for Figure 4b.                          
+
+> −0.000 005 −0.000 021 −0.000 005 0.000 002 −0.000 033 −0.000 090
+> −0.000 118 −0.000 106 −0.000 089 −0.000 096 −0.000 099 −0.000 065
+> −0.000 008 0.000 022 0.000 002 −0.000 039 −0.000 061 −0.000 061
+> −0.000 068 −0.000 097 −0.000 121 −0.000 110 −0.000 069 −0.000 036
+> −0.000 034 −0.000 037 −0.000 013 0.000 034 0.000 059 0.000 037
+
+5.4 Level Set Characterization 
+
+In the engineering practice of power systems, it is necessary to automatically and quickly determine whether the system starting from a specific state (i.e., some δ ∈ Rn) can return to the stable state (i.e., the asymptotically stable equilibrium point 0). At this point, it 28 is neither feasible to rely on human operators to visually judge whether the state point is enclosed by the computed point cloud of the boundary of the region of attraction, nor is there often sufficient time for time-domain simulation. Therefore, this section uses neural network methods to solve the level sets of the boundaries of the region of attraction for the three examples in the previous section. After precomputing the level set neural network, one can quickly determine whether the system can return to the steady state by directly evaluating the level function value at the state point. All models adopt a fully connected neural network architecture fθ : Rn → [0 , +∞),where the network parameters θ = {Wi, b i : 1 ≤ i ≤ 4} include weight matrices Wi and bias vectors bi for 3 hidden layers and 1 output layer. The network is defined as 
+
+fθ(x) = ∥x∥2 · (Softplus(MLP θ(x)) + 10 −4),
+
+where Softplus( z) = ln(1 + ez ), and MLP θ is a multilayer perceptron consisting of 3 hidden layers (128 neurons each, activation function tanh ) and 1 linear output layer. Clearly fθ is nonnegative and fθ(0) = 0 .Given the point set {xi : 1 ≤ i ≤ N } ⊂ Rn on the boundary of the region of attraction computed in the previous section as the training point set, the loss function is 
+
+L(θ) = Lfit + Lgrad + Lext ,
+
+where the fitting term 
+
+Lfit = wfit · 1
+
+N
+
+> N
+
+∑
+
+> i=1
+
+(fθ (xi) − 1) 2
+
+imposes a penalty at the known boundary sample points xi; minimizing this loss drives 
+
+fθ(xi) towards 1, thereby constraining the unit level set {x : fθ(x) = 1 } to lie near these sample points. The gradient penalty term is 
+
+Lgrad = wgrad · 1
+
+N
+
+> N
+
+∑
+
+> i=1
+
+(τ − ∥ Dxfθ (xi)∥)2+ ,
+
+where (·)+ = max(0 , ·) and τ ≥ 1. Intuitively, if the function has a larger gradient near 
+
+xi, the distance required along the radial path from the origin 0 to xi for the function value to grow from 0 to 1 will be smaller, thereby constraining the level set fθ = 1 near the training points and preventing it from expanding outward excessively. The exterior point constraint term is 
+
+Lext = wext · 1
+
+M
+
+> M
+
+∑
+
+> j=1
+
+(t − fθ(xext  
+
+> j
+
+))2+
+
+where t > 1, and the exterior point set {xext  
+
+> j
+
+} is generated by radial extension: for each training point xi, extend radially along ui = xi/∥xi∥ by a distance d = max( r∥xi∥, 0.002) 
+
+29 to obtain xext = xi + du i, with r a preset radial extension ratio. If fθ(xext  
+
+> j
+
+) < t , the loss term drives the function value upward. Since the fitting term makes fθ(xi) ≈ 1
+
+and the exterior point is located a distance d radially outward from the corresponding training point and is required to satisfy fθ(xext  
+
+> j
+
+) ≥ t > 1, the function must increase from approximately 1 to at least t over the radial distance d, i.e., the radial derivative must be at least approximately (t − 1) /d . This makes it difficult for the level set fθ = 1 
+
+to expand outward and stay close to the training points. All models use the Adam optimizer with a learning rate of 10 −3, implemented with the PyTorch framework, and random seeds (Python, NumPy, PyTorch) are fixed to 42. Figures 7 to 9 demonstrate the effective fitting results of this method for different systems. For the two-machine system (5.1), the level set f = 0 .9 is shown in Figure 7 4. The loss function weights are wfit = 300 , worigin = 2 , wgrad = 5 , wext = 10 , the gradient threshold 
+
+τ = 1 .0, the target output value t = 1 .2, the radial extension ratios r ∈ { 0.005 , 0.01 },and the number of training epochs is 9000. Figure 7: Level set of the boundary of the region of attraction for the two-machine system. −4 −2 0 2 4
+
+> δ1
+> −6
+> −4
+> −2024
+> δ2
+> boundary points origin f(x) = 0.9
+> 0.000 0.125 0.250 0.375 0.500 0.625 0.750 0.875 1.000
+> network output
+
+For the three-machine system (5.2), the level set f = 0 .9 is shown in Figure 8. The loss function weights are wfit = 500 , worigin = 1 , wgrad = 0 , wext = 20 , the target output value t = 1 .1, the radial extension ratios r ∈ { 0.02 , 0.05 }, and the number of training epochs is 6500. For the three-machine system with a periodic orbit (5.3), the level set f = 0 .97 is shown in Figure 9. The loss function weights are wfit = 500 , worigin = 1 , wgrad = 0 ,
+
+wext = 20 , the target output value t = 1 .1, the radial extension ratios r ∈ { 0.02 , 0.05 },
+
+> 4
+
+For the safe operation of a power system, a conservative boundary of the region of attraction is required, i.e., the learned level set should lie inside the true region of attraction; therefore we do not choose the level set f = 1 , similarly hereinafter. 
+
+30 Figure 8: Level set of the boundary of the region of attraction for the three-machine system. 4 
+
+> 2
+> 0
+> 2
+> 4
+> 1(rad)
+> 4
+> 2
+> 0
+> 2
+> 4
+> 2 (rad)
+> 4
+> 2
+> 0
+> 2
+> 4
+> 3 (rad)
+> f(x)=0.9
+> boundary points
+
+and the number of training epochs is 6500. Figure 9: Level set of the boundary of the region of attraction for the three-machine system with a periodic orbit. 6 4 2 0 2 
+
+> 1(rad)
+> 6
+> 4
+> 2
+> 0
+> 2
+> 2 (rad)
+> 4
+> 2
+> 0
+> 2
+> 3 (rad)
+> f(x)=0.97
+> boundary points
+
+From Figures 7 to 9, it can be seen that the trained (conservative) level set can well reflect the boundary of the region of attraction, and can also learn its shape well at non-smooth points on the boundary. The ∥x∥2 factor forces the function to be zero at the origin, and combined with the universal approximation capability of the MLP, it can approximate closed surfaces of complex shapes without requiring a priori assumptions about the boundary morphology. However, limitations are also evident: for example, the loss weights wfit , w grad , w ext , the gradient threshold τ , the exterior point target value 
+
+t, and the radial extension ratio r need to be manually tuned for each specific problem, lacking automatic selection criteria; improper settings may lead to an overly tight or loose boundary, or training divergence. Moreover, the network structure does not explicitly enforce radial monotonicity; although numerical experiments have not produced multiple 31 level sets or holes, there is no theoretical guarantee of the radial monotonicity of fθ.These limitations await further research and improvement. 
+
+# 6 Conclusion 
+
+This paper makes progress in both theoretical analysis and algorithm design for the numerical computation of the domain of attraction boundary of synchronous generator systems. Theoretically, by introducing a topological homeomorphism assumption based on classical results, it is proved that the domain of attraction boundary can be consti-tuted by the closure of the union of the stable manifolds of critical elements with index one (saddle points or periodic orbits), providing a foundation for numerical computation. Algorithmically, the gentlest ascent dynamics method is employed for 1-saddle points, transforming them into asymptotically stable equilibrium points of an augmented sys-tem. For periodic orbits with index one, an adjoint operator-based localization algorithm is used, and the GAD method is extended to infinite-dimensional settings for computing stable manifolds of periodic orbits. By introducing artificial viscosity, a stability theory for the perturbed system is established, providing theoretical guarantees for computing stable manifolds of periodic orbits. Numerical experiments on a two-machine system, a three-machine system containing only saddle points, and a three-machine system con-taining periodic orbits validate the effectiveness and geometric accuracy of the proposed algorithms, offering a new numerical tool for transient stability analysis of power sys-tems. 
+
+# References 
+
+[1] A.R. Bergen and D.J. Hill. A structure preserving model for power system stability analysis. IEEE Transactions on Power Apparatus and Systems, PAS-100(1):25–35, January 1981. [2] H.M. Rodrigues, L.F.C. Alberto, and N.G. Bretas. On the invariance principle: generalizations and applications to synchronization. IEEE Transactions on Circuits and Systems I: Fundamental Theory and Applications, 47(5):730–739, May 2000. [3] N.G. Bretas and L.F.C. Alberto. Lyapunov function for power systems with transfer conductances: extension of the invariance principle. IEEE Transactions on Power Systems, 18(2):769–777, May 2003. [4] Alexandre Mauroy and Igor Mezic. A spectral operator-theoretic framework for global stability. In 52nd IEEE Conference on Decision and Control, pages 5234– 5239. IEEE, December 2013. [5] Alexandre Mauroy and Igor Mezic. Global stability analysis using the eigenfunctions of the koopman operator. IEEE Transactions on Automatic Control, 61(11):3356– 3369, November 2016. 32 [6] N. Tsolas, A. Arapostathis, and P. Varaiya. A structure preserving energy function for power system transient stability analysis. IEEE Transactions on Circuits and Systems, 32(10):1041–1049, October 1985. [7] David Hill and Chong Chi Nai. Energy functions for power systems based on structture preserving models. 1986. [8] Robert Owusu-Mireku, Hsiao-Dong Chiang, and Matt Hin. A dynamic theory-based method for computing unstable equilibrium points of power systems. IEEE Transactions on Power Systems, 35(3):1946–1955, May 2020. [9] Marian Anghel, Federico Milano, and Antonis Papachristodoulou. Algorithmic construction of lyapunov functions for power system stability analysis. IEEE Transactions on Circuits and Systems I: Regular Papers, 60(9):2533–2546, Septem-ber 2013. [10] Shinsaku Izumi, Hiroki Somekawa, Xin Xin, and Taiga Yamasaki. Estimation of regions of attraction of power systems by using sum of squares programming. Electrical Engineering, 100(4):2205–2216, May 2018. [11] Shinsaku Izumi, Hiroki Somekawa, Xin Xin, and Taiga Yamasaki. Analysis of robust transient stability of power systems by using sum of squares programming. In 2018 IEEE Conference on Decision and Control (CDC), pages 8006–8010. IEEE, December 2018. [12] Hsiao Dong Chiang. Direct Methods for Stability Analysis of Electric Power Systems. Wiley, 2011. [13] Hsiao-Dong Chiang and Luis F. C. Alberto. Stability Regions of Nonlinear Dynamical Systems: Theory, Estimation, and Applications. Cambridge, 2015. [14] Weinan E and Xiang Zhou. The gentlest ascent dynamics. Nonlinearity, 24(6):1831, may 2011. [15] Sajjad Azimi, Omid Ashtari, and Tobias M. Schneider. Constructing periodic orbits of high-dimensional chaotic systems by an adjoint-based variational method. Phys. Rev. E, 105:014217, Jan 2022. [16] Yang Liu, Zhongyang Chen, Huanjin Yao, Lin Yi, and Q.H.Wu. Estimating critical clearing time of grid faults using da of state-reduction model of power systems. CSEE Journal of Power and Energy Systems, 10(2):807–820, 4 2024. [17] Hsiang Dong Chiang, M.W. Hirsch, and F.F. Wu. Stability regions of nonlin-ear autonomous dynamical systems. IEEE Transactions on Automatic Control, 33(1):16–27, January 1988. [18] Michael W. Fisher and Ian A. Hiskens. Comments on “stability regions of non-linear autonomous dynamical systems”. IEEE Transactions on Automatic Control, 66(12):6194–6196, December 2021. 33 [19] Michael W. Fisher and Ian A. Hiskens. Hausdorff continuity of region of attrac-tion boundary under parameter variation with application to disturbance recovery. SIAM Journal on Applied Dynamical Systems, 21(1):327–365, 2022. [20] John M Lee. Introduction to Smooth Manifolds, volume 218 of Graduate Texts in Mathematics. Springer, 2nd edition, 2013. [21] Shuting Gu and Xiang Zhou. Simplified gentlest ascent dynamics for saddle points in non-gradient systems. Chaos: An Interdisciplinary Journal of Nonlinear Science, 28(12):123106, 12 2018. 34

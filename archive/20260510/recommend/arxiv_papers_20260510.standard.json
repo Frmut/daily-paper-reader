@@ -1,0 +1,98 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-05-10T20:26:14.714307+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 2,
+    "quick_skim_target": 11,
+    "quick_selected": 2
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2605.03302v1",
+      "title": "Height Control and Optimal Torque Planning for Jumping With Wheeled-Bipedal Robots",
+      "abstract": "This paper mainly studies the accurate height jumping control of wheeled-bipedal robots based on torque planning and energy consumption optimization. Due to the characteristics of underactuated, nonlinear estimation, and instantaneous impact in the jumping process, accurate control of the wheeled-bipedal robot's jumping height is complicated. In reality, robots often jump at excessive height to ensure safety, causing additional motor loss, greater ground reaction force and more energy consumption. To solve this problem, a novel wheeled-bipedal jumping dynamical model(W-JBD) is proposed to achieve accurate height control. It performs well but not suitable for the real robot because the torque has a striking step. Therefore, the Bayesian optimization for torque planning method(BOTP) is proposed, which can obtain the optimal torque planning without accurate dynamic model and within few iterations. BOTP method can reduce 82.3% height error, 26.9% energy cost with continuous torque curve. This result is validated in the Webots simulation platform. Based on the torque curve obtained in the W-JBD model to narrow the searching space, BOTP can quickly converge (40 times on average). Cooperating W-JBD model and BOTP method, it is possible to achieve the height control of real robots with reasonable times of experiments.",
+      "authors": [
+        "Yulun Zhuang",
+        "Yuan Xu",
+        "Binxin Huang",
+        "Mandan Chao",
+        "Guowei Shi",
+        "Xin Yang",
+        "Kuangen Zhang",
+        "Chenglong Fu"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-05-05T02:43:57+00:00",
+      "link": "https://arxiv.org/pdf/2605.03302v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "optimal torque planning and motor loss reduction",
+      "llm_evidence_cn": "最优转矩规划与电机损耗降低",
+      "llm_evidence": "最优转矩规划与电机损耗降低",
+      "canonical_evidence": "最优转矩规划与电机损耗降低",
+      "llm_tldr_en": "Studies torque planning and energy optimization to reduce motor loss in bipedal robots.",
+      "llm_tldr_cn": "研究了转矩规划和能量优化，以减少双足机器人的电机损耗。",
+      "llm_tldr": "研究了转矩规划和能量优化，以减少双足机器人的电机损耗。",
+      "llm_tags": [
+        "query:pmsm"
+      ],
+      "matched_query_tag": "query:pmsm",
+      "matched_query_text": "Permanent Magnet Synchronous Motor research",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2605.04197v1",
+      "title": "Calculating Domain of Attraction Boundary of Power Systems Based on the Gentlest Ascent Dynamics",
+      "abstract": "The power system, a fundamental public utility, is increasingly important due to growing global electricity demand. Recent large-scale blackouts (e.g., Iberian Peninsula, UK) have raised concerns about transient stability under impact faults. Transient stability is determined by post-disturbance synchronizing capability of synchronous generators, formulated as identifying the domain of attraction (DOA) boundary of the asymptotically stable equilibrium. Using a benchmark model of synchronous-generator-dominated power systems, this report employs a gentlest ascent dynamics (GAD) method for 1-saddle points, an adjoint operator method for periodic orbits, and stable manifold algorithms to compute the DOA boundary. These algorithms transform DOA boundary determination into constructing unstable critical elements (saddle points and periodic orbits) and their stable manifolds. Theoretically, under certain assumptions we prove that the DOA boundary is the closure of the union of stable manifolds of index-1 critical elements, and establish a stability theory for a perturbed GAD system. Numerical experiments on two-machine and three-machine systems (with only saddle points or with periodic orbits) validate the effectiveness and accuracy. Results show the algorithms accurately capture the geometric structure of the DOA boundary, providing a new numerical tool for transient stability analysis.",
+      "authors": [
+        "Sixu Wu",
+        "Chenmin Zhang",
+        "Aiqing Zhu",
+        "Yang Liu",
+        "Jianxi Lin",
+        "Yifa Tang"
+      ],
+      "primary_category": "math.DS",
+      "categories": [
+        "math.DS",
+        "math.NA"
+      ],
+      "published": "2026-05-05T18:40:38+00:00",
+      "link": "https://arxiv.org/pdf/2605.04197v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "synchronous generator stability in power systems",
+      "llm_evidence_cn": "电力系统中同步发电机的稳定性",
+      "llm_evidence": "电力系统中同步发电机的稳定性",
+      "canonical_evidence": "电力系统中同步发电机的稳定性",
+      "llm_tldr_en": "Computes the domain of attraction for synchronous-generator-dominated power systems to assess stability.",
+      "llm_tldr_cn": "计算以同步电机为主的电力系统的吸引域边界，以评估瞬态稳定性。",
+      "llm_tldr": "计算以同步电机为主的电力系统的吸引域边界，以评估瞬态稳定性。",
+      "llm_tags": [
+        "query:pmsm"
+      ],
+      "matched_query_tag": "query:pmsm",
+      "matched_query_text": "Permanent Magnet Synchronous Motor research",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

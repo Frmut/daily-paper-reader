@@ -1,0 +1,37 @@
+{
+  "label": "2026-05-10",
+  "date": "2026-05-10",
+  "generated_at": "2026-05-10T20:26:45",
+  "count": 2,
+  "papers": [
+    {
+      "paper_id": "202605/10/2605.03302v1-height-control-and-optimal-torque-planning-for-jumping-with-wheeled-bipedal-robots",
+      "section": "quick",
+      "title_en": "Height Control and Optimal Torque Planning for Jumping With Wheeled-Bipedal Robots",
+      "authors": "Yulun Zhuang, Yuan Xu, Binxin Huang, Mandan Chao, Guowei Shi, Xin Yang, Kuangen Zhang, Chenglong Fu",
+      "date": "2026-05-05",
+      "pdf": "https://arxiv.org/pdf/2605.03302v1",
+      "score": "6.0",
+      "evidence": "最优转矩规划与电机损耗降低",
+      "tldr": "针对轮足机器人跳跃过程中存在的高度控制不精确及能耗过高问题，本文提出了一种新型轮足跳跃动力学模型（W-JBD）和基于贝叶斯优化的力矩规划方法（BOTP）。该方法通过优化力矩曲线，在减少电机损耗和地面冲击力的同时，实现了精确的高度控制。仿真结果显示，该方案显著降低了高度误差和能耗，为实际机器人的跳跃控制提供了高效的解决方案。",
+      "tags": "query:pmsm",
+      "abstract_en": "This paper mainly studies the accurate height jumping control of wheeled-bipedal robots based on torque planning and energy consumption optimization. Due to the characteristics of underactuated, nonlinear estimation, and instantaneous impact in the jumping process, accurate control of the wheeled-bipedal robot's jumping height is complicated. In reality, robots often jump at excessive height to ensure safety, causing additional motor loss, greater ground reaction force and more energy consumption. To solve this problem, a novel wheeled-bipedal jumping dynamical model(W-JBD) is proposed to achieve accurate height control. It performs well but not suitable for the real robot because the torque has a striking step. Therefore, the Bayesian optimization for torque planning method(BOTP) is proposed, which can obtain the optimal torque planning without accurate dynamic model and within few iterations. BOTP method can reduce 82.3% height error, 26.9% energy cost with continuous torque curve. This result is validated in the Webots simulation platform. Based on the torque curve obtained in the W-JBD model to narrow the searching space, BOTP can quickly converge (40 times on average). Cooperating W-JBD model and BOTP method, it is possible to achieve the height control of real robots with reasonable times of experiments.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202605/10/2605.04197v1-calculating-domain-of-attraction-boundary-of-power-systems-based-on-the-gentlest-ascent-dynamics",
+      "section": "quick",
+      "title_en": "Calculating Domain of Attraction Boundary of Power Systems Based on the Gentlest Ascent Dynamics",
+      "authors": "Sixu Wu, Chenmin Zhang, Aiqing Zhu, Yang Liu, Jianxi Lin, Yifa Tang",
+      "date": "2026-05-05",
+      "pdf": "https://arxiv.org/pdf/2605.04197v1",
+      "score": "6.0",
+      "evidence": "电力系统中同步发电机的稳定性",
+      "tldr": "本研究针对电力系统暂态稳定性分析中的吸引域（DOA）边界计算难题，提出了一种基于最缓上升动力学（GAD）的方法。通过结合伴随算子法和稳定流形算法，研究实现了对1-鞍点和周期轨道的精确识别，并从理论上证明了DOA边界由指数-1临界元素的稳定流形并集闭包构成。在两机和三机系统上的实验验证了该方法能准确捕捉DOA边界的几何结构，为电力系统稳定性评估提供了新的数值工具。",
+      "tags": "query:pmsm",
+      "abstract_en": "The power system, a fundamental public utility, is increasingly important due to growing global electricity demand. Recent large-scale blackouts (e.g., Iberian Peninsula, UK) have raised concerns about transient stability under impact faults. Transient stability is determined by post-disturbance synchronizing capability of synchronous generators, formulated as identifying the domain of attraction (DOA) boundary of the asymptotically stable equilibrium. Using a benchmark model of synchronous-generator-dominated power systems, this report employs a gentlest ascent dynamics (GAD) method for 1-saddle points, an adjoint operator method for periodic orbits, and stable manifold algorithms to compute the DOA boundary. These algorithms transform DOA boundary determination into constructing unstable critical elements (saddle points and periodic orbits) and their stable manifolds. Theoretically, under certain assumptions we prove that the DOA boundary is the closure of the union of stable manifolds of index-1 critical elements, and establish a stability theory for a perturbed GAD system. Numerical experiments on two-machine and three-machine systems (with only saddle points or with periodic orbits) validate the effectiveness and accuracy. Results show the algorithms accurately capture the geometric structure of the DOA boundary, providing a new numerical tool for transient stability analysis.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
