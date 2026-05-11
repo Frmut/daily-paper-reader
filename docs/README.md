@@ -6,29 +6,22 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-05-10
-- 运行时间：2026-05-10 20:26:33 UTC
+- 最新运行日期：2026-05-11
+- 运行时间：2026-05-11 21:01:34 UTC
 - 运行状态：成功
-- 本次总论文数：2
+- 本次总论文数：0
 - 精读区：0
-- 速读区：2
+- 速读区：0
 
 ### 今日简报（AI）
-今日聚焦轮足机器人跳跃控制与电力系统稳定性分析，完成两篇前沿算法速读。
-重点关注轮足机器人跳跃的高度控制与力矩规划，以及利用最缓上升动力学（GAD）精确刻画电力系统吸引域边界。
-建议关注复杂动力系统在极端工况下的稳定性算法，探索跨领域控制理论的融合应用。
-- 详情：[/202605/10/README](/202605/10/README)
+> 今日无新推荐，系统未产出可展示论文。
+- 详情：[/202605/11/README](/202605/11/README)
 
 ### 精读区论文标签
 - 本次无精读推荐。
 
 ### 速读区论文标签
-1. [Height Control and Optimal Torque Planning for Jumping With Wheeled-Bipedal Robots](/202605/10/2605.03302v1-height-control-and-optimal-torque-planning-for-jumping-with-wheeled-bipedal-robots)  
-   标签：评分：6.0/10、query:pmsm
-   evidence：最优转矩规划与电机损耗降低
-2. [Calculating Domain of Attraction Boundary of Power Systems Based on the Gentlest Ascent Dynamics](/202605/10/2605.04197v1-calculating-domain-of-attraction-boundary-of-power-systems-based-on-the-gentlest-ascent-dynamics)  
-   标签：评分：6.0/10、query:pmsm
-   evidence：电力系统中同步发电机的稳定性
+- 本次无速读推荐。
 
 
 <div class="dpr-home-promo-card">
