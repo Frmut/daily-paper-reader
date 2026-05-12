@@ -1,0 +1,704 @@
+Title: LASSA Architecture-Based Autonomous Fault-Tolerant Control of Unmanned Underwater Vehicles
+
+URL Source: https://arxiv.org/pdf/2605.09494v1
+
+Published Time: Tue, 12 May 2026 01:56:36 GMT
+
+Number of Pages: 22
+
+Markdown Content:
+# LASSA Architecture-Based Autonomous Fault-Tolerant Control of Unmanned Underwater Vehicles 
+
+## Hong Chen a,∗, Zixiang Tang a,b , Yuanbao Chen a and Yu Liu a
+
+> a
+
+, Wuhan Second Ship Design and Research Institute, Wuhan, 430060, China 
+
+> b
+
+, School of Aeronautic Science and Engineering, Beihang University, Beijing, 100191, China 
+
+A R T I C L E I N F O 
+
+Keywords :Unmanned Underwater Vehicle (UUV) Large Language Model (LLM) Intelligent Agent Rudder Fault Fault-Aware Trajectory Replanning Physical Solver 
+
+A B S T R A C T 
+
+Unmanned underwater vehicles (UUVs) operate persistently in communication-constrained environ-ments, thus requiring high-level autonomous fault-tolerant control under faulty operating conditions. Existing approaches rely heavily on predefined hard-coded rules and struggle to achieve effective fault-tolerant control against unforeseen faults. Although large language models (LLMs) possess powerful cognitive and reasoning capabilities, their inherent hallucinations remain a major obstacle to their application in UUV control systems. This paper proposes an intelligent control method based on the LASSA (LLM-based Agent with Solver, Sensor and Actuator) architecture. Within this architecture, an LLM identifies unknown faults and accomplishes task replanning via autonomous reasoning without hard-coded rules; the intelligent agent undertakes perception, scheduling and decision evaluation; the solver verifies physical boundary feasibility constraints prior to command transmission to the actuators. This architecture suppresses physically infeasible LLM hallucinations and ensures interpretable, verifiable decision-making. Moreover, it enables fast–slow dual closed-loop collaborative control, where the slow loop undertakes high-level dynamic decision-making and the fast loop guarantees high-frequency real-time control, simultaneously balancing decision intelligence and control timeliness. Lake experiments under normal and lower-rudder-fault conditions show that the framework detects trajectory tracking abnormalities, replans the route by adjusting the turning radius from 4m to 12m and reducing speed from 2kn to 1kn, passes all three solver constraints on the first invocation, and guides the UUV to complete the full mission; under normal conditions no false fault alarms are raised throughout the run. Additional simulation experiments under abnormal scenarios such as cross-current disturbances and DVL sensor faults further demonstrate the robustness of the framework. 
+
+## 1. Introduction 
+
+Unmanned underwater vehicles (UUVs) have been widely used in marine observation, underwater inspection, environ-mental monitoring, and special operation support because of their compact structure, low deployment cost, and strong environmental adaptability [1, 2]. As mission profiles extend to deeper waters, longer endurance operations, and increas-ingly remote deployment areas, UUVs are required to oper-ate in environments where the underwater acoustic commu-nication channel imposes severe constraints on bandwidth, propagation delay, and link availability [3]. In such condi-tions, real-time teleoperation or shore-based intervention is impractical: the vehicle must rely on autonomous decision-making capabilities to handle unexpected events without human assistance. Among these, actuator faults represented by rudder failures are particularly critical, as they directly de-grade heading control, trajectory tracking, and return safety. In addition, navigation equipment malfunctions and current disturbances can also severely impair the trajectory control performance of UUVs [4, 5]. Once the UUV can no longer follow the preset route and no remote operator is reachable in time, a delayed or inappropriate autonomous response may cause mission interruption, navigation instability, or even vehicle loss. Therefore, an architecture with high autonomy and precise control capability should be established to 
+
+> ∗
+
+Hong Chen.  
+
+> chenhong22001@163.com
+
+(H. Chen) 
+
+organically integrate state perception, fault analysis, mission replanning, solver-based physical verification, and actuation control into a complete closed-loop decision-making pro-cess, so as to guarantee fully autonomous operation of the system without any external input. Existing studies on UUV fault handling mainly focus on fault diagnosis, fault-tolerant control, control allocation, and trajectory replanning [4, 6, 7, 8, 9]. These methods have provided effective support for stabilizing the vehicle after actuator degradation or disturbance. However, most existing approaches are centered on low-level controller design or predefined rule-based adjustment, and they are typically op-timized for relatively clear fault forms and known dynamic constraints [10, 11]. More critically, they implicitly assume that a human operator or a continuously available remote system remains in the loop to provide supervisory guidance whenever a fault-induced deviation exceeds the scope of the pre-designed controller. In the scenario where the com-munication link is constrained or severed and autonomous fault recovery is most urgently needed, there is no fallback cognitive mechanism to reassess the situation, reformulate the mission, and generate an adaptive response. Therefore, a time-division dual-loop control architecture with fast and slow loops should be constructed to organically integrate state perception, fault analysis, mission replanning, solver-based physical verification, and actuation control into a com-plete and coherent closed-loop decision-making process. The fast loop achieves real-time high-precision low-level 
+
+First Author et al. Page 1 of 18 
+
+> arXiv:2605.09494v1 [cs.RO] 10 May 2026 LASSA Architecture-Based Autonomous Fault-Tolerant Control of UUVs
+
+control, while the slow loop performs dynamic optimization and adjustment of the control strategy, enabling the system to operate with high autonomy without any external input. Recent advances in large language models (LLMs) and intelligent agent systems provide a new possibility for ad-dressing this problem [12, 13]. Unlike conventional fault-tolerant controllers that require the designer to enumerate all anticipated fault types and hard-code a corresponding response for each, an LLM reasons over the current vehicle state, fault description, and mission context to generate an adaptive replanning strategy without any pre-programmed rule set. This reasoning capability confers several properties that conventional methods cannot provide. First, the LLM operates autonomously: it completes the full fault-response cycle comprising perception, causal reasoning, trajectory replanning, and execution without requiring any communi-cation with a remote operator. Second, it generalises to fault configurations that were never explicitly anticipated during design, because its response is derived from reasoning rather than table lookup. Third, it eliminates rule-combination explosion: as the number of possible fault types and environ-mental conditions grows, a rule-based system requires expo-nentially more hand-crafted cases, whereas the LLM adapts through context. These properties are not unique to under-water vehicles; the same architecture is applicable wherever communication constraints force fully autonomous fault re-covery, including ground robots, manipulators, unmanned aerial vehicles, and autonomous driving systems under sig-nal interference [14, 15]. Nevertheless, directly deploying an LLM in the UUV control loop without additional safeguards introduces a critical risk: a strategy generated from semantic reasoning may be logically coherent yet physically infeasible given the vehicle’s degraded actuator authority and environ-mental boundaries [16, 17]. Therefore, the core challenge is not simply incorporating an LLM into the control architec-ture, but grounding its outputs through a deterministic phys-ical verification layer before they reach the actuators, thus forming a complete and reliable autonomous decision loop. Meanwhile, directly introducing LLM reasoning into the real-time control loop incurs non-negligible latency, making it difficult to satisfy high-precision control requirements. Therefore, the proposed architecture must strike a balance between autonomous capability and control precision. To address the above issues, this paper proposes an intel-ligent control method for autonomous navigation of UUVs under fault conditions based on the LASSA (LLM-based Agent with Solver, Sensor and Actuator) architecture, as illustrated in Figure 1. This framework integrates the cogni-tive reasoning capability of LLMs, the perception-planning-scheduling capability of the agent, and the physical con-straint validation capability supported by the solver. Within this architecture, the agent acquires real-time operational state data from onboard sensors to autonomously detect system anomalies. With the support of the LLM, the agent performs fault mechanism analysis and adaptively adjusts and optimizes control strategies. The LLM conducts logical reasoning based on the real-time UUV status and mission scenarios, and generates replanned control strategies and corresponding parameters without human intervention. The solver conducts physical constraint validation on the gener-ated control strategies. Only when all constraints are satisfied can compliant commands be transmitted to the actuator layer for execution. Meanwhile, LASSA is formulated as a time-division fast-slow dual-loop control architecture. The fast loop realizes real-time high-precision low-level control, while the slow loop performs dynamic optimization and adjustment of control strategies. This method constructs a collaborative dual-loop system that integrates state per-ception, LLM reasoning and dynamic strategy generation, solver-based physical verification, and real-time low-level actuator control, enabling independent, reliable and fully autonomous operation in communication-constrained en-vironments. The main contributions of this study are as follows. First, a hierarchical intelligent control framework based on the LASSA architecture is proposed for fault-state UUV autonomous navigation under communication-constrained deployment conditions, enabling the vehicle to indepen-dently complete the full fault-response cycle spanning state perception, LLM-based cognitive reasoning, solver-based physical verification, and actuator execution, without relying on real-time remote intervention and without hard-coding any predefined rule set for fault handling. Unlike conven-tional fault-tolerant control methods that require explicit enumeration of fault types and corresponding response rules [18, 5], the LLM component autonomously reasons over the current vehicle state, mission context, and fault description to generate adaptive replanning strategies, thereby avoiding rule-combination explosion in complex or compound fault scenarios. To the best of the authors’ knowledge, this rep-resents the first integration of LLM-driven fault-aware re-planning with a deterministic solver verification layer specif-ically designed for rudder-degraded underwater navigation. Second, a solver-based physical verification module is designed that certifies LLM-generated trajectory strategies against three physical constraints, namely boundary fea-sibility, speed limits, and a fault-aware minimum turning radius derived from the degraded actuator configuration, before actuator dispatch. This constraint-grounding mech-anism suppresses physically infeasible LLM hallucinations from reaching the vehicle, an issue that existing LLM-for-robotics frameworks have left largely unaddressed. Further-more, because every replanning decision passes through explicit, inspectable solver checks, the framework provides interpretable decision grounding: the reasoning path from fault detection through strategy generation to constraint cer-tification is transparent and auditable, a property absent from end-to-end learned controllers. Third, the proposed LASSA architecture adopts a time-sharing closed-loop configuration with fast and slow dual loops. The fast loop delivers real-time and high-precision responses for low-level actuation control, whereas the slow loop performs dynamic decision-making and optimization  
+
+> First Author et al. Page 2 of 18 LASSA Architecture-Based Autonomous Fault-Tolerant Control of UUVs
+> Figure 1: Fault-Tolerant Control of UUV Based on LASSA Architecture. The LASSA architecture incorporates cognitive reasoning of large language models, perception-planning-scheduling of the agent, and physical constraint verification of the solver. The agent acquires operational data via onboard sensors to autonomously detect fault anomalies, performs fault mechanism analysis based on the LLM, and adaptively regulates and optimizes control strategies. After passing physical constraint verification by the solver, qualified control commands are transmitted to the actuator layer for implementation. The architecture adopts a time-division fast-slow dual closed-loop framework. The fast loop ensures high-precision real-time low-level control, while the slow loop achieves dynamic optimization of control strategies, enabling unmanned underwater vehicles to maintain highly autonomous control in communication-constrained scenarios.
+
+tuning based on LLM reasoning and physical solver veri-fication. This design substantially improves the autonomous capability of the control system, while fully meeting the real-time and high-precision demands of low-level control. Fourth, lake field trials are carried out under normal operating conditions and incipient rudder actuator faults to validate the end-to-end practicability of the proposed framework. Experimental results show that the LASSA ar-chitecture can monitor and analyze UUV rudder actuator faults. Leveraging the autonomous reasoning capability of the LLM, the system dynamically generates feasible replan-ning paths, which are transmitted to the actuators for imple-mentation after passing physical verification via the solver. The results confirm that LASSA’s dynamic replanning and low-level real-time control capabilities well satisfy the fault-tolerant control demands of UUVs subjected to abnormal rudder actuator conditions. The remainder of this paper is organized as follows. Section 2 reviews the most relevant studies on UUV fault-tolerant control, path planning, and LLM-enabled robotic autonomy. Section 3 presents the LASSA architecture and the detailed design of each module. Section 4 describes the experimental design and implementation. Section 5 reports the experimental results and analysis, followed by conclu-sions and directions for future work. 
+
+## 2. Related Work 
+
+Research closely related to this paper can be grouped into three directions: UUV fault-tolerant control and fault diagnosis, UUV path planning and online replanning, and LLM-enabled robotic decision-making. Underlying all three directions is a deployment reality that has received com-paratively little explicit treatment in the literature: acoustic underwater communication channels are characterised by limited bandwidth (typically on the order of kilobits per sec-ond), high and variable propagation delay, and intermittent link availability in complex bathymetric environments [3]. These constraints make real-time shore-based supervision impractical for long-endurance or remote missions, elevat-ing the importance of fully autonomous onboard decision-making, particularly in fault scenarios where the vehicle cannot defer to a remote operator. In the first direction, recent studies have investigated fault-tolerant control strategies for autonomous underwater vehicles under actuator degradation, unknown disturbances, saturation, and fault reconstruction constraints, including thruster-fault diagnosis and control co-design, model pre-dictive fault-tolerant control, predefined-time or finite-time fault handling, and fuzzy or sliding-mode-based formula-tions [4, 6, 7, 8, 10, 11, 19]. More recent work has extended these approaches to multi-mode thruster failure under com-plex environmental conditions and to deep-reinforcement-learning-based rudder fault diagnosis for X-rudder AUVs  
+
+> First Author et al. Page 3 of 18 LASSA Architecture-Based Autonomous Fault-Tolerant Control of UUVs
+
+[5, 20]. In parallel, data-driven diagnosis methods have been introduced for underwater vehicle health monitoring, includ-ing multi-scale attention-based diagnosis, weak fault de-tection, deep-learning-based diagnosis under missing data, and propeller fault diagnosis using particle-filter-based ap-proaches [9, 21, 22, 23, 24, 25]. While these studies pro-vide valuable support for fault identification and low-level stabilization, they primarily address diagnosis or controller design at the individual module level and do not provide a mechanism for translating detected faults into high-level trajectory replanning decisions. More critically, they do not address the scenario in which the vehicle must complete this translation autonomously, without any possibility of remote operator involvement. The second direction concerns path planning, adaptive navigation, and online replanning for autonomous underwa-ter vehicles. Review studies have systematically analyzed optimization-based, biologically inspired, and learning-based planning methods [1, 2, 26, 27, 28]. More targeted work has addressed multi-AUV cooperative planning under realistic communication degradation, coverage path planning with real-time replanning, bioinspired neural-network planning, reinforcement-learning-based navigation, and path genera-tion in unknown underwater canyons [29, 30, 31, 32, 33, 34]. Although these methods significantly improve planning quality and online route generation, they presuppose that replanning can be triggered by well-defined external signals or that the planning system operates in isolation from the fault-detection layer. None of them closes the loop between fault-induced state deviation, autonomous cognitive replan-ning, and physical feasibility verification in a manner that remains fully operable without external communication. The third direction involves LLMs and agent architec-tures for robotic systems. Broad studies have demonstrated that LLMs can support robot task planning, instruction in-terpretation, action sequencing, and high-level decision co-ordination [12, 13, 14, 35, 36, 37]. More recent embodied frameworks such as ELLMER further couple LLMs with retrieval-augmented generation and sensorimotor feedback to complete long-horizon tasks in unpredictable settings [38]. A particularly relevant line of work addresses LLM-based online replanning: RePLan [39] uses perception and language models to adapt robot actions when an initial plan fails due to unforeseen obstacles, while BrainBody-LLM [15] couples a hierarchical two-LLM planner with closed-loop execution feedback for real-time replanning. Brain-inspired embodied agents that explicitly partition cognition and dynamics, such as EvoAgent [40], which couples a multimodal LLM with a world model through dynamic communication slots, further illustrate the broader trend toward dual-system architectures. These works demonstrate the viability of LLM-driven replanning but operate in ter-restrial manipulation settings with persistent cloud connec-tivity and do not address physical constraint certification of replanned trajectories. In the underwater domain, re-cent work has explored LLMs for AUV attitude stability and adaptive control under hydrodynamic disturbances [17, 41], and language-driven command generation for under-water, subsea, and surface vehicles has been demonstrated by OceanChat, AquaChat, Word2Wave, and AI Captain [16, 42, 43, 44]. However, these works predominantly rely on persistent connectivity between the vehicle and a remote or cloud-hosted LLM service, and they address motion control adaptation or natural-language task interaction rather than autonomous fault-state recovery. Ensuring that a generated trajectory is actually executable given the vehicle’s degraded actuator authority and environmental boundary constraints remains unaddressed across all of them. None of these works addresses the compound scenario in which communication constraints eliminate the possibility of remote intervention while a complex actuator fault simultaneously requires the vehicle to autonomously complete the full cognitive cy-cle of abnormality detection, LLM-based trajectory replan-ning, solver-based physical constraint verification, and actu-ator execution within a single closed-loop architecture. This gap in combining communication-constrained deployment, complex rudder fault handling, and physically verified au-tonomous replanning directly motivates the LASSA frame-work proposed in this paper. To the best of the authors’ knowledge, this is the first work to couple LLM-driven fault-aware trajectory replanning with a deterministic solver verification layer in a fully autonomous closed-loop control architecture designed for communication-constrained UUV deployment under actuator faults. 
+
+## 3. Method 
+
+As established in Section 1, fault-state UUV naviga-tion under communication constraints presents a compound challenge: the vehicle must complete the full fault-response cycle of detection, reasoning, replanning, verification, and execution entirely onboard, without access to a remote op-erator or cloud-based planner. Conventional fault-tolerant control methods address this through pre-designed rule sets or model-based controllers that enumerate anticipated fault modes [18, 5], but such approaches are inherently brittle: their response space is bounded by the designer’s fore-sight and cannot adapt to fault configurations or environ-mental conditions that were not explicitly anticipated. The LASSA architecture addresses this limitation by substituting the fixed rule set with an LLM-based cognitive reasoning module that autonomously interprets the current fault state and mission context to generate adaptive replanning strate-gies, thereby eliminating rule-combination explosion and enabling generalisation to complex fault scenarios without additional programming. The solver layer then acts as a hard physical filter, certifying each LLM-generated strategy before it reaches the actuators and suppressing physically infeasible outputs that may arise from pure language-model reasoning. This separation of cognitive autonomy (LLM) from physical feasibility enforcement (solver) also confers interpretability: every replanning decision is grounded by explicit, inspectable constraint checks, making the frame-work’s decision process transparent and auditable.  
+
+> First Author et al. Page 4 of 18 LASSA Architecture-Based Autonomous Fault-Tolerant Control of UUVs
+
+3.1. Overview 
+
+The LASSA architecture is adopted in this study for UUV autonomous navigation control. As illustrated in Fig-ure 2, the framework is organized into five tightly coupled layers: a large language model (LLM) for high-level cogni-tive reasoning, an intelligent agent for perception, planning, scheduling, and decision evaluation, a solver-based physical verification center for feasibility and constraint checking, a sensor layer for real-time state acquisition, and an actuator layer for command execution. During operation, data flow upward from the sensor layer through the agent to the LLM when needed, and commands flow downward from the de-cision evaluation module through the solver and back to the actuators. The remainder of this section describes each layer in turn, beginning with the kinematic model that underpins the solver and control laws, followed by the agent core, the LLM module, the solver, and finally the sensor and actuator layers. The complete system state at time 𝑡 is defined as the vector 
+
+𝐬 (𝑡 ) = [𝑥 (𝑡 ), 𝑦 (𝑡 ), 𝜓 (𝑡 ), 𝑢 (𝑡 ), 𝑑 (𝑡 ), 𝛿 𝑟 (𝑡 )]⊤, (1) where (𝑥, 𝑦 ) denotes the horizontal position in a fixed nav-igation frame, 𝜓 is the heading angle, 𝑢 is the surge speed, 
+
+𝑑 is the diving depth, and 𝛿 𝑟 ∈ {0 , 1} is a binary rudder-health indicator ( 𝛿 𝑟 = 0 denotes a fault; 𝛿 𝑟 = 1 denotes healthy). The first five components are continuous and take values in ℝ; 𝛿 𝑟 is treated as an appended discrete flag for notational convenience. Under normal operation, the agent executes a closed-loop navigation cycle driven by sensor measurements; upon detecting a navigation abnormality, the system escalates to the LLM layer for fault-aware trajectory replanning, passes the candidate strategy to the solver for physical verification, and finally delivers the verified com-mand 𝐂 (𝑡 ) to the actuator layer. The overall closed-loop control mapping is written as 
+
+𝐂 (𝑡 ) = (̂
+
+𝐬 (𝑡 ), 𝐖 act (𝑡 ),̂ 𝛼 (𝑡 ) ), (2) where 𝐖 act (𝑡 ) is the active waypoint sequence at time 𝑡 ,equal to 𝐖 ref (the original plan) before any fault-triggered replanning and updated to 𝐖 new (the LLM-replanned route) once a solver-verified replanning has been accepted; ̂𝛼 (𝑡 ) ∈ {0 , 1} is the confirmed fault flag generated by the perception planning module (formally defined in (9)), and ̂ 𝐬 (𝑡 ) denotes the estimated vehicle state derived from the sensor measure-ments 𝐳 𝑐 (𝑡 ) and 𝛿 𝑚 𝑟 (𝑡 ).
+
+3.2. UUV Kinematic Model and State Representation 
+
+To provide a physical basis for trajectory planning, ab-normality detection, and solver verification, the horizontal-plane kinematics of the UUV are described by the three-degree-of-freedom model ̇𝑥 = 𝑢 cos 𝜓 −𝑣 sin 𝜓,̇ 𝑦 = 𝑢 sin 𝜓 +𝑣 cos 𝜓,̇ 𝜓 = 𝑟, (3) where 𝑣 is the lateral (sway) velocity and 𝑟 is the yaw rate. In the shallow-water, low-speed regime of the lake experiments, the sway component 𝑣 is relatively small and is treated as a bounded disturbance. The heading controller is a PD law acting on the estimated heading error: 
+
+𝛿 (𝑡 ) = 𝐾 𝑝 𝑒 𝜓 (𝑡 ) + 𝐾 𝑑 ̇ 𝑒 𝜓 (𝑡 ), (4) where 𝑒 𝜓 (𝑡 ) = 𝜓 des (𝑡 ) − ̂𝜓 (𝑡 ) is the heading error computed from the estimated heading ̂ 𝜓 (𝑡 ), 𝜓 des is the desired head-ing provided by the LOS guidance law (defined in (33) in Section 3.7), and 𝐾 𝑝 , 𝐾 𝑑 are the proportional and derivative gains, respectively. The rudder command 𝛿 (𝑡 ) is saturated within [− 𝛿 max , 𝛿 max ] to respect actuator limits. The trajectory reference is defined as an ordered se-quence of 𝑁 waypoints 
+
+𝐖 ref = {𝑤 𝑘 = ( 𝑥 𝑟 𝑘 , 𝑦 𝑟 𝑘 )}𝑁 𝑘 =1 , (5) with each inter-waypoint transition described by a circular arc of turning radius 𝑅 𝑘 and a constant forward speed 𝑢 𝑘 . The UUV switches to the next waypoint 𝑤 𝑘 +1 when the cross-track distance to the current segment falls below a waypoint-acceptance radius 𝑟 acc .The cross-track error is defined with respect to the near-est point on the reference path. In terms of the true state it is 
+
+𝑒 𝑝 (𝑡 ) = 
+
+√(𝑥 (𝑡 ) − 𝑥 ref (𝑡 ))2 + (𝑦 (𝑡 ) − 𝑦 ref (𝑡 ))2, (6) where (𝑥 ref (𝑡 ), 𝑦 ref (𝑡 )) is the nearest point on the reference path at time 𝑡 . In the implementation, the estimated position 
+
+(̂𝑥 (𝑡 ),̂𝑦 (𝑡 )) from ̂ 𝐬 (𝑡 ) is substituted for (𝑥 (𝑡 ), 𝑦 (𝑡 )) .
+
+3.3. Agent Core for Perception, Planning, and Scheduling 
+
+The intelligent agent constitutes the computational core of the LASSA architecture, responsible for global schedul-ing, state perception, decision-making, and execution man-agement. It consists of three collaborating modules: the per-ception planning module, the decision evaluation module, and the scheduling module. 
+
+3.3.1. Perception Planning Module 
+
+At each control cycle of duration Δ𝑡 , the perception planning module receives the structured state message 𝐦 (𝑡 )
+
+assembled by the scheduling module: 
+
+𝐦 (𝑡 ) = ⟨̂
+
+𝐬 (𝑡 ), 𝑒 𝑝 (𝑡 ), 𝑒 𝜓 (𝑡 ), 𝛿 𝑚 𝑟 (𝑡 ), 𝑡 ⟩, (7) where ̂ 𝐬 (𝑡 ) is the estimated vehicle state derived from the sensor measurements 𝐳 𝑐 (𝑡 ), and 𝑒 𝑝 (𝑡 ) and 𝑒 𝜓 (𝑡 ) are the cross-track and heading errors computed from ̂ 𝐬 (𝑡 ) relative to the current reference waypoint. The module computes the fault flag by evaluating three conditions: 
+
+𝛼 (𝑡 ) = 
+
+{
+
+1, if 𝑒 𝑝 (𝑡 ) > 𝜀 𝑝 or |𝑒 𝜓 (𝑡 )| > 𝜀 𝜓 or 𝛿 𝑚 𝑟 (𝑡 ) = 0 ,
+
+0, otherwise ,
+
+(8)   
+
+> First Author et al. Page 5 of 18 LASSA Architecture-Based Autonomous Fault-Tolerant Control of UUVs
+> Figure 2: Principle diagram of LASSA-based intelligent control for UUV autonomous navigation
+
+where 𝜀 𝑝 (m) and 𝜀 𝜓 (rad) are the position and heading deviation thresholds, respectively, and 𝛿 𝑚 𝑟 (𝑡 ) = 0 directly indicates a hardware rudder fault reported by the rudder-state sensor. To avoid spurious triggering caused by transient sensor noise, the flag is confirmed only when the condition in (8) persists for a consecutive window of 𝑛 𝑤 cycles: ̂𝛼 (𝑡 ) = 𝟏 
+
+[𝑛 𝑤 −1 
+
+∑
+
+> 𝑖 =0
+
+𝛼 (𝑡 − 𝑖 Δ𝑡 ) ≥ 𝑛 𝑤 
+
+]
+
+. (9) Here the hat in ̂𝛼 denotes confirmation (persistent detection over 𝑛 𝑤 cycles), not estimation in the statistical sense; ̂𝛼 (𝑡 ) = 1 is the signal that activates the LLM reasoning pipeline. When ̂ 𝛼 (𝑡 ) = 0 , the module passes the current trajectory parameters directly to the decision evaluation module for routine execution. When ̂𝛼 (𝑡 ) = 1 , it assembles the context package (𝑡 ) = ⟨̂ 𝐬 (𝑡 ), 𝐖 ref , (𝑡 )⟩ and triggers the LLM reasoning pipeline, where (𝑡 ) denotes the historical context retrieved from the memory module. 
+
+3.3.2. Decision Evaluation Module 
+
+The decision evaluation module operates in two modes depending on whether the LLM has been invoked. Under normal operation ( ̂𝛼 (𝑡 ) = 0 ), no LLM call is made and the module directly issues the trajectory-tracking command: 
+
+𝐂 (𝑡 ) = track 
+
+(̂ 𝐬 (𝑡 ), 𝑤 act 
+
+> 𝑘
+
+),̂ 𝛼 (𝑡 ) = 0 , (10) where track encodes the LOS heading law (33) and the seg-ment plan speed, and 𝑤 act  
+
+> 𝑘
+
+is the currently active waypoint, drawn from 𝐖 ref before any fault-triggered replanning or from 𝐖 new (as defined in (15)) once a replanned route has been successfully verified and activated. Under fault operation ( ̂𝛼 (𝑡 ) = 1 ), after the LLM generates a candidate strategy Θ( 𝑡 ) (defined in Section 3.4), the module submits it to the physical solver (Section 3.5) and obtains a binary verification result 
+
+𝑣 = (Θ( 𝑡 )) ∈ { PASS , FAIL ()} , (11) where  is the set of violated constraint labels returned on failure. The module then applies the execution decision rule: 
+
+𝐂 (𝑡 ) = 
+
+{
+
+sym 
+
+(Θ( 𝑡 )), if 𝑣 = PASS ,
+
+hold (̂𝐬 (𝑡 )) , if 𝑣 = FAIL () and 𝑛 retry ≥ 𝑛 max ,
+
+(12) where sym is the symbolic interfacing function defined in Section 3.4, hold is a conservative hold-heading fallback controller that maintains the last valid heading and reduces speed to 𝑢 min , and 𝑛 retry counts the number of LLM re-generation attempts against the maximum allowed 𝑛 max . If 
+
+𝑣 = FAIL () and 𝑛 retry < 𝑛 max , the failure label set  is appended to the prompt and the LLM is invoked again. 
+
+3.3.3. Scheduling Module 
+
+The scheduling module manages the timing and data routing among all subsystems. At each cycle it reads the raw measurements 𝐳 𝑐 (𝑡 ) and 𝛿 𝑚 𝑟 (𝑡 ) from the sensor layer, forms the estimated state ̂ 𝐬 (𝑡 ), computes the navigation errors 𝑒 𝑝 (𝑡 )
+
+and 𝑒 𝜓 (𝑡 ) against the active waypoint, assembles the message 
+
+𝐦 (𝑡 ) defined in (7), and dispatches it to the perception plan-ning module. Conversely, it receives the verified command list 𝐂 (𝑡 ) from the decision evaluation module and transmits each command to the actuator layer via the CAN bus. The inter-module message format is defined as a typed tuple 
+
+msg = (𝑡 stamp , src , dst , type , 𝐩𝐚𝐲𝐥𝐨𝐚𝐝 ), (13)  
+
+> First Author et al. Page 6 of 18 LASSA Architecture-Based Autonomous Fault-Tolerant Control of UUVs
+
+where 𝑡 stamp is the UNIX timestamp, src and dst identify the sending and receiving modules, type specifies whether the payload carries state data, a planning request, a strategy, a verification result, or a control command, and 𝐩𝐚𝐲𝐥𝐨𝐚𝐝 
+
+contains the corresponding data structure. 
+
+3.4. Cognitive Reasoning Based on a Large Language Model 
+
+The LLM module serves as the high-level cognitive rea-soning engine within the LASSA framework. It is invoked in two situations: (i) at mission start, to generate the initial trajectory plan from the mission specification (with ̂𝛼 (𝑡 ) = 0 
+
+and an empty fault context); and (ii) during runtime, when the confirmed fault flag ̂ 𝛼 (𝑡 ) = 1 is raised, to generate physically grounded trajectory replanning strategies. Once the LASSA control loop enters routine execution under ̂𝛼 (𝑡 ) = 0, no further LLM call is made until a fault is confirmed (cf. Section 3.3). The module comprises four functional components: a prompt engine, a reasoning and strategy generation unit, a symbolic standard interfacing unit, and a memory module. 
+
+3.4.1. Prompt Engine 
+
+Given the context package (𝑡 ), the prompt engine con-structs a structured natural-language prompt 
+
+(𝑡 ) = prompt 
+
+(̂
+
+𝐬 (𝑡 ),  , (𝑡 ),̂ 𝛼 (𝑡 ),  ), (14) where  is the mission description (target waypoints, mis-sion priority, and safety requirements) and  is the constraint-violation feedback from the solver on retry attempts. The prompt is structured into four fixed sections: (i) System Role ,which defines the LLM’s role as a UUV navigation decision agent; (ii) Vehicle State , which encodes the estimated state ̂
+
+𝐬 (𝑡 ) in tabular form; (iii) Task and Constraints , which speci-fies the mission objective and the physical bounds imposed by the solver; and (iv) Abnormality Description , which translates ̂𝛼 (𝑡 ) and  into natural-language fault context. This structured template ensures deterministic output formatting and reduces the risk of physically infeasible hallucinations. On the first invocation  = ∅ and section (iv) describes only the detected navigation deviation; on retry invocations,  is populated with the names of the failed solver constraints, giving the LLM explicit corrective guidance. 
+
+3.4.2. Reasoning and Strategy Generation 
+
+Upon receiving (𝑡 ), the LLM performs chain-of-thought reasoning and generates a candidate replanning strategy expressed as a structured parameter set: 
+
+Θ( 𝑡 ) = LLM 
+
+((𝑡 )) = {𝑅 new , 𝑢 new , 𝐖 new , 𝜓 ret 
+
+}, (15) where 𝑅 new is the proposed turning radius (m), 𝑢 new is the proposed navigation speed (kn), 𝐖 new = {𝑤 ′1, … , 𝑤 ′ 
+
+> 𝑁 ′
+
+}
+
+is the replanned waypoint sequence, and 𝜓 ret is the desired heading at the return waypoint. The reasoning process con-siders the current fault type, the remaining mission distance, the lake boundary geometry, and the reduced actuator au-thority under the fault condition. 
+
+3.4.3. Symbolic Standard Interfacing 
+
+Because the LLM output Θ( 𝑡 ) contains structured nu-meric parameters (turning radius, speed, waypoint coordi-nates, return heading) embedded in natural-language text, the symbolic interfacing unit parses these values and assem-bles a strictly typed command list that can be dispatched directly to hardware: 
+
+𝐂 (𝑡 ) = sym 
+
+(Θ( 𝑡 )) = {(𝑐 𝑘 , 𝑝 𝑘 )}𝐾 𝑘 =1 , (16) where 𝑐 𝑘 ∈ { SET_SPEED , SET_RADIUS , ADD_WAYPOINT , SET_HEADING }
+
+is a command token and 𝑝 𝑘 is the corresponding numeric parameter. The conversion enforces unit consistency (con-verting natural-language units to SI) and clips values to pre-defined safe ranges; a parse error is raised if any mandatory field is absent. Note that sym is applied after the solver has returned a PASS verdict on Θ( 𝑡 ) (see Section 3.5 and (12)): the solver operates on the structured parameters in 
+
+Θ( 𝑡 ) directly, and the symbolic conversion to 𝐂 (𝑡 ) is only performed once physical feasibility has been confirmed. The resulting command list 𝐂 (𝑡 ) is then forwarded to the scheduling module for actuator dispatch. 
+
+3.4.4. Memory Module 
+
+The memory module maintains two independent stores. The short-term context buffer ST retains the last 𝑀 ST 
+
+prompt–response pairs within the current mission session to enable coherent multi-turn reasoning: 
+
+ST (𝑡 ) = {((𝑡 𝑖 ), Θ( 𝑡 𝑖 )) }𝑛 𝑖 =max(1 , 𝑛 −𝑀 ST ), (17) where 𝑛 is the index of the current reasoning invocation. The long-term knowledge base LT stores mission summaries, known fault patterns, and previously verified recovery strate-gies retrieved by semantic similarity search. The combined context injected into the prompt engine is 
+
+(𝑡 ) = ST (𝑡 ) ∪ LT (𝑡 ), (18) where LT (𝑡 ) denotes the top-𝐾 entries retrieved from the long-term store by semantic similarity to the current prompt 
+
+(𝑡 ). Injecting (𝑡 ) into (𝑡 ) improves the accuracy and coherence of reasoning across repeated fault events within the same or subsequent missions. 
+
+3.5. Solver-Based Physical Verification Center 
+
+The solver acts as a safety gateway between the LLM-generated strategy Θ( 𝑡 ) and the actuator layer. Its purpose is to certify that the proposed trajectory is physically achiev-able given the UUV’s kinematic limits, the environmen-tal boundary of the test lake, and the degraded actuator authority caused by the rudder fault. The verification is decomposed into three sequential checks; the strategy passes only if all three are satisfied. 
+
+3.5.1. Boundary Feasibility Check 
+
+The navigable water area is represented as a convex poly-gon  with 𝑁 𝑏 vertices {( 𝑥 𝑏 𝑖 , 𝑦 𝑏 𝑖 )} 𝑁 𝑏  
+
+> 𝑖 =1
+
+in the same navigation frame as (3). For each planned waypoint 𝑤 ′ 
+
+> 𝑘
+
+∈ 𝐖 new , the  
+
+> First Author et al. Page 7 of 18 LASSA Architecture-Based Autonomous Fault-Tolerant Control of UUVs
+
+signed distance to the nearest boundary edge is computed as 
+
+𝑑 𝑏 (𝑤 ′
+
+> 𝑘
+
+) = 
+
+> 𝑁 𝑏
+
+min  
+
+> 𝑖 =1
+
+dist (𝑤 ′
+
+> 𝑘
+
+, 𝑒 𝑖 
+
+), (19) where 𝑒 𝑖 is the 𝑖 -th boundary edge. The boundary constraint requires 
+
+𝑑 𝑏 (𝑤 ′
+
+> 𝑘
+
+) ≥ 𝑑 safe , ∀ 𝑘 = 1 , … , 𝑁 ′, (20) with safety margin 𝑑 safe (m). For each circular arc turn centered at 𝐨 𝑘 = ( 𝑜 𝑥 𝑘 , 𝑜 𝑦 𝑘 ) with radius 𝑅 𝑘 , the arc is sampled at angular resolution Δ𝜃 and every sample point is tested against (20): 
+
+𝑑 𝑏 
+
+(𝐨 𝑘 +𝑅 𝑘 [cos 𝜃, sin 𝜃 ]⊤) ≥ 𝑑 safe , 𝜃 ∈ [ 𝜃 start , 𝜃 end ]. (21) If any sample violates (20), the boundary check fails and the specific violated waypoints are included in  for LLM feedback. 
+
+3.5.2. Speed and Actuator Constraint Check 
+
+The proposed navigation speed 𝑢 new must satisfy the vehicle’s speed envelope: 
+
+𝑢 min ≤ 𝑢 new ≤ 𝑢 max , (22) where 𝑢 min is the minimum speed for maintaining rudder effectiveness and 𝑢 max is the rated maximum speed. In addition, executing a circular turn of radius 𝑅 at speed 𝑢 
+
+requires a lateral acceleration 
+
+𝑎 𝑐 = 𝑢 2new 
+
+𝑅 new 
+
+, (23) which must remain within the maximum lateral force that the rudder can deliver: 
+
+𝑎 𝑐 ≤ 𝑎 max = 𝐹 𝑟, max 
+
+𝑚 , (24) where 𝐹 𝑟, max is the maximum lateral rudder force and 𝑚 
+
+is the vehicle mass. Combining (23) and (24), the speed-constrained minimum turning radius is 
+
+𝑅 min (𝑢 new ) = 𝑢 2new 
+
+𝑎 max 
+
+. (25) The speed constraint check passes if and only if 𝑅 new ≥
+
+𝑅 min (𝑢 new ).
+
+3.5.3. Fault-Aware Minimum Turning Radius Check 
+
+Under normal operation with both upper and lower ver-tical rudders active, the geometric minimum turning radius at maximum rudder deflection 𝛿 max is approximated by 
+
+𝑅 nom min = 𝐿 
+
+2 sin 𝛿 max 
+
+, (26) where 𝐿 is the vehicle length. This expression is a first-order geometric approximation derived from the turning-circle geometry of a rigid-body vehicle [1] and is used here as a conservative lower bound for solver validation rather than a precise hydrodynamic prediction. When the lower rudder is removed, the effective maximum deflection is reduced to 
+
+𝛿 ef f max < 𝛿 max owing to the asymmetric fin configuration and the consequent degradation in yaw authority. The fault-state minimum turning radius is therefore 
+
+𝑅 fault min = 𝐿 
+
+2 sin 𝛿 ef f max 
+
+> 𝑅 nom min . (27) The value of 𝛿 ef f max is estimated offline from a set of captive turning-circle trials conducted before the lake experiment. The turning-radius constraint check passes if 
+
+𝑅 new ≥ max (𝑅 fault min , 𝑅 min (𝑢 new )). (28) 
+
+3.5.4. Composite Verification Decision 
+
+Denoting the three check results as 𝑣 𝑏 (boundary), 𝑣 𝑠 
+
+(speed), and 𝑣 𝑅 (turning radius), the overall solver verdict is 
+
+(Θ( 𝑡 )) =
+
+{
+
+> PASS
+
+, if 𝑣 𝑏 ∧ 𝑣 𝑠 ∧ 𝑣 𝑅 = true ,
+
+> FAIL
+
+(), otherwise , (29) where  ⊆ {boundary , speed , radius } is the set of failed constraint labels, defined as 
+
+ = {boundary ∣ ¬ 𝑣 𝑏 
+
+} ∪ {speed ∣ ¬ 𝑣 𝑠 
+
+} ∪ {radius ∣ ¬ 𝑣 𝑅 
+
+}.
+
+(30) This structured label set is returned to the decision evaluation module and appended to the LLM prompt on retry invoca-tions to provide explicit corrective guidance. 
+
+3.6. Sensors 
+
+The sensor layer collects the UUV physical state in real time. The continuous-valued components of the measure-ment vector at time 𝑡 are 
+
+𝐳 𝑐 (𝑡 ) = [𝑥 𝑚 (𝑡 ), 𝑦 𝑚 (𝑡 ), 𝜓 𝑚 (𝑡 ), 𝑢 𝑚 (𝑡 ), 𝑑 𝑚 (𝑡 )]⊤, (31) comprising GPS position (𝑥 𝑚 , 𝑦 𝑚 ), compass heading 𝜓 𝑚 ,speed-log surge velocity 𝑢 𝑚 , and pressure-based depth 𝑑 𝑚 .These are modeled as noisy observations of the correspond-ing continuous states: 
+
+𝐳 𝑐 (𝑡 ) = 𝐬 𝑐 (𝑡 ) + 𝜼 (𝑡 ), 𝜼 (𝑡 ) ∼  (𝟎 , 𝚺 𝜂 ), (32) where 𝐬 𝑐 (𝑡 ) = [ 𝑥, 𝑦, 𝜓, 𝑢, 𝑑 ]⊤ and 𝚺 𝜂 = diag( 𝜎 2
+
+> 𝑥
+
+, 𝜎 2 
+
+> 𝑦
+
+, 𝜎 2 
+
+> 𝜓
+
+, 𝜎 2 
+
+> 𝑢
+
+, 𝜎 2 
+
+> 𝑑
+
+)
+
+is the measurement noise covariance. The rudder-health flag 
+
+𝛿 𝑚 𝑟 (𝑡 ) ∈ {0 , 1} is acquired separately from a dedicated fault-detection circuit on the CAN bus and is treated as a deterministic boolean signal; it is not subject to additive Gaussian noise. All signals are sampled at 𝑓 𝑠 = 10 Hz, encoded as CAN frames, and transmitted to the shore-based agent via a 4G/5G wireless link.  
+
+> First Author et al. Page 8 of 18 LASSA Architecture-Based Autonomous Fault-Tolerant Control of UUVs
+
+3.7. Actuators and Control Execution 
+
+The actuator layer constitutes the final execution stage of the LASSA control loop. Upon receiving the verified command 𝐂 (𝑡 ) from the scheduling module, it decomposes the command list into individual device setpoints and drives each device accordingly. The heading control loop runs at 𝑓 𝑐 = 20 Hz and consists of two cascaded elements: the line-of-sight (LOS) guidance law that generates the desired heading, and the PD controller that tracks it. The LOS law computes: 
+
+𝜓 des (𝑡 ) = atan2 (𝑦 𝑟 𝑘 −̂𝑦 (𝑡 ), 𝑥 𝑟 𝑘 −̂𝑥 (𝑡 ) ), (33) where (𝑥 𝑟 𝑘 , 𝑦 𝑟 𝑘 ) is the current target waypoint and (̂𝑥 (𝑡 ),̂𝑦 (𝑡 )) 
+
+are the estimated horizontal position components from ̂ 𝐬 (𝑡 ).The resulting 𝜓 des (𝑡 ) is fed into the PD controller defined in (4), and the resulting rudder command 𝛿 (𝑡 ) is mapped to a CAN setpoint after saturation clamping: 
+
+𝛿 cmd (𝑡 ) = clip (𝛿 (𝑡 ), −𝛿 max , 𝛿 max 
+
+). (34) The propulsion control loop receives the currently com-manded speed setpoint 𝑢 cmd , which equals 𝑢 𝑘 (the plan speed of the active waypoint segment) under normal operation or 
+
+𝑢 new (the LLM-replanned speed) after a fault is detected. The loop drives the brushless DC motor via a dedicated speed controller to maintain the target RPM within ±5 r/min. When a SET_SPEED command is issued under fault conditions, the speed setpoint is additionally clipped to the fault-safe upper bound 𝑢 fault max ≤ 𝑢 max to limit the centripetal demand on the degraded rudder. The fault-safe bound is derived from the combined turning-radius constraint (28): 
+
+𝑢 fault max =
+
+√
+
+𝑎 max ⋅ 𝑅 fault min . (35) All actuator commands are logged to the shore-based mon-itoring system with their associated timestamps to support post-experiment trajectory reconstruction and performance analysis. 
+
+## 4. Experimental Design and Implementation 
+
+4.1. Experimental Objectives 
+
+The lake experiments are designed to validate the pro-posed LASSA framework under two operating conditions: normal navigation and lower-rudder fault navigation. Five specific verification targets are defined, spanning lake-experiment validation, software-in-the-loop simulation validation, and an LLM module ablation study. 1. Normal navigation performance: verify that the LASSA framework can plan and execute a closed-loop navigation trajectory under nominal actuator condi-tions, maintaining cross-track error 𝑒 𝑝 and heading error 𝑒 𝜓 within acceptable bounds throughout the full outbound-and-return mission. 2. Fault detection and triggering: verify that the per-ception planning module correctly identifies the nav-igation abnormality caused by the lower-rudder fault and raises the confirmed fault flag ̂𝛼 (𝑡 ) = 1 within a bounded detection latency.                      
+
+> Table 1
+> Principal specifications of the experimental UUV Parameter Value Unit Body length 1830 mm Body diameter 200 mm Total weight 45.1 kg Maximum diving depth 30 mMaximum speed 10 kn Rudder configuration Four-fin cross-rudder —Rudder angle range ±60 ◦
+> Rudder response time ≤0.5sRudder servo rated torque 15 N⋅m
+
+3. Fault-tolerant replanning and execution: verify that once the fault flag is raised, the LLM generates a physically feasible replanned trajectory, the solver certifies it against the boundary, speed, and turning-radius constraints defined in Section 3.5, and the UUV successfully completes the remainder of the mission under the updated route. 4. Simulation validation of the closed-loop strategy: 
+
+verify that the LASSA framework completes the full perception–replanning–execution cycle in a software-in-the-loop simulation environment under continu-ous sensor noise across three representative fault scenarios—a steering-locked actuator fault, a cross-current environmental disturbance, and a DVL sensor-degradation fault—thereby decoupling the fault-response logic from the physical hardware and enabling system-atic parameter sweeps. 5. LLM module ablation: characterise the sensitivity of trajectory planning quality to (i) the choice of LLM backbone across four candidate models under a fixed prompt and (ii) the quality of prompt engineering across three prompt variants under a fixed model, with the objective of selecting the backbone and prompt configuration deployed in the lake experiments. 
+
+4.2. Experimental Platform 
+
+4.2.1. UUV 
+
+The UUV used in the experiments is a small autonomous underwater vehicle whose principal specifications are listed in Table 1. The vehicle is equipped with a tail-mounted four-fin cross-rudder arrangement (two horizontal and two vertical fins, crossing angle 90 ◦). In the fault scenario, the lower vertical rudder is physically removed before launch to simulate complete lower-rudder failure. The propulsion system uses a tail-mounted three-blade fixed-pitch propeller with a NACA0012 symmetric airfoil profile. Its main parameters are given in Table 2. 
+
+4.2.2. Onboard Sensor Suite 
+
+The UUV carries five sensors that collectively provide the measurements 𝐳 𝑐 (𝑡 ) and 𝛿 𝑚 𝑟 (𝑡 ) defined in (31). Their types and key accuracy parameters are summarized in Table 3.                                       
+
+> First Author et al. Page 9 of 18 LASSA Architecture-Based Autonomous Fault-Tolerant Control of UUVs
+> Table 2
+> Propeller and motor specifications Parameter Value Unit Blade diameter 0.22 mRated speed 1200 r/min Rated thrust 180 NRated torque 12 N⋅mPropulsion efficiency ≥0.70 —Motor supply voltage 24 V (DC brushless) Speed control accuracy ±5 r/min Acceleration response ≤1s
+> Table 3
+> Onboard sensor specifications (all outputs via CAN bus) Sensor Quantity Accuracy GPS receiver Position (𝑥 𝑚 , 𝑦 𝑚 )±10 m Compass / IMU Heading 𝜓 𝑚 ±1 ◦
+> Pressure sensor Depth 𝑑 𝑚 ±0.01 m Speed log Speed 𝑢 𝑚 ±1 kn Rudder-state sensor Health 𝛿 𝑚 𝑟 Boolean
+
+Figure 3: Overview of the experimental UUV All sensor signals are encoded as CAN frames and transmitted to the shore-based agent at a unified sampling rate of 𝑓 𝑠 = 10 Hz via a 4G/5G wireless link. 
+
+4.2.3. Intelligent Agent and LLM Deployment 
+
+For experimental convenience, the LASSA agent is de-ployed on a shore-based computing platform that commu-nicates with the UUV in real time over a wireless link. The platform runs the agent perception–planning–scheduling cy-cle and hosts the LLM inference engine. An open-source LLM with a parameter scale in the range of 10B–30B is used. The single-instruction inference latency is ≤500 ms, satisfying the real-time requirement of the fault-response pipeline. The shore-based monitoring interface displays the live GPS track, the reference trajectory, and the agent sta-tus in real time; representative screenshots are presented and discussed in Section 5. The shore-based deployment is adopted here only for experimental convenience and mon-itoring; the LASSA architecture itself is designed to be portable to onboard computing without modification, and onboard deployment is targeted as part of future work. 
+
+4.2.4. Simulation Platform 
+
+To enable systematic closed-loop validation of the LASSA control logic prior to lake deployment, and to decouple the fault-response pipeline from the physical hardware, a software-in-the-loop simulation platform was constructed.       
+
+> Table 4
+> Test environment parameters Parameter Value Water body type Inland closed lake Avg. / max. / min. depth 1.3 / 2.0 / 1.0 m UUV operating depth 0–0.3 m Current / wave condition Still water / none Communication coverage Full (4G/5G/WiFi)
+
+The platform comprises five modules that communicate via TCP over a local loopback connection, with the simulated UUV acting as server and the agent acting as client. The simulated UUV module executes a discrete-time kinematic model at a fixed state-report period of 𝑇 𝑠 = 2 .0 sand a nominal surge speed of 𝑣 = 2 .0 m/s. At each cycle it advances the vehicle position and heading, applies sensor noise described below, and transmits the noisy state vector to the agent. The agent module performs local coordinate frame initialisation, cross-track deviation monitoring, LLM context assembly, solver invocation, and command dispatch, mirroring the same perception–planning–scheduling logic used in the lake experiments. The LLM planning mod-ule generates trajectory waypoints through a hybrid ap-proach combining geometric arc construction with LLM-based waypoint interpolation; the LLM backbone is the model selected in the ablation study (Section 4.6). The solver module checks each candidate path against boundary con-straints and computes cross-track deviation from the active reference polyline. The visualisation module renders the live position track, reference path, depth profile, replanning results, and per-phase latency on a shared display. To replicate the continuous measurement uncertainties present in the lake experiments, the simulated state report incorporates two noise models. Lateral position error follows a random-walk-plus-white-noise model with a maximum drift amplitude of 3 m, a walk strength of 0.25 m per step, and superimposed white noise 𝜎 lat = 0 .08 m. Depth observation error is strictly positive (biased upward), modelled with a maximum offset of 0.35 m, a walk strength of 0.04 m per step, and superimposed white noise 𝜎 𝑑 = 0.02 m. These models are qualitatively consistent with the GPS and pressure-sensor accuracy figures listed in Table 3. 
+
+4.3. Test Environment 
+
+The experiments were conducted in a calm inland lake. The key environmental parameters are summarized in Ta-ble 4. The test area is a closed freshwater lake free of tidal currents, and wireless communication (4G/5G/WiFi) covered the entire test area without blind spots. Within the UUV operating depth range of 0–0.3 m, the water depth was spatially uniform, so no depth-collision avoidance was required during navigation.                         
+
+> First Author et al. Page 10 of 18 LASSA Architecture-Based Autonomous Fault-Tolerant Control of UUVs
+> Table 5
+> Experimental configurations and key parameters Parameter Exp-N Exp-F Rudder condition Nominal Lower rudder removed Turning radius (init.) 7 m 4 m Turning radius (repl.) —12 m Navigation speed (init.) 2 kn 2 kn Navigation speed (repl.) —1 kn Forward distance 80 m 90 m Threshold 𝜀 𝑝 3.0 m 3.0 m Window 𝑛 𝑤 5 cycles 5 cycles Accept. radius 𝑟 acc 2 m 2 m
+
+Figure 4: UUV navigation status in the test lake 
+
+4.4. Experimental Configurations 
+
+Two experimental configurations are defined. The nor-mal navigation experiment (Exp-N) serves as the per-formance baseline under nominal actuator conditions. The 
+
+lower-rudder fault experiment (Exp-F) introduces the rud-der fault before launch and tests the full fault-detection, replanning, and execution pipeline. Table 5 summarises the key parameters of both configurations. In Exp-F, the initial turning radius of 4 m is delib-erately set below the fault-state minimum turning radius 
+
+𝑅 fault min (estimated at approximately 10 m) to ensure that the navigation abnormality is triggered reliably. The replanned turning radius of 12 m satisfies constraint (28) and was verified by the solver before deployment. The simulation experiment (Exp-S) comprises three sub-scenarios: a steering-lock actuator fault, a cross-current envi-ronmental disturbance, and a DVL sensor-degradation fault. The cross-current and DVL sub-scenarios share the same SIL platform and noise models but use sub-scenario-specific fault and parameter settings, which are introduced together with their results in Section 5.3; only the steering-lock sub-scenario uses the parameter set summarised in Table 6. In the steering-lock sub-scenario, the fault is modelled through a steering-lock mechanism : upon receipt of a replanned trajectory, the simulated UUV does not immediately alter its heading. Instead, it maintains its current heading and dives at a rate limited to Δ𝑑 max = 0 .2 m per cycle until the accumulated depth increment reaches the unlock threshold 
+
+Δ𝑑 unlock = 0.2 m, after which waypoint tracking is en-abled. This mechanism approximates the physical scenario in which the lower vertical rudder is inoperative and the                              
+
+> Table 6
+> Key parameters of the steering-lock sub-scenario in Exp-S Parameter Value Coord. range (lat./fwd./depth) [±100] /[±100] /[±2] mMission target (local) (0 ,90 ,0) mRecovery point (local) (0 ,0,0) mNominal speed 2.0 m/s State report period 𝑇 𝑠 2.0 s Cross-track threshold 10 m Initial turning radius 5 m Replanned turning radius 10 m Waypoint acceptance radius 10 m Steering-unlock delta Δ𝑑 unlock 0.2 m Max. depth step Δ𝑑 max 0.2 m Replan dive depth 0.5 m Replan forward offset 5.0 m Initial path speed 2.0 m/s Replanned path speed 1.0 m/s Lateral drift amplitude 3.0 m Lateral drift walk strength 0.25 m/step Depth bias max offset 0.35 m
+
+vehicle must submerge until the upper control surface re-enters effective flow before yaw authority is restored. The cross-current and DVL sub-scenarios do not impose this dive-then-unlock dependency. 
+
+4.5. Experimental Procedure 
+
+The experimental procedure is identical for both config-urations and consists of four stages. 
+
+Stage 1 – Pre-launch preparation. The UUV hardware is inspected (sensing system, propulsion system, and rud-der mechanism). For Exp-F, the lower rudder is physically removed at this stage. The LLM and agent software are initialized on the shore-based platform; mission parameters from Table 5 are loaded; and the wireless communication link is verified at both ends. 
+
+Stage 2 – Launch and initial navigation. The UUV is placed in the water at the designated launch point. The LASSA control loop is started, and the LLM generates the initial trajectory (turning radius and waypoint sequence per Table 5). The agent begins closed-loop navigation control. The shore-based monitor logs position, heading, speed, and depth at 𝑓 𝑠 = 10 Hz throughout the experiment. 
+
+Stage 3 – Fault detection and replanning (Exp-F only). Once the agent perception planning module raises the confirmed fault flag ̂𝛼 (𝑡 ) = 1 , the fault context package (𝑡 )
+
+is assembled and passed to the LLM. The LLM generates a replanned strategy Θ( 𝑡 ), which is checked by the solver against the three constraints in Section 3.5. After the solver issues a PASS verdict, the new trajectory commands are forwarded to the UUV actuators. 
+
+Stage 4 – Return and recovery. The UUV completes the outbound leg and executes the return route to the desig-nated recovery point. After surfacing, it is recovered and the logged data are downloaded for analysis.  
+
+> First Author et al. Page 11 of 18 LASSA Architecture-Based Autonomous Fault-Tolerant Control of UUVs
+
+4.6. LLM Ablation Study Design 
+
+To select the LLM backbone and prompt template used in both the lake and simulation experiments, and to provide a systematic characterisation of how each factor affects trajectory planning quality, an ablation study was conducted across two orthogonal groups before the main experiments. 
+
+Group 1 — Model comparison under a fixed prompt. 
+
+Four LLM backbones were evaluated: Kimi K2.5, Qwen3-max, DeepSeek-V3.2, and GPT-5.3. Each model received an identical structured prompt specifying the navigable area boundary, start and end waypoints, required arc radius, tan-gency conditions, and sampling density. Two scenarios were tested. In the normal scenario , all geometric constraints are mutually consistent and a valid closed path exists within the boundary. In the abnormal scenario , the specified arc radius deliberately exceeds the geometric feasibility limit imposed by the navigable area, creating an intentional constraint conflict. The normal scenario assesses whether a model can generate smooth, boundary-compliant arcs with correct tangency and uniform sampling; the abnormal scenario tests whether the model can identify constraint infeasibility and produce either an explicit infeasibility signal or a best-effort approximation, rather than silently generating a geometri-cally invalid path. 
+
+Group 2 — Prompt variant comparison under a fixed model. Using the Kimi K2.5 backbone identified from Group 1, three prompt variants of increasing descriptive precision were evaluated. The minimal variant specifies only the core geometric parameters (boundary, arc radius, waypoints). The standard variant adds structured constraint sections and an explicit output format requirement (comma-separated coordinate tuples, no natural-language explana-tion). The detailed variant further provides step-by-step ge-ometric reasoning guidance, explicit statements of tangency conditions, and per-segment sampling allocation. Each vari-ant was tested under the same normal and abnormal sce-narios as Group 1. Path quality was assessed qualitatively by examining arc tangency accuracy, sampling uniformity, boundary clearance, and path closure in the normal scenario, and by whether the model correctly identified or approxi-mated the infeasible constraint in the abnormal scenario. The model and prompt configuration that achieved the highest geometric fidelity in the normal scenario and the most appropriate constraint-conflict response in the abnor-mal scenario were adopted as the LLM deployment config-uration for Exp-N, Exp-F, and Exp-S. 
+
+## 5. Results and Analysis 
+
+5.1. Normal Navigation Experiment (Exp-N) 
+
+5.1.1. Navigation Performance 
+
+Under the nominal actuator conditions of Exp-N, the UUV completed the full outbound-and-return mission with-out triggering any fault flag. The initial trajectory generated by the LLM specified a turning radius of 𝑅 = 7 m, which falls within the target planning range of 6 ± 1 m specified in the mission parameters, a navigation speed of 𝑢 = 2 kn, and                     
+
+> Table 7
+> Key navigation metrics for Exp-N (normal navigation) Metric Value Requirement LLM-planned turning radius 7 m 6 ± 1 mNavigation speed 2 kn 2 kn Forward distance 80 m 80 m Max. cross-track error 𝑒 max
+> 𝑝 2.8 m <3.0mFault flag ̂𝛼 raised No No Mission completed Yes Yes
+
+a forward distance of 80 m. The agent perception planning module evaluated the estimated state at each 10 Hz cycle and produced ̂𝛼 (𝑡 ) = 0 throughout the entire run, confirming that no navigation abnormality occurred. 
+
+5.1.2. Quantitative Results 
+
+The key navigation metrics recorded during Exp-N are summarized in Table 7. The fault flag ̂ 𝛼 remained at zero throughout the run and the mission was completed in full, confirming that the LASSA framework operates correctly under nominal conditions. The measured maximum cross-track error 𝑒 max  
+
+> 𝑝
+
+= 2 .8 m remains below the fault-detection threshold 𝜀 𝑝 = 3.0 m. These results provide a reliable performance baseline for the fault experiment. 
+
+Figure 5: Aerial view of the complete Exp-N mission track, showing the outbound leg (right-to-left) and the return leg along the planned route with no deviation throughout the run 
+
+5.2. Lower-Rudder Fault Experiment (Exp-F) 
+
+5.2.1. Initial Navigation and Abnormality Detection 
+
+In Exp-F, the lower rudder was removed before launch to simulate complete lower-rudder failure. The LLM generated an initial route with a turning radius of 𝑅 0 = 4 m and a speed of 𝑢 0 = 2 kn, which is deliberately below the estimated fault-state minimum turning radius 𝑅 fault min ≈ 10 m. As a result, once the UUV reached the first turning waypoint, it was unable to follow the planned arc, and the cross-track error 𝑒 𝑝 (𝑡 ) exceeded the threshold 𝜀 𝑝 = 3 .0 m for 𝑛 𝑤 =5 consecutive sampling cycles. The perception planning module therefore raised the confirmed fault flag ̂ 𝛼 (𝑡 ) = 1 ,triggering the LLM reasoning pipeline. 
+
+5.2.2. LLM-Driven Trajectory Replanning 
+
+Upon receiving the context package (𝑡 ), the LLM performed chain-of-thought reasoning and proposed a re-planned strategy with a turning radius of 𝑅 new = 12 m and                 
+
+> First Author et al. Page 12 of 18 LASSA Architecture-Based Autonomous Fault-Tolerant Control of UUVs
+> Table 8
+> Key metrics for Exp-F (lower-rudder fault experiment) Metric Value Initial turning radius 𝑅 04 m Initial navigation speed 𝑢 02 kn Forward distance 90 m Fault-state min. radius 𝑅 fault min ≈10 m Replanned turning radius 𝑅 new 12 m Replanned speed 𝑢 new 1 kn Solver checks passed (1st attempt) 3/3 Fault flag raised Yes Mission completed after replanning Yes
+
+a reduced speed of 𝑢 new = 1 kn. This strategy was submitted to the physical solver, which executed the three sequential checks described in Section 3.5. The solver verified that: 1. Boundary check: all arc sample points of the re-planned path maintained a clearance 𝑑 𝑏 ≥ 𝑑 safe from the lake boundary; 2. Speed constraint: 𝑢 new = 1 kn satisfies 𝑢 min ≤
+
+𝑢 new ≤ 𝑢 max ;3. Turning-radius constraint: 𝑅 new = 12 m ≥ 𝑅 fault min ≈10 m per (28). All three checks passed on the first solver invocation, and the solver returned a PASS verdict. The verified command list 
+
+𝐂 (𝑡 ) was forwarded to the UUV via the scheduling module. 
+
+5.2.3. Post-Replanning Navigation and Return 
+
+After receiving the updated commands, the UUV re-sumed navigation according to the replanned trajectory. With the larger turning radius and reduced speed, the vehicle was able to execute the required turns despite the degraded yaw authority caused by the missing lower rudder. The UUV completed the remaining outbound leg and successfully executed the return operation to the designated recovery point. The visible deviation in the initial turning segment, followed by the recovery to the replanned route, visually confirms the fault-detection and replanning behavior; the aerial view of the complete mission track is shown in Fig-ure 6. 
+
+5.2.4. Quantitative Results and Comparative Summary 
+
+The key parameters of Exp-F are summarized in Table 8, and a side-by-side comparison of the two experiments is given in Table 9. The experimental results demonstrate that the proposed LASSA framework successfully achieves the three lake-experiment verification targets stated in Section 4.1. Under normal conditions, the UUV tracks the planned trajectory throughout the mission with no false fault alarms. Under the lower-rudder fault condition, the framework correctly detects the navigation abnormality, invokes the LLM to generate a physically feasible replanned route, obtains first-attempt solver certification, and guides the vehicle to com-plete the mission. The coordinated operation of the per-ception planning module, the LLM reasoning engine, the                       
+
+> Table 9
+> Comparative summary of Exp-N and Exp-F Item Exp-N Exp-F Rudder condition Nominal Lower rudder removed Turning radius (init.) 7 m 4 m Turning radius (exec.) 7 m 12 m (replanned) Navigation speed (init.) 2 kn 2 kn Navigation speed (exec.) 2 kn 1 kn (replanned) Fault flag raised No Yes LLM replanning triggered No Yes Solver invocations 01Solver pass on 1st attempt —Yes Mission completed Yes Yes
+
+physical solver, and the actuator control layer confirms the practical engineering feasibility of the LASSA architecture for fault-state UUV autonomous navigation. 
+
+Figure 6: Aerial view of the complete Exp-F mission track, showing the initial deviation, fault-triggered replanning point, and the subsequent return route 
+
+5.3. Simulation Experiment (Exp-S) 
+
+5.3.1. Initialisation and Straight Navigation 
+
+At mission start the agent initialised the local coordinate frame with the UUV launch point as origin and instructed the LLM to generate an initial path to the mission target at (0 , 90 , 0) m with a turning radius of 5 m. Rather than tracking the arc sequence point-by-point, the simulated UUV extracted the outbound heading from the initial plan and advanced at 2.0 m/s along that heading in a straight line. This design intentionally creates a scenario in which the reported position (subject to continuous lateral drift up to 3 m) progressively diverges from the planned polyline as the vehicle advances, establishing the precondition for deviation detection without requiring a pre-specified fault trigger time. The 3D trajectory view, top-view projection, and depth profile for the three phases of Exp-S are shown in Figure 7. 
+
+5.3.2. Cross-Track Deviation Detection and Replanning 
+
+As the simulated UUV continued along its initial head-ing, the solver computed the perpendicular distance from the noisy reported position to the reference polyline at each 𝑇 𝑠 = 
+
+> First Author et al. Page 13 of 18 LASSA Architecture-Based Autonomous Fault-Tolerant Control of UUVs
+
+2.0 s cycle. Once this cross-track deviation exceeded the threshold of 10 m, the agent assembled the context package from the current state estimate and passed it to the LLM. The LLM generated a return path to the recovery point (0 , 0, 0) mwith a replanned turning radius of 10 m and a reduced way-point speed of 1.0 m/s. The solver verified the replanned path against the boundary constraints and confirmed feasibility before the agent dispatched the waypoint sequence to the simulated UUV. As shown in the middle panel of Figure 7, the orange replanned route and the diverged red actual trace are both visible, confirming that the replanning was triggered at the correct deviation point. 
+
+5.3.3. Steering-Lock Dive and Return Execution 
+
+Upon receipt of the replanned trajectory, the simulated UUV entered the steering-lock phase, maintaining its cur-rent heading while diving at a rate capped at Δ𝑑 max =0.2 m per cycle. Once the accumulated depth increment reached Δ𝑑 unlock = 0 .2 m, the steering lock was released and the vehicle transitioned to waypoint-tracking mode. The depth profile in the bottom panel of Figure 7 clearly shows the characteristic dive-then-recover signature: depth increases sharply during the steering-lock phase (reaching approximately 1.2 m) before recovering as the vehicle begins tracking the replanned route. Despite the continuous lateral drift noise present throughout the return leg, the vehicle reached the recovery point and completed the mission. To further assess the robustness of the LASSA replan-ning pipeline under a more constrained mobility model, a supplementary simulation was conducted in which the UUV is unable to actively adjust its depth (approximating the surface-constrained operating mode of the lake experi-ments). Under this constraint, the steering-lock dive phase is suppressed and the vehicle must execute the replanned turn relying solely on the adjusted turning radius without depth-assisted recovery of yaw authority. The trajectory results for this surface-constrained variant are shown in Figure 8. The replanning pipeline succeeded in generating a valid return path and guiding the vehicle to the recovery point in both cases, confirming that the LASSA framework is effective across both depth-capable and surface-constrained operating modes. 
+
+5.3.4. Robustness Under Cross-Current Disturbance 
+
+Beyond the actuator-fault scenarios already presented, the LASSA framework was evaluated under a continuous lateral hydrodynamic disturbance to assess its robustness against environmental perturbations. A simulated cross-current was injected, exerting a steady lateral velocity of 
+
+0.3 m/s perpendicular to the nominal heading throughout the run. The three stages of this experiment are shown in Figure 9. In the first stage (top panel), the UUV is progressively pushed off the planned trajectory by the cross-current; the actual trace gradually diverges from the initial plan as the lateral perturbation accumulates. Once the cross-track de-viation crosses the detection threshold ( 10 m, reached after approximately 34 s of accumulated drift), the agent triggers the LLM reasoning pipeline (middle panel); the LLM pro-duces a replanned straight-line path to the mission target and additionally generates a rudder-bias correction of ≈ −11 .5◦
+
+that compensates for the persistent lateral force. In the final stage (bottom panel), the UUV follows the replanned path with the applied rudder correction and successfully reaches the mission target against the cross-current. This experiment demonstrates that the LASSA pipeline can extend beyond actuator faults to handle continuous en-vironmental disturbances. Notably, the LLM autonomously inferred both the need for a rudder bias term and its quantita-tive value ( ≈ −11 .5◦) from the deviation signature alone— a corrective action that would require explicit hand-coded logic in conventional rule-based fault-handling systems. The rudder-bias term lies outside the geometric strategy schema 
+
+Θ( 𝑡 ) defined in Section 3.4, and is admitted only after a parameter-bound check confirms it falls within the safe de-flection range of the heading controller. The detailed metrics are listed in Table 11. 
+
+5.3.5. Robustness Under DVL Sensor Fault 
+
+Beyond the actuator-fault and environmental-disturbance scenarios already presented, the LASSA framework was evaluated under a sensor-degradation fault to assess its ro-bustness against onboard state-estimation errors. The UUV’s planar position is fused from DVL and GPS measurements through a Kalman filter (KF) at a sampling period of Δ𝑡 =2.0 s; at step 𝑘 = 15 , a persistent DVL lateral-velocity bias of 0.8 m/s (with noise 𝜎 = 0 .5 m/s) is injected. Two groups are compared on identical fault traces: kf_only , with fixed measurement covariances; and kf_mcp , in which the LLM issues an MCP tool call at fault detection that rescales the covariances (𝑄 vel , 𝑅 GPS , 𝑅 DVL ) by (×8 .0, ×0 .5, ×20 .0) ,downweighting the corrupted DVL channel and elevat-ing the GPS contribution. The time-domain comparison is shown in Figure 10 and the spatial comparison in Figure 11. In the kf_only group (Figure 10, top), once the lateral DVL bias activates, the KF lateral-channel estimate progres-sively departs from the ground truth, and a residual offset remains visible through the turn segment; the along-track channel exhibits a smaller residual since the injected bias is primarily lateral. With fixed covariances, the KF treats the biased DVL signal as a credible velocity observation and propagates the error into the position estimate. In the kf_mcp 
+
+group (Figure 10, bottom), the lateral residual is markedly reduced, and Figure 11 shows at the spatial level that the KF estimate overlays the ground-truth trajectory closely across the entire loop, while the along-track channel remains well tracked. The rescaled covariances effectively suppress the corrupted DVL channel and let the GPS observation dom-inate the fused estimate during the fault window, without modifying the KF structure. This experiment demonstrates that the LASSA pipeline can extend beyond actuator and environmental faults to handle onboard sensor-degradation faults. Notably, the LLM              
+
+> First Author et al. Page 14 of 18 LASSA Architecture-Based Autonomous Fault-Tolerant Control of UUVs
+> Table 10
+> Key metrics for the steering-lock fault scenario in Exp-S Metric Value Nominal speed 2.0 m/s State report period 2.0 s Cross-track deviation threshold 10 m Initial turning radius 5 m Replanned turning radius 10 m Replanned waypoint speed 1.0 m/s Steering-unlock depth delta 0.2 m Deviation detected Yes Replanning triggered Yes Steering-lock phase executed Yes Mission completed Yes
+
+selected and parameterised a sensor-fusion reconfigura-tion, a recovery action of a different category (covariance reweighting rather than geometric replanning) than the preceding scenarios—in response to a fault that was never explicitly enumerated in the design. Here MCP denotes the Model Context Protocol; the proposed covariance scaling factors lie outside the geometric strategy schema Θ( 𝑡 ) of Section 3.4, and are admitted only after a parameter-bound check (positive-definiteness preservation and bounded scal-ing range) before being applied to the KF. 
+
+5.3.6. Quantitative Summary 
+
+Exp-S comprises three sub-scenarios with partly disjoint parameter sets, which are summarised separately. Key met-rics for the steering-lock fault, cross-current disturbance, and DVL sensor-fault scenarios are listed in Tables 10, 11, and 12, respectively. Under the steering-lock fault, the LASSA closed-loop pipeline operates correctly under continuous measurement noise: deviation detection, LLM-driven re-planning, solver verification, and waypoint-tracking exe-cution cooperate seamlessly, and the vehicle reaches the designated recovery point despite the transient heading-lock constraint imposed during the fault-response phase. Under the cross-current disturbance, the LLM autonomously in-ferred a rudder-bias correction of ≈ −11 .5◦ and replanned a straight-line path to the mission target, allowing the UUV to overcome the persistent lateral force. Under the DVL sensor-degradation fault, the LLM-issued MCP covariance update reduces the peak lateral-channel transient from ≈ 3 .3 m to 
+
+≈ 0 .8 m, a ≈ 76% reduction relative to the fixed-covariance baseline. Representative screenshots of the simulation monitoring interface at the initial-navigation stage and at the fault-triggered replanning stage of the steering-lock scenario are shown in Figure 12 and Figure 13, respectively. The interface panels display the real-time FSM state, solver deviation reports, and the LLM I/O log, providing a transparent view of the agent’s decision process at each stage.            
+
+> Table 11
+> Key metrics for the cross-current disturbance scenario in Exp-S Metric Value Cross-current lateral velocity 0.3 m/s Cross-current direction 90 ◦(heading) Cross-track deviation threshold 10 m Time to deviation trigger ≈ 34 s ( ≈ 17 steps) LLM-inferred rudder-bias correction ≈ −11 .5◦
+> Replanned waypoint speed 1.0 m/s Mission target reached Yes
+
+Figure 12: Simulation monitoring interface during the initial navigation stage: the Solver panel reports “Deviation check: normal” at each cycle; the LLM I/O panel shows the planned waypoint coordinates output by the LLM; the FSM tran-sitions through Planning (init) → Executing (validated) →
+
+Normal (command sent) 
+
+Figure 13: Simulation monitoring interface during the fault-triggered replanning stage: the Decision & Control panel shows the FSM transitioning to Planning (drift); the LLM output panel explicitly identifies “Anomaly state: rudder fault” and generates a dive-then-return waypoint sequence; the depth profile shows the vehicle diving to approximately 1.4 m during the steering-lock phase before the replanned return is executed Exp-S complements the lake experiments by demon-strating that the LASSA strategy pipeline is robust to con-tinuous sensor drift and can execute a multi-phase fault recovery encompassing deviation detection, cognitive re-planning, physical verification, and waypoint tracking, en-tirely within the closed-loop architecture and without any                   
+
+> First Author et al. Page 15 of 18 LASSA Architecture-Based Autonomous Fault-Tolerant Control of UUVs
+> Table 12
+> Key metrics for the DVL sensor-fault scenario in Exp-S Metric Value DVL lateral-velocity bias 0.8 m/s Fault trigger step 𝑘 = 15
+> Sampling period Δ𝑡 2.0 s MCP covariance scaling (𝑄 vel , 𝑅 GPS , 𝑅 DVL )(8 .0,0.5,20 .0)
+> Peak lateral deviation, kf_only ≈ 3 .3mPeak lateral deviation, kf_mcp ≈ 0 .8mPeak transient reduction ≈ 76%
+
+human intervention or remote operator input. The three Exp-S sub-scenarios collectively exercise failure modes that are structurally distinct from the lake experiments: whereas Exp-F tests yaw-authority degradation under a physically removed rudder, the steering-lock sub-scenario tests the ability to sequence a conditional dive-then-turn recovery that introduces a temporal dependency between fault response and actuation capability, the cross-current sub-scenario tests robustness against a persistent environmental disturbance, and the DVL sub-scenario tests recovery from an onboard state-estimation degradation; together they exercise three different failure modes of the same replanning pipeline. 
+
+5.4. LLM Ablation Study 
+
+5.4.1. Model Comparison under a Fixed Prompt 
+
+The planned paths for all four models under both sce-narios are shown in Figure 14, where each row corre-sponds to one model (GPT-5.3, Qwen3-max, DeepSeek-V3.2, Kimi K2.5 from top to bottom) and the two columns show the normal and abnormal scenarios respectively. 
+
+Normal scenario. All four models generated closed navigation paths with arc segments (left column of Fig-ure 14). Kimi K2.5 produced a smooth closed loop with uniform sampling, accurate arc tangency at both endpoints, and full boundary compliance, achieving the highest ge-ometric fidelity among the four. DeepSeek-V3.2 produced a similarly smooth closed loop that closely matches the geometric target. GPT-5.3 generated a valid closed path with a slightly different boundary fit. Qwen3-max produced a broadly valid path but exhibited a notable kink at the arc transition, indicating reduced tangency accuracy compared with Kimi K2.5 and DeepSeek-V3.2. 
+
+Abnormal scenario. The performance divergence across models was markedly more pronounced under the contra-dictory arc-radius constraint (right column of Figure 14). Kimi K2.5 recognised the constraint conflict and returned a best-effort partial arc with a reduced feasible radius, produc-ing a geometrically consistent approximation rather than a random invalid path, demonstrating the strongest constraint-conflict reasoning among the four. DeepSeek-V3.2 produced a C-shaped partial arc that represents a plausible sub-arc approximation. GPT-5.3 generated a partial arc connected by a straight segment, indicating incomplete arc generation under the infeasible constraint. Qwen3-max produced a near-straight two-point path, the most severe geometric deviation among the four, suggesting a fundamental failure to process the contradictory constraint. 
+
+5.4.2. Prompt Variant Comparison under Kimi K2.5 
+
+The planned paths for the three prompt variants under both scenarios are shown in Figure 15, where rows corre-spond to the detailed (P1), standard (P2), and minimal (P3) variants from top to bottom. 
+
+Normal scenario. The three prompt variants produced visibly different path qualities (left column of Figure 15). The detailed variant (P1) produced a smooth closed loop with uniform sampling and accurate tangency, confirming that this configuration reliably extracts maximum planning accuracy from the model. The standard variant (P2) also produced a smooth closed loop that is geometrically valid, though with marginally less precise tangency at the arc start. The minimal variant (P3) produced a path with a distinctive bump at the arc apex and uneven sampling density; while the boundary geometry is met, the arc quality is noticeably lower, reflecting the model’s difficulty in inferring implicit constraints from an underspecified prompt. 
+
+Abnormal scenario. Prompt precision had a decisive effect on constraint-conflict handling (right column of Fig-ure 15). The detailed variant (P1) produced a compact best-effort partial arc with the infeasible radius implicitly reduced to a feasible approximation. The standard variant (P2) gen-erated a C-shaped partial arc that is geometrically plausible but does not explicitly flag the infeasibility. The minimal variant (P3) produced a smooth quarter-arc that terminates without closing. This result appears locally valid but fails to account for the global path-closure constraint violated by the infeasible radius, indicating that the underspecified prompt caused the model to solve a simpler sub-problem rather than detecting the full constraint conflict. 
+
+5.4.3. Summary and Deployment Implications 
+
+The ablation results yield two practical conclusions. First, Kimi K2.5 is selected as the LLM backbone for the lake and simulation experiments: it consistently outper-formed the other candidates in both constraint satisfaction under normal conditions and constraint-conflict reasoning under adversarial conditions, demonstrating the strongest combination of geometric planning accuracy and infeasi-bility recognition. Second, the detailed prompt variant is adopted as the standard template: the structured geometric description, explicit tangency statements, per-segment sam-pling allocation, and zero-redundancy output format col-lectively improve path quality and reduce hallucination of infeasible trajectories to a negligible level. These selections are consistent with the broader finding that LLM output quality in constrained trajectory planning depends critically on both model capability and prompt de-sign: model capability determines the ceiling of achievable planning accuracy, while prompt precision determines how reliably that ceiling is reached in practice. The LASSA architecture benefits from both factors, as the prompt engine (Section 3.4) is specifically designed to provide structured,  
+
+> First Author et al. Page 16 of 18
+
+LASSA Architecture-Based Autonomous Fault-Tolerant Control of UUVs 
+
+constraint-rich context to the LLM at each replanning invo-cation, and the solver layer provides a hard safety net that prevents any remaining geometric errors from reaching the actuators. 
+
+## 6. Conclusion 
+
+This paper has presented the LASSA architecture for fault-state UUV autonomous navigation under communication-constrained conditions, integrating LLM-based cognitive reasoning, agent scheduling, and solver-based physical veri-fication into a unified closed-loop pipeline requiring no real-time remote intervention. LASSA demonstrates four unique and irreplaceable ad-vantages over existing control methods. First, autonomous reasoning without hard-coding : the LLM generates adap-tive replanning strategies by reasoning over vehicle state and fault context, avoiding rule-combination explosion and handling unanticipated fault configurations without repro-gramming, which improves generalisation to complex and compound fault scenarios. Second, hallucination suppres-sion : the solver certifies every LLM-generated trajectory against physical constraints before actuator dispatch, pre-venting infeasible outputs from reaching the vehicle. Third, 
+
+interpretability : the full decision path from abnormality detection through strategy generation to solver certification is explicit and auditable, a property absent from end-to-end learned controllers. Fourth, architectural complete-ness : the LASSA architecture employs a fast–slow dual-loop time-sharing control structure. It deeply integrates sensor perception, autonomous reasoning, task scheduling, solver verification, and actuator control into an integrated end-to-end closed-loop framework. While substantially enhancing the autonomy of the control system, this architecture meets the high-precision and real-time performance requirements of low-level control. Lake and simulation experiments validated the frame-work end-to-end, confirming fault detection within a five-cycle sliding window, first-attempt solver certification, and successful mission completion under degraded actuator au-thority with no false alarms. The current work covers four fault scenarios—lower-rudder failure, cross-current distur-bance, and DVL sensor degradation, plus the steering-lock variant—in a controlled environment; future work will ad-dress compound and concurrent fault scenarios, onboard LLM deployment, and dynamic boundary updates for open-water operation. 
+
+## References 
+
+[1] Madhusmita Panda, Bikramaditya Das, Bidyadhar Subudhi, and Bib-huti Bhusan Pati. A comprehensive review of path planning algo-rithms for autonomous underwater vehicles. International Journal of Automation and Computing , 17(3):321–352, January 2020. [2] Daoliang Li, Peng Wang, and Ling Du. Path planning technolo-gies for autonomous underwater vehicles-a review. IEEE Access ,7:9745–9768, 2019. [3] Feilong Liu, Bin Peng, Lianming Xu, and Tao Chen. Dynamic task allocation for multiple AUVs under weak underwater acoustic communication: A CBBA-based simulation study. Journal of Marine Science and Engineering , 14(3):237, January 2026. [4] Qunhong Tian, Tao Wang, Bing Liu, and Guangtao Ran. Thruster fault diagnostics and fault tolerant control for autonomous underwater vehicle with ocean currents. Machines , 10(7):582, July 2022. [5] Xuxi Zhang, Kun Jiang, and Zhaojian Li. Multi-mode fault-tolerant trajectory tracking control of AUV under thruster failure conditions in complex environments. Ocean Engineering , April 2025. [6] Yimin Chen, Shaowen Hao, Jian Gao, Jiarun Wang, and Le Li. Fault-tolerant model predictive control for autonomous underwater vehicles considering unknown disturbances. Journal of Marine Science and Engineering , 13(1):171, January 2025. [7] Xiaofeng Liu, Mingjun Zhang, Xing Liu, and Wende Zhao. Finite-time extended state observe based fault tolerant control for au-tonomous underwater vehicle with unknown thruster fault. Journal of Marine Science and Engineering , 10(11):1624, November 2022. [8] Ye Li, Jiayu He, Qiang Zhang, Wenjun Zhang, and Yanying Li. Predefined-time fault-tolerant trajectory tracking control for au-tonomous underwater vehicles considering actuator saturation. Ac-tuators , 12(4):171, April 2023. [9] Yimin Chen, Yazhou Wang, Yang Yu, Jiarun Wang, and Jian Gao. A fault diagnosis method for the autonomous underwater vehicle via meta-self-attention multi-scale cnn. Journal of Marine Science and Engineering , 11(6):1121, May 2023. [10] Zimu Zhang, Yunkai Wu, Yang Zhou, and Dahai Hu. Fault-tolerant control of autonomous underwater vehicle actuators based on takagi and sugeno fuzzy and pseudo-inverse quadratic programming under constraints. Sensors , 24(10):3029, May 2024. [11] Jian Xu, Xing Wang, Ping Liu, and Qiaoyu Duan. Adaptive proportional-integral sliding mode-based fault tolerant control for au-tonomous underwater vehicles with thrusters saturation and potential failure. Journal of Marine Science and Engineering , 10(11):1614, November 2022. [12] Sai H. Vemprala, Rogerio Bonatti, Arthur Bucker, and Ashish Kapoor. ChatGPT for robotics: Design principles and model abilities. IEEE Access , 12:55682–55696, 2024. [13] Zhirong Luan, Yujun Lai, Rundong Huang, Shuanghao Bai, Yuedi Zhang, Haoran Zhang, and Qian Wang. Enhancing robot task planning and execution through multi-layer large language models. 
+
+Sensors , 24(5):1687, March 2024. [14] Alessio Capitanelli and Fulvio Mastrogiovanni. A framework for neurosymbolic robot action planning using large language models. 
+
+Frontiers in Neurorobotics , 18, June 2024. [15] Vineet Bhat, Ahmet Umur Kaypak, Pramod Krishnamurthy, Ramesh Karri, and Farshad Khorrami. Grounding large language models for robot task planning using closed-loop state feedback. Advanced Robotics Research , November 2025. [16] Ruochu Yang, Mengxue Hou, Junkai Wang, and Fumin Zhang. Oceanchat: Piloting autonomous underwater vehicles in natural lan-guage, 2023. [17] Jingzehua Xu, Zhuoli Zheng, Zhenghao Wang, Ziwei Han, Yilong Ren, and Shuai Zhang. When motion learns to listen: Diffusion-prior Lyapunov actor-critic framework with LLM guidance for stable and robust AUV control in underwater tasks, 2025. [18] Sourav Sinha, Mazen Farhood, and Daniel J. Stilwell. Control de-sign and analysis for autonomous underwater vehicles using integral quadratic constraints. Control Engineering Practice , 147:105932, 2024. [19] Chao Hou, XiaoGang Li, Hongbo Wang, Peng Zhai, and Hao Lu. Fuzzy linear extended states observer-based iteration learning fault-tolerant control for autonomous underwater vehicle trajectory-tracking system. IET Control Theory & Applications , 17(3):270–283, February 2023. [20] Chuanfa Chen, Xiang Gao, Yueming Li, Xuezhi Chen, Jian Cao, and Yinghao Zhang. Deep reinforcement learning approach for X-rudder AUVs fault diagnosis based on deep Q-network. Journal of Marine Science and Application , January 2025. 
+
+First Author et al. Page 17 of 18 LASSA Architecture-Based Autonomous Fault-Tolerant Control of UUVs 
+
+[21] Yang Jiang, Bo He, Jia Guo, Pengfei Lv, Xiaokai Mu, Xin Zhang, and Fei Yu. Actuator weak fault diagnosis in autonomous underwater vehicle based on tri-stable stochastic resonance. Applied Sciences ,10(6):2048, March 2020. [22] Yushan Sun, Zikai Wang, and Guocheng Zhang. Fault diagnosis method of autonomous underwater vehicle based on deep learn-ing. IOP Conference Series: Materials Science and Engineering ,470:012035, January 2019. [23] Yunkai Wu, Aodong Wang, Yang Zhou, Zhiyu Zhu, and Qingjun Zeng. Fault diagnosis of autonomous underwater vehicle with miss-ing data based on multi-channel full convolutional neural network. 
+
+Machines , 11(10):960, October 2023. [24] Jiayu He, Ye Li, Yanqing Jiang, Yueming Li, and Li An. Propeller fault diagnosis based on a rank particle filter for autonomous under-water vehicles. Brodogradnja , 69(2):147–164, April 2018. [25] Jiayu He, Ye Li, Yueming Li, Yanqing Jiang, and Li An. Fault diagno-sis in autonomous underwater vehicle propeller in the transition stage based on gp-rpf. International Journal of Advanced Robotic Systems ,15(6), November 2018. [26] Yinjing Guo, Hui Liu, Xiaojing Fan, and Wenhong Lyu. Research progress of path planning methods for autonomous underwater vehi-cle. Mathematical Problems in Engineering , 2021:1–25, February 2021. [27] Liang Yang, Juntong Qi, Dalei Song, Jizhong Xiao, Jianda Han, and Yong Xia. Survey of robot 3d path planning algorithms. Journal of Control Science and Engineering , 2016:1–22, 2016. [28] Chee Sheng Tan, Rosmiwati Mohd-Mokhtar, and Mohd Rizal Arshad. A comprehensive review of coverage path planning in robotics using classical and heuristic algorithms. IEEE Access , 9:119310–119342, 2021. [29] Yangfan Cui, Peibin Zhu, Guowei Lei, Peng Chen, and Guangsong Yang. Energy-efficient multiple autonomous underwater vehicle path planning scheme in underwater sensor networks. Electronics ,12(15):3321, August 2023. [30] Enric Galceran, Ricard Campos, Narcís Palomeras, David Ribas, Marc Carreras, and Pere Ridao. Coverage path planning with real-time replanning and surface reconstruction for inspection of three-dimensional underwater structures using autonomous underwater ve-hicles: Coverage path planning with real-time replanning and surface reconstruction. Journal of Field Robotics , 32(7):952–983, November 2014. [31] Xu Liao, Le Li, Chuangxia Huang, Xian Zhao, and Shumin Tan. Noisy dueling double deep q-network algorithm for autonomous underwater vehicle path planning. Frontiers in Neurorobotics , 18, October 2024. [32] Zhuo Wang, Hao Lu, Hongde Qin, and Yancheng Sui. Autonomous underwater vehicle path planning method of soft actor–critic based on game training. Journal of Marine Science and Engineering ,10(12):2018, December 2022. [33] Jianjun Ni, Liuying Wu, Pengfei Shi, and Simon X. Yang. A dynamic bioinspired neural network based real-time path planning method for autonomous underwater vehicles. Computational Intelligence and Neuroscience , 2017:1–16, 2017. [34] Yushan Sun, Xiaokun Luo, Xiangrui Ran, and Guocheng Zhang. A 2d optimal path planning algorithm for autonomous underwater vehicle driving in unknown underwater canyons. Journal of Marine Science and Engineering , 9(3):252, February 2021. [35] Naruki Yoshikawa, Marta Skreta, Kourosh Darvish, Sebastian Arellano-Rubach, Zhi Ji, Lasse Bjørn Kristensen, Andrew Zou Li, Yuchi Zhao, Haoping Xu, Artur Kuramshin, Alán Aspuru-Guzik, Florian Shkurti, and Animesh Garg. Large language models for chemistry robotics. Autonomous Robots , 47(8):1057–1086, October 2023. [36] Jianwei Zhu, Xueying Sun, Qiang Zhang, and Mingmin Liu. Vla-grasp: a vision-language-action modeling with cross-modality fusion for task-oriented grasping. Complex & Intelligent Systems , 11(6), May 2025. [37] Christopher E. Mower, Yuhui Wan, Hongzhan Yu, Antoine Gros-nit, Jonas Gonzalez-Billandon, Matthieu Zimmer, Puze Liu, Daniel Palenicek, Davide Tateo, Jan Peters, Kaixian Qu, Mike Zhang, Guowei Lan, Andrei Cramariuc, Cesar Cadena, Marco Hutter, Guangjian Tian, Yuzhen Zhuang, Kun Shao, Xingyue Quan, Jianye Hao, Jun Wang, and Haitham Bou-Ammar. A robot operating system framework for using large language models in embodied AI. Nature Machine Intelligence , 2026. [38] Ruaridh Mon-Williams, Gen Li, Ran Long, Wenqian Du, and Christo-pher G. Lucas. Embodied large language models enable robots to complete complex tasks in unpredictable environments. Nature Machine Intelligence , 7(4):592–601, 2025. [39] Marta Skreta, Zihan Zhou, Jia Lin Yuan, Kourosh Darvish, Alán Aspuru-Guzik, and Animesh Garg. Replan: Robotic replanning with perception and language models, 2024. [40] Junyu Gao, Xuan Yao, Yong Rui, and Changsheng Xu. Building em-bodied EvoAgent: A brain-inspired paradigm for bridging multimodal large models and world models. In Proceedings of the 33rd ACM International Conference on Multimedia (MM ’25) . ACM, 2025. [41] Guanwen Xie, Jingzehua Xu, Yimian Ding, Zhi Zhang, Shuai Zhang, and Yi Li. Never too prim to swim: An LLM-enhanced RL-based adaptive S-surface controller for AUVs under extreme sea conditions, 2025. [42] Waseem Akram, Muhayy Ud Din, Abdelhaleem Saad, and Irfan Hussain. AquaChat: An LLM-guided ROV framework for adap-tive inspection of aquaculture net pens. Aquacultural Engineering ,111:102607, 2025. [43] Ruo Chen, David Blow, Adnan Abdullah, and Md Jahidul Islam. Word2Wave: Language driven mission programming for efficient subsea deployments of marine robots. In 2025 IEEE International Conference on Robotics and Automation (ICRA) . IEEE, 2025. [44] Kim Alexander Christensen, Alexey Gusev, Andreas Gudahl Tufte, Ole Andreas Alsos, and Martin Steinert. AI Captain: Conversational mission planning and execution system for autonomous surface vehi-cles. Ocean Engineering , 338:121988, 2025. 
+
+First Author et al. Page 18 of 18 LASSA Architecture-Based Autonomous Fault-Tolerant Control of UUVs 
+
+Figure 7: Exp-S three-phase trajectory results. Top : Phase 1, path initialisation and straight navigation (stable depth, initial route blue, actual trace red). Middle : Phase 2, deviation detection and LLM-driven replanning (blue: initial path; or-ange: replanned route; red: actual trace; depth begins to fluctuate). Bottom : Phase 3, steering-lock dive and return execution (depth reaches ≈1.2 m during the lock phase before recovering). 
+
+Figure 8: Surface-constrained simulation variant (UUV unable to actively adjust depth). Top : Phase 1, path initialisation; depth profile is flat throughout. Middle : Phase 2, deviation detection and replanning; depth remains stable (0.1–0.25 m) with no steering-lock dive. Bottom : Phase 3, return execution along the replanned path with stable depth, demonstrating that the LASSA pipeline succeeds without dive-assisted recovery. First Author et al. Page 19 of 18 LASSA Architecture-Based Autonomous Fault-Tolerant Control of UUVs 
+
+Figure 9: Robustness validation under cross-current distur-bance. Top : the UUV is progressively displaced laterally by a steady cross-current, with the actual trace diverging from the initial plan. Middle : the cross-track deviation triggers LLM replanning; the LLM generates a corrected straight-line path to the mission target (orange) and additionally outputs a rudder-bias correction of ≈ −11 .5◦ that accounts for the persistent lateral force. Bottom : the UUV executes the replanned path with the applied rudder correction and successfully reaches the mission target against the cross-current. 
+
+Figure 10: Lateral ( 𝑋 ) and along-track ( 𝑌 ) time histories under the DVL lateral-bias fault, expressed in a planar frame aligned with the initial heading. Top : kf_only , with fixed KF covariances; the lateral channel deviates noticeably from the ground truth during and after the turn. Bottom : kf_mcp , where the LLM rescales the KF covariances at fault detection; the lateral residual is reduced and the along-track channel remains well tracked. Green: ground truth; red: KF estimate. First Author et al. Page 20 of 18 LASSA Architecture-Based Autonomous Fault-Tolerant Control of UUVs 
+
+Figure 11: Trajectory-level comparison under the DVL lateral-bias fault. Top row : kf_mcp , with the LLM-issued MCP covari-ance update; the KF estimate (red) overlays the ground truth (green) throughout the loop. Bottom row : kf_only , with fixed covariances; the KF estimate exhibits visible lateral inflation and an outward bow on the return leg. Left column: 3D view; right column: top-down 𝑋𝑌 view. 
+
+Figure 14: Model comparison. Each row shows one LLM backbone (GPT-5.3, Qwen3-max, DeepSeek-V3.2, Kimi K2.5 from top to bottom); left column: normal scenario; right column: abnormal scenario. Kimi K2.5 achieves the highest ge-ometric fidelity in the normal scenario and the most consistent constraint-conflict response in the abnormal scenario; Qwen3-max exhibits the most severe deviation under the infeasible constraint. First Author et al. Page 21 of 18 LASSA Architecture-Based Autonomous Fault-Tolerant Control of UUVs 
+
+Figure 15: Prompt variant comparison using Kimi K2.5. Rows correspond to the detailed (P1), standard (P2), and minimal (P3) prompt variants from top to bottom; left column: normal scenario; right column: abnormal scenario. The detailed variant (P1) achieves the highest arc quality in the normal scenario and the most geometrically consistent constraint-conflict response in the abnormal scenario; the minimal variant (P3) shows the greatest quality degradation under both conditions. First Author et al. Page 22 of 18

@@ -1,0 +1,1218 @@
+Title: Nullspace-based Fault Diagnosis for Closed-Loop Mechatronic Systems with Application to Semiconductor Equipment
+
+URL Source: https://arxiv.org/pdf/2605.09689v1
+
+Published Time: Tue, 12 May 2026 02:14:41 GMT
+
+Number of Pages: 12
+
+Markdown Content:
+Koen Classens et al., Nullspace-based Fault Diagnosis for Closed-Loop Mechatronic Systems with Application to Semiconductor Equipment ,
+
+Submitted for journal publication , uploaded to ArXiv May 10, 2026 
+
+# Nullspace-based Fault Diagnosis for Closed-Loop Mechatronic Systems with Application to Semiconductor Equipment 
+
+Koen Classens a, ∗, Jeroen van de Wijdeven b, W. P. M. H. (Maurice) Heemels a, Tom Oomen a,c 
+
+> aEindhoven University of Technology, Department of Mechanical Engineering, Control Systems Technology, Eindhoven, The Netherlands
+> bASML, Veldhoven, The Netherlands
+> cDelft University of Technology, Department of Mechanical Engineering, Delft Center for Systems and Control, Delft, The Netherlands
+
+Abstract 
+
+Fault detection and isolation (FDI) systems are critical for modern mechatronic production equipment, as their continuous oper-ation is heavily dependent on the ability to detect and isolate faults in a timely and e ffi cient manner. The aim of this paper is to address closed-loop aspects for linear systems and enable the application of well-known nullspace-based FDI synthesis conditions to mechatronic systems subject to actuator and sensor faults. These tailored FDI synthesis conditions are applied to a large-scale prototype wafer stage, showcasing the proposed approach through real experiments, thereby underlining the usefulness of the derived synthesis conditions for a wide range of production machines and scientific instruments. 
+
+Keywords: Fault Detection and Isolation, Fault Diagnosis, Mechatronics, Lithography, Semiconductor. 
+
+1. Introduction 
+
+The high-tech industry is moving towards a new approach to manage maintenance of its mechatronic production equip-ment, with a strong focus on predictive strategies to reduce the high expenses related to unplanned downtime. In this transition, real-time diagnosis of closed-loop systems is expected to play a crucial role to facilitate e ff ective and targeted maintenance. Historically, these fault diagnosis systems are well established in safety-critical domains such as aerospace and automotive, whereas this article explores their application in linear multi-input multi-output (MIMO) mechatronic systems. Driven by the stringent requirements of safety-critical sys-tems, significant progress has been made over the past decades in the areas of fault diagnosis and fault tolerance. This progress is documented in numerous surveys such as Isermann (2005); Hwang et al. (2010); Gao et al. (2015); Li et al. (2020). Repre-sentative developments include observer-based approaches (Frank and Ding, 1997; Zhang and Ding, 2008; Wang et al., 2007), factorization-based methods (Ding et al., 2000), parameter es-timation techniques (Gertler, 1995; Classens et al., 2022), and statistical approaches (Yin et al., 2014). Recent research in fault diagnosis has increasingly focused on data-driven, machine learning, and hybrid approaches, driven by the growing availability of operational data and advances in artificial intelligence. Data-driven methods have shown strong capabilities in machinery health monitoring and prognostics (Lei et al., 2018; Neupane et al., 2025), while machine learning tech-niques, including deep learning and ensemble learning meth-ods, have demonstrated promising performance for fault detec-tion and classification in complex systems (Lei et al., 2020;   
+
+> ∗Corresponding author
+> Email address: k.h.j.classens@gmail.com (Koen Classens)
+
+Mian et al., 2024; Leite et al., 2024). In parallel, hybrid ap-proaches that combine physics-based models with data-driven or knowledge-based techniques have gained significant atten-tion (Wilhelm et al., 2021; Rezamand et al., 2020). Due to the high financial stakes associated with downtime of mechatronic production equipment, transparency and deep understanding are required to support decision-making. Model-based approaches o ff er this and provide greater transparency and interpretability than black-box methods. In addition, the reproducible behavior and availability of accurately identified models, often developed during the design and integration phases, make model-based approaches particularly suitable for this ap-plication domain. Fault detection and isolation (FDI) for closed-loop mecha-tronics poses several unique challenges. Generically applicable methods such as the nullspace-based approach (Varga, 2013, 2017) have been developed using an open-loop framework and have been successfully applied in closed-loop scenarios. How-ever, in areas such as system identification, it is widely recog-nized that closed-loop behavior is critical and must be consid-ered carefully (Van den Hof, 1998). Although important progress has been made in the field of FDI, the implications of the closed loop are not yet fully un-derstood. While generic existence conditions for FDI filters are well established, further analysis is required to uncover funda-mental limitations and opportunities. Moreover, experimental evidence supporting the applicability of such methods to large-scale industrial systems remains limited. The framework pre-sented in this paper builds on the preliminary version reported in (Classens, 2024, Chpt. 6) and addresses closed-loop aspects relevant to mechatronic systems. The main contributions of this paper are the following. 
+
+> arXiv:2605.09689v1 [eess.SY] 10 May 2026
+
+C1 Conditions are established under which open-loop nullspace-based FDI synthesis remains valid for closed-loop sys-tems, and scenarios are identified in which a closed-loop formulation provides additional design freedom. C2 Generic solvability and isolability conditions for approx-imate fault detection and isolation are translated into tai-lored criteria for systems subjected to actuator and sensor faults. C3 The nullspace-based approach is experimentally validated on multi-input multi-output prototype wafer stage, demon-strating its applicability to industrial mechatronic systems. The remainder of this article is organized as follows. The problem is formulated in Section 2. In particular, the approxi-mate fault detection and isolation problem (AFDIP) for closed-loop and open-loop systems. Next, the closed-loop aspects are clarified in Section 3. The solution to the AFDIP is described in Section 4. Subsequently, the solvability requirements are exam-ined and transformed to reveal fundamental properties in Sec-tion 5, followed by a concise discussion. Experimental results are presented in Section 6. Finally, the findings are summarized and conclusions drawn in Section 7. 
+
+2. Problem formulation 
+
+Consider the closed-loop output for linear continuous-time multi-input multi-output (MIMO) systems a ff ected by additive faults, described in the Laplace domain, by 
+
+y = (I + GuC)−1 GuCr + (I + GuC)−1 Gdd
+
++ (I + GuC)−1 Gww + (I + GuC)−1 G f f, (1) and consider the control input, described by 
+
+u = (I + CG u)−1 Cr − (I + CG u)−1 CG dd
+
+− (I + CG u)−1 CG ww − (I + CG u)−1 CG f f, (2) see Figure 1. In time domain, the output y takes values in Rny ,the control input u takes values in Rnu , the disturbance d takes values in Rnd , the noise w takes values in Rnw , and the fault vector f takes values in Rn f . The transfer function matrices (TFMs) Gu, Gd, Gw, G f , and the feedback controller C are of corresponding dimensions. A residual generator, described by a proper and stable TFM 
+
+Q := hQy Qu
+
+i, augments the closed-loop controlled system, and processes the known control input u and measurable output signal y, see Figure 1. Hence, the residual ε, taking values in 
+
+Rnε , is described by 
+
+ε = hQy Qu
+
+i "yu
+
+#
+
+, (3) and is used for decision making on the presence or absence of faults. The filter Q, which is to be designed, must meet spe-cific requirements to enable the detection and isolation of faults. These requirements are imposed on the internal representation, C−rGddGuyuQyQuGwwGffε
+
+> Figure 1: Closed-loop controlled system equipped with a residual generator.
+
+derived by substituting the closed-loop output and input, de-scribed by (1) and (2), into (3), which gives 
+
+ε = hQy Qu
+
+i "GuCS S G d S G w S G f
+
+CS −CS G d −CS G w −CS G f
+
+# 
+
+rdwf
+
+
+
+,
+
+with sensitivity function S = (I + GuC)−1. Alternatively, the in-ternal representation of the closed-loop formulation is denoted as 
+
+ε = Rcl  
+
+> r
+
+r + Rcl  
+
+> d
+
+d + Rcl  
+
+> w
+
+w + Rcl  
+
+> f
+
+f, (4) where 
+
+hRcl  
+
+> r
+
+Rcl  
+
+> d
+
+Rcl  
+
+> w
+
+Rcl 
+
+> f
+
+i :=
+
+hQy Qu
+
+i "GuCS S G d S G w S G f
+
+CS −CS G d −CS G w −CS G f
+
+#
+
+, (5) and the column of the fault-to-residual TFM Rcl  
+
+> f
+
+, corresponding to fault f j, is denoted by Rcl   
+
+> fj
+
+, where j = 1, . . . , n f .In case the system is in open loop, see Figure 2, the output is described by 
+
+y = Guu + Gdd + Gww + G f f. (6) In this scenario, the internal representation is described by 
+
+ε = Rol  
+
+> u
+
+u + Rol  
+
+> d
+
+d + Rol  
+
+> w
+
+w + Rol  
+
+> f
+
+f, (7) where 
+
+hRol  
+
+> u
+
+Rol  
+
+> d
+
+Rol  
+
+> w
+
+Rol 
+
+> f
+
+i
+
+:= hQy Qu
+
+i "Gu Gd Gw G f
+
+I 0 0 0
+
+#
+
+, (8) and Rol   
+
+> fj
+
+is the column of Rol  
+
+> f
+
+corresponding to the jth fault. GddGuyuQyQuGwwGffεFigure 2: Open-loop system equipped with a residual generator. 
+
+2.1. Approximate fault detection problem (AFDP) 
+
+The approximate fault detection problem (AFDP) for closed-loop systems involves finding a filter Q such that the internal representation (4) is proper, stable, and satisfies the following requirements: a) Rcl  
+
+> r
+
+= 0, b) Rcl  
+
+> d
+
+= 0, c) Rcl   
+
+> wj
+
+≈ 0, j = 1, . . . , nw, with max j
+
+Re λ Rcl  
+
+> wj
+
+ < 0, d) Rcl   
+
+> fj
+
+, 0, j = 1, . . . , n f , with max j
+
+Re λ Rcl  
+
+> fj
+
+ < 0, where Re ( λ (·)) denotes the real part of the poles of the TFMs. The first requirements a) and b) enforce decoupling of the ref-erence input r and the disturbance d from the residual ε, in the sense that r and d do not propagate to the residual signal. That is, when Rcl  
+
+> r
+
+= 0 and Rcl  
+
+> d
+
+= 0, the residual ε is completely insensitive to the reference and external disturbances, and any nonzero residual can therefore not be attributed to these sig-nals. The requirements c) and d) are formalized as part of an optimization problem in Section 4. The solution to this op-timization problem simultaneously minimizes the transfer of measurement noise w to the residual ε, while ensuring that the transfer from faults f to ε remains nonzero. This guarantees that the residual is predominantly driven by fault e ff ects, while being robust to noise. Note that if the requirements a), b), and d) hold, the requirement c) can always be achieved by scaling the filter Q.The disturbance inputs targeted for exact decoupling, and for which such decoupling is presumably achievable, are repre-sented by Gd. In contrast, noise and disturbances not covered by these inputs are represented by Gw. In practice, the distinc-tion between Gd and Gw lies solely in how they are handled in the solution of the AFDP. When the system is considered in open loop, see Figure 2, the goal is to decouple the plant input u. To this end, require-ment a) is replaced by Rol  
+
+> u
+
+= 0. In this case, the AFDP in-volves finding a filter Q such that the internal representation (7) is proper, stable, and satisfies the following requirements: a) Rol  
+
+> u
+
+= 0, b) Rol  
+
+> d
+
+= 0, c) Rol   
+
+> wj
+
+≈ 0, j = 1, . . . , nw, with max j
+
+Re λ Rol  
+
+> wj
+
+ < 0, d) Rol   
+
+> fj
+
+, 0, j = 1, . . . , n f , with max j
+
+Re λ Rol  
+
+> fj
+
+ < 0. 
+
+2.2. Approximate fault detection and isolation problem (AFDIP) 
+
+To e ff ectively isolate faults, a dedicated structure is enforced in the residual signals, with the aim of ensuring that each resid-ual εi is influenced by distinct set of faults. To this end, consider a nε-dimensional residual vector ε and a structured bank of fil-ters Q(1) to Q(nε) as 
+
+Q =
+
+
+
+Q(1) 
+
+...
+
+Q(nε)
+
+ . (9) The corresponding fault-to-residual TFM in the closed-loop and open-loop scenario, Rcl   
+
+> fj
+
+and Rol   
+
+> fj
+
+respectively, are structured ac-cordingly as 
+
+R f =
+
+
+
+R(1)  
+
+> f1
+
+. . . R(1) 
+
+> fn f
+
+... . . . ...
+
+R(nε) 
+
+> f1
+
+. . . R(nε)
+
+> fn f
+
+
+
+. (10) Let S R f be the corresponding nε × n f matrix, which encodes the structure of R f as 
+
+S R f (i, j) = 1 if R(i)  
+
+> fj
+
+, 0 (11a) 
+
+S R f (i, j) = 0 if R(i)  
+
+> fj
+
+= 0 (11b) The approximate fault detection and isolation problem (AFDIP) requires determining a stable and proper filter Q that, given a structure matrix S , additionally satisfies 
+
+e) S R f = S .The selection of the structure matrix S is an important fac-tor in solving fault isolation problems. Notably, this selection is not unique; multiple configurations of S can often yield equally satisfactory synthesis results. According to the nomenclature of Gertler (1998), for a desired structure matrix S , the ith row is re-ferred to as the ith specification, while the jth column is known as the jth fault signature. The specifications describe the de-sired sensitivity pattern of each residual with respect to the set of faults and are used primarily during the synthesis procedure, i.e., the design of the filter bank Q. During synthesis, each filter 
+
+Q(i) is constructed such that the corresponding residual εi is sen-sitive only to the faults indicated by the nonzero entries in the 
+
+ith row of S , while being decoupled from the remaining faults. In contrast, the fault signatures describe how each fault a ff ects the residual vector and are used primarily during fault isolation. Specifically, the jth fault signature is given by the jth column of 
+
+S and represents the pattern of residuals that are expected to be-come nonzero when fault f j occurs. Fault isolation is achieved by comparing the observed pattern of fired (nonzero) residuals with the fault signatures encoded in the columns of S . Although pairwise distinct fault signatures are su ffi cient to uniquely iden-tify a single fault, a sparse structure matrix generally enables the isolation of a larger number of simultaneously occurring faults, as overlapping residual responses are reduced. 
+
+3. Closed-loop aspects and solvability of the AFD(I)P 
+
+This section has two objectives. First, it establishes the relationship between the open-loop and closed-loop formula-tions of the approximate fault detection and (isolation) problem (AFD(I)P), clarifying under which conditions the simpler open-loop formulation can be used for closed-loop systems. Second, it recalls standard solvability and isolability conditions, which are required later for residual generator synthesis. The first part contains new results, while the second part summarizes classi-cal results, mainly following Varga (2017), and is included for completeness and later use. 
+
+3.1. Relationship between open-loop and closed-loop formula-tions 
+
+A comparison of the open-loop and closed-loop decoupling requirements, in particular a) and b), reveals that certain resid-ual generators Q satisfy both formulations. In particular, resid-ual generators obtained from the open-loop formulation may already fulfill the closed-loop requirements. The following two theorems formalize this relationship and constitute a contribu-tion of this work. 
+
+Theorem 1. Consider G u with n y ≥ nu, and let G d, G w and G f be given transfer function matrices in a closed-loop system described by (1) and (2) , with a full normal rank controller C, and residual generator Q in (3) . Let G u, G d, G w and G f be the same transfer function matrices in the open-loop formulation described by (6) . Then, any filter Q that achieves R ol  
+
+> u
+
+= 0 and Rol  
+
+> d
+
+= 0 in the open-loop formulation also achieves R cl  
+
+> r
+
+= 0 and Rcl  
+
+> d
+
+= 0 in the closed-loop formulation. Moreover, the corre-sponding nullspaces coincide, implying identical residual dy-namics, i.e., Rol  
+
+> w
+
+= Rcl  
+
+> w
+
+, Rol  
+
+> f
+
+= Rcl  
+
+> f
+
+.
+
+Proof. See Appendix Appendix A. Theorem 1 shows that when ny ≥ nu, the open-loop and closed-loop formulations are equivalent from the perspective of residual generation. Consequently, residual generators can be designed using the open-loop formulation even for closed-loop systems, yielding identical disturbance, noise, and fault responses while avoiding explicit dependence on the controller. The next result addresses the complementary case ny < nu.
+
+Theorem 2. Consider G u with n y < nu, and let G d, G w and G f be given transfer function matrices in a closed-loop system described by (1) and (2) , with a full normal rank controller C, and residual generator Q in (3) . Let G u, G d, G w and G f be the same transfer function matrices in the open-loop formulation described by (6) . Then, the set of filters Q satisfying R ol  
+
+> u
+
+= 0
+
+and R ol  
+
+> d
+
+= 0 is a subset of the set of filters satisfying R cl  
+
+> r
+
+= 0 and Rcl  
+
+> d
+
+= 0.Proof. See Appendix Appendix B. Theorem 2 shows that for ny < nu the closed-loop formula-tion admits additional design freedom due to a larger nullspace. While this additional freedom can be exploited by explicitly in-corporating closed-loop operators, the open-loop formulation is adopted in the remainder of this paper for simplicity. The pre-sented results extend naturally to the closed-loop case. 
+
+3.2. Solvability and isolability conditions 
+
+Consider the open-loop model (6). The approximate fault detection problem (AFDP) is solvable if and only if the sys-tem is completely fault detectable, i.e., each individual fault produces a nonzero residual that cannot be masked by distur-bances. This property holds if and only if, for every fault chan-nel j = 1, . . . , n f , the rank condition rank hG f j Gd
+
+i > rank Gd (12) is satisfied, where G f j denotes the jth column of G f and rank refers to the normal rank. The equivalence between (12) and solvability of the AFDP follows from (Varga, 2017, Theorems 3.2, 3.7, 3.9) and will be used later when discussing existence of residual generators. Beyond detectability, isolation requires that di ff erent faults produce distinguishable residual signatures. Let S denote a bi-nary nε × n f structure matrix specifying which residual chan-nels should respond to which faults. The system (1) is S -fault isolable if and only if, for each residual channel i = 1, . . . , nε,the rank condition rank hGd ˆG(i) 
+
+> d
+
+G f j
+
+i > rank hGd ˆG(i)
+
+> d
+
+i , ∀ j, S i j , 0 (13) is satisfied, where ˆ G(i) 
+
+> d
+
+is formed from those columns of G f cor-responding to S i j = 0. This condition ensures that fault f j can-not be hidden by disturbances and by faults that are required to be decoupled in residual channel i (Varga, 2017, Theorem 3.5). Achievable structure matrices can be determined a priori using the procedure in Varga (2009). An important special case is strong fault isolability , corre-sponding to S = In f . In this case, all faults must be simultane-ously isolable, which is equivalent to rank hGd G f
+
+i = rank Gd + n f . (14) This condition is often not feasible in practice, especially when the number of sensors is limited. A weaker requirement is weak fault isolability , where faults are assumed to occur one at a time. The least restrictive struc-ture that still allows isolation of all faults is the hollow structure 
+
+S = Jn f − In f , where J is the matrix of ones. In this case, the general S -fault isolability condition (13) reduces to the pairwise rank conditions rank hGd G fi G f j
+
+i > rank hGd G fi
+
+i , i , j, (15) which ensure that any two distinct faults are distinguishable. Indeed, for the hollow structure one has S i j = 0 if i = j and S i j = 1 otherwise, so that ˆG(i) 
+
+> d
+
+in (13) reduces to G fi , yielding (15). Finally, the approximate fault detection and isolation prob-lem (AFDIP) with a prescribed structure matrix S is solvable if and only if the system is S -fault isolable in the sense of (13) (Varga, 2017, Theorems 3.10, 3.13). These conditions will be used in the subsequent sections to characterize existence and structural limitations of the proposed residual generator de-signs. 
+
+4. Solution to the AFDIP 
+
+To synthesize a fault detection and isolation filter that solves the AFDIP, i.e., criteria a) to e) for an S -fault isolable system according to the rank condition (13), the nullspace-based ap-proach is followed (Varga, 2017). Here, each filter i = 1, . . . , q
+
+in the bank of filters (9), is factorized as 
+
+Q(i) = Q(i)3 Q(i)2 Q(i)1 . (16) Each factor is interpreted as a partial synthesis result addressing specific requirements. First, for a specific i, define a new fault input ˆf (i) that contains the components f j for which S i j = 1. Define ˆG(i) 
+
+> f
+
+as the TFM formed by the columns G f j for which 
+
+S i j = 1 and define ˆG(i) 
+
+> d
+
+as the TFM formed by the columns 
+
+G f j for which S i j = 0. Assume nu + nd > 0 and consider 
+
+Q(i) = ¯Q(i)1 Q(i)1 . Here, ¯Q(i)1 = Q(i)3 Q(i)2 and Q(i)1 is the first partial synthesis result which is a proper left rational nullspace basis satisfying 
+
+Q(i)1 G(i) = 0, (17) where 
+
+G(i) :=
+
+"Gu Gd ˆG(i)
+
+> d
+
+Inu 0 0
+
+#
+
+. (18) The residual that remains can be written as 
+
+εi = ¯Q(i)1 ¯G(i) 
+
+> f
+
+ˆf (i) + ¯Q(i)1 ¯G(i) 
+
+> w
+
+w, (19) where ¯G(i) 
+
+> f
+
+:= Q(i)1
+
+" ˆG(i)
+
+> f
+
+0
+
+#
+
+and ¯G(i) 
+
+> w
+
+:= Q(i)1
+
+"Gw
+
+0
+
+#
+
+. The factor Q(i)1
+
+is computed using the approach in Varga (2008), ensuring that ¯Q(i)1 ¯G f and ¯Q(i)1 ¯Gw are proper and stable. Computing Q(i)1 for all i = 1, . . . , q su ffi ces to satisfy requirements a), b), and e). The remaining ¯Q(i)1 can be factored as ¯Q(i)1 = Q(i)3 Q(i)2 , where 
+
+Q(i)2 is a rational vector to construct a linear combination of the basis vectors of Q(i)1 , which can be chosen such that Q(i)2 Q(i)1
+
+has the least possible McMillan degree (Zhou et al., 1996). To this end, minimum dynamic cover algorithms are deployed (Kimura, 1977; Varga, 2003). Alternatively, a di ff erent linear combination of basis vectors can be chosen via Q(i)2 at the cost of a higher McMillan degree. Next, Q(i)3 is determined to maximize the fault-to-noise gap 
+
+η := βγ . An optimization-based approach is used to achieve the largest gap between fault detectability and noise attenuation. Let γ > 0 be an admissible level for the influence of w on εi. An optimization problem to minimize the e ff ect of w and maximize the e ff ect of ˆf (i) is posed as follows. Given γ > 0, determine 
+
+β > 0 and a stable and proper fault detection filter Q(i)3 such that 
+
+β = max 
+
+> Q(i)3
+
+
+
+Q(i)3 Q(i)2 ¯G f ∞− Q(i)3 Q(i)2 ¯Gw ∞ ≤ γ
+
+
+
+, (20) where 
+
+Q(i)3 Q(i)2 ¯G f ∞− := min  
+
+> 1≤i≤q
+
+Q(i)3 Q(i)2 ¯G f ∞ . (21) This optimization problem is solved by determining Q(i)3 from a co-inner-outer factorization, Q(i)2 ¯G f = Gwo Gwi , where Gwo is an invertible TFM which has only stable zeros and Gwi is co-inner (i.e., Gwi GHwi = I where H denotes the Hermitian trans-pose). Setting Q(i)3 = γG−1 
+
+> wo
+
+yields the optimal solution to (20). Computing this outer factor generally involves solving a single Riccati equation (Liu and Zhou, 2007; Glover and Varga, 2011). 
+
+Remark 4.1. The conditions of the AFDIP can be relaxed by replacing requirement e) such that the TFMs R (i)  
+
+> fj
+
+corresponding to S i j = 0 are not required to be exactly zero, i.e., R (i)  
+
+> fj
+
+= 0, but should be small R (i)  
+
+> fj
+
+≈ 0. To this end, ˆG(i) 
+
+> d
+
+is considered as part of G w which includes its contribution in the optimization problem (20) , instead of enforcing its contribution to zero via 
+
+(17) .
+
+With the optimal solution to the AFDIP established, the next section explores several special cases and their implications for solvability. 
+
+5. Design for actuator and sensor faults 
+
+This section discusses three practically relevant scenarios: actuator faults only, sensor faults only, and combined actuator and sensor faults. For each case, the general solvability con-ditions of the AFDIP derived in Section 3 are translated into concrete design implications for admissible structure matrices 
+
+S .Throughout this section, Gd is assumed absent. Disturbance eff ects can alternatively be included in Gw and treated via the optimization problem (20). In this case, the S -fault isolability condition reduces to rank h ˆG(i) 
+
+> d
+
+G f j
+
+i > rank h ˆG(i)
+
+> d
+
+i , ∀ j with S i j , 0, (22) where ˆ G(i) 
+
+> d
+
+is formed from those columns of G f corresponding to S i j = 0. 
+
+5.1. Actuator faults 
+
+Consider the system (6) subject only to actuator faults, so that n f = nu and the fault transfer matrix satisfies Gact  
+
+> f
+
+= Gu.Without loss of generality, the actuator fault model can be fac-torized as 
+
+G f (s) = 1
+
+d(s)
+
+
+
+N11 (s) . . . N1nu (s)
+
+... . . . ...
+
+Nny1(s) . . . Nnynu (s)
+
+ . (23) where d(s) is a common denominator and N(s) is a polynomial numerator matrix. Since multiplication by the scalar transfer function 1 /d(s) does not a ff ect the normal rank, all isolability conditions depend only on the column rank properties of N(s). Strong fault isolability ( S = In f ) requires rank G f = n f .Because rank G f = rank N, this condition is equivalent to N(s)having full column rank. Consequently, the number of sensors must satisfy ny ≥ nu, and the fault columns must be linearly in-dependent. Hence, a system with only actuator faults is strongly isolable if and only if the actuator fault transfer matrix is full column rank and at least as many sensors as actuators are avail-able. If ny < nu, strong isolation is impossible. In that case, the least restrictive structure is the hollow matrix S = Jn f − In f , cor-responding to weak isolability under the assumption that only one fault occurs at a time. The rank conditions then reduce to the pairwise tests rank hG fi G f j
+
+i > rank hG fi
+
+i = 1, i , j.
+
+Since the denominator does not influence rank, this is equiv-alent to requiring that the columns of N(s) are pairwise lin-early independent. In addition, at least two sensors are required (ny ≥ 2), since otherwise all columns are necessarily dependent. 
+
+5.2. Sensor faults 
+
+Next, consider the system (6) subject only to sensor faults. In this case n f = ny and the fault model is given by 
+
+Gsens  
+
+> f
+
+(s) = Iny .
+
+Hence, each fault a ff ects exactly one measured output channel. Since G f = Iny , the fault transfer matrix is constant and full rank, with rank G f = n f = ny.
+
+Therefore, the strong isolability condition is always satisfied. A system with only sensor faults is thus inherently strongly fault isolable. Each sensor fault produces a direction in the residual space that is linearly independent of all others. No additional requirements arise on the number of actua-tors, since actuator dynamics do not influence the rank of G f
+
+in this case. Moreover, because strong isolability holds, any less restrictive structure matrix S (such as the hollow structure corresponding to weak isolation) is automatically achievable. 
+
+5.3. Actuator and sensor faults 
+
+Finally, consider the system (6) subject to both actuator and sensor faults. In this case n f = nu + ny and the fault model 
+
+G f = hGact  
+
+> f
+
+(s) Gsens  
+
+> f
+
+(s)i = hGu(s) Iny
+
+i.Without loss of generality, the combined fault model can be written as 
+
+G f (s) = 1
+
+d(s)
+
+
+
+N11 (s) . . . N1nu (s) d(s) . . . 0
+
+... . . . ... ... . . . ...
+
+Nny1(s) . . . Nnynu (s) 0 . . . d(s)
+
+ .
+
+As in the actuator-only case, multiplication by the scalar factor 1/d(s) does not a ff ect the normal rank. Hence, all isolability conditions depend solely on the column independence proper-ties of the corresponding numerator matrix. Strong isolability would require rank G f = n f = nu + ny.However, since G f ∈ Rny×(nu+ny), its normal rank satisfies rank G f ≤
+
+ny. Because n f = nu + ny > ny whenever nu > 0, the strong isolability condition can never be satisfied if both actuator and sensor faults are considered simultaneously. Thus, a system in which all actuators and all sensors are allowed to fail is never strongly fault isolable. Consider next the weakest meaningful requirement, corre-sponding to the hollow structure S = Jn f − In f , which assumes that at most one fault occurs at a time. In this case, isolability reduces to pairwise column independence of G f , i.e., rank hG fi G f j
+
+i > rank G fi ∀i , j.
+
+Hence, weak isolability holds if and only if all fault columns of G f (both actuator and sensor columns) are pairwise indepen-dent and ny ≥ 2. This condition reveals an inherent structural limitation: at least two sensors are required to distinguish any two distinct faults. In particular, if ny = 1, then all fault columns are neces-sarily linearly dependent and isolation is impossible, even under the single-fault assumption. 
+
+6. Experimental results 
+
+In this section, a fault detection and isolation filter is applied in a prototype wafer stage used in the semiconductor industry. The system is equipped with 4 sensors and 13 actuators, which are all assumed to be prone to faults, hence the analysis pre-sented in Section 5.3 is used. First, the system and its control algorithm are introduced. Following this, an accurate paramet-ric model of the system is presented. Subsequently, a tailored FDI filter design is synthesized based on an open-loop formu-lation to demonstrate the e ff ectiveness of the fault diagnosis ap-proach. The primary objective is to detect and isolate faults in each actuator and sensor. 
+
+6.1. Prototype experimental wafer stage and control algorithm 
+
+Consider an overview of the prototype wafer stage depicted in Figure 3. A close-up of the force frame and the bottom of the stage is depicted in Figure 4 and Figure 5, respectively. The stage is the only moving part in the setup and is suspended by gravity compensators to reduce the required actuator forces. For this experimental case study only the actuators and sen-sors in the out-of-plane direction are considered. In this direc-tion, the position of the stage is measured by four linear en-coders with nanometer resolution. The system is actuated by 13 Lorentz actuators. The 13 coils are visible in Figure 4 and the interface on the chuck is shown in Figure 5. g f
+
+cb
+
+e
+
+h
+
+a
+
+dFigure 3: Prototype experimental wafer stage setup. The moving part, the chuck, is indicated by a and is suspended by gravity compensators on the force frame b , which is on top of the base frame c . Currently, the chuck and force frame are slid out of the machine, whereas during operation, it is un-derneath the metroframe d . The metroframe is isolated from the fixed world through air mounts e . There are four Lorentz actuators in the horizontal plane of which one is indicated by f . These actuators apply a tangential force to the chuck. The actuators in the vertical plane are positioned between the chuck and the force frame. The position of the chuck is measured in the horizontal plane by means of capacitive sensors and measured in the vertical plane by means of linear encoders. The chuck has four scales g measured by the encoders hon the metroframe. b
+
+ac
+
+Figure 4: Close-up of the force frame underneath the chuck. The interface of the gravity compensator to the force frame is indicated by a . One of the thirteen Lorentz actuators that apply a force to the chuck in vertical direction is indicated by b . The position of one of the in-plane actuators is indicated by c . 
+
+The system is controlled in all six degrees of freedom (DOFs) by a decentralized PID controller. To this end, the system is de-coupled using input and output transformation matrices Tu and 
+
+Ty respectively, see Figure 6. Each DOF is controlled by a ded-icated PID controller in a diagonally structured C, operating at a sampling frequency of 10 kHz. The chuck follows a smooth 4th -order setpoint with a stroke of 100 μm at a frequency of 1 Hz in the out-of-plane direction. The other two translational DOFs and three rotational DOFs are regulated to zero. 
+
+6.2. System identification 
+
+A closed-loop multisine identification experiment is per-formed to obtain a best linear approximation (BLA) using the a
+
+b
+
+c
+
+Figure 5: Close-up of the bottom of the chuck. The interface of the gravity compensator to the chuck is indicated by a and the interface of the Lorentz actuator is indicated by b . The interface for the in-plane actuators is indicated by c . C−rGddGuyQyQuGwwε1
+
+> ...
+> ε17 Tu
+> f1
+> ...
+> f13
+> 
+> f14
+> ...
+> f17
+> Tyu
+
+Figure 6: Block diagram of the closed-loop controlled prototype wafer stage system. The 13 actuator and 4 sensor faults are indicated by f1 to f17 respec-tively. 
+
+robust method, see Pintelon and Schoukens (2012). This fre-quency response function (FRF) is used to fit a parametric modal model of order 20. To this end, a frequency-domain modal iden-tification algorithm is used, based on the MIMO simplified re-fined instrumental variable method (SRIVC) (González et al., 2025; van der Hulst et al., 2025) and integrated prediction error minimization (IPEM) (van der Hulst et al., 2026). The 20th-order model, denoted by ˆ Gu : hu1 . . . u13 
+
+i⊤
+
+→
+
+hy1 . . . y4
+
+i⊤
+
+is depicted in Figure 7 and serves as a basis for FDI filter synthesis. 
+
+6.3. FDI Design 
+
+The parametric model ˆ Gu is used to synthesize the FDI fil-ter. The aim is to detect all possible faults, indicated in the block diagram in Figure 6. Transferring the actuator faults to the sensor side of the plant gives the fault model 
+
+G f = hGact  
+
+> f
+
+Gsens 
+
+> f
+
+i , (24) -200 -150 -100 -50 
+
+> Magnitude [dB]
+
+-200 -150 -100 -50 
+
+> Magnitude [dB]
+
+-200 -150 -100 -50 
+
+> Magnitude [dB]
+
+10 110 210 3
+
+f [Hz] 
+
+-200 -150 -100 -50 
+
+> Magnitude [dB]
+
+10 110 210 3
+
+f [Hz] 
+
+10 110 210 3
+
+f [Hz] 
+
+10 110 210 3
+
+f [Hz] 
+
+10 110 210 3
+
+f [Hz] 
+
+10 110 210 3
+
+f [Hz] 
+
+10 110 210 3
+
+f [Hz] 
+
+10 110 210 3
+
+f [Hz] 
+
+10 110 210 3
+
+f [Hz] 
+
+10 110 210 3
+
+f [Hz] 
+
+10 110 210 3
+
+f [Hz] 
+
+10 110 210 3
+
+f [Hz] 
+
+10 110 210 3
+
+f [Hz] Figure 7: Bode magnitude plot of the BLA in ( ), measured using multisine excitation and the robust method, and the 20 th -order fit in ( ), obtained using the frequency domain simplified refined instrumental variable (SRIVC) method with integrated prediction error minimization (IPEM). 
+
+where Gact  
+
+> f
+
+= ˆGu and Gsens  
+
+> f
+
+= I4. Since the sensors are of high quality, no disturbance and noise contributions are taken into account, so Gd and Gw are chosen to be void. The analysis in Section 5 shows that strong fault isolability is not achievable. Hence, a less stringent structure S is used. In this case, an al-most hollow signature matrix is used, equal to 
+
+S =                                                                                                                                                                                                                                                                                
+
+> 
+> 0111111111111011110111111111111011110111111111111011110111111111111011110111111111111111110111111111111111110111111111111111110111111111111111110111111111111111110111111111111111110111111111111111110111111111111111110111111111111111110111111111111111110111111111111111110111111111111111110
+> 
+
+. (25) The zeros in the top right corner of S decouple the sensor faults 
+
+f14 to f17 in the first four residuals to avoid enforcing fault-sensitivity in directions where the achievable sensitivity is too small for reliable detection. Using this structure S an approxi-mate fault detection and isolation filter is synthesized using the approach described in Section 4. 
+
+6.4. Experimental time-domain results 
+
+The FDI filter is synthesized and integrated into the closed-loop control system of the prototype wafer stage. The resulting filter is of order 42, leading to a low computational load that is well suited for real-time implementation. Faults are artificially injected into the system via the channels indicated in Figure 6. First, each actuator fault is introduced sequentially as a step sig-nal with magnitude f1, . . . , f13 = 0.1 N. Following this, sensor faults are injected in the form of a step signal with magnitude 10 μm. The first fault is injected at t = 2.5 s until t = 7.5 s. Each subsquent fault is injected 5 s after the previous fault. The absolute and normalized values of the residual signals are shown in Figure 8. Clearly, the faults are easily detectable and the rootcause of the fault can be deduced by comparison of the fired signals and the fault signatures embedded in S . For instance, around t = 5 s the residuals ε2 to ε17 fire while ε1 ≈ 0(see gray highlighted area), which indicates an additive fault at the first actuator. The residual signals can be processed, e.g., by applying suitable thresholds, to obtain a Boolean decision vector indicating the location of the active fault. The residual signals exhibit small oscillations in the fault-free case, particularly with a period equal to the setpoint r. This undesired e ff ect is attributed to the model-reality mismatch, re-sulting in a slight violation of the decoupling properties and causing a minor leakage of r into the residual signals. The actuator faults produce persistent residual signals in 00.5 1                        
+
+> "1
+> "7
+> "13
+> 00.5 1
+> "2
+> "8
+> "14
+> 00.5 1
+> "3
+> "9
+> "15
+> 00.5 1
+> "4
+> "10
+> "16
+> 00.5 1
+> "5
+> "11
+> 050 100 150
+> Time [s]
+> "17
+> 050 100 150
+> Time [s]
+> 00.5 1
+> "6
+> 050 100 150 Time [s]
+> "12 Figure 8: Absolute and normalized values of the residual signals ε1to ε17 (). The faults can easily be localized using the fault signatures encoded in the structure of Sin (25). The corresponding time windows where the residuals are expected to be zero due to the embedded structure are indicated with the vertical lines ( ). For instance, between t=2.5 s and t=7.5 s, all residuals fire except for ε1, indicating a fault at actuator 1.
+
+the case of persistent fault excitation. This implies an asymp-totically non-vanishing residual signal in the case of persistent faults such as step or sinusoidal signal. The sensor faults lack strong fault detectability making detection slightly more di ffi -cult because its e ff ect manifest in the residual only during the transient of the fault, thus the e ff ect disappears in the residual over time, see (Varga, 2017, Chapter 3) for details. However, with proper processing of the residuals, all faults are detected and isolated, showcasing the applicability of this approach to high-precision industrial equipment. 
+
+7. Conclusion 
+
+Essential principles for fault detection and isolation for closed-loop controlled mechatronic systems are established. It is shown that the open-loop formulation may be used in closed-loop sce-narios. Moreover, fundamental limitations of systems with ac-tuator and sensor faults have been uncovered by translating generic existence requirements to these specific cases. In addition, a nullspace-based fault diagnosis system was synthesized, with experimental results demonstrating the e ff ectiveness of the ap-proach. These results and the experimental validation provide a solid foundation for the application of fault diagnosis to large-scale closed-loop controlled industrial systems. 
+
+References 
+
+Classens, K., 2024. Fault Diagnosis for Uncertain Systems in Closed Loop: Applied to Semiconductor Equipment. Classens, K., Mostard, M., van de Wijdeven, J., Heemels, W.P.M.H., Oomen, T., 2022. Fault detection for preci-sion mechatronics: Online estimation of mechanical reso-nances, in: 2nd Modeling, Estimation and Control Con-ference (MECC), pp. 746–751. doi: 10.1016/j.ifacol. 2022.11.271 .Ding, S.X., Jeinsch, T., Frank, P.M., Ding, E.L., 2000. A unified approach to the optimization of fault detec-tion systems. Int. J. Adapt. Control Signal Process. , 725–745doi: 10.1002/1099-1115(200011)14:7<725:: AID-ACS618>3.0.CO;2-Q .Frank, P.M., Ding, X., 1997. Survey of robust residual gener-ation and evaluation methods in observer-based fault detec-tion systems. J. Process Control 7, 403–424. doi: 10.1016/ S0301-4770(08)60756-3 .Gao, Z., Cecati, C., Ding, S.X., 2015. A survey of fault di-agnosis and fault-tolerant techniques—Part I: Fault diagno-sis with model-based and signal-based approaches. IEEE Trans. Ind. Electron 62, 3757–3767. doi: 10.1109/TIE. 2015.2417501 .Koen Classens et al., Nullspace-based Fault Diagnosis for Closed-Loop Mechatronic Systems with Application to Semiconductor Equipment ,
+
+> Submitted for journal publication , uploaded to ArXiv May 10, 2026
+
+Gertler, J., 1995. Diagnosing parametric faults: From param-eter estimation to parity relations, in: 1995 American Con-trol Conference (ACC), pp. 1615–1620. doi: 10.1109/ACC. 1995.529780 .Gertler, J., 1998. Fault detection and diagnosis in engineering systems. Glover, K., Varga, A., 2011. On solving non-standard H−/H2/∞
+
+fault detection problems, in: 2011 50th IEEE Conference on Decision and Control, pp. 891–896. doi: 10.1109/CDC. 2011.6160723 .González, R.A., Classens, K., Rojas, C.R., Welsh, J.S., Oomen, T., 2025. Identification of additive continuous-time systems in open and closed loop. Automatica 173. doi: 10.1016/j. automatica.2024.112013 .van der Hulst, M., González, R.A., Classens, K., Tacx, P., Dirkx, N., van de Wijdeven, J., Oomen, T., 2025. Frequency domain identification for multivariable motion control sys-tems: Applied to a prototype wafer stage, in: Joint 10th IFAC Symposium on Mechatronic Systems and 14th Sym-posium on Robotics, pp. 67–72. doi: 10.1016/j.ifacol. 2025.10.141 .van der Hulst, M., González, R.A., Classens, K., Tacx, P., Dirkx, N., van de Wijdeven, J., Oomen, T., 2026. Struc-tured identification of multivariable modal systems. Mech. Syst. Signal Process. 247, 113948. doi: 10.1016/j.ymssp. 2026.113948 .Hwang, I., Kim, S., Kim, Y., Seah, C.E., 2010. A survey of fault detection, isolation, and reconfiguration methods. IEEE Trans. Control Syst. Technol. 18, 636–653. doi: 10.1109/ TCST.2009.2026285 .Isermann, R., 2005. Model-based fault-detection and diagno-sis - status and applications. Annu. Rev. Control 29, 71–85. doi: 10.1016/j.arcontrol.2004.12.002 .Kimura, H., 1977. Geometric structure of observers for linear feedback control laws. IEEE Trans. Autom. Control 22, 846– 855. doi: 10.1109/TAC.1977.1101623 .Lei, Y., Li, N., Guo, L., Ningbo, L., Tan, T., Lin, J., 2018. Ma-chinery health prognostics: A systematic review from data acquisition to RUL prediction . Mech. Syst. Signal Process. 104, 799–834. doi: 10.1016/j.ymssp.2017.11.016 .Lei, Y., Yang, B., Jiang, X., Jia, F., Li, N., Nandi, A.K., 2020. Applications of machine learning to machine fault diagnosis: A review and roadmap. Mech. Syst. Signal Process. 138, 106587. doi: 10.1016/j.ymssp.2019.106587 .Leite, D., Andrade, E., Rativa, D., Maciel, A., 2024. Fault Detection and Diagnosis in Industry 4.0: A Review on Chal-lenges and Opportunities . Sensors 25, 60. doi: 10.3390/ s25010060 .Li, W., Li, H., Gu, S., Chen, T., 2020. Process fault diag-nosis with model- and knowledge-based approaches: Ad-vances and opportunities . Control Eng. Pract. 105, 104637. doi: 10.1016/j.conengprac.2020.104637 .Liu, N., Zhou, K., 2007. Optimal solutions to multi-objective robust fault detection problems, in: 2007 46th IEEE Confer-ence on Decision and Control, pp. 981–988. doi: 10.1109/ CDC.2007.4434123 .Mian, Z., Deng, X., Dongg, X., Tian, Y., Cao, T., Chen, K., Al Jaber, T., 2024. A literature review of fault diagnosis based on ensemble learning . Eng. Appl. Artif. Intell. 127, 107357. doi: 10.1016/j.engappai.2023.107357 .Neupane, D., Bouadjenek, M., Dazeley, R., Aryal, S., 2025. Data-driven machinery fault diagnosis: A comprehensive re-view . Neurocomputing 627, 129588. doi: 10.1016/j. neucom.2025.129588 .Pintelon, R., Schoukens, J., 2012. System identification: A frequency domain approach. 2nd ed., John Wiley & Sons, Hoboken, New Jersey. Rezamand, M., Kordestani, R., Carriveau, R., Ting, D., Saif, M., 2020. A New Hybrid Fault Detection Method for Wind Turbine Blades Using Recursive PCA and Wavelet-Based. IEEE Sens. J. 20, 2023–2033. doi: 10.1109/JSEN.2019. 2948997 .Van den Hof, P.M.J., 1998. Closed-loop issues in system iden-tification. Annu. Rev. Control 22, 173–186. doi: 10.1016/ S1367-5788(98)00016-9 .Varga, A., 2003. Reliable algorithms for computing minimal dynamic covers, in: 42nd IEEE International Conference on Decision and Control, pp. 1873–1878. doi: 10.1109/CDC. 2003.1272887 .Varga, A., 2008. On computing nullspace bases — a fault detec-tion perspective. IFAC Proceedings Volumes 41, 6295–6300. doi: 10.3182/20080706-5-KR-1001.01062 .Varga, A., 2009. On computing achievable fault signatures. IFAC Proceedings Volumes 42, 935–940. doi: 10.3182/ 20090630-4-ES-2003.00154 .Varga, A., 2013. New computational paradigms in solving fault detection and isolation problems. Annu. Rev. Control 37. doi: 10.1016/j.arcontrol.2013.03.001 .Varga, A., 2017. Solving fault diagnosis problems. Springer Nature. doi: 10.1007/978-3-031-35767-1 .Wang, J.L., Yang, G., Liu, J., 2007. An LMI approach to 
+
+H− index and mixed H−/H∞ fault detection observer design. Automatica 43, 1656–1665. doi: 10.1016/j.automatica. 2007.02.019 .Wilhelm, Y., Reimann, P., Gauchel, W., Mitschang, B., 2021. Overview on hybrid approaches to fault detection and diagnosis: Combining data-driven, physics-based and knowledge-based models . Procedia CIRP 99, 278–283. doi: 10.1016/j.procir.2021.03.041 .Yin, S., Ding, S.X., Xie, X., Luo, H., 2014. A review on ba-sic data-driven approaches for industrial process monitoring. IEEE Trans. Ind. Electron 61, 6418–6428. doi: 10.1109/ TIE.2014.2301773 .Zhang, P., Ding, S.X., 2008. An integrated trade-o ff design of observer based fault detection systems. Automatica 44, 1886–1894. doi: 10.1016/j.automatica.2007.11.021 .Zhou, K., Doyle, J., Glover, K., 1996. Robust and optimal control. Prentice Hall. doi: 10.1016/s0005-1098(97) 00132-5 .
+
+Appendix A. Proof of Theorem 1 
+
+Proof. Any fault detection filter derived from the open-loop formulation (8), satisfies Rol  
+
+> u
+
+= 0 and Rol  
+
+> d
+
+= 0, or equivalently, 
+
+hQy Qu
+
+i "Gu Gd
+
+I 0
+
+#| {z }
+
+> :=Gol
+
+= 0. (A.1) Let rd be the normal rank of Gd. Then, the normal rank of Gol 
+
+is rol = nu + rd. Let Nl be a ( ny − rd) × (ny + nu) basis of the left nullspace null l(Gol ). Then all fault detection filters can be parameterized by Q = WN l, with W a suitable TFM. Now consider the closed-loop description (5), which can be rewritten as 
+
+hRcl  
+
+> r
+
+Rcl  
+
+> d
+
+Rcl  
+
+> w
+
+Rcl 
+
+> f
+
+i
+
+= hQy Qu
+
+i "GuCS S G d S G w S G f
+
+CS −CS G d −CS G w −CS G f
+
+#
+
+,
+
+= hQy Qu
+
+i "Gu Gd Gw G f
+
+I 0 0 0
+
+#
+
+×
+
+
+
+CS −CS G d −CS G w −CS G f
+
+0 I 0 00 0 I 00 0 0 I
+
+
+
+.
+
+Any fault detection filter derived from this closed-loop for-mulation, should satisfy Rcl  
+
+> r
+
+= 0 and Rcl  
+
+> d
+
+= 0. Thus, 
+
+hQy Qu
+
+i "GuCS S G d
+
+CS −CS G d
+
+#| {z }
+
+> :=Gcl
+
+= 0, (A.2) 
+
+hQy Qu
+
+i "Gu Gd
+
+I 0
+
+#| {z }
+
+> =Gol
+
+"CS −CS G d
+
+0 I
+
+#| {z }
+
+> :=H1
+
+= 0. (A.3) If C is full normal rank, the normal rank of H1 equals nu + nd,which is equal to its number of columns. As a result, rcl =
+
+rol = nu + rd. Given that Gcl and Gol have the same number of columns and same rank, dim null l(Gcl ) = dim null l(Gol ). Next, it is shown that not only the dimension of the left nullspace and rank are equal, but that Gcl and Gol have an equal left nullspace. To this end, consider that 
+
+Q ∈ null l(Gol ) =⇒ QG ol = 0
+
+=⇒ (QG ol )H1 = 0
+
+=⇒ QG cl = 0
+
+=⇒ Q ∈ null lGcl 
+
+=⇒ null l(Gol ) ⊆ null l(Gcl )From, dim null l(Gcl ) = dim null l(Gol ) and null l(Gol ) ⊆ null l(Gcl )it can be concluded that null l(Gol ) = null l(Gcl ). Hence, any fil-ter that achieves Rol  
+
+> u
+
+= 0, Rol  
+
+> d
+
+= 0 in the open-loop formulation achieves Rcl  
+
+> r
+
+= 0, Rcl  
+
+> d
+
+= 0. Subsequently, the residual dynamics are examined. First, the open-loop formulation is considered. To this end, parame-terize Gu, Gd, Gw and G f by a left coprime factorization (LCF) 
+
+hGu Gd Gw G f
+
+i = M−1 hNu Nd Nw N f
+
+i ,
+
+where M and hNu Nd Nw N f
+
+i are proper and stable factors. Consider the basis 
+
+Nl = Nl,d
+
+hM −Nu
+
+i ,
+
+where Nl,d is a ( ny − rd) × ny proper stable basis of null l(Nd). With this basis, any fault detection filter satisfying Rol  
+
+> u
+
+= 0 and 
+
+Rol  
+
+> d
+
+= 0 can be expressed as Q = WN l,d
+
+hM −Nu
+
+i. Substituting this parametrization in (8) gives 
+
+hRol  
+
+> u
+
+Rol  
+
+> d
+
+Rol  
+
+> w
+
+Rol 
+
+> f
+
+i
+
+= WN l,d
+
+hM −Nu
+
+i "Gu Gd Gw G f
+
+I 0 0 0
+
+#
+
+,
+
+= WN l,d
+
+h0 MG d MG w MG f
+
+i ,
+
+= W h0 0 Nl,d MG w Nl,d MG f
+
+i ,
+
+and thus the remaining residual dynamics in the open-loop for-mulation equal 
+
+ε = WN l,d(Nww + N f f ). (A.4) Next, consider the closed-loop dynamics. Since null l(Gol ) =
+
+null l(Gcl ), any residual generator in closed loop satisfying Rcl  
+
+> r
+
+=
+
+0 and Rcl  
+
+> d
+
+= 0 can be parameterized as Q = WN l,d
+
+hM −Nu
+
+i.Substituting this parametrization in (5) gives 
+
+hRcl  
+
+> r
+
+Rcl  
+
+> d
+
+Rcl  
+
+> w
+
+Rcl 
+
+> f
+
+i
+
+= WN l,d
+
+hM −Nu
+
+i "GuCS S G d S G w S G f
+
+CS −CS G d −CS G w −CS G f
+
+#
+
+,
+
+= WN l,d
+
+h0 MG d MG w MG f
+
+i ,
+
+= W h0 0 Nl,d MG w Nl,d MG f
+
+i .and thus the remaining residual dynamics equal 
+
+ε = WN l,d(Nww + N f f ), (A.5) which is indeed the same as (A.4), i.e. Rol  
+
+> w
+
+= Rcl  
+
+> w
+
+and Rol  
+
+> f
+
+=
+
+Rcl  
+
+> f
+
+.
+
+Appendix B. Proof of Theorem 2 
+
+Proof. Following a similar reasoning as in the proof of Theo-rem 1, let Nl be a ( ny − rd) × (ny + nu) basis of the left nullspace null l(Gol ). Any fault detection filter derived from the closed-loop for-mulation, should satisfy Rcl  
+
+> r
+
+= 0 and Rcl  
+
+> d
+
+= 0, which can be written as, 
+
+hQy Qu
+
+i "Gu II 0
+
+#| {z }
+
+> :=H2
+
+"CS −CS G d
+
+0 Gd
+
+#| {z }
+
+> :=H3
+
+= 0. (B.1) Clearly, the normal rank of H2 is ny+nu. If C is full normal rank, the normal rank of H3 equals ny+rd. As a result, the normal rank of Gcl = H2 H3 is ny + rd. In this case, Nl is a ( nu − rd) × (ny + nu)basis of the left nullspace null l(Gcl ). Hence, dim null l(Gcl ) >
+
+dim null l(Gol ). Following the same reasoning as Theorem 1, null l(Gol ) ⊆ null l(Gcl ). Hence, the filters Q achieving Rol  
+
+> u
+
+= 0, 
+
+Rol  
+
+> d
+
+= 0 are a subset of the filters achieving Rcl  
+
+> r
+
+= 0, Rcl  
+
+> d
+
+= 0.

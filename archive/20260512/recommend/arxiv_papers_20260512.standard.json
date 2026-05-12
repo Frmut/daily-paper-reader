@@ -1,0 +1,128 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-05-12T20:27:08.696718+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 3,
+    "quick_skim_target": 11,
+    "quick_selected": 3
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2605.08751v1",
+      "title": "On Composite Adaptive Continuous Finite-Time Control of a class of Euler-Lagrange systems",
+      "abstract": "In this paper, we propose several set-point control schemes for achieving finite-time regulation in a class of Euler--Lagrange systems with $n$ degrees of freedom and uncertain potential energy. The proposed controllers are based on composite adaptive control approaches. Each control scheme consists of two main components: a Proportional--Derivative (PD)-based nonlinear feedback term and a finite-time parameter estimation law. The estimation laws rely on the Dynamic Regressor Extension and Mixing (DREM) technique, which can be designed using either the Kreisselmeier or the least-squares dynamic regressor extensions. These results extend recent advances in finite-time adaptive control for Euler-Lagrange systems. To the best of the authors' knowledge, the composite adaptive control formulation proposed here, which does not employ well-known Slotine and Li adaptive control structure, has not been studied in detail yet. The properties of the proposed controllers are rigorously analyzed using Lyapunov methods. The performance of the controllers is thoroughly evaluated through extensive simulation studies.",
+      "authors": [
+        "Emmanuel Cruz-Zavala",
+        "Jaime A. Moreno",
+        "Antonio Loría"
+      ],
+      "primary_category": "math.OC",
+      "categories": [
+        "math.OC"
+      ],
+      "published": "2026-05-09T07:26:03+00:00",
+      "link": "https://arxiv.org/pdf/2605.08751v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "adaptive control of Euler-Lagrange systems",
+      "llm_evidence_cn": "欧拉-拉格朗日系统的自适应控制",
+      "llm_evidence": "欧拉-拉格朗日系统的自适应控制",
+      "canonical_evidence": "欧拉-拉格朗日系统的自适应控制",
+      "llm_tldr_en": "Proposes composite adaptive finite-time control schemes for Euler-Lagrange systems like motors and robots.",
+      "llm_tldr_cn": "为电机和机器人等欧拉-拉格朗日系统提出复合自适应有限时间控制方案。",
+      "llm_tldr": "为电机和机器人等欧拉-拉格朗日系统提出复合自适应有限时间控制方案。",
+      "llm_tags": [
+        "query:pmsm:composite"
+      ],
+      "matched_query_tag": "query:pmsm:composite",
+      "matched_query_text": "Papers central to 三相及双三相永磁同步电机相关研究检索, especially work that connects or combines: m; s; f; Permanent Magnet Synchronous Motor research; dual three-phase permanent magnet synchronous motor control and design; fault-tolerant control of multi-phase motors; recent advances in dual three phase permanent magnet synchronous motor control; fault tolerant strategies for multi phase permanent magnet synchronous motors.",
+      "matched_requirement_id": "req-composite-pmsm",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2605.09494v1",
+      "title": "LASSA Architecture-Based Autonomous Fault-Tolerant Control of Unmanned Underwater Vehicles",
+      "abstract": "Unmanned underwater vehicles (UUVs) operate persistently in communication-constrained environments, thus requiring high-level autonomous fault-tolerant control under faulty operating conditions. Existing approaches rely heavily on predefined hard-coded rules and struggle to achieve effective fault-tolerant control against unforeseen faults. Although large language models (LLMs) possess powerful cognitive and reasoning capabilities, their inherent hallucinations remain a major obstacle to their application in UUV control systems. This paper proposes an intelligent control method based on the LASSA (LLM-based Agent with Solver, Sensor and Actuator) architecture. Within this architecture, an LLM identifies unknown faults and accomplishes task replanning via autonomous reasoning without hard-coded rules; the intelligent agent undertakes perception, scheduling and decision evaluation; the solver verifies physical boundary feasibility constraints prior to command transmission to the actuators. This architecture suppresses physically infeasible LLM hallucinations and ensures interpretable, verifiable decision-making. Moreover, it enables fast-slow dual closed-loop collaborative control, where the slow loop undertakes high-level dynamic decision-making and the fast loop guarantees high-frequency real-time control, simultaneously balancing decision intelligence and control timeliness. Lake experiments under normal and lower-rudder-fault conditions show that the framework detects trajectory tracking abnormalities, replans the route by adjusting the turning radius from 4m to 12m and reducing speed from 2kn to 1kn, passes all three solver constraints on the first invocation, and guides the UUV to complete the full mission; under normal conditions no false fault alarms are raised throughout the run.",
+      "authors": [
+        "Hong Chen",
+        "Zixiang Tang",
+        "Yuanbao Chen",
+        "Yu Liu"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.AI"
+      ],
+      "published": "2026-05-10T11:59:39+00:00",
+      "link": "https://arxiv.org/pdf/2605.09494v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "autonomous fault-tolerant control",
+      "llm_evidence_cn": "自主容错控制",
+      "llm_evidence": "自主容错控制",
+      "canonical_evidence": "自主容错控制",
+      "llm_tldr_en": "Introduces an LLM-based architecture for autonomous fault-tolerant control in underwater vehicles.",
+      "llm_tldr_cn": "引入一种基于大语言模型的架构，用于水下航行器的自主容错控制。",
+      "llm_tldr": "引入一种基于大语言模型的架构，用于水下航行器的自主容错控制。",
+      "llm_tags": [
+        "query:pmsm"
+      ],
+      "matched_query_tag": "query:pmsm",
+      "matched_query_text": "fault-tolerant control of multi-phase motors",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2605.09689v1",
+      "title": "Nullspace-based Fault Diagnosis for Closed-Loop Mechatronic Systems with Application to Semiconductor Equipment",
+      "abstract": "Fault detection and isolation (FDI) systems are critical for modern mechatronic production equipment, as their continuous operation is heavily dependent on the ability to detect and isolate faults in a timely and efficient manner. The aim of this paper is to address closed-loop aspects for linear systems and enable the application of well-known nullspace-based FDI synthesis conditions to mechatronic systems subject to actuator and sensor faults. These tailored FDI synthesis conditions are applied to a large-scale prototype wafer stage, showcasing the proposed approach through real experiments, thereby underlining the usefulness of the derived synthesis conditions for a wide range of production machines and scientific instruments.",
+      "authors": [
+        "Koen Classens",
+        "Jeroen van de Wijdeven",
+        "Maurice Heemels",
+        "Tom Oomen"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY"
+      ],
+      "published": "2026-05-10T18:19:04+00:00",
+      "link": "https://arxiv.org/pdf/2605.09689v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Fault diagnosis for mechatronic systems",
+      "llm_evidence_cn": "机电系统的故障诊断",
+      "llm_evidence": "机电系统的故障诊断",
+      "canonical_evidence": "机电系统的故障诊断",
+      "llm_tldr_en": "Develops nullspace-based fault detection and isolation for closed-loop mechatronic systems with actuator/sensor faults.",
+      "llm_tldr_cn": "为具有执行器和传感器故障的闭环机电系统开发了基于零空间的故障检测与隔离方法。",
+      "llm_tldr": "为具有执行器和传感器故障的闭环机电系统开发了基于零空间的故障检测与隔离方法。",
+      "llm_tags": [
+        "query:pmsm"
+      ],
+      "matched_query_tag": "query:pmsm",
+      "matched_query_text": "fault-tolerant control of multi-phase motors",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
