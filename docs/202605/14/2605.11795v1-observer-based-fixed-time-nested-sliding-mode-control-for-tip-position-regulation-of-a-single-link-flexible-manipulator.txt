@@ -1,0 +1,652 @@
+Title: Observer-Based Fixed-Time Nested Sliding-Mode Control for Tip-Position Regulation of a Single-Link Flexible Manipulator
+
+URL Source: https://arxiv.org/pdf/2605.11795v1
+
+Published Time: Wed, 13 May 2026 01:08:54 GMT
+
+Number of Pages: 16
+
+Markdown Content:
+# OBSERVER -B ASED FIXED -T IME NESTED SLIDING -M ODE 
+
+# CONTROL FOR TIP -P OSITION REGULATION OF A SINGLE -L INK 
+
+# FLEXIBLE MANIPULATOR ∗
+
+Atul Sharma, Chayan Kumar Paul, S. Janardhanan 
+
+# ABSTRACT 
+
+This paper presents a novel position control strategy for a single-link flexible manipulator, tailored for applications where precise position must be achieved within strict time constraints. To accom-plish this objective, firstly, a nested non-singular terminal sliding mode controller is designed for the system, enabling precise and robust control. Furthermore, a fixed-time sliding mode observer is de-signed to estimate unmeasured system states accurately in a fixed time, thereby enabling closed-loop control implementation. A stability analysis is presented to guarantee the robustness and efficacy of the proposed composite control algorithm. The effectiveness of the proposed fixed-time controller is demonstrated through numerical simulation on accuracy, stability, and convergence speed. The pro-posed controller’s performance is also compared with that of other state-of-the-art control schemes. The proposed controller is further validated through experiments conducted on a real hardware setup. 
+
+# 1 Introduction 
+
+Robotics deployment has produced notable breakthroughs in the fields of exploration and manufacturing. Rigid link manipulators (RLMs) have traditionally been employed in a wide range of applications, including logistics operations [1], infrastructure construction [2], and other multiple fields [3]. However, their considerable size and substantial power requirements often restrict their operational efficiency. Because of their lightweight nature, flexible link ma-nipulators (FLMs) provide an alternative. However, this comes at the cost of flexibility; improperly handling it can cause undesired vibrations and is difficult to control. This research aims to design a control algorithm that effectively addresses these challenges and optimises FLM’s potential for practical applications. Many researchers have studied the problem of tip oscillations in FLMs using various control techniques. For effective control design, FLMs must be accurately modelled [4, 5, 6, 7]. The dynamic model of FLMs is described by partial differential equations (PDEs), but analytical solutions of these equations are not always possible. Li et al. [3] offer a recent review that provides a thorough summary of different modelling approaches for FLMs. Accurate modelling serves as a foundation for effective control design; once the dynamics are well captured, appropri-ate control schemes can be designed to mitigate tip oscillations. Several control strategies have been implemented to address the tip oscillations in FLMs. Li et al. [8] present an extensive review of different control methodologies for FLMs. Among various flexible manipulator configurations, the Single-Link Flexible Manipulator (SLFM) has been the principal testbed for control research, due to its simplicity and rich nonlinear dynamics. SLFMs are nonlinear, underac-tuated, and distributed-parameter systems characterised by strong coupling between rigid and flexible body dynamics. Their tip-position regulation is challenging because the flexible dynamics introduce non-minimum-phase behaviour and unmeasured bending modes. Early work on boundary-control formulations, based on the EulerBernoulli beam model, provides rigorous asymptotic stabilisation by directly acting on boundary variables such as torque or bending moment. Jiang et al. [9] proposed a boundary-disturbance observer to reject unknown inputs at the clamped end, guaranteeing uniform boundedness of the distributed states. Although such designs achieve theoretical completeness, the solution relies on collocated sensing, exact knowledge of the PDE, and boundary actuation conditions that are rarely met in practical experimental setups. While boundary-control methods provide strong theoretical guarantees, 
+
+> ∗
+
+Atul Sharma, Chayan Kumar Paul, and S. Janardhanan are with the Department of Electrical Engineering, Indian Institute of Technology, Delhi, 110016 India (e-mail: atul.sharma@ee.iitd.ac.in). 
+
+> arXiv:2605.11795v1 [eess.SY] 12 May 2026
+
+Running Title for Header their practical implementation is often constrained by sensing and actuation limitations. In particular, it is not feasible to continuously measure system variables over both space and time, necessitating the use of limited or boundary-based sensing. Moreover, practical actuators cannot always realise the ideal boundary inputs assumed in theoretical formula-tions. The presence of unmodeled dynamics, measurement noise, and time delays further complicates implementation, thereby limiting the effectiveness of these control strategies in flexible link manipulator systems. To overcome these challenges, researchers have turned to finite-dimensional approximations that enable the design of physically imple-mentable controllers. Finite-dimensional approximations, such as assumed modes or the finite element method (FEM), enable the design of closed-loop, implementable controllers. Choi and Nho [10] demonstrated vibration suppression using classical sliding mode control (SMC) for a single-link arm, showing strong robustness but only asymptotic convergence. Although classical SMC achieves robustness, its convergence is only asymptotic, motivating the development of terminal-type sliding manifolds designed to ensure faster, finite-time convergence. To improve the convergence rate, terminal sliding-mode control (TSMC) was proposed, achieving finite-time stability but suffering from singularity at the origin. Feng and Yu [11] addressed this issue using the non-singular TSMC (NTSMC), which is widely adopted for robotic manip-ulators. However, the settling time of TSMC/NTSMC depends on the initial conditions, precluding guaranteed bounds on the response. The fixed-time stability framework of Polyakov [12] provides convergence in a uniformly bounded time independent of initial conditions. It has been integrated with SMC for electromechanical systems (e.g., fixed-time SMC for PMSMs [13]) but not yet specialised for flexible manipulators. However, achieving high-performance control also requires accurate state estimation, as many flexible-link states, such as bending deflection and its derivatives, are difficult to measure directly. This challenge has led to the development of observer-based control frameworks. Accurate state estimation is important because bending deflection and its derivatives are often unmeasurable. Chalhoub and Azizi [14] proposed a nonlinear observer with SMC for an SLFM. Fractional-order SMC designs (Nejad et al., [15]) improved precision and chattering reduction but remained asymptotic. More recently, Sharma and Janardhanan [16] employed a functional observer within an SMC loop to enhance robustness, yet the convergence time remained dependent on the initial condition. While these observer designs improve robustness for flexible manipulators, their convergence times remain dependent on initial conditions. Parallel developments in fixed-time observers for ODE systems, e.g., Mechali et al. [17] (UAV attitude), Hosseinabadi et al. [18] (nonlinear double integrator), and Rezaei et al. [19] (spacecraft), prove that fixed-time observercontroller synthesis is feasible but have not been extended to the distributed-parameter or flexible-link domain. Inspired by recent progress in fixed-time observer design for finite-dimensional systems such as UAVs and spacecraft, researchers are now exploring similar ideas for distributed-parameter manipulators. Beyond observercontroller designs, a variety of other strategies have recently emerged to enhance FLM performance. Recent advancements in flexible manipulator control include a linear quadratic optimal boundary control proposed by De Luca et al. [20] for SLFMs. Zhu et al. [21] presented a two-time-scale adaptive robust control law for tip tracking. Vision-based adaptive control has been explored by Sahu et al. [22]. Furthermore, learning-based methodologies, including deep learning [23] and reinforcement learning [24], have been utilised for tracking control. Reza et al. [25] introduced a transfer function-based methodology for FLM regulation. Other notable works include boundary disturbance observer-based control for SLFMs subjected to external disturbances, as presented by Zhao et al. [26]. Sarkhel et al. [27] investigated optimal PID controller placement for vibration suppression in rod-type FLMs. Kayastha et al. [28] proposed a composite controller that combines predictive control and LQR for post-impact motion regulation of flexible-arm robots. In [29], Sharma et al. proposed a functional observer-based output feedback sliding mode control scheme, which employs balanced truncation for model order reduction. Despite extensive research, several theoretical and practical challenges remain unresolved. In summary, existing literature provides valuable insight into sliding-mode and observer-based control of flexible manipulators, but several key limitations remain: • Lack of initial-condition-independent convergence guarantees: Most available controllers, including NTSMC and fractional-order SMC, ensure finite-time performance only for a given initial condition, not fixed-time regulation with a computable upper bound. • Absence of fixed-time observercontroller co-design: Although fixed-time sliding-mode observers have been studied for UAVs and double integrators, no work explicitly integrates such observers with a fixed-time, nonsingular sliding-mode controller for flexible manipulators. • Singularity and implementation issues: Terminal-type sliding manifolds often introduce singularities, while high-order or boundary-based PDE controllers require measurements or models that are impractical for low-cost setups. 2Running Title for Header To address the above limitations, this paper proposes a novel fixed-time observercontroller framework for flexible manipulators. 
+
+1.1 Contributions 
+
+The main contributions are summarised as follows: 1. The proposed controller is designed using a dynamic model with only the first vibratory mode, but is validated through numerical simulations on a two-mode dynamic model of the SLFM. The observer receives outputs from the two-mode model, which serve as its input. 2. The proposed scheme bridges the gap between boundary-control theory and practical lumped-parameter im-plementation by providing a low-order, computationally efficient control structure suitable for experimental validation. 3. A fixed-time sliding-mode observer is designed to reconstruct the unmeasured system dynamics with an explicit convergence-time bound independent of initial conditions. 4. A nested NTSM manifold, in which multiple sliding surfaces are hierarchically embedded within one another, is designed to achieve singularity-free fixed time regulation of the tip position, ensuring global convergence with analytically computable bounds. 5. A rigorous Lyapunov-based stability proof establishes that both observer and controller errors converge in fixed time, guaranteeing overall system stability and robustness against uncertainties. 6. The robustness and effectiveness of the proposed observercontroller framework are demonstrated in the pres-ence of unmodelled higher order dynamics, and its performance is subsequently compared with state-of-the-art control algorithms. 7. The proposed observercontroller framework is further validated through experimental implementation, demonstrating its practical feasibility and effectiveness under real-world operating conditions. 
+
+# 2 Dynamic Modelling of the SLFM 
+
+Consider an SLFM as depicted in Figure 1 of length l(m), which is assumed to have a uniformly distributed mass with linear mass density ρ(kg/m ). The following assumptions are taken into consideration while modelling the system: 
+
+Assumption 1. The link is subjected only to small, linear-elastic deformations, primarily bending. Torsional and compressive deformations are neglected. 
+
+Assumption 2. The effects of gravity and non-linear elastic forces on the link’s deformation are considered negligible. 
+
+The SLFM is modelled as an Euler-Bernoulli beam with an area moment of inertia I(m4) and Young’s modulus 
+
+E(N/m 2). The manipulator’s payload has a mass Mp(kg ) and an inertia Ip(kg − m2). A motor with inertia Ih(kg −
+
+m2) applies a torque τ (N − m) to the base. By utilising Hamilton’s principle and the assumed mode method [5, 29], the dynamic equations of motion can be expressed in matrix form as: 
+
+Jt ¨θ(t) = τ (t) (1a) 
+
+¨pj (t) + 2 ζω j ˙pj (t) + ω2 
+
+> j
+
+pj (t) = ϕ′ 
+
+> j
+
+(0) τ (t) (1b) In the above, Jt denotes the total effective rigid-body inertia seen at the hub (including the motor inertia Ih, payload inertia contribution Ip, and the equivalent inertia of the link). Parameters ωj and ζ represent the natural frequency and modal damping ratio of the j-th flexible mode, respectively. The angular deviation of the line from the x-axis that connects the base to the centre of mass (CoM) is denoted by 
+
+> ′
+
+θ(t)′. The vibrational behaviour of the system is captured by oscillatory modes pj (t), where each pj (t) corresponds to the j-th oscillatory mode. In the conventional state-space framework, the dynamic model represented by equation (1) can be represented as: 
+
+˙ψ(t) = Aψ(t) + Bu(t) + h(ψ, t ) (2a) 
+
+g(t) = Cψ(t) (2b) 
+
+ψ(t) = [θ(t) ˙θ(t) p1(t) ˙p1(t) . . . pn(t) ˙pn(t)]T
+
+g(t) = [ θt(t) θc(t)] T
+
+3Running Title for Header 
+
+Figure 1: Schematic of Single Link Flexible Manipulator where ψ(t) ∈ Rm (m = 2 n + 2) represents internal states of the system, A ∈ Rm×m, B ∈ Rm×1, C ∈ R2×m
+
+are the system matrices represented below, the lumped matched uncertainties due to parameter variations, unmodelled dynamics, and external disruptions are represented by h(ψ, t ) ∈ Rm, g(t) ∈ R2 is the output of the system, u(t) ∈ R
+
+denotes the input to the system, and θt(t) and θc(t) are the tip position angle and clamped joint angle, respectively. The measurable outputs are the tip pointing angle θt(t) and the clamped-joint angle θc(t). Under the small-deflection assumption, the tip angle is approximated by the small-angle relation 
+
+θt(t) = θ(t) + w(l, t )
+
+l
+
+while the clamped-joint angle corresponds to the base slope, 
+
+θc(t) = θ(t) + w(0 , t )
+
+These relations determine the structure of the output matrix C.
+
+A =
+
+
+
+0 1 0 0 · · · 0 0 0 00 0 0 0 · · · 0 0 0 00 0 0 1 · · · 0 0 0 00 0 −ω21 −2ζω 1 · · · 0 0 0 0
+
+... ... ... ... . . . ... ... ... ...
+
+0 0 0 0 · · · 0 0 0 10 0 0 0 · · · 0 0 −ω2 
+
+> n
+
+−2ζω n
+
+
+
+B = [0 1 
+
+> Jt
+
+0 ϕ′
+
+> 1
+
+(0) · · · 0 ϕ′
+
+> n
+
+(0) ]T
+
+C =
+
+[1 0 ϕ1(l) 
+
+> l
+
+0 · · · ϕn(l) 
+
+> l
+
+01 0 ϕ′
+
+> 1
+
+(0) 0 · · · ϕ′
+
+> n
+
+(0) 0
+
+]
+
+The following are assumed to be true while designing the control input for the system in (2). 
+
+Assumption 3. The lumped uncertainties and disturbances are assumed to be matched with the system input. Thus, there exists a vector ξ(ψ, t ) ∈ R such that the uncertainty term h(ψ, t ) ∈ Rm can be expressed as Bξ(ψ, t ) ∈ Rm.
+
+Assumption 4. The magnitude of the uncertainty vector ξ(ψ, t ) is bounded by a known constant ¯ξ. That is || ξ(ψ, t )|| ≤ 
+
+¯ξ, ∀t ≥ 0
+
+4Running Title for Header 
+
+Remark 1. Assumptions 34 are standard in robust and sliding mode control literature. The matched uncertainty con-dition ensures that disturbances enter through the same channel as the control input, allowing effective compensation. The boundedness of the uncertainty vector enables proper selection of control gains and facilitates finite-time stability analysis. These assumptions are practically reasonable and often validated through prior modelling or experimental estimation. 
+
+2.1 Control Objective 
+
+The control objective is to design a robust controller that ensures the tip position of the flexible link, θt(t), faith-fully achieves a predefined desired position, θd, in a fixed amount of time. Mathematically, this can be expressed as minimising the tracking error ˜θ(t), defined as the difference between the actual and desired tip positions, such that 
+
+˜θ(t) = θt(t) − θd = 0 ∀ t ≥ T (3) To ensure that the controller focuses on achieving the desired tip position without unintentionally exciting the other vibratory modes, the desired position in the state-space coordinates, ψd(t), is chosen as: 
+
+ψd(t) = [ θd 0 0 0 · · · 0 0] 
+
+2.2 State Transformation for Fixed-Time SMC Based Controller Design 
+
+In order to facilitate the design of a fixed-time sliding mode controller with guaranteed convergence properties, the original system in (2) is first transformed into its controllable canonical form (or chain of integrators representation) [30]. This transformation explicitly exposes the controllability structure of the system and renders the inputstate relationship in a form that is particularly convenient for fixed-time and terminal sliding mode control design. In this canonical representation, the control input directly affects the highest-order state, while the remaining states evolve as a chain of successive integrators. This property significantly simplifies both the construction of the sliding manifold and the subsequent Lyapunov-based stability analysis. Applying the controllable canonical transformation z(t) = T ψ(t), where T is the transformation matrix, the system can be rewritten in the transformed form as: 
+
+˙z(t) = AC z(t) + BC u + δ(z, t ) (4a) 
+
+g(t) = CC z(t) (4b) where z(t) is the transformed state of the system, AC = T AT −1, BC = T B and CC = CT −1 are the transformed system matrices. 
+
+AC =
+
+
+
+0 1 0 · · · 00 0 1 · · · 0
+
+... ... ... . . . ...
+
+0 0 0 · · · 1
+
+−f0 −f1 −f2 · · · −fm−1
+
+
+
+BC = [0 0 0 · · · 1] T
+
+where the coefficients f0, f 1, . . . , f m−1 correspond to the characteristic polynomial of the system. In this form, the dynamics explicitly appear as a chain of integrators driven by the control input u(t).The desired position zd, in the transformed coordinates can be expressed as follows: 
+
+zd = T ψd (5) where ψd represents the desired position in the original coordinates. This coordinate transformation not only simplifies the synthesis of fixed-time sliding mode control but also provides a unified framework for developing non-singular, analytically verifiable proofs of fixed-time convergence. By expressing the system in controllable canonical form, the controller design can exploit the structure of integrator-type dynamics to ensure fixed-time reaching and fixed-time stability with minimal structural assumptions on the original system matrices. 5Running Title for Header 
+
+# 3 Fixed Time Composite Controller Design 
+
+3.1 Nested Non-Singular Terminal Sliding Mode Controller 
+
+It has been well established that introducing non-smooth dynamics can significantly enhance system performance [31]. For example, the incorporation of a terminal attractor, a first-order dynamic with a fractional power term, into neural learning rules has been shown to accelerate adaptation and achieve finite/fixed time convergence, as demonstrated in [31]. Based on this, we propose a nested non-singular terminal sliding mode (NNTSM)-based control design for the SLFM system to ensure fixed-time convergence of the tip to its desired position. To rigorously establish the fixed-time stability properties of the proposed approach, the following subsection presents the fundamental fixed-time stability lemma, which serves as the theoretical basis for the subsequent controller design and analysis. 
+
+Lemma 1. (Fixed Time Lemma [12]) Consider a continuous autonomous system: 
+
+˙x(t) = f (x), x(0) = 0 , f (0) = 0 (6) 
+
+Assume there exist a Lyapunov function V (x) : Rn → R+ ∪ { 0} such that ˙V ≤ − ηV λ1 (x) − υV λ2 (x) holds for positive constants η, υ, λ 1 ∈ (0 , 1) , and λ2 > 1.Then, the origin is globally fixed-time stable, and the settling time Ts of the state x(t) is bounded by: 
+
+Ts < T max. = 1
+
+η(1 − λ1) + 1
+
+ν(λ2 − 1) (7) 
+
+3.1.1 Preliminaries and Control Law Design 
+
+For controller design, only the first vibratory mode is considered in this paper. Consequently, the resulting state space model is of fourth order and can be represented as follows: 
+
+˙z1 = z2, ˙z2 = z3, ˙z3 = z4, ˙z4 = f (z) + u + δ(t, z ), (8) where z = [ z1, z 2, z 3, z 4]⊤ ∈ R4, the smooth nonlinear function f (z) is assumed known (to be estimated later by an observer), and the disturbance δ(t, z ) is bounded by |δ(t, z )| ≤ ¯d. Let the desired position zd1 and its derivatives be bounded, and define the position error e = z1 − zd1 .
+
+Definition 1 (Non-singular auxiliary function). 
+
+To avoid singularities, we employ the smooth sub-unity map 
+
+ϕε(x) := x(x2 + ε2) γ1−12 , 0 < γ 1 < 1, ε > 0, (9) which is C1 for all x and satisfies, for all x ∈ R,
+
+εγ1−1x2 ≤ xϕ ε(x) ≤ | x|γ1+1 . (10) Thus ϕε(x) behaves like |x|γ1 sgn( x) away from the origin and is linear near x = 0 .Fix γ2 > 1 and choose positive design gains αi > 0, κi1 > 0, κi2 > 0 for i = 0 , 1, 2.
+
+Definition 2 (Sliding surfaces). Let αi, κ i1, κ i2 > 0 and 0 < γ 1 < 1 < γ 2. Define the recursive surfaces 
+
+s0 = e, si+1 = ˙ si + αisi + κi1ϕε(si) + κi2|si|γ2 sgn( si), i = 0 , 1, 2. (11) Differentiation yields the dynamics 
+
+˙si = −αisi − κi1ϕε(si) − κi2|si|γ2 sgn( si) + si+1 , i = 0 , 1, 2. (12) 
+
+˙s3 = f (z) + u + Φ( t, z ) + δ(t, z ). (13) where Φ( t, z ) collects known feed-forward and referencetrajectory terms. The control input is designed as 
+
+u = −f (z) − Φ( t, z ) − c1|s3|psgn( s3)
+
+− c2|s3|q sgn( s3) − η sgn( s3), (14) with constants c1, c 2, η > 0 and exponents 0 < p < 1 < q , η > ¯d.6Running Title for Header 
+
+3.1.2 Main Result Theorem 1. Consider the transformed SLFM dynamics in (4) and the sliding variables in (12) . Under the control law (14) , the closed-loop system is globally practically fixed-time stable. That is, there exist constants Tctrl > 0 and 
+
+εi > 0, i = 0 , 1, 2, 3, independent of the initial conditions, such that 
+
+|si(t)| ≤ εi, i = 0 , 1, 2, 3, ∀t ≥ Tctrl . (15) 
+
+In particular, 
+
+|e(t)| ≤ ε0, ∀t ≥ Tctrl , (16) 
+
+where e(t) = z1(t) − zd1(t). Furthermore, Tctrl ≤ T0 + T1 + T2 + T3, with T3 ≤ 1 
+
+> c1(1 −p)
+
++ 1 
+
+> c2(q−1)
+
+, and 
+
+Ti ≤ 1
+
+κi1(1 − γ1) + 1
+
+κi2(γ2 − 1) , i = 0 , 1, 2. (17) 
+
+The constants εi can be made arbitrarily small by appropriate choice of the controller parameters, particularly by reducing the regularization parameter ε.Proof. The proof follows a recursive fixed-time analysis of the surfaces s3 → s2 → s1 → s0.
+
+Step 1 (Surface s3): Substituting (14) into (13) gives 
+
+˙s3 = −c1|s3|psgn( s3) − c2|s3|q sgn( s3) + ( δ − η sgn( s3)) .
+
+Since |δ| ≤ ¯d < η , it follows that 
+
+s3 ˙s3 ≤ − c1|s3|p − c2|s3|q .
+
+Let V3 = 12 s23. Then, 
+
+˙V3 ≤ − a3V α3 
+
+> 3
+
+− b3V β3 
+
+> 3
+
+,
+
+where a3 = c12− p+1 2 , b3 = c22− q+1 2 , α3 = p+1 2 ∈ (0 , 1) , and β3 = q+1 2 > 1. By the fixed-time stability lemma, 
+
+T3 ≤ 1 
+
+> a3(1 −α3)
+
++ 1 
+
+> b3(β3−1)
+
+.
+
+Hence, 
+
+s3(t) = 0 , ∀ t ≥ T3.
+
+Step 2: Practical fixed-time convergence of si, i = 0 , 1, 2. Once si+1 has converged to a sufficiently small neighbour-hood of the origin, the dynamics of si can be expressed as 
+
+˙si = −αisi − κi1ϕε(si) − κi2|si|γ2 sgn( si) + di(t), (18) where |di(t)| ≤ ¯di after a fixed time. For the Lyapunov function Vi = 12 s2 
+
+> i
+
+, one has 
+
+˙Vi = −αis2 
+
+> i
+
+− κi1siϕε(si) − κi2|si|γ2+1 + sidi(t). (19) Since siϕε(si) ≥ cε|si|γ1+1 for some cε > 0, Young’s inequality gives 
+
+˙Vi ≤ − aiV γ1+1 2 
+
+> i
+
+− biV γ2+1 2 
+
+> i
+
++ σi, (20) with ai, b i > 0 and σi ≥ 0. Therefore, si(t) reaches the residual set 
+
+Ωi = { si ∈ R : |si| ≤ εi } (21) in a fixed time Ti independent of the initial conditions. Step 3 (Total settling time) : By recursive application, all surfaces si(t), i = 0 , 1, 2, 3, converge to their respective residual sets in fixed time. In particular, the tracking error 
+
+e(t) = s0 satisfies |e(t)| ≤ ε after a fixed time. The overall settling time is bounded as fixed time, 
+
+Tcontroller ≤
+
+> 3
+
+∑
+
+> i=0
+
+Ti (22) which is independent of initial conditions. Moreover, the residual sets can be made arbitrarily small by choosing ε > 0
+
+sufficiently small. This completes the proof. We can perform a generalised proof of this theorem for a larger number of vibratory modes, considering an appropriate number of nested sliding functions. 7Running Title for Header 
+
+3.2 Fixed-Time Sliding-Mode Observer 
+
+The fixed-time controller in Sec. 3.1 requires knowledge of the transformed system states z(t) obtained from the first vibratory mode model. However, the available measurements originate from the actual two-mode plant. Let the plant output be 
+
+y = C2z2 = Cr z + ∆ y, (23) where ∆y denotes the residual contribution of the higher vibratory mode, bounded as ∥∆y∥ ≤ ¯∆.Our objective is to reconstruct the reduced transformed state z(t) from the available measurement y(t) and input u(t),such that the controller in Sec. 3.1 can employ ˆz(t) with guaranteed fixed-time convergence of the estimation error. 
+
+Theorem 2. Consider an observer of the following form for the system in (4) .
+
+˙ˆz = AC ˆz(t) + BC u(t) + L(g − Cc ˆz(t)) + K1⌊˜ey ⌉μ1 + K2⌊˜ey ⌉μ2 (24) 
+
+where ⌊˜ey ⌉μi =
+
+[|˜ey1 |μi sgn (˜ ey1 )
+
+|˜ey2 |μi sgn (˜ ey2 )
+
+]
+
+, for (i = 1 , 2) , with K1 ∈ Rm×2, K2 ∈ Rm×2, constant observer gain matrices of compatible dimensions, chosen such that the nonlinear output-injection terms dominate the estimation error dynamics, 
+
+0 < μ 1 < 1 and μ2 > 1, L is a design constant, and ˜ey = g − C C ˆz is the output estimation error. The observer in (24) will take the estimation error ˜e = z − ˆz to the origin in a fixed amount of time. Proof. Let us choose a Lyapunov function as: 
+
+V (t) = 12 ˜eT (CTC CC )˜ e = 12 ˜eTy ˜ey (˜ ey = CC ˜e) (25) The time derivative of output estimation error ˜ey using equations (4) and (24) can be expressed as: 
+
+˙˜ey = CC (AC z(t) + BC u(t) − A C ˆz(t) − B C u(t) − LC C e
+
+− K 1|˜ey |μ1 sgn (˜ ey ) − K 2|˜ey |μ2 sgn (˜ ey )) (26) Thus, 
+
+˙V (t) = 12 ˜eTy ˙˜ey + 12 ˙˜eTy ˜ey (27) 
+
+= 12
+
+[˜eT (CT C(AC − LC C ) + ( AC − LC C )T CT C)˜ e]
+
+− ˜eT CT CK 1⌊˜ey ⌉μ1 − ˜eT CT CK 2⌊˜ey ⌉μ2 (28) where (CT C(AC − LC C ) + ( AC − LC C )T CT C) = −Q, here Q is a positive definite matrix. Therefore, 
+
+˙V (t) = − 12 ˜eT Q˜e − ˜eTy CK 1
+
+[|˜ey1 |μ1 sgn (˜ ey1 )
+
+|˜ey2 |μ1 sgn (˜ ey2 )
+
+]
+
+− ˜eTy CK 2
+
+[|˜ey1 |μ2 sgn (˜ ey1 )
+
+|˜ey2 |μ2 sgn (˜ ey2 )
+
+]
+
+˙V (t) ≤ − ∥C C ∥∥K 1∥ [˜ ey1 ˜ey2 ]
+
+[|˜ey1 |μ1 sgn (˜ ey1 )
+
+|˜ey2 |μ1 sgn (˜ ey2 )
+
+]
+
+− ∥C C ∥∥K 2∥ [˜ ey1 ˜ey2 ]
+
+[|˜ey1 |μ2 sgn (˜ ey1 )
+
+|˜ey2 |μ2 sgn (˜ ey2 )
+
+]
+
+≤ − ∥C C ∥∥K 1∥
+
+> 2
+
+∑
+
+> i=1
+
+|˜eyi |(μ1+1) − ∥C C ∥∥K 2∥
+
+> 2
+
+∑
+
+> i=1
+
+|˜eyi |(μ2+1) 
+
+˙V (t) ≤ − ∥C C ∥∥K 1∥
+
+( 2∑
+
+> i=1
+
+|˜eyi |2
+
+)( μ1+1 2 )
+
+− ∥C C ∥∥K 2∥
+
+( 2∑
+
+> i=1
+
+|˜eyi |2
+
+)( μ2+1 2 )
+
+(29) 8Running Title for Header From equation (25) and (29), 
+
+˙V (t) ≤ − ε1V ( μ1+1 2 ) − ε2V ( μ2+1 2 ) (30) where ε1 = ∥C C ∥∥K 1∥ and ε2 = ∥C C ∥∥K 2∥ are both positive definite. Define 
+
+ρ1 = μ1 + 1 2 ∈ (0 , 1) , ρ2 = μ2 + 1 2 > 1.
+
+Then, by the fixed-time lemma 1 for scalar systems, the origin is fixed-time stable and the settling time is uniformly bounded by 
+
+TF T SM O ≤ 1
+
+ε1(1 − ρ1) + 1
+
+ε2(ρ2 − 1) . (31) Substituting ρ1 and ρ2 yields the explicit bound 
+
+TF T SM O ≤ 2
+
+ε1(1 − μ1) + 2
+
+ε2(μ2 − 1) . (32) By using the fixed time lemma 1 in equation (29), it can be concluded that the Lyapunov function V (t) will converge to the origin in a fixed amount of time. Further, the output estimation error ˜ey will also converge to zero in a fixed amount of time. 
+
+˜ey (t) = CC ˜e(t) ≡ 0, ∀t ≥ TF T SM O .
+
+Then all time derivatives of ˜ey (t) are also zero for t ≥ TF T SM O , i.e., 
+
+˜e(k) 
+
+> y
+
+(t) = CC AkC ˜e(t) ≡ 0, ∀k = 0 , 1, . . . , n − 1, ∀t ≥ TF T SM O .
+
+Evaluating at t = TF T SM O , we obtain 
+
+[CC CC AC · · · CC An−1
+
+> C
+
+]⊤ ˜e(TF T SM O ) = 0 .
+
+Since the pair (AC , CC ) is observable, the observability matrix 
+
+O = [CC CC AC · · · CC An−1
+
+> C
+
+]⊤
+
+has full rank, which implies that ˜e(TF T SM O ) = 0 . By uniqueness of solutions to the system ˙˜e(TF T SM O ) = AC ˜e, it follows that ˜e(t) ≡ 0 for all t ≥ TF T SM O . Therefore, the state error converges to zero in a fixed time. This completes the proof. 
+
+Remark 2 (Integration with the controller) . The observer (24) provides estimates ˆz used by the fixed-time controller of Sec. 3.1. Since the observer error ez converges within TFTSMO , which is independent of initial conditions, the overall closed loop exhibits a cascaded fixed-time property. By designing L2 such that TFTSMO < T ctrl , the controller performance remains unaffected by the transient of the observer. 
+
+3.3 Composite Controller Design 
+
+The previous sections established two key components of the overall control architecture: (i) A non-singular fixed-time controller (Theorem 1) ensuring finite and uniform convergence of the transformed tracking error e = z1 − zd1 .(ii) A fixed-time sliding-mode observer (Theorem 2) guaranteeing that the transformed state estimation error 
+
+ez = ˆ z − z vanishes within a bounded fixed time TFTSMO , independently of initial conditions. To realise a fully implementable scheme, the controller in (14) is modified to use the estimated transformed states ˆz
+
+obtained from the observer (24). The resulting composite closed-loop controller is given by 
+
+u = −f (ˆ z) − Φ( t, ˆz) − c1|s3(ˆ z)|psgn( s3(ˆ z)) 
+
+− c2|s3(ˆ z)|q sgn( s3(ˆ z)) − η sgn( s3(ˆ z)) , (33) where s3(ˆ z) denotes the terminal sliding variable computed using the observer states according to (11), and the auxil-iary function Φ( t, ˆz) is constructed from the desired trajectory and its derivatives. 9Running Title for Header 
+
+Closed-loop structure: The overall system can be viewed as a cascade of two fixed-time subsystems: (observer subsystem) ez −−−−−−−−→ 
+
+> FTS in TFTSMO
+
+0,
+
+(controller subsystem) e −−−−−−→ 
+
+> FTS in Tctrl
+
+0.
+
+From Theorems 1 and 2, both subsystems are globally fixed-time stable, with respective settling-time bounds in (22) and (31). If the observer gains are selected such that 
+
+TFTSMO < T ctrl , (34) Then the composite closed loop exhibits cascaded fixed-time stability , and both the estimated and actual tracking errors converge to zero within a total settling time bounded by 
+
+Ttotal ≤ TFTSMO + Tctrl . (35) 
+
+Remark 3 (Composite closed-loop stability) . Condition (34) ensures a strict time-scale separation between estimation and control. Hence, the state estimates ˆz converge before the controllers surfaces si(ˆ z) reach the origin. Under this hierarchy, the overall composite system is globally fixed-time stable in the sense of Polyakov [12], and the final control input (33) can be implemented directly using measured output y and known model quantities. 
+
+# 4 Simulation Results 
+
+The proposed composite fixed-time controller in (33) for the SLFM system is validated using numerical simulation. The proposed controller ensures convergence of the tip position to the desired position within a fixed time. The simulations were conducted using MATLAB/Simulink (R2018a) on a 64-bit Windows system with an Intel Core i7 processor and 16 GB of RAM. Table 1 gives the physical parameters for numerical simulation. The desired tip position is π 
+
+> 4
+
+.
+
+Parameter Value Parameter Value 
+
+ρ 0.5 kg/m ϕ′
+
+> 1
+
+(0) 32.8184 l 1 m ω1 20.53 rad/sec mp 0 kg Jp 0 kg − m2
+
+J0 0.002 kg − m2 ϕ1(l) 0.3214 
+
+EI 1 N − m2
+
+Table 1: Physical Parameters of SLFM Fig. 2 reports the time histories of the tip angle θt(t) (top subplot) and the joint angle θc(t) (bottom subplot) of the SLFM under the proposed controller, FOSMC [16], and a PD controller [32]. The desired position is indicated by the dotted magenta line. As seen in the tip response, the proposed scheme achieves a smooth rise and accurate regulation, with negligible overshoot (below ≈ 2% ) and a settling time of about 2.5 − 3 sec . In contrast, FOSMC exhibits a pronounced transient overshoot (exceeding ≈ 40% ) and oscillatory convergence, whereas the PD controller shows slower convergence accompanied by sustained oscillations around the reference. The joint angle trajectories further corroborate these observations. The proposed controller yields a comparatively well-damped joint response with reduced oscillation amplitude after approximately 3 sec , indicating effective suppres-sion of flexible-mode excitation. Conversely, the FOSMC response contains large-amplitude oscillations and sharp excursions during the transient, while the PD controller retains persistent oscillatory behaviour. Collectively, these re-sults suggest that the proposed design improves tracking performance at both the joint and tip levels while mitigating vibration-induced oscillations, consistent with the stability analysis. The performance parameters presented in Table 2 demonstrate the effectiveness of the proposed control strategy in regulation when compared to alternative controllers. Table 3 reports the integral error indices ISE, IAE, ITSE, and ITAE for both the tip angle and the joint angle. The proposed controller provides the most balanced overall behaviour, particularly in terms of reduced oscillation, faster settling, and improved joint-angle regulation. Although some tip-angle integral indices are not uniformly smaller than those of all benchmark controllers, the proposed scheme offers a superior tradeoff between transient smoothness, vibration suppression, and steady-state regulation. In figure 3, the plot between states of the system with only the first vibratory mode considered versus time is shown. It is evident from the figure that the CoM angle also converges to the desired position with suppressed vibration. The transient response is smooth, and convergence is achieved in approx. 2.3 sec . The plot of the transformed system 10 Running Title for Header 
+
+Figure 2: Output Plots 
+
+Figure 3: States Plot for Original System 
+
+Figure 4: States and Observer Comparison 
+
+Figure 5: Sliding Variable Plots 11 Running Title for Header Table 2: Control Performances for Regulation Problem 
+
+Control schemes 
+
+Tsettling ,
+
+θt(t)
+
+(sec.) 
+
+Tsettling ,
+
+θc(t)
+
+(sec.) Steady state, 
+
+∥θt(t)∥2
+
+(rad) Steady state, 
+
+∥θc(t)∥2
+
+(rad) 
+
+SMC 2-Mode [16] 3.88 6.4 3.4 × 10 −3 5.4 × 10 −3
+
+PD Con-trol [32] 6.1 5.4 1.03 × 10 −3 24 .1 × 10 −2
+
+Proposed 2.66 3.567 2.978 ×
+
+10 −4
+
+2.970 ×
+
+10 −4
+
+Table 3: Comparison of error performance measures 
+
+Tip Angle θt(t) Joint Angle θc(t)
+
+Control schemes ISE IAE ITSE ITAE ISE IAE ITSE ITAE 
+
+SMC 2-Mode [16] 0.305 0.659 0.146 0.497 5.472 3.605 8.573 6.429 PD Control [32] 0.357 1.053 0.236 3.082 1.527 3.970 7.996 26.696 
+
+Proposed 0.651 1.1651 0.462 1.088 1.308 1.464 1.100 1.685 states versus time, along with the estimated states, is displayed in figure 4. As evident in the figure, the estimated states converge rapidly to the actual system states, resulting in negligible estimation error. This demonstrates the observer’s ability to accurately estimate the system states, even in the presence of disturbances. The sliding variables plot with respect to time is given in figure 5. The sliding variable function s3 converges to the origin in a fixed time, as shown in the figure. The figure also shows that the sliding variables s2 and s1 converge to the origin in a fixed time. Fig. 6 shows time responses of the higher-order system states under the proposed control, including the CoM angle and velocity, as well as the first and second vibratory modes and their derivatives. The flexible modes and their rates exhibit bounded oscillations during the transient phase and converge rapidly to the vicinity of zero within approximately 3 sec ,indicating effective suppression of vibration dynamics. Meanwhile, the CoM angle smoothly tracks the desired profile without exciting residual flexible oscillations, demonstrating coordinated stabilisation of both rigid-body and flexible dynamics. Fig. 7, shows sliding function response comparison under the proposed control ( s0(t) = e) and FOSMC ( s(t)). The proposed scheme achieves fixed-time reaching of the sliding manifold, driving the sliding variable to a small neigh-bourhood of the origin within approximately 2.5 sec and maintaining it within a tight bound (on the order of 10 −3). In contrast, FOSMC exhibits larger transient excursions and reaches a comparable neighbourhood only after about 4 sec ,with noticeable residual oscillations. The control input plot with respect to time is shown in Figure 8. The proposed scheme generates bounded control torques with rapidly attenuated oscillations after the transient phase ( ≈ 3 sec ). In contrast, FOSMC exhibits pro-nounced high-frequency oscillations during the reaching phase, while the PD controller produces larger steady-state 
+
+Figure 6: Larger Order System States 12 Running Title for Header 
+
+Figure 7: Sliding Variable Comparison Plot 
+
+Figure 8: Control Input Plot control activity. The reduced oscillatory content and bounded amplitude of the proposed control indicate improved control smoothness and reduced actuator stress. 
+
+# 5 Experimental Validation 
+
+This section details the experimental validation of the proposed control strategy. The controller is implemented and evaluated on the Rotary Flexible Link setup developed by Quanser Inc., as described in [33]. The experiments are conducted at the Control and Automation Laboratory, Department of Electrical Engineering, Indian Institute of Tech-nology Delhi. The experimental setup comprises a lightweight, stainless-steel, flexible link attached to a Quanser SRV02 DC servomotor. The angular position of the motor shaft is measured using a high-resolution optical encoder, 
+
+Figure 9: Complete hardware experimental set-up comprising the flexible link, host system, power amplifier, and data acquisition board. 13 Running Title for Header Time (s) 
+
+2 4 6 8 10 12 
+
+> θt(t) (Rad.)
+
+0123
+
+> (a) The position of the tip
+
+Time (sec) 
+
+0 2 4 6 8 10 12 
+
+> Control input (V)
+
+012
+
+> (b) Control input (motor voltage) applied to the SRV02
+
+Figure 10: Experimental time responses of the servo angle x1 and tip deflection x2 of the Quanser Rotary Flexible Link along with the proposed control law. while the link deflection is obtained from a strain gauge mounted near its base. The servomotor is actuated via a Quanser VoltPAQ-X1 power amplifier. The control algorithm is implemented in real time on a host computer running MATLAB/Simulink with the QUARC real-time control software environment, interfacing with the hardware via a Q8-USB data acquisition board. The proposed controller is developed in Simulink and deployed to the experimental platform at a fixed sampling interval. During operation, the measured signals are fed back to the controller, while the unmeasured states are estimated using the designed observer. The experimental results obtained from the Rotary Flexible Link set-up are presented in Fig. 10 and Fig. 10b. Figure 10 shows the time evolution of the four system states, while Fig. 10b depicts the corresponding control input applied to the DC motor. The closed-loop responses obtained from the Quanser Rotary Flexible Link platform are shown in Fig. 10a, where the solid red curve denotes the measured angle with the tip deflection and the dashed blue curve denotes the corresponding estimate produced by the observer. The servo angle x1 is driven from rest toward the desired set-point of π/ 4 rad ,which it reaches within roughly one second and subsequently holds with only a small steady-state offset. A brief transient excursion due to tip deflection is observed and then damped smoothly, confirming that the elastic mode of the flexible link is effectively suppressed by the proposed controller. Throughout the response, the estimated trajectories remain in close agreement with the measured ones, indicating that the observer reconstructs the internal states with good fidelity. The corresponding control effort applied to the DC motor, shown in Fig. 10b, stays well within the actuator saturation limits and exhibits no excessive chattering. Taken together, the hardware results are in good agreement with the theoretical predictions and demonstrate the practical applicability of the proposed control strategy on a physical flexible-link system. 
+
+# 6 Conclusion 
+
+This paper presented an observer-based composite control scheme for tip-position regulation of a single-link flexible manipulator. A nested non-singular terminal sliding-mode controller was developed to achieve practical fixed-time regulation of the tip position, while a nonlinear sliding-mode observer was introduced to reconstruct the transformed states from the measured outputs. Lyapunov-based analysis established practical fixed-time convergence of both the controller surfaces and the observer error, with explicit settling-time bounds. Numerical simulations and hardware experiments demonstrated improved transient behaviour, reduced oscillation, and smoother control effort compared with benchmark controllers. Future work will focus on extending the proposed framework to higher-mode models and on deriving exact fixed-time observer-controller synthesis under reduced-order modelling mismatch. 14 Running Title for Header 
+
+# References 
+
+[1] Jianjun Yuan, Weijun Zhang, Jun Tao, Zhicheng Wan, and Zhixia Tang. Research on novel wire driving robot ma-nipulator for local industrial production line. In 2007 International Conference on Mechatronics and Automation ,pages 3925–3930. IEEE, 2007. [2] Abraham Warszawski and Dwight A Sangrey. Robotics in building construction. Journal of construction engi-neering and management , 111(3):260–280, 1985. [3] Bai Li, Xinyuan Li, Hejia Gao, and Fei-Yue Wang. Advances in flexible robotic manipulator systemspart i: Overview and dynamics modeling methods. IEEE/ASME Transactions on Mechatronics , 2024. [4] Moharam Habibnejad Korayem, HN Rahimi, and A Nikoobin. Mathematical modeling and trajectory planning of mobile manipulators with flexible links and joints. Applied Mathematical Modelling , 36(7):3229–3244, 2012. [5] Alessandro De Luca and G Di Giovanni. Rest-to-rest motion of a one-link flexible arm. In 2001 IEEE/ASME International Conference on Advanced Intelligent Mechatronics. Proceedings (Cat. No. 01TH8556) , volume 2, pages 923–928. IEEE, 2001. [6] Donatus Oguamanam, Sr ¯ dan Bošnjak, and Nenad Zrni´ c. On the dynamic modeling of flexible manipulators. 
+
+FME Transactions , 34(4):231–237, 2006. [7] Rahul Dixit and R Prasanth Kumar. Cable stiffened flexible link manipulator. In 2014 IEEE/RSJ International Conference on Intelligent Robots and Systems , pages 871–876. IEEE, 2014. [8] Bai Li, Xinyuan Li, Hejia Gao, and Fei-Yue Wang. Advances in flexible robotic manipulator systemspart ii: Planning, control, applications, and perspectives. IEEE/ASME Transactions on Mechatronics , 2024. [9] Tingting Jiang, Jinkun Liu, and Wei He. Boundary control for a flexible manipulator based on infinite dimen-sional disturbance observer. Journal of sound and Vibration , 348:1–14, 2015. [10] S-B Choi, C-C Cheong, and H-C Shin. Sliding mode control of vibration in a single-link flexible arm with parameter variations. Journal of Sound and Vibration , 179(5):737–748, 1995. [11] Yong Feng, Xinghuo Yu, and Zhihong Man. Non-singular terminal sliding mode control of rigid manipulators. 
+
+Automatica , 38(12):2159–2167, 2002. [12] Andrey Polyakov. Nonlinear feedback design for fixed-time stabilization of linear control systems. IEEE trans-actions on Automatic Control , 57(8):2106–2110, 2011. [13] Ruiqi Xu, Zhuang Kang, Zhuang Liu, Shun Cai, Yabin Gao, and Jianxing Liu. Adaptive fixed-time speed control and position observation for sensorless pmsm control. IEEE Transactions on Transportation Electrification ,2025. [14] NG Chalhoub, GA Kfoury, and BA Bazzi. Design of robust controllers and a nonlinear observer for the control of a single-link flexible robotic manipulator. Journal of Sound and Vibration , 291(1-2):437–461, 2006. [15] Farzaneh Hamzeh Nejad, Ali Fayazi, Hossein Ghayoumi Zadeh, Hassan Fatehi Marj, and S Hassan Hossein-Nia. Precise tip-positioning control of a single-link flexible arm using a fractional-order sliding mode controller. 
+
+Journal of Vibration and Control , 26(19-20):1683–1696, 2020. [16] Atul Sharma and S Janardhanan. Position control of single-link flexible manipulator: A functional observer based sliding mode approach. In 2024 European Control Conference (ECC) , pages 3684–3689. IEEE, 2024. [17] Omar Mechali, Limei Xu, Xiaomei Xie, and Jamshed Iqbal. Fixed-time nonlinear homogeneous sliding mode approach for robust tracking control of multirotor aircraft: Experimental validation. Journal of the Franklin Institute , 359(5):1971–2029, 2022. [18] Pooyan Alinaghi Hosseinabadi, Ali Soltani Sharif Abadi, Howard Schwartz, Hemanshu Pota, and Saad Mekhilef. Fixed-time sliding mode observer-based controller for a class of uncertain nonlinear double integrator systems. 
+
+Asian Journal of Control , 25(5):3456–3473, 2023. [19] Erfan Rezaei, Hossein Bolandi, and Mohammad Fathi. Designing a fixed-time observer-based adaptive non-singular sliding mode controller for flexible spacecraft. ISA transactions , 148:32–44, 2024. 15 Running Title for Header [20] Andrea Cristofaro, Alessandro De Luca, and Leonardo Lanari. Linear-quadratic optimal boundary control of a one-link flexible arm. IEEE Control Systems Letters , 5(3):833–838, 2020. [21] Xiaocong Zhu, Jian Cao, Cianyi Yannick, Linyuan Wang, Xinda Shen, and Peng Liu. High-precision tip track-ing of a flexible link manipulator using two-time scale adaptive robust control. IEEE/ASME Transactions on Mechatronics , 2023. [22] Umesh Kumar Sahu, Dipti Patra, and Bidyadhar Subudhi. Adaptive intelligent vision-based control of a flexible-link manipulator. Electrical Engineering , 105(5):3263–3281, 2023. [23] Joshi Kumar Viswanadhapalli, Vinodh Kumar Elumalai, S Shivram, Sweta Shah, and Dhruv Mahajan. Deep reinforcement learning with reward shaping for tracking control and vibration suppression of flexible link manip-ulator. Applied Soft Computing , 152:110756, 2024. [24] Wei He, Hejia Gao, Chen Zhou, Chenguang Yang, and Zhijun Li. Reinforcement learning control of a flexible two-link manipulator: An experimental investigation. IEEE Transactions on Systems, Man, and Cybernetics: Systems , 51(12):7326–7336, 2020. [25] Reza Mohsenipour and Guangjun Liu. Flexible single-link manipulators control based on a full-order transfer function model. IEEE Transactions on Automatic Control , 2024. [26] Zhijia Zhao, Xiuyu He, and Choon Ki Ahn. Boundary disturbance observer-based control of a vibrating single-link flexible manipulator. IEEE Transactions on Systems, Man, and Cybernetics: Systems , 51(4):2382–2390, 2019. [27] Prasenjit Sarkhel, Mithilesh K Dikshit, Vimal Kumar Pathak, Kuldeep K Saxena, C Prakash, and Dharam Buddhi. Robust deflection control and analysis of a fishing rod-type flexible robotic manipulator for collaborative robotics. 
+
+Robotics and Autonomous Systems , 159:104293, 2023. [28] Sharmila Kayastha, Jayantha Katupitiya, Garth Pearce, and Asha Rao. Comparative study of post-impact motion control of a flexible arm space robot. European Journal of Control , 69:100738, 2023. [29] Atul Sharma and S Janardhanan. Position control of single link flexible manipulator: a functional observer-based output feedback sliding mode approach. International Journal of Systems Science , pages 1–12, 2024. [30] Chi Tsong Chen. Linear system theory and design . Saunders college publishing, 1984. [31] Xinghuo Yu, Yong Feng, and Zhihong Man. Terminal sliding mode control–an overview. IEEE Open Journal of the Industrial Electronics Society , 2:36–52, 2020. [32] Loredana Zollo, Bruno Siciliano, Alessandro De Luca, and Eugenio Guglielmelli. Pd control with on-line gravity compensation for robots with flexible links. In 2007 European Control Conference (ECC) , pages 4365–4370. IEEE, 2007. [33] J Apkarian, P Karam, and M Levis. Workbook on flexible link experiment for matlab/simulink users. Quanser ,2011. 16

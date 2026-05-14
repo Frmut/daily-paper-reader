@@ -1,0 +1,23 @@
+{
+  "label": "2026-05-14",
+  "date": "2026-05-14",
+  "generated_at": "2026-05-14T20:34:58",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202605/14/2605.11795v1-observer-based-fixed-time-nested-sliding-mode-control-for-tip-position-regulation-of-a-single-link-flexible-manipulator",
+      "section": "quick",
+      "title_en": "Observer-Based Fixed-Time Nested Sliding-Mode Control for Tip-Position Regulation of a Single-Link Flexible Manipulator",
+      "authors": "Atul Sharma, Chayan Kumar Paul, S. Janardhanan",
+      "date": "2026-05-12",
+      "pdf": "https://arxiv.org/pdf/2605.11795v1",
+      "score": "6.0",
+      "evidence": "机械系统的滑模控制与观测器",
+      "tldr": "本研究针对单连杆柔性机械臂在严格时间约束下的精确位置控制问题，提出了一种基于观测器的固定时间嵌套滑模控制策略。该方法结合了嵌套非奇异终端滑模控制器与固定时间滑模观测器，实现了对未测量状态的快速准确估计及系统的鲁棒控制。通过稳定性分析、数值仿真以及实物硬件实验，验证了该算法在精度、稳定性和收敛速度方面的优越性。",
+      "tags": "query:pmsm",
+      "abstract_en": "This paper presents a novel position control strategy for a single-link flexible manipulator, tailored for applications where precise position must be achieved within strict time constraints. To accomplish this objective, firstly, a nested non-singular terminal sliding mode controller is designed for the system, enabling precise and robust control. Furthermore, a fixed-time sliding mode observer is designed to estimate unmeasured system states accurately in a fixed time, thereby enabling closed-loop control implementation. A stability analysis is presented to guarantee the robustness and efficacy of the proposed composite control algorithm. The effectiveness of the proposed fixed-time controller is demonstrated through numerical simulation on accuracy, stability, and convergence speed. The proposed controller's performance is also compared with that of other state-of-the-art control schemes. The proposed controller is further validated through experiments conducted on a real hardware setup.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

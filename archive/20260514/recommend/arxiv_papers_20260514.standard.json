@@ -1,0 +1,53 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-05-14T20:34:35.389331+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 1,
+    "quick_skim_target": 11,
+    "quick_selected": 1
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2605.11795v1",
+      "title": "Observer-Based Fixed-Time Nested Sliding-Mode Control for Tip-Position Regulation of a Single-Link Flexible Manipulator",
+      "abstract": "This paper presents a novel position control strategy for a single-link flexible manipulator, tailored for applications where precise position must be achieved within strict time constraints. To accomplish this objective, firstly, a nested non-singular terminal sliding mode controller is designed for the system, enabling precise and robust control. Furthermore, a fixed-time sliding mode observer is designed to estimate unmeasured system states accurately in a fixed time, thereby enabling closed-loop control implementation. A stability analysis is presented to guarantee the robustness and efficacy of the proposed composite control algorithm. The effectiveness of the proposed fixed-time controller is demonstrated through numerical simulation on accuracy, stability, and convergence speed. The proposed controller's performance is also compared with that of other state-of-the-art control schemes. The proposed controller is further validated through experiments conducted on a real hardware setup.",
+      "authors": [
+        "Atul Sharma",
+        "Chayan Kumar Paul",
+        "S. Janardhanan"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY"
+      ],
+      "published": "2026-05-12T08:54:49+00:00",
+      "link": "https://arxiv.org/pdf/2605.11795v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Sliding-mode control and observer for mechanical systems",
+      "llm_evidence_cn": "机械系统的滑模控制与观测器",
+      "llm_evidence": "机械系统的滑模控制与观测器",
+      "canonical_evidence": "机械系统的滑模控制与观测器",
+      "llm_tldr_en": "Presents nested sliding-mode control and observers, common techniques in PMSM speed and position control.",
+      "llm_tldr_cn": "提出嵌套滑模控制与观测器，是PMSM转速与位置控制中的常用技术。",
+      "llm_tldr": "提出嵌套滑模控制与观测器，是PMSM转速与位置控制中的常用技术。",
+      "llm_tags": [
+        "query:pmsm"
+      ],
+      "matched_query_tag": "query:pmsm",
+      "matched_query_text": "Permanent Magnet Synchronous Motor research",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

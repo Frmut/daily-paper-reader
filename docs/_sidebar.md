@@ -1,6 +1,9 @@
 * <a class="dpr-sidebar-root-link" href="#/">首页</a>
 * <a class="dpr-sidebar-root-link dpr-sidebar-noactive-link" href="javascript:void(0)" data-dpr-hash="#/tutorial/README">使用教程</a>
 * Daily Papers
+  * 2026-05-14 <!--dpr-date:20260514-->
+    * 速读区
+      * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202605/14/2605.11795v1-observer-based-fixed-time-nested-sliding-mode-control-for-tip-position-regulation-of-a-single-link-flexible-manipulator" data-sidebar-item="{&quot;title&quot;: &quot;Observer-Based Fixed-Time Nested Sliding-Mode Control for Tip-Position Regulation of a Single-Link Flexible Manipulator&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2605.11795v1-observer-based-fixed-time-nested-sliding-mode-control-for-tip-position-regulation-of-a-single-link-flexible-manipulator&quot;, &quot;score&quot;: &quot;6.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;pmsm&quot;}], &quot;evidence&quot;: &quot;机械系统的滑模控制与观测器&quot;}">Observer-Based Fixed-Time Nested Sliding-Mode Control for Tip-Position Regulation of a Single-Link Flexible Manipulator</a>
   * 2026-05-12 <!--dpr-date:20260512-->
     * 速读区
       * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202605/12/2605.08751v1-on-composite-adaptive-continuous-finite-time-control-of-a-class-of-euler-lagrange-systems" data-sidebar-item="{&quot;title&quot;: &quot;On Composite Adaptive Continuous Finite-Time Control of a class of Euler-Lagrange systems&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2605.08751v1-on-composite-adaptive-continuous-finite-time-control-of-a-class-of-euler-lagrange-systems&quot;, &quot;score&quot;: &quot;7.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;pmsm&quot;}], &quot;evidence&quot;: &quot;欧拉-拉格朗日系统的自适应控制&quot;}">On Composite Adaptive Continuous Finite-Time Control of a class of Euler-Lagrange systems</a>
