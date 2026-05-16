@@ -1,0 +1,89 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-05-16T20:02:43.236694+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 2,
+    "quick_skim_target": 11,
+    "quick_selected": 2
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2605.12244v1",
+      "title": "Estimation Problems and the Modulating Function Method: The Algebra of Modulating Functions",
+      "abstract": "State and parameter estimation, along with fault detection, are three crucial estimation problems within the control systems community. Although different approaches have been proposed for each type of problem, the modulating function method proposes a more unified approach to all three problem classes, being used for state and parameter estimation of lumped systems, fault detection, and estimation of distributed and fractional systems. At the core of the method is the modulating function: a function that evaluates to 0 at the left or right boundaries up to a certain order of derivatives. By selecting the modulating functions, one directly determines the filter characteristics, and, for that reason, different function families have been proposed over the years. Nevertheless, many families of modulating functions are given in a rather similar mathematical structure. In light of these structures, this paper formally discusses the algebraic properties of modulating functions, and, after formalizing the closedness and group properties of modulating functions, a simple algorithm to construct new modulating functions is proposed, discussed, and illustrated with the construction of the newly introduced logarithmic modulating function families and 3 non-analytic modulating function families. Moreover, the fact that total modulating functions form a vector space and an algebra is exploited to construct orthonormal modulating functions, which are then used for the parameter estimation of a boat's roll dynamics, effectively avoiding matrix inversion issues.",
+      "authors": [
+        "Davi G. Accioli",
+        "Jerome Jouffroy"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY",
+        "math.RA"
+      ],
+      "published": "2026-05-12T15:12:52+00:00",
+      "link": "https://arxiv.org/pdf/2605.12244v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "unified approach for fault detection in control systems",
+      "llm_evidence_cn": "控制系统故障检测的统一方法",
+      "llm_evidence": "控制系统故障检测的统一方法",
+      "canonical_evidence": "控制系统故障检测的统一方法",
+      "llm_tldr_en": "Proposes a modulating function method for state estimation and fault detection in control systems.",
+      "llm_tldr_cn": "提出了一种用于控制系统状态估计和故障检测的调制函数方法。",
+      "llm_tldr": "提出了一种用于控制系统状态估计和故障检测的调制函数方法。",
+      "llm_tags": [
+        "query:pmsm"
+      ],
+      "matched_query_tag": "query:pmsm",
+      "matched_query_text": "fault-tolerant control of multi-phase motors",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2605.12244v2",
+      "title": "Estimation Problems and the Modulating Function Method: The Algebra of Modulating Functions",
+      "abstract": "State and parameter estimation, along with fault detection, are three crucial estimation problems within the control systems community. Although different approaches have been proposed for each type of problem, the modulating function method proposes a more unified approach to all three problem classes, being used for state and parameter estimation of lumped systems, fault detection, and estimation of distributed and fractional systems. At the core of the method is the modulating function: a function that evaluates to 0 at the left or right boundaries up to a certain order of derivatives. By selecting the modulating functions, one directly determines the filter characteristics, and, for that reason, different function families have been proposed over the years. Nevertheless, many families of modulating functions are given in a rather similar mathematical structure. In light of these structures, this paper formally discusses the algebraic properties of modulating functions, and, after formalizing the closedness and group properties of modulating functions, a simple algorithm to construct new modulating functions is proposed, discussed, and illustrated with the construction of the newly introduced logarithmic modulating function families and 3 non-analytic modulating function families. Moreover, the fact that total modulating functions form a vector space and an algebra is exploited to construct orthonormal modulating functions, which are then used for the parameter estimation of a boat's roll dynamics, effectively avoiding matrix inversion issues.",
+      "authors": [
+        "Davi G. Accioli",
+        "Jerome Jouffroy"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY",
+        "math.RA"
+      ],
+      "published": "2026-05-12T15:12:52+00:00",
+      "link": "https://arxiv.org/pdf/2605.12244v2",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Unified approach for parameter estimation and fault detection in control systems",
+      "llm_evidence_cn": "控制系统中参数估计与故障检测的统一方法",
+      "llm_evidence": "控制系统中参数估计与故障检测的统一方法",
+      "canonical_evidence": "控制系统中参数估计与故障检测的统一方法",
+      "llm_tldr_en": "Provides a modulating function method for state estimation and fault detection in lumped systems.",
+      "llm_tldr_cn": "提供了一种用于集中参数系统状态估计和故障检测的调制函数方法。",
+      "llm_tldr": "提供了一种用于集中参数系统状态估计和故障检测的调制函数方法。",
+      "llm_tags": [
+        "query:pmsm"
+      ],
+      "matched_query_tag": "query:pmsm",
+      "matched_query_text": "fault tolerant strategies for multi phase permanent magnet synchronous motors",
+      "matched_requirement_id": "req-8",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

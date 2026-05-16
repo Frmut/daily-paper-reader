@@ -1,0 +1,37 @@
+{
+  "label": "2026-05-16",
+  "date": "2026-05-16",
+  "generated_at": "2026-05-16T20:03:06",
+  "count": 2,
+  "papers": [
+    {
+      "paper_id": "202605/16/2605.12244v1-estimation-problems-and-the-modulating-function-method-the-algebra-of-modulating-functions",
+      "section": "quick",
+      "title_en": "Estimation Problems and the Modulating Function Method: The Algebra of Modulating Functions",
+      "authors": "Davi G. Accioli, Jerome Jouffroy",
+      "date": "2026-05-12",
+      "pdf": "https://arxiv.org/pdf/2605.12244v1",
+      "score": "6.0",
+      "evidence": "控制系统故障检测的统一方法",
+      "tldr": "本文研究控制系统中的状态与参数估计及故障检测问题，聚焦于调制函数法（MFM）的统一框架。研究深入探讨了调制函数的代数性质，如封闭性和群属性，并提出一种构建新函数族的通用算法，由此引入了对数型和非解析型调制函数。通过构建正交调制函数空间，研究解决了船舶横摇动力学参数估计中的矩阵求逆难题，为复杂系统的估计问题提供了更稳健的数学工具。",
+      "tags": "query:pmsm",
+      "abstract_en": "State and parameter estimation, along with fault detection, are three crucial estimation problems within the control systems community. Although different approaches have been proposed for each type of problem, the modulating function method proposes a more unified approach to all three problem classes, being used for state and parameter estimation of lumped systems, fault detection, and estimation of distributed and fractional systems. At the core of the method is the modulating function: a function that evaluates to 0 at the left or right boundaries up to a certain order of derivatives. By selecting the modulating functions, one directly determines the filter characteristics, and, for that reason, different function families have been proposed over the years. Nevertheless, many families of modulating functions are given in a rather similar mathematical structure. In light of these structures, this paper formally discusses the algebraic properties of modulating functions, and, after formalizing the closedness and group properties of modulating functions, a simple algorithm to construct new modulating functions is proposed, discussed, and illustrated with the construction of the newly introduced logarithmic modulating function families and 3 non-analytic modulating function families. Moreover, the fact that total modulating functions form a vector space and an algebra is exploited to construct orthonormal modulating functions, which are then used for the parameter estimation of a boat's roll dynamics, effectively avoiding matrix inversion issues.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202605/16/2605.12244v2-estimation-problems-and-the-modulating-function-method-the-algebra-of-modulating-functions",
+      "section": "quick",
+      "title_en": "Estimation Problems and the Modulating Function Method: The Algebra of Modulating Functions",
+      "authors": "Davi G. Accioli, Jerome Jouffroy",
+      "date": "2026-05-12",
+      "pdf": "https://arxiv.org/pdf/2605.12244v2",
+      "score": "6.0",
+      "evidence": "控制系统中参数估计与故障检测的统一方法",
+      "tldr": "该研究深入探讨了控制系统中用于状态、参数估计及故障检测的调制函数法。通过形式化分析调制函数的代数性质（如封闭性和群性质），论文提出了构建新调制函数族的通用算法，并引入了对数型及非解析型函数。此外，利用调制函数的向量空间特性构建了正交调制函数，并将其应用于船舶横摇动力学参数估计，有效解决了传统方法中的矩阵求逆难题。",
+      "tags": "query:pmsm",
+      "abstract_en": "State and parameter estimation, along with fault detection, are three crucial estimation problems within the control systems community. Although different approaches have been proposed for each type of problem, the modulating function method proposes a more unified approach to all three problem classes, being used for state and parameter estimation of lumped systems, fault detection, and estimation of distributed and fractional systems. At the core of the method is the modulating function: a function that evaluates to 0 at the left or right boundaries up to a certain order of derivatives. By selecting the modulating functions, one directly determines the filter characteristics, and, for that reason, different function families have been proposed over the years. Nevertheless, many families of modulating functions are given in a rather similar mathematical structure. In light of these structures, this paper formally discusses the algebraic properties of modulating functions, and, after formalizing the closedness and group properties of modulating functions, a simple algorithm to construct new modulating functions is proposed, discussed, and illustrated with the construction of the newly introduced logarithmic modulating function families and 3 non-analytic modulating function families. Moreover, the fact that total modulating functions form a vector space and an algebra is exploited to construct orthonormal modulating functions, which are then used for the parameter estimation of a boat's roll dynamics, effectively avoiding matrix inversion issues.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
