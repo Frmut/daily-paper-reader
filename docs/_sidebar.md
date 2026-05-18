@@ -1,6 +1,9 @@
 * <a class="dpr-sidebar-root-link" href="#/">首页</a>
 * <a class="dpr-sidebar-root-link dpr-sidebar-noactive-link" href="javascript:void(0)" data-dpr-hash="#/tutorial/README">使用教程</a>
 * Daily Papers
+  * 2026-05-18 <!--dpr-date:20260518-->
+    * 速读区
+      * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202605/18/2605.12230v1-neural-network-based-virtual-wheel-speed-sensor-for-enhanced-low-velocity-state-estimation" data-sidebar-item="{&quot;title&quot;: &quot;Neural Network-Based Virtual Wheel-Speed Sensor for Enhanced Low-Velocity State Estimation&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2605.12230v1-neural-network-based-virtual-wheel-speed-sensor-for-enhanced-low-velocity-state-estimation&quot;, &quot;score&quot;: &quot;6.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;pmsm&quot;}], &quot;evidence&quot;: &quot;电动汽车中的电机速度信号处理&quot;}">Neural Network-Based Virtual Wheel-Speed Sensor for Enhanced Low-Velocity State Estimation</a>
   * 2026-05-16 <!--dpr-date:20260516-->
     * 速读区
       * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202605/16/2605.12244v1-estimation-problems-and-the-modulating-function-method-the-algebra-of-modulating-functions" data-sidebar-item="{&quot;title&quot;: &quot;Estimation Problems and the Modulating Function Method: The Algebra of Modulating Functions&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2605.12244v1-estimation-problems-and-the-modulating-function-method-the-algebra-of-modulating-functions&quot;, &quot;score&quot;: &quot;6.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;pmsm&quot;}], &quot;evidence&quot;: &quot;控制系统故障检测的统一方法&quot;}">Estimation Problems and the Modulating Function Method: The Algebra of Modulating Functions</a>

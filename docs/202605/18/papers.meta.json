@@ -1,0 +1,23 @@
+{
+  "label": "2026-05-18",
+  "date": "2026-05-18",
+  "generated_at": "2026-05-18T21:14:49",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202605/18/2605.12230v1-neural-network-based-virtual-wheel-speed-sensor-for-enhanced-low-velocity-state-estimation",
+      "section": "quick",
+      "title_en": "Neural Network-Based Virtual Wheel-Speed Sensor for Enhanced Low-Velocity State Estimation",
+      "authors": "Hendrik Schäfke, Daniel O. M. Weber, Askar Vagapov, Christoph Schweers, Thomas Seel, Simon F. G. Ehlers",
+      "date": "2026-05-12",
+      "pdf": "https://arxiv.org/pdf/2605.12230v1",
+      "score": "6.0",
+      "evidence": "电动汽车中的电机速度信号处理",
+      "tldr": "针对传统轮速传感器在低速下的量化延迟及电机信号扭转失真问题，本文提出一种基于神经网络的虚拟轮速传感器。通过融合轮速与电机转速信号，在保持实时性的同时显著提升了低速状态估计精度，为驾驶辅助功能提供了更平滑的信号支持。",
+      "tags": "query:pmsm",
+      "abstract_en": "Accurate wheel speed information is crucial for vehicle control and state estimation. Conventional sensors suffer from quantization and latency, especially at low velocities, while motor-speed signals in electric vehicles are distorted by drivetrain torsion. This work presents a neural-network-based virtual wheel-speed sensor that fuses wheel-speed and motor-speed signals to reduce errors from both sources. Validated on real-world Volkswagen ID.7 data, the real-time capable model achieves an error reduction of up to 85% compared to the production sensor and 47% compared to an optimized zero-phase filter, providing a smooth signal for driver-assistance functions. The results demonstrate robust generalization across diverse real-world maneuvers within the vehicle platform.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
