@@ -6,35 +6,32 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-05-22
-- 运行时间：2026-05-22 21:24:49 UTC
+- 最新运行日期：2026-05-23
+- 运行时间：2026-05-23 20:08:02 UTC
 - 运行状态：成功
-- 本次总论文数：4
+- 本次总论文数：3
 - 精读区：0
-- 速读区：4
+- 速读区：3
 
 ### 今日简报（AI）
-今日速览 4 篇前沿论文，聚焦复杂系统中的故障识别与容错控制技术。
-亮点包括利用镜像下降法进行几何故障诊断，以及充气桁架机器人在受损后的刚性保持策略。
-推荐关注自适应车辆性能预测中的覆盖均衡问题，以提升极端环境下的行驶安全性。
-- 详情：[/202605/22/README](/202605/22/README)
+今日聚焦电力电子变换器创新，涵盖多端口DC-DC控制、构网型变流器稳定性及配电网电能质量优化。
+重点推荐关注耦合电感变换器的协同控制技术，以及利用社区逆变器剩余容量提升配电网性能的新策略。
+建议深入了解构网型技术对系统功角稳定的重塑作用，为应对高比例新能源接入挑战提供参考。
+- 详情：[/202605/23/README](/202605/23/README)
 
 ### 精读区论文标签
 - 本次无精读推荐。
 
 ### 速读区论文标签
-1. [Geometric Fault Identification via Mirror Descent Learning](/202605/22/2605.17103v1-geometric-fault-identification-via-mirror-descent-learning)  
+1. [A Coupled Inductor Based Multi Port DC DC Converter with Coordinated Duty-Cycle and Phase Shift Control](/202605/23/2605.16634v1-a-coupled-inductor-based-multi-port-dc-dc-converter-with-coordinated-duty-cycle-and-phase-shift-control)  
    标签：评分：6.0/10、query:pmsm
-   evidence：非线性控制系统的故障检测与识别
-2. [Equalized Coverage in Motion Control Performance Prediction for Self-Adaptive Road Vehicles](/202605/22/2605.19655v1-equalized-coverage-in-motion-control-performance-prediction-for-self-adaptive-road-vehicles)  
+   evidence：电动汽车动力总成磁性元件与协调相移控制
+2. [Revisiting angle stability in power systems with grid-forming power converters](/202605/23/2605.19380v1-revisiting-angle-stability-in-power-systems-with-grid-forming-power-converters)  
    标签：评分：6.0/10、query:pmsm
-   evidence：执行器故障下的运动控制
-3. [Fault-Tolerant, Rigidity-Preserving Control of Inflatable Truss Robots](/202605/22/2605.20561v1-fault-tolerant-rigidity-preserving-control-of-inflatable-truss-robots)  
+   evidence：同步电机与电力系统稳定性
+3. [Coordinated Optimal Power Quality Management in Distribution Systems Using The Residual Capacity of Community IBRs](/202605/23/2605.21153v1-coordinated-optimal-power-quality-management-in-distribution-systems-using-the-residual-capacity-of-community-ibrs)  
    标签：评分：6.0/10、query:pmsm
-   evidence：针对电机故障的容错控制框架
-4. [Engineering Hybrid Physics-Informed Neural Networks for Next-Generation Electricity Systems: A State-of-the-Art Review](/202605/22/2605.21903v1-engineering-hybrid-physics-informed-neural-networks-for-next-generation-electricity-systems-a-state-of-the-art-review)  
-   标签：评分：6.0/10、query:pmsm
-   evidence：用于电力系统控制的物理信息神经网络
+   evidence：用于逆变器控制的双共享同步参考坐标系
 
 
 <div class="dpr-home-promo-card">

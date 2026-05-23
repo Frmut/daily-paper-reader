@@ -1,0 +1,129 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-05-23T20:07:43.290765+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 3,
+    "quick_skim_target": 11,
+    "quick_selected": 3
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2605.16634v1",
+      "title": "A Coupled Inductor Based Multi Port DC DC Converter with Coordinated Duty-Cycle and Phase Shift Control",
+      "abstract": "Electrified powertrains rely heavily on magnetics for power conversion, where cost, volume, and weight concerns make integrated multi-use designs an attractive solution. With EV powertrain architectures requiring a boost stage being a major market segment, the proposed Coupled Inductor-Based Multi-Port DC-DC Converter (CI-MPC) leverages the existing magnetic framework of a conventional topology to realize independent, isolated, and simultaneously regulated converters without additional magnetic cores or cascaded stages. Unlike existing architectures that use secondary windings solely for voltage gain or passive rectification, the proposed topology integrates an actively controlled full bridge on the secondary side to create a distinct, independently regulated auxiliary converter. Primary output regulation is achieved via duty-cycle control, while the auxiliary converter employs phase-shift modulation synchronized with the primary switching to enable active rectification and flexible voltage or current regulation. A unified control framework ensures decoupled operation with minimal interaction between the primary and auxiliary loops, while also avoiding high step-down conversion ratios from high voltages to lower auxiliary levels. The operating principles and coordinated control strategies are validated through simulation and experimental results on a hardware prototype, demonstrating enhanced controllability, decoupled regulation, and a scalable pathway toward generalized multi-port power conversion within a unified magnetic framework.",
+      "authors": [
+        "Sachith Wijesooriya",
+        "Sandun S. Kuruppu"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY"
+      ],
+      "published": "2026-05-15T21:04:42+00:00",
+      "link": "https://arxiv.org/pdf/2605.16634v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "EV powertrain magnetics and coordinated phase shift control",
+      "llm_evidence_cn": "电动汽车动力总成磁性元件与协调相移控制",
+      "llm_evidence": "电动汽车动力总成磁性元件与协调相移控制",
+      "canonical_evidence": "电动汽车动力总成磁性元件与协调相移控制",
+      "llm_tldr_en": "Proposes a multi-port DC-DC converter for EV powertrains using coordinated control.",
+      "llm_tldr_cn": "提出了一种用于电动汽车动力总成的多端口DC-DC转换器及其协调控制方法。",
+      "llm_tldr": "提出了一种用于电动汽车动力总成的多端口DC-DC转换器及其协调控制方法。",
+      "llm_tags": [
+        "query:pmsm"
+      ],
+      "matched_query_tag": "query:pmsm",
+      "matched_query_text": "dual three-phase permanent magnet synchronous motor control and design",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2605.19380v1",
+      "title": "Revisiting angle stability in power systems with grid-forming power converters",
+      "abstract": "This letter presents a comprehensive analysis of the stability phenomenon related to the ability of generators to remain in synchronism when subjected to small or large disturbances, in power systems with both synchronous machines and grid-forming voltage source converters (GFM-VSC). This phenomenon is associated with two stability classes in the IEEE/PES classification, namely, rotor-angle stability (when involving synchronous machines and slow-interaction converter-driven stability (when involving power converters). However, this work shows that this phenomenon is fully characterised with the slow dynamics of the angle difference between the voltage sources connected to the power system, regardless of whether they are synchronous machines (with rotors) or GFM-VSCs. Therefore, we suggest using the term angle stability to refer to this phenomenon, while slow-interaction converter-driven stability should only include slow interactions of different nature involving power converters.",
+      "authors": [
+        "Régulo E. Ávila-Martínez",
+        "Javier Renedo",
+        "Luis Rouco",
+        "Aurelio Garcia-Cerrada",
+        "Lukas Sigrist"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY"
+      ],
+      "published": "2026-05-19T05:26:41+00:00",
+      "link": "https://arxiv.org/pdf/2605.19380v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "synchronous machines and power system stability",
+      "llm_evidence_cn": "同步电机与电力系统稳定性",
+      "llm_evidence": "同步电机与电力系统稳定性",
+      "canonical_evidence": "同步电机与电力系统稳定性",
+      "llm_tldr_en": "Analyzes angle stability in power systems involving both synchronous machines and grid-forming converters.",
+      "llm_tldr_cn": "分析了包含同步电机和构网型变流器的电力系统角度稳定性现象。",
+      "llm_tldr": "分析了包含同步电机和构网型变流器的电力系统角度稳定性现象。",
+      "llm_tags": [
+        "query:pmsm"
+      ],
+      "matched_query_tag": "query:pmsm",
+      "matched_query_text": "Permanent Magnet Synchronous Motor research",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2605.21153v1",
+      "title": "Coordinated Optimal Power Quality Management in Distribution Systems Using The Residual Capacity of Community IBRs",
+      "abstract": "This letter proposes a network-wide coordinated optimization model to mitigate voltage unbalance (VU) by unleashing the remaining capacity of community inverter-based resources (IBRs). Existing single-sequence strategies ignore coupled capacity constraints and cause idle headroom. Meanwhile, they fail to harness the collective governance capabilities of community IBRs. To solve this discrepancy and exploit the unused potential, we developed a sequence-domain network model in dual commonly shared synchronous reference frames. Strict phase current and apparent power limits are formulated and convexified via polyhedral approximations. A quadratic objective function flexibly balances sequence capacity allocation. Simulation and experimental results validate the effectiveness of the proposed strategy.",
+      "authors": [
+        "Tiantian Ji",
+        "Pengfeng Lin",
+        "Miao Zhu",
+        "Stephan M. Goetz",
+        "Ahmed Abu-Siada",
+        "Syed Islam"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY"
+      ],
+      "published": "2026-05-20T13:25:54+00:00",
+      "link": "https://arxiv.org/pdf/2605.21153v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "dual commonly shared synchronous reference frames for inverter control",
+      "llm_evidence_cn": "用于逆变器控制的双共享同步参考坐标系",
+      "llm_evidence": "用于逆变器控制的双共享同步参考坐标系",
+      "canonical_evidence": "用于逆变器控制的双共享同步参考坐标系",
+      "llm_tldr_en": "Uses dual synchronous reference frames to optimize power quality in distribution systems.",
+      "llm_tldr_cn": "利用双同步参考坐标系优化配电系统的电能质量。",
+      "llm_tldr": "利用双同步参考坐标系优化配电系统的电能质量。",
+      "llm_tags": [
+        "query:pmsm:composite"
+      ],
+      "matched_query_tag": "query:pmsm:composite",
+      "matched_query_text": "Papers central to 三相及双三相永磁同步电机相关研究检索, especially work that connects or combines: m; s; f; Permanent Magnet Synchronous Motor research; dual three-phase permanent magnet synchronous motor control and design; fault-tolerant control of multi-phase motors; recent advances in dual three phase permanent magnet synchronous motor control; fault tolerant strategies for multi phase permanent magnet synchronous motors.",
+      "matched_requirement_id": "req-composite-pmsm",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

@@ -1,0 +1,51 @@
+{
+  "label": "2026-05-23",
+  "date": "2026-05-23",
+  "generated_at": "2026-05-23T20:08:11",
+  "count": 3,
+  "papers": [
+    {
+      "paper_id": "202605/23/2605.16634v1-a-coupled-inductor-based-multi-port-dc-dc-converter-with-coordinated-duty-cycle-and-phase-shift-control",
+      "section": "quick",
+      "title_en": "A Coupled Inductor Based Multi Port DC DC Converter with Coordinated Duty-Cycle and Phase Shift Control",
+      "authors": "Sachith Wijesooriya, Sandun S. Kuruppu",
+      "date": "2026-05-15",
+      "pdf": "https://arxiv.org/pdf/2605.16634v1",
+      "score": "6.0",
+      "evidence": "电动汽车动力总成磁性元件与协调相移控制",
+      "tldr": "本研究针对电动汽车动力总成对高功率密度和低成本的需求，提出了一种基于耦合电感的集成式多端口直流变换器（CI-MPC）。该方案在不增加额外磁芯的情况下，利用现有磁性框架，通过在副边集成主动控制的全桥电路，实现了独立且隔离的辅助输出。采用占空比与移相协调控制策略，实现了主副输出的解耦调节，为多端口功率转换提供了一种高效、紧凑的解决方案。",
+      "tags": "query:pmsm",
+      "abstract_en": "Electrified powertrains rely heavily on magnetics for power conversion, where cost, volume, and weight concerns make integrated multi-use designs an attractive solution. With EV powertrain architectures requiring a boost stage being a major market segment, the proposed Coupled Inductor-Based Multi-Port DC-DC Converter (CI-MPC) leverages the existing magnetic framework of a conventional topology to realize independent, isolated, and simultaneously regulated converters without additional magnetic cores or cascaded stages. Unlike existing architectures that use secondary windings solely for voltage gain or passive rectification, the proposed topology integrates an actively controlled full bridge on the secondary side to create a distinct, independently regulated auxiliary converter. Primary output regulation is achieved via duty-cycle control, while the auxiliary converter employs phase-shift modulation synchronized with the primary switching to enable active rectification and flexible voltage or current regulation. A unified control framework ensures decoupled operation with minimal interaction between the primary and auxiliary loops, while also avoiding high step-down conversion ratios from high voltages to lower auxiliary levels. The operating principles and coordinated control strategies are validated through simulation and experimental results on a hardware prototype, demonstrating enhanced controllability, decoupled regulation, and a scalable pathway toward generalized multi-port power conversion within a unified magnetic framework.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202605/23/2605.19380v1-revisiting-angle-stability-in-power-systems-with-grid-forming-power-converters",
+      "section": "quick",
+      "title_en": "Revisiting angle stability in power systems with grid-forming power converters",
+      "authors": "Régulo E. Ávila-Martínez, Javier Renedo, Luis Rouco, Aurelio Garcia-Cerrada, Lukas Sigrist",
+      "date": "2026-05-19",
+      "pdf": "https://arxiv.org/pdf/2605.19380v1",
+      "score": "6.0",
+      "evidence": "同步电机与电力系统稳定性",
+      "tldr": "本研究探讨了包含同步机和构网型变流器（GFM-VSC）的电力系统中，发电机在扰动下保持同步的稳定性问题。传统分类将其分为功角稳定和慢交互变流器驱动稳定，但本文通过分析发现，该现象本质上是由电压源之间的电压角差慢动态特性决定的，与设备类型无关。因此，作者建议统一使用“角度稳定性”一词来描述此类现象，并重新界定变流器驱动稳定性的范畴，为混合电力系统的稳定性分析提供了更清晰的理论框架。",
+      "tags": "query:pmsm",
+      "abstract_en": "This letter presents a comprehensive analysis of the stability phenomenon related to the ability of generators to remain in synchronism when subjected to small or large disturbances, in power systems with both synchronous machines and grid-forming voltage source converters (GFM-VSC). This phenomenon is associated with two stability classes in the IEEE/PES classification, namely, rotor-angle stability (when involving synchronous machines and slow-interaction converter-driven stability (when involving power converters). However, this work shows that this phenomenon is fully characterised with the slow dynamics of the angle difference between the voltage sources connected to the power system, regardless of whether they are synchronous machines (with rotors) or GFM-VSCs. Therefore, we suggest using the term angle stability to refer to this phenomenon, while slow-interaction converter-driven stability should only include slow interactions of different nature involving power converters.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202605/23/2605.21153v1-coordinated-optimal-power-quality-management-in-distribution-systems-using-the-residual-capacity-of-community-ibrs",
+      "section": "quick",
+      "title_en": "Coordinated Optimal Power Quality Management in Distribution Systems Using The Residual Capacity of Community IBRs",
+      "authors": "Tiantian Ji, Pengfeng Lin, Miao Zhu, Stephan M. Goetz, Ahmed Abu-Siada, Syed Islam",
+      "date": "2026-05-20",
+      "pdf": "https://arxiv.org/pdf/2605.21153v1",
+      "score": "6.0",
+      "evidence": "用于逆变器控制的双共享同步参考坐标系",
+      "tldr": "本研究针对配电网中的电压不平衡问题，提出了一种利用社区逆变器资源（IBR）剩余容量的协同优化模型。针对现有策略忽略耦合容量约束导致资源闲置的问题，该方法在双同步参考坐标系下建立了序域网络模型，并通过多面体近似对电流和功率限制进行凸化处理。该方案有效挖掘了社区IBR的治理潜力，实现了电压质量的优化管理。",
+      "tags": "query:pmsm",
+      "abstract_en": "This letter proposes a network-wide coordinated optimization model to mitigate voltage unbalance (VU) by unleashing the remaining capacity of community inverter-based resources (IBRs). Existing single-sequence strategies ignore coupled capacity constraints and cause idle headroom. Meanwhile, they fail to harness the collective governance capabilities of community IBRs. To solve this discrepancy and exploit the unused potential, we developed a sequence-domain network model in dual commonly shared synchronous reference frames. Strict phase current and apparent power limits are formulated and convexified via polyhedral approximations. A quadratic objective function flexibly balances sequence capacity allocation. Simulation and experimental results validate the effectiveness of the proposed strategy.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
