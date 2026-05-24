@@ -1,0 +1,53 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-05-24T20:36:00.259378+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 1,
+    "quick_skim_target": 11,
+    "quick_selected": 1
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2605.21708v1",
+      "title": "Disturbance Rejection Control under Nested Signal Temporal Logic Specifications: A Recursive Design Approach",
+      "abstract": "This paper investigates the control synthesis for continuous-time uncertain systems under nested Signal Temporal Logic (STL) specifications containing nested temporal operators. Control Barrier Functions (CBFs) are utilized herein to encode STL formulas into system constraints. However, traditional CBF designs fail to encode nested STL formulas, whereas recent reachability analysis-based methods capable of handling such formulas are inapplicable to uncertain systems and suffer from a severe computational burden. To overcome these challenges, a novel recursive CBF design procedure based on a modified STL tree (sTLT) is proposed to yield explicit parameterized CBFs. Within this framework, sliding window variables are introduced to capture complex temporal relationships. Crucially, satisfying the resulting CBF constraints is proven to guarantee the fulfillment of the STL specifications. To render the proposed recursive CBF design applicable to systems subject to uncertain disturbance, a novel controller based on reconstructed CBF using quadratic programming (QP) is proposed, ensuring strict CBF constraint satisfaction under disturbances. In contrast to existing methods, the proposed reconstructed CBF approach requires no prior knowledge of the disturbances while relaxing initial safety assumptions. Simulation results validate the efficacy of the proposed approach.",
+      "authors": [
+        "Yuzhang Peng",
+        "Jiaqi Yan",
+        "Wei Wang"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY"
+      ],
+      "published": "2026-05-20T20:12:04+00:00",
+      "link": "https://arxiv.org/pdf/2605.21708v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "disturbance rejection control for uncertain systems",
+      "llm_evidence_cn": "不确定系统的抗扰控制",
+      "llm_evidence": "不确定系统的抗扰控制",
+      "canonical_evidence": "不确定系统的抗扰控制",
+      "llm_tldr_en": "Proposes a recursive design for disturbance rejection control, applicable to PMSM under parameter uncertainty.",
+      "llm_tldr_cn": "提出了一种递归抗扰控制设计方法，适用于参数不确定情况下的永磁同步电机。",
+      "llm_tldr": "提出了一种递归抗扰控制设计方法，适用于参数不确定情况下的永磁同步电机。",
+      "llm_tags": [
+        "query:pmsm"
+      ],
+      "matched_query_tag": "query:pmsm",
+      "matched_query_text": "Permanent Magnet Synchronous Motor research",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

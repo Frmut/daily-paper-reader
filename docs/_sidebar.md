@@ -1,6 +1,9 @@
 * <a class="dpr-sidebar-root-link" href="#/">首页</a>
 * <a class="dpr-sidebar-root-link dpr-sidebar-noactive-link" href="javascript:void(0)" data-dpr-hash="#/tutorial/README">使用教程</a>
 * Daily Papers
+  * 2026-05-24 <!--dpr-date:20260524-->
+    * 速读区
+      * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202605/24/2605.21708v1-disturbance-rejection-control-under-nested-signal-temporal-logic-specifications-a-recursive-design-approach" data-sidebar-item="{&quot;title&quot;: &quot;Disturbance Rejection Control under Nested Signal Temporal Logic Specifications: A Recursive Design Approach&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2605.21708v1-disturbance-rejection-control-under-nested-signal-temporal-logic-specifications-a-recursive-design-approach&quot;, &quot;score&quot;: &quot;6.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;pmsm&quot;}], &quot;evidence&quot;: &quot;不确定系统的抗扰控制&quot;}">Disturbance Rejection Control under Nested Signal Temporal Logic Specifications: A Recursive Design Approach</a>
   * 2026-05-23 <!--dpr-date:20260523-->
     * 速读区
       * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202605/23/2605.16634v1-a-coupled-inductor-based-multi-port-dc-dc-converter-with-coordinated-duty-cycle-and-phase-shift-control" data-sidebar-item="{&quot;title&quot;: &quot;A Coupled Inductor Based Multi Port DC DC Converter with Coordinated Duty-Cycle and Phase Shift Control&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2605.16634v1-a-coupled-inductor-based-multi-port-dc-dc-converter-with-coordinated-duty-cycle-and-phase-shift-control&quot;, &quot;score&quot;: &quot;6.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;pmsm&quot;}], &quot;evidence&quot;: &quot;电动汽车动力总成磁性元件与协调相移控制&quot;}">A Coupled Inductor Based Multi Port DC DC Converter with Coordinated Duty-Cycle and Phase Shift Control</a>

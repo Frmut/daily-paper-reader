@@ -1,0 +1,23 @@
+{
+  "label": "2026-05-24",
+  "date": "2026-05-24",
+  "generated_at": "2026-05-24T20:36:25",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202605/24/2605.21708v1-disturbance-rejection-control-under-nested-signal-temporal-logic-specifications-a-recursive-design-approach",
+      "section": "quick",
+      "title_en": "Disturbance Rejection Control under Nested Signal Temporal Logic Specifications: A Recursive Design Approach",
+      "authors": "Yuzhang Peng, Jiaqi Yan, Wei Wang",
+      "date": "2026-05-20",
+      "pdf": "https://arxiv.org/pdf/2605.21708v1",
+      "score": "6.0",
+      "evidence": "不确定系统的抗扰控制",
+      "tldr": "本研究针对含有嵌套时序算子的信号时序逻辑（STL）规范，提出了一种适用于不确定系统的递归控制屏障函数（CBF）设计方法。通过引入改进的STL树和滑动窗口变量，将复杂的嵌套规范转化为系统约束，并结合二次规划（QP）设计了无需扰动先验知识的重构CBF控制器，有效解决了传统方法在处理嵌套逻辑和系统不确定性时的局限性。",
+      "tags": "query:pmsm",
+      "abstract_en": "This paper investigates the control synthesis for continuous-time uncertain systems under nested Signal Temporal Logic (STL) specifications containing nested temporal operators. Control Barrier Functions (CBFs) are utilized herein to encode STL formulas into system constraints. However, traditional CBF designs fail to encode nested STL formulas, whereas recent reachability analysis-based methods capable of handling such formulas are inapplicable to uncertain systems and suffer from a severe computational burden. To overcome these challenges, a novel recursive CBF design procedure based on a modified STL tree (sTLT) is proposed to yield explicit parameterized CBFs. Within this framework, sliding window variables are introduced to capture complex temporal relationships. Crucially, satisfying the resulting CBF constraints is proven to guarantee the fulfillment of the STL specifications. To render the proposed recursive CBF design applicable to systems subject to uncertain disturbance, a novel controller based on reconstructed CBF using quadratic programming (QP) is proposed, ensuring strict CBF constraint satisfaction under disturbances. In contrast to existing methods, the proposed reconstructed CBF approach requires no prior knowledge of the disturbances while relaxing initial safety assumptions. Simulation results validate the efficacy of the proposed approach.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
