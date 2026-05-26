@@ -1,0 +1,51 @@
+{
+  "label": "2026-05-26",
+  "date": "2026-05-26",
+  "generated_at": "2026-05-26T21:00:49",
+  "count": 3,
+  "papers": [
+    {
+      "paper_id": "202605/26/2605.19003v1-scalable-iterative-gramian-synthesis-for-control-affine-systems",
+      "section": "quick",
+      "title_en": "Scalable iterative Gramian synthesis for control-affine systems",
+      "authors": "Zongxi Yu, Cyprien Tamekue, Ruiqi Chen, ShiNung Ching",
+      "date": "2026-05-18",
+      "pdf": "https://arxiv.org/pdf/2605.19003v1",
+      "score": "6.0",
+      "evidence": "非线性控制仿射系统的可扩展控制综合",
+      "tldr": "本研究针对控制仿射系统，提出了一种可扩展的非线性格拉姆（Gramian）控制综合方法。通过解决迭代综合映射中的计算瓶颈，该方案实现了快速收敛和高精度控制，特别适用于最小能量控制。实验涵盖了从经典非线性系统到100维循环神经网络模型的多种场景。研究表明，算法的收敛性主要受系统内在特性（如非线性和可控性）影响，而非状态空间维度，为高维非线性控制提供了实用的计算路径。",
+      "tags": "query:pmsm",
+      "abstract_en": "This article presents a scalable implementation of nonlinear Gramian-based control synthesis for control-affine systems, including a minimum energy control construction. These synthesis advances are achieved by addressing key computational bottlenecks inherent to iterative synthesis map formulations, yielding a computational scheme that exhibits rapid convergence and high-precision. The efficacy of this synthesis framework is demonstrated across five canonical nonlinear control systems and 100-dimensional recurrent neural network models, including underactuated systems. Empirical scaling results further indicate that convergence is primarily governed by intrinsic system properties, such as nonlinearity and controllability, rather than by state-space dimensionality. This work provides a practical, scalable computational pathway for translating rigorous nonlinear synthesis theory into high-dimensional control applications.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202605/26/2605.20038v1-a-new-simple-to-configure-self-perturbing-multivariable-extremum-seeking-controller",
+      "section": "quick",
+      "title_en": "A New Simple-to-Configure Self-Perturbing Multivariable Extremum-Seeking Controller",
+      "authors": "Timothy I. Salsbury, Min Gyung Yu",
+      "date": "2026-05-19",
+      "pdf": "https://arxiv.org/pdf/2605.20038v1",
+      "score": "6.0",
+      "evidence": "动态系统的多变量极值寻求控制器",
+      "tldr": "针对多变量极值搜索控制（ESC）配置复杂的难题，本文提出一种基于随机继电器的多输入单输出（MISO）系统控制器。该方法通过随机继电器增益实现梯度识别，显著简化了参数配置（静态系统每通道仅需一个参数），并提供了稳定性证明。仿真验证了其在静态和动态系统优化中的有效性，降低了实际应用门槛。",
+      "tags": "query:pmsm",
+      "abstract_en": "This paper presents a new stochastic relay-based extremum-seeking controller (ESC) for multi-input-single-output (MISO) systems. The goal of this work was to create an algorithm that is much simpler to configure than alternative approaches making deployment to real-world problems easier. A solution is developed first for a static map and then adapted for a general class of dynamic systems. The number of configurable parameters is one per input channel for the static case and only one additional parameter is needed for the dynamic version. The problem of gradient identification is solved via the use of stochastic relay gains and a simple stability proof for the static case is presented. Simulation tests demonstrate the performance of the strategy for optimizing both static and dynamic systems.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202605/26/2605.21399v1-output-feedback-control-of-linear-time-invariant-systems-with-operational-constraints",
+      "section": "quick",
+      "title_en": "Output Feedback Control of Linear Time-Invariant Systems with Operational Constraints",
+      "authors": "Marcel Menner, Heather Hussain, Eugene Lavretsky",
+      "date": "2026-05-20",
+      "pdf": "https://arxiv.org/pdf/2605.21399v1",
+      "score": "6.0",
+      "evidence": "带约束的 MIMO 系统鲁棒线性控制器",
+      "tldr": "本文针对具有运行约束的线性时不变系统，提出了一种系统化的鲁棒输出反馈控制器设计方法。该方法结合Nagumo定理、比较引理以及受控制屏障函数启发的最小范数优化原理，构建出连续分段线性策略。该设计不仅保证了状态约束的满足，还保留了线性系统理论的可分析性，能够推导出MIMO鲁棒性裕度。通过飞行控制案例研究，验证了其在安全关键应用中的实用价值。",
+      "tags": "query:pmsm",
+      "abstract_en": "This paper introduces a systematic method for designing robust linear controllers using output feedback in the presence of operational constraints. The design uses Nagumo's Theorem and the Comparison Lemma to guarantee constraint satisfaction, while incorporating min-norm optimal control principles inspired by Control Barrier Functions. The resulting controller is a continuous piecewise-linear output feedback policy that preserves the closed-loop system's analyzability using linear systems theory. Due to the linear control design, multi-input multi-output (MIMO) robustness margins can be derived with and without active operational constraints. This paper shows that operational constraints on the system's state can be satisfied using an observer-based output feedback control design. Through flight control trade studies, we demonstrate the practical relevance of the framework in safety-critical aircraft control applications.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

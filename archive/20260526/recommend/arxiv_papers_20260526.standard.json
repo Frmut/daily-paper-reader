@@ -1,0 +1,126 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-05-26T21:00:19.539868+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 3,
+    "quick_skim_target": 11,
+    "quick_selected": 3
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2605.19003v1",
+      "title": "Scalable iterative Gramian synthesis for control-affine systems",
+      "abstract": "This article presents a scalable implementation of nonlinear Gramian-based control synthesis for control-affine systems, including a minimum energy control construction. These synthesis advances are achieved by addressing key computational bottlenecks inherent to iterative synthesis map formulations, yielding a computational scheme that exhibits rapid convergence and high-precision. The efficacy of this synthesis framework is demonstrated across five canonical nonlinear control systems and 100-dimensional recurrent neural network models, including underactuated systems. Empirical scaling results further indicate that convergence is primarily governed by intrinsic system properties, such as nonlinearity and controllability, rather than by state-space dimensionality. This work provides a practical, scalable computational pathway for translating rigorous nonlinear synthesis theory into high-dimensional control applications.",
+      "authors": [
+        "Zongxi Yu",
+        "Cyprien Tamekue",
+        "Ruiqi Chen",
+        "ShiNung Ching"
+      ],
+      "primary_category": "math.OC",
+      "categories": [
+        "math.OC",
+        "eess.SY"
+      ],
+      "published": "2026-05-18T18:23:55+00:00",
+      "link": "https://arxiv.org/pdf/2605.19003v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Scalable control synthesis for nonlinear control-affine systems",
+      "llm_evidence_cn": "非线性控制仿射系统的可扩展控制综合",
+      "llm_evidence": "非线性控制仿射系统的可扩展控制综合",
+      "canonical_evidence": "非线性控制仿射系统的可扩展控制综合",
+      "llm_tldr_en": "Presents a scalable Gramian-based control synthesis for nonlinear systems with high convergence and precision.",
+      "llm_tldr_cn": "提出了一种基于格拉姆矩阵的可扩展非线性系统控制综合方法，具有高收敛性和精度。",
+      "llm_tldr": "提出了一种基于格拉姆矩阵的可扩展非线性系统控制综合方法，具有高收敛性和精度。",
+      "llm_tags": [
+        "query:pmsm:composite"
+      ],
+      "matched_query_tag": "query:pmsm:composite",
+      "matched_query_text": "Papers central to 三相及双三相永磁同步电机相关研究检索, especially work that connects or combines: m; s; f; Permanent Magnet Synchronous Motor research; dual three-phase permanent magnet synchronous motor control and design; fault-tolerant control of multi-phase motors; recent advances in dual three phase permanent magnet synchronous motor control; fault tolerant strategies for multi phase permanent magnet synchronous motors.",
+      "matched_requirement_id": "req-composite-pmsm",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2605.20038v1",
+      "title": "A New Simple-to-Configure Self-Perturbing Multivariable Extremum-Seeking Controller",
+      "abstract": "This paper presents a new stochastic relay-based extremum-seeking controller (ESC) for multi-input-single-output (MISO) systems. The goal of this work was to create an algorithm that is much simpler to configure than alternative approaches making deployment to real-world problems easier. A solution is developed first for a static map and then adapted for a general class of dynamic systems. The number of configurable parameters is one per input channel for the static case and only one additional parameter is needed for the dynamic version. The problem of gradient identification is solved via the use of stochastic relay gains and a simple stability proof for the static case is presented. Simulation tests demonstrate the performance of the strategy for optimizing both static and dynamic systems.",
+      "authors": [
+        "Timothy I. Salsbury",
+        "Min Gyung Yu"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY"
+      ],
+      "published": "2026-05-19T16:01:27+00:00",
+      "link": "https://arxiv.org/pdf/2605.20038v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Multivariable extremum-seeking controller for dynamic systems",
+      "llm_evidence_cn": "动态系统的多变量极值寻求控制器",
+      "llm_evidence": "动态系统的多变量极值寻求控制器",
+      "canonical_evidence": "动态系统的多变量极值寻求控制器",
+      "llm_tldr_en": "Develops a simple-to-configure stochastic relay-based extremum-seeking controller for multivariable systems.",
+      "llm_tldr_cn": "为多变量系统开发了一种易于配置的基于随机继电器的极值寻求控制器。",
+      "llm_tldr": "为多变量系统开发了一种易于配置的基于随机继电器的极值寻求控制器。",
+      "llm_tags": [
+        "query:pmsm:composite"
+      ],
+      "matched_query_tag": "query:pmsm:composite",
+      "matched_query_text": "Papers central to 三相及双三相永磁同步电机相关研究检索, especially work that connects or combines: m; s; f; Permanent Magnet Synchronous Motor research; dual three-phase permanent magnet synchronous motor control and design; fault-tolerant control of multi-phase motors; recent advances in dual three phase permanent magnet synchronous motor control; fault tolerant strategies for multi phase permanent magnet synchronous motors.",
+      "matched_requirement_id": "req-composite-pmsm",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2605.21399v1",
+      "title": "Output Feedback Control of Linear Time-Invariant Systems with Operational Constraints",
+      "abstract": "This paper introduces a systematic method for designing robust linear controllers using output feedback in the presence of operational constraints. The design uses Nagumo's Theorem and the Comparison Lemma to guarantee constraint satisfaction, while incorporating min-norm optimal control principles inspired by Control Barrier Functions. The resulting controller is a continuous piecewise-linear output feedback policy that preserves the closed-loop system's analyzability using linear systems theory. Due to the linear control design, multi-input multi-output (MIMO) robustness margins can be derived with and without active operational constraints. This paper shows that operational constraints on the system's state can be satisfied using an observer-based output feedback control design. Through flight control trade studies, we demonstrate the practical relevance of the framework in safety-critical aircraft control applications.",
+      "authors": [
+        "Marcel Menner",
+        "Heather Hussain",
+        "Eugene Lavretsky"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY"
+      ],
+      "published": "2026-05-20T16:56:52+00:00",
+      "link": "https://arxiv.org/pdf/2605.21399v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Robust linear controllers for MIMO systems with constraints",
+      "llm_evidence_cn": "带约束的 MIMO 系统鲁棒线性控制器",
+      "llm_evidence": "带约束的 MIMO 系统鲁棒线性控制器",
+      "canonical_evidence": "带约束的 MIMO 系统鲁棒线性控制器",
+      "llm_tldr_en": "Introduces a method for designing robust output feedback controllers for systems with operational constraints.",
+      "llm_tldr_cn": "介绍了一种为具有运行约束的系统设计鲁棒输出反馈控制器的方法。",
+      "llm_tldr": "介绍了一种为具有运行约束的系统设计鲁棒输出反馈控制器的方法。",
+      "llm_tags": [
+        "query:pmsm:composite"
+      ],
+      "matched_query_tag": "query:pmsm:composite",
+      "matched_query_text": "Papers central to 三相及双三相永磁同步电机相关研究检索, especially work that connects or combines: m; s; f; Permanent Magnet Synchronous Motor research; dual three-phase permanent magnet synchronous motor control and design; fault-tolerant control of multi-phase motors; recent advances in dual three phase permanent magnet synchronous motor control; fault tolerant strategies for multi phase permanent magnet synchronous motors.",
+      "matched_requirement_id": "req-composite-pmsm",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
