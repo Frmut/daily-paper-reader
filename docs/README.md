@@ -6,32 +6,22 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-05-26
-- 运行时间：2026-05-26 21:00:40 UTC
+- 最新运行日期：2026-05-27
+- 运行时间：2026-05-27 21:17:29 UTC
 - 运行状态：成功
-- 本次总论文数：3
+- 本次总论文数：0
 - 精读区：0
-- 速读区：3
+- 速读区：0
 
 ### 今日简报（AI）
-今日聚焦控制系统优化，涵盖仿射系统 Gramian 合成、多变量极值寻求及受限输出反馈三大前沿进展。
-重点关注可扩展的迭代 Gramian 合成算法，以及配置更简便、具备自扰动能力的多变量极值寻求控制器。
-建议深入了解控制理论在大规模系统与复杂约束下的工程落地，特别是简化参数配置的实用方案。
-- 详情：[/202605/26/README](/202605/26/README)
+> 今日无新推荐，系统未产出可展示论文。
+- 详情：[/202605/27/README](/202605/27/README)
 
 ### 精读区论文标签
 - 本次无精读推荐。
 
 ### 速读区论文标签
-1. [Scalable iterative Gramian synthesis for control-affine systems](/202605/26/2605.19003v1-scalable-iterative-gramian-synthesis-for-control-affine-systems)  
-   标签：评分：6.0/10、query:pmsm
-   evidence：非线性控制仿射系统的可扩展控制综合
-2. [A New Simple-to-Configure Self-Perturbing Multivariable Extremum-Seeking Controller](/202605/26/2605.20038v1-a-new-simple-to-configure-self-perturbing-multivariable-extremum-seeking-controller)  
-   标签：评分：6.0/10、query:pmsm
-   evidence：动态系统的多变量极值寻求控制器
-3. [Output Feedback Control of Linear Time-Invariant Systems with Operational Constraints](/202605/26/2605.21399v1-output-feedback-control-of-linear-time-invariant-systems-with-operational-constraints)  
-   标签：评分：6.0/10、query:pmsm
-   evidence：带约束的 MIMO 系统鲁棒线性控制器
+- 本次无速读推荐。
 
 
 <div class="dpr-home-promo-card">
