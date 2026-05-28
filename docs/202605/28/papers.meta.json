@@ -1,0 +1,23 @@
+{
+  "label": "2026-05-28",
+  "date": "2026-05-28",
+  "generated_at": "2026-05-28T21:32:33",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202605/28/2605.28478v1-towards-autonomous-commissioning-of-industrial-drives-via-multi-objective-bayesian-optimization",
+      "section": "deep",
+      "title_en": "Towards Autonomous Commissioning of Industrial Drives via Multi-Objective Bayesian Optimization",
+      "authors": "David Petrovic, Gian Antonio Susto, Angelo Cenedese",
+      "date": "2026-05-27",
+      "pdf": "https://arxiv.org/pdf/2605.28478v1",
+      "score": "8.0",
+      "evidence": "工业电机驱动电流控制回路的自动整定",
+      "tldr": "针对工业电机驱动调试依赖人工、耗时且需专家经验的问题，本文提出一种基于多目标贝叶斯优化的全自动调试方法。该方法将驱动器视为黑盒，直接在硬件上通过闭环实验迭代优化电流环参数。采用多元TPE策略处理离散参数和噪声，在满足工业约束下最小化跟踪误差与超调。实验证明，该方法能在数分钟内实现媲美专家的调试效果，且TPE在收敛速度和计算开销上优于高斯过程。",
+      "tags": "query:pmsm",
+      "abstract_en": "The commissioning of industrial electric drives still relies heavily on manual tuning of cascaded control loops, requiring expert knowledge and significant time. In this paper, we propose a fully automated approach for tuning the current control loop of industrial drives using Bayesian Optimization (BO) directly on real hardware, without requiring a system model or firmware modifications. The drive is treated as a black-box system, and the controller parameters are iteratively updated through closed-loop experiments. The tuning problem is formulated as a multi-objective optimization task that directly minimizes tracking error, time-weighted error, overshoot, and oscillatory behavior, enabling the identification of Pareto-optimal controller configurations. To address discrete parameters, noisy evaluations, and limited budgets, we adopt a multivariate Tree-structured Parzen Estimator (TPE) as the underlying BO strategy. The proposed method operates under practical industrial constraints, including communication latency and limited evaluation budgets. The experimental validation on a real motor drive system under no-load conditions shows that the method achieves performance comparable to expert tuning within a few minutes and without human intervention. Results show that Gaussian Process (GP)-based BO can yield highly competitive final solutions, but TPE-based BO is better aligned with this setting due to faster convergence, richer Pareto-front approximation, and lower computational overhead.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

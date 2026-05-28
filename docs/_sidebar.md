@@ -1,6 +1,9 @@
 * <a class="dpr-sidebar-root-link" href="#/">首页</a>
 * <a class="dpr-sidebar-root-link dpr-sidebar-noactive-link" href="javascript:void(0)" data-dpr-hash="#/tutorial/README">使用教程</a>
 * Daily Papers
+  * 2026-05-28 <!--dpr-date:20260528-->
+    * 精读区
+      * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202605/28/2605.28478v1-towards-autonomous-commissioning-of-industrial-drives-via-multi-objective-bayesian-optimization" data-sidebar-item="{&quot;title&quot;: &quot;Towards Autonomous Commissioning of Industrial Drives via Multi-Objective Bayesian Optimization&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2605.28478v1-towards-autonomous-commissioning-of-industrial-drives-via-multi-objective-bayesian-optimization&quot;, &quot;score&quot;: &quot;8.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;pmsm&quot;}], &quot;evidence&quot;: &quot;工业电机驱动电流控制回路的自动整定&quot;}">Towards Autonomous Commissioning of Industrial Drives via Multi-Objective Bayesian Optimization</a>
   * 2026-05-26 <!--dpr-date:20260526-->
     * 速读区
       * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202605/26/2605.19003v1-scalable-iterative-gramian-synthesis-for-control-affine-systems" data-sidebar-item="{&quot;title&quot;: &quot;Scalable iterative Gramian synthesis for control-affine systems&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2605.19003v1-scalable-iterative-gramian-synthesis-for-control-affine-systems&quot;, &quot;score&quot;: &quot;6.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;pmsm&quot;}], &quot;evidence&quot;: &quot;非线性控制仿射系统的可扩展控制综合&quot;}">Scalable iterative Gramian synthesis for control-affine systems</a>

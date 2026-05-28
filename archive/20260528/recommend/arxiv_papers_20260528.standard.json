@@ -1,0 +1,52 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-05-28T21:31:43.249772+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 1,
+    "deep_cap": 6,
+    "deep_selected": 1,
+    "quick_candidates": 0,
+    "quick_skim_target": 11,
+    "quick_selected": 0
+  },
+  "deep_dive": [
+    {
+      "id": "2605.28478v1",
+      "title": "Towards Autonomous Commissioning of Industrial Drives via Multi-Objective Bayesian Optimization",
+      "abstract": "The commissioning of industrial electric drives still relies heavily on manual tuning of cascaded control loops, requiring expert knowledge and significant time. In this paper, we propose a fully automated approach for tuning the current control loop of industrial drives using Bayesian Optimization (BO) directly on real hardware, without requiring a system model or firmware modifications. The drive is treated as a black-box system, and the controller parameters are iteratively updated through closed-loop experiments. The tuning problem is formulated as a multi-objective optimization task that directly minimizes tracking error, time-weighted error, overshoot, and oscillatory behavior, enabling the identification of Pareto-optimal controller configurations. To address discrete parameters, noisy evaluations, and limited budgets, we adopt a multivariate Tree-structured Parzen Estimator (TPE) as the underlying BO strategy. The proposed method operates under practical industrial constraints, including communication latency and limited evaluation budgets. The experimental validation on a real motor drive system under no-load conditions shows that the method achieves performance comparable to expert tuning within a few minutes and without human intervention. Results show that Gaussian Process (GP)-based BO can yield highly competitive final solutions, but TPE-based BO is better aligned with this setting due to faster convergence, richer Pareto-front approximation, and lower computational overhead.",
+      "authors": [
+        "David Petrovic",
+        "Gian Antonio Susto",
+        "Angelo Cenedese"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY"
+      ],
+      "published": "2026-05-27T13:38:57+00:00",
+      "link": "https://arxiv.org/pdf/2605.28478v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Automated tuning of current control loops for industrial electric drives",
+      "llm_evidence_cn": "工业电机驱动电流控制回路的自动整定",
+      "llm_evidence": "工业电机驱动电流控制回路的自动整定",
+      "canonical_evidence": "工业电机驱动电流控制回路的自动整定",
+      "llm_tldr_en": "Presents a Bayesian Optimization approach for autonomous commissioning and tuning of industrial electric drive controllers.",
+      "llm_tldr_cn": "提出了一种基于贝叶斯优化的工业电机驱动控制器自动整定与调试方法。",
+      "llm_tldr": "提出了一种基于贝叶斯优化的工业电机驱动控制器自动整定与调试方法。",
+      "llm_tags": [
+        "query:pmsm"
+      ],
+      "matched_query_tag": "query:pmsm",
+      "matched_query_text": "Permanent Magnet Synchronous Motor research",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": []
+}
