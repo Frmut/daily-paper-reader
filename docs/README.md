@@ -6,26 +6,29 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-05-28
-- 运行时间：2026-05-28 21:32:24 UTC
+- 最新运行日期：2026-05-29
+- 运行时间：2026-05-29 21:23:06 UTC
 - 运行状态：成功
-- 本次总论文数：1
-- 精读区：1
-- 速读区：0
+- 本次总论文数：2
+- 精读区：0
+- 速读区：2
 
 ### 今日简报（AI）
-攻克工业驱动器自主调试难题，多目标贝叶斯优化助力生产自动化再升级。
-核心结论展示了 MOBO 算法在处理复杂工业参数整定时，能兼顾多项性能指标并实现高效闭环优化。
-推荐关注自动化运维的读者深入了解该算法框架，探索其在降低人工调试成本方面的实战潜力。
-- 详情：[/202605/28/README](/202605/28/README)
+今日聚焦高性能应用中的电源完整性建模与三相潮流计算的算法优化。
+重点探讨了电压调节器（VR）故障对系统稳定性的影响，以及利用可扩展束方法提升复杂电网潮流分析的计算效率。
+建议关注高算力场景下的硬件可靠性评估与大规模电网优化算法的工程落地。
+- 详情：[/202605/29/README](/202605/29/README)
 
 ### 精读区论文标签
-1. [Towards Autonomous Commissioning of Industrial Drives via Multi-Objective Bayesian Optimization](/202605/28/2605.28478v1-towards-autonomous-commissioning-of-industrial-drives-via-multi-objective-bayesian-optimization)  
-   标签：评分：8.0/10、query:pmsm
-   evidence：工业电机驱动电流控制回路的自动整定
+- 本次无精读推荐。
 
 ### 速读区论文标签
-- 本次无速读推荐。
+1. [Power-Integrity Modeling of VR Faults in High-Performance Applications](/202605/29/2605.24877v1-power-integrity-modeling-of-vr-faults-in-high-performance-applications)  
+   标签：评分：6.0/10、query:pmsm
+   evidence：容错电源管理与检测
+2. [A Scalable Bundle Method for Exact Reformulation of SDP in Three-Phase Power Flow Feasibility](/202605/29/2605.25319v1-a-scalable-bundle-method-for-exact-reformulation-of-sdp-in-three-phase-power-flow-feasibility)  
+   标签：评分：6.0/10、query:pmsm
+   evidence：三相潮流可行性评估
 
 
 <div class="dpr-home-promo-card">

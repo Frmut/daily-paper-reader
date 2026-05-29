@@ -1,0 +1,37 @@
+{
+  "label": "2026-05-29",
+  "date": "2026-05-29",
+  "generated_at": "2026-05-29T21:23:20",
+  "count": 2,
+  "papers": [
+    {
+      "paper_id": "202605/29/2605.24877v1-power-integrity-modeling-of-vr-faults-in-high-performance-applications",
+      "section": "quick",
+      "title_en": "Power-Integrity Modeling of VR Faults in High-Performance Applications",
+      "authors": "Sriharini Krishnakumar, Inna Partin-Vaisband",
+      "date": "2026-05-24",
+      "pdf": "https://arxiv.org/pdf/2605.24877v1",
+      "score": "6.0",
+      "evidence": "容错电源管理与检测",
+      "tldr": "针对高性能计算系统中垂直供电架构易受短路和断路故障影响的问题，本文提出了一种实时的故障检测与隔离方法。该方法基于电感电流分析模型，仅利用现有控制信号实现无额外传感开销的监测。仿真结果显示，该方案能在亚微秒内检测故障并通过双熔断器隔离，将系统效率损失控制在2%以内，确保了供电的连续性与可靠性。",
+      "tags": "query:pmsm",
+      "abstract_en": "Distributed vertical power delivery has emerged as a promising approach to meet aggressive current-density, efficiency, and transient response requirements in high-performance computing systems. Tight integration of voltage regulators within stacked substrates, however, increases the vulnerability of the power delivery system to short-circuit and open-circuit faults arising from elevated thermal and mechanical stresses. Such faults can propagate through the shared power delivery network, leading to rapid degradation of system-wide efficiency at worst-case rates of up to 0.5% per microsecond. Advanced fault-tolerant power management strategies are therefore required to ensure efficient power delivery. A real-time fault-detection and isolation methodology are proposed in this paper for vertical power delivery systems. The methodology is developed based on an analytical inductor-current models that rely solely on signals available within the converter control circuitry, thereby eliminating additional sensing overhead. The proposed framework is designed and simulated in SPICE environment, demonstrating sub-microsecond fault detection and effective dual-fuse isolation, maintaining uninterrupted power delivery with a system-wide efficiency degradation of less than 2%.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202605/29/2605.25319v1-a-scalable-bundle-method-for-exact-reformulation-of-sdp-in-three-phase-power-flow-feasibility",
+      "section": "quick",
+      "title_en": "A Scalable Bundle Method for Exact Reformulation of SDP in Three-Phase Power Flow Feasibility",
+      "authors": "Bohang Fang, Lijun Ding, Cong Chen",
+      "date": "2026-05-25",
+      "pdf": "https://arxiv.org/pdf/2605.25319v1",
+      "score": "6.0",
+      "evidence": "三相潮流可行性评估",
+      "tldr": "针对不平衡三相配电网潮流可行性评估的计算难题，本文提出了一种基于总线注入模型（BIM）的向量化半正定规划（SDP）方法。通过将其对偶问题重构为精确惩罚问题，开发了一种可扩展的三剪切近端束方法。该方法在计算速度和内存占用上显著优于传统求解器MOSEK，为大规模配电网的实时分析提供了高效工具。",
+      "tags": "query:pmsm",
+      "abstract_en": "Power flow feasibility assessment is computationally challenging for unbalanced three-phase distribution networks. This paper develops a vectorized semidefinite program (SDP) based on the bus injection model (BIM) and reformulates its dual as an exact-penalty problem, enabling us to develop a scalable three-cut proximal bundle method for feasibility assessment. The proposed bundle method is numerically over 400 times faster than MOSEK with less than 1/2000 of its memory; on the decomposed BIM-SDP, approximately 2 times faster with 75% less memory.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
