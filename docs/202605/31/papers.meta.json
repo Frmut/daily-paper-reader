@@ -1,0 +1,23 @@
+{
+  "label": "2026-05-31",
+  "date": "2026-05-31",
+  "generated_at": "2026-05-31T20:22:10",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202605/31/2605.27046v1-learning-to-balance-motor-thermal-safety-and-quadrupedal-locomotion-performance-with-residual-policy",
+      "section": "quick",
+      "title_en": "Learning to Balance Motor Thermal Safety and Quadrupedal Locomotion Performance with Residual Policy",
+      "authors": "Yuhang Wan, Weixian Lin, Letian Qian, Yiqi Zou, Weiwei Wu, Shengwei Wu, Chuanlin Zhao, Xin Luo",
+      "date": "2026-05-26",
+      "pdf": "https://arxiv.org/pdf/2605.27046v1",
+      "score": "6.0",
+      "evidence": "电机热管理与安全控制",
+      "tldr": "针对四足机器人电机过热限制长时运动的问题，本文提出一种结合残差策略的两阶段强化学习框架。通过在RL流程中集成全身热模型，首先训练基础运动策略，再训练残差策略根据电机温度实时调整动作。该方法在保证运动性能的同时有效防止电机过热，实验证明其在负载情况下能显著延长机器人稳定运行时间，提升了作业持久性。",
+      "tags": "query:pmsm",
+      "abstract_en": "Motor thermal management is often overlooked in the context of electrically-actuated robots, particularly legged robots, but motor overheating is a key factor that limits long-duration locomotion especially under payload conditions. This paper integrates a whole-body thermal model of a quadruped robot into the reinforcement learning pipeline to update motor temperatures, and proposes a two-stage training framework for motor thermal management. In this framework, a nominal policy is first pre-trained as a locomotion baseline capable of traversing diverse terrains. A residual policy is then trained on top of the nominal policy to provide corrective actions based on the robot's thermal state, ensuring high performance under low-temperature conditions and preventing motor overheating under high-temperature conditions. Simulation results demonstrate that the proposed policy achieves an effective balance between motor thermal safety and locomotion performance. Real-world experiments on a Unitree A1 quadruped robot further validate the approach: under a 3 kg payload, the robot achieves stable locomotion across multiple terrains for over 13 minutes, while the nominal policy alone leads to motor overheating in about 5 minutes.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

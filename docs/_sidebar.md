@@ -1,6 +1,9 @@
 * <a class="dpr-sidebar-root-link" href="#/">首页</a>
 * <a class="dpr-sidebar-root-link dpr-sidebar-noactive-link" href="javascript:void(0)" data-dpr-hash="#/tutorial/README">使用教程</a>
 * Daily Papers
+  * 2026-05-31 <!--dpr-date:20260531-->
+    * 速读区
+      * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202605/31/2605.27046v1-learning-to-balance-motor-thermal-safety-and-quadrupedal-locomotion-performance-with-residual-policy" data-sidebar-item="{&quot;title&quot;: &quot;Learning to Balance Motor Thermal Safety and Quadrupedal Locomotion Performance with Residual Policy&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2605.27046v1-learning-to-balance-motor-thermal-safety-and-quadrupedal-locomotion-performance-with-residual-policy&quot;, &quot;score&quot;: &quot;6.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;pmsm&quot;}], &quot;evidence&quot;: &quot;电机热管理与安全控制&quot;}">Learning to Balance Motor Thermal Safety and Quadrupedal Locomotion Performance with Residual Policy</a>
   * 2026-05-29 <!--dpr-date:20260529-->
     * 速读区
       * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202605/29/2605.24877v1-power-integrity-modeling-of-vr-faults-in-high-performance-applications" data-sidebar-item="{&quot;title&quot;: &quot;Power-Integrity Modeling of VR Faults in High-Performance Applications&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2605.24877v1-power-integrity-modeling-of-vr-faults-in-high-performance-applications&quot;, &quot;score&quot;: &quot;6.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;pmsm&quot;}], &quot;evidence&quot;: &quot;容错电源管理与检测&quot;}">Power-Integrity Modeling of VR Faults in High-Performance Applications</a>
