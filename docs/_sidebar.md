@@ -1,6 +1,9 @@
 * <a class="dpr-sidebar-root-link" href="#/">首页</a>
 * <a class="dpr-sidebar-root-link dpr-sidebar-noactive-link" href="javascript:void(0)" data-dpr-hash="#/tutorial/README">使用教程</a>
 * Daily Papers
+  * 2026-06-01 <!--dpr-date:20260601-->
+    * 精读区
+      * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202606/01/2605.31032v1-on-the-application-of-hybrid-mixed-domain-decomposition-methods-to-permanent-magnet-synchronous-machines" data-sidebar-item="{&quot;title&quot;: &quot;On the Application of Hybrid Mixed Domain Decomposition Methods to Permanent Magnet Synchronous Machines&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2605.31032v1-on-the-application-of-hybrid-mixed-domain-decomposition-methods-to-permanent-magnet-synchronous-machines&quot;, &quot;score&quot;: &quot;10.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;pmsm&quot;}], &quot;evidence&quot;: &quot;直接将域分解方法应用于永磁同步电机&quot;}">On the Application of Hybrid Mixed Domain Decomposition Methods to Permanent Magnet Synchronous Machines</a>
   * 2026-05-31 <!--dpr-date:20260531-->
     * 速读区
       * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202605/31/2605.27046v1-learning-to-balance-motor-thermal-safety-and-quadrupedal-locomotion-performance-with-residual-policy" data-sidebar-item="{&quot;title&quot;: &quot;Learning to Balance Motor Thermal Safety and Quadrupedal Locomotion Performance with Residual Policy&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2605.27046v1-learning-to-balance-motor-thermal-safety-and-quadrupedal-locomotion-performance-with-residual-policy&quot;, &quot;score&quot;: &quot;6.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;pmsm&quot;}], &quot;evidence&quot;: &quot;电机热管理与安全控制&quot;}">Learning to Balance Motor Thermal Safety and Quadrupedal Locomotion Performance with Residual Policy</a>

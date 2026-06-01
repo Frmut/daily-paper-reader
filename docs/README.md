@@ -6,26 +6,26 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-05-31
-- 运行时间：2026-05-31 20:22:03 UTC
+- 最新运行日期：2026-06-01
+- 运行时间：2026-06-01 22:52:09 UTC
 - 运行状态：成功
 - 本次总论文数：1
-- 精读区：0
-- 速读区：1
+- 精读区：1
+- 速读区：0
 
 ### 今日简报（AI）
-今日聚焦四足机器人运动性能与电机热安全的动态平衡研究。
-核心结论展示了残差策略（Residual Policy）在防止电机过热的同时，能有效维持高效的奔跑表现。
-建议关注机器人硬件长效稳定性与复杂控制算法结合的工程实践。
-- 详情：[/202605/31/README](/202605/31/README)
+今日深度解析获 10 分满分评价的永磁同步电机仿真前沿技术。
+重点探讨了混合域分解法（Hybrid Mixed DDM）在电机电磁场分析中的高效应用。
+推荐电机设计与计算电磁学领域的读者深入研读这一突破性算法。
+- 详情：[/202606/01/README](/202606/01/README)
 
 ### 精读区论文标签
-- 本次无精读推荐。
+1. [On the Application of Hybrid Mixed Domain Decomposition Methods to Permanent Magnet Synchronous Machines](/202606/01/2605.31032v1-on-the-application-of-hybrid-mixed-domain-decomposition-methods-to-permanent-magnet-synchronous-machines)  
+   标签：评分：10.0/10、query:pmsm
+   evidence：直接将域分解方法应用于永磁同步电机
 
 ### 速读区论文标签
-1. [Learning to Balance Motor Thermal Safety and Quadrupedal Locomotion Performance with Residual Policy](/202605/31/2605.27046v1-learning-to-balance-motor-thermal-safety-and-quadrupedal-locomotion-performance-with-residual-policy)  
-   标签：评分：6.0/10、query:pmsm
-   evidence：电机热管理与安全控制
+- 本次无速读推荐。
 
 
 <div class="dpr-home-promo-card">

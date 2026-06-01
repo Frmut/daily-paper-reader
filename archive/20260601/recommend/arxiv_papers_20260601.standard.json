@@ -1,0 +1,53 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-06-01T22:51:29.040550+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 1,
+    "deep_cap": 6,
+    "deep_selected": 1,
+    "quick_candidates": 0,
+    "quick_skim_target": 11,
+    "quick_selected": 0
+  },
+  "deep_dive": [
+    {
+      "id": "2605.31032v1",
+      "title": "On the Application of Hybrid Mixed Domain Decomposition Methods to Permanent Magnet Synchronous Machines",
+      "abstract": "In this work, we study the application of a hybrid mixed domain decomposition (HMDD) method for the rotor-stator coupling of a permanent magnet synchronous machine. For this, we derive a variational formulation on the electric machine inspired by hybridized discontinuous Galerkin methods using a mixed magnetostatics problem, an affine material law and boundary conditions respecting the symmetry of the motor. We are then able to locate the resulting finite element method within the HMDD framework presented in arXiv:2604.22543. This enables us naturally to transfer the well-posedness results and error estimates for the HMDD method to the finite element method considered in this work. Lastly, as a proof of concept, we consider an academic example and compare the resulting magnetic flux density and potential lines to their counterparts obtained by a well-established in-house code using iso-geometric analysis.",
+      "authors": [
+        "Timon Seibel",
+        "Sebastian Schöps",
+        "Kersten Schmidt"
+      ],
+      "primary_category": "cs.CE",
+      "categories": [
+        "cs.CE",
+        "math.NA"
+      ],
+      "published": "2026-05-29T09:03:59+00:00",
+      "link": "https://arxiv.org/pdf/2605.31032v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 10.0,
+      "llm_evidence_en": "Directly applies domain decomposition methods to Permanent Magnet Synchronous Machines",
+      "llm_evidence_cn": "直接将域分解方法应用于永磁同步电机",
+      "llm_evidence": "直接将域分解方法应用于永磁同步电机",
+      "canonical_evidence": "直接将域分解方法应用于永磁同步电机",
+      "llm_tldr_en": "Applies hybrid mixed domain decomposition to improve rotor-stator coupling simulation in PMSMs.",
+      "llm_tldr_cn": "应用混合混合域分解方法改进永磁同步电机的转子-定子耦合仿真。",
+      "llm_tldr": "应用混合混合域分解方法改进永磁同步电机的转子-定子耦合仿真。",
+      "llm_tags": [
+        "query:pmsm"
+      ],
+      "matched_query_tag": "query:pmsm",
+      "matched_query_text": "Permanent Magnet Synchronous Motor research",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": []
+}

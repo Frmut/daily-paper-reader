@@ -1,0 +1,23 @@
+{
+  "label": "2026-06-01",
+  "date": "2026-06-01",
+  "generated_at": "2026-06-01T22:52:17",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202606/01/2605.31032v1-on-the-application-of-hybrid-mixed-domain-decomposition-methods-to-permanent-magnet-synchronous-machines",
+      "section": "deep",
+      "title_en": "On the Application of Hybrid Mixed Domain Decomposition Methods to Permanent Magnet Synchronous Machines",
+      "authors": "Timon Seibel, Sebastian Schöps, Kersten Schmidt",
+      "date": "2026-05-29",
+      "pdf": "https://arxiv.org/pdf/2605.31032v1",
+      "score": "10.0",
+      "evidence": "直接将域分解方法应用于永磁同步电机",
+      "tldr": "本研究探讨了混合混合域分解（HMDD）方法在永磁同步电机（PMSM）转子-定子耦合模拟中的应用。通过借鉴混合间断伽辽金（HDG）思想，推导了基于混合静磁问题、仿射材料律及对称边界条件的变分形式。该方法被纳入现有的HMDD理论框架，从而获得了适定性证明和误差估计。最后，通过学术算例验证了该方法在计算磁通密度等关键物理量上的有效性，并与成熟的等几何分析代码进行了对比。",
+      "tags": "query:pmsm",
+      "abstract_en": "In this work, we study the application of a hybrid mixed domain decomposition (HMDD) method for the rotor-stator coupling of a permanent magnet synchronous machine. For this, we derive a variational formulation on the electric machine inspired by hybridized discontinuous Galerkin methods using a mixed magnetostatics problem, an affine material law and boundary conditions respecting the symmetry of the motor. We are then able to locate the resulting finite element method within the HMDD framework presented in arXiv:2604.22543. This enables us naturally to transfer the well-posedness results and error estimates for the HMDD method to the finite element method considered in this work. Lastly, as a proof of concept, we consider an academic example and compare the resulting magnetic flux density and potential lines to their counterparts obtained by a well-established in-house code using iso-geometric analysis.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
