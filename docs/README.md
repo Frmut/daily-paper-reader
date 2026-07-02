@@ -6,26 +6,44 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-06-01
-- 运行时间：2026-06-01 22:52:09 UTC
+- 最新运行日期：2026-07-02
+- 运行时间：2026-07-02 21:27:05 UTC
 - 运行状态：成功
-- 本次总论文数：1
+- 本次总论文数：8
 - 精读区：1
-- 速读区：0
+- 速读区：7
 
 ### 今日简报（AI）
-今日深度解析获 10 分满分评价的永磁同步电机仿真前沿技术。
-重点探讨了混合域分解法（Hybrid Mixed DDM）在电机电磁场分析中的高效应用。
-推荐电机设计与计算电磁学领域的读者深入研读这一突破性算法。
-- 详情：[/202606/01/README](/202606/01/README)
+今日聚焦三相电机电流纹波的近优控制优化，并横向测评了航天器与电动汽车领域的控制与诊断技术。
+- 详情：[/202607/02/README](/202607/02/README)
 
 ### 精读区论文标签
-1. [On the Application of Hybrid Mixed Domain Decomposition Methods to Permanent Magnet Synchronous Machines](/202606/01/2605.31032v1-on-the-application-of-hybrid-mixed-domain-decomposition-methods-to-permanent-magnet-synchronous-machines)  
+1. [Computationally Efficient Near-Optimal Control for Current Ripple Reduction and Optimization of Three-Phase Motors via LMIs](/202607/02/2607.01215v1-computationally-efficient-near-optimal-control-for-current-ripple-reduction-and-optimization-of-three-phase-motors-via-lmis)  
    标签：评分：10.0/10、query:pmsm
-   evidence：直接将域分解方法应用于永磁同步电机
+   evidence：直接针对三相永磁同步电机的优化控制和电流纹波抑制
 
 ### 速读区论文标签
-- 本次无速读推荐。
+1. [Parametric Generalized Adaptive Moment Features (PG-AMF) for Bearing Fault Diagnosis and Machine Health Monitoring](/202607/02/2606.26317v1-parametric-generalized-adaptive-moment-features-pg-amf-for-bearing-fault-diagnosis-and-machine-health-monitoring)  
+   标签：评分：7.0/10、query:pmsm
+   evidence：旋转机械故障诊断
+2. [Model Predictive Current Control with Harmonic Correction for Single-Phase AC-DC EV Charging](/202607/02/2606.30397v1-model-predictive-current-control-with-harmonic-correction-for-single-phase-ac-dc-ev-charging)  
+   标签：评分：7.0/10、query:pmsm
+   evidence：电力电子的模型预测电流控制
+3. [What Actually Works for Spacecraft Fault-Tolerant Control: An Honest Settled-Gate Benchmark of Learned and Classical Methods](/202607/02/2606.25374v1-what-actually-works-for-spacecraft-fault-tolerant-control-an-honest-settled-gate-benchmark-of-learned-and-classical-methods)  
+   标签：评分：6.0/10、query:pmsm
+   evidence：执行器容错控制的基准测试
+4. [Distributed Air-Gap Flux and Rotor-Current Fusion for Operating-Regime Identification in a 10-MW Kaplan Hydrogenerator](/202607/02/2606.27800v1-distributed-air-gap-flux-and-rotor-current-fusion-for-operating-regime-identification-in-a-10-mw-kaplan-hydrogenerator)  
+   标签：评分：6.0/10、query:pmsm
+   evidence：大型发电机的监测与工况识别
+5. [From Detection to Action: Using LLM Agents for Fault-Tolerant Control](/202607/02/2606.28011v1-from-detection-to-action-using-llm-agents-for-fault-tolerant-control)  
+   标签：评分：6.0/10、query:pmsm
+   evidence：用于主动容错控制的LLM智能体
+6. [Resilient Control Lyapunov Function-based Quadratic Program for Quadrotors Under Cyberattacks](/202607/02/2606.28588v1-resilient-control-lyapunov-function-based-quadratic-program-for-quadrotors-under-cyberattacks)  
+   标签：评分：6.0/10、query:pmsm
+   evidence：针对执行器故障的容错控制方法
+7. [Sinusoidality Index](/202607/02/2607.00419v1-sinusoidality-index)  
+   标签：评分：6.0/10、query:pmsm
+   evidence：电力系统中交流电压矢量正弦性的度量指标
 
 
 <div class="dpr-home-promo-card">

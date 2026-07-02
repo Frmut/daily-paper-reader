@@ -1,0 +1,318 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-02T21:26:00.911792+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 1,
+    "deep_cap": 6,
+    "deep_selected": 1,
+    "quick_candidates": 7,
+    "quick_skim_target": 11,
+    "quick_selected": 7
+  },
+  "deep_dive": [
+    {
+      "id": "2607.01215v1",
+      "title": "Computationally Efficient Near-Optimal Control for Current Ripple Reduction and Optimization of Three-Phase Motors via LMIs",
+      "abstract": "The optimal control of three-phase permanent-magnet synchronous motors (PMSMs) is challenging due to their nonlinearity and the discrete nature of the control set. Existing approaches either rely on mixed-integer trajectory optimization or require computationally intensive value-iteration procedures. This paper proposes a Linear Matrix Inequality (LMI)-based method for approximating the infinite-horizon value function using a quadratic parameterization and iterated Bellman inequalities, yielding a tractable convex program. The computed function can be obtained efficiently offline and used online as a tail cost in a horizon-one optimal control law. Simulation results show that the proposed approach achieves a favorable trade-off between switching effort and current ripple, with performance comparable to that of finite-control-set MPC but with a significantly lower computational cost.",
+      "authors": [
+        "Huu-Thinh Do",
+        "Trung B. Tran",
+        "Jing Sun",
+        "Ilya Kolmanovsky"
+      ],
+      "primary_category": "math.OC",
+      "categories": [
+        "math.OC",
+        "eess.SY"
+      ],
+      "published": "2026-07-01T17:53:21+00:00",
+      "link": "https://arxiv.org/pdf/2607.01215v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 10.0,
+      "llm_evidence_en": "Directly addresses optimal control and current ripple reduction for three-phase PMSMs",
+      "llm_evidence_cn": "直接针对三相永磁同步电机的优化控制和电流纹波抑制",
+      "llm_evidence": "直接针对三相永磁同步电机的优化控制和电流纹波抑制",
+      "canonical_evidence": "直接针对三相永磁同步电机的优化控制和电流纹波抑制",
+      "llm_tldr_en": "Proposes an LMI-based method for efficient near-optimal control of three-phase PMSMs to reduce current ripple.",
+      "llm_tldr_cn": "提出一种基于LMI的方法，用于三相永磁同步电机的近最优控制，以减少电流纹波。",
+      "llm_tldr": "提出一种基于LMI的方法，用于三相永磁同步电机的近最优控制，以减少电流纹波。",
+      "llm_tags": [
+        "query:pmsm"
+      ],
+      "matched_query_tag": "query:pmsm",
+      "matched_query_text": "Permanent Magnet Synchronous Motor research",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2606.26317v1",
+      "title": "Parametric Generalized Adaptive Moment Features (PG-AMF) for Bearing Fault Diagnosis and Machine Health Monitoring",
+      "abstract": "Accurate fault diagnosis of rolling element bearings in rotating machinery is considered essential for ensuring industrial safety and enabling predictive maintenance. Conventional statistical feature-based methods rely on predefined descriptors, whose diagnostic sensitivity is constrained by fixed configurations and limited adaptability across varying fault conditions. Although deep learning approaches offer strong representational capacity, their effectiveness is often restricted by high data requirements and reduced interpretability. In this work, a parametric adaptive feature extraction framework is proposed, in which feature characteristics are learned directly from data rather than being manually specified. Multiple complementary representations are extracted from vibration signals, including absolute features capturing signal energy distribution, signed moment features reflecting waveform asymmetry, and AC-coupled moment features emphasizing dynamic fluctuations, while interactions between multiple sensor channels are modeled through a structured fusion mechanism to enhance fault representation. The proposed approach is evaluated on a benchmark gearbox bearing dataset comprising five health conditions, including normal operation and multiple fault types. Improved classification performance is observed compared to conventional methods, with consistent results under cross-validation, indicating strong generalization capability. Additionally, enhanced feature separability is demonstrated through clearer clustering patterns in low-dimensional projections. The learned representations effectively capture a wide range of signal characteristics, supporting both improved diagnostic performance and practical applicability in industrial monitoring systems.",
+      "authors": [
+        "Rajeev Kumar"
+      ],
+      "primary_category": "eess.SP",
+      "categories": [
+        "eess.SP",
+        "cs.AI"
+      ],
+      "published": "2026-06-24T19:02:23+00:00",
+      "link": "https://arxiv.org/pdf/2606.26317v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "fault diagnosis for rotating machinery",
+      "llm_evidence_cn": "旋转机械故障诊断",
+      "llm_evidence": "旋转机械故障诊断",
+      "canonical_evidence": "旋转机械故障诊断",
+      "llm_tldr_en": "An adaptive feature extraction framework for bearing fault diagnosis in rotating machinery.",
+      "llm_tldr_cn": "一种用于旋转机械轴承故障诊断的自适应特征提取框架。",
+      "llm_tldr": "一种用于旋转机械轴承故障诊断的自适应特征提取框架。",
+      "llm_tags": [
+        "query:pmsm:composite"
+      ],
+      "matched_query_tag": "query:pmsm:composite",
+      "matched_query_text": "Papers central to 三相及双三相永磁同步电机相关研究检索, especially work that connects or combines: m; s; f; Permanent Magnet Synchronous Motor research; dual three-phase permanent magnet synchronous motor control and design; fault-tolerant control of multi-phase motors; recent advances in dual three phase permanent magnet synchronous motor control; fault tolerant strategies for multi phase permanent magnet synchronous motors.",
+      "matched_requirement_id": "req-composite-pmsm",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.25374v1",
+      "title": "What Actually Works for Spacecraft Fault-Tolerant Control: An Honest Settled-Gate Benchmark of Learned and Classical Methods",
+      "abstract": "Recent learned fault-tolerant-control (FTC) work reports high success on spacecraft actuator faults, but often in simulation, on narrow fault sets, and with transient metrics that a trajectory need only touch once. We ask what recovers spacecraft pointing when success means holding it on faults never seen in training. We answer with a benchmark built around a settled gate, pointing held within 0.2 deg over a dwell window and scored on the true state, train/test splits disjoint in inertia, gain, sign pattern, and bias, Wilson intervals over n=500 episodes per cell, and one-command reproduction on a 6-DOF Basilisk testbed. Across classical, adaptive, learned end-to-end, and structured controllers, three findings stand out. Fault-unaware PD/PID and from-scratch end-to-end RL score 0%, so learning capacity alone is not the lever. Classical adaptive laws resolve sign faults but handle gain poorly at 55.2%, and a literature-faithful Nussbaum-gain law reaches 45.2% and 3.2%. A structured estimate-then-control design, with a learned recurrent module that infers actuator gain online and feeds an analytic law, wins on sign and gain faults at 97.8% and 94.4%, approaching the privileged oracle while unstructured methods remain at zero. The hard wall is constant additive bias, which is 0% for every controller including the privileged gain oracle, because an integral-free law cannot null a constant disturbance. We close it with a disturbance observer that recovers bias from the dynamics and is self-correcting for gain-estimate error. Composed with the gain estimate, it recovers 59.4% of held-out bias faults with no sign/gain regression, moving that class off zero. We classify sensor-fault regimes similarly, show that sensor bias is unobservable from the corrupted measurement alone and therefore requires fusion rather than an observer, and release the benchmark so the gate is shared.",
+      "authors": [
+        "Alireza Shojaei"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-06-24T04:08:39+00:00",
+      "link": "https://arxiv.org/pdf/2606.25374v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Benchmark for fault-tolerant control of actuators",
+      "llm_evidence_cn": "执行器容错控制的基准测试",
+      "llm_evidence": "执行器容错控制的基准测试",
+      "canonical_evidence": "执行器容错控制的基准测试",
+      "llm_tldr_en": "Evaluates classical and learned fault-tolerant control methods for spacecraft actuator failures.",
+      "llm_tldr_cn": "评估航天器执行器故障下的经典与学习型容错控制方法。",
+      "llm_tldr": "评估航天器执行器故障下的经典与学习型容错控制方法。",
+      "llm_tags": [
+        "query:pmsm"
+      ],
+      "matched_query_tag": "query:pmsm",
+      "matched_query_text": "fault-tolerant control of multi-phase motors",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.30397v1",
+      "title": "Model Predictive Current Control with Harmonic Correction for Single-Phase AC-DC EV Charging",
+      "abstract": "The increasing integration of Electric Vehicles (EVs) has imposed a growing harmonic challenge on the power grid. For AC/DC Power Factor Correction (PFC) in single-phase On-Board Chargers (OBCs), Model Predictive Current Control (MPCC) improves the current quality by predicting and tracking the inductor current. However, finite control set MPCC selects switching states, resulting in discrete control actions and a limited optimisation space. Moreover, the MPCC cost function based on instantaneous current tracking error has limited capability to compensate for low-order harmonic disturbances induced by dead time, control delay, and model parameter mismatch. This paper proposes a duty cycle predictive MPCC incorporating a real-time harmonic estimation reference. The proposed method dynamically estimates the low-order harmonic components of the input current and corrects the MPCC reference current, enabling continuous duty cycle control and targeted suppression of dominant low-order harmonics. Simulation results on a single-phase OBC demonstrate that the proposed duty cycle predictive MPCC reduces the steady-state current THD_i from 11.47% to 6.10% compared with the switching state predictive MPCC. With the harmonic reference, the THD_i is further reduced to 2.85%.",
+      "authors": [
+        "Changhong Li",
+        "Bharathkumar Hegde",
+        "Biswajit Basu",
+        "Shreejith Shanker"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY",
+        "cs.AI",
+        "cs.AR"
+      ],
+      "published": "2026-06-29T14:46:33+00:00",
+      "link": "https://arxiv.org/pdf/2606.30397v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Model predictive current control for power electronics",
+      "llm_evidence_cn": "电力电子的模型预测电流控制",
+      "llm_evidence": "电力电子的模型预测电流控制",
+      "canonical_evidence": "电力电子的模型预测电流控制",
+      "llm_tldr_en": "Proposes duty cycle predictive MPCC with harmonic correction for EV charging power factor correction.",
+      "llm_tldr_cn": "提出一种具有谐波修正的占空比预测MPCC，用于电动汽车充电功率因数校正。",
+      "llm_tldr": "提出一种具有谐波修正的占空比预测MPCC，用于电动汽车充电功率因数校正。",
+      "llm_tags": [
+        "query:pmsm:composite"
+      ],
+      "matched_query_tag": "query:pmsm:composite",
+      "matched_query_text": "Papers central to 三相及双三相永磁同步电机相关研究检索, especially work that connects or combines: m; s; f; Permanent Magnet Synchronous Motor research; dual three-phase permanent magnet synchronous motor control and design; fault-tolerant control of multi-phase motors; recent advances in dual three phase permanent magnet synchronous motor control; fault tolerant strategies for multi phase permanent magnet synchronous motors.",
+      "matched_requirement_id": "req-composite-pmsm",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.27800v1",
+      "title": "Distributed Air-Gap Flux and Rotor-Current Fusion for Operating-Regime Identification in a 10-MW Kaplan Hydrogenerator",
+      "abstract": "Reliable monitoring of hydroelectric generators requires descriptors that capture both electrical loading and electromagnetic field behavior. This work investigates operating-regime identification in the Porjus U9 10-MW Kaplan hydrogenerator using synchronized measurements from ten stator-mounted Hall probes and six rotor-current channels. Seven steady guide-vane-opening settings are considered, and each 300s record is divided into 1s windows. The resulting windows are represented by spatial Fourier descriptors of the circumferential air-gap field, probe-wise temporal flux indicators, and channel-wise RMS rotor-current features. Correlation analysis and principal component analysis are used to examine how the feature groups vary with the operating point, and Random Forest, radial-basis-function support vector classification, and multilayer perceptron models are evaluated for supervised identification of the guide-vane-opening state. The analysis shows that RMS rotor-current features mainly track the loading axis, while the magnetic-flux features reveal complementary information associated with spatial imbalance, waveform distortion, and weak low-frequency modulation. Spatial descriptors alone provide limited separability, yielding test accuracies below 27%, whereas rotor-current features alone reach about 84-85%. Combining flux and current information gives the most discriminative representation; the SVC-RBF model achieves 99.5% test accuracy and macro-F1 score. The results indicate that distributed air-gap magnetic sensing, when fused with rotor-current measurements, can support accurate and interpretable data-driven monitoring of Kaplan hydrogenerator operating regimes.",
+      "authors": [
+        "Eduardo Jr Piedad",
+        "Rafel Roig",
+        "Xavier Escaler",
+        "Eduardo Prieto-Araujo",
+        "Oriol Gomis-Bellmunt"
+      ],
+      "primary_category": "eess.SP",
+      "categories": [
+        "eess.SP",
+        "cs.LG"
+      ],
+      "published": "2026-06-26T07:33:07+00:00",
+      "link": "https://arxiv.org/pdf/2606.27800v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "monitoring and regime identification of large generators",
+      "llm_evidence_cn": "大型发电机的监测与工况识别",
+      "llm_evidence": "大型发电机的监测与工况识别",
+      "canonical_evidence": "大型发电机的监测与工况识别",
+      "llm_tldr_en": "Operating-regime identification in hydrogenerators using air-gap flux and rotor-current fusion.",
+      "llm_tldr_cn": "利用气隙磁通和转子电流融合技术对水轮发电机进行运行工况识别。",
+      "llm_tldr": "利用气隙磁通和转子电流融合技术对水轮发电机进行运行工况识别。",
+      "llm_tags": [
+        "query:pmsm"
+      ],
+      "matched_query_tag": "query:pmsm",
+      "matched_query_text": "Permanent Magnet Synchronous Motor research",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.28011v1",
+      "title": "From Detection to Action: Using LLM Agents for Fault-Tolerant Control",
+      "abstract": "We propose an agentic Large Language Model (LLM) framework for active Fault-Tolerant Control (FTC) that transforms fault detection outputs into constraint-aware recovery actions grounded in plant-specific knowledge. The approach couples (i) a multi-agent workflow that decomposes operator duties into monitoring, planning, action synthesis, simulation, validation, and reprompting; (ii) a Digital Process Plant Twin (DPPT) that exposes plant data, models, and a simulation service for pre-execution testing; and (iii) a Graph Retrieval-Augmented Generation (Graph RAG) layer built on the CPSMod ontology, which organizes plant knowledge (structure, function, hybrid dynamics, control context, and fault semantics) into a graph that supports relation-aware, multi-hop retrieval for the agents. Corrective actions are generated as minimal-risk state-machine recovery paths and corresponding discrete commands or continuous setpoint adaptations, then validated deterministically against interlocks, envelopes, and dynamic feasibility before any actuation. If no acceptable plan is found within a bounded time window, control is handed to a safety fallback. The framework is evaluated in simulation on two representative benchmarks: a discrete batch Mixing Module and a Continuous Stirred-Tank Reactor (CSTR) under closed-loop PID regulation. Results with lightweight LLMs (GPT-4o-mini and GPT-4.1-mini) show that semantically grounded agents can derive valid recovery decisions within latency budgets compatible with the respective process dynamics, demonstrating a practical pathway from detection to validated corrective action across both discrete and continuous FTC tasks.",
+      "authors": [
+        "Javal Vyas",
+        "Milapji Singh Gill",
+        "Artan Markaj",
+        "Felix Gehlhoff",
+        "Mehmet Mercangöz"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY",
+        "cs.LG"
+      ],
+      "published": "2026-06-26T12:13:58+00:00",
+      "link": "https://arxiv.org/pdf/2606.28011v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "LLM agents for active fault-tolerant control",
+      "llm_evidence_cn": "用于主动容错控制的LLM智能体",
+      "llm_evidence": "用于主动容错控制的LLM智能体",
+      "canonical_evidence": "用于主动容错控制的LLM智能体",
+      "llm_tldr_en": "Uses LLM agents and digital twins to transform fault detection into recovery actions for plant control.",
+      "llm_tldr_cn": "利用LLM智能体和数字孪生将故障检测转化为工厂控制的恢复行动。",
+      "llm_tldr": "利用LLM智能体和数字孪生将故障检测转化为工厂控制的恢复行动。",
+      "llm_tags": [
+        "query:pmsm"
+      ],
+      "matched_query_tag": "query:pmsm",
+      "matched_query_text": "fault-tolerant control of multi-phase motors",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.28588v1",
+      "title": "Resilient Control Lyapunov Function-based Quadratic Program for Quadrotors Under Cyberattacks",
+      "abstract": "Ensuring the operational safety of quadrotors under partial actuator failures, lumped external disturbances, and malicious cyberattacks is a critical challenge due to the system's underactuated and highly nonlinear nature. Building on the existing result of a fault-tolerant control approach for a quadrotor experiencing a complete loss of two opposing rotors \\cite{chen2024quadrotor}, this letter further addresses the additional challenge of malicious cyberattacks, which could be unknown and unbounded. While the baseline control law, rooted in proportional-derivative (PD) feedback and observer-based decoupling, effectively handles mismatched disturbances, it remains vulnerable to maliciously injected cyberattacks on the pseudo-control channels. To address this, a Resilient Control Lyapunov Function-based Quadratic Program (RCLF-QP) is developed, where a resilient compensational term with real-time online adaptation is designed in the conventional CLF to compensate for the maliciously injected unknown and unbounded attacks. Compared with the PD feedback control, the proposed QP-based constrained optimization control framework provides a systematic and extensible framework that allows new control objectives and constraints to be seamlessly integrated without altering the underlying stability guarantees. The overall proposed controller integrates a model-based extended state observer with the proposed RCLF-QP mechanism to mitigate both lumped disturbances caused by aerodynamics and strong wind, and adversarial cyberattacks injected by malicious adversaries. Simulations in a high-fidelity environment demonstrate that the proposed RCLF-QP control architecture prevents trajectory divergence and system instability in scenarios where the baseline controller fails in maintaining the stability of Quadrotors under malicious attacks.",
+      "authors": [
+        "Yichao Wang",
+        "Sameeha Tasneem",
+        "Mohamadamin Rajabinezhad",
+        "Jinfeng Chen",
+        "Qin Lin",
+        "Kai Wang",
+        "Shan Zuo"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY"
+      ],
+      "published": "2026-06-26T20:31:12+00:00",
+      "link": "https://arxiv.org/pdf/2606.28588v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "fault-tolerant control approach for actuator failures",
+      "llm_evidence_cn": "针对执行器故障的容错控制方法",
+      "llm_evidence": "针对执行器故障的容错控制方法",
+      "canonical_evidence": "针对执行器故障的容错控制方法",
+      "llm_tldr_en": "A resilient control scheme for quadrotors addressing actuator failures and cyberattacks.",
+      "llm_tldr_cn": "一种针对四旋翼飞行器执行器故障和网络攻击的弹性控制方案。",
+      "llm_tldr": "一种针对四旋翼飞行器执行器故障和网络攻击的弹性控制方案。",
+      "llm_tags": [
+        "query:pmsm"
+      ],
+      "matched_query_tag": "query:pmsm",
+      "matched_query_text": "fault-tolerant control of multi-phase motors",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.00419v1",
+      "title": "Sinusoidality Index",
+      "abstract": "Maintaining sinusoidal or near-sinusoidal operating conditions in electrical systems is essential, as is their accurate assessment. This letter proposes a novel metric, namely the sinusoidality index, which quantifies the instantaneous deviation of the trajectory of an ac voltage vector with respect to a circle under any periodic operating conditions. This metric differs from conventional Fourier-based estimations by accounting for the trajectory of the waveform rather than its spectral decomposition. A variety of examples illustrates the properties of the proposed metric and highlights insights that may not be captured by conventional approaches.",
+      "authors": [
+        "J. Gutiérrez Florensa",
+        "L. Sigrist",
+        "Á. Ortega",
+        "F. Milano"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY"
+      ],
+      "published": "2026-07-01T04:27:51+00:00",
+      "link": "https://arxiv.org/pdf/2607.00419v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Metric for sinusoidality of AC voltage vectors in electrical systems",
+      "llm_evidence_cn": "电力系统中交流电压矢量正弦性的度量指标",
+      "llm_evidence": "电力系统中交流电压矢量正弦性的度量指标",
+      "canonical_evidence": "电力系统中交流电压矢量正弦性的度量指标",
+      "llm_tldr_en": "Proposes a sinusoidality index to quantify deviations of AC voltage vectors from ideal circular trajectories.",
+      "llm_tldr_cn": "提出了一种正弦性指数，用于量化交流电压矢量与理想圆形轨迹的偏差。",
+      "llm_tldr": "提出了一种正弦性指数，用于量化交流电压矢量与理想圆形轨迹的偏差。",
+      "llm_tags": [
+        "query:pmsm:composite"
+      ],
+      "matched_query_tag": "query:pmsm:composite",
+      "matched_query_text": "Papers central to 三相及双三相永磁同步电机相关研究检索, especially work that connects or combines: m; s; f; Permanent Magnet Synchronous Motor research; dual three-phase permanent magnet synchronous motor control and design; fault-tolerant control of multi-phase motors; recent advances in dual three phase permanent magnet synchronous motor control; fault tolerant strategies for multi phase permanent magnet synchronous motors.",
+      "matched_requirement_id": "req-composite-pmsm",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

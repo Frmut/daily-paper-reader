@@ -1,0 +1,189 @@
+Title: Sinusoidality Index
+
+URL Source: https://arxiv.org/pdf/2607.00419v1
+
+Published Time: Thu, 02 Jul 2026 00:35:27 GMT
+
+Number of Pages: 4
+
+Markdown Content:
+> 1
+
+# Sinusoidality Index 
+
+Joan Gutiérrez-Florensa, Student, IEEE, Álvaro Ortega, Member, IEEE, Lukas Sigrist, Member, IEEE, and Federico Milano, Fellow, IEEE 
+
+Abstract —Maintaining sinusoidal or near-sinusoidal operating conditions in electrical systems is essential, as is their accurate assessment. This letter proposes a novel metric, namely the 
+
+sinusoidality index , which quantifies the instantaneous deviation of the trajectory of an ac voltage vector with respect to a circle under any periodic operating conditions. This metric differs from conventional Fourier-based estimations by accounting for the trajectory of the waveform rather than its spectral decomposition. A variety of examples illustrates the properties of the proposed metric and highlights insights that may not be captured by conventional approaches. 
+
+Index Terms —Harmonic distortion, power quality, differential geometry, Fourier transform. 
+
+I. I NTRODUCTION 
+
+Operating at sinusoidal conditions is crucial in electric systems to ensure equipment protection, power quality, and overall system reliability, among other operational considera-tions. For this reason, international standards define methods to evaluate waveform distortion and impose limits within which the system can operate safely, e.g., [1]. However, existing standards estimate the waveform dis-tortion based on its decomposition from the Fourier series and define metrics, such as the Total Harmonic Distortion (THD), that rely on the summation of the contribution of each harmonic. This is the common approach utilized for most power quality indexes proposed in the literature [2], which are widely used in different applications to evaluate and improve power quality [3], [4]. While conventional Fourier-based metrics are useful in many applications, they do not account for other conditions that might distort the fundamental signal, e.g., unbalanced conditions, and therefore cannot serve as a generalized metric to evaluate the deviation of a signal from an ideal sinusoid. Moreover, by the use of Fourier series, these metrics: (i) assume that the signal is periodic at the nominal frequency – 
+
+50 or 60 Hz, depending on the region–; and (ii) cannot handle well interharmonics and, more in general, transient conditions. This letter uses the geometric and fluid dynamics framework introduced in [5] to propose a novel metric, called sinusoidality index , to evaluate the deviation of the trajectory of voltage vec-tors from an ideal circle. The metric relies on the estimation of the Quasi Steady-State (QSS) frequency, a concept introduced in [6] and that represents the fundamental frequency of the measured voltage. The proposed metric is able to account for            
+
+> J. Gutiérrez-Florensa and F. Milano are with the School of Elec. &Electron. Eng., University College Dublin, Dublin, D04V1W8, Ireland. e-mails: joan.gutierrezflorensa1@ucdconnect.ie, federico.milano@ucd.ie, Á. Ortega and L. Sigrist are with School of Engineering, Comillas Pontifical University, 28015, Madrid, Spain. e-mails: {aortega, lsigrist}@comillas.edu This work is supported by Science Foundation Ireland (SFI) by fund-ing J. Gutiérrez-Florensa and F. Milano under NexSys project, Grant No. 21/SPP/3756.
+
+any type of distortion, harmonic and interharmonic, as well as of unbalances. The proposed index can be also applied to analytic signals if they are properly transformed into planar space vectors. II. B ACKGROUND AND PERIODICAL CONDITIONS 
+
+This letter builds on the geometric interpretation of the frequency introduced in [7]. Leveraging on this interpretation, the work in [5], uses the Lagrange derivative to decompose the geometric frequency, ωυ , of a vector representing the voltage at a node of three-phase circuit, υ, into different terms with a clear physical meaning borrowed from fluid mechanics: 
+
+ωυ = υ × υ′
+
+|υ|2
+
+= υ × ∂tυ
+
+|υ|2 + υ × (Rυ )
+
+|υ|2 − 12(w · υ)υ
+
+|υ|2 + 12 (∇ × υ)= ωt + ωr − 12 |ωτ | υ
+
+|υ| + 12 w , (1) where |v| denotes the magnitude and v′ the time derivative of 
+
+v respectively; ωt is related to the non-stationary conditions of the voltage; ωr is related to the voltage distortion or 
+
+shear strain characterized by matrix R; ωτ is the torsional frequency; and w = ∇ × υ is the vorticity, and represents the rotation of a rigid body. Details on how to obtain all terms that appear in (1) are given in [5]. In more than three dimensions, the rigid rotation can be obtained with the exterior gradient (∇∧ υ) and geometric algebra tools. For simplicity but without lack of generality, this work focuses only on 3D cases. Under ideal balanced sinusoidal conditions, |ωt| = |ωr | =
+
+|ωτ | = 0 and the voltage describes a circular trajectory defined by 1/2|w|. In any other condition, the terms ωt, ωr and ωτ
+
+deform the circular path. The decomposition in (1) allows extracting the fundamental frequency, given by 1/2|w|, from the other terms that compose the geometric frequency. Nevertheless, estimation of w by means of its definition based on the curl is not possible since it requires the knowl-edge of the voltage vector, which is considered as a generalized velocity vector field, as υ(φ, t ), where φ represents the vector of magnetic fluxes that serve as generalized positions. To overcome this issue, recent work addresses the estimation of vorticity based on a Cauchy theorem that states that vorticity can be measured as the average of ωυ [6], as follows: 
+
+ωQSS = 12 w = 1
+
+T
+
+I
+
+> T
+
+ωυ dτ . (2) where ωQSS is defined as quasi-steady-state frequency in [6] and is the sought fundamental frequency of the voltage; and the period T is defined based on ωυ as: 
+
+T = inf 
+
+
+
+t : t > t 0 ,
+
+Z t+t0
+
+> t0
+
+|ωυ | dτ = 2 π
+
+
+
+. (3) 
+
+> arXiv:2607.00419v1 [eess.SY] 1 Jul 2026 2
+
+If the trajectory of the voltage is a simple closed curve, the tra-jectory describes a Jordan’s curve, and one can define a unique 
+
+T , which is thus the period of the fundamental frequency. Applying (3) along a moving window allows accounting for variations in time of T . This means that the period utilized in the calculation of ωQSS is the actual period of the voltage rather than the nominal period of the synchronous reference frequency, as it is assumed in current standards. A detailed discussion on the challenges of estimating ωQSS based on (2) is given in [6]. In short, this reference shows that ωQSS 
+
+can be well approximated for stationary as well as slow (e.g., electromechanical) transient conditions. For fast transients, the estimation of ωQSS is still possible but it loses the meaning of fundamental frequency. Note also that ωQSS can be calculated analytically based on the Fourier spectrum of the voltage as obtained, for example, using the DFT. How to calculate ωQSS 
+
+in the case the voltage is represented as a Fourier series is discussed in [5]. Using this approach, the limitations of the estimation of ωQSS are the same as any other metric based on the Fourier analysis. As mentioned above, under periodic conditions, |ωQSS |
+
+coincides with the fundamental frequency of the voltage as it can be obtained applying the Fourier transform to each element of the voltage vector. The remaining part of the spectrum of υ
+
+must then coincide with the other terms of the right-hand side of (1). As a byproduct, voltage trajectories can be described as a sum of a circular trajectory — which represents the rigid rotation at the fundamental frequency, ωo — and a series of 
+
+epicycles given by a series of rotations each at hω 0 where 
+
+h ∈ Z. Figure 1 illustrates, in the Clarke’s αβ -plane, a variety of relevant operating conditions and their link to epicycles. In this representation, unbalanced conditions are characterized by an harmonic of order h = −1.           
+
+> (a) (b) Fig. 1: Comparison of ideal sinusoidal trajectories (gray curves) with actual voltage trajectories (black curves), as a result of epicycles of radius r=Vh, where Vhis the magnitude of the harmonic voltage component, for different conditions: (a) a positive-sequence harmonic, h= 5 ; (b) an unbalanced sinusoidal voltage with h=−1.
+
+In the same vein, single phase voltages can be represented as a three-dimensional vector using the well-known Hilbert transform (see discussion in [8]), as follows: 
+
+υ = ( υ, H(υ), 0) T , (4) where H(υ) is the Hilbert transform of υ. Thus, while in the following we focus exclusively on three-phase systems, single-phase systems can be studied using the same procedure described below. The only, although relevant, difference is that, due to the nature of the Hilbert transform that is defined in order to remove the negative part of the spectrum of a signal, (4) cannot include, by construction, unbalanced conditions. III. S INUSOIDALITY INDEX 
+
+This section presents the proposed sinusoidality index, which quantifies the deviation of a voltage vector from a circular trajectory. From Fig. 1, the intuition behind the proposed metric is straightforward: the proposed sinusoidality index relies on the measurement of the distance between the actual trajectory (black curve) with the ideal circle (gray curve) given by 12 w, estimated with ωQSS .The derivation of this metric is build upon the analogy with the dynamical vorticity number, introduced in [9] as a measure of the rotationality of a fluid. Based on the findings of [5] and [6] we express voltage dynamics, at any moment, as: 
+
+υ′ = ωQSS × υ + ( distortion terms ) , (5) where ωQSS × υ is the ideal rigid motion and the remaining terms account for unbalances, stationary distortions (namely, harmonics) and local time-dependent distortions — see [5]. In [9], the rotationality index, Sυ , is defined as: 
+
+Sυ = |ωQSS × υ||υ′ − ωQSS × υ| , (6) as a scalar that measures the contribution of the fundamental frequency on the total voltage dynamics. To bind and normal-ize the results, we define the sinusoidality index as: 
+
+ςυ = 2
+
+π arctan( Sυ ) . (7) Under ideal sinusoidal conditions, the distortion components are null and the voltage dynamics are defined only by ωQSS ,hence, ςυ = 1 . On the other hand, if the signal is irrotational (dc case), ωQSS = 0 and, hence, ςυ = 0 . Note that ςυ is time-varying under non-ideal conditions (see for instance Section IV-B) and its average value can be obtained as: 
+
+¯ςυ = 1
+
+T
+
+I
+
+> T
+
+ςυ dτ , (8) where T is obtained with (3). IV. A NALYTICAL AND NUMERICAL CASE STUDIES 
+
+A. Three and Single-Phase Sinusoidal Balanced System 
+
+Under sinusoidal balanced conditions we can express volt-age in the αβγ frame as: 
+
+υ = ( υα, υ β , υ γ )T = ( V cos θ, V sin θ, 0) T . (9) This case also illustrates the sinusoidal single-phase case as 
+
+H(V cos θ) = V sin θ. The time derivative of υ is: 
+
+υ′ = ω0(−V sin θ, V cos θ, 0) T = ω0(−υβ , υ α, 0) T . (10) Following the results in [6], we know that ωQSS =
+
+ω0(0 , 0, 1) T . Hence: 
+
+ωQSS × υ = ω0(−υβ , υ α, 0) T = υ′ , (11) and, consequently, the sinusoidality indices Sυ and ςυ are: 
+
+Sυ → ∞ and ςυ → 1 . (12) 3
+
+B. Nonsinusoidal Balanced System 
+
+In this case we assess the behavior of the proposed metric under the presence of balanced harmonics. The results for a single harmonic for different magnitudes are shown in Figs. 2a and 2b for h = 5 and h = 11 respectively. Contrary to what is expected from THD, higher-order harmonics produce greater distortion from a sinusoid even when the THD (in this case equal to Vh/V ) is the same. Results discussed below apply equivalently to nonsinusoidal balanced three-phase systems where the voltage can be represented as υ = ( υα, υ β , 0) T
+
+and to single-phase nonsinusoidal voltage in the form of (4).      
+
+> (a) (b) Fig. 2: Sinusoidality indexes for a balanced system with one harmonic for different magnitudes of the harmonic: (a) h= 5 , and (b) h= 11 .
+
+As an instantaneous measurement, ςυ is time-varying under non-ideal conditions. However, the amplitude of the ripple and the average value of ςυ are related as they both depend on h and Vh. For this reason, without loss of information, in the following, we consider the average of the proposed sinusoidality index from (8). Figure 3a shows ¯ςυ for different h and Vh. If multiple harmonics are present, results of ¯ςυ can be counterintuitive. Figure 3b shows ¯ςυ for a system with two harmonics, one fixed 
+
+V5/V 1 = 5% and the other one varying in the range shown in the horizontal axis. According to the THD, one would expect the distortion to increase if additional harmonics are included, regardless of its order or magnitude. However, the behavior of ¯ςυ indicates that, in a certain range of magnitudes, the additional harmonic can partially compensate harmonic distortion and reduce the deviation with respect to a circle.        
+
+> (a) (b) Fig. 3: Average sinusoidality index of a balanced system with: (a) a single harmonic; and (b) a fixed harmonic V5/V 1= 5% and an additional harmonic with different hand Vh.
+
+C. Three-Phase Sinusoidal Unbalanced 
+
+The sinusoidal unbalanced case is addressed in this section using the symmetric components method. The results for a variable range of negative sequence amplitudes, denoted with 
+
+V−1; and for fixed zero-sequence amplitudes, denoted with 
+
+V0, are shown in Fig. 4a. Results show that, in a certain range of magnitudes, the effect of the negative-sequence can be partially compensated by the zero-sequence component. This example indicates that ςυ can capture distortions beyond purely harmonic effects, providing a unified framework for waveform distortion estimation under unbalances and harmonics. 
+
+D. Three-Phase Nonsinusoidal and Unbalanced 
+
+Finally, we consider the case of a system with unbalanced harmonics. Figure 4b shows the results for Vh/V 1 = 2 .5% for different h and V−h. Results show that below a certain level, the unbalance of the harmonic partially mitigates the effect of the original harmonic distortion.            
+
+> (a) (b) Fig. 4: Sinusoidality results of a three-phase system with: (a) un-balances; and (b) a single unbalanced harmonic given by Vhα =
+> Vh+V−hand Vhβ =Vh−V−h.
+
+E. Comparison with Conventional Power Quality Indexes 
+
+This last section aims at comparing the proposed index with other power quality indexes commonly used in the literature. For this comparison, the deviation from the ideal “circle,” namely ς = 1 , is evaluated. An analogous approach is used for the crest factor, Cf , being the ideal sinusoidal case Cf = √2.Figure 5a shows the results for a balanced system with a 
+
+5th and an 11 th harmonic. The magnitude of the 5th harmonics is kept constant, whereas the magnitude of the 11 th harmonic is varied in the range V11 /V 1 ∈ [0 , 5] . The voltage distortion, measured as |1 − ¯ςυ |, is compared with THD, K factor Kf ,and crest factor Cf . Results show that only the proposed index is capable to detect the signal quality improvement due to the partial compensation of 5th harmonic effect through the additional V11 /V 1 harmonic at specific range of values. Next, we consider an unbalanced voltage with phase shift angles ϕa = ϕb = 0 and ϕc = π/ 12 , and magnitudes Va = Vc
+
+with the Vb magnitude changing along the abscissas. This case compares the distortion |1− ¯ςυ | with unbalance indexes, V0/V 1
+
+and V−1/V 1, where V0, V1 and V−1 represents the magnitudes of the positive, negative and zero sequences of the voltage. Results are shown in Fig. 5b. Differently from conventional in-dexes, the sinusoidality index takes into account both negative and zero-sequence components. Results show that, because of the phase unbalance, the minimum distortion is not zero and that the minimum value is not obtained for Va = Vb = Vc.In fact, the unbalance in the magnitudes of the voltages can partially compensates the distortion due to the phase angle 4
+
+unbalance. These findings are consistent with the fact that harmonics can partially mutually compensate in a certain range of magnitudes and phase angles. 
+
+(a) (b) Fig. 5: Comparison of sinusoidality results with respect to: (a) conventional harmonic indexes under a balanced system with fixed 
+
+V5/V 1 and variable V11 /V 1 harmonics; (b) conventional unbalance indexes under a fixed phase unbalance ϕc̸ = ϕa = ϕb and a variable magnitude unbalance Vb̸ = Va = Vc.
+
+V. C ONCLUSIONS 
+
+This letter introduces a novel metric, called sinusoidality index , which is a measure of the overall distortion of the trajectory of a voltage vector (or a voltage analytic signal transformed into a plane vector) with respect to a circle. Leveraging concepts inherited from differential geometry and fluid dynamics, the proposed metric provides a unified mea-surement of distortion under any periodic condition, even if the period is not perfectly constant. The proposed approach shows that, under certain conditions, the injection of an additional harmonic may improve the waveform quality. These cases indicate that conventional metrics, such as the THD, do not provide complete information on the impact of harmonics on the voltage waveform distortion. The proposed index can be employed for offline power quality analysis – particularly through its average value – or formulated as a control objec-tive. The latter application will be the focus of future work. REFERENCES [1] IEEE, “Standard for harmonic control in electric power systems,” IEEE Std 519-2022 (Revision of IEEE Std 519-2014) , pp. 1–31, 2022. [2] Arranz-Gimon et al. , “A review of total harmonic distortion factors for the measurement of harmonic and interharmonic pollution in modern power systems,” Energies , vol. 14, no. 20, 2021. [3] N. Yousefpoor, S. H. Fathi, N. Farokhnia, and H. A. Abyaneh, “THD minimization applied directly on the line-to-line voltage of multilevel inverters,” IEEE Trans. on Ind. Electronics , vol. 59, no. 1, pp. 373–380, 2012. [4] E. Barbie et al. , “Analytical approach to THD formulation and op-timization in sine-PWM-based single-phase multilevel inverters with variable DC ratios,” IEEE J. of Emerging and Selected Topics in Power Electronics , vol. 11, no. 3, pp. 2755–2766, 2023. [5] F. Milano, “Equivalence between geometric frequency and lagrange derivative,” IEEE Trans. on Circuits and Systems I: Regular Papers ,vol. 72, no. 9, pp. 4800–4809, 2025. [6] J. Gutiérrez-Florensa, Á. Ortega, L. Sigrist, and F. Milano, “Quasi steady-state frequency,” IEEE Trans. on Circuits and Systems I: Regular Papers, early access , pp. 1–13, 2025. [7] F. Milano, “A geometrical interpretation of frequency,” IEEE Trans. on Power Systems , vol. 37, no. 1, pp. 816–819, 2022. [8] F. Milano, G. Tzounas, I. Dassios, and T. Kërçi, “Applications of the frenet frame to electric circuits,” IEEE Trans. on Circuits and Systems I: Regular Papers , vol. 69, no. 4, pp. 1668–1680, 2022. [9] C. Truesdell, The Kinematics of Vorticity . Bloomington, Indiana,: Indiana University Press, 1954.

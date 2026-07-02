@@ -1,0 +1,216 @@
+Title: Model Predictive Current Control with Harmonic Correction for Single-Phase AC-DC EV Charging
+
+URL Source: https://arxiv.org/pdf/2606.30397v1
+
+Published Time: Tue, 30 Jun 2026 02:26:36 GMT
+
+Number of Pages: 6
+
+Markdown Content:
+# Model Predictive Current Control with Harmonic Correction for Single-Phase AC-DC EV Charging 
+
+Changhong Li, Bharathkumar Hegde, Biswajit Basu, Shreejith Shanker Reconfigurable Computing Systems Lab, Electronic & Electrical Engineering Trinity College Dublin, Ireland Email: {lic9, shripa, basub, shreejith.shanker }@tcd.ie 
+
+Abstract —The increasing integration of Electric Vehicles (EVs) has imposed a growing harmonic challenge on the power grid. For AC/DC Power Factor Correction (PFC) in single-phase On-Board Chargers (OBCs), Model Predictive Current Control (MPCC) improves the current quality by predicting and tracking the inductor current. However, finite control set MPCC selects switching states, resulting in discrete control actions and a limited optimisation space. Moreover, the MPCC’s cost function based on instantaneous current tracking error has limited capability to compensate for low-order harmonic disturbances induced by dead time, control delay, and model parameter mismatch. This paper proposes a duty cycle predictive MPCC incorporating a real-time harmonic estimation reference. The proposed method dynamically estimates the low-order harmonic components of the input current and corrects the MPCC reference current, enabling continuous duty cycle control and targeted suppression of dominant low-order harmonics. Simulation results on a single-phase OBC demonstrate that the proposed duty cycle predictive MPCC reduces the steady current T HD i from 11.47% to 6.10% compared with the switching state predictive MPCC. With the harmonic reference, the T HD i is further reduced to 2.85%. 
+
+Index Terms —Electric vehicles, on-board chargers, power fac-tor correction, model predictive current control. 
+
+I. I NTRODUCTION 
+
+The rapid penetration of EVs is increasing the interaction between transportation electrification and distribution power systems. EV charging facilities are typically interfaced with the grid through power electronic converters, which behave as nonlinear loads and may introduce current harmonics, voltage distortion, power factor degradation, additional losses, and accelerated ageing of grid equipment [1], [2]. International standard IEC-61000-4-7 have been established to limit harmon-ics that degrade power quality and the standard procedures to conduct the measurement [3]. To satisfy these standards, the suppression of harmonics at the source of injection is crucial for EV charging systems. A typical two-stage OBC first rectifies the AC input and performs PFC, and then regulates the battery charging voltage and current through a downstream DC/DC stage [4], [5]. In conventional PFC control, Proportional Resonant (PR) control is commonly adopted for the inner loop because it provides high gain at the fundamental frequency. However, its performance is sensitive to grid frequency deviation, distorted input voltage, and switching nonidealities and may inject more harmonic distortion. 
+
+This work was supported by EU MSCA Project “COALESCE” under Grant Number 101130739 and the Sustainable Energy Authority of Ireland under Grant Number 24/RDD/1170. 
+
+MPCC has become an attractive alternative for PFC convert-ers. MPCC predicts the future inductor current under candidate control actions and selects the optimal action according to a current tracking objective, which provides a direct way to handle converter nonlinearities [6]. However, conventional finite control set MPCC directly selects binary switching states. This discrete control action restricts the optimisation space and may cause larger current ripple and variable switching. High-frequency switching actions in single-phase PFC con-verters, together with non-ideal device characteristics such as dead time, introduce harmonics into the current, among which low-order odd harmonics are the most prominent [7], [8]. By embedding the harmonic estimation into reference generation, the controller can actively correct the current reference and pro-vide selective compensation for targeted harmonic suppression. However, this relies on fast and accurate harmonic estimation. Conventional harmonic estimation methods, such as Fast Fourier Transform (FFT) and its variants, are widely used for frequency-domain analysis, but their accuracy can degrade un-der non-stationary operating conditions due to spectral leakage, aliasing, and picket-fence effects. A series of more advanced time-frequency estimation methods have been introduced and integrated into edge devices to improve the robustness and accuracy of harmonic estimation [9]–[14]. Recent data-driven harmonic estimation approaches with Broad Learning Sys-tem (BLS) [15] demonstrated the robustness with noise and frequency conversion, estimating the harmonic components with less than 1 power cycle offline. In [16], the authors demonstrates that Temporal Convolutional Network (TCN) can be deployed online for real-time harmonic estimation. However, these promising deep learning-based estimation approaches have not been integrated into the control loop to improve the power quality. To bridge these gaps, this paper proposes a duty cycle predictive MPCC with a real-time harmonic estimation reference for the PFC stage of a single-phase OBC, in order to improve the power quality from the EV charging end. The main contributions of this paper are as follows:  
+
+> •
+
+A duty cycle predictive MPCC for the single-phase OBC’s PFC, reducing harmonics by replacing the direct discrete switch control with continuous duty cycle optimisation.  
+
+> •
+
+A deep learning-based real-time harmonic estimation model for MPCC current reference correction, enabling targeted suppression of low-order odd harmonics.  
+
+> •
+
+OBC Hardware-in-the-loop simulation results show that the proposed MPCC reduces T HD i from 11.47% to 6.10%, while with the harmonic reference reaching 2.85%. 
+
+> arXiv:2606.30397v1 [eess.SY] 29 Jun 2026
+
+II. R ELATED WORK 
+
+A. Model Predictive Current Control 
+
+Typically, PFCs used in AC-DC pre-regulators of power converters consist of an outer voltage controller loop and an inner current controller [17]. Specifically, the PR controller is widely used in the inner current controller. However, it is susceptible to voltage distortion and is sensitive to noise. Predictive current mode control (PCMC) [18]–[20] generates a sinusoidal current reference with the same frequency as the input voltage internally. With a predicted current reference, it has the advantage of being robust to voltage distortion. Model predictive control (MPC) defines a predictive model and a cost function based on a system model. The control input is calculated by minimising the cost function [21], [22]. Its current control version, MPCC, is employed for boost PFC con-verter’s current control [23]. The future inductor current value when the switch is turned on/off is predicted and compared with the reference value, and the switching operation of the next cycle is determined by minimising the cost function. Recent work in [6] has shown that by using variable switch-ing action, MPCC can reduce switching activity in areas of high current stress, thereby improving converter efficiency. However, switch state predictive MPCC is restricted to a finite set of discrete control actions, resulting in a limited optimisation space and constraining further improvements in power quality. Although MPCC minimises the predicted current tracking error within each sampling interval, a purely sinusoidal current reference does not explicitly account for low-order harmonic disturbances caused by the non-ideal factors like dead time. By incorporating real-time harmonic estimation into the refer-ence generation process, the controller can reshape the current reference with selective compensation terms and suppress the dominant low-order odd harmonics more effectively. 
+
+B. Harmonic Estimation Model 
+
+Harmonic estimation involves analysing the distorted volt-age/current signals to identify the harmonic components. In practice, the FFT remains a fundamental and effective method for harmonic analysis. Several advanced signal processing methods have also been explored to improve estimation per-formance under leakage, noise, and non-stationary conditions, including wavelet-based, Hilbert-transform-based analysis, and optimisation or model-based techniques like ESPRIT [9], [10]. Although these conventional approaches are effective in most ideal scenarios, most of them rely on longer observation windows or stronger signal assumptions. Recently, data-driven approaches like BLS have also been introduced for harmonic estimation and have demonstrated robust performance with noise and frequency deviation [15]. However, it involves more computation and has higher latency. A series of algorithms was offloaded to edge devices for online harmonic estimation. The Discrete Wavelet Packet Transform (DWPT) [11] and its variant Undecimated Wavelet Packet Transform (UWPT) [12] are offloaded to FPGAs for real-time harmonics estimation. In [13], the authors show that an FPGA-based DWPT implementation improved hardware efficiency by using MAC-based wavelet filters and level-wise R         
+
+> L
+> MPCC
+> PWM
+> Generator
+> 1,2 g
+> PLL
+> ( ) in v n
+> ( ) Li n
+> C
+> Voltage
+> Controller
+> ( ) oVn
+> _oref Vcv
+> (1) ref in
+> sin (1) line t n
+> 
+> D
+> Harmonic
+> Estimator
+> iH
+> i
+
+ 
+
+> Control Loop
+> Fig. 1. Proposed harmonic-estimation-assisted duty cycle predictive MPCC control loop for the single-phase AC/DC PFC converter.
+
+downsampling. In [14], the authors show the comparative advantage of offloading FFT-based harmonic analysis to FPGAs over MCUs, with 33 × performance improvement reported for the FPGA implementation. Other algorithm like Gauss-Newton Optimisation (GNO) was implemented on DSPs for real-time harmonic estimation under power system frequency deviations [24]. In [16], the deep learning based TCN model for harmonic estimation is deployed online to estimate the harmonics in a single-drive system with a 4-kW. However, these estimations were not incorporated into real-time control. III. M ETHODOLOGY AND DESIGN 
+
+Fig. 1 illustrates the proposed harmonic estimation-assisted MPCC control framework. The main circuit adopts a single-phase AC/DC PFC converter structure, which is used for AC input current shaping and DC link voltage regulation. In the control stage, the outer voltage loop generates the current amplitude command according to the error between the output voltage Vo(n) and the reference voltage Vo,ref , while the PLL provides the phase information synchronised with the input voltage to construct the fundamental current reference. The harmonic estimation module performs online estimation of the low-order harmonic components in the input current 
+
+iL(n), yielding the corresponding harmonic amplitudes Hi
+
+and phases φi, which are then used to correct the current reference iref (n + 1) for the next sampling period. Based on the converter predictive model, the MPCC controller computes the optimal duty cycle D, which is applied to the power switches through the PWM generator to achieve closed-loop input current tracking and low-order harmonic suppression. The following sections present the harmonic estimation model and the MPCC current control algorithm with harmonic reference correction, respectively. 
+
+A. BLS-based Real-time Harmonic Estimation Model 
+
+For the construction of the harmonic estimation model, we follow the structure of the BLS used for harmonic estima-tion [15]. The raw current waveform containing harmonic com-ponents is used as the model input. At a sampling rate of 4000 Hz, one fundamental cycle contains 80 samples. The backbone network inherits the BLS architecture, consisting of broad feature layers and enhancement layers. A high-dimensional feature space is constructed through a large number of ran-dom mappings for feature extraction. The broad feature layers and enhancement layers serve as the feature extractor, while multiple task-specific output heads are trained by closed-form regression rather than backpropagation to perform harmonic estimation. This design facilitates fast training and adaptive deployment on edge devices. Different from existing BLS-based harmonic estimation models, the original BLS model is mainly used for estimating the amplitudes of different harmonic orders. However, ampli-tude information alone is insufficient for harmonic compensa-tion. The proposed model further estimates the relative phase of each harmonic component with respect to the fundamental component. The phase estimation typically relies on orthogonal projection and half-wave symmetry over a complete fundamen-tal cycle. Therefore, a full-cycle input is adopted instead of a half-cycle or shorter input window. Although the BLS-based harmonic estimation model im-proves representation capability through wide feature layers, it also increases the computational burden, which makes real-time edge deployment challenging. This characteristic is well matched with the pipelined parallel computing paradigm on an FPGA, where low-latency inference can be achieved through spatial parallelism. To further improve real-time performance, 3-bit quantisation is applied to the weights and activations in the feature layers and enhancement layers. The input and output layers are quantised with 8 bits, and the network is implemented in a fully unrolled manner. In addition, sparse weights are introduced in selected feature layers to further reduce the model size and inference latency. The resulting quantised neural network is finally deployed on the FPGA side through FINN [25], [26] and is invoked by the MPCC controller for real-time harmonic estimation. 
+
+B. MPCC with Harmonic Estimations 
+
+The proposed controller optimises the duty cycle input for the PWM in the single-phase AC/DC PFC converter using harmonic estimation-assisted MPCC control. Compared with a conventional PR current controller, the proposed method does not rely only on a linear resonant compensator to reduce the current tracking error at the fundamental frequency. Instead, it uses the discrete converter model to calculate the duty cycle Dopt to minimise predicted harmonics, error between the predicted current and the current reference, and excessive current oscillation. To minimise the influence of low-order harmonics on the in-put current, the estimated harmonic components are subtracted from the predicted current reference, thereby generating aharmonic-compensated reference signal. The current reference prediction is expressed as: 
+
+iref (n + 1) = vc| sin( ωline t(n + 1)) | (1) where, vc is the output of the voltage controller and ωline is the frequency of the input voltage. vc represents the magnitude, and 
+
+| sin( ωline t(n + 1)) | is a predicted sine wave that determines the shape of the current reference. The amplitudes and phases of the low order harmonics are estimated online using the proposed BLS-based estimation model explained previously. The controller reconstructs the dominant low order harmonics from the estimated amplitudes and phases. The PLL phase increment is first calculated as 
+
+∆θ(n) = atan2 
+
+
+
+sin  θpll (n) − θpll (n − 1) ,
+
+cos  θpll (n) − θpll (n − 1) 
+
+.
+
+(2) and the instantaneous angular frequency is estimated by 
+
+ωinst (n) = ∆θ(n)
+
+Ts
+
+. (3) A leading control phase is then used to compensate for the digital control delay: 
+
+θc(n + 1) = θpll (n) + ωinst (n)Ts, (4) Based on the estimated harmonic information, the 3rd, 5th, and 7th harmonic components are reconstructed as 
+
+ih(n + 1) = X
+
+> i∈{ 3,5,7}
+
+Ai sin ( iθ c(n + 1) + φi) , (5) where Ai and φi denote the estimated amplitude, and estimated phase of the ith harmonic, respectively. The corrected current reference is then evaluated as follows: 
+
+iref,c (n + 1) = iref (n + 1) − ih(n + 1) (6) The predicted current iL(n + 1) can be modelled for a duty cycle D as follows: 
+
+iL(n + 1) = iL(n) − |vin | − (1 − D) Vo
+
+L Ts (7) where iL(n), vin , and Vo are the input current, input voltage and output voltage, respectively. The primary objective of the proposed MPCC is to minimise the error between the harmonic corrected reference current and the predicted current, which is defined as 
+
+Jc = iref,c (n + 1) − iL(n + 1) (8) By substituting Eq.(6) and Eq.(7) in the above cost function, the optimal duty cycle Dc to achieve zero cost can be evaluated as 
+
+Dc = S · (iref,c (n + 1) − iL(n)) · LVo(n)Ts
+
+− |vin |
+
+Vo
+
++ 1 (9) where S = sign ( vin (n)) represents the sign of the current input cycle. Further, the controller minimises the following damping cost function to avoid excessive current oscillations, 
+
+Jd = iref,c (n + 1) − (1 − D)iL(n + 1) (10) This cost function penalises the difference between the ref-erence current and the average inductor current, thereby dis-couraging large current excursions and improving transient damping. The optimal duty cycle to minimise the damping cost function to zero is evaluated as 
+
+Dd = (iL(n) − iref,c (n + 1)) 
+
+iL(n) (11) The overall cost function for the proposed MPCC is defined as 
+
+J = Jc + Jd (12) The optimal duty cycle to minimise the overall cost function 
+
+J to zero is evaluated by combining Eq. (9) and Eq. (11) as follows 
+
+Dopt = Dc + Dd (13) The evaluated duty cycle Dopt is saturated to limit its range within [0 , 1] and applied to the PWM generator. The block diagram for the proposed MPCC controller for evaluating the optimal duty cycle Dopt is illustrated in Fig. 2.  
+
+> Fig. 2. Proposed MPCC optimisation block with harmonic predictions
+
+The MPCC tracks a reference that has already been corrected according to the estimated harmonic distortion. This provides a selective feedforward compensation path for the dominant 3rd, 5th, and 7th harmonics, while retaining the model-based duty cycle prediction of MPCC. The proposed controller, therefore, combines the regular PWM operation of duty cycle control, the predictive current tracking capability of MPCC, and the targeted harmonic suppression capability provided by the online harmonic estimator. This duty cycle formulation is different from the finite control set MPCC used for direct switch control. By contrast, the proposed controller outputs a continuous duty cycle for fixed frequency PWM modulation. Therefore, the control action has a finer resolution, the current waveform is smoother, and the switching behaviour is more regular. IV. E XPERIMENTAL RESULTS 
+
+A. Experimental Setup 
+
+We conducted two case studies to evaluate the proposed framework. The first case study benchmarks the accuracy and real-time performance of the harmonic estimation model under synthetic signals offline. The dataset follows scenario A1 from the BLS evaluation for fair comparison with existing harmonic estimation approaches, especially BLS [15]. The fundamental frequency f0 is set to 50 Hz and allowed to vary within ±0.5% ,while the amplitudes of the first, third, fifth, and seventh harmonics fluctuate within ±1% . Gaussian white noise with a signal-to-noise ratio (SNR) of 26 dB is added. The second case study evaluates the closed-loop PFC per-formance when the harmonic estimation reference is integrated into the proposed MPCC. The main circuit simulation is conducted in MATLAB R2025b, and the OBC simulation                                                                                                            
+
+> TABLE I MEAN AND MAXIMUM RELATIVE ERROR OF DIFFERENT HARMONIC ESTIMATION METHODS FOR EACH HARMONIC ORDER
+> Method Mean relative error Max relative error 1st 3rd 5th 7th 1st 3rd 5th 7th FFT 0.67 2.52 3.55 5.37 2.62 14.22 19.66 29.72 DWPT 0.67 2.57 3.84 4.62 2.62 14.51 20.41 33.36 MLP 0.83 0.80 0.82 0.79 2.00 2.00 2.02 2.00 RBF 0.53 0.50 0.56 0.48 1.24 1.09 1.29 1.10 AWN 0.50 0.50 0.53 0.48 1.02 1.03 1.09 1.01 BLS 0.49 0.50 0.52 0.48 1.00 1.01 1.01 1.00
+> Prop. 0.51 0.48 0.51 0.50 1.09 0.97 1.00 0.99
+> TABLE II LATENCY COMPARISON OF DIFFERENT METHODS AND PLATFORMS
+> Method Platform Latency Method Platform Latency GNO [24] F28027 0.31 ms FFT [15] i5-9400F 2.6 μsFFT [14] ZYNQ7000 0.33 ms DWPT [15] i5-9400F 10.4 ms DWPT [11] AC-701 8.8 – 13 μsMLP [15] i5-9400F 7μsDWPT [13] AC-701 1.22 μsRBF [15] i5-9400F 22 μs
+> Prop. (d) ZU7EV 82 ns AWN [15] i5-9400F 26.3 μs
+> Prop. (s) ZU7EV 70 ns BLS [15] i5-9400F 80.3 μs
+
+model is recreated from an open source OBC model [27]. The FPGA-based control unit is connected to the MATLAB sim-ulation through the MATLAB FPGA communication toolbox, enabling hardware-in-the-loop evaluation of the controller with the simulated OBC plant. It compares the proposed harmonic estimation-assisted MPCC with other conventional approaches. The simulation, model training and hardware compilation are conducted on a workstation equipped with an NVIDIA RTX A4000 GPU and an Intel Core Ultra 7 265K CPU. The software environment uses Python 3.9, PyTorch 2.5.1, CUDA 12.8, and Vivado 2022.2. The accelerator is generated for the AMD ZU7EV FPGA on the ZCU104 development kit. 
+
+B. Synthetic Signal Harmonic Offline Estimation 
+
+We first evaluated our harmonic estimation offline before integrating to the MPCC control as a real-time reference. The harmonic estimation relative error in the simulation scenario A1 is summarised in Table I. Performance of competing models is recreated from [15], and compared to the proposed harmonic estimation model. Despite 3-bit quantisation and 85% unstructured pruning, the proposed compressed estimation model preserves accuracy close to the original BLS model [15]. Table II compares the reported computational latency of dif-ferent harmonic estimation methods and deployment platforms. The latency reported for the proposed estimation models refers to the FPGA inference datapath after the input window is available. As shown in the table, sparse optimisation reduces the inference latency of the proposed estimation model from 82 ns for Prop. (d) to 70 ns for Prop. (s) . This low inference overhead supports real-time harmonic estimation updates in the control loop once each observation window has been acquired, making the proposed estimation model suitable for real-time harmonic reference generation. 
+
+C. MPCC with Harmonic Estimator Online Evaluation 
+
+In this section, we integrate our estimation model with the proposed duty-cycle predictive MPCC controller and evaluate them with a 7-kW EV OBC. The current waveform around Relative Zero-Crossing Time(ms)            
+
+> -1 -0.8 -0.6 -0.4 -0.2 00.2 0.4 0.6 0.8 1
+> -15
+> -10
+> -5
+> 0
+> 5
+> 10
+> 15 Fig. 3. Zoomed view of the input current around the zero-crossing region under different control strategies.
+
+STime (s)             
+
+> 00.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1
+> THD (%)
+> 0
+> 20
+> 40
+> 60
+> 80
+> 100
+> 120
+> Fig. 4. Dynamic evolution of input current T HD iduring EV charger start-up under different control methods.
+
+the grid-voltage zero-crossing region provides an intuitive indication of the control granularity, transient response, and dead-time-induced distortion under different control strategies. Therefore, it can be used to visually compare the current track-ing quality and zero-crossing distortion suppression capability of different controllers. In Fig. 3, we compared the current with the control strategy PR, representing the Proportional Resonant control in [27], MPCC-P, MPCC with gate action prediction [6] and our duty cycle predictive MPCC with no harmonic ref-erence as MPCC-D, FFT-based reference as MPCC-D-F and BLS-based prediction as MPCC-D-B. The PR controller shows noticeable distortion in this region, since its current regulation is mainly determined by the resonant tracking loop and does not explicitly account for the converter switching model. MPCC-P improves the current response by predicting the inductor current under candidate switch positions. However, its binary control action limits the available current slopes, which can lead to lo-cal waveform irregularities when the required control effort lies between two switching states. MPCC-D alleviates this problem by replacing the direct switching decision with a continuous duty-cycle command applied through fixed-frequency PWM. When harmonic reference correction is further introduced, the controller compensates the estimated low-order harmonic components before the reference is tracked. We captured the system status within 1 second of OBC’s operation, which covers both the OBC startup process and its stable operation. Fig. 4 shows the evolution of the T HD i
+
+during the start-up process. During OBC start-up, the DC-link state has not yet reached steady state. Since MPCC rapidly tracks the reference according to the prediction model and tends to adopt a relatively more aggressive control action, it may exhibit a higher T HD i level than the conventional PR method during the transient start-up stage. After the system reaches steady state, the advantages of MPCC become more evident, as reflected by reduced oscillations and a significantly lower final steady-state T HD i compared with the PR method.                                             
+
+> TABLE III PERFORMANCE COMPARISON OF DIFFERENT CONTROL METHODS
+> Method RMS Amplitude T HD iRipple 13579(%) (%) PR [27] 30.53 2.67 1.43 1.07 0.81 11.77 5.95 MPCC-P [6] 30.52 1.53 0.20 0.28 0.13 11.47 5.72 MPCC-D 30.53 1.57 0.48 0.29 0.20 6.10 5.75 MPCC-D-F 30.51 0.75 0.26 0.18 0.21 3.37 5.60 MPCC-D-B 30.53 0.54 0.08 0.57 0.18 2.85 5.61
+
+Table III summarises the steady-state harmonic amplitudes, overall T HD i, and current ripple achieved by the different control methods. MPCC-D-F and MPCC-D-B achieve lower 
+
+T HD i and ripple levels because the estimated 3rd-, 5th-, and 7th-order harmonic components are incorporated into the current reference reconstruction process. Compared with FFT-based estimation, the BLS-based estimator provides more accu-rate harmonic references, resulting in more effective harmonic compensation. Although a given controller may not minimise every individual harmonic component simultaneously, the pro-posed harmonic-assisted duty-cycle MPCC achieves the lowest overall T HD i. The reference correction improves the overall harmonic profile of the input current rather than targeting a specific frequency component alone. The experimental results of the two case studies demonstrate that the proposed duty-cycle predictive MPCC can selectively reduce harmonic con-tents and improve power quality when guided by the reference information provided by a more effective estimation model. V. C ONCLUSION 
+
+This paper presented a harmonic estimation-assisted duty cycle MPCC framework for the PFC stage of a single-phase AC/DC EV charger. The proposed method integrates online harmonic estimation into the current reference generation path, enabling selective compensation of the dominant low-order harmonics. By using duty cycle prediction with fixed frequency PWM, the controller provides smoother current regulation than finite control set MPCC, while the harmonic reference correction further improves the steady state current quality. The proposed estimator achieves accurate and low-latency harmonic estimation on the edge side. Closed-loop 7-kW OBC results show that the harmonic-assisted duty cycle predictive MPCC reduces the steady state current THD from 6.10% 
+
+under duty cycle MPCC to 2.85% , with no evident increase in current ripple. Future work will focus on validating the proposed method on the real main circuit and exploring edge reinforcement learning for further harmonic optimisation. REFERENCES [1] A. Srivastava, M. Manas, and R. K. Dubey, “Electric vehicle integration’s impacts on power quality in distribution network and associated mitiga-tion measures: a review,” Journal of Engineering and Applied Science ,vol. 70, no. 1, p. 32, 2023. [2] B. N. Harish and U. Surendra, “A review on power quality issues in electric vehicle interfaced distribution system and mitigation techniques,” 
+
+Indonesian Journal of Electrical Engineering and Computer Science ,vol. 25, no. 2, pp. 656–665, 2022. [3] I. IEC, “61000-4-7: Electromagnetic compatability (EMC),” Testing and measurement techniques-General guide on harmonics and interharmon-ics measurements and instrumentation, for power supply systems and equipment connected thereto, CEI-IEC, Geneva , 2002. [4] A. R. Dar, A. Haque, M. A. Khan, V. S. B. Kurukuru, and S. Mehfuz, “On-board chargers for electric vehicles: A comprehensive performance and efficiency review,” Energies , vol. 17, no. 18, p. 4534, 2024. [5] J. Yuan, L. Dorn-Gomba, A. D. Callegaro, J. Reimers, and A. Emadi, “A review of bidirectional on-board chargers for electric vehicles,” IEEE access , vol. 9, pp. 51 501–51 518, 2021. [6] H.-J. Ko, H.-G. Koh, and Y.-J. Choi, “A model predictive current control method for achieving a high efficiency and high robustness boost pfc converter operation,” IEEE Access , vol. 11, pp. 142 754–142 763, 2023. [7] S.-G. Jeong and M.-H. Park, “The analysis and compensation of dead-time effects in PWM inverters,” IEEE Transactions on Industrial Elec-tronics , vol. 38, no. 2, pp. 108–114, 1991. [8] Y. Yang, K. Zhou, H. Wang, and F. Blaabjerg, “Harmonics mitigation of dead time effects in PWM converters using a repetitive controller,” in 2015 IEEE Applied Power Electronics Conference and Exposition (APEC) . IEEE, 2015, pp. 1479–1486. [9] C. Norman, J. Y. Chan, W.-H. Lau, and L. L. Lai, “Hybrid wavelet and hilbert transform with frequency-shifting decomposition for power qual-ity analysis,” IEEE Transactions on Instrumentation and Measurement ,vol. 61, no. 12, pp. 3225–3233, 2012. [10] I. Y.-H. Gu and M. H. Bollen, “Estimating interharmonics by using sliding-window ESPRIT,” IEEE Transactions on Power Delivery , vol. 23, no. 1, pp. 13–23, 2007. [11] V. K. Tiwari and S. K. Jain, “Hardware implementation of polyphase-decomposition-based wavelet filters for power system harmonics estima-tion,” IEEE Transactions on Instrumentation and Measurement , vol. 65, no. 7, pp. 1585–1595, 2016. [12] V. K. Tiwari, A. C. Umarikar, and T. Jain, “Fast amplitude estimation of harmonics using undecimated wavelet packet transform and its hardware implementation,” IEEE Transactions on instrumentation and measure-ment , vol. 67, no. 1, pp. 65–77, 2017. [13] S. Baraskar and V. K. Tiwari, “Digital design of DWPT technique on FPGA for power system harmonics estimation,” Journal of Electrical Engineering & Technology , vol. 17, no. 6, pp. 3515–3524, 2022. [14] J. Li, S. Li, and H. Liu, “A fast power harmonic detection framework based on fpga,” in 2024 36th Chinese Control and Decision Conference (CCDC) . IEEE, 2024, pp. 1054–1059. [15] C. Li, C. Sun, Z. Chen, and Y. Zhang, “Broad learning system using rectified adaptive moment estimation for harmonic detection and anal-ysis,” IEEE Transactions on Industrial Electronics , vol. 71, no. 3, pp. 2873–2882, 2023. [16] A. Taghvaie, T. Fernando, F. Zare, D. Kumar, and C. Fookes, “An online harmonic estimation technique based on deep learning in distribution networks,” IEEE Journal of Emerging and Selected Topics in Power Electronics , vol. 13, no. 3, pp. 3688–3697, 2025. [17] S. Rahman, Y. Kosesoy, M. A. Ozdemir, O. Simsek, M. T. Aydemir, and A. Chub, “Design and practical implementation of a parallel-switched power factor correction boost converter,” in 2021 14th IEEE International Conference on Industry Applications (INDUSCON) . IEEE, 2021, pp. 395–400. [18] W. Zhang, G. Feng, Y.-F. Liu, and B. Wu, “A new predictive control strategy for power factor correction,” in Eighteenth Annual IEEE Applied Power Electronics Conference and Exposition, 2003. APEC’03. , vol. 1. IEEE, 2003, pp. 403–409. [19] H. Azazi, E. El-Kholy, S. Mahmoud, and S. Shokralla, “DSP-based control of boost pfc ac-dc converters using predictive control,” Yanbu Journal of Engineering and Science , vol. 2, no. 1, pp. 23–34, 2011. [20] J. Chen, A. Prodic, R. W. Erickson, and D. Maksimovic, “Predictive digi-tal current programmed control,” IEEE transactions on Power Electronics ,vol. 18, no. 1, pp. 411–419, 2003. [21] C. Bordons and C. Montero, “Basic principles of mpc for power con-verters: Bridging the gap between theory and practice,” IEEE Industrial electronics magazine , vol. 9, no. 3, pp. 31–43, 2015. [22] D. Q. Mayne, “Model predictive control: Recent developments and future promise,” Automatica , vol. 50, no. 12, pp. 2967–2986, 2014. [23] A. G. Bartsch, C. J. Meirinho, Y. R. de Novaes, M. S. Cavalca, and J. de Oliveira, “Analysis of predictive control for boost converter in power factor correction application,” in 2016 12th IEEE International Conference on Industry Applications (INDUSCON) . IEEE, 2016, pp. 1–8. [24] K. Genc ¸ol, “An efficient iterative optimization-based algorithm for the real-time estimation of harmonics under power system frequency devi-ations,” Engineering Science and Technology, an International Journal ,vol. 47, p. 101543, 2023. [25] M. Blott, T. B. Preußer, N. J. Fraser, G. Gambardella, K. O’brien, Y. Umuroglu, M. Leeser, and K. Vissers, “Finn-r: An end-to-end deep-learning framework for fast exploration of quantized neural networks,” 
+
+ACM Transactions on Reconfigurable Technology and Systems (TRETS) ,vol. 11, no. 3, pp. 1–23, 2018. [26] Y. Umuroglu, N. J. Fraser, G. Gambardella, M. Blott, P. Leong, M. Jahre, and K. Vissers, “Finn: A framework for fast, scalable binarized neural network inference,” in Proceedings of the 2017 ACM/SIGDA international symposium on field-programmable gate arrays , 2017, pp. 65–74. [27] P. Giroux, “Electric vehicle on-board charger,” MATLAB Central File Exchange, 2026, retrieved May 25, 2026. [Online]. Available: https://uk.mathworks.com/matlabcentral/fileexchange/136174-electric-vehicle-on-board-charger

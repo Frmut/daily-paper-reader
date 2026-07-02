@@ -1,0 +1,238 @@
+Title: What Actually Works for Spacecraft Fault-Tolerant Control: An Honest Settled-Gate Benchmark of Learned and Classical Methods
+
+URL Source: https://arxiv.org/pdf/2606.25374v1
+
+Published Time: Thu, 25 Jun 2026 00:29:35 GMT
+
+Number of Pages: 8
+
+Markdown Content:
+> 1
+
+# What Actually Works for Spacecraft Fault-Tolerant Control: An Honest Settled-Gate Benchmark of Learned and Classical Methods 
+
+Alireza Shojaei 
+
+Abstract —The recent learned fault-tolerant-control (FTC) lit-erature reports high success on spacecraft actuator faults, but mostly in simulation, on cherry-picked fault sets, and scored on transient metrics that a trajectory need only touch once. We ask the honest question of what recovers a spacecraft’s pointing when success means holding it, on faults the controller never trained on , and answer it with a benchmark built around a settled 
+
+gate (pointing held within 0.2◦ over a dwell window, scored on the true state), a structurally held-out fault taxonomy (train/test disjoint by construction in inertia, gain, sign pattern, and bias), Wilson confidence intervals over n=500 episodes per cell, and one-command reproduction on a 6-DOF Basilisk testbed. Across a battery of classical, adaptive, learned-end-to-end, and structured controllers, three findings stand out. Fault-unaware PD/PID and a from-scratch end-to-end RL policy score 0% , so learning capacity alone is not the lever. Classical adaptive laws resolve the discrete control-direction (sign) fault but handle continuous gain poorly ( 55 .2% ), and a literature-faithful Nussbaum-gain law reaches only 45 .2% /3.2% . A structured estimate-then-control design, a learned recurrent module that infers the actuator gain online and feeds an analytic law, is the clear winner on sign and continuous-gain faults ( 97 .8% /94 .4% ), approaching the privileged oracle where everything unstructured sits at zero. The hard wall is a constant additive bias , which is 0% for every controller including the privileged gain oracle , because an integral-free law cannot null a constant disturbance. We close it with a disturbance observer that recovers the bias from the dynamics and is provably self-correcting for gain-estimate error .Composed with the gain estimate it recovers 59 .4% of held-out bias faults with no SIGN/GAIN regression, the first controller to move that class off zero. We classify the sensor-fault regimes the same way, show that a sensor bias is unobservable from the corrupted measurement alone and therefore demands fusion rather than an observer, and release the benchmark so the gate is shared. 
+
+Index Terms —fault-tolerant control, spacecraft attitude con-trol, disturbance observer, benchmark, adaptive control, reaction wheels 
+
+I. I NTRODUCTION 
+
+A spacecraft that loses, reverses, or degrades an actuator must recover its pointing autonomously between sparse ground contacts. One-way light time and an oversubscribed deep-space communications budget make teleoperation impossible during the seconds-to-minutes window in which an attitude excursion becomes a safety event, so the recovery has to happen onboard or not at all. Fault-tolerant control (FTC) for spacecraft is therefore a long-standing and active discipline, and the most visible recent thread within it is learned FTC, 
+
+A. Shojaei is with the Myers-Lawson School of Construction, Virginia Tech, Blacksburg, VA 24061 USA (e-mail: shojaei@vt.edu). 
+
+in which a neural policy is trained to fly through faults it was never explicitly modeled for. The promise is real, but its empirical claims are difficult to trust, and the difficulty is methodological rather than incidental. Results are typically simulation-only, evaluated on a hand-picked fault or two, and scored on a transient criterion, the minimum pointing error the trajectory ever reaches, which a controller can satisfy while limit-cycling and never actually holding. A controller that reads 94% on such a touch-once gate can read 60% once it is scored on whether it held , and the gap is not noise but the difference between brushing a tolerance and regulating to it. A benchmark that cannot tell those two behaviors apart cannot adjudicate which methods work, and the subfield has been adjudicating on exactly such a benchmark. This paper takes the position that the evaluation standard is itself the bottleneck, and it replaces the optimistic gate with a benchmark designed to be hard to game, then asks what survives it. The benchmark rests on three commitments that we treat as the methodological contribution rather than as fine print. The first is a settled gate, with pointing held within 0.2◦ over a final dwell window and scored on the 
+
+true simulator state, never a corrupted measurement and never a transient minimum, so that a reported success means the spacecraft is pointed and staying pointed. The second is a set of structurally held-out faults, so that the test set lives in regions of inertia, gain magnitude, sign pattern, and bias the controller never trains on and a high score is evidence of generalization rather than an i.i.d. resample of the training distribution. The third is reported uncertainty , in the form of Wilson 95% intervals over n=500 episodes per cell, with every number re-derivable from a clean checkout. None of these three is novel in isolation, and that is the point. A settled dwell gate, a held-out test split, and interval estimates are ordi-nary good practice in adjacent fields, and their absence from learned spacecraft FTC is precisely what has let optimistic numbers stand. Adopting all three at once, and committing the evaluation harness so that the gate is shared rather than asserted, is what converts a collection of demonstrations into a benchmark on which methods can be compared and falsified. On that benchmark we run the classical, adaptive, learned-end-to-end, and structured controllers head-to-head on one instrumented testbed, identify exactly where each stops work-ing and why, and contribute a controller that recovers the one fault class the entire battery, and the privileged oracle, could not. Two consequences of holding the bar honestly run through the paper. The first is that structure beats raw learning 
+
+> arXiv:2606.25374v1 [cs.AI] 24 Jun 2026 2
+
+capacity on this problem. A from-scratch end-to-end recurrent reinforcement-learning policy scores zero, while a design that uses a small learned module only to identify the latent fault and hands an analytic law the control decisively wins, which says the useful learned object here is a system-identification estimate and not a control map. The second is that the hardest failures are architectural, not statistical . The fault class on which the entire battery collapses to zero, a constant additive bias, collapses for the privileged gain oracle as well, which localizes the cause to the deployed control law rather than to any tuning or sample-size deficiency and points directly at the fix. 
+
+A. Contributions 
+
+1) We release an honest benchmark for spacecraft FTC (Sec. III), comprising the settled gate, the structurally held-out fault taxonomy, and the pinned 6-DOF testbed, released with a leaderboard and a submission protocol so that the evaluation standard is a shared, reproducible artifact rather than a per-paper choice. 2) We run a definitive head-to-head (Sec. IV), in which structured estimate-then-control wins on the two con-trollable continuous fault classes, classical-adaptive, Nussbaum-gain, end-to-end RL, and fault-unaware base-lines are each honestly bounded, and a constant additive bias is shown to be a 0% wall for every method including the privileged gain oracle, which we present as a clean architectural result. 3) We derive a disturbance observer that breaks the wall (Sec. V). Built from the rigid-body dynamics and proved self-correcting for the error in the learned gain estimate, it takes the held-out bias class from 0% to 59 .4% with no SIGN/GAIN regression and is, to our knowledge, the first controller to move that class off zero on a held-out settled gate. 4) We add a sensor-fault taxonomy (Sec. VI), the same honest classification applied to the measurement side, which separates a controllable measurement bias from shield-only dropout and stuck-sensor regimes and ex-plains, on observability grounds, why the disturbance observer that rescues the actuator bias cannot rescue its sensor-side analog. II. R ELATED WORK 
+
+This study sits at the meeting point of five lines of work that have largely matured in isolation, namely spacecraft fault-tolerant control, adaptive control for an unknown control direction, learned online adaptation by rapid-motor-adaptation and meta-learning, disturbance-observer-based control, and the practice of benchmarking FTC honestly. We position the paper against each in turn, and the recurring theme is that the building blocks are individually well understood while their 
+
+composition for held-out spacecraft faults under a settled gate, and the evaluation discipline that makes such a comparison meaningful, are what this work supplies. 
+
+A. Spacecraft fault-tolerant control 
+
+Fault-tolerant control is a mature field with a clear taxon-omy. The standard division is between passive schemes, which are designed once to be robust to an anticipated set of faults, and active schemes, which detect and identify the fault online and reconfigure the controller in response, and the field’s surveys lay out this landscape and its design methodologies in detail [2], [3]. Spacecraft attitude control is a canonical application, with the rigid-body dynamics, reaction-wheel and thruster actuation, and pointing requirements treated rigorously in the standard texts [4], [5]. The dominant failure modes we study, namely a reversed, degraded, over-strong, or dead actuator together with an additive torque bias, are exactly the effectiveness and bias faults that the active-FTC literature targets. Our contribution is not a new reconfiguration law in this lineage but a clear-eyed account of which existing design philosophies actually recover spacecraft pointing when the fault is held out and success means holding the attitude, scored on a gate strict enough to separate regulation from limit cycling. 
+
+B. Adaptive control for an unknown control direction 
+
+When an actuator’s direction (the sign of its effectiveness) is unknown, ordinary adaptive control can drive the plant the wrong way, and the classical remedy is the Nussbaum-gain technique, introduced to handle precisely the case in which the high-frequency gain sign is unknown [6]. Nussbaum-type designs have been carried into spacecraft attitude control, including for actuator-saturation compensation [7], and the broader theory of robust adaptive control, including the dead-zone and σ-modification fixes that stabilize adaptation when the regressor is uninformative, is laid out in the standard references [8], [9], [10], [11]. We implement a literature-faithful Nussbaum-gain law, tuned on the training split like every other controller we report, so that the classical answer to unknown control direction is represented at full strength. We find it resolves the discrete sign question only partially at the settled gate and is weak on continuous gain, which is informative rather than dismissive. The Nussbaum con-struction is built to settle the binary direction question, and a continuous effectiveness fault asks for an accurate online magnitude estimate that the technique is not designed to deliver. 
+
+C. Learned online adaptation, RMA and meta-learning 
+
+On the learning side, adapting to latent dynamics parameters online is the province of meta-reinforcement learning [12] and, most directly relevant here, Rapid Motor Adaptation (RMA) [13]. RMA trains a privileged teacher that sees the true latent parameters and distills a history-conditioned student that infers them online from the observable consequences of its own actions, which is the mechanism we adopt for the actuator gain. The architectural choice of feeding a learned latent estimate into an analytic control law, rather than learning the control map end-to-end, follows Neural-Fly [14], and RMA-style fault-tolerant control has since reached quadrotor [15] 3
+
+and fixed-wing [16] platforms. To our knowledge it has not been brought to spacecraft attitude control across this breadth of faults under an honest settled gate, which is the gap the win-ning design in our battery fills. The persistence-of-excitation latch we place on the converged gain estimate to suppress steady-state limit cycling plays the same stabilizing role as the classical dead-zone and σ-modification fixes [8], connecting the learned scheme back to well-understood adaptive-control practice. 
+
+D. Disturbance-observer-based control 
+
+Rejecting an unknown additive disturbance by estimating it from the plant dynamics and cancelling it is the core idea of disturbance-observer-based control, a classical and widely surveyed family that also subsumes active disturbance rejection control [18], [19]. The standard disturbance observer treats a lumped disturbance as an extended state and recovers it from the measured response, then feeds it forward to cancel it. We use exactly this idea to recover the additive torque bias, but with a twist that the classical formulation does not address. In our setting the observer must share the loop with a 
+
+learned estimate of the actuator gain, and that estimate is itself imperfect. Our specific contribution is the observation, derived and then verified empirically, that the disturbance observer composed with the learned gain estimate is self-correcting for the gain-estimate error, so the additive bias is cancelled exactly at steady state regardless of a gain-magnitude error that would otherwise be binding. This is what makes online additive-bias rejection deployable here rather than merely classical. 
+
+E. Benchmarking FTC 
+
+Finally, the methodological core of this paper is shared with a growing recognition across learned control that evaluation choices, rather than algorithms, often decide reported perfor-mance. A settled dwell gate, a structurally held-out test split, and interval estimates are standard practice in the surrounding control and learning literature, yet learned spacecraft FTC has largely been reported on transient, in-distribution, point-estimate gates. We do not claim to invent any of these instruments. We claim that applying all three at once to spacecraft FTC, committing the evaluation harness so the gate is reproducible, and releasing it as a shared benchmark with a submission protocol is what turns a set of optimistic demonstrations into a falsifiable comparison. That discipline is the lens through which every number below should be read. III. T HE BENCHMARK 
+
+The benchmark is the instrument the rest of the paper depends on, so we specify it precisely. Its three components, the testbed, the settled gate, and the held-out taxonomy, are each chosen so that a reported success is a regulation result on a genuinely unseen fault rather than an artifact of the scoring rule or the split. 
+
+A. Testbed 
+
+The substrate is a 6-DOF Basilisk [1] rigid-body attitude simulator with diagonal inertia (10 , 8, 6) kg m 2, integration step dt =0 .5 s, 400 -step episodes, and a per-axis torque cap of 0.2 N m. Attitude is represented in modified Rodrigues parameters, the minimal three-parameter set standard in space-craft attitude practice [5], which avoids the redundancy of quaternions while remaining nonsingular over the operating range of interest. The observation is the attitude error and body rate [σ, ω] ∈ R6 and the controller commands three normalized body torques in [−1, 1] 3, so every controller in the battery sees the identical interface and the comparison is on the control law and its adaptation rather than on the sensing or actuation model. The same versioned testbed and seeds drive every row, so every controller is evaluated on one testbed. 
+
+B. Settled gate 
+
+A fault is settled iff the pointing error stays within 0.2◦
+
+for the final 20 -step dwell window, scored on the true state, never on a corrupted measurement and never on a transient minimum. This is the discriminating choice in the whole study. A touch-once metric credits a trajectory that brushes the tolerance and then drifts or limit-cycles away, whereas the dwell gate credits only a trajectory that reaches the tolerance and holds it, which is the behavior a pointing requirement actually demands. We additionally report an operational gate at ≤ 5◦ held, the threshold at which the vehicle is safe and pointable even if not science-grade, so that the difference between a science-recovered fault and a merely stabilized one is visible rather than hidden inside one headline rate. 
+
+C. Fault model and held-out taxonomy 
+
+The applied torque per axis is command · g + b, where g
+
+is the actuator effectiveness gain and b is an additive torque bias, and the inertia is scaled by a factor f . This single model spans the failure spectrum, with g < 0 a reversed actuator, g ∈ (0 , 1) a degraded one, g > 1 an over-strong one, g=0 a dead axis, and b̸ = 0 a stuck or biased torque. The defining property of the benchmark is that train and test sets are disjoint by construction , with f train [0 .8, 2.0] 
+
+and test [0 .7, 0.8) ∪ (2 .0, 2.3] , |g| train [0 .5, 1.5] and test 
+
+[0 .3, 0.5) ∪ (1 .5, 2.0] , sign pattern train ≤ 1 reversed axis and test ≥ 2 reversed axes, and bias train [−0.2, 0.2] and test 
+
+[−0.3, −0.2) ∪ (0 .2, 0.3] . The four evaluated classes are SIGN 
+
+(g ∈ {± 1}, a pure control-direction fault), GAIN (continuous effectiveness), GAIN +BIAS (continuous effectiveness with an additive bias), and LOSS (one axis with g=0 , structurally uncontrollable). All tuning of every controller, and of the latch, is confined to the train split, and every score below is on test, 
+
+n=50 faults × 10 seeds per cell for n=500 episodes per cell with Wilson 95% intervals. Stating this provenance precisely is what lets the numbers be read as generalization, because every test fault is a held-out instance and the extrapolative cells lie strictly outside the training support. 4SIGN GAIN GAIN+BIAS LOSS             
+
+> 0
+> 20
+> 40
+> 60
+> 80
+> 100
+> settled-science (%)
+> Controller battery (held-out faults, settled gate)
+> PD Classical RMA [WS1] RMA+DOB [ours] Oracle (g+b)
+> Fig. 1. Settled-science rate across the four held-out actuator-fault classes for representative controllers. Structured estimate-then-control (RMA, RMA+DOB) dominates the controllable continuous classes; the additive-bias class is the wall that only the disturbance observer and the privileged bias oracle clear.
+
+IV. T HE CONTROLLER BATTERY 
+
+We evaluate a deliberately broad battery, spanning the fault-unaware baselines, the classical adaptive answers, an end-to-end learned policy, and the structured learned de-sign, all tuned on train and scored identically on the held-out taxonomy (Table I). The battery is fault-unaware PD and PID; the literature’s classical-adaptive law with online sign identification; an integral-concurrent-learning adaptive law [17]; a literature-faithful Nussbaum-gain law for unknown control direction [6], [7]; a from-scratch end-to-end recurrent reinforcement-learning controller; and the structured Rapid Motor Adaptation (RMA) [13] design. The RMA design pairs a privileged teacher π(obs , z ) that sees the true fault 
+
+z = [ g0, g 1, g 2, f −1] and applies an analytic inertia-scaled PD law with a recurrent student that never sees z and must infer an estimate ˆz online from the command-versus-response signal, then feeds that estimate to the same analytic law (estimate-then-control, after Neural-Fly [14]; RMA-style FTC has reached quadrotors [15] and fixed-wing platforms [16] but not spacecraft at this fault breadth). The key signal for the stu-dent is the response change ∆ω, because sign(∆ ωi) · sign( ai)
+
+reveals whether axis i moved in the commanded direction and so exposes the fault sign, while the magnitude of the response calibrates the gain. Two oracles bound the table, the privileged teacher (true gain) and a bias-feedforward oracle (true gain 
+
+and true bias), which mark respectively what a perfect gain estimate and a perfect gain-plus-bias estimate can achieve under the same analytic law. 
+
+A. Model capacity 
+
+Fault-unaware PD and PID score 0% on every class, which is expected, because a fixed-sign feedback law drives the wrong way on a reversed axis and diverges. The more telling zero is the end-to-end recurrent RL controller, which also scores 0% despite substantial training and ample model ca-pacity. The reason is structural rather than a training shortfall. The fault sign is not observable from a single state [σ, ω],so a policy must integrate the history of action and response to identify it, and an end-to-end policy that is simultaneously trying to identify the fault and regulate attitude through it has no clean signal to learn either task from. Learning capacity 
+
+is therefore demonstrably not what helps on this problem, which is the result that motivates separating identification from control rather than asking one network to do both. 
+
+B. Classical adaptation 
+
+The classical-adaptive law with online sign identification ties the oracle on the discrete sign fault at 100 .0% , which confirms that the binary control-direction question is solvable online by a well-implemented classical method. It then handles continuous gain poorly at 55 .2% (Wilson 95% CI [50 .8, 59 .5] ), because resolving the sign is not the same as tracking a continuous effectiveness magnitude accurately enough to hold the gate. The integral-concurrent-learning adaptive law [17] sits below it at 82 .2% /38 .2% , and the Nussbaum-gain law [6], [7], the classical answer to unknown control direction, reaches only 45 .2% /3.2% at this gate. The Nussbaum result deserves a precise reading rather than a verdict. The technique is constructed to settle the binary direction question through a high-gain search, and at a strict dwell gate that search induces the very transients the gate penalizes, while a continuous gain fault asks for an accurate magnitude estimate the construction does not target. The classical methods are thus represented at full strength and are partial for principled reasons, not because they were strawmen. 
+
+C. Controllable continuous classes 
+
+The structured RMA student is the clear winner on the two controllable continuous classes, settling 97 .8% of sign faults (Wilson 95% CI [96 .1, 98 .8] ) and 94 .4% of continuous-gain faults (Wilson 95% CI [92 .0, 96 .1] ), closely approaching the privileged oracle at 100 .0% on a task where every fault-unaware and end-to-end-learned method is at zero and the strongest classical law reaches 55 .2% on continuous gain. The comparison is controlled, because the RMA student is built on the same learning machinery as the end-to-end policy and differs only in that it uses the learned network for system identification and a fixed analytic law for control. The lesson is therefore sharp. The structure of inferring the latent fault and then applying an analytic law is what does the work, not the model class, and the main learned object is a system-identification estimate of a physical quantity rather than an opaque control map. 
+
+D. The gain-plus-bias wall 
+
+> GAIN
+
++BIAS is 0% for every controller in the battery, and crucially for the privileged gain oracle as well. This is the cleanest result in the table, and we present it as an architectural fact rather than a shortfall. The cause is not statistical, because the oracle is fed the true gain and still cannot settle the class, which rules out any estimation or sample-size explanation. The cause is the deployed control law itself. An integral-free inertia-scaled PD law has no mechanism to null a constant additive disturbance, so a constant torque bias leaves a steady-state pointing offset no matter how accurately the gain is known. The bias-feedforward oracle, which is additionally 5                          
+
+> TABLE I DEFINITIVE CONTROLLER BATTERY ,REPORTING SETTLED -SCIENCE RATE (≤0.2◦HELD OVER THE FINAL DWELL )ON THE FOUR STRUCTURALLY HELD -OUT FAULT CLASSES (n=500 /CELL ,SAME FAULTS AND GATE ACROSS ROWS ). GAIN+BIAS IS 0% FOR EVERY CLASSICAL ,LEARNED ,AND
+> RMA CONTROLLER ,AND FOR THE PRIVILEGED GAIN ORACLE ,WHICH IS THE INTEGRAL -FREE ARCHITECTURAL LIMIT ;THE RMA STUDENT COMPOSED WITH THE DISTURBANCE OBSERVER IS THE ONLY DEPLOYABLE CONTROLLER TO RECOVER IT ,WITH NO SIGN/GAIN REGRESSION . A
+> DEAD AXIS (LOSS) IS UNCONTROLLABLE (SHIELD -ONLY )FOR ALL .
+
+Controller SIGN GAIN GAIN+BIAS LOSS PD (fault-unaware) 0.0% 0.0% 0.0% 0.0% Classical adaptive (sign-ID) 100.0% 55.2% 0.0% 0.0% ICL-adaptive [lit.] 82.2% 38.2% 0.0% 0.0% Nussbaum-gain [lit.] 45.2% 3.2% 0.0% 0.0% End-to-end GRU+PPO 0.0% 0.0% 0.0% 0.0% RMA student, latched [WS1] 97.8% 94.4% 0.0% 0.0% 
+
+RMA + disturbance obs. [ours] 97.2% 96.8% 59.4% 0.0% Privileged teacher (gain oracle) 100.0% 100.0% 0.0% 0.0% Bias-feedforward oracle (g+b) 100.0% 100.0% 95.8% 0.0% 
+
+handed the true bias b, settles 95 .8% of the class (Wilson 95% 
+
+CI [93 .7, 97 .2] ), which confirms that the class is recoverable in principle under the same analytic law and that the single missing ingredient is an online estimate of b. The wall is thus not a limit of what an analytic PD law plus a bias term can achieve, but a statement that the deployed law lacks the bias term, which points precisely at the fix. V. B REAKING THE WALL WITH A DISTURBANCE OBSERVER 
+
+The wall is the central technical problem of the paper, and the path to its solution is a short sequence of principled eliminations that each rule out a class of fixes and earn the design that remains. We present that path because it is the engineering argument for the disturbance observer, not because any step was a fumble. Each failed candidate is a controlled experiment that localizes the difficulty. 
+
+A. Bias feedforward 
+
+The first and most natural candidate is to extend the learned module to also regress an estimate ˆb of the bias and feed it forward through the same analytic law as a = ( u −ˆb)/g eff (ˆ g).This fails, and instructively it fails even when the module is handed the true bias. Dividing the bias term by the gain 
+
+estimate rather than the true gain leaves a residual proportional to b (1 − g/ ˆg), so a gain-magnitude error that is harmless for a pure gain fault becomes binding under a bias. The reason the same gain error is harmless without a bias is itself diagnostic. For a pure gain fault the command u → 0 as the attitude settles, so the residual it multiplies vanishes at the equilibrium, whereas a constant bias keeps the residual alive at steady state. Feeding the bias forward through an imperfect gain estimate therefore trades one uncancelled constant for another, which is why the naive extension settles none of the class. 
+
+B. Classical integral action 
+
+The textbook remedy for a steady-state offset is an integral term, and in principle an integrator removes the constant offset that defeats the PD law. In this regime it is the wrong instrument. At the available control authority and the 400 -step horizon, an in-loop integrator winds up against the torque cap and limit-cycles rather than settling, so it fails the dwell gate by exactly the mechanism the gate is designed to catch. This is not a tuning accident but a structural mismatch between an in-loop integrator’s slow authority-limited correction and a strict short-horizon dwell requirement, and it is what rules integral action out as the deployable answer here. 
+
+C. The disturbance observer 
+
+The two eliminations above pin the requirement precisely. The fix must supply an online estimate of b that is robust to an imperfect gain estimate and does not introduce an in-loop integrator’s limit cycle. A disturbance observer (DOB) [18], [19] meets exactly that requirement. From the rigid-body relation I ˙ω = τ with τ = ( ag + b) τmax , the bias is recovered directly from one integration step, 
+
+ˆbraw = ∆ω Iτmax dt −a ˆg, ˆb ← (1 −λ)ˆb+λ ˆbraw , a = u − ˆbgeff (ˆ g) .
+
+(1) The first expression measures the realized torque from the observed rate change and subtracts the known commanded contribution a ˆg, the second low-pass filters the raw estimate with gain λ, and the third feeds the filtered bias forward through the analytic law. Two properties make this the right instrument. First, the DOB is a low-pass filter on a measured residual rather than an in-loop integrator, so it carries no integrator state to wind up and does not limit-cycle, which is precisely the failure mode that eliminated integral action. Second, and decisively, the DOB is provably self-correcting for the gain-estimate error . Because ∆ω I/ (τmax dt ) = ag + b
+
+holds exactly from the dynamics, the DOB measures the true realized torque even when ˆg is wrong. At steady state the regulated command u → 0, and the filtered estimate converges to ˆb = b ˆg/g , which the feedforward a = ( u − ˆb)/ˆg divides by ˆg to apply a compensating −b/g that cancels the realized bias contribution b exactly, independent of the gain-magnitude error. The DOB thus absorbs precisely the b (1 − g/ ˆg) residual that defeated the naive feedforward, turning the gain error from a binding obstacle into a quantity the observer accounts 6PD Classical ICL Nussbaum GRU+PPO RMA [WS1] teacher         
+
+> (g oracle)
+> RMA+DOB
+> [ours]
+> oracle
+> (g+b)
+> 0
+> 20
+> 40
+> 60
+> 80
+> 100
+> GAIN+BIAS settled (%)
+> 0000000
+> 59
+> 96
+> The additive-bias wall, 0\% for all but the disturbance observer
+> Fig. 2. The additive-bias wall. GAIN+BIAS settled-science rate is 0%
+> for every classical, learned, and RMA controller, and for the privileged gain oracle, because an integral-free law cannot null a constant bias. The disturbance observer (ours) is the only deployable controller to recover it, and the bias-feedforward oracle is the upper bound.
+
+for automatically. The one requirement the construction does impose is a sign-correct and magnitude-reasonable ˆg, which is why the gain student is trained over the wide effectiveness envelope with the bias present in the loop , so that the estimate it produces is the one the DOB will actually compose with. 
+
+D. Result 
+
+Deployed (Table I, “RMA + disturbance observer”), the unified controller recovers 59 .4% of held-out GAIN +BIAS 
+
+faults (Wilson 95% CI [55 .0, 63 .6] ), the only deployable controller in the battery to leave zero, while simultaneously holding SIGN at 97 .2% and GAIN at 96 .8% , which match or beat the bias-free RMA student rather than regressing. The improvement on the bias class is therefore not bought by sacrificing the classes the student already handled, which is the property a deployable fix requires. The remaining gap to the 
+
+95 .8% bias oracle is the cost of online gain-estimation error on the hardest extrapolative faults, where ˆg is least accurate and the self-correction has the most error to absorb, and we report it as a measured 59 .4% recovery rather than a solved class. A dead axis ( LOSS ) remains uncontrollable for every controller including both oracles, which is correct, because a fully dead axis is genuinely under-actuated and is a shield-only regime rather than a control problem. VI. S ENSOR FAULTS 
+
+We apply the same honest classification to the measurement side, corrupting only what the controller observes and scoring the true state (Table II). The structure of the results mirrors the actuator side and is governed by the same controllable-versus-shield-only boundary. A constant attitude-measurement bias is controllable within the gate, with the deployed controller settling 96 .4% of 0.1◦ biases and 45 .2% of 0.2◦ biases, and be-yond the gate the true attitude offsets to exactly −bias because the controller faithfully regulates the measured attitude to zero, so a measurement offset becomes a true-state offset of equal magnitude. A bias at or above 0.3◦ therefore parks the true attitude outside the 0.2◦ gate by construction and reads 0% ,which is the sensor-side analog of the actuator GAIN +BIAS 
+
+wall. A lost (zeroed) or stuck attitude sensor removes position feedback entirely, leaving the controller able to damp rate but not point and tumbling to a 97 .19 ◦ or 85 .56 ◦ steady error, which is the sensor-side analog of LOSS and a shield-only regime. The privileged teacher matches the deployed controller on every row, which is the key evidence that these are fundamental sensor-regime limits rather than controller deficiencies, because even an oracle with the true actuator fault cannot recover information the corrupted measurement does not contain. The decisive contrast with the actuator side is one of 
+
+observability , and it explains why the disturbance observer cannot be reused here. The actuator bias is observable from the dynamics, because the realized rate change ∆ω reveals the true applied torque and so exposes b, which is exactly what Eq. (1) exploits. A sensor bias is unobservable from the corrupted measurement alone, because the controller has no independent reference against which to detect that its attitude reading is offset, and any observer built on that single corrupted channel would estimate zero error and do nothing. Removing a sensor bias therefore genuinely requires sensor fusion or redundancy, an independent attitude reference such as a second star tracker or a sun-and-magnetometer fix, rather than a disturbance observer. This is an honest architectural boundary, and stating it cleanly is more useful than papering over it, because it tells a mission designer exactly which measurement faults need hardware redundancy and which the control law can absorb on its own. VII. D ISCUSSION 
+
+The benchmark turns a set of optimistic demonstrations into a falsifiable comparison, and read through it the results tell a coherent story about what recovers spacecraft pointing under faults and why. We draw out three threads. 
+
+A. What recovers spacecraft pointing 
+
+The honest reading of the battery is that structured estimate-then-control is the design that works for spacecraft actua-tor FTC, classical adaptive laws are partial, and end-to-end learning fails on this regime. The reason is consistent across the table. The fault is unobservable from a single state and identifiable only from the history of action and response, which is a system-identification problem, and the methods that succeed are the ones that treat it as such. The RMA student devotes its learned capacity entirely to estimating the physical fault and hands a fixed analytic law the control, the classical adaptive law solves the easier binary part of the same identification problem, and the disturbance observer estimates the one remaining physical unknown from the dynamics. The end-to-end policy, by contrast, asks one network to identify and control at once and learns neither cleanly, which is why added capacity does not help. The practical implication for flight is that the learned component should be kept small, aimed at a physical quantity, and composed with an analytic law whose behavior a reviewer can reason about, rather than expanded into an opaque end-to-end controller. 7                   
+
+> TABLE II SENSOR -FAULT REGIMES (DEPLOYED RMA, SETTLED GATE ,SCORED ON THE TRUE STATE ). A CONSTANT ATTITUDE BIAS IS CONTROLLABLE WITHIN THE 0.2◦GATE AND OFFSETS TO EXACTLY −BIAS BEYOND IT (THE SENSOR -SIDE ANALOG OF ACTUATOR GAIN+BIAS); A LOST OR STUCK ATTITUDE SENSOR REMOVES POSITION FEEDBACK (SHIELD -ONLY ,THE ANALOG OF TOTAL LOSS). T HE PRIVILEGED TEACHER MATCHES THE CONTROLLER ON EVERY ROW ,SO THESE ARE FUNDAMENTAL SENSOR -REGIME LIMITS ,AND A SENSOR BIAS IS UNOBSERVABLE FROM THE CORRUPTED MEASUREMENT ALONE (UNLIKE THE ACTUATOR BIAS ).
+
+Sensor fault settled-science final pointing regime Sensor bias 0.1◦ 96.4% 0.10 ◦ controllable Sensor bias 0.2◦ 45.2% 0.20 ◦ controllable Sensor bias 0.3◦ 0.0% 0.30 ◦ shield-only Sensor bias 0.5◦ 0.0% 0.50 ◦ shield-only Star-tracker dropout 0.0% 97.19 ◦ shield-only Stuck measurement 0.0% 85.56 ◦ shield-only 
+
+B. Architectural limits 
+
+Two of the four columns are 0% for the privileged oracle, and far from weakening the study, those zeros are among its most useful outputs. The GAIN +BIAS zero localizes a missing bias term in the control law with certainty, because an oracle handed the true gain cannot settle the class, and that certainty is exactly what justified building the disturbance observer rather than retuning. The LOSS zero states that a dead axis is genuinely under-actuated, which is a property of the plant that no controller can repair and that the safety architecture must therefore carry. Reporting these as clean architectural facts, with the oracle as the witness, is what lets the rest of the paper draw a sharp line between the faults the controller recovers and the faults a runtime shield or hardware redundancy must handle, with no overlap left to chance. 
+
+C. The settled gate 
+
+The single choice with the largest effect on the conclusions is the settled dwell gate. It is what exposes that a touch-once score conflates brushing a tolerance with holding it, what makes the classical-adaptive law’s continuous gain weakness visible at 55 .2% rather than hidden behind a transient min-imum, what reveals the additive-bias wall as a steady-state offset, and what disqualifies the integral fix by surfacing its limit cycle. A weaker gate would have credited several of these failures as successes and produced a flattering and misleading ranking. We therefore regard the gate, together with the held-out taxonomy and the released harness, as the contribution that makes the rest of the study trustworthy, and we release it so that future spacecraft-FTC results can be compared on the same terms rather than each on its own optimistic gate. VIII. L IMITATIONS AND CONCLUSION 
+
+A. Limitations 
+
+We state the scope of the contribution precisely, as bound-aries on a solid result rather than as caveats. (i) Single environment. The study is conducted on one seed-controlled Basilisk testbed, released for reproduction, so the numbers are characterized on a single environment and the cross-platform generality of the rankings is future work rather than an established claim. (ii) Actuator model fidelity. Faults are injected as external-torque effectiveness, bias, and loss rather than through a reaction-wheel momentum model with wheel speeds, saturation, and friction, which is a fidelity upgrade we leave to future work and which we expect to sharpen rather than overturn the controllable-versus-shield-only boundary. (iii) The bias result is a recovery, not a solved class. The disturbance observer recovers 59 .4% of held-out GAIN +BIAS 
+
+faults, and the gap to the 95 .8% oracle is attributable to online gain-estimation error on the most extrapolative faults, which we report as a measured recovery rather than presenting the class as closed. (iv) Sensor bias needs redundancy. Asensor bias at or above 0.3◦ and a dropped or stuck sensor are shield-only regimes that the control law cannot recover, and on observability grounds a sensor bias genuinely requires fusion or redundancy, which is an architectural statement rather than a controller to be tuned. Within that scope the result is unambiguous, and naming the boundaries is what makes the claim auditable. 
+
+B. Conclusion 
+
+We have presented an honest benchmark for spacecraft fault-tolerant control, built on a settled dwell gate, a struc-turally held-out fault taxonomy, and reported uncertainty, and used it to give a definitive account of what recovers spacecraft pointing under held-out actuator and sensor faults. Structured estimate-then-control, a small learned module that identifies the latent fault feeding an analytic law, decisively wins on the controllable continuous classes where classical adaptation is partial and end-to-end learning fails, which shows that structure rather than learning capacity is the lever on this problem. A constant additive bias is a clean 0% wall for every method including the privileged gain oracle, because an integral-free law cannot null a constant disturbance, and we close it with a disturbance observer that is provably self-correcting for the learned gain estimate’s error and takes the held-out bias class from 0% to 59 .4% with no regression, the first controller to move that class off zero on this gate. The sensor-fault taxonomy mirrors the actuator side and draws the architectural line that a sensor bias demands redundancy rather than an observer. The benchmark, the leaderboard, the pinned testbed, the evaluation API, and the submission protocol are released so that the settled gate is shared and every table here regenerates from a clean checkout, because a spacecraft-FTC 8
+
+result is only as credible as the gate it is scored on and the ease with which a skeptic can reproduce it. REFERENCES 
+
+[1] P. W. Kenneally, S. Piggott, H. Schaub. “Basilisk: a flexible, scalable and modular astrodynamics simulation framework.” J. Aerospace Information Systems , 17(9):496–507, 2020. [2] R. J. Patton. “Fault-tolerant control systems: the 1997 situation.” 
+
+IFAC Symposium on Fault Detection, Supervision and Safety for Technical Processes (SAFEPROCESS) , Hull, UK, pp. 1033– 1054, 1997. [3] Y. Zhang, J. Jiang. “Bibliographical review on reconfigurable fault-tolerant control systems.” Annual Reviews in Control ,32(2):229–252, 2008. [4] B. Wie. Space Vehicle Dynamics and Control , 2nd ed. AIAA Education Series, 2008. [5] H. Schaub, J. L. Junkins. Analytical Mechanics of Space Sys-tems , 4th ed. AIAA Education Series, 2018. [6] R. D. Nussbaum. “Some remarks on a conjecture in parameter adaptive control.” Systems & Control Letters , 3(5):243–246, 1983. [7] Q. Hu, X. Shao, Y. Zhang, L. Guo. “Nussbaum-type function-based attitude control of spacecraft with actuator saturation.” Int. J. Robust and Nonlinear Control , 28(8):2927–2949, 2018. [8] P. A. Ioannou, J. Sun. Robust Adaptive Control . Prentice-Hall, 1996. [9] K. J. ˚Astr¨ om, B. Wittenmark. Adaptive Control , 2nd ed. Addison-Wesley, 1995 (Dover reprint, 2008). [10] J.-J. E. Slotine, W. Li. Applied Nonlinear Control . Prentice-Hall, Englewood Cliffs, NJ, 1991. [11] H. K. Khalil. Nonlinear Systems , 3rd ed. Prentice-Hall, 2002. [12] C. Finn, P. Abbeel, S. Levine. “Model-agnostic meta-learning for fast adaptation of deep networks.” International Conference on Machine Learning (ICML) , 2017. [13] A. Kumar, Z. Fu, D. Pathak, J. Malik. “RMA: Rapid Motor Adaptation for legged robots.” Robotics: Science and Systems (RSS) , 2021. [14] M. O’Connell, G. Shi, X. Shi, K. Azizzadenesheli, A. Anandku-mar, Y. Yue, S.-J. Chung. “Neural-Fly enables rapid learning for agile flight in strong winds.” Science Robotics , 7(66):eabm6597, 2022. [15] D. Kim, J. D. Lee, H. Bang, J. Bae. “Reinforcement learning-based fault-tolerant control for quadrotor with online transformer adaptation.” ICRA Workshop: Robots in the Wild , 2025. [16] F. Giral, I. G´ omez, R. Vinuesa, S. Le Clainche. “Transformer-based fault-tolerant control for fixed-wing UAVs using knowl-edge distillation and in-context adaptation.” arXiv:2411.02975, 2024. [17] C. Ria˜ no-R´ ıos, G. Nehma, M. Tiwari. “Adaptive controller for simultaneous spacecraft attitude tracking and reaction wheel fault detection.” arXiv:2504.12124, 2025. [18] W.-H. Chen, J. Yang, L. Guo, S. Li. “Disturbance-observer-based control and related methods, an overview.” IEEE Trans. Industrial Electronics , 63(2):1083–1095, 2016. [19] J. Han. “From PID to active disturbance rejection control.” IEEE Trans. Industrial Electronics , 56(3):900–906, 2009.
