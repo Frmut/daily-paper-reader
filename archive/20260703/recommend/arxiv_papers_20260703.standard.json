@@ -1,0 +1,125 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-03T20:00:42.808930+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 3,
+    "quick_skim_target": 11,
+    "quick_selected": 3
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2606.31562v1",
+      "title": "Stabilization Learning: A Paradigm Transition Bridging Control Theory and Machine Learning",
+      "abstract": "Stabilization learning is an interdisciplinary paradigm that bridges control theory and machine learning. Its core idea is to enable systems to adjust their policies under perturbations or environmental changes through real-time feedback and adaptive mechanisms. It takes stability as its primary goal, distinguishing itself from certificate learning, which focuses on formal proofs, and reinforcement learning, which pursues optimality. It encompasses a range of methods, including Lyapunov-based analysis and design, deep feature extraction, and data-driven feedback synthesis, and is applicable to complex high-dimensional, nonlinear systems. This paper elaborates on the two major categories of stability in stabilization learning, as well as three typical application scenarios: control, observation, and recognition. It constructs a unified mathematical framework based on a six-tuple, and expands into two types of seven-tuple models: constrained learning with barrier spaces and tracking problems with targets. It also analyzes the roles, meanings, and implementation choices of key elements such as state space, controlled system, metrics, and policy. Through the formal reformulation of 11 types of problems, including multi-agent cooperative tracking, visual servo robot position stabilization, chess games, and Push-T tasks, this paper illustrates the potential applicability of the framework across multiple domains. Finally, it points out that future stabilization learning will focus on two major directions: constructing a unified problem framework and achieving efficient and robust learning, providing solutions for complex system control that combine theoretical rigor with engineering practicality.",
+      "authors": [
+        "Quan Quan"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-06-30T12:19:05+00:00",
+      "link": "https://arxiv.org/pdf/2606.31562v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "stabilization learning for nonlinear systems",
+      "llm_evidence_cn": "非线性系统的稳定化学习",
+      "llm_evidence": "非线性系统的稳定化学习",
+      "canonical_evidence": "非线性系统的稳定化学习",
+      "llm_tldr_en": "Bridges control theory and machine learning for system stabilization, applicable to motor control.",
+      "llm_tldr_cn": "桥接控制理论与机器学习以实现系统稳定，可应用于电机控制领域。",
+      "llm_tldr": "桥接控制理论与机器学习以实现系统稳定，可应用于电机控制领域。",
+      "llm_tags": [
+        "query:pmsm:composite"
+      ],
+      "matched_query_tag": "query:pmsm:composite",
+      "matched_query_text": "Papers central to 三相及双三相永磁同步电机相关研究检索, especially work that connects or combines: m; s; f; Permanent Magnet Synchronous Motor research; dual three-phase permanent magnet synchronous motor control and design; fault-tolerant control of multi-phase motors; recent advances in dual three phase permanent magnet synchronous motor control; fault tolerant strategies for multi phase permanent magnet synchronous motors.",
+      "matched_requirement_id": "req-composite-pmsm",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.00383v1",
+      "title": "Regularized Model Predictive Control via Contractivity and Implicit Lur'e Analysis",
+      "abstract": "This paper develops a contraction-based stability analysis for regularized model predictive control (MPC), whose feedback law is defined implicitly by a finite-horizon optimal control problem with an additional regularizing cost. The proposed approach interprets regularized MPC as an implicit Lur'e system, in which the regularizing cost perturbs the optimality conditions. We develop a multiplier-based contraction framework for implicit Lur'e systems and derive linear matrix inequality conditions for regularized MPC with three broad classes of regularizers: convex smooth stage costs, convex closed proper stage costs, and differentiable regularizers with Lipschitz gradients. Numerical studies on input and state soft penalties, hard input constraints, and sparsity-promoting penalties illustrate that regularization shapes closed-loop performance while retaining formal contraction-based stability guarantees.",
+      "authors": [
+        "Ryotaro Shima",
+        "Anand Gokhale",
+        "Alexander Davydov",
+        "Francesco Bullo"
+      ],
+      "primary_category": "math.OC",
+      "categories": [
+        "math.OC"
+      ],
+      "published": "2026-07-01T03:26:41+00:00",
+      "link": "https://arxiv.org/pdf/2607.00383v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "model predictive control stability analysis",
+      "llm_evidence_cn": "模型预测控制稳定性分析",
+      "llm_evidence": "模型预测控制稳定性分析",
+      "canonical_evidence": "模型预测控制稳定性分析",
+      "llm_tldr_en": "Develops stability analysis for regularized MPC, a method widely used in motor control.",
+      "llm_tldr_cn": "为电机控制中广泛使用的正则化模型预测控制开发了稳定性分析方法。",
+      "llm_tldr": "为电机控制中广泛使用的正则化模型预测控制开发了稳定性分析方法。",
+      "llm_tags": [
+        "query:pmsm:composite"
+      ],
+      "matched_query_tag": "query:pmsm:composite",
+      "matched_query_text": "Papers central to 三相及双三相永磁同步电机相关研究检索, especially work that connects or combines: m; s; f; Permanent Magnet Synchronous Motor research; dual three-phase permanent magnet synchronous motor control and design; fault-tolerant control of multi-phase motors; recent advances in dual three phase permanent magnet synchronous motor control; fault tolerant strategies for multi phase permanent magnet synchronous motors.",
+      "matched_requirement_id": "req-composite-pmsm",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.00571v1",
+      "title": "Enhancing Robustness in Robot-Environment Interactions through Passive Compliant Degrees of Freedom: A Hybrid Position-Force Control Approach with Feedback Linearization",
+      "abstract": "Robot-environment interactions in dynamic or unstructured settings are often degraded by impact shocks, vibrations, and uncertainties in contact geometry and mechanical properties. This paper proposes an interaction architecture that combines feedback-linearized hybrid position-force control with a passive compliant degree of freedom embedded at the end-effector. Unlike conventional hybrid position-force control, which relies mainly on active feedback, force sensing, and gain tuning, the proposed architecture uses a physical spring-damper interface to store and dissipate impact energy at the contact point before high-frequency shocks propagate to the actuated joints and force-control loop. The approach is evaluated in MATLAB/Simulink on a 2-DOF planar manipulator with three end-effector configurations: rigid, spring-only, and spring-damper. Results under fixed and time-varying interaction conditions show that the spring-damper configuration provides stronger attenuation of contact-induced oscillations, lower force and velocity error variance, and smoother joint-torque response. Representative reductions include 36.5% in fixed-environment tangential force-error standard deviation, 25.4% in variable-environment normal force-error standard deviation, and 41.1% in variable-environment normal velocity-error standard deviation.",
+      "authors": [
+        "Rahman Ardakanian",
+        "Iman Kardan",
+        "AliAkbar Akbari",
+        "Ali Mousavi"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-07-01T07:56:06+00:00",
+      "link": "https://arxiv.org/pdf/2607.00571v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "hybrid position-force control and feedback linearization",
+      "llm_evidence_cn": "混合位置力控制与反馈线性化",
+      "llm_evidence": "混合位置力控制与反馈线性化",
+      "canonical_evidence": "混合位置力控制与反馈线性化",
+      "llm_tldr_en": "Proposes a robust control architecture using feedback linearization, relevant to advanced motor control.",
+      "llm_tldr_cn": "提出了一种使用反馈线性化的鲁棒控制架构，与先进电机控制相关。",
+      "llm_tldr": "提出了一种使用反馈线性化的鲁棒控制架构，与先进电机控制相关。",
+      "llm_tags": [
+        "query:pmsm:composite"
+      ],
+      "matched_query_tag": "query:pmsm:composite",
+      "matched_query_text": "Papers central to 三相及双三相永磁同步电机相关研究检索, especially work that connects or combines: m; s; f; Permanent Magnet Synchronous Motor research; dual three-phase permanent magnet synchronous motor control and design; fault-tolerant control of multi-phase motors; recent advances in dual three phase permanent magnet synchronous motor control; fault tolerant strategies for multi phase permanent magnet synchronous motors.",
+      "matched_requirement_id": "req-composite-pmsm",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

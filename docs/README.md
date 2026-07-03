@@ -6,44 +6,32 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-07-02
-- 运行时间：2026-07-02 21:27:05 UTC
+- 最新运行日期：2026-07-03
+- 运行时间：2026-07-03 20:01:10 UTC
 - 运行状态：成功
-- 本次总论文数：8
-- 精读区：1
-- 速读区：7
+- 本次总论文数：3
+- 精读区：0
+- 速读区：3
 
 ### 今日简报（AI）
-今日聚焦三相电机电流纹波的近优控制优化，并横向测评了航天器与电动汽车领域的控制与诊断技术。
-- 详情：[/202607/02/README](/202607/02/README)
+今日聚焦控制理论与机器学习的深度融合，探索机器人交互鲁棒性与模型预测控制的新范式。
+重点关注“稳定化学习”这一跨学科桥梁，以及利用被动顺应性自由度优化机器人环境交互的混合控制方案。
+建议深入了解控制理论如何为 AI 模型提供稳定性保障，并关注硬件顺应性在复杂任务中的实际增益。
+- 详情：[/202607/03/README](/202607/03/README)
 
 ### 精读区论文标签
-1. [Computationally Efficient Near-Optimal Control for Current Ripple Reduction and Optimization of Three-Phase Motors via LMIs](/202607/02/2607.01215v1-computationally-efficient-near-optimal-control-for-current-ripple-reduction-and-optimization-of-three-phase-motors-via-lmis)  
-   标签：评分：10.0/10、query:pmsm
-   evidence：直接针对三相永磁同步电机的优化控制和电流纹波抑制
+- 本次无精读推荐。
 
 ### 速读区论文标签
-1. [Parametric Generalized Adaptive Moment Features (PG-AMF) for Bearing Fault Diagnosis and Machine Health Monitoring](/202607/02/2606.26317v1-parametric-generalized-adaptive-moment-features-pg-amf-for-bearing-fault-diagnosis-and-machine-health-monitoring)  
-   标签：评分：7.0/10、query:pmsm
-   evidence：旋转机械故障诊断
-2. [Model Predictive Current Control with Harmonic Correction for Single-Phase AC-DC EV Charging](/202607/02/2606.30397v1-model-predictive-current-control-with-harmonic-correction-for-single-phase-ac-dc-ev-charging)  
-   标签：评分：7.0/10、query:pmsm
-   evidence：电力电子的模型预测电流控制
-3. [What Actually Works for Spacecraft Fault-Tolerant Control: An Honest Settled-Gate Benchmark of Learned and Classical Methods](/202607/02/2606.25374v1-what-actually-works-for-spacecraft-fault-tolerant-control-an-honest-settled-gate-benchmark-of-learned-and-classical-methods)  
+1. [Stabilization Learning: A Paradigm Transition Bridging Control Theory and Machine Learning](/202607/03/2606.31562v1-stabilization-learning-a-paradigm-transition-bridging-control-theory-and-machine-learning)  
    标签：评分：6.0/10、query:pmsm
-   evidence：执行器容错控制的基准测试
-4. [Distributed Air-Gap Flux and Rotor-Current Fusion for Operating-Regime Identification in a 10-MW Kaplan Hydrogenerator](/202607/02/2606.27800v1-distributed-air-gap-flux-and-rotor-current-fusion-for-operating-regime-identification-in-a-10-mw-kaplan-hydrogenerator)  
+   evidence：非线性系统的稳定化学习
+2. [Regularized Model Predictive Control via Contractivity and Implicit Lur'e Analysis](/202607/03/2607.00383v1-regularized-model-predictive-control-via-contractivity-and-implicit-lure-analysis)  
    标签：评分：6.0/10、query:pmsm
-   evidence：大型发电机的监测与工况识别
-5. [From Detection to Action: Using LLM Agents for Fault-Tolerant Control](/202607/02/2606.28011v1-from-detection-to-action-using-llm-agents-for-fault-tolerant-control)  
+   evidence：模型预测控制稳定性分析
+3. [Enhancing Robustness in Robot-Environment Interactions through Passive Compliant Degrees of Freedom: A Hybrid Position-Force Control Approach with Feedback Linearization](/202607/03/2607.00571v1-enhancing-robustness-in-robot-environment-interactions-through-passive-compliant-degrees-of-freedom-a-hybrid-position-force-control-approach-with-feedback-linearization)  
    标签：评分：6.0/10、query:pmsm
-   evidence：用于主动容错控制的LLM智能体
-6. [Resilient Control Lyapunov Function-based Quadratic Program for Quadrotors Under Cyberattacks](/202607/02/2606.28588v1-resilient-control-lyapunov-function-based-quadratic-program-for-quadrotors-under-cyberattacks)  
-   标签：评分：6.0/10、query:pmsm
-   evidence：针对执行器故障的容错控制方法
-7. [Sinusoidality Index](/202607/02/2607.00419v1-sinusoidality-index)  
-   标签：评分：6.0/10、query:pmsm
-   evidence：电力系统中交流电压矢量正弦性的度量指标
+   evidence：混合位置力控制与反馈线性化
 
 
 <div class="dpr-home-promo-card">

@@ -1,0 +1,51 @@
+{
+  "label": "2026-07-03",
+  "date": "2026-07-03",
+  "generated_at": "2026-07-03T20:01:23",
+  "count": 3,
+  "papers": [
+    {
+      "paper_id": "202607/03/2606.31562v1-stabilization-learning-a-paradigm-transition-bridging-control-theory-and-machine-learning",
+      "section": "quick",
+      "title_en": "Stabilization Learning: A Paradigm Transition Bridging Control Theory and Machine Learning",
+      "authors": "Quan Quan",
+      "date": "2026-06-30",
+      "pdf": "https://arxiv.org/pdf/2606.31562v1",
+      "score": "6.0",
+      "evidence": "非线性系统的稳定化学习",
+      "tldr": "稳定学习（Stabilization Learning）是连接控制理论与机器学习的新范式，旨在通过实时反馈和自适应机制使系统在扰动下保持稳定。该研究区分了稳定学习与证书学习及强化学习的不同，提出了基于六元组的统一数学框架，并扩展至约束学习和跟踪问题。通过对11类典型问题的形式化重构，展示了其在多智能体、机器人视觉等领域的广泛应用潜力，为复杂系统控制提供了兼具理论严谨性与工程实用性的新方案。",
+      "tags": "query:pmsm",
+      "abstract_en": "Stabilization learning is an interdisciplinary paradigm that bridges control theory and machine learning. Its core idea is to enable systems to adjust their policies under perturbations or environmental changes through real-time feedback and adaptive mechanisms. It takes stability as its primary goal, distinguishing itself from certificate learning, which focuses on formal proofs, and reinforcement learning, which pursues optimality. It encompasses a range of methods, including Lyapunov-based analysis and design, deep feature extraction, and data-driven feedback synthesis, and is applicable to complex high-dimensional, nonlinear systems. This paper elaborates on the two major categories of stability in stabilization learning, as well as three typical application scenarios: control, observation, and recognition. It constructs a unified mathematical framework based on a six-tuple, and expands into two types of seven-tuple models: constrained learning with barrier spaces and tracking problems with targets. It also analyzes the roles, meanings, and implementation choices of key elements such as state space, controlled system, metrics, and policy. Through the formal reformulation of 11 types of problems, including multi-agent cooperative tracking, visual servo robot position stabilization, chess games, and Push-T tasks, this paper illustrates the potential applicability of the framework across multiple domains. Finally, it points out that future stabilization learning will focus on two major directions: constructing a unified problem framework and achieving efficient and robust learning, providing solutions for complex system control that combine theoretical rigor with engineering practicality.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/03/2607.00383v1-regularized-model-predictive-control-via-contractivity-and-implicit-lure-analysis",
+      "section": "quick",
+      "title_en": "Regularized Model Predictive Control via Contractivity and Implicit Lur'e Analysis",
+      "authors": "Ryotaro Shima, Anand Gokhale, Alexander Davydov, Francesco Bullo",
+      "date": "2026-07-01",
+      "pdf": "https://arxiv.org/pdf/2607.00383v1",
+      "score": "6.0",
+      "evidence": "模型预测控制稳定性分析",
+      "tldr": "本研究针对正则化模型预测控制（MPC）提出了一种基于收缩理论的稳定性分析方法。通过将正则化MPC建模为隐式Lur'e系统，研究者利用乘子法构建了收缩框架，并针对凸平滑代价、闭凸代价及Lipschitz梯度正则化器推导出了线性矩阵不等式（LMI）稳定性条件。该方法不仅涵盖了软约束和稀疏性惩罚，还为正则化MPC在保持闭环性能的同时提供了严谨的稳定性保障。",
+      "tags": "query:pmsm",
+      "abstract_en": "This paper develops a contraction-based stability analysis for regularized model predictive control (MPC), whose feedback law is defined implicitly by a finite-horizon optimal control problem with an additional regularizing cost. The proposed approach interprets regularized MPC as an implicit Lur'e system, in which the regularizing cost perturbs the optimality conditions. We develop a multiplier-based contraction framework for implicit Lur'e systems and derive linear matrix inequality conditions for regularized MPC with three broad classes of regularizers: convex smooth stage costs, convex closed proper stage costs, and differentiable regularizers with Lipschitz gradients. Numerical studies on input and state soft penalties, hard input constraints, and sparsity-promoting penalties illustrate that regularization shapes closed-loop performance while retaining formal contraction-based stability guarantees.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/03/2607.00571v1-enhancing-robustness-in-robot-environment-interactions-through-passive-compliant-degrees-of-freedom-a-hybrid-position-force-control-approach-with-feedback-linearization",
+      "section": "quick",
+      "title_en": "Enhancing Robustness in Robot-Environment Interactions through Passive Compliant Degrees of Freedom: A Hybrid Position-Force Control Approach with Feedback Linearization",
+      "authors": "Rahman Ardakanian, Iman Kardan, AliAkbar Akbari, Ali Mousavi",
+      "date": "2026-07-01",
+      "pdf": "https://arxiv.org/pdf/2607.00571v1",
+      "score": "6.0",
+      "evidence": "混合位置力控制与反馈线性化",
+      "tldr": "针对机器人与动态环境交互时易受冲击和振动影响的问题，本文提出一种结合反馈线性化混合位置/力控制与末端执行器被动顺应自由度（弹簧-阻尼）的交互架构。该方法利用物理接口吸收冲击能量，避免高频冲击传播至关节。仿真结果显示，该架构显著降低了力与速度误差波动，提升了系统在固定及变环境下的鲁棒性与平稳性。",
+      "tags": "query:pmsm",
+      "abstract_en": "Robot-environment interactions in dynamic or unstructured settings are often degraded by impact shocks, vibrations, and uncertainties in contact geometry and mechanical properties. This paper proposes an interaction architecture that combines feedback-linearized hybrid position-force control with a passive compliant degree of freedom embedded at the end-effector. Unlike conventional hybrid position-force control, which relies mainly on active feedback, force sensing, and gain tuning, the proposed architecture uses a physical spring-damper interface to store and dissipate impact energy at the contact point before high-frequency shocks propagate to the actuated joints and force-control loop. The approach is evaluated in MATLAB/Simulink on a 2-DOF planar manipulator with three end-effector configurations: rigid, spring-only, and spring-damper. Results under fixed and time-varying interaction conditions show that the spring-damper configuration provides stronger attenuation of contact-induced oscillations, lower force and velocity error variance, and smoother joint-torque response. Representative reductions include 36.5% in fixed-environment tangential force-error standard deviation, 25.4% in variable-environment normal force-error standard deviation, and 41.1% in variable-environment normal velocity-error standard deviation.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
