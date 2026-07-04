@@ -1,0 +1,93 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-04T21:11:31.617242+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 2,
+    "quick_skim_target": 11,
+    "quick_selected": 2
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2606.29339v1",
+      "title": "Two kinds of robustness are not the same: disentangling fault tolerance and low-SNR robustness in multi-domain event detection on real data",
+      "abstract": "Reliable event detection underpins induced-seismicity monitoring for Carbon dioxide Capture and Storage (CCS) and geothermal operations, distributed acoustic sensing (DAS), and industrial condition monitoring. In each setting a detector must stay reliable both when sensors fail and when the signal is buried in noise. These two failure modes are routinely conflated, and architectural complexity is often credited with robustness it may not deserve. We assemble a unified binary event-detection benchmark from three physically distinct real sources -- Hi-net seismic waveforms, Utah FORGE 2024 borehole DAS, and MAFAULDA industrial vibration -- each mapped to a common 8-channel, 256-sample representation, and evaluate a fault-tolerant detector (CEPHALON) trained with per-sample sensor-dropout against standard detectors (a 1D convolutional network, a temporal convolutional network, and a compact Transformer) trained with an identical recipe. On clean data every model is near-perfect (AUC ~ 0.99). Under progressive sensor loss, simple models with sensor-dropout are already robust and CEPHALON holds no advantage. Under additive noise, however, CEPHALON degrades far more gracefully: at -2.5 dB its overall AUC is 0.939 versus 0.532-0.572 for the convolutional baselines. Same-architecture ablations isolate the cause: disabling internal redundancy at inference reduces the low-SNR advantage only modestly, whereas removing sensor-dropout training collapses it (0.899 to 0.603 at -5 dB). The training recipe is therefore the dominant cause and parallel redundancy only secondary. We release a complete, numbered, reproducible pipeline so that every figure can be regenerated.",
+      "authors": [
+        "Isao Kurosawa"
+      ],
+      "primary_category": "physics.geo-ph",
+      "categories": [
+        "physics.geo-ph",
+        "cs.LG",
+        "eess.SP"
+      ],
+      "published": "2026-06-28T11:14:20+00:00",
+      "link": "https://arxiv.org/pdf/2606.29339v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Fault tolerance and industrial condition monitoring for vibration data",
+      "llm_evidence_cn": "振动数据的容错和工业状态监测",
+      "llm_evidence": "振动数据的容错和工业状态监测",
+      "canonical_evidence": "振动数据的容错和工业状态监测",
+      "llm_tldr_en": "Disentangles fault tolerance and noise robustness in multi-domain event detection benchmarks.",
+      "llm_tldr_cn": "在多领域事件检测基准中区分了容错性和噪声鲁棒性。",
+      "llm_tldr": "在多领域事件检测基准中区分了容错性和噪声鲁棒性。",
+      "llm_tags": [
+        "query:pmsm"
+      ],
+      "matched_query_tag": "query:pmsm",
+      "matched_query_text": "fault-tolerant control of multi-phase motors",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.31635v1",
+      "title": "A Tutorial on Autonomous Fault-Tolerant Control Using Knowledge-Grounded LLM Agents",
+      "abstract": "Fault recovery in process plants still relies heavily on plant operators, especially when faults fall outside predefined supervisory logic. Operators interpret alarms, procedures, P\\&IDs, interlocks, and process trends, then decide how to move the plant to a safe operating mode without triggering a shutdown. This paper examines how Large Language Model (LLM) agents can support such recovery decisions. The proposed framework treats the LLM as a constrained supervisory planner. It uses plant-specific knowledge to propose recovery actions, and every proposal is checked by an external validator (symbolic or simulation-based) before actuation. The paper develops three design dimensions for applying the framework: the recovery patterns for which LLM agents are useful, the validation strategies that separate admissible from inadmissible proposals, and the deployment constraints imposed by latency, knowledge engineering, safety integration, and model lifecycle management. To make the framework directly usable, two openly available executable Python environments are provided. Both re-implement established case studies, a modular mixing module and a continuous stirred-tank reactor, extended with configurable faults and defined interfaces for custom recovery and validation methods.",
+      "authors": [
+        "Javal Vyas",
+        "Milapji Singh Gill",
+        "Artan Markaj",
+        "Felix Gehlhoff",
+        "Mehmet Mercangöz"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY",
+        "cs.AI",
+        "cs.MA"
+      ],
+      "published": "2026-06-30T13:19:45+00:00",
+      "link": "https://arxiv.org/pdf/2606.31635v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "autonomous fault-tolerant control using LLM agents",
+      "llm_evidence_cn": "基于大语言模型智能体的自主容错控制",
+      "llm_evidence": "基于大语言模型智能体的自主容错控制",
+      "canonical_evidence": "基于大语言模型智能体的自主容错控制",
+      "llm_tldr_en": "Explores using LLM agents as supervisory planners for autonomous fault recovery in process plants.",
+      "llm_tldr_cn": "探讨了利用大语言模型智能体作为监督规划器，实现工厂的自主故障恢复。",
+      "llm_tldr": "探讨了利用大语言模型智能体作为监督规划器，实现工厂的自主故障恢复。",
+      "llm_tags": [
+        "query:pmsm"
+      ],
+      "matched_query_tag": "query:pmsm",
+      "matched_query_text": "fault-tolerant control of multi-phase motors",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "label": "2026-07-04",
+  "date": "2026-07-04",
+  "generated_at": "2026-07-04T21:12:06",
+  "count": 2,
+  "papers": [
+    {
+      "paper_id": "202607/04/2606.29339v1-two-kinds-of-robustness-are-not-the-same-disentangling-fault-tolerance-and-low-snr-robustness-in-multi-domain-event-detection-on-real-data",
+      "section": "quick",
+      "title_en": "Two kinds of robustness are not the same: disentangling fault tolerance and low-SNR robustness in multi-domain event detection on real data",
+      "authors": "Isao Kurosawa",
+      "date": "2026-06-28",
+      "pdf": "https://arxiv.org/pdf/2606.29339v1",
+      "score": "6.0",
+      "evidence": "振动数据的容错和工业状态监测",
+      "tldr": "本研究探讨了多领域事件检测中容错性与低信噪比鲁棒性的区别。通过在地震、光纤传感和工业振动数据集上测试，发现传感器丢弃（sensor-dropout）训练策略是提升鲁棒性的关键，而非单纯的架构复杂性。研究提出的 CEPHALON 模型在极低信噪比下表现优异，证明了训练方法在应对噪声干扰方面的主导作用，并提供了可重复的实验流程。",
+      "tags": "query:pmsm",
+      "abstract_en": "Reliable event detection underpins induced-seismicity monitoring for Carbon dioxide Capture and Storage (CCS) and geothermal operations, distributed acoustic sensing (DAS), and industrial condition monitoring. In each setting a detector must stay reliable both when sensors fail and when the signal is buried in noise. These two failure modes are routinely conflated, and architectural complexity is often credited with robustness it may not deserve. We assemble a unified binary event-detection benchmark from three physically distinct real sources -- Hi-net seismic waveforms, Utah FORGE 2024 borehole DAS, and MAFAULDA industrial vibration -- each mapped to a common 8-channel, 256-sample representation, and evaluate a fault-tolerant detector (CEPHALON) trained with per-sample sensor-dropout against standard detectors (a 1D convolutional network, a temporal convolutional network, and a compact Transformer) trained with an identical recipe. On clean data every model is near-perfect (AUC ~ 0.99). Under progressive sensor loss, simple models with sensor-dropout are already robust and CEPHALON holds no advantage. Under additive noise, however, CEPHALON degrades far more gracefully: at -2.5 dB its overall AUC is 0.939 versus 0.532-0.572 for the convolutional baselines. Same-architecture ablations isolate the cause: disabling internal redundancy at inference reduces the low-SNR advantage only modestly, whereas removing sensor-dropout training collapses it (0.899 to 0.603 at -5 dB). The training recipe is therefore the dominant cause and parallel redundancy only secondary. We release a complete, numbered, reproducible pipeline so that every figure can be regenerated.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/04/2606.31635v1-a-tutorial-on-autonomous-fault-tolerant-control-using-knowledge-grounded-llm-agents",
+      "section": "quick",
+      "title_en": "A Tutorial on Autonomous Fault-Tolerant Control Using Knowledge-Grounded LLM Agents",
+      "authors": "Javal Vyas, Milapji Singh Gill, Artan Markaj, Felix Gehlhoff, Mehmet Mercangöz",
+      "date": "2026-06-30",
+      "pdf": "https://arxiv.org/pdf/2606.31635v1",
+      "score": "6.0",
+      "evidence": "基于大语言模型智能体的自主容错控制",
+      "tldr": "本研究针对流程工业中故障恢复高度依赖人工操作的现状，提出了一种基于知识增强型大语言模型（LLM）智能体的自主容错控制框架。该框架将LLM定位为受约束的监控规划器，利用工厂特定知识提出恢复建议，并通过外部验证器确保操作安全性。论文详细探讨了恢复模式、验证策略及部署约束三个设计维度，并提供了两个开源的Python执行环境（混合模块与连续搅拌反应器），为LLM在工业自动化领域的应用提供了实践指南。",
+      "tags": "query:pmsm",
+      "abstract_en": "Fault recovery in process plants still relies heavily on plant operators, especially when faults fall outside predefined supervisory logic. Operators interpret alarms, procedures, P\\&IDs, interlocks, and process trends, then decide how to move the plant to a safe operating mode without triggering a shutdown. This paper examines how Large Language Model (LLM) agents can support such recovery decisions. The proposed framework treats the LLM as a constrained supervisory planner. It uses plant-specific knowledge to propose recovery actions, and every proposal is checked by an external validator (symbolic or simulation-based) before actuation. The paper develops three design dimensions for applying the framework: the recovery patterns for which LLM agents are useful, the validation strategies that separate admissible from inadmissible proposals, and the deployment constraints imposed by latency, knowledge engineering, safety integration, and model lifecycle management. To make the framework directly usable, two openly available executable Python environments are provided. Both re-implement established case studies, a modular mixing module and a continuous stirred-tank reactor, extended with configurable faults and defined interfaces for custom recovery and validation methods.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

@@ -6,32 +6,29 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-07-03
-- 运行时间：2026-07-03 20:01:10 UTC
+- 最新运行日期：2026-07-04
+- 运行时间：2026-07-04 21:11:58 UTC
 - 运行状态：成功
-- 本次总论文数：3
+- 本次总论文数：2
 - 精读区：0
-- 速读区：3
+- 速读区：2
 
 ### 今日简报（AI）
-今日聚焦控制理论与机器学习的深度融合，探索机器人交互鲁棒性与模型预测控制的新范式。
-重点关注“稳定化学习”这一跨学科桥梁，以及利用被动顺应性自由度优化机器人环境交互的混合控制方案。
-建议深入了解控制理论如何为 AI 模型提供稳定性保障，并关注硬件顺应性在复杂任务中的实际增益。
-- 详情：[/202607/03/README](/202607/03/README)
+今日聚焦系统鲁棒性前沿，深入探讨了多领域事件检测的容错机制与 LLM 驱动的自主控制。
+研究明确区分了容错性与低信噪比鲁棒性的差异，并展示了知识增强型 LLM 智能体在自主容错控制中的应用潜力。
+建议关注大模型如何赋能复杂系统的可靠性，并学习在实际场景中精准评估不同维度的鲁棒性能。
+- 详情：[/202607/04/README](/202607/04/README)
 
 ### 精读区论文标签
 - 本次无精读推荐。
 
 ### 速读区论文标签
-1. [Stabilization Learning: A Paradigm Transition Bridging Control Theory and Machine Learning](/202607/03/2606.31562v1-stabilization-learning-a-paradigm-transition-bridging-control-theory-and-machine-learning)  
+1. [Two kinds of robustness are not the same: disentangling fault tolerance and low-SNR robustness in multi-domain event detection on real data](/202607/04/2606.29339v1-two-kinds-of-robustness-are-not-the-same-disentangling-fault-tolerance-and-low-snr-robustness-in-multi-domain-event-detection-on-real-data)  
    标签：评分：6.0/10、query:pmsm
-   evidence：非线性系统的稳定化学习
-2. [Regularized Model Predictive Control via Contractivity and Implicit Lur'e Analysis](/202607/03/2607.00383v1-regularized-model-predictive-control-via-contractivity-and-implicit-lure-analysis)  
+   evidence：振动数据的容错和工业状态监测
+2. [A Tutorial on Autonomous Fault-Tolerant Control Using Knowledge-Grounded LLM Agents](/202607/04/2606.31635v1-a-tutorial-on-autonomous-fault-tolerant-control-using-knowledge-grounded-llm-agents)  
    标签：评分：6.0/10、query:pmsm
-   evidence：模型预测控制稳定性分析
-3. [Enhancing Robustness in Robot-Environment Interactions through Passive Compliant Degrees of Freedom: A Hybrid Position-Force Control Approach with Feedback Linearization](/202607/03/2607.00571v1-enhancing-robustness-in-robot-environment-interactions-through-passive-compliant-degrees-of-freedom-a-hybrid-position-force-control-approach-with-feedback-linearization)  
-   标签：评分：6.0/10、query:pmsm
-   evidence：混合位置力控制与反馈线性化
+   evidence：基于大语言模型智能体的自主容错控制
 
 
 <div class="dpr-home-promo-card">
