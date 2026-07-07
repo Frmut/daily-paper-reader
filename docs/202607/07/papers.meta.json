@@ -1,0 +1,37 @@
+{
+  "label": "2026-07-07",
+  "date": "2026-07-07",
+  "generated_at": "2026-07-07T21:20:46",
+  "count": 2,
+  "papers": [
+    {
+      "paper_id": "202607/07/2607.03051v1-severity-classification-of-rotor-inter-turn-short-circuits-using-eddy-current-vibration-signals",
+      "section": "quick",
+      "title_en": "Severity Classification of Rotor Inter-Turn Short Circuits Using Eddy-Current Vibration Signals",
+      "authors": "Ondrej Rozhon, Serge Pacome Bosson, Stepan Janous, Jakub Sevcik, Zdenek Peroutka",
+      "date": "2026-07-03",
+      "pdf": "https://arxiv.org/pdf/2607.03051v1",
+      "score": "7.0",
+      "evidence": "利用振动信号进行同步电机故障诊断",
+      "tldr": "针对同步发电机转子匝间短路（ITSC）故障，本文提出了一种基于电涡流位移传感器振动信号的严重程度分类框架。通过提取18维混合特征集来表征电磁不对称引起的机电调制，并利用XGBoost分类器进行诊断。该方法在多级严重程度分类中表现优异，尤其对早期轻微故障具有较高的识别率，为发电机健康监测提供了一种低传感器需求的有效方案。",
+      "tags": "query:pmsm",
+      "abstract_en": "Rotor inter-turn short-circuit (ITSC) faults in synchronous generators introduce electromagnetic asymmetries that can lead to torque ripple, unbalanced magnetic pull, and progressive mechanical degradation. While most existing studies focus on binary classification and severe fault conditions, the assessment of incipient rotor ITSC severity using displacement-sensitive vibration measurements remains relatively underexplored. This paper proposes a vibration-based diagnostic framework for multi-class severity classification of rotor ITSC by integrating an eddy-current displacement sensor with physically motivated feature extraction. An 18-dimensional hybrid feature set is designed to characterize electromechanical modulations induced by rotor electromagnetic asymmetry. Using an XGBoost classifier with leave-one-out cross-validation, the proposed approach achieved 90.56% overall accuracy, including 99% recall for healthy operation and 87% recall for mild fault conditions. The results suggest that displacement-sensitive vibration analysis enables effective severity-aware diagnosis of rotor ITSC with minimal sensor requirements.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/07/2607.04188v1-physics-informed-graph-learning-with-uncertainty-awareness-for-open-set-domain-generalization-in-fault-diagnosis",
+      "section": "quick",
+      "title_en": "Physics-Informed Graph Learning with Uncertainty Awareness for Open-Set Domain Generalization in Fault Diagnosis",
+      "authors": "Jinfeng Zhu, Shiyu Long, Ye Yuan",
+      "date": "2026-07-05",
+      "pdf": "https://arxiv.org/pdf/2607.04188v1",
+      "score": "7.0",
+      "evidence": "基于物理信息学习的旋转机械故障诊断",
+      "tldr": "针对旋转机械故障诊断中未知故障类型和工况变化带来的挑战，本文提出了一种具有不确定性感知能力的物理信息图学习框架（PGU-OD）。该框架通过物理信息频谱注意力、自适应图学习及高斯分布边界损失，有效抑制了特征提取、拓扑学习和决策过程中的不确定性传播，显著提升了跨域已知故障分类与未知故障拒绝的性能。",
+      "tags": "query:pmsm",
+      "abstract_en": "Intelligent industrial maintenance critically relies on reliable fault diagnosis of rotating machinery. However, it faces formidable challenges from unknown fault types and domain shifts induced by varying operating conditions, which is formally formulated as the open-set domain generalization (OSDG) problem. Existing methods are mainly data-driven, thereby overlooking the cascaded propagation of uncertainty across feature extraction, topological learning, and decision-making stages.To tackle this challenge, we propose PGU-OD, a novel Physics-Informed Graph Learning framework with Uncertainty Awareness for Open-set Domain generalization. First, it designs a physics-informed spectral attention module to extract condition-robust fault features, thereby suppressing perceptual uncertainty caused by frequency shifts. Further, it constructs an uncertainty aware adaptive graph learning mechanism to dynamically adjust the edge weights of the sample graph guided by class-scale Gaussian distribution parameters, which mitigates the structural propagation of uncertainty. Finally, a Gaussian-distribution-based adaptive boundary loss function and a dual-criteria open-set inference strategy are developed to optimize decision boundaries and reliably reject unknown faults. Extensive experimental evaluations on two public and widely used rotating machinery fault datasets demonstrate that the proposed PGU-OD outperforms state-of-the-art baselines in both known fault classification and unknown fault rejection under domain shifts.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

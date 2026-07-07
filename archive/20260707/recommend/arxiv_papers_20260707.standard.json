@@ -1,0 +1,91 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-07T21:20:15.307092+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 2,
+    "quick_skim_target": 11,
+    "quick_selected": 2
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2607.03051v1",
+      "title": "Severity Classification of Rotor Inter-Turn Short Circuits Using Eddy-Current Vibration Signals",
+      "abstract": "Rotor inter-turn short-circuit (ITSC) faults in synchronous generators introduce electromagnetic asymmetries that can lead to torque ripple, unbalanced magnetic pull, and progressive mechanical degradation. While most existing studies focus on binary classification and severe fault conditions, the assessment of incipient rotor ITSC severity using displacement-sensitive vibration measurements remains relatively underexplored. This paper proposes a vibration-based diagnostic framework for multi-class severity classification of rotor ITSC by integrating an eddy-current displacement sensor with physically motivated feature extraction. An 18-dimensional hybrid feature set is designed to characterize electromechanical modulations induced by rotor electromagnetic asymmetry. Using an XGBoost classifier with leave-one-out cross-validation, the proposed approach achieved 90.56% overall accuracy, including 99% recall for healthy operation and 87% recall for mild fault conditions. The results suggest that displacement-sensitive vibration analysis enables effective severity-aware diagnosis of rotor ITSC with minimal sensor requirements.",
+      "authors": [
+        "Ondrej Rozhon",
+        "Serge Pacome Bosson",
+        "Stepan Janous",
+        "Jakub Sevcik",
+        "Zdenek Peroutka"
+      ],
+      "primary_category": "eess.SP",
+      "categories": [
+        "eess.SP"
+      ],
+      "published": "2026-07-03T07:41:47+00:00",
+      "link": "https://arxiv.org/pdf/2607.03051v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "fault diagnosis in synchronous machines using vibration signals",
+      "llm_evidence_cn": "利用振动信号进行同步电机故障诊断",
+      "llm_evidence": "利用振动信号进行同步电机故障诊断",
+      "canonical_evidence": "利用振动信号进行同步电机故障诊断",
+      "llm_tldr_en": "Proposes a vibration-based diagnostic framework for rotor inter-turn short-circuit severity classification.",
+      "llm_tldr_cn": "提出了一种基于振动的转子匝间短路故障严重程度分类诊断框架。",
+      "llm_tldr": "提出了一种基于振动的转子匝间短路故障严重程度分类诊断框架。",
+      "llm_tags": [
+        "query:pmsm:composite"
+      ],
+      "matched_query_tag": "query:pmsm:composite",
+      "matched_query_text": "Papers central to 三相及双三相永磁同步电机相关研究检索, especially work that connects or combines: m; s; f; Permanent Magnet Synchronous Motor research; dual three-phase permanent magnet synchronous motor control and design; fault-tolerant control of multi-phase motors; recent advances in dual three phase permanent magnet synchronous motor control; fault tolerant strategies for multi phase permanent magnet synchronous motors.",
+      "matched_requirement_id": "req-composite-pmsm",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.04188v1",
+      "title": "Physics-Informed Graph Learning with Uncertainty Awareness for Open-Set Domain Generalization in Fault Diagnosis",
+      "abstract": "Intelligent industrial maintenance critically relies on reliable fault diagnosis of rotating machinery. However, it faces formidable challenges from unknown fault types and domain shifts induced by varying operating conditions, which is formally formulated as the open-set domain generalization (OSDG) problem. Existing methods are mainly data-driven, thereby overlooking the cascaded propagation of uncertainty across feature extraction, topological learning, and decision-making stages.To tackle this challenge, we propose PGU-OD, a novel Physics-Informed Graph Learning framework with Uncertainty Awareness for Open-set Domain generalization. First, it designs a physics-informed spectral attention module to extract condition-robust fault features, thereby suppressing perceptual uncertainty caused by frequency shifts. Further, it constructs an uncertainty aware adaptive graph learning mechanism to dynamically adjust the edge weights of the sample graph guided by class-scale Gaussian distribution parameters, which mitigates the structural propagation of uncertainty. Finally, a Gaussian-distribution-based adaptive boundary loss function and a dual-criteria open-set inference strategy are developed to optimize decision boundaries and reliably reject unknown faults. Extensive experimental evaluations on two public and widely used rotating machinery fault datasets demonstrate that the proposed PGU-OD outperforms state-of-the-art baselines in both known fault classification and unknown fault rejection under domain shifts.",
+      "authors": [
+        "Jinfeng Zhu",
+        "Shiyu Long",
+        "Ye Yuan"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-07-05T09:22:56+00:00",
+      "link": "https://arxiv.org/pdf/2607.04188v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Fault diagnosis of rotating machinery using physics-informed learning",
+      "llm_evidence_cn": "基于物理信息学习的旋转机械故障诊断",
+      "llm_evidence": "基于物理信息学习的旋转机械故障诊断",
+      "canonical_evidence": "基于物理信息学习的旋转机械故障诊断",
+      "llm_tldr_en": "Proposes a physics-informed graph learning framework for robust fault diagnosis in rotating machinery.",
+      "llm_tldr_cn": "提出了一种物理信息图学习框架，用于旋转机械的鲁棒故障诊断。",
+      "llm_tldr": "提出了一种物理信息图学习框架，用于旋转机械的鲁棒故障诊断。",
+      "llm_tags": [
+        "query:pmsm"
+      ],
+      "matched_query_tag": "query:pmsm",
+      "matched_query_text": "fault tolerant strategies for multi phase permanent magnet synchronous motors",
+      "matched_requirement_id": "req-8",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}

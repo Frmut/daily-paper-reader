@@ -1,0 +1,431 @@
+Title: Severity Classification of Rotor Inter-Turn Short Circuits Using Eddy-Current Vibration Signals
+
+URL Source: https://arxiv.org/pdf/2607.03051v1
+
+Published Time: Tue, 07 Jul 2026 00:36:23 GMT
+
+Number of Pages: 6
+
+Markdown Content:
+# Severity Classification of Rotor Inter-Turn Short Circuits Using Eddy-Current Vibration Signals 
+
+Ondˇ rej Rozhon, Serge Pacome Bosson, ˇ Stˇ ep´ an Janouˇ s, Jakub ˇ Sevˇ c´ ık, Zdeˇ nek Peroutka 
+
+Faculty of Electrical Engineering University of West Bohemia 
+
+Pilsen, Czech Republic rozhon@fel.zcu.cz, bosson@fel.zcu.cz, sjanous@fel.zcu.cz, jsevcik@fel.zcu.cz, pero@fel.zcu.cz 
+
+Abstract —Rotor inter-turn short-circuit (ITSC) faults in syn-chronous generators introduce electromagnetic asymmetries that can lead to torque ripple, unbalanced magnetic pull, and progres-sive mechanical degradation. While most existing studies focus on binary classification and severe fault conditions, the assessment of incipient rotor ITSC severity using displacement-sensitive vibration measurements remains relatively underexplored. This paper proposes a vibration-based diagnostic framework for multi-class severity classification of rotor ITSC by integrating an eddy-current displacement sensor with physically motivated feature extraction. An 18-dimensional hybrid feature set is designed to characterize electromechanical modulations induced by rotor electromagnetic asymmetry. Using an XGBoost classifier with leave-one-out cross-validation, the proposed approach achieved 90.56 % overall accuracy, including 99 % recall for healthy operation and 87 % recall for mild fault conditions. The results suggest that displacement-sensitive vibration analysis enables effective severity-aware diagnosis of rotor ITSC with minimal sensor requirements. 
+
+Index Terms —Condition monitoring, fault detection, inter-turn short circuit, machine learning, synchronous generator, vibration analysis, XGBoost 
+
+I. I NTRODUCTION 
+
+Rotor inter-turn short-circuit (ITSC) faults are among the most critical and difficult-to-detect electrical faults in syn-chronous generators. Such faults introduce rotor winding asymmetry, leading to unbalanced magnetic pull, torque rip-ple, and increased mechanical stress that can progressively degrade generator performance and reliability [1], [2]. If left undetected, rotor ITSC faults may propagate and result in severe secondary damage or forced outages, making early diagnosis essential for secure and economical power system operation [3]. A wide range of diagnostic techniques has been proposed for rotor ITSC detection. Conventional approaches rely on detection coils or auxiliary windings to monitor variations in the rotor magnetic field. Although effective under severe fault conditions, these methods are sensitive to operating point variations, require intrusive installation, and often de-pend on manually defined thresholds that limit robustness and automation [4]. Alternative techniques based on virtual power estimation [5], shaft voltage monitoring [6], or negative-sequence current analysis have also been reported; however, these approaches typically require specialized sensors or com-plex signal processing, restricting their practical deployment in industrial environments. To overcome the limitations of purely electrical monitoring, vibration-based diagnostics have been increasingly investi-gated in context with rotor fault detection in synchronous gen-erators. Rotor inter-turn short-circuit (ITSC) faults introduce electromagnetic asymmetry that produces torque ripple and unbalanced magnetic pull (UMP), which can excite measur-able rotor vibration responses [7], [8]. Recent studies have further explored the combination of vibration with electrical variables to enhance sensitivity to early defects. For example, [9] proposes a vibration-current fusion approach based on excitation-current prediction and vibration correlation, vali-dated using field data from a large turbogenerator. Neverthe-less, most vibration-based investigations rely on conventional accelerometer measurements and emphasize fault detection through RMS values or spectral indicators, rather than provid-ing severity-aware assessment [10]. As a result, the existing literature offers limited support for maintenance strategies that require discrimination and tracking of incipient rotor ITSC progression. For condition-based maintenance applications, binary fault detection is often insufficient. Maintenance decisions depend critically on fault severity: incipient rotor ITSC may be monitored until a scheduled outage, whereas advanced faults require immediate intervention. Despite this practical need, severity-aware or multi-class classification of rotor ITSC re-mains insufficiently explored in the literature, particularly when relying on vibration-based measurements. In addition, conventional vibration feature extraction frequently depends on predetermined narrow frequency bands and amplitude-based metrics (e.g., RMS or peak values), which may become insensitive to early-stage faults due to mechanical damping and measurement noise. Rotor ITSC faults primarily induce low-frequency elec-tromechanical effects associated with unbalanced magnetic pull and torque ripple. Thus, eddy-current displacement sen-sors are well suited for capturing such low-frequency motion and provide a non-intrusive measurement solution that is compatible with industrial synchronous generator monitoring environments. This paper proposes a machine learning-based diagnos-tic framework for multi-class severity classification of rotor 
+
+> arXiv:2607.03051v1 [eess.SP] 3 Jul 2026
+
+ITSC in synchronous generators. By integrating eddy-current displacement vibration measurements with hybrid spectral, temporal complexity, and statistical feature extraction, the proposed approach aims to capture subtle electromechanical modulations associated with different fault severity levels. A supervised learning model is employed to map these features to discrete severity classes, enabling interpretable and practical fault assessment using minimal sensor infrastructure. The main contributions of this paper are summarized as follows:  
+
+> •
+
+A multi-class diagnostic framework for rotor inter-turn short-circuit faults, enabling explicit severity discrimina-tion beyond conventional binary detection.  
+
+> •
+
+Application of eddy-current displacement vibration sens-ing for rotor ITSC diagnosis, targeting low-frequency electromechanical effects induced by rotor electromag-netic asymmetry.  
+
+> •
+
+A physically motivated hybrid feature extraction strategy combining optimized spectral integration, temporal com-plexity measures, and statistical morphology features.  
+
+> •
+
+Experimental validation on a laboratory synchronous gen-erator demonstrating effective severity-aware diagnosis using minimal sensor infrastructure. II. P ROPOSED DIAGNOSTIC FRAMEWORK 
+
+The proposed diagnostic framework combines complemen-tary information from both the frequency and time domains in order to capture subtle fault-induced signatures that can-not be reliably detected using conventional single-domain approaches. By integrating optimized spectral analysis with temporal complexity features and advanced machine learn-ing, the proposed methodology aims to achieve robust fault classification under varying operating conditions. The overall diagnostic procedure consists of four main stages: (i) signal conditioning and preprocessing, (ii) optimized spectral feature extraction, (iii) temporal and statistical feature extraction, and (iv) supervised classification using an XGBoost model. Each stage is designed to enhance sensitivity to ITSC-related phenomena while maintaining robustness against noise, load variations, and speed fluctuations. Raw vibration signals acquired from the machine are first preprocessed to remove measurement noise and high-frequency disturbances that do not carry diagnostic informa-tion. This is achieved using a Savitzky–Golay smoothing filter, which preserves important waveform characteristics such as peaks and local trends while reducing random fluctuations. The filtered signal xfilt [n] is obtained as 
+
+xfilt [n] = 
+
+> M
+
+X
+
+> j=−M
+
+cj xraw [n + j],
+
+where cj denotes the convolution coefficients. The window length of 51 samples, i.e., M = 25 , and a third-order polynomial were adopted based on empirical tuning. This configuration provides an effective trade-off between noise 0                    
+
+> 5
+> 10
+> Norm. Amp.
+> 6.187
+> Fundamental (1x)
+> State: Healthy (Detected fr= 2.167 Hz)
+> 0
+> 2
+> 4
+> Norm. Amp.  4.885
+> State: 100 Ohm (Detected fr= 1.581 Hz)
+> 0
+> 5
+> 10
+> Norm. Amp.
+> 7.791
+> State: 10 Ohm (Detected fr= 1.647 Hz)
+> 12345678910
+> Harmonic Order ( f/fr)
+> 0
+> 5
+> 10
+> Norm. Amp.
+> 8.149
+> State: 1 Ohm (Detected fr= 1.389 Hz)
+> Fig. 1. Order analysis of representative measurements showing normalized amplitude versus harmonic order. The 3× frcomponent dominates due to electromagnetic forcing, while 4× fris selected as the primary diagnostic frequency for ITSC detection.
+
+suppression and signal fidelity, ensuring that fault-related modulation components are preserved for subsequent analysis. Accurate estimation of the fundamental rotation fre-quency fr is essential for reliable extraction of order-domain features. In practical measurements, the amplitude of harmonic components can vary significantly with load and fault sever-ity, sometimes causing higher harmonics to dominate over the fundamental component. To avoid misidentification, the rotation frequency is estimated in the time domain using the autocorrelation function: 
+
+Rxx [τ ] = X 
+
+> n
+
+xfilt [n] · xfilt [n + τ ].
+
+The dominant periodicity detected from Rxx [τ ] provides a robust estimate of fr that is less sensitive to spectral distortions or amplitude fluctuations. This approach ensures consistent alignment of spectral features across different operating points and fault conditions. Order-domain analysis is employed to reveal fault-related patterns that are synchronized with the mechanical rotation of the machine. As illustrated in Fig. 1, ITSC faults do not primarily manifest as isolated spectral peaks, but rather as modulation effects that influence multiple higher-order harmonics. In particular, harmonics such as 4×, 6×, and 8× 
+
+fr exhibit progressive sideband structures as fault severity increases. These sidebands are caused by periodic variations in the unbalanced magnetic pull (UMP) force generated by shorted turns. Although the 3× fr component is typically dominant due to electromagnetic forcing, it is less sensitive to ITSC progres-sion. For this reason, the 4× fr harmonic is selected as the primary carrier frequency for diagnostic feature extraction, as it provides a better balance between sensitivity and stability. 1.5 1.0 0.5 0.0 0.5 1.0 1.5                   
+
+> Relative frequency from carrier [Hz]
+> 0.002
+> 0.004
+> 0.006
+> 0.008
+> Amplitude
+> 2×f_r harmonic
+> Healthy
+> 100 Ohm
+> 10 Ohm
+> 1 Ohm
+> 1.5 1.0 0.5 0.0 0.5 1.0 1.5
+> Relative frequency from carrier [Hz]
+> 0.000
+> 0.005
+> 0.010
+> 0.015
+> 0.020
+> Amplitude
+> 4×f_r harmonic
+> Healthy
+> 100 Ohm
+> 10 Ohm
+> 1 Ohm
+> 1.5 1.0 0.5 0.0 0.5 1.0 1.5
+> Relative frequency from carrier [Hz]
+> 0.00
+> 0.01
+> 0.02
+> 0.03
+> 0.04
+> Amplitude
+> 6×f_r harmonic
+> Healthy
+> 100 Ohm
+> 10 Ohm
+> 1 Ohm
+> 1.5 1.0 0.5 0.0 0.5 1.0 1.5
+> Relative frequency from carrier [Hz]
+> 0.00
+> 0.01
+> 0.02
+> 0.03
+> 0.04
+> 0.05
+> Amplitude
+> 8×f_r harmonic
+> Healthy
+> 100 Ohm
+> 10 Ohm
+> 1 Ohm
+
+Fig. 2. Ensemble-averaged spectra relative to carrier frequency for mechanical harmonics 2×, 4×, 6×, and 8× fr across all fault states. Each curve represents the mean of n measurements (legend) with interquartile range (shaded regions). 
+
+Ensemble-averaged spectra computed over all operating conditions (Fig. 2) further confirm that ITSC faults induce systematic spectral evolution rather than random variations. This observation motivates the use of quantitative spectral descriptors instead of simple peak amplitude tracking. To capture these spectral changes in a structured manner, two complementary feature types are extracted for each se-lected harmonic order h ∈ 2, 4, 6, 8:1) Carrier RMS Energy: 
+
+E(h)
+
+RMS =
+
+vuut 1
+
+Nw
+
+X
+
+f ∈[hf r −1.0,hf r +1 .0] 
+
+|X(f )|2,
+
+which quantifies the overall vibration energy around the harmonic carrier frequency. 2) Sideband Ratio: 
+
+R(h)
+
+SB = E(h)
+
+SB 
+
+E(h)
+
+RMS 
+
+,
+
+where E(h)
+
+SB represents the combined energy of the left and right modulation sidebands located at hf r ± 0.1 Hz. This ratio captures the relative strength of fault-induced amplitude modulation independently of the overall vi-bration level. The extraction strategy is illustrated in Fig. 3. Wide RMS integration windows (±1.0 Hz) ensure robustness to small errors in frequency estimation, while narrow sideband win-dows (±0.1 Hz) focus specifically on rotation-synchronous modulation components. This procedure yields a total of eight spectral features (two per harmonic), providing a compact yet informative representation of the frequency-domain fault signatures. While spectral features effectively describe steady-state pe-riodic behavior, ITSC faults also influence the time-domain 2 3 4               
+
+> Frequency [Hz]
+> 0.000
+> 0.005
+> 0.010
+> 0.015
+> 0.020
+> 0.025
+> 0.030
+> 0.035
+> Amplitude
+> 2×f_r harmonic - State: 1 Ohm
+> 4.5 5.0 5.5 6.0 6.5 7.0
+> Frequency [Hz]
+> 0.000
+> 0.005
+> 0.010
+> 0.015
+> 0.020
+> 0.025
+> Amplitude
+> 4×f_r harmonic - State: 1 Ohm
+> 7.0 7.5 8.0 8.5 9.0 9.5
+> Frequency [Hz]
+> 0.000
+> 0.002
+> 0.004
+> 0.006
+> 0.008
+> 0.010
+> Amplitude
+> 6×f_r harmonic - State: 1 Ohm
+> 10.0 10.5 11.0 11.5 12.0 12.5
+> Frequency [Hz]
+> 0.000
+> 0.002
+> 0.004
+> 0.006
+> 0.008
+> 0.010
+> Amplitude
+> 8×f_r harmonic - State: 1 Ohm
+
+Fig. 3. Feature extraction windows illustrated on a representative severe ITSC spectrum (1 Ohm state). Gray shaded regions indicate RMS integration windows (±1.0 Hz from carrier), while dashed vertical lines mark sideband detection windows (±0.1 Hz width) centered at carrier ± 0.1 Hz. The black dashed line shows the carrier frequency position at hf r .
+
+structure of vibration signals. To capture these effects, seven additional temporal and statistical features are extracted. These features characterize nonlinear complexity, waveform mor-phology, and overall signal amplitude, complementing the spectral descriptors. 
+
+Temporal Complexity Measures: 
+
+Hjorth Complexity [11] evaluates how far a signal deviates from pure sinusoidal behavior: 
+
+C =
+
+s
+
+Var (x′′ )Var (x)
+
+Var (x′)2 ,
+
+where Var( ·) denotes the variance of the signal. Healthy machines exhibit relatively complex vibration patterns due to the interaction of multiple mechanical modes. As ITSC develops, the vibration becomes increasingly dominated by a periodic UMP forcing component, leading to a measurable reduction in Hjorth complexity. Permutation Entropy [12], [13] measures the temporal un-predictability of the signal: 
+
+H = − X
+
+π p(π) ln p(π),
+
+where π denotes an ordinal pattern of length D, and p(π) rep-resents its relative probability of occurrence in the embedded time series. In this study, an embedding dimension of D = 3 
+
+and delay τ = 1 were used. Fault-induced modulation may increase the irregularity of the temporal sequence, resulting in higher entropy values. 
+
+Statistical Morphology Features: 
+
+Classical statistical indicators including the root-mean-square (RMS), crest factor, peak-to-peak value, skewness, and kurtosis are also included to capture global changes in vibration behavior: RMS total =
+
+r 1
+
+N
+
+XNn x[n]2, Crest = max |x|
+
+RMS total 
+
+,
+
+Peak-to-Peak = max( x) − min( x),
+
+Skewness =
+
+PNn (x[n] − μ)3
+
+N σ 3 , Kurtosis =
+
+PNn (x[n] − μ)4
+
+N σ 4 ,
+
+where μ denotes the mean value of the vibration signal x
+
+and σ its standard deviation. These metrics reflect changes in overall vibration intensity, impulsiveness, asymmetry, and distribution shape that accompany magnetic and mechanical distortions caused by ITSC. To help the classifier distinguish fault effects from normal operational variations, two current-based features are incorpo-rated: 
+
+Imean = 1
+
+N
+
+XNn i[n], Istd =
+
+r 1
+
+N
+
+XNn (i[n] − Imean )2.
+
+The mean current reflects the excitation level of the ma-chine, while its standard deviation captures load fluctuations. Including these parameters enables the model to adapt to different operating regimes rather than learning spurious cor-relations. Finally, the estimated rotation frequency fr is also included as an explicit feature, allowing the diagnostic model to account for speed-dependent variations in fault manifestation. Temporal behavior of key nonlinear features is analyzed using a sliding-window approach with 0.5-s windows and 0.1-s overlap. Representative evolutions of Hjorth Complexity and Permutation Entropy are shown in Fig. 4, illustrating their sensitivity to fault severity. III. E XPERIMENTAL RESULTS AND ANALYSIS 
+
+The proposed diagnostic framework was validated on a laboratory-scale test rig designed to emulate rotor inter-turn short circuits under controlled conditions. 
+
+A. Test Rig Description 
+
+The experimental setup consists of a salient-pole syn-chronous generator with a four-pole rotor. The generator is mechanically coupled to a DC drive motor, which serves as a controllable loading machine. The synchronous machine is connected to an isolated network supplying a resistive load bank. A schematic of the laboratory circuit is shown in Fig. 5. To emulate realistic ITSC faults without permanently dam-aging the machine, a modification was made to one of the rotor poles. Taps were introduced into the field winding, enabling a specific number of turns to be by-passed externally via slip rings, as shown in Fig. 6. Fault severity is controlled by connecting external resistors to the shorting path. Three distinct fault levels were defined (i) Severe Fault (1 Ω), which represents a near-complete insu-lation failure, (ii) Moderate Fault (10 Ω), and (iii) Mild Fault 
+
+(100 Ω), which result in low circulating current and represents a case which is usually difficult to detect. A Healthy baseline condition was also recorded (no shorted turns). 0.00 0.25 0.50 0.75 1.00 1.25 1.50 1.75 2.00         
+
+> 2
+> 4
+> 6
+> 8
+> 10
+> Hjorth Complexity
+> Temporal Evolution of Nonlinear Features (Sliding Window)
+> Healthy
+> 100 Ohm
+> 10 Ohm
+> 1 Ohm
+> 0.00 0.25 0.50 0.75 1.00 1.25 1.50 1.75 2.00
+> Time [s]
+> 1.35
+> 1.40
+> 1.45
+> 1.50
+> 1.55
+> 1.60
+> Permutation Entropy
+> Healthy
+> 100 Ohm
+> 10 Ohm
+> 1 Ohm
+
+Fig. 4. Temporal evolution of Hjorth Complexity and Permutation Entropy via sliding window analysis for representative measurements across fault conditions. 
+
+Fig. 5. Schematic diagram of the laboratory test rig showing the synchronous generator, DC drive motor, excitation system, and instrumentation layout. 
+
+Fig. 6. Modification of the selected generator’s field winding to allow external taps for controlled fault injection. 
+
+Fig. 7. Auxiliary terminal block with shorting cable used for fault injection via external resistors. 
+
+B. Instrumentation and Data Acquisition 
+
+Vibration data were acquired using a single non-contact eddy-current displacement sensor mounted radially near the rotor shaft. Unlike accelerometers, displacement sensors di-rectly measure the shaft’s relative motion, making them highly sensitive to the low-frequency mechanical excursions caused by unbalanced magnetic pull. A current probe was used to measure the excitation current. The dataset comprises 360 steady-state measurements ac-0.25                     
+
+> 0.00
+> 0.25
+> Disp. [mm]  State: Healthy
+> 0.25
+> 0.00
+> 0.25
+> Disp. [mm]  State: 100 Ohm
+> 0.25
+> 0.00
+> 0.25
+> Disp. [mm]  State: 10 Ohm
+> 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1.0 1.1 1.2 1.3 1.4 1.5 1.6 1.7 1.8 1.9 2.0
+> Time [s]
+> 0.25
+> 0.00
+> 0.25
+> Disp. [mm]  State: 1 Ohm
+
+Fig. 8. Representative filtered time-domain vibration displacement signals for the four investigated machine states. 
+
+quired across a wide range of operating conditions to ensure model robustness and prevent overfitting. The experiments were conducted at various rotational frequencies and excitation current levels to generate diverse training datasets, ensuring the classifier robustness and compatibility with realistic industrial operating conditions. The distribution of the 360 measure-ments across fault conditions is summarized in Table I. 
+
+TABLE I DATASET COMPOSITION 
+
+Condition Samples Percentage 
+
+Healthy 79 21.9% Mild (100 Ω) 99 27.5% Moderate (10 Ω) 87 24.2% Severe (1 Ω) 95 26.4% 
+
+Total 360 100% 
+
+A comparison of the acquired vibration signatures for afore-mentioned conditions is presented in Fig. 8. Despite varying fault severity, the peak-to-peak amplitude remains at a compa-rable level. This indicates that simple amplitude-based metrics are insufficient for reliable fault severity discrimination. 
+
+C. Classification Performance 
+
+An XGBoost classifier [14] was trained using the 18-dimensional hybrid feature vector (8 spectral, 7 tempo-ral/statistical, 2 current, 1 operating parameter). Leave-one-out cross-validation achieved 90.56% overall accuracy on 360 measurements. The confusion matrix (Fig. 9) and per-class metrics (Table II) reveal excellent healthy-state detection with balanced performance across fault severities. 
+
+D. Feature Importance Analysis 
+
+Feature importance analysis (Table III) reveals balanced multi-domain contributions: current statistics (19.58%), tem-poral complexity (19.16%), operating parameters (6.07%), and spectral/statistical features (55.19%). The top-ranked features include current standard deviation (11.82%), Hjorth Complex-ity (11.73%), and mean current (8.76%), demonstrating that no single domain dominates classification performance. Healthy 100% 10% 1%             
+
+> Predicted
+> Healthy 100% 10% 1%
+> True
+> 78 001
+> 286 74
+> 013 73 1
+> 12389
+> Confusion Matrix
+
+0
+
+20 
+
+40 
+
+60 
+
+80 
+
+Fig. 9. Confusion matrix showing 99% healthy recall with balanced multi-class performance. Most misclassification occur between adjacent severity levels. TABLE II PER -C LASS CLASSIFICATION PERFORMANCE (LOO C ROSS -V ALIDATION )
+
+Condition Precision Recall F1-Score 
+
+Healthy 0.96 0.99 0.97 100 Ω 0.85 0.87 0.86 10 Ω 0.88 0.84 0.86 1 Ω 0.94 0.94 0.94 
+
+Macro Avg. 0.91 0.91 0.91 
+
+The multi-domain feature set suggests that current statistics may provide useful operational context (standard deviation captures load variations), while Hjorth Complexity appears to capture aspects of nonlinear temporal structure not readily observable in frequency analysis. Spectral features across multiple harmonics (2×, 4×, 6×, 8× fr ) may further contribute to capturing distributed fault signatures. The ±1.0 Hz integration windows around mechanical har-monics effectively capture ITSC-induced spectral changes while maintaining robustness against rotation frequency es-timation errors (typical ∆fr < 0.1 Hz). This bandwidth encompasses the fundamental sideband structure predicted by UMP theory while avoiding excessive noise contamination from distant frequency bins. For measurements at the dominant frequency range ( fr ≈
+
+1.5–2.0 Hz), the 1.0 Hz window captures both the carrier energy and near-carrier modulation sidebands that characterize fault progression. The narrow sideband detection windows 
+
+TABLE III TOP 10 F EATURES BY XGB OOST IMPORTANCE 
+
+Feature Importance Type 
+
+Std Current 11.82% Current Hjorth Complexity 11.73% Temporal Mean Current 8.76% Current Perm. Entropy 7.43% Temporal Rotation Frequency 6.07% Operating RMS Total 5.37% Spectral RMS 2 × fr 5.29% Spectral Peak-to-Peak 5.18% Spectral RMS 8 × fr 4.99% Spectral Skewness 4.96% Statistical (±0.1 Hz) specifically target amplitude modulation compo-nents at the rotation frequency, providing complementary fine-resolution diagnostic information. 
+
+E. Hybrid Features and Diagnostic Performance 
+
+The hybrid feature vector balances interpretability with dis-criminative power (Table III). Current statistics provide opera-tional context, temporal complexity quantifies nonlinear signal structure, statistical features characterize morphology changes, and spectral features capture distributed fault signatures across harmonics. The achieved performance (Table II) demonstrates early-stage detection with high recall across all severities, enabling prognostic maintenance scheduling based on fault progression rather than binary presence/absence detection. 
+
+F. Comparison with Existing Methods 
+
+Compared to recent binary detection methods (e.g., Fang et al. [15]: 97% accuracy using time-series prediction), our four-class severity classifier achieves 90.56% overall accuracy while providing diagnostic granularity unavailable in binary frameworks. The framework maintains 99% healthy recall (ex-ceeding binary performance) while additionally distinguishing between three fault severity levels. This multi-class capability supports actionable prognostic maintenance, as early-stage fault detection may enable planned generator outage. Furthermore, the hybrid feature design relies on physically meaningful spectral and temporal descriptors rather than end-to-end black-box time-series representation, which may facilitate industrial adoption in applications where diagnostic transparency is important for operator trust and regulatory compliance. IV. C ONCLUSION 
+
+This paper presented a multi-class ITSC severity classifica-tion framework for synchronous generators achieving 90.56% overall accuracy on 360 measurements, with 99% healthy recall and 87% mild fault recall demonstrating effective early-stage detection using minimal sensor infrastructure. Key contributions include: (i) hybrid 18-dimensional feature extraction combining spectral, temporal complexity, statis-tical, and operational features with balanced multi-domain contributions, (ii) multi-class severity classification achieving 90.56% accuracy with 99% healthy recall and 87% mild fault detection, (iii) a diagnostic framework based on physically meaningful features, promoting transparency in maintenance decisions, and (iv) practical deployment using minimal sensor infrastructure (single displacement sensor + current probe). The results demonstrate that the proposed multi-domain diagnostic framework can achieve reliable ITSC severity discrimination under controlled laboratory conditions using standard industrial sensing hardware. The achieved perfor-mance indicates strong potential for practical condition-based maintenance applications in synchronous generators. However, further validation across different machine types, power rating, and real industrial environments would help assess robustness and generalization capability. ACKNOWLEDGMENT 
+
+This research has been supported by the European Union and the Ministry of Education, Youth and Sports of the Czech Republic under the project OP JAK Czech In-cubator of Technologies for Energy Networks, number CZ.02.01.01/00/23 020/0008490. This work was accepted and presented at the 2026 IEEE International Symposium on Industrial Electronics (IEEE ISIE) in Nagoya, Japan, in June 2026. It is included in the conference proceedings, and the copyright has been transferred to IEEE. REFERENCES [1] G. Klempner and I. Kerszenbaum, Monitoring and Diagnostics . IEEE, 2018, pp. 331–428. [2] P. Tavner, L. Ran, J. Penman, and H. Sedding, “Condition monitoring of rotating electrical machines,” Bibliovault OAI Repository, the University of Chicago Press , 01 2008. [3] S. Nandi, H. A. Toliyat, and X. Li, “Condition monitoring and fault diagnosis of electrical motors—a review,” IEEE Transactions on Energy Conversion , vol. 20, no. 4, pp. 719–729, 2005. [Online]. Available: https://doi.org/10.1109/TEC.2005.847955 [4] D. R. Albright, “Interturn short-circuit detector for turbine-generator rotor windings,” IEEE Transactions on Power Apparatus and Systems ,vol. PAS-90, no. 2, pp. 478–483, 1971. [5] W. Yucai and L. Yonggang, “Diagnosis of rotor winding interturn short-circuit in turbine generators using virtual power,” IEEE Transactions on Energy Conversion , vol. 30, no. 1, pp. 183–188, 2015. [6] W. Yucai, L. Yonggang, and L. Heming, “Diagnosis of turbine generator typical faults by shaft voltage,” 10 2012, pp. 1–6. [7] Y. He, M. Jiang, K. Sun, M. Qiu, and D. Gerada, “Analysis on rotor vibration characteristics under dynamic rotor interturn short circuit fault in synchronous generators,” Energies , vol. 16, no. 18, p. 6585, 2023. [8] X.-H. Yuan, Y.-L. He, M. Liu, H. Wang, S.-T. Wan, and G. Vakil, “Impact of the field winding interturn short-circuit position on rotor vibration properties in synchronous generators,” Mathematical Problems in Engineering , vol. 2021, p. 9236726, 2021. [9] R. Fang, Z. Liu, C. Peng, Y. Yang, and S. Zhang, “Fault diagnosis of inter-turn short circuit in turbogenerator rotor windings based on vibration-current signal fusion,” Energy Reports , vol. 9, no. Supplement 2, pp. 316–323, 2023. [10] G. F. dos Santos, C. A. C. Wengerkievicz, N. J. Batistela, L. D. Bernard, L. M. de Freitas, L. A. C. Borges, T. K. Matsuo, and L. Tominaga, “Detection of electrical faults in a synchronized generator through mechanical vibration at various operating conditions,” in Anais do 15ª Congresso Brasileiro de Eletromagnetismo (CBMAG) . Even3, 2022, online proceedings (ISBN: 978-65-5941-681-3). [11] B. Hjorth, “Eeg analysis based on time domain properties,” Electroen-cephalography and Clinical Neurophysiology , vol. 29, no. 3, pp. 306– 310, 1970. [12] C. Bandt and B. Pompe, “Permutation entropy: A natural complexity measure for time series,” Physical Review Letters , vol. 88, no. 17, p. 174102, 2002. [13] S. Rajabi, M. Azari, S. Santini, and F. Flammini, “Fault diagnosis in industrial rotating equipment based on permutation entropy, signal processing and multi-output neuro-fuzzy classifier,” Expert Systems with Applications , vol. 206, p. 117754, 2022. [14] T. Chen and C. Guestrin, “Xgboost: A scalable tree boosting system,” in Proceedings of the 22nd ACM SIGKDD International Conference on Knowledge Discovery and Data Mining , 2016, pp. 785–794. [Online]. Available: https://doi.org/10.1145/2939672.2939785 [15] R. Fang, Z. Liu, C. Peng, Y. Yang, and S. Zhang, “Fault diagnosis of inter-turn short circuit in turbogenerator rotor windings based on vibration-current signal fusion,” Energy Reports , vol. 9, pp. 316–323, 2023, 2022 2nd International Joint Conference on Energy and Environ-mental Engineering.
