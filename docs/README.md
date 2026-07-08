@@ -6,29 +6,30 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-07-07
-- 运行时间：2026-07-07 21:20:35 UTC
+- 最新运行日期：2026-07-08
+- 运行时间：2026-07-08 20:29:23 UTC
 - 运行状态：成功
-- 本次总论文数：2
-- 精读区：0
-- 速读区：2
+- 本次总论文数：3
+- 精读区：2
+- 速读区：1
 
 ### 今日简报（AI）
-今日聚焦工业设备智能运维，深入探讨了转子短路程度分类与物理增强的图学习诊断技术。
-核心结论展示了电涡流振动信号在转子故障识别中的潜力，以及不确定性感知在开放域故障泛化中的关键作用。
-建议关注物理先验与图神经网络的融合，这是提升复杂工况下诊断可靠性的前沿路径。
-- 详情：[/202607/07/README](/202607/07/README)
+今日深度攻克电机驱动数字孪生与高效多目标优化，涵盖从网络化实验环境到机器人触觉反馈的前沿技术。
+满分论文详述了电机驱动数字孪生的落地架构，另一项研究则通过二阶导数显著提升了电机设计的帕累托前沿
+- 详情：[/202607/08/README](/202607/08/README)
 
 ### 精读区论文标签
-- 本次无精读推荐。
+1. [Implementation of an Electric Drive Digital Twin in a Networked Test Lab Environment](/202607/08/2607.05877v1-implementation-of-an-electric-drive-digital-twin-in-a-networked-test-lab-environment)  
+   标签：评分：10.0/10、query:pmsm
+   evidence：永磁同步电机(PMSM)的数字孪生实现
+2. [Efficient Pareto-Front Generation for Electric Machines using IGA and Second Order Derivatives](/202607/08/2607.06085v1-efficient-pareto-front-generation-for-electric-machines-using-iga-and-second-order-derivatives)  
+   标签：评分：8.0/10、query:pmsm
+   evidence：电机多目标优化与设计
 
 ### 速读区论文标签
-1. [Severity Classification of Rotor Inter-Turn Short Circuits Using Eddy-Current Vibration Signals](/202607/07/2607.03051v1-severity-classification-of-rotor-inter-turn-short-circuits-using-eddy-current-vibration-signals)  
-   标签：评分：7.0/10、query:pmsm
-   evidence：利用振动信号进行同步电机故障诊断
-2. [Physics-Informed Graph Learning with Uncertainty Awareness for Open-Set Domain Generalization in Fault Diagnosis](/202607/07/2607.04188v1-physics-informed-graph-learning-with-uncertainty-awareness-for-open-set-domain-generalization-in-fault-diagnosis)  
-   标签：评分：7.0/10、query:pmsm
-   evidence：基于物理信息学习的旋转机械故障诊断
+1. [Current as Touch: Proprioceptive Contact Feedback for Compliant Dexterous Manipulation](/202607/08/2607.03529v1-current-as-touch-proprioceptive-contact-feedback-for-compliant-dexterous-manipulation)  
+   标签：评分：6.0/10、query:pmsm
+   evidence：利用电机电流和关节状态进行本体感受反馈
 
 
 <div class="dpr-home-promo-card">
