@@ -6,22 +6,28 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-07-09
-- 运行时间：2026-07-09 21:35:16 UTC
+- 最新运行日期：2026-07-10
+- 运行时间：2026-07-10 20:11:32 UTC
 - 运行状态：成功
-- 本次总论文数：0
-- 精读区：0
-- 速读区：0
+- 本次总论文数：2
+- 精读区：1
+- 速读区：1
 
 ### 今日简报（AI）
-> 今日无新推荐，系统未产出可展示论文。
-- 详情：[/202607/09/README](/202607/09/README)
+1) 聚焦饱和同步电机驱动的最优参考值在线生成，深度解析解耦前馈控制策略。
+2) 核心结论在于实现了饱和状态下的高效解耦优化，并同步探讨了调制函数法在控制领域的应用潜力。
+3) 建议重点研读高分论文中的实时算法架构，以提升复杂工况下电机驱动的动态响应性能。
+- 详情：[/202607/10/README](/202607/10/README)
 
 ### 精读区论文标签
-- 本次无精读推荐。
+1. [Decoupled Online Feedforward Generation of Optimal References for Saturated Synchronous Machine Drives](/202607/10/2607.08528v1-decoupled-online-feedforward-generation-of-optimal-references-for-saturated-synchronous-machine-drives)  
+   标签：评分：10.0/10、query:pmsm
+   evidence：同步电机驱动的最优参考信号生成，包含MTPA
 
 ### 速读区论文标签
-- 本次无速读推荐。
+1. [On the Modulating Function Method for Control Problems](/202607/10/2607.04544v1-on-the-modulating-function-method-for-control-problems)  
+   标签：评分：6.0/10、query:pmsm
+   evidence：用于故障检测与控制的调制函数法
 
 
 <div class="dpr-home-promo-card">

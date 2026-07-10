@@ -1,0 +1,37 @@
+{
+  "label": "2026-07-10",
+  "date": "2026-07-10",
+  "generated_at": "2026-07-10T20:11:50",
+  "count": 2,
+  "papers": [
+    {
+      "paper_id": "202607/10/2607.08528v1-decoupled-online-feedforward-generation-of-optimal-references-for-saturated-synchronous-machine-drives",
+      "section": "deep",
+      "title_en": "Decoupled Online Feedforward Generation of Optimal References for Saturated Synchronous Machine Drives",
+      "authors": "Mikko Sarén, Hannu Hartikainen, Antti Piippo, Marko Hinkkanen",
+      "date": "2026-07-09",
+      "pdf": "https://arxiv.org/pdf/2607.08528v1",
+      "score": "10.0",
+      "evidence": "同步电机驱动的最优参考信号生成，包含MTPA",
+      "tldr": "本文针对饱和同步电机驱动提出一种在线前馈参考信号生成方法，无需预计算查找表即可实时生成遵循MTPA轨迹并满足电压、电流及MTPV限制的最优参考。该方法通过构建解耦的一阶误差动力学确保跟踪性能，且仅需正向磁链图，避免了复杂的电流图反演，具有结构简单、抗噪性强等优点。",
+      "tags": "query:pmsm",
+      "abstract_en": "This paper presents a modular method for generating reference signals online for saturable synchronous machine drives. The method dynamically generates optimal references without precomputed lookup tables, following the maximum-torque-per-ampere (MTPA) trajectory while respecting maximum-torque-per-volt (MTPV), current, and voltage limits. The proposed tracking laws are formulated to yield exact, decoupled first-order error dynamics, ensuring predictable tracking responses and simplifying system tuning. The algorithm requires only the forward flux map, thereby eliminating the need for current-map inversion. By operating in a feedforward manner, the method ensures noise-free reference signals and structural separation from the feedback control. Both simulation and experimental results are presented, demonstrating that the proposed method achieves dynamic and steady-state performance on par with conventional lookup-table-based approaches, while avoiding the need for precomputed reference tables.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/10/2607.04544v1-on-the-modulating-function-method-for-control-problems",
+      "section": "quick",
+      "title_en": "On the Modulating Function Method for Control Problems",
+      "authors": "Davi G. Accioli, Jerome Jouffroy",
+      "date": "2026-07-05",
+      "pdf": "https://arxiv.org/pdf/2607.04544v1",
+      "score": "6.0",
+      "evidence": "用于故障检测与控制的调制函数法",
+      "tldr": "本研究将传统用于状态和参数估计的调制函数法（MFM）扩展至控制器设计领域。通过引入对偶调制函数和辅助系统概念，建立了一个适用于线性时变（LTV）系统的代数控制框架。该方法不仅能推导出状态反馈、滑动模态控制等经典控制律，还提出了一种新型固定时间控制律。研究证明了该框架在控制设计中的通用性，且数值仿真显示其在处理非匹配扰动时具有优异的性能。",
+      "tags": "query:pmsm",
+      "abstract_en": "The modulating function method is an algebraic framework that, thus far, has been used for state and parameter estimation, as well as fault detection, of linear, fractional-order, distributed, and some nonlinear systems. At the core of the method lies the modulating function, which can either be selected directly or be obtained as a solution to an auxiliary system. By introducing the notion of dual modulating functions and dual modulations using auxiliary systems and duality, this paper shows that this framework is not only an estimation framework, but also a controller design framework for LTV systems. In particular, necessary and sufficient conditions for the existence of the associated control laws are introduced; the well-known state feedback law is obtained as a particular case of the dual modulation approach, along with output feedback, LTI sliding mode control, the reachability gramian, and the state-transition matrix; and a new fixed-time control law is proposed for both LTI and LTV systems, including an estimate of the transient behavior. Moreover, numerical simulations of the newly proposed control law are performed, indicating similar performance levels to a benchmark LQR even when handling unmatched disturbances.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

@@ -1,0 +1,89 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-10T20:10:34.997179+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 1,
+    "deep_cap": 6,
+    "deep_selected": 1,
+    "quick_candidates": 1,
+    "quick_skim_target": 11,
+    "quick_selected": 1
+  },
+  "deep_dive": [
+    {
+      "id": "2607.08528v1",
+      "title": "Decoupled Online Feedforward Generation of Optimal References for Saturated Synchronous Machine Drives",
+      "abstract": "This paper presents a modular method for generating reference signals online for saturable synchronous machine drives. The method dynamically generates optimal references without precomputed lookup tables, following the maximum-torque-per-ampere (MTPA) trajectory while respecting maximum-torque-per-volt (MTPV), current, and voltage limits. The proposed tracking laws are formulated to yield exact, decoupled first-order error dynamics, ensuring predictable tracking responses and simplifying system tuning. The algorithm requires only the forward flux map, thereby eliminating the need for current-map inversion. By operating in a feedforward manner, the method ensures noise-free reference signals and structural separation from the feedback control. Both simulation and experimental results are presented, demonstrating that the proposed method achieves dynamic and steady-state performance on par with conventional lookup-table-based approaches, while avoiding the need for precomputed reference tables.",
+      "authors": [
+        "Mikko Sarén",
+        "Hannu Hartikainen",
+        "Antti Piippo",
+        "Marko Hinkkanen"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY"
+      ],
+      "published": "2026-07-09T14:23:47+00:00",
+      "link": "https://arxiv.org/pdf/2607.08528v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 10.0,
+      "llm_evidence_en": "Optimal reference generation for synchronous machine drives including MTPA",
+      "llm_evidence_cn": "同步电机驱动的最优参考信号生成，包含MTPA",
+      "llm_evidence": "同步电机驱动的最优参考信号生成，包含MTPA",
+      "canonical_evidence": "同步电机驱动的最优参考信号生成，包含MTPA",
+      "llm_tldr_en": "Generates online optimal references for synchronous machines following MTPA and MTPV trajectories.",
+      "llm_tldr_cn": "为同步电机驱动生成在线最优参考信号，遵循MTPA和MTPV轨迹并考虑饱和。",
+      "llm_tldr": "为同步电机驱动生成在线最优参考信号，遵循MTPA和MTPV轨迹并考虑饱和。",
+      "llm_tags": [
+        "query:pmsm"
+      ],
+      "matched_query_tag": "query:pmsm",
+      "matched_query_text": "Permanent Magnet Synchronous Motor research",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2607.04544v1",
+      "title": "On the Modulating Function Method for Control Problems",
+      "abstract": "The modulating function method is an algebraic framework that, thus far, has been used for state and parameter estimation, as well as fault detection, of linear, fractional-order, distributed, and some nonlinear systems. At the core of the method lies the modulating function, which can either be selected directly or be obtained as a solution to an auxiliary system. By introducing the notion of dual modulating functions and dual modulations using auxiliary systems and duality, this paper shows that this framework is not only an estimation framework, but also a controller design framework for LTV systems. In particular, necessary and sufficient conditions for the existence of the associated control laws are introduced; the well-known state feedback law is obtained as a particular case of the dual modulation approach, along with output feedback, LTI sliding mode control, the reachability gramian, and the state-transition matrix; and a new fixed-time control law is proposed for both LTI and LTV systems, including an estimate of the transient behavior. Moreover, numerical simulations of the newly proposed control law are performed, indicating similar performance levels to a benchmark LQR even when handling unmatched disturbances.",
+      "authors": [
+        "Davi G. Accioli",
+        "Jerome Jouffroy"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY"
+      ],
+      "published": "2026-07-05T23:16:47+00:00",
+      "link": "https://arxiv.org/pdf/2607.04544v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Modulating function method for fault detection and control",
+      "llm_evidence_cn": "用于故障检测与控制的调制函数法",
+      "llm_evidence": "用于故障检测与控制的调制函数法",
+      "canonical_evidence": "用于故障检测与控制的调制函数法",
+      "llm_tldr_en": "Extends the modulating function method to controller design and fault detection for LTV systems.",
+      "llm_tldr_cn": "将调制函数法扩展到线性时变系统的控制器设计和故障检测。",
+      "llm_tldr": "将调制函数法扩展到线性时变系统的控制器设计和故障检测。",
+      "llm_tags": [
+        "query:pmsm"
+      ],
+      "matched_query_tag": "query:pmsm",
+      "matched_query_text": "fault-tolerant control of multi-phase motors",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
