@@ -1,0 +1,51 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-11T20:03:57.153632+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 1,
+    "quick_skim_target": 11,
+    "quick_selected": 1
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2607.06416v1",
+      "title": "Understanding Small-Signal Impedance Matrices in Different Reference Frames",
+      "abstract": "This paper systematically analyzes the relationships among the $dq$-domain, $αβ$-domain, and sequence-domain representations used in small-signal impedance modeling of voltage-source converters (VSCs). It is shown that the AC impedance matrix expressed with $dq$-complex and $αβ$-complex variables leads to different formulations in the sequence domain. The study demonstrates that asymmetric systems exhibit different physical phenomena in the rotating and stationary reference frames; therefore, the transformations between these frames are not physically consistent in such cases. It is also demonstrated that the so-called modified sequence-domain impedance is equivalent to the universal impedance model in the frequency domain. The analysis clarifies several notational inconsistencies found in the literature. Finally, a physical interpretation is presented highlighting the implications of using stationary and rotating reference frames for stability analysis of power converters.",
+      "authors": [
+        "J. Pedra"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY"
+      ],
+      "published": "2026-07-07T15:47:51+00:00",
+      "link": "https://arxiv.org/pdf/2607.06416v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "dq-domain and alpha-beta domain impedance modeling for converters",
+      "llm_evidence_cn": "变换器的dq域和αβ域阻抗建模",
+      "llm_evidence": "变换器的dq域和αβ域阻抗建模",
+      "canonical_evidence": "变换器的dq域和αβ域阻抗建模",
+      "llm_tldr_en": "Analyzes relationships between different reference frames for converter small-signal impedance modeling.",
+      "llm_tldr_cn": "分析了变换器小信号阻抗建模中不同参考系之间的关系。",
+      "llm_tldr": "分析了变换器小信号阻抗建模中不同参考系之间的关系。",
+      "llm_tags": [
+        "query:pmsm:composite"
+      ],
+      "matched_query_tag": "query:pmsm:composite",
+      "matched_query_text": "Papers central to 三相及双三相永磁同步电机相关研究检索, especially work that connects or combines: m; s; f; Permanent Magnet Synchronous Motor research; dual three-phase permanent magnet synchronous motor control and design; fault-tolerant control of multi-phase motors; recent advances in dual three phase permanent magnet synchronous motor control; fault tolerant strategies for multi phase permanent magnet synchronous motors.",
+      "matched_requirement_id": "req-composite-pmsm",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

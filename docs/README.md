@@ -6,28 +6,26 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-07-10
-- 运行时间：2026-07-10 20:11:32 UTC
+- 最新运行日期：2026-07-11
+- 运行时间：2026-07-11 20:04:09 UTC
 - 运行状态：成功
-- 本次总论文数：2
-- 精读区：1
+- 本次总论文数：1
+- 精读区：0
 - 速读区：1
 
 ### 今日简报（AI）
-1) 聚焦饱和同步电机驱动的最优参考值在线生成，深度解析解耦前馈控制策略。
-2) 核心结论在于实现了饱和状态下的高效解耦优化，并同步探讨了调制函数法在控制领域的应用潜力。
-3) 建议重点研读高分论文中的实时算法架构，以提升复杂工况下电机驱动的动态响应性能。
-- 详情：[/202607/10/README](/202607/10/README)
+今日深入剖析了不同参考坐标系下的小信号阻抗矩阵建模方法。
+研究重点在于揭示坐标系变换对阻抗特性表征的影响，为电力电子系统稳定性分析提供理论参考。
+建议读者对比不同框架下的矩阵差异，以提升对复杂系统动态行为的理解。
+- 详情：[/202607/11/README](/202607/11/README)
 
 ### 精读区论文标签
-1. [Decoupled Online Feedforward Generation of Optimal References for Saturated Synchronous Machine Drives](/202607/10/2607.08528v1-decoupled-online-feedforward-generation-of-optimal-references-for-saturated-synchronous-machine-drives)  
-   标签：评分：10.0/10、query:pmsm
-   evidence：同步电机驱动的最优参考信号生成，包含MTPA
+- 本次无精读推荐。
 
 ### 速读区论文标签
-1. [On the Modulating Function Method for Control Problems](/202607/10/2607.04544v1-on-the-modulating-function-method-for-control-problems)  
+1. [Understanding Small-Signal Impedance Matrices in Different Reference Frames](/202607/11/2607.06416v1-understanding-small-signal-impedance-matrices-in-different-reference-frames)  
    标签：评分：6.0/10、query:pmsm
-   evidence：用于故障检测与控制的调制函数法
+   evidence：变换器的dq域和αβ域阻抗建模
 
 
 <div class="dpr-home-promo-card">

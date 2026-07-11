@@ -1,0 +1,23 @@
+{
+  "label": "2026-07-11",
+  "date": "2026-07-11",
+  "generated_at": "2026-07-11T20:04:17",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202607/11/2607.06416v1-understanding-small-signal-impedance-matrices-in-different-reference-frames",
+      "section": "quick",
+      "title_en": "Understanding Small-Signal Impedance Matrices in Different Reference Frames",
+      "authors": "J. Pedra",
+      "date": "2026-07-07",
+      "pdf": "https://arxiv.org/pdf/2607.06416v1",
+      "score": "6.0",
+      "evidence": "变换器的dq域和αβ域阻抗建模",
+      "tldr": "本研究系统分析了电压源变流器（VSC）小信号阻抗建模中dq域、αβ域和序域表示法之间的关系。论文揭示了在非对称系统中，旋转坐标系与静止坐标系下的物理现象存在差异，导致坐标变换在物理上不一致。研究证明了改进的序域阻抗与频域通用阻抗模型的等效性，澄清了文献中的符号混淆，并为电力电子变换器的稳定性分析提供了物理视角。",
+      "tags": "query:pmsm",
+      "abstract_en": "This paper systematically analyzes the relationships among the $dq$-domain, $αβ$-domain, and sequence-domain representations used in small-signal impedance modeling of voltage-source converters (VSCs). It is shown that the AC impedance matrix expressed with $dq$-complex and $αβ$-complex variables leads to different formulations in the sequence domain. The study demonstrates that asymmetric systems exhibit different physical phenomena in the rotating and stationary reference frames; therefore, the transformations between these frames are not physically consistent in such cases. It is also demonstrated that the so-called modified sequence-domain impedance is equivalent to the universal impedance model in the frequency domain. The analysis clarifies several notational inconsistencies found in the literature. Finally, a physical interpretation is presented highlighting the implications of using stationary and rotating reference frames for stability analysis of power converters.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
