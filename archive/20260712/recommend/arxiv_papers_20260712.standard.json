@@ -1,0 +1,94 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-12T20:36:39.941929+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 1,
+    "deep_cap": 6,
+    "deep_selected": 1,
+    "quick_candidates": 1,
+    "quick_skim_target": 11,
+    "quick_selected": 1
+  },
+  "deep_dive": [
+    {
+      "id": "2607.07514v1",
+      "title": "Accelerating Industrial Finite Element Simulations of Electric Machines based on Runtime Analysis",
+      "abstract": "The simulation of electric machines plays a significant role in the design of efficient and competitive products. Faster simulations reduce computational costs, such as CPU hours, and shorten development cycles, thereby enabling faster design iterations and ultimately accelerating time-to-market. In this work, we analyze the dominant computational bottlenecks and demonstrate how targeted acceleration measures can significantly reduce the overall runtime of 2D and 3D finite element simulations of electric machines in an industrial environment.",
+      "authors": [
+        "Arvinth Shankar",
+        "Iryna Kulchytska-Ruchka",
+        "Sebastian Schöps"
+      ],
+      "primary_category": "cs.CE",
+      "categories": [
+        "cs.CE"
+      ],
+      "published": "2026-07-08T15:12:10+00:00",
+      "link": "https://arxiv.org/pdf/2607.07514v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "finite element simulations of electric machines",
+      "llm_evidence_cn": "电机有限元仿真",
+      "llm_evidence": "电机有限元仿真",
+      "canonical_evidence": "电机有限元仿真",
+      "llm_tldr_en": "Accelerates industrial finite element simulations for electric machine design and development cycles.",
+      "llm_tldr_cn": "加速工业电机设计的有限元仿真，缩短研发周期。",
+      "llm_tldr": "加速工业电机设计的有限元仿真，缩短研发周期。",
+      "llm_tags": [
+        "query:pmsm"
+      ],
+      "matched_query_tag": "query:pmsm",
+      "matched_query_text": "Permanent Magnet Synchronous Motor research",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2607.06535v1",
+      "title": "Neural-ESO: A Dual-Pathway Architecture for Provably Robust Learning-Based Control",
+      "abstract": "A learning-enabled disturbance-rejection framework based on a Neural Extended State Observer (Neural-ESO) is presented in this letter. Unlike existing learning-based control methods that largely rely on the learned model once deployed, Neural-ESO adopts a dual-pathway architecture: a predictive pathway uses a neural network to provide a feedforward disturbance estimate that accelerates convergence, while a corrective pathway employs a conventional ESO to compensate prediction errors and prevent over-reliance on the neural component. Using Lyapunov theory and a small-gain analysis, we show that enforcing a Lipschitz bound on the learning component guarantees uniform ultimate boundedness of the closed-loop error dynamics. The proposed framework is validated on a quadrotor landing task subject to strong ground-effect disturbances across normal and out-of-distribution scenarios, demonstrating accuracy-robustness trade-off and greater operational reliability during training, deployment, and transfer compared with state-of-the-art baselines.",
+      "authors": [
+        "Fan Zhang",
+        "Richie Suganda",
+        "Jinfeng Chen",
+        "Wenhua Liu",
+        "Hantao Fu",
+        "Bin Hu",
+        "Qin Lin"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "eess.SY"
+      ],
+      "published": "2026-07-07T17:41:38+00:00",
+      "link": "https://arxiv.org/pdf/2607.06535v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Disturbance rejection and Extended State Observers are core methods for robust PMSM control.",
+      "llm_evidence_cn": "扰动抑制和扩展状态观测器是永磁同步电机鲁棒控制的核心方法。",
+      "llm_evidence": "扰动抑制和扩展状态观测器是永磁同步电机鲁棒控制的核心方法。",
+      "canonical_evidence": "扰动抑制和扩展状态观测器是永磁同步电机鲁棒控制的核心方法。",
+      "llm_tldr_en": "Introduces a dual-pathway Neural-ESO for robust disturbance rejection in control systems.",
+      "llm_tldr_cn": "引入了一种双路径神经扩展状态观测器，用于控制系统中的鲁棒扰动抑制。",
+      "llm_tldr": "引入了一种双路径神经扩展状态观测器，用于控制系统中的鲁棒扰动抑制。",
+      "llm_tags": [
+        "query:pmsm:composite"
+      ],
+      "matched_query_tag": "query:pmsm:composite",
+      "matched_query_text": "Papers central to 三相及双三相永磁同步电机相关研究检索, especially work that connects or combines: m; s; f; Permanent Magnet Synchronous Motor research; dual three-phase permanent magnet synchronous motor control and design; fault-tolerant control of multi-phase motors; recent advances in dual three phase permanent magnet synchronous motor control; fault tolerant strategies for multi phase permanent magnet synchronous motors.",
+      "matched_requirement_id": "req-composite-pmsm",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

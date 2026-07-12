@@ -6,26 +6,28 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-07-11
-- 运行时间：2026-07-11 20:04:09 UTC
+- 最新运行日期：2026-07-12
+- 运行时间：2026-07-12 20:37:25 UTC
 - 运行状态：成功
-- 本次总论文数：1
-- 精读区：0
+- 本次总论文数：2
+- 精读区：1
 - 速读区：1
 
 ### 今日简报（AI）
-今日深入剖析了不同参考坐标系下的小信号阻抗矩阵建模方法。
-研究重点在于揭示坐标系变换对阻抗特性表征的影响，为电力电子系统稳定性分析提供理论参考。
-建议读者对比不同框架下的矩阵差异，以提升对复杂系统动态行为的理解。
-- 详情：[/202607/11/README](/202607/11/README)
+今日深挖工业电机有限元仿真加速技术，并速览具备鲁棒性保障的神经控制新架构。
+核心结论指出运行时分析能显著优化工业级仿真效率，而 Neural-ESO 通过双路径架构实现了可证明稳健的学习控制。
+建议重点关注仿真提速在工程中的落地路径，并探索神经网络与传统控制理论结合的安全性。
+- 详情：[/202607/12/README](/202607/12/README)
 
 ### 精读区论文标签
-- 本次无精读推荐。
+1. [Accelerating Industrial Finite Element Simulations of Electric Machines based on Runtime Analysis](/202607/12/2607.07514v1-accelerating-industrial-finite-element-simulations-of-electric-machines-based-on-runtime-analysis)  
+   标签：评分：8.0/10、query:pmsm
+   evidence：电机有限元仿真
 
 ### 速读区论文标签
-1. [Understanding Small-Signal Impedance Matrices in Different Reference Frames](/202607/11/2607.06416v1-understanding-small-signal-impedance-matrices-in-different-reference-frames)  
+1. [Neural-ESO: A Dual-Pathway Architecture for Provably Robust Learning-Based Control](/202607/12/2607.06535v1-neural-eso-a-dual-pathway-architecture-for-provably-robust-learning-based-control)  
    标签：评分：6.0/10、query:pmsm
-   evidence：变换器的dq域和αβ域阻抗建模
+   evidence：扰动抑制和扩展状态观测器是永磁同步电机鲁棒控制的核心方法。
 
 
 <div class="dpr-home-promo-card">

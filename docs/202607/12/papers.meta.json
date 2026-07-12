@@ -1,0 +1,37 @@
+{
+  "label": "2026-07-12",
+  "date": "2026-07-12",
+  "generated_at": "2026-07-12T20:37:34",
+  "count": 2,
+  "papers": [
+    {
+      "paper_id": "202607/12/2607.07514v1-accelerating-industrial-finite-element-simulations-of-electric-machines-based-on-runtime-analysis",
+      "section": "deep",
+      "title_en": "Accelerating Industrial Finite Element Simulations of Electric Machines based on Runtime Analysis",
+      "authors": "Arvinth Shankar, Iryna Kulchytska-Ruchka, Sebastian Schöps",
+      "date": "2026-07-08",
+      "pdf": "https://arxiv.org/pdf/2607.07514v1",
+      "score": "8.0",
+      "evidence": "电机有限元仿真",
+      "tldr": "本研究针对工业环境下电机设计的有限元模拟（FEA）效率问题，通过对2D和3D模拟过程进行深入的运行时间分析，识别出主要的计算瓶颈。研究提出了一系列针对性的加速措施，旨在降低计算成本（如CPU时长）并缩短产品开发周期。该方法成功显著减少了整体仿真时间，为加速电机产品的迭代和上市提供了技术支持。",
+      "tags": "query:pmsm",
+      "abstract_en": "The simulation of electric machines plays a significant role in the design of efficient and competitive products. Faster simulations reduce computational costs, such as CPU hours, and shorten development cycles, thereby enabling faster design iterations and ultimately accelerating time-to-market. In this work, we analyze the dominant computational bottlenecks and demonstrate how targeted acceleration measures can significantly reduce the overall runtime of 2D and 3D finite element simulations of electric machines in an industrial environment.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/12/2607.06535v1-neural-eso-a-dual-pathway-architecture-for-provably-robust-learning-based-control",
+      "section": "quick",
+      "title_en": "Neural-ESO: A Dual-Pathway Architecture for Provably Robust Learning-Based Control",
+      "authors": "Fan Zhang, Richie Suganda, Jinfeng Chen, Wenhua Liu, Hantao Fu, Bin Hu, Qin Lin",
+      "date": "2026-07-07",
+      "pdf": "https://arxiv.org/pdf/2607.06535v1",
+      "score": "6.0",
+      "evidence": "扰动抑制和扩展状态观测器是永磁同步电机鲁棒控制的核心方法。",
+      "tldr": "针对学习控制方法过度依赖模型的问题，本文提出Neural-ESO框架。该框架采用双路径架构：预测路径利用神经网络提供前馈扰动估计以加速收敛，修正路径利用传统扩张状态观测器（ESO）补偿预测误差。通过李雅普诺夫理论证明了其闭环稳定性。在无人机着陆实验中，该方法在处理地面效应扰动时表现出优于现有方法的鲁棒性和可靠性。",
+      "tags": "query:pmsm",
+      "abstract_en": "A learning-enabled disturbance-rejection framework based on a Neural Extended State Observer (Neural-ESO) is presented in this letter. Unlike existing learning-based control methods that largely rely on the learned model once deployed, Neural-ESO adopts a dual-pathway architecture: a predictive pathway uses a neural network to provide a feedforward disturbance estimate that accelerates convergence, while a corrective pathway employs a conventional ESO to compensate prediction errors and prevent over-reliance on the neural component. Using Lyapunov theory and a small-gain analysis, we show that enforcing a Lipschitz bound on the learning component guarantees uniform ultimate boundedness of the closed-loop error dynamics. The proposed framework is validated on a quadrotor landing task subject to strong ground-effect disturbances across normal and out-of-distribution scenarios, demonstrating accuracy-robustness trade-off and greater operational reliability during training, deployment, and transfer compared with state-of-the-art baselines.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
