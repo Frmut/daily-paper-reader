@@ -1,0 +1,23 @@
+{
+  "label": "2026-07-13",
+  "date": "2026-07-13",
+  "generated_at": "2026-07-13T21:29:41",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202607/13/2607.09136v1-residual-physics-informed-neural-networks-for-high-fidelity-bldc-motor-modeling",
+      "section": "deep",
+      "title_en": "Residual Physics-Informed Neural Networks for High-Fidelity BLDC Motor Modeling",
+      "authors": "Haitham El-Hussieny",
+      "date": "2026-07-10",
+      "pdf": "https://arxiv.org/pdf/2607.09136v1",
+      "score": "8.0",
+      "evidence": "三相无刷直流电机动力学的高保真建模",
+      "tldr": "本研究针对机器人关节控制中的无刷直流（BLDC）电机建模问题，提出了一种基于残差网络（ResNet）架构的物理信息神经网络（PINN）。该模型通过融合机电与热力学常微分方程（ODE）的复合损失函数，能够准确预测电机转角、转速、三相电流及绕组温度等六个状态变量。该方法采用课程调度策略优化训练，在保持高精度的同时，推理速度比传统ODE求解器快118倍，为实时控制提供了高效的代理模型。",
+      "tags": "query:pmsm",
+      "abstract_en": "Accurate dynamics modeling of Brushless DC (BLDC) motors is fundamental to high-performance robotic joint control. This paper presents a Physics-Informed Neural Network (PINN) with a deep residual (ResNet) backbone that learns a continuous-time surrogate of the full six-state BLDC motor dynamics. Given simulation time, applied three-phase voltages, and excitation parameters as inputs, the network directly predicts all motor state variables -- rotor angle, angular velocity, three-phase currents, and winding temperature -- while simultaneously satisfying the governing electromechanical and thermal ODEs through a composite physics-data loss. A curriculum scheduling strategy gradually activates the physics penalty to prevent premature convergence. Training runs are completed in under two minutes on a standard CPU. Crucially, once trained, PINN inference achieves latencies of 0.1--22, mu s per query, up to 118x faster than conventional ODE solvers, making it suitable for real-time observer and control applications.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

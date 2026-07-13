@@ -6,28 +6,26 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-07-12
-- 运行时间：2026-07-12 20:37:25 UTC
+- 最新运行日期：2026-07-13
+- 运行时间：2026-07-13 21:19:29 UTC
 - 运行状态：成功
-- 本次总论文数：2
+- 本次总论文数：1
 - 精读区：1
-- 速读区：1
+- 速读区：0
 
 ### 今日简报（AI）
-今日深挖工业电机有限元仿真加速技术，并速览具备鲁棒性保障的神经控制新架构。
-核心结论指出运行时分析能显著优化工业级仿真效率，而 Neural-ESO 通过双路径架构实现了可证明稳健的学习控制。
-建议重点关注仿真提速在工程中的落地路径，并探索神经网络与传统控制理论结合的安全性。
-- 详情：[/202607/12/README](/202607/12/README)
+今日聚焦高保真无刷直流电机建模，深入剖析残差物理信息神经网络（RPINN）的创新应用。
+该研究通过将物理定律与残差学习深度融合，成功实现了复杂工况下电机特性的高精度仿真。
+建议关注工业自动化与精密控制的读者重点研读这种结合物理先验的深度学习建模新范式。
+- 详情：[/202607/13/README](/202607/13/README)
 
 ### 精读区论文标签
-1. [Accelerating Industrial Finite Element Simulations of Electric Machines based on Runtime Analysis](/202607/12/2607.07514v1-accelerating-industrial-finite-element-simulations-of-electric-machines-based-on-runtime-analysis)  
+1. [Residual Physics-Informed Neural Networks for High-Fidelity BLDC Motor Modeling](/202607/13/2607.09136v1-residual-physics-informed-neural-networks-for-high-fidelity-bldc-motor-modeling)  
    标签：评分：8.0/10、query:pmsm
-   evidence：电机有限元仿真
+   evidence：三相无刷直流电机动力学的高保真建模
 
 ### 速读区论文标签
-1. [Neural-ESO: A Dual-Pathway Architecture for Provably Robust Learning-Based Control](/202607/12/2607.06535v1-neural-eso-a-dual-pathway-architecture-for-provably-robust-learning-based-control)  
-   标签：评分：6.0/10、query:pmsm
-   evidence：扰动抑制和扩展状态观测器是永磁同步电机鲁棒控制的核心方法。
+- 本次无速读推荐。
 
 
 <div class="dpr-home-promo-card">

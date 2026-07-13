@@ -1,0 +1,50 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-13T21:19:00.646924+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 1,
+    "deep_cap": 6,
+    "deep_selected": 1,
+    "quick_candidates": 0,
+    "quick_skim_target": 11,
+    "quick_selected": 0
+  },
+  "deep_dive": [
+    {
+      "id": "2607.09136v1",
+      "title": "Residual Physics-Informed Neural Networks for High-Fidelity BLDC Motor Modeling",
+      "abstract": "Accurate dynamics modeling of Brushless DC (BLDC) motors is fundamental to high-performance robotic joint control. This paper presents a Physics-Informed Neural Network (PINN) with a deep residual (ResNet) backbone that learns a continuous-time surrogate of the full six-state BLDC motor dynamics. Given simulation time, applied three-phase voltages, and excitation parameters as inputs, the network directly predicts all motor state variables -- rotor angle, angular velocity, three-phase currents, and winding temperature -- while simultaneously satisfying the governing electromechanical and thermal ODEs through a composite physics-data loss. A curriculum scheduling strategy gradually activates the physics penalty to prevent premature convergence. Training runs are completed in under two minutes on a standard CPU. Crucially, once trained, PINN inference achieves latencies of 0.1--22, mu s per query, up to 118x faster than conventional ODE solvers, making it suitable for real-time observer and control applications.",
+      "authors": [
+        "Haitham El-Hussieny"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-07-10T06:47:02+00:00",
+      "link": "https://arxiv.org/pdf/2607.09136v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "high-fidelity modeling of three-phase BLDC motor dynamics",
+      "llm_evidence_cn": "三相无刷直流电机动力学的高保真建模",
+      "llm_evidence": "三相无刷直流电机动力学的高保真建模",
+      "canonical_evidence": "三相无刷直流电机动力学的高保真建模",
+      "llm_tldr_en": "Uses PINNs to model three-phase BLDC motor dynamics, highly relevant to synchronous motor research.",
+      "llm_tldr_cn": "使用物理信息神经网络对三相无刷直流电机建模，与同步电机研究高度相关。",
+      "llm_tldr": "使用物理信息神经网络对三相无刷直流电机建模，与同步电机研究高度相关。",
+      "llm_tags": [
+        "query:pmsm:composite"
+      ],
+      "matched_query_tag": "query:pmsm:composite",
+      "matched_query_text": "Papers central to 三相及双三相永磁同步电机相关研究检索, especially work that connects or combines: m; s; f; Permanent Magnet Synchronous Motor research; dual three-phase permanent magnet synchronous motor control and design; fault-tolerant control of multi-phase motors; recent advances in dual three phase permanent magnet synchronous motor control; fault tolerant strategies for multi phase permanent magnet synchronous motors.",
+      "matched_requirement_id": "req-composite-pmsm",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": []
+}
