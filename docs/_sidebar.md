@@ -1,6 +1,9 @@
 * <a class="dpr-sidebar-root-link" href="#/">首页</a>
 * <a class="dpr-sidebar-root-link dpr-sidebar-noactive-link" href="javascript:void(0)" data-dpr-hash="#/tutorial/README">使用教程</a>
 * Daily Papers
+  * 2026-07-14 <!--dpr-date:20260714-->
+    * 速读区
+      * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202607/14/2607.09276v1-an-improved-deep-reinforcement-learning-control-strategy-for-traction-dual-rectifiers-in-emus" data-sidebar-item="{&quot;title&quot;: &quot;An Improved Deep Reinforcement Learning Control Strategy for Traction Dual Rectifiers in EMUs&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2607.09276v1-an-improved-deep-reinforcement-learning-control-strategy-for-traction-dual-rectifiers-in-emus&quot;, &quot;score&quot;: &quot;6.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;pmsm&quot;}], &quot;evidence&quot;: &quot;牵引系统中的dq电流解耦控制&quot;}">An Improved Deep Reinforcement Learning Control Strategy for Traction Dual Rectifiers in EMUs</a>
   * 2026-07-13 <!--dpr-date:20260713-->
     * 精读区
       * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202607/13/2607.09136v1-residual-physics-informed-neural-networks-for-high-fidelity-bldc-motor-modeling" data-sidebar-item="{&quot;title&quot;: &quot;Residual Physics-Informed Neural Networks for High-Fidelity BLDC Motor Modeling&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2607.09136v1-residual-physics-informed-neural-networks-for-high-fidelity-bldc-motor-modeling&quot;, &quot;score&quot;: &quot;8.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;pmsm&quot;}], &quot;evidence&quot;: &quot;三相无刷直流电机动力学的高保真建模&quot;}">Residual Physics-Informed Neural Networks for High-Fidelity BLDC Motor Modeling</a>

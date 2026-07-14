@@ -6,26 +6,26 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-07-13
-- 运行时间：2026-07-13 21:19:29 UTC
+- 最新运行日期：2026-07-14
+- 运行时间：2026-07-14 21:27:18 UTC
 - 运行状态：成功
 - 本次总论文数：1
-- 精读区：1
-- 速读区：0
+- 精读区：0
+- 速读区：1
 
 ### 今日简报（AI）
-今日聚焦高保真无刷直流电机建模，深入剖析残差物理信息神经网络（RPINN）的创新应用。
-该研究通过将物理定律与残差学习深度融合，成功实现了复杂工况下电机特性的高精度仿真。
-建议关注工业自动化与精密控制的读者重点研读这种结合物理先验的深度学习建模新范式。
-- 详情：[/202607/13/README](/202607/13/README)
+今日聚焦动车组牵引双整流器的控制优化，探索深度强化学习在轨道交通中的新应用。
+该研究提出了一种改进的 DRL 策略，旨在提升 EMU 牵引系统在复杂工况下的整流控制性能。
+推荐电力电子与智能控制领域的读者关注 AI 算法在重型装备实时控制中的落地潜力。
+- 详情：[/202607/14/README](/202607/14/README)
 
 ### 精读区论文标签
-1. [Residual Physics-Informed Neural Networks for High-Fidelity BLDC Motor Modeling](/202607/13/2607.09136v1-residual-physics-informed-neural-networks-for-high-fidelity-bldc-motor-modeling)  
-   标签：评分：8.0/10、query:pmsm
-   evidence：三相无刷直流电机动力学的高保真建模
+- 本次无精读推荐。
 
 ### 速读区论文标签
-- 本次无速读推荐。
+1. [An Improved Deep Reinforcement Learning Control Strategy for Traction Dual Rectifiers in EMUs](/202607/14/2607.09276v1-an-improved-deep-reinforcement-learning-control-strategy-for-traction-dual-rectifiers-in-emus)  
+   标签：评分：6.0/10、query:pmsm
+   evidence：牵引系统中的dq电流解耦控制
 
 
 <div class="dpr-home-promo-card">

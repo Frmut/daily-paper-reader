@@ -1,0 +1,23 @@
+{
+  "label": "2026-07-14",
+  "date": "2026-07-14",
+  "generated_at": "2026-07-14T21:27:26",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202607/14/2607.09276v1-an-improved-deep-reinforcement-learning-control-strategy-for-traction-dual-rectifiers-in-emus",
+      "section": "quick",
+      "title_en": "An Improved Deep Reinforcement Learning Control Strategy for Traction Dual Rectifiers in EMUs",
+      "authors": "Zhigang Liu, Mingwei Tang, Xiangyu Meng, Hui Wang, Qiao Zhang, Haoyu Wang, Mengru Li",
+      "date": "2026-07-10",
+      "pdf": "https://arxiv.org/pdf/2607.09276v1",
+      "score": "6.0",
+      "evidence": "牵引系统中的dq电流解耦控制",
+      "tldr": "针对CRH5型动车组牵引整流器中传统PI控制在模型失配及工况切换时性能下降的问题，本文提出一种改进的深度强化学习（DRL）控制策略。该策略利用单个智能体替代d-q电流解耦控制中的所有PI调节器，并引入奖励塑形（RS）与优先经验回放（PER）优化TD3算法，提升了多工况下的收敛速度与控制稳定性，确保了中间直流电压的稳定。",
+      "tags": "query:pmsm",
+      "abstract_en": "Due to the use of PI-based d q current decoupling in the pulse rectifier of CRH5 high-speed trains, the PI parameters directly affect the traction system's control performance. Linearized control may have issues with reference trajectory changes or model mismatches, leading to a decrease in system performance, while nonlinear control may have problems with jitter and poor steady-state accuracy. This paper proposes a new control strategy that replaces all PI in the d q current decoupling control with a single intelligent agent. This method based on Deep Reinforcement Learning (DRL) can avoid various drawbacks of linearization and nonlinear control and ensure the stability of intermediate DC voltage. However, when EMUs are in different working conditions and switching, the Twin Delayed Deep Deterministic Policy Gradient (TD3) algorithm used in traction dual rectifiers does not have a good control effect. Focusing on the issue, Reward Shaping (RS) is added to re-design a nonlinear reward function, which can be combined with Prioritized Experience Replay (PER) to increase the convergence speed of the episode reward. The simulation results show that the improved control strategy can be effectively applied to EMUs working in multiple conditions. Finally, the stability analysis is carried out using Lyapunov's second method and the verification results of the hardware-in-the-loop (HIL) simulation platform show that the DRL control has a good effect.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
