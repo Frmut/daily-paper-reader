@@ -1,0 +1,55 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-15T20:44:26.328433+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 1,
+    "quick_skim_target": 11,
+    "quick_selected": 1
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2607.10883v1",
+      "title": "Model-Free Detection and Accommodation of Sensor Faults for a PEM Electrolyzer",
+      "abstract": "We investigate the detection and accommodation of sensor faults for a proton exchange membrane electrolyzer coupled to a DC/DC converter powered by renewable energy sources. The proposed method for detecting and accommodating the sensor fault is model-free and is based on the concept of ultra-local model that is becoming classic in control engineering. The existing literature on active control tolerant to sensor fault dedicated to this question shows that no previous work has addressed this topic. Our approach mitigates the effect of sensor fault on closed-loop behavior and guarantees the stability and performance of the overall system. Numerical simulations under variations in renewable energy sources validate our approach.",
+      "authors": [
+        "Meziane Ait Ziane",
+        "Michel Zasadzinski",
+        "Cédric Join",
+        "Michel Fliess"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY",
+        "physics.app-ph"
+      ],
+      "published": "2026-07-12T19:14:01+00:00",
+      "link": "https://arxiv.org/pdf/2607.10883v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Model-free detection and accommodation of sensor faults",
+      "llm_evidence_cn": "传感器故障的无模型检测与处理",
+      "llm_evidence": "传感器故障的无模型检测与处理",
+      "canonical_evidence": "传感器故障的无模型检测与处理",
+      "llm_tldr_en": "A model-free approach for detecting and accommodating sensor faults in power converters using ultra-local models.",
+      "llm_tldr_cn": "一种基于超局部模型的功率变换器传感器故障无模型检测与容错处理方法。",
+      "llm_tldr": "一种基于超局部模型的功率变换器传感器故障无模型检测与容错处理方法。",
+      "llm_tags": [
+        "query:pmsm"
+      ],
+      "matched_query_tag": "query:pmsm",
+      "matched_query_text": "fault-tolerant control of multi-phase motors",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

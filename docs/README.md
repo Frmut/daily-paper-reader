@@ -6,26 +6,26 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-07-14
-- 运行时间：2026-07-14 21:27:18 UTC
+- 最新运行日期：2026-07-15
+- 运行时间：2026-07-15 20:44:39 UTC
 - 运行状态：成功
 - 本次总论文数：1
 - 精读区：0
 - 速读区：1
 
 ### 今日简报（AI）
-今日聚焦动车组牵引双整流器的控制优化，探索深度强化学习在轨道交通中的新应用。
-该研究提出了一种改进的 DRL 策略，旨在提升 EMU 牵引系统在复杂工况下的整流控制性能。
-推荐电力电子与智能控制领域的读者关注 AI 算法在重型装备实时控制中的落地潜力。
-- 详情：[/202607/14/README](/202607/14/README)
+今日聚焦 PEM 电解槽传感器故障诊断，探索制氢系统在无模型环境下的智能化运维。
+研究提出一种无需物理模型的检测与容错方案，有效解决了电解槽传感器失效时的系统稳定性难题。
+建议关注氢能设备安全监控及无模型控制技术在工业复杂工况下的落地应用。
+- 详情：[/202607/15/README](/202607/15/README)
 
 ### 精读区论文标签
 - 本次无精读推荐。
 
 ### 速读区论文标签
-1. [An Improved Deep Reinforcement Learning Control Strategy for Traction Dual Rectifiers in EMUs](/202607/14/2607.09276v1-an-improved-deep-reinforcement-learning-control-strategy-for-traction-dual-rectifiers-in-emus)  
+1. [Model-Free Detection and Accommodation of Sensor Faults for a PEM Electrolyzer](/202607/15/2607.10883v1-model-free-detection-and-accommodation-of-sensor-faults-for-a-pem-electrolyzer)  
    标签：评分：6.0/10、query:pmsm
-   evidence：牵引系统中的dq电流解耦控制
+   evidence：传感器故障的无模型检测与处理
 
 
 <div class="dpr-home-promo-card">
