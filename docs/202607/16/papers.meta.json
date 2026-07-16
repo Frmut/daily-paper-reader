@@ -1,0 +1,37 @@
+{
+  "label": "2026-07-16",
+  "date": "2026-07-16",
+  "generated_at": "2026-07-16T21:00:10",
+  "count": 2,
+  "papers": [
+    {
+      "paper_id": "202607/16/2607.13368v1-fine-grained-open-set-fault-diagnosis-via-metric-guided-time-frequency-configuration-selection-and-class-specific-autoencoders",
+      "section": "quick",
+      "title_en": "Fine-Grained Open-Set Fault Diagnosis via Metric-Guided Time-Frequency Configuration Selection and Class-Specific Autoencoders",
+      "authors": "Youngjae Jeon, Dongjin Lee",
+      "date": "2026-07-15",
+      "pdf": "https://arxiv.org/pdf/2607.13368v1",
+      "score": "6.0",
+      "evidence": "旋转机械与工业系统的故障诊断",
+      "tldr": "针对旋转机械细粒度开集故障诊断中STFT配置选择困难及未知类别识别不准的问题，本文提出一种结合度量引导数据中心（MGDC）配置选择与类特定自编码器（CSAE）的方法。MGDC利用轮廓系数预筛选最优时频表示，CSAE通过学习已知类别的紧凑流形并结合双重准则机制实现异常拒绝。实验证明该方法在CWRU和PU数据集上表现优异，显著降低了配置选择成本并提升了诊断精度。",
+      "tags": "query:pmsm",
+      "abstract_en": "Reliable fault diagnosis of rotating machinery is essential for the safe and stable operation of industrial systems. Although deep learning methods perform well under closed-set conditions, real machinery may encounter previously unseen fault states. Existing open-set fault diagnosis (OSFD) methods remain limited in fine-grained severity diagnosis because they often rely on coarse type levels, heuristically selected Short-Time Fourier Transform (STFT) settings, and global class boundaries. We propose a fine-grained OSFD method that combines metric-guided data-centric (MGDC) STFT configuration selection with class-specific autoencoder (CSAE)-based anomaly rejection. MGDC screens candidate STFT configurations using the Silhouette score computed from spectrogram representations, identifying promising time-frequency representations before network training. The diagnostic model then uses a bank of CSAEs to learn compact class-specific manifolds for known degradation states. During inference, reconstruction-error-based class affinity identifies known classes, while a dual-criteria mechanism based on latent dimension-wise boundaries and class-specific reconstruction error rejects unknown samples. Experiments on the Case Western Reserve University (CWRU) and Paderborn University (PU) bearing datasets show that the proposed method achieves H-scores of 0.9924 and 0.9509 for fine-grained fault severity diagnosis. MGDC also identifies the best-performing configuration found by exhaustive search while evaluating only 9 of 38 candidates on CWRU and 2 of 39 candidates on PU, reducing the selection cost by factors of 5.69 and 29.87, respectively. These results indicate that the proposed method supports accurate open-set severity diagnosis with substantially lower configuration-selection cost.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/16/2607.13537v1-transformer-is-all-you-need-attention-based-anomaly-detection-and-classification-in-inverter-rich-power-systems",
+      "section": "quick",
+      "title_en": "Transformer is All You Need: Attention-Based Anomaly Detection and Classification in Inverter-Rich Power Systems",
+      "authors": "Emad Abukhousa, Saman Zonouz, A. P. Sakis Meliopoulos",
+      "date": "2026-07-15",
+      "pdf": "https://arxiv.org/pdf/2607.13537v1",
+      "score": "6.0",
+      "evidence": "使用Transformer进行逆变器电力系统的故障诊断",
+      "tldr": "本研究针对含高比例逆变器电源（IBR）的新型电力系统，提出并评估了基于Transformer架构的深度学习分类器DL-Xformer，用于多类故障与网络攻击的诊断。通过与动态状态估计保护（DSE-EBP）在18类异常场景下的对比，证明了该方法在处理非传统故障行为和测量域攻击（如GPS欺骗）方面的有效性，为下一代智能电网提供了分层保护架构的新思路。",
+      "tags": "query:pmsm",
+      "abstract_en": "Inverter-based resources and IEC 61850 process-bus measurements introduce new protection challenges, including nontraditional fault behavior and measurement-domain cyber-physical attacks. This paper evaluates DL-Xformer, an attention-based Transformer classifier for multi-class fault and cyberattack diagnosis, side-by-side with Dynamic State Estimation-Based Protection (DSE-EBP) on identical high-fidelity electromagnetic-transient (EMT) streaming measurements from an IBR-rich power grid. The evaluation uses an 18-class taxonomy covering normal operation, 11 physical faults, and six measurement-domain attacks, including CT/PT ratio manipulation and GPS spoofing, sampled at 4.8 kHz from synchronized upstream and downstream merging units. DSE-EBP detects all streaming anomalies in 0.417-1.660 ms, with a mean detection time of 0.756 ms, while DL-Xformer classifies the same events in 2.50-50.42 ms, with a mean classification time of 13.46 ms. The longest delay occurs in a deliberate stress case where a CT ratio attack is introduced while residual oscillations from a preceding DLG fault have not fully settled; the event-window accuracy drops to 76.1 %, but the stable final classification remains correct. Measurement-level feature attribution shows that the DL-Xformer decision is driven by physically meaningful current and voltage channels at the attacked measurement location. Together, the two methods motivate a layered protection architecture for next-generation inverter-dominated smart grids.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

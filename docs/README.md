@@ -6,26 +6,29 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-07-15
-- 运行时间：2026-07-15 20:44:39 UTC
+- 最新运行日期：2026-07-16
+- 运行时间：2026-07-16 21:00:02 UTC
 - 运行状态：成功
-- 本次总论文数：1
+- 本次总论文数：2
 - 精读区：0
-- 速读区：1
+- 速读区：2
 
 ### 今日简报（AI）
-今日聚焦 PEM 电解槽传感器故障诊断，探索制氢系统在无模型环境下的智能化运维。
-研究提出一种无需物理模型的检测与容错方案，有效解决了电解槽传感器失效时的系统稳定性难题。
-建议关注氢能设备安全监控及无模型控制技术在工业复杂工况下的落地应用。
-- 详情：[/202607/15/README](/202607/15/README)
+聚焦电力与工业系统的智能运维，探索基于 Transformer 和自编码器的故障诊断新方案。
+重点关注逆变器密集型电网的异常检测，以及通过时频配置优化实现的细粒度开集故障识别。
+建议关注注意力机制在复杂电力场景下的泛化能力，以及开集识别在实际工况中的落地应用。
+- 详情：[/202607/16/README](/202607/16/README)
 
 ### 精读区论文标签
 - 本次无精读推荐。
 
 ### 速读区论文标签
-1. [Model-Free Detection and Accommodation of Sensor Faults for a PEM Electrolyzer](/202607/15/2607.10883v1-model-free-detection-and-accommodation-of-sensor-faults-for-a-pem-electrolyzer)  
+1. [Fine-Grained Open-Set Fault Diagnosis via Metric-Guided Time-Frequency Configuration Selection and Class-Specific Autoencoders](/202607/16/2607.13368v1-fine-grained-open-set-fault-diagnosis-via-metric-guided-time-frequency-configuration-selection-and-class-specific-autoencoders)  
    标签：评分：6.0/10、query:pmsm
-   evidence：传感器故障的无模型检测与处理
+   evidence：旋转机械与工业系统的故障诊断
+2. [Transformer is All You Need: Attention-Based Anomaly Detection and Classification in Inverter-Rich Power Systems](/202607/16/2607.13537v1-transformer-is-all-you-need-attention-based-anomaly-detection-and-classification-in-inverter-rich-power-systems)  
+   标签：评分：6.0/10、query:pmsm
+   evidence：使用Transformer进行逆变器电力系统的故障诊断
 
 
 <div class="dpr-home-promo-card">
