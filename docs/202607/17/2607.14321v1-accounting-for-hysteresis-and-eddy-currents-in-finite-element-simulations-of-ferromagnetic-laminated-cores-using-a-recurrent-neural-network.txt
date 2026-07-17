@@ -1,0 +1,1570 @@
+Title: Accounting for Hysteresis and Eddy Currents in Finite Element Simulations of Ferromagnetic Laminated Cores using a Recurrent Neural Network
+
+URL Source: https://arxiv.org/pdf/2607.14321v1
+
+Published Time: Fri, 17 Jul 2026 00:21:17 GMT
+
+Number of Pages: 29
+
+Markdown Content:
+> This work has been submitted to a journal for possible publication. Copyright may be transferred without notice, after which this version may no longer be accessible.
+
+# Accounting for Hysteresis and Eddy Currents in Finite Element Simulations of Ferromagnetic Laminated Cores using a Recurrent Neural Network 
+
+Florent Purnode a, ∗, Louis Denis a, François Henrotte a, Gilles Louppe a, Christophe Geuzaine a
+
+> aDepartment of Electrical Engineering and Computer Science, University of Liege, Belgium
+
+Abstract 
+
+Incorporating hysteresis and eddy currents into finite element simulations of laminated-core electrical machines is computationally challenging. Resolving the fields inside the laminations at each integration point and at every non-linear iteration leads to computational costs several orders of magnitude higher than anhysteretic simulations, making such approaches impractical for design applications. Conversely, simplified models accounting only for magnetic saturation are becoming increasingly inadequate as electrical machine topologies and operating conditions grow in complexity. In this context, machine learning surrogate modeling has emerged as a promising alternative, o ff ering ef-ficient and accurate approximations of complex electromagnetic behaviors. In this paper, a recurrent neural network is trained as a surrogate of a laminated-core material model for an isotropic laminated core, and is integrated into realistic two-dimensional magnetodynamic finite element simulations based on a magnetic vector potential formulation. The proposed approach achieves excellent agreement with the reference laminated-core model while limiting the computa-tional cost to about twice that of an anhysteretic simulation. By training the recurrent neural network on a su ffi ciently diverse set of artificially generated magnetic field sequences designed to mimic those encountered in electrical ma-chine simulations, the proposed approach can be readily applied across a wide range of finite element simulations. Furthermore, the trained surrogate model is provided as a standalone component that can be easily incorporated into existing computational frameworks. It is publicly available at https://gitlab.onelab.info/getdp/lamnet .
+
+Keywords: Finite Element Simulation, Homogenization, Hysteresis, Iron Losses, Laminated Core, Neural Network 
+
+1. Introduction 
+
+Transformers and electric machines rely on laminated ferromagnetic cores to guide and concentrate magnetic flux. Accurate modeling of electromagnetic fields and magnetic losses within these laminated regions is crucial for the reliable prediction of induced voltages and overall device e ffi ciency [1, 2]. However, the electromagnetic behavior of laminated cores is particularly challenging to model due to the inhomogeneous distribution of eddy currents, the nonlinear and history-dependent nature of magnetic hysteresis, and the coupling between these two phenomena. Modeling hysteresis alone is already challenging. The Preisach [3] and Jiles-Atherton [4] models have long been considered standard hysteresis models, and have been widely implemented in two-dimensional (2D) finite element (FE) simulations [5, 6, 7]. However, both models were originally formulated for scalar hysteresis, and their extensions to vector hysteresis lack a clear physical foundation which limits their applicability to vector field problems. In addition, they may su ff er from limitations related to accuracy, computational cost, or numerical convergence [8, 9]. More recently, the energy-based (EB) model [10, 11] has emerged as a promising alternative. This hysteresis model is based on energy considerations and is intrinsically vectorial [12]. The forward EB model takes the magnetic field H
+
+as input and returns the history-dependent magnetic flux density B, while its inverse formulation [13, 14], computes 
+
+H from a given B. The forward model can be evaluated either by solving a minimization problem [15] or a nonlinear vector function [11]. Besides these two formulations, a simplified explicit variant, akin to a vector play model [10, 11],     
+
+> ∗Corresponding author
+> Email addresses: florent.purnode@uliege.be (Florent Purnode), cgeuzaine@uliege.be (Christophe Geuzaine) arXiv:2607.14321v1 [cs.CE] 15 Jul 2026
+
+also exists and provides a computationally e ffi cient update at the cost of a slightly reduced accuracy [16]. The inverse formulation, by contrast, requires solving a minimization problem [11, 15, 17], whose robustness has been recently significantly improved [13, 14]. Eddy currents further add to the complexity of modeling ferromagnetic behavior. They form closed current loops whose distribution is governed by the spatial and temporal variations of the magnetic flux density. In laminated cores, eddy currents are largely confined to the plane of each lamination, but three-dimensional (3D) e ff ects arise near edges and geometric discontinuities and cannot be fully captured by the 2D formulations commonly employed in electrical machine design. However, direct 3D modeling of laminated cores, in which the fields are resolved within each individual lamination, is several orders of magnitude more computationally expensive. Although feasible on high-performance computing platforms, such simulations remain impractical for engineering design and optimization. The periodicity of the laminated structure can, however, be exploited through homogenization techniques, yielding 2D formulations that accurately capture the bulk eddy-current behavior, although their accuracy deteriorates near edges and geometric discontinuities. In multiscale methods like the heterogeneous multiscale method (HMM) [18, 19] or the multilevel finite element method (FE 2) [20], the e ff ective material response unavailable at the macroscopic scale is computed during the simulation by solving a mesoscopic-scale problem on a representative volume element and homogenizing its solution. In the present context, the mesoscopic-scale model can be formulated as a magneto-quasistatic FE simulation solved on the cross-section of a lamination and incorporating the EB hysteresis model. However, this approach remains too computationally demanding for routine machine design for three main reasons: i) The mesoscopic-scale model must be queried in each macroscopic finite element, at each time step and at each nonlinear iteration. ii) The mesoscopic-scale model must additionally provide the corresponding Jacobian, ∂H/∂ B or 
+
+∂B/∂ H, to construct the macroscopic tangent sti ff ness matrix required for a Newton-Raphson scheme. If obtained by finite di ff erences, the mesoscopic-scale problem must be solved for the nominal state, and for additional perturbed states, further increasing the number of mesoscopic-scale model queries. iii) Each mesoscopic-scale query itself requires evaluating the EB model at every element of the mesoscopic mesh. Advances in machine learning have led to a rapid expansion of neural network (NN)-based methods dedicated to magnetic modeling. Among other applications, NNs are used to predict core losses [21], to predict hysteresis model parameters [22, 23], or to predict B from H and inversely [24, 25, 26, 27]. This enthusiasm is further evidenced by the emergence of dedicated international competitions in the power electronics community, such as the MagNet chal-lenges, which have been specifically designed to stimulate innovation in the data-driven modeling of core losses [28] and transient magnetic behavior [29]. Yet, despite an intense research activity, and proven e ff ectiveness in related fields such as heterogeneous elasto-plastic materials [30], integrating an NN-based surrogate model to account for vector hysteresis and eddy currents in 2D FE simulations of realistic electrical machines remains an open problem. In a previous contribution [31], the relation required for magnetic vector-potential formulations was approximated by a parametric homogenized constitutive law ˜ H(B, ˙B, pk). The parameters pk of this law were identified element-wise through a three-step procedure: i) A 2D macroscopic-scale anhysteretic FE simulation was performed to compute characteristic periodic H(t) sequences. ii) Corresponding B(t) responses were obtained by feeding the resulting H(t)sequences to the aforementioned mesoscopic-scale model using the explicit variant of the forward EB model, and homogenizing its solution. iii) The parameters pk were then identified by fitting the homogenized constitutive law ˜H(B, ˙B, pk) to the computed ( B(t), H(t)) pairs. This identification was carried out through NN training, which min-imizes the fitting error over all sequences simultaneously and yields a smooth spatial distribution of the parameters 
+
+pk across the macroscopic domain. The resulting macroscopic 2D FE simulations e ffi ciently captured the combined eff ects of hysteresis and eddy currents through the parametric constitutive law ˜ H(B, ˙B, pk). However, this approach is restricted to periodic steady-state operating conditions. Furthermore, the fixed analytical structure of the parametric law inherently limits the achievable accuracy, and the resulting macroscopic FE simulations may converge slowly. In the present work, rather than assuming a fixed parametric structure, an e ff ective constitutive relation ˜ H(B) is directly learned from precomputed data generated by the aforementioned mesoscopic-scale model. A recurrent neural network (RNN) is used to naturally handle the history-dependent nature of hysteresis, lifting the periodicity restriction of the previous approach, while the Jacobian ∂ ˜H/∂ B is obtained exactly through automatic di ff erentiation [32]. The improved approach is evaluated by modeling two real-world applications. It demonstrates excellent accuracy and ro-bust convergence properties, while maintaining computational times comparable to those of conventional anhysteretic simulations. In addition, the proposed NN-based model provides an estimation of its error, which constitutes valuable information for assessing the reliability of the computed solution. 2The paper is organized as follows. Section 2 first presents the mesoscopic-scale model used to generate the training datasets and to assess the NN-based model accuracy. Section 3 then details the model architecture, training dataset and training procedure, while Section 4 presents the conducted 2D FE simulations. Finally, Section 5 provides conclusions and perspectives for future work. 
+
+2. Lamination Model 
+
+This section presents the detailed lamination model used as reference throughout this paper. It provides a ho-mogenized description of the fields at the mesoscopic scale, i.e., at the scale of the lamination thickness. The model combines the explicit variant of the EB hysteresis model [10] with a one-dimensional (1D) magnetodynamic FE for-mulation accounting for eddy currents. The EB model is first introduced, followed by the associated 1D FE simulation. 
+
+2.1. Quasi-Static Mesoscopic Model: The Energy-Based Hysteresis Model 
+
+The EB hysteresis model is grounded in thermodynamic principles; its theoretical derivation is presented in detail in [11, 15]. Without expanding on this derivation, the model captures the distributed nature of pinning strengths through an ensemble of N elementary cells. Each cell n decomposes the mesoscopic magnetic field h into a reversible component hn 
+
+> rev
+
+and an irreversible component hn
+
+> irr
+
+, whose magnitude is constrained within a threshold κn. As long as 
+
+|hn
+
+> irr
+
+| ≤ κn, the cell behaves reversibly. Once the threshold is exceeded, the cell transitions into irreversible behavior. Among the update laws proposed to describe this transition, we adopt the explicit variant, illustrated on Fig. 1 and expressed as 
+
+hn 
+
+> rev
+
+=
+
+
+
+hn 
+
+> rev ,p
+
+if |h − hn
+
+> rev ,p
+
+| ≤ κn,
+
+h − κn h−hn 
+
+> rev ,p
+> |h−hn
+> rev ,p|
+
+otherwise, (1) where hn 
+
+> rev ,p
+
+denotes the previous reversible component hn
+
+> rev
+
+. From the weighted sum of the reversible fields hrev =
+
+PNn=1 wnhn
+
+> rev
+
+, with the wn parameters summing up to 1, the mesoscopic magnetic flux density is expressed as 
+
+b = μ0h +
+
+"
+
+L |hrev |
+
+ha
+
+! Ja
+
+|hrev | + L |hrev |
+
+hb
+
+! Jb
+
+|hrev |
+
+#
+
+hrev , (2) where μ0 is the magnetic permeability of vacuum, L (x) = coth ( x) − 1/x denotes the Langevin function, and ha, hb,
+
+Ja and Jb are parameters of the EB model. These parameters, along with the κn and wn parameters, are determined from measurements, and have to be updated whenever the material changes. This work employs N = 11 elementary cells for the modeling of M235-35A non-oriented electrical steel sheets, with the identified parameter values reported in Appendix A. h𝑛 
+
+> rev ,p
+
+h
+
+h𝑛 
+
+> irr
+
+𝜅 𝑛 (a) h𝑛 
+
+> rev
+
+h
+
+h𝑛 
+
+> irr
+
+h𝑛 
+
+> rev ,p
+
+(b)                
+
+> Figure 1: Illustration of (1). ( a)hremains in the circle of radius κncentered in hn
+> rev ,p, so that hnrev remains unchanged. ( b)hexits the circle, so that
+> hn
+> rev moves along the line linking hn
+> rev ,pand h, and stop at a distance κnfrom h.
+
+2.2. Dynamic Mesoscopic Model: Laminations with Eddy Current and Hysteresis 
+
+The aforementioned EB model solely accounts for quasi-static hysteresis. To also account for dynamic e ff ects, it is included into the FE simulation of a stack of ferromagnetic laminations. Considering that all the laminations see the same imposed macroscopic magnetic field H, and neglecting edge e ff ects, simulating a single lamination is su ffi cient to describe the whole stack. Furthermore, the mesoscopic magnetic field h and the mesoscopic magnetic flux density 
+
+b inside a lamination can reasonably be assumed parallel to the lamination plane and to vary exclusively within the 3𝑥 
+
+𝑦 
+
+𝑧 
+
+𝑖 ′
+
+> 𝐴
+
+𝑖 𝐴 𝑖 ′
+
+> 𝐵
+
+𝑖 𝐵 𝑖 ′
+
+> 𝐶
+
+𝑖 𝐶 𝑑 
+
+j
+
+B
+
+H
+
+𝑥 
+
+𝑦 h
+
+bFigure 2: Definition of the domain of analysis of the 1D lamination model. 
+
+lamination depth. Eventually, the symmetry with respect to the median plane of a lamination is exploited to simulate solely half of a lamination thickness d (see Fig. 2). Let t denote time, ρ the electrical resistivity, and ( x, y, z) a Cartesian coordinate system, with x and y lying in the plane of the laminations and z in the stacking direction. Furthermore, let z = 0 correspond to the lamination surface and z = d/2 to its center. The 1D magneto-quasistatic formulation then reads: Find the mesoscopic magnetic field 
+
+h(z, t) = (hx(z, t), hy(z, t)) such that 
+
+
+
+∂t
+
+bx (h) , h′
+
+> x
+
+ 
+
+> [0 ,d/2]
+
++ ρ ∂ zhx, ∂ zh′
+
+> x
+
+ 
+
+> [0 ,d/2]
+
+= 0
+
+∂t
+
+by (h) , h′
+
+> y
+
+ 
+
+> [0 ,d/2]
+
++ ρ ∂ zhy, ∂ zh′
+
+> y
+
+ 
+
+> [0 ,d/2]
+
+= 0 (3) holds for all test functions h′
+
+> x
+
+, h′
+
+> y
+
+, where the notation ( ·, ·)D denotes the inner product of its arguments over bounded domain D. The macroscopic excitation H(t) is imposed at the lamination surface, i.e. h(0 , t) = H(t), and the zero-current condition at the mid-plane leads to the Neumann boundary condition ∂zh(d/2, t) = 0. The macroscopic magnetic flux density B(t) is retrieved by averaging the mesoscopic magnetic flux density b(h) = (bx(h), by(h)) over the half lamination thickness. This formulation accounts for the eddy currents and the associated skin e ff ect in the thickness direction via the resistivity term ρ ∂ zh, and accounts for hysteresis via the b(h) term, solution of the EB model. In practice, the model is implemented as a self-contained C language code, solving the linear system, whose matrix is sparse, using an e ffi cient LU sparse algorithm. The code is applied to a stack of M235-35A non-oriented electrical steel laminations, whose domain of analysis z ∈ [0 , d/2] is discretized with 51 equidistant nodes. Given that the maximum di ff erential permeability is μmax = lim h→0+ (μ0 + L (h/ha) Ja/h + L (h/hb) Jb/h) ≈ 25 .5 mH /m, obtained from (2), the resulting mesh size d/100 = 3.5 μm ensures that the skin depth δ = pρ/ (π f μmax ) is resolved by at least five nodes up to approximately 44 kHz. Thus, skin-e ff ect phenomena are accurately captured over the frequency range considered in this work (see Section 3.2). The temporal discretization is chosen su ffi ciently fine to avoid nonlinear iterations, and the time derivatives are discretized with the implicit Euler scheme. Finally, the cells of the EB model are initialized assuming an initially demagnetized material subjected to a slowly increasing excitation field until reaching H(t = 0), such that no dynamic e ff ects are initially present and B(H(t = 0)) lies on the virgin magnetization curve. 
+
+3. Architecture and Training of the NN-Based Surrogate Model 
+
+The choice of the NN architecture is of predominant importance. Since hysteresis inherently depends on the ma-terial history, the NN model must operate on time-sequence data. Some authors process the entire sequence at once using, for example, neural operators [33]. In FE simulations, however, the input sequence length evolves contin-uously during time integration, which makes whole-sequence architectures poorly suited for direct integration into incremental solvers. Another approach consists in using a fixed-length sliding window that captures only the most recent history [34, 35, 36]. Nevertheless, such a fixed-length window may omit parts of the history that significantly influence the response, thereby reducing accuracy. Alternatively, attention-based architectures [37] have shown high accuracy on sequence-to-sequence tasks [38], but the computational overhead becomes significant for long sequences. 4In this contribution, an RNN architecture is preferred. Indeed, RNNs are well suited to handle hysteresis in FE sim-ulations: (i) they maintain and update state variables similarly as the EB model maintains and updates the reversible fields hn
+
+> rev
+
+; (ii) they are fast to infer a single time step, making them e ffi cient within incremental solvers; and (iii) they achieve high accuracy [39, 40, 41]. This section discusses the implementation of the NN-based model that will be integrated into the FE simulations of Section 4, and details its training process. At first, Section 3.1 presents the general model architecture and Section 3.2 details the datasets used for training. Section 3.3 later demonstrates that the model cannot be trained naively to minimize the mean squared error, since saturated fields will dominate the training to the detriment of lower fields where the magnetic behavior is more intricate. Section 3.3 therefore introduces a scaled loss, which is further modified in Section 3.4 to assess the model confidence. In Section 3.5, the model is upgraded to ensure correct prediction even in extreme saturation, which lies out of the training range. Section 3.6 later describes how the training sequences, initially defined on constant time steps, are resampled to include variable time steps, thereby enabling adaptive time-stepping strategies in the FE simulations. Finally, Section 3.7 discusses the hyperparameter tuning, while Section 3.8 assesses the model performance, prior to any FE coupling. 
+
+3.1. Baseline Architecture 
+
+To process temporal sequences, RNNs ingest a single time step at a time. At each time step k, the network updates a hidden state S k based on the current input Xk and the previous hidden state S k−1. In its simplest form, this update is given by S k = ϕ(Wx Xk + Ws S k−1 + b), where ϕ(·) is a nonlinear activation function, Wx and Ws are weight matrices, b
+
+is a bias term, and the output Yk is computed directly from the hidden state S k. This basic formulation however su ff ers from the vanishing- and exploding-gradient problems, which impair its ability to learn long-range dependencies. To address this issue, advanced recurrent units have been developed, the most prominent being the Long Short-Term Memory (LSTM) [42] and the Gated Recurrent Unit (GRU) [43]. The GRU is adopted here, as it achieves accuracy comparable to LSTMs with fewer parameters and a simpler gating structure, making it both easier to train and more effi cient to deploy. Without going into the details of the GRU cell, Fig. 3 presents the basic model architecture, which is further enhanced in Sections 3.4 and 3.5. At time step k, the model takes as input the x- and y-components of the magnetic flux density Bk, together with the time increment ∆tk. The latter may vary between successive iterations to enable temporal refinement during FE simulations. Both Bk and ∆tk are scaled, concatenated, and passed through an encoder block implemented as a multilayer perceptron, which progressively increases the feature dimensionality to match the GRU hidden-state size. The GRU cell is followed by a decoder block, also implemented as a multilayer perceptron, which maps the hidden state back to the x- and y-components of ˜ Hk, that is the predicted magnetic field, intended to approximate the target magnetic field Hk. Rather than initializing the hidden state to zero, it is initialized by a trainable vector, plus the output of a shallow network taking B0 and ∆t0 as inputs. This o ffl oads the initial magnetization response, which is history-independent and lies on the virgin curve (see Section 2.2), to a dedicated subnetwork. The GRU cell therefore starts with a meaningful hidden state, and can devote its full capacity to learning history-dependent evolution, reducing the number of parameters that would otherwise be required. Encoder    
+
+> GRU cell
+> Decoder
+> B𝑘
+> Δ𝑡 𝑘 𝑆 𝑘 −1𝑆 𝑘 ˜H𝑘
+> Figure 3: Baseline model architecture, enhanced in Sections 3.4 and 3.5.
+
+3.2. Generation of the Training Datasets 
+
+In order to propose an NN-based surrogate model readily usable in a wide range of applications, the training dataset should be populated with a broad variety of field profiles. Since using data from simulations or measurements on existing devices may bias the model toward specific applications, the training H sequences are generated artificially 5to span the diversity of waveforms encountered in electrical machines. The corresponding B sequences are later obtained by feeding them to the lamination model of Section 2. As an initial strategy, the training H sequences can be expressed as a sum of harmonics in which each component is defined by two orthogonal contributions with random amplitudes and phases: 
+
+H(t) =
+
+X
+
+> h∈H
+
+αh H⋆
+
+√h
+
+hcos( βh) sin(2 π f ht + φxh) ˆ x + sin( βh) sin(2 π f ht + φyh) ˆ yi . (4) In this expression, the set H is generated by first randomly selecting the maximum harmonic hmax ∈ [1 , 50], later randomly selecting the number of harmonics |H| ∈ [1 , hmax ], and finally randomly selecting the remaining harmonic indices without replacement in {1, . . . , hmax −1}. The characteristic amplitude H⋆ is drawn from a log-uniform distribu-tion over [10 A /m, 100 kA /m], while the fundamental frequency f is uniformly sampled between 0.1 Hz and 1 kHz, with harmonic h having frequency h f . The selected ranges for H⋆ and hmax are justified in Sections 3.5 and 3.6, respectively, where the associated anhysteretic extension and resampling strategy are introduced. The coe ffi cients 
+
+αh ∈ [0 , 1] are also uniformly sampled and, together with the decay factor 1 / √h, modulate the relative amplitude of each harmonic, thereby controlling the harmonic distribution and enabling the generation of both smooth and highly distorted waveforms. The parameters βh ∈ [0 , 2π] in turn govern how each harmonic contribution is shared between the orthogonal directions ˆ x and ˆ y, thus defining its orientation in the plane. Eventually, the phase terms φxh and 
+
+φyh ∈ [0 , 2π] independently shift the temporal evolution of each directional contribution, while their di ff erence deter-mines the trajectory of each harmonic component in the plane: identical phases lead to unidirectional oscillations, whereas a non-zero phase di ff erence produces a rotating component, resulting in circular or elliptical trajectories. Up to now, (4) describes a broad class of excitations, encompassing alternating, rotating, and distorted magnetic field trajectories. However, it poorly accounts for several features commonly encountered in electrical machines: i) purely unidirectional fields, ii) DC-biased fields, iii) pulse-like fields, iv) and ramp-up fields. To improve the repre-sentation of these excitation types, several independent modifications are introduced. Each modification is activated with a probability of 50 %, avoiding both under-representation of the corresponding waveform characteristics and excessive bias toward them. 
+
+i) Unidirectional Fields. Without specific constraints on the parameters βh, φxh, and φyh, (4) almost never generates purely unidirectional fields. Such fields arise only when all βh are identical and when φxh and φyh are either equal or di ff er by an integer multiple of π for all h ∈ H . However, unidirectional fields are commonly encountered in electrical machines. To ensure their adequate representation in the training dataset, all βh are assigned the same value with a probability of 50 %. Independently, the phase terms are generated such that φxh = φyh for all h ∈ H , again with a probability of 50 %. Since these two conditions are imposed independently, approximately 25 % of the generated sequences are purely unidirectional. 
+
+ii) DC-biased Fields. Among other environments, DC-biased fields are encountered in the rotor of synchronous machines, in the stator of DC machines and in the presence of permanent magnets. With a probability of 50 %, (4) is therefore augmented by a DC component 
+
+Hdc = Hdc 
+
+ cos ( βdc ) ˆ x + sin ( βdc ) ˆ y (5) where both the amplitude Hdc ∈ [0 , H⋆] and direction βdc ∈ [0 , 2π] are uniformly sampled. 
+
+iii) Pulse-Like Fields. In rotating electrical machines, the slotted geometry of the stator and rotor often causes the air-gap reluctance to vary periodically. As a result, the field near the air-gap takes a pulse-like shape: high when rotor and stator teeth are facing each other, and significantly reduced when a tooth faces a slot. In principle, (4) can build such pulse-like fields, but it is unlikely. To ensure adequate coverage of this field shape in the dataset, a pulse-like modulation is applied with a probability of 50 %. When applied, the x and y components of both (4) and Hdc are scaled by αxp + (1 − αxp) p(t) and αyp + (1 − αyp) p(t), respectively, where αxp and αyp ∈ [0 , 1] are uniformly sampled, and 
+
+p(t) = sin(2 π f h pt + φp)ep (6) 6is a pulse-like function. The number of pulses per period hp ∈ [1 , 20] and the phase φp ∈ [0 , 2π] are both drawn from uniform distributions. The upper bound on hp was chosen to ensure the resulting pulses are su ffi ciently resolved, while still allowing variability within each pulse owing to the harmonic content of (4). On the other hand, the exponent ep,sampled as a random integer between 3 and 20, controls the sharpness and symmetry of the pulses. When ep is odd, 
+
+p(t) preserves the sign of the sine term, resulting in alternating positive and negative pulses, as can be observed in the stator teeth. Conversely, when ep is even, the function remains non-negative, producing pulses of constant sign, as is typical in the rotor near the air gap, a behavior that will be illustrated in Fig. 17 at the end of Section 4.2. 
+
+iv) Ramp-up Transients. The magnetic excitation can progressively build up from an initially demagnetized state. To account for such excitations, the generated field is multiplied, with a probability of 50 %, by the ramp-up function 
+
+r(t) = 1 − exp( −γπ f t ) (7) where γ is drawn from a log-uniform distribution over [1 , 10]. This parameter controls the rise speed of the excitation, ranging from smooth progressive growth to rapid establishment of the underlying waveform. From this procedure, 100 000 H sequences are generated and fed to the lamination model to form the training dataset. As will be shown in Section 3.8, this dataset size provides su ffi cient accuracy. Smaller datasets, on the other hand, lead to a degradation in model performance. While the lamination model is evaluated with a fine temporal discretization, as discussed in Section 2.2, the resulting sequences are downsampled to 500 uniform time steps span-ning half of the fundamental period T = 1/ f . Although the second half is not strictly redundant — owing to phase di ff erences, pulse modulation, and ramp-up transients — it contains largely similar information. Furthermore, re-stricting the sequence length speeds up the RNN training while reducing the risk of vanishing or exploding gradients. Validation and test datasets are generated in the same manner, each comprising 10 000 sequences. Overall, the dataset generation process requires approximately four days on a single CPU core of an HPE ProLiant XL225n compute node from the Lucia cluster. The workload is, however, embarrassingly parallel and can therefore be completed in a much shorter wall-clock time when distributed across multiple CPU cores. 
+
+3.3. Permeability-Based Error Scaling 
+
+A common loss for regression tasks is the Mean Squared Error (MSE). Restraining its definition to the time step k
+
+of a single sequence, it is given by 
+
+LMSE = Hk − ˜Hk 2 . (8) Poor results are however obtained using this loss as is. Indeed, in the saturated regime, the magnetic response can vary over tens of kA /m or more, so even a small relative error produces a large absolute contribution to the loss. Conversely, low-field regions (where the material behavior is most sensitive and non-linear) contribute comparatively little to the total error, leading to poor accuracy in this regime. Common strategies to improve accuracy across a wide range of output values include: (i) using a relative loss, e.g. |Hk − ˜Hk|2/(|Hk|2 + ϵ), with an ϵ added in the denominator term to control the trade-o ff between accuracy at low and high fields; (ii) defining the loss on the time derivative, although it may su ff er the same issues as the MSE, and may cause the predicted trajectories to drift progressively over time; and (iii) applying a logarithmic scaling, which improves overall accuracy but does not fully resolve the imbalance between low- and high-field regions. To overcome these limitations, this paper introduces a loss that conjointly scales the predicted field ˜ Hk and the target field Hk by the anhysteretic magnetic permeability μanh (|Hk|). This scaling essentially expresses the error in terms of a magnetic flux density, naturally reducing the dominance of high saturated fields. The resulting loss, referred to as the Mean Squared Scaled Error (MSSE), is specifically designed for applications involving magnetic saturation and writes 
+
+LMSSE = μanh 
+
+|Hk| Hk − ˜Hk 2
+
+, (9) with 
+
+μanh 
+
+|Hk| = μ0 + L |Hk|
+
+ha
+
+! Ja
+
+|Hk| + L |Hk|
+
+hb
+
+! Jb
+
+|Hk| , (10) 7which directly stems from (2). Fig. 4 demonstrates the suitability of (9), by comparing the predictions made on two simple sequences after having trained the model of Fig. 3 on the aforementioned losses. 𝑡 
+
+100 
+
+A/m 
+
+100 A/m 
+
+1 T
+
+𝑡 
+
+10 
+
+kA/m 
+
+10 kA/m 
+
+2 T Target 
+
+1) H𝑘 − ˜H𝑘 2
+
+2) H𝑘 − ˜H𝑘 2 /(|H𝑘 |2 + 100 )
+
+3) ¤H𝑘 − ¤˜H𝑘 2
+
+4) 
+
+( log (|H𝑘 |+ 1)  
+
+> |H𝑘 |
+
+H𝑘 − ˜H𝑘 
+
+)2
+
+5) (𝜇 anh 
+
+(|H𝑘 |) H𝑘 − ˜H𝑘 )2    
+
+> Figure 4: Given a low-field (left) and a high-field (right) sinusoidal Hcurves oscillating at 200 Hz with 500 time steps per period, and the corresponding Bsequences returned by the lamination model, comparison between the ˜ H(B) sequences returned by models trained to minimize di ff erent losses: 1) the MSE, 2) a relative loss, 3) a loss on the time derivative, 4) a loss using a logarithmic scaling, and 5) the proposed MSSE. All models were trained on the same datasets with uniformly spaced time steps and using identical numbers of layers, hidden units, and activation functions, as adopted for the final architecture in Section 3.7. A grid search over the learning rate and batch size was performed for each loss individually. Among the losses, the proposed MSSE loss shows the best performance in both low- and high-field regions.
+
+3.4. Learning the Prediction Confidence 
+
+Beyond predicting the material response itself, it is valuable for the NN to also indicate how much confidence it places in each of its own predictions. Nix and Weigend [44] proposed in 1994 a loss function that enables an NN to learn both the mean and standard deviation of a normal probability distribution, originally to capture the uncertainty inherent to data collection. Although this source of uncertainty is absent here – since the lamination model used to generate the training dataset is deterministic (see Sections 2 and 3.2) – a similar loss can be used to make the NN predict an expected error. Evaluating the NN previously-trained with the MSSE loss on the whole validation dataset shows that the error μanh (|Hk|) |Hk − ˜Hk| is exponentially distributed. Following the steps presented in [45, Section 5.2], the loss is therefore derived by taking the negative log-likelihood of an exponential distribution with scale parameter 
+
+ε. This yields the exponential negative log-likelihood (ENLL) loss, adopted as the final training loss and expressed here for a single time step k:
+
+LENLL = log εk + μanh (|Hk|) |Hk − ˜Hk|
+
+εk . (11) The two terms in the ENLL loss play complementary roles: the logarithmic term penalizes overly large values of 
+
+εk, whereas the second term penalizes values that underestimate the prediction error. Their balance encourages εk to match the actual prediction error. Consequently, the scale parameter εk acts as a predicted error, expressed in tesla, which varies from sequence to sequence and from time step to time step. At evaluation, εk is expected to grow when the model is given sequences it poorly handled during training. In practice, εk is also expected to grow on sequences lying outside of the training domain, but this behavior remains a tendency rather than a certainty, as the NN response to unseen inputs cannot itself be guaranteed. To ensure stable training, εk must remain strictly positive. In practice, a minimum value of εmin = 1 mT is enforced using a softplus-like activation function. 
+
+εk = 1
+
+κ ln 
+
+
+
+1 + exp 
+
+
+
+κ ςok + 1 − εmin 
+
+  
+
++ εmin , (12) where ok denotes the raw output of the decoder, ς = 0.1 controls the slope of the activation function, and κ = 5 its sharpness. 
+
+3.5. Robustness at High Fields 
+
+The model is trained on H sequences with maximum amplitudes of roughly 100 kA /m (see Section 3.2), which, via (10), correspond to anhysteretic amplitudes |B| = μanh (|H|) |H| of approximately 2 .05 T. The model is therefore expected to provide reliable predictions within this range. Predictions for B amplitudes exceeding 2 .05 T, however, 8lie outside the training domain and their accuracy cannot be guaranteed. While exceeding 2 .05 T is uncommon in practice, excursions to higher field values may occur during the Newton–Raphson iterations of the 2D macroscopic-scale FE simulations (see Section 4). Therefore, the model must remain well-behaved even when |B| exceeds 2.05 T. Beyond 100 kA /m, ferromagnetic materials are fully saturated. In this regime, the material response follows a simple anhysteretic law, such as (10). A practical strategy is thus to detect when the model operates outside its training domain, and to replace it with an anhysteretic law. However, this approach may introduce issues near the switching point, as it may create a discontinuity. The proposed solution relies on two points: i) having the neural network predict only the deviation from an anhysteretic curve; and ii) clipping the amplitude of the input Bk, ensuring that the model never receives data outside its training domain. The resulting enhanced model architecture is illustrated in Fig. 5. |B𝑘 |
+
+| ˜J𝑘 |
+
+𝜈 anh 
+
+(|B𝑘 |) B𝑘 
+
+> Encoder
+> GRU cell
+> Decoder
+
+B𝑘 H𝑘 
+
+> anh
+
+˜J𝑘 
+
+Δ𝑡 𝑘 𝑆 𝑘 −1 𝑆 𝑘 
+
+˜H𝑘 
+
+> dev
+
+𝜀 𝑘 
+
+˜H𝑘 
+
+> Figure 5: Enhanced model architecture.
+
+i) Residual formulation. The predicted field ˜ Hk is now written as the sum of an anhysteretic contribution Hk 
+
+> anh
+
+and a hysteretic deviation ˜ Hk
+
+> dev
+
+, output of the decoder. The term Hk 
+
+> anh
+
+is computed as νanh (|Bk|) Bk, where νanh (|Bk|) =
+
+1/μ anh (|Bk|) expresses a magnetic reluctivity, and is implemented as a piecewise cubic Hermite interpolating polyno-mial (PCHIP). By inverting (10), it is defined on a uniform partition of |B|2, each interval having a width ∆B2. The index of the appropriate spline segment is therefore directly given by ⌊(B2 
+
+> x
+
++ B2 
+
+> y
+
+)/∆B2⌋. If the PCHIP was defined on 
+
+∆B intervals, an additional square root would be required. Alternatively, if it was defined on ∆H intervals, finding the corresponding spline index would require a lookup operation. For |Bk| ≥ 3 T, the PCHIP is replaced by the analytical expression [( |Bk| − Bs)/μ 0 + Hs]/|Bk|, where the parameters Bs and Hs are chosen to guarantee νanh (|Bk|) is continuous at 3 T. 
+
+ii) Input Clipping. When the material is fully saturated, Hk(Bk) follows the anhysteretic law, so that Hk
+
+> anh
+
+(Bk) alone captures the behavior of ˜Hk(Bk) and ˜Hk
+
+> dev
+
+(Bk) remains constant. In this situation, the magnitude of the input Bk
+
+therefore has no impact on the prediction and can be clipped without impacting the model accuracy. Equivalently, the NN can be given an approximate magnetic polarization ˜ Jk = [1 −μ0 νanh (|Bk|)] Bk as input, since it is naturally bounded by Jmax = Ja + Jb ≈ 1.95 T (see Section 2.1). With a training dataset populated with B sequences whose maximum amplitude reaches Bmax ≈ 2.05 T, the NN is trained on magnetic polarizations up to [1 − μ0 νanh (Bmax )] Bmax ≈ 1.92 T, which is slightly smaller, yet su ffi ciently close to Jmax = 1.95 T. Note that extending the training dataset beyond 100 kA /m is therefore unnecessary. It would also be counterproductive, as it would increase the cost of data generation and training, despite the saturated regime being fully described by Hk
+
+> anh
+
+.In addition to ensuring robustness at high fields, the residual formulation o ff ers further advantages related to the learning problem itself. By constraining the network to predict only the hysteretic deviation ˜ Hk 
+
+> dev
+
+from the known anhysteretic baseline Hk
+
+> anh
+
+, the target function is significantly smoother and smaller in magnitude than the full mate-rial response. This simplification reduces the complexity of the function the NN must approximate, allowing good accuracy to be achieved with a more compact architecture. Furthermore, since the dominant, well-understood part of the behavior is handled analytically, the NN is implicitly guided toward physically meaningful predictions, which tends to reduce the risk of spurious oscillations. 
+
+3.6. Sequence Resampling for Adaptive Time-Stepping 
+
+At each training iteration, a batch of sequences is drawn at random from the 100 000 sequences composing the training dataset. To encourage accurate predictions across di ff erent sequence lengths, these sequences are ran-9domly truncated, resulting in sub-sequences of lengths between 10 and 500 uniformly-spaced time steps. These sub-sequences are then resampled to expose the model to non-uniform temporal discretizations, making the trained model compatible with adaptive time-stepping schemes. The complete resampling algorithm is presented in Appendix B. In brief, the algorithm first selects a random subset of points to retain from the source sub-sequence, while enforcing a maximum gap ¯ g = 5 between consecutive retained points. Since the highest considered harmonic (50 th harmonic) is initially sampled by 20 points per period (see Section 3.2), enforcing ¯ g = 5 guarantees that at least 4 points per period are retained after resampling, keeping it su ffi ciently resolved. The algorithm then inserts up to nins linearly interpolated points according to a skewed random distribution, allowing the interpolated points to be either smoothly spread across the source sub-sequence or concen-trated within localized regions. In the present work, nins is chosen equal to the length of the source sub-sequence, allowing substantial variation in the time steps while keeping the resampled sequence length comparable to that of the source sub-sequence. This limits training time and mitigates vanishing and exploding gradient issues. A minimum normalized spacing δmin = 0.05 is also enforced between consecutive output points within each segment, correspond-ing to 5 % of the source-sequence time step ∆t. This minimum spacing prevents the insertion of nearly coincident points that could cause numerical instabilities during training. With this spacing, up to 1 /δ min − 1 = 19 points can be inserted within a segment. However, the algorithm limits the number of inserted points per segment to ¯ m = 10, in order to leave su ffi cient room for the remaining points to be distributed with varying, non-degenerate time steps. Moreover, during training, the loss is evaluated only at the retained source points to prevent biasing the model toward the interpolation scheme. Note that Neural Ordinary Di ff erential Equations (Neural ODEs) could inherently handle variable time steps, as Neural ODEs learn the system dynamics and integrates it over the requested time interval, rather than directly predicting the system output at a given time. In the context of constitutive surrogate models for FE simulations, this approach may however be inappropriate, since it may require multiple NN evaluations to perform a single nonlinear iteration, thereby increasing the computational cost. 
+
+3.7. Hyperparameter Tuning and Training 
+
+Fig. 6 compares the training, validation, and test metrics obtained for di ff erent architectural variants, and justifies the hereunder selected architecture. Preliminary experiments revealed that using a single GRU cell is su ffi cient to achieve high quality predictions. Slightly better results are observed by stacking two GRU cells but, since it doubles the evaluation time, a single GRU cell is preferred. This GRU cell uses a hidden size of 300, chosen as a compromise between accuracy and computational cost. The encoder and decoder use respectively two and three layers, as deeper architectures did not improve performance significantly, whereas shallower configurations were found less accurate. The decoder’s final layer uses a linear activation function to produce continuous and unbounded ˜ Hk 
+
+> dev
+
+values, whereas the activation functions used in the encoder and in the first two decoder layers were determined through a grid search. To guarantee a smooth Jacobian ∂H/∂ B and thus well-behaved Newton–Raphson iterations, the activation function search was restricted to continuously di ff erentiable candidates: tanh, softplus, and CELU. Although di ff erent acti-vation function combinations produced similar final results, some exhibited instabilities during training. The final architecture uses softplus activations in both encoder layers, and CELU and softplus activations in the first and second decoder layers, respectively. The Adam optimizer was employed throughout the optimization procedure, while the learning rate and batch size were progressively adjusted, resulting in a final learning rate of 2 · 10 −4 for a batch size of 128. Overall, the NN-based model contains approximately 670 000 parameters, corresponding to a storage size of 2.8 MB. It was trained two days on a single NVIDIA A100 GPU from the Lucia cluster using Pytorch [46]. Although training was performed in single precision (float32), inference is carried out in double precision (float64), as the round-o ff errors inherent to single-precision arithmetic were observed to prevent the FE simulations of Section 4 from reaching su ffi ciently small residuals. Importantly, no additional training or fine-tuning was performed; all subsequent results reported in this work were obtained using this single trained model. 
+
+3.8. Standalone Performance 
+
+To assess the model performance, the error μanh (|H|) |H− ˜H| is evaluated on the test dataset described in Section 3.2, yielding a low average value of 8.78 mT. This error is defined as the norm of the di ff erence between the target H
+
+and predicted ˜ H magnetic field vectors, and expressed in T through the scaling factor μanh (|H|), allowing a direct 10 b
+
+c
+
+d
+
+e
+
+f
+
+ghi
+
+a
+
+-4.6 
+
+-3 Training LENLL [-] 
+
+0 48 Training time [h] 
+
+b
+
+c
+
+d
+
+e f
+
+g
+
+hi a
+
+Validation LENLL [-] 
+
+0 48 Training time [h]                                     
+
+> GRU cells
+> Hidden size
+> Encoder act. fct.
+> Decoder act. fct.
+> Mean error [mT]
+> 1300 Softplus-Softplus Celu-Softplus-Linear 8.78 a)
+> 2300 Softplus-Softplus Celu-Softplus-Linear 7.32 b)
+> 1200 Softplus-Softplus Celu-Softplus-Linear 10.98 c)
+> 1400 Softplus-Softplus Celu-Softplus-Linear 8.78 d)
+> 1300 Softplus Celu-Softplus-Linear 10.42 e)
+> GRU cells
+> Hidden size
+> Encoder act. fct.
+> Decoder act. fct.
+> Mean error [mT]
+> 1300 Softplus-Softplus-Softplus Celu-Softplus-Linear 8.89 f)
+> 1300 Softplus-Softplus Softplus-Linear 10.17 g)
+> 1300 Softplus-Softplus Celu-Celu-Softplus-Linear 9.70 h)
+> 1300 Softplus-Softplus Celu-Celu-Linear 14.15 i)
+
+Figure 6: Training, validation, and test metrics for di ff erent architectural variants, each di ff ering from the selected architecture a) by a single parameter. All models were trained using the Adam optimizer, a learning rate of 2 · 10 −4 and a batch size of 128. While the ENLL loss is used for training, the error μanh (|H|) |H − ˜H| is used on the test dataset. For readability, a moving-average operator was applied on the training and validation curves, using a window of 30. 
+
+comparison with the predicted error ε. Assuming the error follows an exponential distribution, the expected fractions of predictions whose observed error lies within the 1 ε, 2 ε, and 3 ε predicted error intervals are 63.2 %, 86.5 % and 95 %, respectively. In practice, the observed fractions on the test dataset are 63.5 %, 93.6 %, and 99.2 %. The coverage curve shown on the left of Fig. 7 extends this comparison to all confidence levels by plotting the observed proportion of predictions lying within the corresponding predicted error interval. A perfectly calibrated model would yield a coverage curve lying exactly on the diagonal, where the observed coverage systematically equals the nominal confidence level. Curves below the diagonal indicate overconfidence, whereas curves above the diagonal correspond to conservative error estimates. As shown in Fig. 7, the model is slightly overconfident for small confidence levels, where the predicted error intervals are somewhat too narrow, and slightly conservative at higher confidence levels. The right panel of Fig. 7 also depicts how the mean observed error and mean predicted error vary with the magnetic flux density magnitude |B|. In particular, both decrease as saturation is reached, reflecting the fact that the magnetic response becomes essentially anhysteretic, so that Hanh alone provides an accurate prediction. In the strongly saturated regime, the observed error drops below the imposed lower bound εmin , making the predicted error conservative. Ideal coverage 
+
+Observed coverage  
+
+> 63.5 %
+> 93.6 % 99.2 %
+> 63.2 %
+> 86.5 %
+> 95 %
+> 1𝜀
+> 2𝜀
+> 3𝜀
+
+0
+
+0
+
+100 
+
+100 Confidence level [%] 
+
+> Coverage [%]
+
+Unsaturated Saturated 
+
+𝜀 min = 1 mT 
+
+0
+
+0
+
+25 
+
+2.3|B| [T] 
+
+> 𝜇 anh  (| H|) | H − ˜H|, 𝜀  [mT]
+
+Figure 7: Comparison between the observed error μanh (|H|) |H − ˜H| and the predicted error ε on the test dataset. Left: Coverage curve comparing the observed and ideal coverages, showing good overall calibration with slight overconfidence at low confidence levels, and slight underconfidence at high confidence levels. Right: Mean observed error and mean predicted error in bins of the magnetic flux density magnitude |B|.
+
+11 Fig. 8 compares three target H sequences from the test dataset, representative of low-, medium-, and high-field regimes, with the corresponding predicted ˜ H sequences. It also reports the observed error |H − ˜H| and the scaled predicted error ε/μ anh (|H|). The figure demonstrates close agreement between the target and predicted sequences across the full range of field amplitudes, including regions where small variations in B produce significantly amplified responses in H. Moreover, ε/μ anh (|H|) provides a good approximation of the error |H − ˜H|.B [T] 
+
+0.1 
+
+1.2 
+
+H [A/m] 
+
+-110 
+
+190 
+
+|H − ˜H|, 𝜀 /𝜇 anh (| H|) [A/m] 
+
+0
+
+10 
+
+-20 190 
+
+0.8 
+
+1.2 
+
+𝐻 𝑥 [A/m] 
+
+> 𝐵 𝑥  [T]
+
+-110 160 
+
+0.18 
+
+0.6 
+
+𝐻 𝑦 [A/m] 
+
+> 𝐵 𝑦  [T]
+
+695 𝜇 s
+
+B [T] 
+
+0.2 
+
+1.3 
+
+H [A/m] 
+
+0
+
+1200 
+
+|H − ˜H|, 𝜀 /𝜇 anh (| H|) [A/m] 
+
+0
+
+5
+
+-30 470 
+
+0.4 
+
+1
+
+𝐻 𝑥 [A/m] 
+
+> 𝐵 𝑥  [T]
+
+0 1200 
+
+0.2 
+
+1.3 
+
+𝐻 𝑦 [A/m] 
+
+> 𝐵 𝑦  [T]
+
+2 ms 
+
+B [T] 
+
+-1.7 
+
+1.7 
+
+H [kA/m] 
+
+-8.5 
+
+8.5 
+
+|H − ˜H|, 𝜀 /𝜇 anh (| H|) [A/m] 
+
+0
+
+20 
+
+-8.5 8.5 
+
+-1.7 
+
+1.7 
+
+𝐻 𝑥 [kA/m] 
+
+> 𝐵 𝑥  [T]
+
+-2 2
+
+-1.3 
+
+1.3 
+
+𝐻 𝑦 [kA/m] 
+
+> 𝐵 𝑦  [T]
+
+2 ms 
+
+Target x Target y Prediction x Prediction y        
+
+> Figure 8: Comparison between three target Hsequences from the test dataset, and the corresponding predicted ˜ Hsequences. The mismatch |H−˜H|
+> and the predicted error ε/μ anh (|H|) show a good correlation.
+
+12 Similarly, Fig. 9 compares the ˜ B field, obtained by inverting the NN-based model via Newton-Raphson for a given H field, against the reference lamination solution B. The Jacobian ∂ ˜B/∂ ˜H required by the scheme is obtained via automatic di ff erentiation of the NN-based model, yielding exact derivatives at low computational cost. This formulation also naturally enables adaptive time-stepping strategies. To illustrate this capability, the imposed H field is designed to switch from strongly saturated regions to low-field regions, and an adaptive time-stepping strategy, controlled by the predicted error ε, is employed: the time step ∆t is doubled when ε < 25 mT and halved when 
+
+ε > 40 mT, with minimum and maximum time steps of 1 .25 μs and 40 μs, respectively. When fully-saturated, the anhysteretic contribution Hanh alone governs the model response, resulting in low predicted error ε and allowing the adaptive scheme to increase the time step. Conversely, at lower field levels, the irreversible contribution ˜ Hirr 
+
+becomes significant and the predicted error ε increases, prompting the scheme to reduce the time step. This adaptive strategy proves e ff ective: the predicted ˜ B is in close agreement with the reference lamination solution B. Fig. 9 also demonstrates the ability of the model to extend out of its training range in the saturation regime, as |B| reaches 3.2 T. Target x Target y Prediction x Prediction y 
+
+B [T] 
+
+-3.5 
+
+3.5 
+
+|B − ˜B|, 𝜀 [T] 
+
+0
+
+0.05 
+
+Δ𝑡 
+
+𝑡 𝑇 /1600 
+
+𝑇 /200 
+
+𝑇 /50 
+
+𝑇 -1100 1100 
+
+-3.5 
+
+3.5 
+
+𝐻 𝑥 [kA/m] 
+
+> 𝐵 𝑥  [T]
+
+-0.8 0.8 
+
+-1.5 
+
+1.5 
+
+𝐻 𝑦 [kA/m] 
+
+> 𝐵 𝑦  [T]
+
+1.6 
+
+-1.6 
+
+-5 5  
+
+> Figure 9: Inversion of the NN-based surrogate model via Newton-Raphson for a test Hfield spanning low- and high-field regimes, using an adaptive time-stepping strategy.
+
+4. Macroscopic-Scale Simulation 
+
+The magnetic vector potential A formulation is used for 2D FE simulations of electrical machines because it reduces to a single scalar unknown (the out of plane component of the vector potential) discretized with nodal La-grange elements (rather than edge elements), makes div B = 0 exact with flux lines as its contours, lets prescribed winding currents enter trivially as a source while giving flux linkage and torque directly, and handles the dominant non-conducting regions without any topological cuts [47]. Let Ω denote the computational domain, Ωcore ⊂ Ω the laminated ferromagnetic core region, Ωs ⊂ Ω the stranded conductor region and js the imposed current density, it seeks A such that 
+
+μ−10 curl A, curl A′
+
+> Ω\Ωcore
+
++ μ−1curl A, curl A′
+
+> Ωcore
+
+− js, A′
+
+> Ωs
+
+= 0 (13) holds for all test function A′ in the appropriate function space. The coupling with the NN-based model is introduced by replacing the constitutive relation μ−1curl A = μ−1B in Ωcore by the NN-based prediction ˜ H(B). Owing to the nonlinearity of ˜ H(B), the resulting problem is solved using a Newton-Raphson scheme. At iteration i, the constitutive law is linearized around Bi−1 as ˜H(Bi) ≈ ˜H(Bi−1) + ∂ ˜H
+
+∂B (Bi−1) ( Bi − Bi−1) , (14) 13 where ˜ H(Bi−1) is evaluated in a forward pass of the NN, and the Jacobian ∂ ˜H/∂ B(Bi−1) is computed by reverse-mode automatic di ff erentiation. Note that the GRU hidden state is kept fixed during the Newton-Raphson iterations and updated only upon convergence. Consequently, once convergence has been reached, the NN-based model must be queried one additional time to update its hidden state. Alternatively, two hidden states can be stored per element in 
+
+Ωcore : the input hidden state S k−1, which remains fixed during the Newton-Raphson iterations, and the output hidden state S ki , returned by the GRU at each iteration, which becomes the new input hidden state S k once convergence is reached. The latter approach is adopted in this work, requiring the storage of 2 · 300 = 600 double-precision numbers (4.8 kB) per element in Ωcore .The proposed methodology is evaluated on two representative case studies, both making use of the same NN-based model trained for stacks of M235-35A steel laminations. Subsection 4.1 first considers a three-phase transformer, and subsection 4.2 then considers a synchronous reluctance motor. In both applications, the models are discretized using the free and open-source software Gmsh [48], while the magnetic vector potential field A is discretized with first order elements using the free and open-source FE solver GetDP [49]. All simulations reported in this work also perform element-wise integration using a single Gauss quadrature point, and consider relative and absolute residual tolerances of 10 −7 and 10 −10 , respectively. The convergence behavior of the Newton-Raphson scheme is discussed in in subsection 4.3, while subsection 4.4 analyses the computational cost. 
+
+4.1. Three Phase Transformer 
+
+For each phase p ∈ { A, B, C} of the three-phase transformer, the current density in the primary and secondary windings is imposed as jp(t) = 10 5 (1 − exp( −2π f t )) sin(2 π f t − ϕp), where f = 50 Hz is the frequency, ϕA = 0◦,
+
+ϕB = 120 ◦ and ϕC = 240 ◦ are phase lags, and the factor (1 −exp( −2π f t )) introduces a gradual startup. A homogeneous Dirichlet boundary condition is also imposed on the boundary of Ω. Fig. 10 depicts the mesh of the analyzed three-phase transformer, together with the curves of the imposed current density in each phase and the corresponding By(t)and Hy(t) curves at points a, b, and c located at the center of each leg. These curves result either from an anhysteretic simulation (dotted lines) or from a simulation using the NN-based model (solid lines), both running over 800 constant time steps for a single period. The impact of hysteresis is visible on the By curves which, compared to the anhysteretic case, are delayed due to remanent magnetization. 𝑦 
+
+𝑥 
+
+25 cm 
+
+𝑎 𝑏 𝑐 
+
+𝑒 
+
+𝑑 
+
+Anhysteretic NN-based 
+
+𝑡 
+
+𝑗 𝐴 , 𝑗 𝐵 , 𝑗 𝐶 
+
+10 5 A/m 2
+
+𝑇 
+
+𝐵 𝑎 𝑦 , 𝐵 𝑏 𝑦 , 𝐵 𝑐 𝑦 
+
+1.5 T 
+
+𝐻 𝑎 𝑦 , 𝐻 𝑏 𝑦 , 𝐻 𝑐 𝑦 
+
+2 kA/m                
+
+> Figure 10: Left: Mesh of the considered three-phase transformer, with circa 5300 nodes and 10 500 elements, of which 4600 belong to Ωcore .Right: Curves of the current densities jA,jBand jCimposed in phase A,Band C, and curves of the magnetic flux density Band magnetic field H
+> along the ydirection in the center of each leg, resulting from a simulation with the proposed NN-based model (solid lines) or with an anhysteretic law (dotted lines).
+
+14 To evaluate the e ff ect of time-step refinement on simulation accuracy, two additional simulations are performed over a single period T = 1/ f using the same trained NN-based model. The first considers half less (400) constant time steps, and the second uses an adaptive time step ∆tk. At each time step k, the converged solution is accepted if the maximum predicted error max Ω εk is lower than 100 mT, it is otherwise rejected and the time step is halved. In case max Ω εk is lower than 70 mT, the time step is doubled back, with a maximum time step of T/100 = 200 μs, and a minimum time step of T/1600 = 12 .5 μs, resulting in a simulation of 210 accepted time steps. Note that this adaptive strategy is guided by the predicted error εk rather than by an estimate of the local truncation error, and should therefore be regarded as a heuristic approach. Nevertheless, classical error-controlled time-stepping schemes remain applicable. To measure the error introduced by the NN-based model, the H sequences (one per element in Ωcore ) obtained during the simulation with 800 time steps are injected into the lamination model. The resulting sequences, noted ¯ B,serve as target and can be compared to the B sequences obtained directly during the three simulations using the NN-based model. They are used to compute the mismatch |B − ¯B|, which is a direct measure of the simulation accuracy. If 
+
+|B − ¯B| was zero at each Gauss point and at each time step, it would mean the NN-based model is a perfect substitute to the lamination model. The same results could therefore be obtained using the lamination model as material law, using su ffi ciently fine temporal refinement and at a computational cost and complexity largely superior. The first two columns of Fig. 11 are used to assess the simulation accuracy. The first column displays the spatial distribution of the maximum-in-time mismatch max t |B − ¯B|, while the second displays the spatial distribution of the time-averaged mismatch ⟨| B − ¯B|⟩ t, both computed element-wise over the ferromagnetic core region Ωcore , and for the three aforementioned NN-based simulations. For all three simulations, the maximum-in-time mismatch remains below 66 mT throughout Ωcore , while the mean mismatch ⟨| B − ¯B|⟩ t,Ω, averaged over time and space, is about 6 mT. When compared locally with the norm of B, these mismatches correspond to relative values ⟨| B − ¯B|⟩ t/⟨| B|⟩ t that remain below 5.4 % throughout Ωcore , with a spatial average ⟨⟨| B − ¯B|⟩ t/⟨| B|⟩ t⟩Ω of about 0.7 %. Without access to the lamination model, the mismatch |B− ¯B| cannot be computed, and one should rely exclusively on the predicted error ε. The third column of Fig. 11 shows the spatial distribution of its time average ⟨ε⟩t. It is observed that, except in the vicinity of point c, ⟨ε⟩t remains larger than the time-averaged mismatch ⟨| B − ¯B|⟩ t.Furthermore, locations where the time-averaged mismatch is larger correspond to locations where the time-averaged predicted error is larger, showing the ability of the NN to detect challenging regions. The time-averaged mismatch ⟨| B − ¯B|⟩ t and time-averaged predicted error ⟨ε⟩t however provide only aggregate measures over time and do not indicate whether the predicted error consistently bounds the actual mismatch, or if the mismatch frequently exceeds the predicted error. The last column of Fig. 11 reports the percentage of time the mismatch is larger than the predicted error, hereafter referred as the exceedance ⟨1(|B − ¯B| > ε )⟩t. The mean exceedance ⟨1(|B − ¯B| > ε )⟩t,Ω is obtained by further averaging over space. It reaches 16.4 %, 13.6 % and 7.8 % for respectively the 800-time-step, 400-time-step and variable-time-step simulations, showing the predicted error indeed remains larger than the mismatch most of the time. The mean exceedance decreases to 4.9 %, 4 % and 2.2 % when considering twice the predicted error, and to 2 %, 1.9 % and 0.9 % when considering three times the predicted error. While the previous analysis focuses on global and time-averaged quantities, it is also instructive to examine the behavior at specific points. Fig. 12 shows the time evolution of B, ε, and |B − ¯B|/ε , together with the corresponding 
+
+B(H) curves, at points c, d, and e, identified in Fig. 10 and 11. Point c stands in the middle of the region where the time-averaged mismatch is greater than the time-averaged predicted error, while point d exhibits the worst maximum-in-time mismatch and point e showcases the largest time-averaged predicted error. Primarily focusing on the B and 
+
+B(H) curves, it is observed that the NN curves closely match the target curves. The By curve of point c also shows that the higher time-average mismatch does not originate from a discrepancy in shape, but rather results from a slight amplitude o ff set between the target and prediction curves. This curve explains why the time-averaged mismatch is slightly larger than the time-averaged predicted error in the vicinity of point c. Despite this deviation, the predicted 
+
+By(Hy) loop still accurately reproduces the reference curve. By comparing the ε and B curves, it appears that ε is minimum when |B| is su ffi ciently large to reach saturation, in which case the model prediction mainly relies on the anhysteretic contribution Hanh . Fig. 12 also depicts the evolution of the time step for the adaptive-time-step simulation, and the By curves at the center of each of the transformer leg. The time step is decreased whenever a transformer leg switches from nearly-zero field to saturation or inversely, reflecting a rise in the predicted error during these transitions. Eventually, the |B − ¯B|/ε curves reveal that the previously reported exceedance translates locally into ratios that stay close to unity for most of the time horizon. 15 0 5 10 15 20 25 
+
+[mT] 
+
+0 22 44 66 
+
+[mT] 
+
+0 10 20 30 40 50 
+
+[%] 
+
+max 𝑡 B − ¯B 〈|B − ¯B|〉 
+
+> 𝑡
+
+⟨𝜀 ⟩𝑡 
+
+〈1 (|B − ¯B| > 𝜀 )〉                                                                         
+
+> 𝑡
+> Δ𝑡  = 𝑇
+> 800 Δ𝑡  = 𝑇
+> 400 Δ𝑡 𝑘  ∈ [ 𝑇
+> 200  , 𝑇
+> 2000
+> ]
+> max 𝑡, Ω|B−¯B|=66 mT ⟨ | B−¯B| ⟩ 𝑡, Ω=5.8mT ⟨𝜀 ⟩𝑡, Ω=7mT ⟨1( | B−¯B|> 𝜀 ) ⟩ 𝑡, Ω=16 .4%
+> max 𝑡, Ω|B−¯B|=66 mT ⟨ | B−¯B| ⟩ 𝑡, Ω=5.9mT ⟨𝜀 ⟩𝑡, Ω=8.5mT ⟨1( | B−¯B|> 𝜀 ) ⟩ 𝑡, Ω=13 .6%
+> max 𝑡, Ω|B−¯B|=66 mT ⟨ | B−¯B| ⟩ 𝑡, Ω=6.5mT ⟨𝜀 ⟩𝑡, Ω=14 .2mT ⟨1( | B−¯B|> 𝜀 ) ⟩ 𝑡, Ω=7.8%
+
+𝑐 
+
+𝑑 
+
+𝑒 Figure 11: Spatial distributions of the maximum-in-time mismatch (first column), time-averaged mismatch (second column), time-averaged pre-dicted error (third column), and exceedance (last column), for the three NN-based simulations. 
+
+4.2. Synchronous Reluctance Motor 
+
+The considered synchronous reluctance motor is supplied with three-phase sinusoidal currents of 217 .31 ARMS ,delivering a power of 220 kW. It has two pole pairs and operates at a frequency of 65 Hz, resulting in a nominal speed of ˙ θn = 1950 rpm. The flux barriers in the rotor result from a shape optimization process aimed at minimizing torque ripple [50]. Fig. 13 presents the considered mesh — which relies on a moving band technique to handle the relative motion between stator and rotor — together with a map of the time-averaged magnetic-flux-density amplitude 
+
+⟨| B|⟩ t. It also introduces two coordinate systems: a fixed xy frame and a rotating x′y′ frame attached to the rotor. When evaluating the NN-based model, the rotor sequences must be expressed according to the x′y′ frame, in order to eliminate artificial time variations due to rotation. As with the transformer, the target ¯ B sequences (one per element in Ωcore ) are obtained by first running an NN-based simulation, and subsequently feeding the resulting H sequences to the lamination model. This simulation uses 4800 constant time steps to model a single period, a deliberately large number to ensure a su ffi ciently fine temporal resolution and accurately capture rapid variations due to rotor–stator tooth alignment. Simulations with a coarser 16 𝐵 𝑎 𝑦 , 𝐵 𝑏 𝑦 , 𝐵 𝑐 𝑦 [T] 
+
+−1.5
+
+1.5 𝑡 
+
+Δ𝑡 
+
+𝑇 /1600 
+
+𝑇 /100 
+
+𝑇 /400 
+
+B [T] 
+
+-1.5 
+
+1.5 
+
+B [T] 
+
+-1.1 
+
+1.1 
+
+B [T] 
+
+-1.1 
+
+1.1 
+
+𝜀 [mT] 
+
+40 
+
+0
+
+𝜀 [mT] 
+
+70 
+
+0
+
+𝜀 [mT] 
+
+50 
+
+0
+
+0
+
+3 |B − ¯B|/ 𝜀 
+
+0
+
+4 |B − ¯B|/ 𝜀 
+
+0
+
+2 |B − ¯B|/ 𝜀 
+
+-400 400 
+
+-1.1 
+
+1.1 
+
+𝐻 𝑥 [A/m] 
+
+> 𝐵 𝑥  [T]
+
+-130 130 
+
+-1.1 
+
+1.1 
+
+𝐻 𝑥 [A/m] 
+
+> 𝐵 𝑥  [T]
+
+-1300 1300 
+
+-1.5 
+
+1.5 
+
+𝐻 𝑦 [A/m] 
+
+> 𝐵 𝑦  [T]
+
+-400 400 
+
+-1.1 
+
+1.1 
+
+𝐻 𝑦 [A/m] 
+
+> 𝐵 𝑦  [T]
+
+-130 130 
+
+-1.1 
+
+1.1 
+
+𝐻 𝑦 [A/m] 
+
+> 𝐵 𝑦  [T]
+
+c) 
+
+d) 
+
+e) 
+
+𝑇 
+
+¯B (Target) 
+
+Anhysteretic 
+
+800 constant time steps 
+
+400 constant time steps 
+
+210 adaptive time steps 
+
+𝐵 𝑥 
+
+𝐵 𝑦 
+
+𝐵 𝑥 
+
+𝐵 𝑦 
+
+𝐵 𝑥 
+
+𝐵 𝑦 Figure 12: Comparison of the B, ε, |B − ¯B|/ε , and B(H) curves obtained during the NN-based simulations with 800 constant time steps, 400 constant time steps, and 210 adaptive time steps, at the points c (time-averaged mismatch greater than time-averaged predicted error), d (largest maximum-in-time mismatch), and e (largest time-averaged predicted error) identified in Fig. 10 and 11. The target ¯ B curves are given by the lamination model, evaluated on the H curves obtained during the 800-time-step NN-based simulation. At the top of the figure, the ∆t curves are also depicted, together with the By curves obtained at the center of each leg of the three-phase transformer (points a, b, and c). 
+
+17 𝑥 
+
+𝑦 
+
+32 .6◦
+
+𝑐 
+
+𝑏 
+
+𝑎 
+
+𝑑 
+
+𝑓 
+
+𝑒 𝑥 ′
+
+𝑦 ′
+
+> 25.7 cm
+> 15.1 cm
+
+¤𝜃 𝑛 
+
+0 2.6
+
+〈| B|〉 𝑡 [T] Figure 13: Left: Mesh of the considered synchronous reluctance motor, with circa 14700 nodes and 29600 elements, of which 17000 belong to  
+
+> Ωcore . Right: Norm of B, averaged over time.
+
+temporal resolution may lack precision in the predicted H sequences and, although the impact on subsequent NN predictions remains limited, it could drive the EB hysteresis model cells into a spurious state from which they cannot automatically recover, ultimately compromising the accuracy of the target ¯ B sequences. At first, these ¯ B sequences are compared against the B sequences obtained from an NN-based simulation with 1200 time steps for a single period. Unlike the simulations of the transformer, the three-phase currents are imposed directly as sinusoidal waveforms at their nominal amplitude, without any ramp-up phase. As a result, the first time step is more challenging to converge, since the solution must evolve from an initially completely demagnetized state along the initial magnetization curve. To facilitate convergence, a relaxation factor of 0.8 is applied for this initial time step, and no strict limit is imposed on its number of iterations. Fig. 14 presents the spatial distributions of the maximum-in-time mismatch max t |B − ¯B|, time-averaged mismatch 0 20 40 60 80 
+
+[mT] 
+
+0.1 1 10 50 
+
+[mT] 
+
+0 90 
+
+[%] 
+
+max  
+
+> 𝑡
+
+B − ¯B 〈|B − ¯B|〉 
+
+> 𝑡
+
+〈𝜀 〉𝑡 
+
+〈1 (|B − ¯B| > 𝜀 )〉 
+
+> 𝑡
+
+𝑐 
+
+𝑏 
+
+𝑎 
+
+𝑑 
+
+𝑓 𝑒 
+
+> Figure 14: Spatial distributions of the maximum-in-time mismatch (first column), time-averaged mismatch (second column), time-averaged pre-dicted error (third column), and exceedance (last column), for the 1200-time-step NN-based simulation.
+
+18 ⟨| B − ¯B|⟩ t, time-averaged predicted error ⟨ε⟩t, and exceedance ⟨1(|B − ¯B| > ε )⟩t. The peak mismatch max t,Ω |B − ¯B|
+
+reaches 73 mT at point c, while the time-averaged mismatch remains below 27.5 mT throughout Ωcore , reaching its maximum at point e. The time-averaged predicted error attains its maximum at the rotor air-gap interface (point f ), where the field undergoes the most abrupt variations, ranging from strong saturation when aligned with a stator tooth, to nearly zero otherwise. The predicted error also remains strictly above 1 mT, as discussed in Section 3.4, and, except for a region near point a, consistently bounds the time-averaged mismatch. The mean relative mismatch is here computed as ⟨⟨| B − ¯B|⟩ t/(⟨| B|⟩ t + ϵ)⟩Ω, where ϵ = 1 mT is introduced to avoid near-zero divisions in regions where 
+
+⟨| B|⟩ t vanishes (see Fig. 13). The resulting mean relative mismatch is 0.5 %. In Fig. 15 and 16, the B, ε, |B − ¯B|/ε , and B(H) curves are displayed at points a, b and c in the stator, and at points 
+
+d, e and f in the rotor. Similarly to point c in the transformer, the B and ¯ B curves at point a exhibit a slight amplitude shift, which explains the localized larger error near point a. For all the other curves, B and ¯ B are in close agreement. To assess the sensitivity of the method to reduced temporal resolution, three additional NN-based simulations are performed with 600, 300, and 150 nominal time steps per period. Note that, in practice, an adaptive time-stepping strategy is employed: except for the first time step, the time step is halved whenever convergence is not achieved within 20 iterations, and doubled when convergence is reached in fewer than 10 iterations. Table 1 reports the peak mismatch max t,Ω |B − ¯B|, mean mismatch ⟨| B − ¯B|⟩ t,Ω, and mean predicted error ⟨ε⟩t,Ω at the stator and at the rotor for the aforementioned NN-based simulations. It is first worth noting that the simulations maintain good accuracy on average, as the mean stator and rotor mismatches increase only modestly, from 6.1 to 6.9 mT and 1.8 to 2.6 mT, respectively, when reducing the number of nominal time steps from 1200 to 150. Moreover, the mean and peak mismatches remain nearly unchanged between 1200 and 300 nominal time steps, suggesting that a resolution of 300 time steps is already su ffi cient. This observation is further supported by the behavior of the mean predicted error, which increases only slightly from 1200 to 300 time steps, but rises more markedly from 300 to 150 time steps. 
+
+> Table 1: Peak mismatch, mean mismatch, and mean predicted error at the stator and rotor for the NN-based simulations with 1200, 600, 300, and 150 nominal time steps per period.
+
+Nominal number Stator [mT] Rotor [mT] of time steps max t,Ω|B − ¯B| ⟨| B − ¯B|⟩ t,Ω ⟨ε⟩t,Ω max t,Ω|B − ¯B| ⟨| B − ¯B|⟩ t,Ω ⟨ε⟩t,Ω
+
+1200 73.0 6.1 5.8 47.3 1.8 5.5 600 77.5 6.1 7.0 52.5 1.9 7.0 300 82.6 6.2 11.3 204.9 2.1 11.2 150 320.2 6.9 26.0 701.3 2.6 20.7 As the temporal resolution is reduced, the peak error increases more markedly at the rotor than at the stator, which can be explained by the coarser temporal discretization of the rotor sequences. Indeed, with 48 stator teeth and two pole pairs, the 24 th harmonic dominates at the rotor and is sampled by only about 6 time steps in the simulation with 150 nominal time steps per period. Nevertheless, Fig. 17, which shows the B and H fields at point f in the rotor for the 1200, 600, 300, and 150 nominal-time-step simulations, demonstrates the ability of the NN-based model to handle such poorly resolved temporal variations. This robustness is particularly valuable during the design phase of electrical machines, where coarse time discretizations are often preferred to reduce computational costs. In this regime, the model strongly benefits from the anhysteretic contribution Hanh , which provides a physically consistent base to the NN predictions, regardless of the temporal discretization. Fig. 18 further compares these NN-based simulations by depicting the B(H) curves at point b in the stator. Owing to the contribution of Hanh , the NN-based model provides perfect predictions in the strongly saturated regime, even for coarse temporal discretizations. At lower field levels, although some noise is observed, even the 150-nominal-time-step simulation remains capable of capturing the minor hysteresis loops. 19 Target Anhysteretic NN-based model 
+
+𝑇 
+
+𝑎 ) B [T] 
+
+-1.5 
+
+1.5 
+
+𝐵 𝑥 
+
+𝐵 𝑦 
+
+𝜀 [mT] 
+
+0
+
+15 
+
+|B − ¯B|/ 𝜀 [-] 
+
+3
+
+0
+
+-2 2
+
+-1.5 
+
+1.5 
+
+𝐻 𝑥 [kA/m] 
+
+> 𝐵 𝑥  [T]
+
+-0.5 0.5 
+
+-0.7 
+
+0.7 
+
+𝐻 𝑦 [kA/m] 
+
+> 𝐵 𝑦  [T]
+
+𝑏 ) B [T] 
+
+-1.8 
+
+1.8 𝐵 𝑥 
+
+𝐵 𝑦 
+
+𝜀 [mT] 
+
+0
+
+25 
+
+|B − ¯B|/ 𝜀 [-] 
+
+3
+
+0
+
+-60 60 
+
+-1.8 
+
+1.8 
+
+𝐻 𝑥 [kA/m] 
+
+> 𝐵 𝑥  [T]
+
+-80 80 
+
+-1.8 
+
+1.8 
+
+𝐻 𝑦 [kA/m] 
+
+> 𝐵 𝑦  [T]
+
+𝑐 ) B [T] 
+
+-1.8 
+
+1.8 
+
+𝐵 𝑥 
+
+𝐵 𝑦 
+
+𝜀 [mT] 
+
+0
+
+20 
+
+|B − ¯B|/ 𝜀 [-] 
+
+3
+
+0
+
+-14 14 
+
+-1.8 
+
+1.8 
+
+𝐻 𝑥 [kA/m] 
+
+> 𝐵 𝑥  [T]
+
+-4.5 4.5 
+
+-0.6 
+
+0.6 
+
+𝐻 𝑦 [kA/m] 
+
+> 𝐵 𝑦  [T]
+
+Figure 15: Comparison of the B, ε, |B − ¯B|/ε , and B(H) curves obtained during the NN-based simulation with 1200 time steps, at the stator points 
+
+a, b and c, identified in Fig. 13 and 14. The target ¯ B curves are given by the lamination model, evaluated on the H curves obtained during a 4800-time-step NN-based simulation. 
+
+20 Target Anhysteretic NN-based model 
+
+𝑑 ) 𝐵 𝑥 ′ [T] 
+
+-0.44 
+
+-0.38 
+
+𝐵 𝑦 ′ [T] 
+
+0.26 
+
+0.36 
+
+𝜀 [mT] 
+
+0
+
+30 
+
+|B − ¯B|/ 𝜀 [-] 
+
+1
+
+0
+
+-45 -15 
+
+-0.44 
+
+-0.38 
+
+𝐻 𝑥 ′ [A/m] 
+
+> 𝐵 𝑥 ′ [T]
+
+5 45 
+
+0.26 
+
+0.36 
+
+𝐻 𝑦 ′ [A/m] 
+
+> 𝐵 𝑦 ′ [T]
+
+𝑇 
+
+𝑒 ) 𝐵 𝑥 ′ [T] 
+
+-1.15 
+
+-0.8 
+
+𝐵 𝑦 ′ [T] 
+
+-0.25 
+
+0.3 
+
+𝜀 [mT] 
+
+0
+
+40 
+
+|B − ¯B|/ 𝜀 [-] 
+
+1
+
+0
+
+-125 -25 
+
+-1.15 
+
+-0.8 
+
+𝐻 𝑥 ′ [A/m] 
+
+> 𝐵 𝑥 ′ [T]
+
+-60 70 
+
+-0.25 
+
+0.3 
+
+𝐻 𝑦 ′ [A/m] 
+
+> 𝐵 𝑦 ′ [T]
+
+𝑇 
+
+𝑓 ) 𝐵 𝑥 ′ [T] 
+
+-0.7 
+
+0.7 
+
+𝐵 𝑦 ′ [T] 
+
+-2.2 
+
+0
+
+𝜀 [mT] 
+
+0
+
+300 
+
+|B − ¯B|/ 𝜀 [-] 
+
+1
+
+0
+
+-10 50 
+
+-0.7 
+
+0.7 
+
+𝐻 𝑥 ′ [kA/m] 
+
+> 𝐵 𝑥 ′ [T]
+
+-160 10 
+
+-2.2 
+
+0
+
+𝐻 𝑦 ′ [kA/m] 
+
+> 𝐵 𝑦 ′ [T]
+
+𝑇 Figure 16: Comparison of the B, ε, |B − ¯B|/ε , and B(H) curves obtained during the NN-based simulation with 1200 time steps, at the rotor points 
+
+d, e and f , identified in Fig. 13 and 14. The target ¯ B curves are given by the lamination model, evaluated on the H curves obtained during a 4800-time-step NN-based simulation. 
+
+21 𝑓 ) 𝐵 𝑥 ′ [T] 
+
+-0.7 
+
+0.7 
+
+𝐵 𝑦 ′ [T] 
+
+-2.2 
+
+0
+
+𝐻 𝑥 ′ [kA/m] 
+
+-10 
+
+50 
+
+𝐻 𝑦 ′ [kA/m] 
+
+-160 
+
+10 
+
+Target 1200 time steps 600 time steps 300 time steps 150 time steps Figure 17: Comparison of the B and H curves obtained during the NN-based simulations with 1200, 600, 300 and 150 nominal time steps, at the rotor point f .𝑏 )
+
+-60 60 
+
+-1.8 
+
+1.8 
+
+𝐻 𝑥 [kA/m] 
+
+> 𝐵 𝑥  [T]
+
+-80 80 
+
+-1.8 
+
+1.8 
+
+𝐻 𝑦 [kA/m] 
+
+> 𝐵 𝑦  [T]
+
+Target 1200 time steps 600 time steps 300 time steps 150 time steps   
+
+> Figure 18: Comparison of the B(H) curves obtained during the NN-based simulations with 1200, 600, 300 and 150 nominal time steps, at the stator point b.
+
+4.3. Convergence of the Newton-Raphson scheme 
+
+Fig. 19 presents the convergence behavior of the Newton-Raphson scheme for the synchronous reluctance motor simulations performed with 1200, 600, 300, and 150 nominal time steps, using either the NN-based surrogate model or the anhysteretic law. Except for a limited number of instances in the 150-time-step case, where the NN-based simulation reduces its time step after reaching the maximum of 20 Newton iterations, both models exhibit nearly identical convergence behavior. This close superposition indicates that the NN-based model preserves the numerical behavior of the anhysteretic model. The initial time step also requires more Newton iterations to converge since, as previously mentioned, the three-phase currents are imposed directly as sinusoidal waveforms at their nominal amplitude. Consequently, the solution must evolve from a completely demagnetized state and stabilize along the first magnetization curve. 22 10 −8
+
+10 −4
+
+10 0
+
+Relative residual 
+
+10 −8
+
+10 −4
+
+10 0
+
+10 −8
+
+10 −4
+
+10 0
+
+10 −8
+
+10 −4
+
+10 0
+
+Δ𝑡 
+
+𝑇 /1200 
+
+𝑇 /150 
+
+0 400 System solves 
+
+1200, 600, 300 and 150 time steps NN-based model Anhysteretic Figure 19: Convergence history of the nonlinear Newton-Raphson iterations, with the anhysteretic material law and with the NN-based model, considering the 1200, 600, 300 and 150 nominal-time-step simulations of the synchronous reluctance machine. 
+
+4.4. Computational Cost 
+
+All simulations were carried out on a MacBook Pro laptop equipped with an Apple M1 Max chip, using GetDP for the FE computations [49] and Python to evaluate either the anhysteretic law or the NN-based surrogate model. In practice, the transformer simulations run in 12.7, 6.8, and 4.3 minutes for the 800-, 400-, and adaptive-time-step cases respectively, while the synchronous reluctance motor simulations run in 55.4, 34.2, 20.9 and 14.8 minutes for 1200, 600, 300, and 150 nominal time steps respectively. Tables 2 and 3 provide a detailed breakdown of these timings for the transformer and synchronous reluctance motor simulations, decomposed into three contributions: evaluation of the material law in Python, assembly and solution of the system in GetDP, and input /output (I /O) operations corresponding to data exchange between Python and GetDP. This exchange is currently implemented via text files written to and read from disk, which, while functional, accounts for approximately 20 % of the total simulation time. In future work, this file-based communication will be replaced by shared-memory communication to remove this overhead. 
+
+> Table 2: Comparison of computation times and number of system solves for the transformer simulations. “Total time steps” denotes all attempted time steps (accepted and rejected), whereas “e ff ective time steps” counts only the accepted ones; the two coincide for fixed time-step simulations.
+
+Time steps System solves Time [s] Time /system solve [s] Total Eff ective Total /Step Python GetDP I/O Total Python GetDP NN-b.  800 800 3631 4.54 292 311 158 762 0.08 0.09 400 400 1944 4.86 157 167 83 409 0.08 0.09 240 210 1243 5.18 93 109 53 256 0.08 0.09 Anh.  800 800 3321 4.15 2 282 138 424 / 0.09 400 400 1751 4.38 1 147 72 221 / 0.08 For both applications, the time required to evaluate the NN-based model in Python is approximately that needed to assemble and solve the system in GetDP. Compared to the anhysteretic simulations, for which the time spent in Python is negligible, and assuming that the I /O overhead would be removed through improved communication, a simulation using the NN-based model is therefore limited to roughly twice the cost of an anhysteretic simulation. Beyond these 23 Table 3: Comparison of computation times and number of system solves for the synchronous-reluctance-motor simulations. “Nominal time steps” refers to the target number of time steps per period, whereas “e ff ective time steps” denotes the actual number of accepted time steps after adaptive refinement; the two di ff er only when additional intermediate time steps are introduced following a failed convergence attempt. 
+
+Time steps System solves Time [s] Time /system solve [s] Nominal Eff ective Total /Step Python GetDP I/O Total Python GetDP NN-based  1200 1200 4860 4.05 1376 1180 766 3323 0.28 0.24 600 600 3007 5.01 844 738 467 2050 0.28 0.25 300 300 1829 6.10 517 452 282 1252 0.28 0.25 150 153 1290 8.43 365 323 197 886 0.28 0.25 Anhyst.  1200 1200 4912 4.09 6 1171 739 1917 / 0.24 600 600 3001 5.00 3 726 452 1182 / 0.24 300 300 1849 6.16 2 450 277 730 / 0.24 150 150 1259 8.39 1 310 189 501 / 0.25 absolute timings, the computational cost scales linearly with problem size. The number of elements in Ω increases by a factor of 2.8 from the transformer to the synchronous reluctance motor (10500 to 29600), and the GetDP assembly and solve time per system solve grows by a consistent factor of 2.8 (0.09 to 0.25 s). The same holds for the Python evaluation, where a 3.7-fold increase in Ωcore elements (4600 to 17000) yields a 3.7-fold increase in evaluation time (0.08 to 0.28 s). 
+
+5. Conclusions and Perspectives 
+
+This paper has discussed the 2D FE modeling of electrical machines with laminated ferromagnetic cores. The re-sults show that homogenization of the laminated ferromagnetic core behavior via a surrogate NN-based model o ff ers key implementation and numerical advantages over direct computational homogenization: i) The automatic di ff eren-tiation capabilities of NNs allow an exact evaluation of the NN-based ferromagnetic model Jacobian, eliminating the need for finite di ff erences. Furthermore, since the proposed NN is smooth by construction, owing to its di ff erentiable activation functions, the resulting Jacobian matrices are smooth, yielding Newton-Raphson convergence comparable to that obtained with conventional anhysteretic constitutive laws. In contrast, Jacobians obtained using direct homog-enization would inherit the numerical noise of finite di ff erences and could be a ff ected by the non-smoothness of the EB hysteresis model. ii) The NN allows coupling an H-conform mesoscopic-scale model (to use the fast vector-play EB approximation) with an e ffi cient B-conform macroscopic machine model. iii) The NN-based model inherits the accuracy of the fine temporal discretization used during dataset generation and largely preserves this accuracy at in-ference, even when coarser time steps are used at the macroscopic scale. Furthermore, after training on variable time steps, the NN-based model seamlessly handles variable time increments, so that macroscopic-scale adaptive time-stepping strategies are naturally supported. Achieving the same with a direct homogenization approach would require maintaining a fine temporal discretization at the mesoscopic scale throughout the simulation, thereby incurring the full computational cost of fine mesoscopic-scale solves [51] iv) From the perspective of the FE solver, the proposed constitutive model behaves as a single function call. The magnetic history required to describe hysteresis is entirely encoded in the NN hidden state, eliminating the need to explicitly manage the internal variables of an underlying mesoscopic-scale model. v) Once trained for a given lamination (material grade and sheet thickness), the proposed surrogate enables computationally e ffi cient FE simulations. Although extending the approach to a new lamination requires generating a new dataset (approximately 4 days on a single CPU core, but embarrassingly parallel) and re-training the network (approximately 2 days), the model can subsequently be used in a wide range of FE simulations, with computational times roughly twice those of conventional anhysteretic simulations. Moreover, the predicted error returned by the NN-based model provides an immediate accuracy measure of the FE simulations. Several directions are left for future work. The present study considers sinusoidal current excitations, whereas motors are often operated using pulse-width modulation (PWM); assessing the performance of the surrogate model under such conditions is a natural next step. The NN architecture could also be extended to predict ferromagnetic 24 core losses and to account for temperature e ff ects, following an approach similar to [41], where NN-based models are used for AC loss prediction in superconducting conductors. On a broader scale, the method currently assumes isotropic magnetic properties; extending it to anisotropic laminations, such as grain-oriented electrical steels, would require adapting both the dataset generation and the network architecture. A 3D extension would also be needed to accurately capture eddy-current paths near edges and geometric discontinuities. 
+
+Appendix A. Parameters of the Energy-Based Model 
+
+ha = 18 .18 A /m hb = 3905 .7 A /m Ja = 1.387 T Jb = 0.559 T ρ = 690 n Ω m d = 350 μm
+
+N = 11 elementary cells: 
+
+κn [A /m] 0.0 7.3 18.8 32.1 45.5 55.8 66.9 80.6 99.1 143.0 213.5 
+
+wn [−] 0.075 0.103 0.106 0.342 0.119 0.105 0.053 0.043 0.028 0.019 0.006 
+
+Appendix B. Resampling algorithm 
+
+The resampling algorithm is designed to produce sequences with irregular time steps of varying density. It first thins the source sub-sequence by retaining only a random subset of points, then re-enriches it by inserting linearly interpolated points, whose distribution can range from spatially uniform to highly localized. Inputs: 
+
+Bsrc : source sub-sequence 
+
+nsrc : length of the source sub-sequence 
+
+nins : number of points to insert ¯g: maximum gap between two consecutive kept source points ¯m: maximum number of points inserted per segment 
+
+δmin : minimum spacing between consecutive output points Output: 
+
+Bup : upsampled sequence 
+
+▷ Step 1: Determine which source points are kept idx keep [i] ← False , ∀i = 1, . . . , nsrc − 1
+
+i ← 1
+
+while i < nsrc do ▷ point nsrc is always kept, see Step 3 idx keep [i] ← True Draw g ∼ Uniform {1, . . . , ¯g}
+
+i ← i + g
+
+end while 
+
+▷ Step 2: Determine how many points are inserted between two source points Draw s ∼ Uniform[0 , 0.99] ▷ skewness parameter Draw r[ j] ∼ Uniform(0 , 1) , ∀ j = 1, . . . , nins + 1
+
+r[ j] ← ϵ ∀ j s.t. r[ j] < s ▷ large s forces many r[ j] near zero ( ϵ ⪆ 0) 
+
+r[ j] ← (P jl=1 r[l]) /(Pnins +1 
+
+> l=1
+
+r[l]) , ∀ j = 1, . . . , nins ▷ low s: r grows smoothly; high s: r grows in steps idx ins [ j] ← ⌊ r[ j] · (nsrc − 1) ⌋ + 1, ∀ j = 1, . . . , nins 
+
+mins [i] ← #{ j : idx ins [ j] = i}, ∀ i = 1, . . . , nsrc − 1 ▷ number of inserted points in segment imins [i] ← ¯m ∀ i s.t. mins [i] > ¯m ▷ cap insertions per segment 
+
+▷ Step 3: Build upsampled (output) sequence 
+
+k ← 125 for i = 1, . . . , nsrc − 1 do if idx keep [i] then B up [k] ← Bsrc [i], k ← k + 1 ▷ append source point i if kept Draw δ[ j] ∼ Uniform(0 , 1) , ∀ j = 1, . . . , mins [i] + 1
+
+δ[ j] ← P jl=1 δ[l], ∀ j = 1, . . . , mins [i] + 1
+
+δ[ j] ← δ[ j] · 1−(mins [i]+1) δmin  
+
+> δ[mins [i]+1]
+
++ j · δmin , ∀ j = 1, . . . , mins [i] ▷ enforce minimum spacing 
+
+Bup [k + j − 1] ← (1 − δ[ j]) · Bsrc [i] + δ[ j] · Bsrc [i + 1] , ∀ j = 1, . . . , mins [i]
+
+k ← k + mins [i]
+
+end for Bup [k] ← Bsrc [nsrc ] ▷ last source point is always kept 
+
+Acknowledgments 
+
+Computational resources have been provided by the Consortium des Équipements de Calcul Intensif (CÉCI), funded by the Fonds de la Recherche Scientifique de Belgique (F.R.S.-FNRS) under Grant n o2.5020.11 and by the Walloon Region. The present research also benefited from computational resources made available on Lucia, the Tier-1 supercomputer of the Walloon Region, infrastructure funded by the Walloon Region under the grant agreement no1910247. 
+
+Funding sources 
+
+This work was supported in part by the Walloon Region of Belgium under grant 8139 M&SSCoT and 9001 ELECTRON. The work of Louis Denis was supported by the F.R.S-FNRS. 
+
+Declaration of generative AI and AI-assisted technologies in the manuscript preparation process 
+
+During the preparation of this work, the authors used ChatGPT in order to revise portions of the manuscript and improve its language and readability. After using this service, the authors reviewed and edited the content as needed and take full responsibility for the content of the published article. 
+
+References 
+
+[1] D. Ceylan, R. Zeinali, B. Daniels, K. O. Boynov, and E. A. Lomonova, “Magnetodynamic finite element analysis coupled with a vector hysteresis model applied to a variable flux reluctance machine,” IEEE Transactions on Industry Applications , vol. 60, no. 1, pp. 80–92, 2023. doi: 10.1109 /TIA.2023.3292806 [2] M. M. Billah, F. Martin and A. Belahcen, “A computationally e ff ective method for iron loss estimation in a synchronous machine from a static field solution,” in International Conference on Electrical Machines , pp. 751– 757, 2020. doi: 10.1109 /ICEM49940.2020.9271020 [3] I. D. Mayergoyz and G. Friedman, “Generalized Preisach model of hysteresis,” IEEE Transactions on Magnetics ,vol. 24, no. 1, pp. 212–217, 1988. doi: 10.1109 /20.43892 [4] D.C. Jiles and D.L. Atherton, “Theory of ferromagnetic hysteresis,” Journal of Magnetism and Magnetic Mate-rials , vol. 61, no. 1-2, pp. 48–60, 1986. doi: 10.1016 /0304-8853(86)90066-1 [5] A. Benabou, S. Clénet and F. Piriou, “Comparison of Preisach and Jiles–Atherton models to take into account hysteresis phenomenon for finite element analysis,” Journal of Magnetism and Magnetic Materials , vol. 261, no. 1-2, pp. 139–160, 2003. doi: 10.1016 /S0304-8853(02)01463-4 [6] W. Li and C. S. Koh, “Investigation of the vector Jiles–Atherton model and the fixed point method combined technique for time-periodic magnetic problems,” IEEE Transactions on Magnetics , vol. 51, no. 4, pp. 1–6, 2015. doi: 10.1109 /TMAG.2014.2360150 26 [7] M. Nierla, M. Loe ffl er, M. Kaltenbacher and S. J. Rupitsch, “Comparison of di ff erent vector Preisach mod-els for the simulation of ferromagnetic materials,” COMPEL , vol. 38, no. 5, pp. 1696–1710, 2019. doi: 10.1108 /COMPEL-12-2018-0494 [8] A. H. S. Atyia and A. M. Ghanim, “Limitations of Jiles–Atherton models to study the e ff ect of hystere-sis in electrical steels under di ff erent excitation regimes,” COMPEL , vol. 43, no. 1, pp. 66–79, 2024. doi: 10.1108 /COMPEL-02-2023-0061 [9] S. Hussain and D. A. Lowther, “An e ffi cient implementation of the classical preisach model,” IEEE Transactions on Magnetics , vol. 54, no. 3, pp. 1–4, 2018. doi: 10.1109 /TMAG.2017.2748100 [10] F. Henrotte, A. Nicolet and K. Hameyer, “An energy-based vector hysteresis model for ferromagnetic materials,” 
+
+COMPEL , vol. 25, no. 1, pp. 71–80, 2006. doi: 10.1108 /03321640610634344 [11] K. Jacques, “Energy-based magnetic hysteresis models - Theoretical development and finite element formula-tions,” Ph.D. dissertation, University of Liège, Liège, Belgium, 2018. [12] A. Bergqvist, “Magnetic vector hysteresis model with dry friction-like pinning,” Physica B: Condensed Matter ,vol. 233, no. 4, pp. 342–347, 1997. doi: 10.1016 /S0921-4526(97)00319-0 [13] H. Egger, F. Engertsberger, L. Domenig, K. Roppert and M. Kaltenbacher, “On forward and inverse energy-based magnetic vector hysteresis operators,” IEEE Transactions on Magnetics , vol. 61, no. 4, pp. 1–7, 2025. doi: 10.1109 /TMAG.2025.3544507 [14] H. Egger, F. Engertsberger and A. Schafelner, “E ffi cient evaluation of forward and inverse energy-based mag-netic hysteresis operators,” IEEE Transactions on Magnetics , 2025. doi: 10.1109 /TMAG.2025.3621134 [15] V. François-Lavet, F. Henrotte, L. Stainier, L. Noels and C. Geuzaine, “An energy-based variational model of ferromagnetic hysteresis for finite element computations,” Journal of Computational and Applied Mathematics ,vol. 246, pp. 243–250, 2013. doi: 10.1016 /j.cam.2012.06.007 [16] K. Roppert, M. Kaltenbacher, L. Domenig and L. Daniel, “Magnetoelastic vector hysteresis modeling for elec-tromagnetic devices: A combination of a multiscale model with the energy-based hysteresis framework,” IEEE Transactions on Magnetics , vol. 61, no. 8, pp. 1–14, 2025. doi: 10.1109 /TMAG.2025.3584819 [17] K. Jacques, R. V. Sabariego, C. Geuzaine and J. Gyselinck, “Inclusion of a direct and inverse energy-consistent hysteresis model in dual magnetostatic finite-element formulations,” IEEE Transactions on Magnetics , vol. 52, no. 3, pp. 1–4, 2016. doi: 10.1109 /TMAG.2015.2490578 [18] W. E and B. Engquist, “The heterogeneous multi-scale method for homogenization problems,” in Multiscale Methods in Science and Engineering , pp. 89–110, 2005. doi: 10.1007 /3-540-26444-2_4 [19] I. Niyonzima, R. V. Sabariego, P. Dular, F. Henrotte and C. Geuzaine, “Computational homogenization for laminated ferromagnetic cores in magnetodynamics,” IEEE Transactions on Magnetics , vol. 49, no. 5, pp. 2049– 2052, 2013. doi: 10.1109 /TMAG.2012.2237546 [20] J. Schröder, “A numerical two-scale homogenization scheme: The FE 2-method,” in Plasticity and beyond: Mi-crostructures, crystal-plasticity and phase transitions , J. Schröder and K. Hackl, Eds. Springer, 2014, pp. 1–64. doi: 10.1007 /978-3-7091-1625-8_1 [21] L. Solimene, C. S. Ragusa, A. Giu ff rida, N. Lombardo, F. Marmello, S. Morra and M. Pasquale, “A hybrid data-driven approach in magnetic core loss modeling for power electronics applications,” in Mediterranean Electrotechnical Conference , pp. 1356–1361, 2024. doi: 10.1109 /MELECON56669.2024.10608787 [22] M. d’Aquino, S. Perna, C. Serpico and C. Visone, “Hysteresis compensation by deep learning algorithms,” 
+
+Physica B: Condensed Matter , vol. 675, art. 415596, 2024. doi: 10.1016 /j.physb.2023.415596 27 [23] H. Zhang, Q. Yang, C. Zhang, Y. Li and Y. Chen, “Magnetic properties simulation of electrical steel sheet based on recurrent neural network,” IEEE Transactions on Magnetics , vol. 60, no. 3, pp. 1–4, 2024. doi: 10.1109 /TMAG.2023.3316753 [24] Z. Guo, B. H. Nguyen, H. Hamzehbahmani and R. V. Sabariego, “Dynamic hysteresis model of grain-oriented ferromagnetic material using neural operators,” IEEE Transactions on Magnetics , vol. 61, no. 10, pp. 1–7, 2025. doi: 10.1109 /TMAG.2025.3600089 [25] V. Bertolini, M. Quercio, L. Sabino, M. Stella, A. Faba, F. R. Fulginei, F. Crescimbini and E. Cardelli, “Devel-opment of a neural network approach to model magnetic core power loss in high-frequency transformers,” IEEE Transactions on Industry Applications , 2026. doi: 10.1109 /TIA.2026.3675154 [26] D. Serrano, H. Li, T. Guillod, S. Wang, M. Luo, C. R. Sullivan and M. Chen, “Neural network as datasheet: Modeling B-H loops of power magnetics with sequence-to-sequence LSTM encoder-decoder ar-chitecture,” in Workshop on Control and Modeling for Power Electronics , pp. 1–8, 2022. doi: 10.1109 /COM-PEL53829.2022.9829998 [27] H. Li, D. Serrano, S. Wang, T. Guillod, M. Luo and M. Chen, “Predicting the B-H loops of power magnetics with transformer-based encoder-projector-decoder neural network architecture,” in Applied Power Electronics Conference and Exposition , pp. 1543–1550, 2023. doi: 10.1109 /APEC43580.2023.10131497 [28] M. Chen, H. Li, S. Wang, T. Guillod, D. Serrano, N. Förster, et al. , “MagNet challenge for data-driven power magnetics modeling,” IEEE Open Journal of Power Electronics , vol. 6, pp. 883–898, 2024. doi: 10.1109 /OJPEL.2024.3469916 [29] S. Wang, H. Kwon, H. Li, Y. Elasser, G. -G. Kang, D. Zhou, D. Grigoryan and M. Chen, “MagNetX: Foundation neural network models for simulating power magnetics in transient,” in Applied Power Electronics Conference and Exposition , pp. 2438–2445, 2025. doi: 10.1109 /APEC48143.2025.10977420 [30] L. Wu, V. D. Nguyen, N. G. Kilingar and L. Noels, “A recurrent neural network-accelerated multi-scale model for elasto-plastic heterogeneous materials subjected to random cyclic and non-proportional load-ing paths,” Computer Methods in Applied Mechanics and Engineering , vol. 369, art. 113234, 2020. doi: 10.1016 /j.cma.2020.113234 [31] F. Purnode, F. Henrotte, G. Louppe and C. Geuzaine, “Neural network-based simulation of fields and losses in electrical machines with ferromagnetic laminated cores,” International Journal of Numerical Modelling: Elec-tronic Networks, Devices and Fields , vol. 37, no. 2, art. e3226, 2024. doi: 10.1002 /jnm.3226 [32] A. G. Baydin, B. A. Pearlmutter, A. A. Radul and J. M. Siskind, “Automatic di ff erentiation in ma-chine learning: a survey,” Journal of Machine Learning Research , vol. 18, no. 153, pp. 1–43, 2018. url: https: // www.jmlr.org /papers /v18 /17-468.html [33] A. Chandra, B. Daniels, M. Curti, K. Tiels and E. A. Lomonova, “Magnetic hysteresis modeling with neural operators,” IEEE Transactions on Magnetics , vol. 61, no. 1, pp. 1–11, 2025. doi: 10.1109 /TMAG.2024.3496695 [34] S. Quondam-Antonio, F. Riganti-Fulginei, A. Laudani, G. M. Lozito and R. Scorretti, “Deep neural networks for the e ffi cient simulation of macro-scale hysteresis processes with generic excitation waveforms,” Engineering Applications of Artificial Intelligence , vol. 121, art. 105940, 2023. doi: 10.1016 /j.engappai.2023.105940 [35] M. Stella, A. Faba, V. Bertolini, F. R. Fulginei, L. Sabino, H. Tiismus, A. Kallaste and E. Cardelli, “Mod-elling of magnetization processes of 3D-printed Fe-Si components by means of an artificial neural network implemented in a FEM scheme,” in International Conference on Electrical Machines , pp. 1–7, 2024. doi: 10.1109 /ICEM60801.2024.10700301 [36] N. Vuokila, C. Cunning, J. Zhang, N. Akel, A. Khan and D. A. Lowther, “The application of neural networks to the modeling of magnetic hysteresis,” IEEE Transactions on Magnetics , vol. 60, no. 3, pp. 1–4, 2024. doi: 10.1109 /TMAG.2023.3326708 28 [37] A. Vaswani, N. Shazeer, N. Parmar, J. Uszkoreit, L. Jones, A. N. Gomez, L. Kaiser and I. Polosukhin, “At-tention is all you need,” Advances in Neural Information Processing Systems , vol. 30, 2017. doi: 10.48550 /
+
+arXiv.1706.03762 [38] A. Khan, S. Ceesay, Y. P. Teng, R. Wang, H. Yue and D. Lowther, “Generalizable deep neural network based multi-material hysteresis modeling,” in Conference on Electromagnetic Field Computation , pp. 1–4, 2022. doi: 10.1109 /CEFC-LONG57069.2022.10107520 [39] H. Li, D. Serrano, T. Guillod, S. Wang, E. Dogariu, A. Nadler, M. Luo, V. Bansal, N. K. Jha, Y. Chen, C. R. Sullivan and M. Chen, “How MagNet: Machine learning framework for modeling power magnetic mate-rial characteristics,” IEEE Transactions on Power Electronics , vol. 38, no. 12, pp. 15829–15853, 2023. doi: 10.1109 /TPEL.2023.3309232 [40] H. Li, B. Zhang, Y. Shen and K. Liu, “Research on prediction of nanocrystalline alloy hysteresis properties based on long short-term memory network,” Scientific Reports , vol. 15, no. 1, 2025. doi: 10.1038 /s41598-025-91138-1 [41] L. Denis, J. Dular, V. Nuttens, M. Wozniak, B. Vanderheyden and C. Geuzaine, “Acceleration of multi-scale LTS magnet simulations with neural network surrogate models,” IEEE Transactions on Applied Superconductivity ,vol. 36, no. 5, pp. 1–6, 2026. doi: 10.1109 /TASC.2026.3660620 [42] S. Hochreiter and J. Schmidhuber, “Long Short-Term Memory,” Neural Computation , vol. 9, no. 8, pp. 1735– 1780, 1997. doi: 10.1162 /neco.1997.9.8.1735 [43] K. Cho, B. van Merriënboer, C. Gülçehre, D. Bahdanau, F. Bougares, H. Schwenk, and Y. Bengio, “Learn-ing phrase representations using RNN encoder-decoder for statistical machine translation,” in Conference on Empirical Methods in Natural Language Processing , pp. 1724–1734, 2014. doi: 10.3115 /v1 /D14-1179 [44] D. A. Nix and A. S. Weigend, “Estimating the mean and variance of the target probability distribution,” in 
+
+International Conference on Neural Networks , pp. 55–60, 1994. doi: 10.1109 /ICNN.1994.374138 [45] S. J. Prince, Understanding deep learning , MIT Press, 2023. [46] A. Paszke, S. Gross, F. Massa, A. Lerer, J. Bradbury, G. Chanan, et al. , “PyTorch: An imperative style, high-performance deep learning library,” in Advances in Neural Information Processing Systems , vol. 32, 2019. [47] G. Meunier (ed.), The finite element method for electromagnetic modeling , 2010 [48] C. Geuzaine and J. F. Remacle, “Gmsh: A 3-D finite element mesh generator with built-in pre- and post-processing facilities,” International Journal for Numerical Methods in Engineering , vol. 79, no. 11, pp. 1309– 1331, 2009. doi: 10.1002 /nme.2579 [49] P. Dular, C. Geuzaine, F. Henrotte and W. Legros, “A general environment for the treatment of discrete problems and its application to the finite element method,” IEEE Transactions on Magnetics , vol. 34, no. 5, pp. 3395–3398, 1998. doi: 10.1109 /20.717799 [50] C. De Greef, V. Kluyskens, F. Henrotte, C. Versele, C. Geuzaine and B. Dehez, “Time-e ffi cient multi-physics optimization approaches for the design of synchronous reluctance motors,” in Energy Conversion Congress and Exposition , pp. 4197–4204, 2021. doi: 10.1109 /ECCE47101.2021.9595977 [51] I. Niyonzima and C. Geuzaine and S. Schöps, “Waveform relaxation for the computational homogenization of multiscale magnetoquasistatic problems,” Journal of Computational Physics , vol. 327, pp. 416–433, 2016. doi: 10.1016 /j.jcp.2016.09.011 29

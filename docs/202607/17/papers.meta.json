@@ -1,0 +1,51 @@
+{
+  "label": "2026-07-17",
+  "date": "2026-07-17",
+  "generated_at": "2026-07-17T20:30:05",
+  "count": 3,
+  "papers": [
+    {
+      "paper_id": "202607/17/2607.14321v1-accounting-for-hysteresis-and-eddy-currents-in-finite-element-simulations-of-ferromagnetic-laminated-cores-using-a-recurrent-neural-network",
+      "section": "quick",
+      "title_en": "Accounting for Hysteresis and Eddy Currents in Finite Element Simulations of Ferromagnetic Laminated Cores using a Recurrent Neural Network",
+      "authors": "Florent Purnode, Louis Denis, François Henrotte, Gilles Louppe, Christophe Geuzaine",
+      "date": "2026-07-15",
+      "pdf": "https://arxiv.org/pdf/2607.14321v1",
+      "score": "7.0",
+      "evidence": "电机有限元仿真中的磁滞与涡流建模",
+      "tldr": "针对叠层铁芯电机有限元仿真中磁滞和涡流计算成本极高的问题，本文提出一种基于循环神经网络（RNN）的代理模型。该模型通过学习多样化的磁场序列，替代复杂的材料本构模型，并集成到二维磁动力有限元仿真中。在保证精度的前提下，计算成本仅为无磁滞仿真的两倍左右，为复杂电机的设计提供了高效且准确的仿真工具。",
+      "tags": "query:pmsm",
+      "abstract_en": "Incorporating hysteresis and eddy currents into finite element simulations of laminated-core electrical machines is computationally challenging. Resolving the fields inside the laminations at each integration point and at every nonlinear iteration leads to computational costs several orders of magnitude higher than anhysteretic simulations, making such approaches impractical for design applications. Conversely, simplified models accounting only for magnetic saturation are becoming increasingly inadequate as electrical machine topologies and operating conditions grow in complexity. In this context, machine learning surrogate modeling has emerged as a promising alternative, offering efficient and accurate approximations of complex electromagnetic behaviors. In this paper, a recurrent neural network is trained as a surrogate of a laminated-core material model for an isotropic laminated core, and is integrated into realistic two-dimensional magnetodynamic finite element simulations based on a magnetic vector potential formulation. The proposed approach achieves excellent agreement with the reference laminated-core model while limiting the computational cost to about twice that of an anhysteretic simulation. By training the recurrent neural network on a sufficiently diverse set of artificially generated magnetic field sequences designed to mimic those encountered in electrical machine simulations, the proposed approach can be readily applied across a wide range of finite element simulations. Furthermore, the trained surrogate model is provided as a standalone component that can be easily incorporated into existing computational frameworks. It is publicly available at https://gitlab.onelab.info/getdp/lamnet.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/17/2607.10653v2-open-source-python-tool-for-grid-converter-output-admittance-identification",
+      "section": "quick",
+      "title_en": "Open-Source Python Tool for Grid Converter Output Admittance Identification",
+      "authors": "Juho Määttä, Jarno Kukkola, Janne Seppänen, Marko Hinkkanen",
+      "date": "2026-07-12",
+      "pdf": "https://arxiv.org/pdf/2607.10653v2",
+      "score": "6.0",
+      "evidence": "网侧变流器控制与辨识",
+      "tldr": "本研究开发了一款基于Python的开源工具，用于识别电力电子变换器的输出导纳，旨在解决传统商业仿真软件授权受限的问题。该工具采用正弦扫频注入法，通过时域仿真提取频域导纳，并针对构网型和跟网型控制进行了验证。其开源特性提高了研究的可配置性与可复现性，为电网稳定性分析提供了高效、免费的替代方案。",
+      "tags": "query:pmsm",
+      "abstract_en": "Frequency-domain analysis based on converter output admittance is a key tool for studying converter-driven stability in power grids. This paper presents a Python-based identification tool built on a completely open-source simulator, eliminating the need for commercial licenses such as MATLAB or PSCAD and improving configurability through an MIT-licensed stack. The identification method uses steady-state signal injection with a sinusoidal sweep, deriving frequency-domain admittance from time-domain simulations. Analytical output-admittance models are developed for both grid-forming (disturbance-observer-based) and grid-following (phase-locked-loop-based) control to verify the numerical results. The tool's results are compared against a commercial PSCAD-based alternative, demonstrating accurate admittance identification across control methods. Code and examples are available online to support reproducibility.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/17/2607.14177v1-adaptive-control-of-motor-position-controlled-flexible-joint-robots-with-uncertain-joint-stiffness",
+      "section": "quick",
+      "title_en": "Adaptive Control of Motor-Position-Controlled Flexible Joint Robots with Uncertain Joint Stiffness",
+      "authors": "Annika Kirner, Grazia Zambella, Igor Kovacevic, Hannes Höppner, Jee-Hwan Ryu, Christian Ott",
+      "date": "2026-07-15",
+      "pdf": "https://arxiv.org/pdf/2607.14177v1",
+      "score": "6.0",
+      "evidence": "电机位置控制机器人的自适应控制",
+      "tldr": "针对具有位置控制执行器且关节刚度不确定的柔性关节机器人，本文提出了一种自适应控制方法。该方法通过在线更新非线性扭矩-偏转关系的估计值，解决了物理弹性元件因磨损、老化或工况变化导致的模型不准确问题。研究采用了隐式控制律和依赖控制输入的回归矩阵，并验证了其对电机位置控制器误差的鲁棒性，实验证明了该方法在处理非线性刚度特性方面的有效性。",
+      "tags": "query:pmsm",
+      "abstract_en": "Model-based control of flexible joint robots with position-controlled actuators relies on accurate knowledge of the joint compliance. In practice, precise stiffness models are often unavailable as the properties of physical elastic elements vary with operating conditions and slowly change over time due to wear and aging. To improve model-based control of these systems, we propose an adaptive control approach in this work, which updates an estimate of the uncertain, nonlinear torque-deflection relation of each joint. As opposed to classical adaptive control approaches for non-elastic robots, we rely on an implicit control law and a control-input-dependent regressor matrix to account for the uncertain joint stiffness. We analyze robustness of the approach against errors induced by the motor position controller. Experimental results on a flexible joint with nonlinear stiffness characteristics demonstrate the effectiveness of the proposed approach.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

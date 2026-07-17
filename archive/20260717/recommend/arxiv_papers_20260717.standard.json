@@ -1,0 +1,133 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-17T20:29:35.209313+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 3,
+    "quick_skim_target": 11,
+    "quick_selected": 3
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2607.14321v1",
+      "title": "Accounting for Hysteresis and Eddy Currents in Finite Element Simulations of Ferromagnetic Laminated Cores using a Recurrent Neural Network",
+      "abstract": "Incorporating hysteresis and eddy currents into finite element simulations of laminated-core electrical machines is computationally challenging. Resolving the fields inside the laminations at each integration point and at every nonlinear iteration leads to computational costs several orders of magnitude higher than anhysteretic simulations, making such approaches impractical for design applications. Conversely, simplified models accounting only for magnetic saturation are becoming increasingly inadequate as electrical machine topologies and operating conditions grow in complexity. In this context, machine learning surrogate modeling has emerged as a promising alternative, offering efficient and accurate approximations of complex electromagnetic behaviors. In this paper, a recurrent neural network is trained as a surrogate of a laminated-core material model for an isotropic laminated core, and is integrated into realistic two-dimensional magnetodynamic finite element simulations based on a magnetic vector potential formulation. The proposed approach achieves excellent agreement with the reference laminated-core model while limiting the computational cost to about twice that of an anhysteretic simulation. By training the recurrent neural network on a sufficiently diverse set of artificially generated magnetic field sequences designed to mimic those encountered in electrical machine simulations, the proposed approach can be readily applied across a wide range of finite element simulations. Furthermore, the trained surrogate model is provided as a standalone component that can be easily incorporated into existing computational frameworks. It is publicly available at https://gitlab.onelab.info/getdp/lamnet.",
+      "authors": [
+        "Florent Purnode",
+        "Louis Denis",
+        "François Henrotte",
+        "Gilles Louppe",
+        "Christophe Geuzaine"
+      ],
+      "primary_category": "cs.CE",
+      "categories": [
+        "cs.CE",
+        "cs.AI",
+        "math.NA"
+      ],
+      "published": "2026-07-15T19:38:30+00:00",
+      "link": "https://arxiv.org/pdf/2607.14321v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Finite element simulations of electrical machines",
+      "llm_evidence_cn": "电机有限元仿真中的磁滞与涡流建模",
+      "llm_evidence": "电机有限元仿真中的磁滞与涡流建模",
+      "canonical_evidence": "电机有限元仿真中的磁滞与涡流建模",
+      "llm_tldr_en": "Uses RNNs to account for hysteresis and eddy currents in electrical machine finite element simulations.",
+      "llm_tldr_cn": "利用循环神经网络在电机有限元仿真中高效模拟磁滞和涡流效应。",
+      "llm_tldr": "利用循环神经网络在电机有限元仿真中高效模拟磁滞和涡流效应。",
+      "llm_tags": [
+        "query:pmsm"
+      ],
+      "matched_query_tag": "query:pmsm",
+      "matched_query_text": "Permanent Magnet Synchronous Motor research",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.10653v2",
+      "title": "Open-Source Python Tool for Grid Converter Output Admittance Identification",
+      "abstract": "Frequency-domain analysis based on converter output admittance is a key tool for studying converter-driven stability in power grids. This paper presents a Python-based identification tool built on a completely open-source simulator, eliminating the need for commercial licenses such as MATLAB or PSCAD and improving configurability through an MIT-licensed stack. The identification method uses steady-state signal injection with a sinusoidal sweep, deriving frequency-domain admittance from time-domain simulations. Analytical output-admittance models are developed for both grid-forming (disturbance-observer-based) and grid-following (phase-locked-loop-based) control to verify the numerical results. The tool's results are compared against a commercial PSCAD-based alternative, demonstrating accurate admittance identification across control methods. Code and examples are available online to support reproducibility.",
+      "authors": [
+        "Juho Määttä",
+        "Jarno Kukkola",
+        "Janne Seppänen",
+        "Marko Hinkkanen"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY"
+      ],
+      "published": "2026-07-12T08:39:12+00:00",
+      "link": "https://arxiv.org/pdf/2607.10653v2",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "grid converter control and identification",
+      "llm_evidence_cn": "网侧变流器控制与辨识",
+      "llm_evidence": "网侧变流器控制与辨识",
+      "canonical_evidence": "网侧变流器控制与辨识",
+      "llm_tldr_en": "An open-source tool for identifying grid converter admittance, useful for power electronics analysis.",
+      "llm_tldr_cn": "一种用于识别电网变流器导纳的开源工具，有助于电力电子分析。",
+      "llm_tldr": "一种用于识别电网变流器导纳的开源工具，有助于电力电子分析。",
+      "llm_tags": [
+        "query:pmsm:composite"
+      ],
+      "matched_query_tag": "query:pmsm:composite",
+      "matched_query_text": "Papers central to 三相及双三相永磁同步电机相关研究检索, especially work that connects or combines: m; s; f; Permanent Magnet Synchronous Motor research; dual three-phase permanent magnet synchronous motor control and design; fault-tolerant control of multi-phase motors; recent advances in dual three phase permanent magnet synchronous motor control; fault tolerant strategies for multi phase permanent magnet synchronous motors.",
+      "matched_requirement_id": "req-composite-pmsm",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.14177v1",
+      "title": "Adaptive Control of Motor-Position-Controlled Flexible Joint Robots with Uncertain Joint Stiffness",
+      "abstract": "Model-based control of flexible joint robots with position-controlled actuators relies on accurate knowledge of the joint compliance. In practice, precise stiffness models are often unavailable as the properties of physical elastic elements vary with operating conditions and slowly change over time due to wear and aging. To improve model-based control of these systems, we propose an adaptive control approach in this work, which updates an estimate of the uncertain, nonlinear torque-deflection relation of each joint. As opposed to classical adaptive control approaches for non-elastic robots, we rely on an implicit control law and a control-input-dependent regressor matrix to account for the uncertain joint stiffness. We analyze robustness of the approach against errors induced by the motor position controller. Experimental results on a flexible joint with nonlinear stiffness characteristics demonstrate the effectiveness of the proposed approach.",
+      "authors": [
+        "Annika Kirner",
+        "Grazia Zambella",
+        "Igor Kovacevic",
+        "Hannes Höppner",
+        "Jee-Hwan Ryu",
+        "Christian Ott"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-07-15T12:53:04+00:00",
+      "link": "https://arxiv.org/pdf/2607.14177v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "adaptive control of motor-position-controlled robots",
+      "llm_evidence_cn": "电机位置控制机器人的自适应控制",
+      "llm_evidence": "电机位置控制机器人的自适应控制",
+      "canonical_evidence": "电机位置控制机器人的自适应控制",
+      "llm_tldr_en": "Proposes adaptive control for flexible joint robots with motor-position-controlled actuators.",
+      "llm_tldr_cn": "为采用电机位置控制执行器的柔性关节机器人提出了一种自适应控制方法。",
+      "llm_tldr": "为采用电机位置控制执行器的柔性关节机器人提出了一种自适应控制方法。",
+      "llm_tags": [
+        "query:pmsm"
+      ],
+      "matched_query_tag": "query:pmsm",
+      "matched_query_text": "Permanent Magnet Synchronous Motor research",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

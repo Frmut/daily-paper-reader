@@ -6,29 +6,32 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-07-16
-- 运行时间：2026-07-16 21:00:02 UTC
+- 最新运行日期：2026-07-17
+- 运行时间：2026-07-17 20:29:57 UTC
 - 运行状态：成功
-- 本次总论文数：2
+- 本次总论文数：3
 - 精读区：0
-- 速读区：2
+- 速读区：3
 
 ### 今日简报（AI）
-聚焦电力与工业系统的智能运维，探索基于 Transformer 和自编码器的故障诊断新方案。
-重点关注逆变器密集型电网的异常检测，以及通过时频配置优化实现的细粒度开集故障识别。
-建议关注注意力机制在复杂电力场景下的泛化能力，以及开集识别在实际工况中的落地应用。
-- 详情：[/202607/16/README](/202607/16/README)
+今日聚焦 AI 赋能电磁仿真与自动化控制，涵盖铁磁损耗建模、并网逆变器及柔性机器人等前沿工具。
+核心亮点在于利用 RNN 提升铁磁叠片核心的有限元仿真精度，以及新推出的并网变换器导纳识别开源 Python 工具。
+推荐关注 AI 在复杂物理场建模中的降本增效潜力，并尝试利用开源工具简化电力电子系统的开发流程。
+- 详情：[/202607/17/README](/202607/17/README)
 
 ### 精读区论文标签
 - 本次无精读推荐。
 
 ### 速读区论文标签
-1. [Fine-Grained Open-Set Fault Diagnosis via Metric-Guided Time-Frequency Configuration Selection and Class-Specific Autoencoders](/202607/16/2607.13368v1-fine-grained-open-set-fault-diagnosis-via-metric-guided-time-frequency-configuration-selection-and-class-specific-autoencoders)  
+1. [Accounting for Hysteresis and Eddy Currents in Finite Element Simulations of Ferromagnetic Laminated Cores using a Recurrent Neural Network](/202607/17/2607.14321v1-accounting-for-hysteresis-and-eddy-currents-in-finite-element-simulations-of-ferromagnetic-laminated-cores-using-a-recurrent-neural-network)  
+   标签：评分：7.0/10、query:pmsm
+   evidence：电机有限元仿真中的磁滞与涡流建模
+2. [Open-Source Python Tool for Grid Converter Output Admittance Identification](/202607/17/2607.10653v2-open-source-python-tool-for-grid-converter-output-admittance-identification)  
    标签：评分：6.0/10、query:pmsm
-   evidence：旋转机械与工业系统的故障诊断
-2. [Transformer is All You Need: Attention-Based Anomaly Detection and Classification in Inverter-Rich Power Systems](/202607/16/2607.13537v1-transformer-is-all-you-need-attention-based-anomaly-detection-and-classification-in-inverter-rich-power-systems)  
+   evidence：网侧变流器控制与辨识
+3. [Adaptive Control of Motor-Position-Controlled Flexible Joint Robots with Uncertain Joint Stiffness](/202607/17/2607.14177v1-adaptive-control-of-motor-position-controlled-flexible-joint-robots-with-uncertain-joint-stiffness)  
    标签：评分：6.0/10、query:pmsm
-   evidence：使用Transformer进行逆变器电力系统的故障诊断
+   evidence：电机位置控制机器人的自适应控制
 
 
 <div class="dpr-home-promo-card">
