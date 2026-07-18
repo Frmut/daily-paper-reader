@@ -1,0 +1,23 @@
+{
+  "label": "2026-07-18",
+  "date": "2026-07-18",
+  "generated_at": "2026-07-18T21:09:15",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202607/18/2607.09058v1-structural-decoupling-and-current-angle-steering-for-post-fault-recovery-of-current-limited-grid-forming-inverters",
+      "section": "quick",
+      "title_en": "Structural Decoupling and Current-Angle Steering for Post-Fault Recovery of Current-Limited Grid-Forming Inverters",
+      "authors": "Neethu Sajeev, Stephen Arinze Obi, Jae-Jung Jung",
+      "date": "2026-07-10",
+      "pdf": "https://arxiv.org/pdf/2607.09058v1",
+      "score": "6.0",
+      "evidence": "限流逆变器的结构解耦与故障恢复",
+      "tldr": "针对构网型逆变器在限流条件下的故障恢复问题，本文揭示了传统PI电压控制与限流器交互导致的恢复边界波动是造成恢复失败（如陷入限流模式或振荡）的主因。为此，提出了一种结合结构解耦虚拟导纳电压控制与电流角引导的恢复框架，旨在稳定恢复边界并优化同步轨迹。实验验证表明，该方法能有效消除对称及不对称电压跌落后的恢复异常，确保可靠同步。",
+      "tags": "query:pmsm",
+      "abstract_en": "Reliable fault recovery of grid-forming (GFM) converters under current-limited conditions is increasingly important as inverter-based resources replace synchronous generation. Existing current-limiting strategies primarily focus on current-angle regulation and synchronization trajectory shaping, while the interaction between the current limiter and the voltage control structure remains insufficiently understood. Consequently, post-fault recovery may exhibit converter trapping in current-limited control (CLC) or oscillatory transitions between CLC and constant voltage control (CVC). This paper shows that, under conventional PI-based voltage control, the interaction between the voltage controller and the current limiter creates a moving recovery boundary that contributes to these recovery failures. To address this issue, a post-fault recovery framework is proposed that combines structurally decoupled virtual admittance voltage control with current-angle steering. The proposed framework simultaneously improves synchronization trajectory evolution and stabilizes the recovery boundary during fault recovery. Experimental validation on a 3-kVA GFM inverter prototype confirms reliable post-fault synchronization recovery under both symmetrical and unsymmetrical voltage sag conditions, with trapping and oscillatory CLC-CVC transitions eliminated.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

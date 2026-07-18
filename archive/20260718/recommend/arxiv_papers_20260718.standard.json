@@ -1,0 +1,53 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-18T21:08:54.294645+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 1,
+    "quick_skim_target": 11,
+    "quick_selected": 1
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2607.09058v1",
+      "title": "Structural Decoupling and Current-Angle Steering for Post-Fault Recovery of Current-Limited Grid-Forming Inverters",
+      "abstract": "Reliable fault recovery of grid-forming (GFM) converters under current-limited conditions is increasingly important as inverter-based resources replace synchronous generation. Existing current-limiting strategies primarily focus on current-angle regulation and synchronization trajectory shaping, while the interaction between the current limiter and the voltage control structure remains insufficiently understood. Consequently, post-fault recovery may exhibit converter trapping in current-limited control (CLC) or oscillatory transitions between CLC and constant voltage control (CVC). This paper shows that, under conventional PI-based voltage control, the interaction between the voltage controller and the current limiter creates a moving recovery boundary that contributes to these recovery failures. To address this issue, a post-fault recovery framework is proposed that combines structurally decoupled virtual admittance voltage control with current-angle steering. The proposed framework simultaneously improves synchronization trajectory evolution and stabilizes the recovery boundary during fault recovery. Experimental validation on a 3-kVA GFM inverter prototype confirms reliable post-fault synchronization recovery under both symmetrical and unsymmetrical voltage sag conditions, with trapping and oscillatory CLC-CVC transitions eliminated.",
+      "authors": [
+        "Neethu Sajeev",
+        "Stephen Arinze Obi",
+        "Jae-Jung Jung"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY"
+      ],
+      "published": "2026-07-10T03:02:08+00:00",
+      "link": "https://arxiv.org/pdf/2607.09058v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Structural decoupling and fault recovery for current-limited inverters",
+      "llm_evidence_cn": "限流逆变器的结构解耦与故障恢复",
+      "llm_evidence": "限流逆变器的结构解耦与故障恢复",
+      "canonical_evidence": "限流逆变器的结构解耦与故障恢复",
+      "llm_tldr_en": "Investigates structural decoupling for post-fault recovery in grid-forming inverters.",
+      "llm_tldr_cn": "研究了构网型逆变器故障后恢复的结构解耦策略。",
+      "llm_tldr": "研究了构网型逆变器故障后恢复的结构解耦策略。",
+      "llm_tags": [
+        "query:pmsm"
+      ],
+      "matched_query_tag": "query:pmsm",
+      "matched_query_text": "fault-tolerant control of multi-phase motors",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
