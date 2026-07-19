@@ -1,0 +1,99 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-19T20:59:06.914436+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 2,
+    "quick_skim_target": 11,
+    "quick_selected": 2
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2607.11734v1",
+      "title": "NeuralActuator: Neural Actuation Modeling for Robot Dynamics and External Force Perception",
+      "abstract": "Differentiable simulators have advanced policy learning and model-based control, yet actuator dynamics remain an important source of sim-to-real error. This is particularly acute on low-cost platforms, where the linear current-to-torque relation $τ= K_tI$ becomes unreliable during commanded-target tracking because of friction, hysteresis, backlash, and thermal effects. We present NeuralActuator, a neural actuator model that jointly predicts (i) a simulator-equivalent generalized-effort surrogate for trajectory propagation on low-cost servo platforms, (ii) external force with a contact-probability gate for sensorless force perception, and (iii) a motor-condition score for the supervised joint. We also introduce the Neural Actuation Dataset (NAD), collected with a twin-arm teleoperation system that records robot states and actuator telemetry together with external-force labels. The torque-surrogate head is trained through differentiable simulation from pose trajectories without direct generalized-effort labels, while the force, gate, and motor-condition heads receive direct supervision. A Transformer captures temporal dependencies while supporting real-time inference. We evaluate NeuralActuator on a 5-DoF OpenManipulator-X, a 6-DoF SO-101, and a 7-DoF Franka Emika Panda, spanning three actuator families and platforms costing approximately USD 500 to over USD 30,000. The low-cost platforms support dynamics and force evaluation, while the offline Franka experiment provides an additional payload-force-estimation benchmark. Experiments further demonstrate its application for motor condition estimation on OpenManipulator-X and improved behavior-cloning performance when NeuralActuator is used as a pretrained module.",
+      "authors": [
+        "Zhiyang Dou",
+        "John U. Onyemelukwe",
+        "Hangxing Zhang",
+        "Heng Zhang",
+        "Minghao Guo",
+        "Yunsheng Tian",
+        "Michal Piotr Lipiec",
+        "Joshua Jacob",
+        "Chao Liu",
+        "Peter Yichen Chen",
+        "Yuri Ivanov",
+        "Wojciech Matusik"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.CV",
+        "cs.GR",
+        "cs.LG"
+      ],
+      "published": "2026-07-13T15:58:34+00:00",
+      "link": "https://arxiv.org/pdf/2607.11734v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "actuator dynamics and motor-condition scoring",
+      "llm_evidence_cn": "执行器动力学与电机状态评分",
+      "llm_evidence": "执行器动力学与电机状态评分",
+      "canonical_evidence": "执行器动力学与电机状态评分",
+      "llm_tldr_en": "Models neural actuator dynamics and motor conditions to improve robot control and force perception.",
+      "llm_tldr_cn": "对神经执行器动力学和电机状态进行建模，以改进机器人控制和力感知。",
+      "llm_tldr": "对神经执行器动力学和电机状态进行建模，以改进机器人控制和力感知。",
+      "llm_tags": [
+        "query:pmsm"
+      ],
+      "matched_query_tag": "query:pmsm",
+      "matched_query_text": "Permanent Magnet Synchronous Motor research",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.13752v1",
+      "title": "Design and Analysis of a Higher-Order Enhanced Phase-Locked Loop via the Ahmadi-Chaudhry-Zhang Newton Framework",
+      "abstract": "The enhanced phase-locked loop (EPLL) is widely used in power systems to estimate the amplitude, phase, and frequency of sinusoidal voltages. Existing EPLL formulations are primarily derived from first- or second-order optimization methods, which may exhibit slow convergence, saddle-point attraction, or undesired oscillatory behavior. This paper presents a new higher-order EPLL based on the recently proposed Ahmadi-Chaudhry-Zhang (ACZ) higher-order Newton framework. Since the ACZ method was originally developed for scalar discrete-time optimization, a continuous-time higher-order Newton flow is formulated for adaptive systems. The resulting framework is then applied to the EPLL through a coordinate optimization strategy, whereby the higher-order Newton flow is applied only to the phase update, while the amplitude update retains its classical form because its cost function is exactly quadratic.   The proposed autonomous system is analyzed through phase portraits and compared with the standard, Newton, and modified EPLL formulations. Phase-portrait analysis of the autonomous model shows that the proposed flow eliminates the spurious equilibria and saddle points present in the autonomous Newton EPLL, substantially enlarges the basin of attraction associated with the desired equilibrium, and shares several desirable convergence characteristics with the modified EPLL.",
+      "authors": [
+        "Shafayat Abrar"
+      ],
+      "primary_category": "eess.SP",
+      "categories": [
+        "eess.SP"
+      ],
+      "published": "2026-07-15T12:11:07+00:00",
+      "link": "https://arxiv.org/pdf/2607.13752v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Enhanced Phase-Locked Loop (EPLL) for power systems and motor control synchronization",
+      "llm_evidence_cn": "用于电力系统和电机控制同步的增强型锁相环 (EPLL)",
+      "llm_evidence": "用于电力系统和电机控制同步的增强型锁相环 (EPLL)",
+      "canonical_evidence": "用于电力系统和电机控制同步的增强型锁相环 (EPLL)",
+      "llm_tldr_en": "Develops a higher-order EPLL using a Newton framework for improved synchronization in power systems.",
+      "llm_tldr_cn": "利用牛顿框架开发了一种高阶增强型锁相环，以改善电力系统中的同步性能。",
+      "llm_tldr": "利用牛顿框架开发了一种高阶增强型锁相环，以改善电力系统中的同步性能。",
+      "llm_tags": [
+        "query:pmsm:composite"
+      ],
+      "matched_query_tag": "query:pmsm:composite",
+      "matched_query_text": "Papers central to 三相及双三相永磁同步电机相关研究检索, especially work that connects or combines: m; s; f; Permanent Magnet Synchronous Motor research; dual three-phase permanent magnet synchronous motor control and design; fault-tolerant control of multi-phase motors; recent advances in dual three phase permanent magnet synchronous motor control; fault tolerant strategies for multi phase permanent magnet synchronous motors.",
+      "matched_requirement_id": "req-composite-pmsm",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

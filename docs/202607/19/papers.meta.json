@@ -1,0 +1,37 @@
+{
+  "label": "2026-07-19",
+  "date": "2026-07-19",
+  "generated_at": "2026-07-19T20:59:30",
+  "count": 2,
+  "papers": [
+    {
+      "paper_id": "202607/19/2607.11734v1-neuralactuator-neural-actuation-modeling-for-robot-dynamics-and-external-force-perception",
+      "section": "quick",
+      "title_en": "NeuralActuator: Neural Actuation Modeling for Robot Dynamics and External Force Perception",
+      "authors": "Zhiyang Dou, John U. Onyemelukwe, Hangxing Zhang, Heng Zhang, Minghao Guo, Yunsheng Tian, Michal Piotr Lipiec, Joshua Jacob, Chao Liu, Peter Yichen Chen, Yuri Ivanov, Wojciech Matusik",
+      "date": "2026-07-13",
+      "pdf": "https://arxiv.org/pdf/2607.11734v1",
+      "score": "6.0",
+      "evidence": "执行器动力学与电机状态评分",
+      "tldr": "本研究针对低成本机器人执行器中因摩擦、滞后和热效应导致的动力学建模不准问题，提出了 NeuralActuator 模型。该模型基于 Transformer 架构，通过微分仿真从位姿轨迹中学习，能够同时预测等效广义力矩、无传感器外部力及电机状态评分。研究还引入了 Neural Actuation Dataset (NAD) 数据集。实验证明，该方法在多种价位的机器人平台上均能显著提升动力学预测精度和力感知能力，并可作为预训练模块优化行为克隆任务。",
+      "tags": "query:pmsm",
+      "abstract_en": "Differentiable simulators have advanced policy learning and model-based control, yet actuator dynamics remain an important source of sim-to-real error. This is particularly acute on low-cost platforms, where the linear current-to-torque relation $τ= K_tI$ becomes unreliable during commanded-target tracking because of friction, hysteresis, backlash, and thermal effects. We present NeuralActuator, a neural actuator model that jointly predicts (i) a simulator-equivalent generalized-effort surrogate for trajectory propagation on low-cost servo platforms, (ii) external force with a contact-probability gate for sensorless force perception, and (iii) a motor-condition score for the supervised joint. We also introduce the Neural Actuation Dataset (NAD), collected with a twin-arm teleoperation system that records robot states and actuator telemetry together with external-force labels. The torque-surrogate head is trained through differentiable simulation from pose trajectories without direct generalized-effort labels, while the force, gate, and motor-condition heads receive direct supervision. A Transformer captures temporal dependencies while supporting real-time inference. We evaluate NeuralActuator on a 5-DoF OpenManipulator-X, a 6-DoF SO-101, and a 7-DoF Franka Emika Panda, spanning three actuator families and platforms costing approximately USD 500 to over USD 30,000. The low-cost platforms support dynamics and force evaluation, while the offline Franka experiment provides an additional payload-force-estimation benchmark. Experiments further demonstrate its application for motor condition estimation on OpenManipulator-X and improved behavior-cloning performance when NeuralActuator is used as a pretrained module.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/19/2607.13752v1-design-and-analysis-of-a-higher-order-enhanced-phase-locked-loop-via-the-ahmadi-chaudhry-zhang-newton-framework",
+      "section": "quick",
+      "title_en": "Design and Analysis of a Higher-Order Enhanced Phase-Locked Loop via the Ahmadi-Chaudhry-Zhang Newton Framework",
+      "authors": "Shafayat Abrar",
+      "date": "2026-07-15",
+      "pdf": "https://arxiv.org/pdf/2607.13752v1",
+      "score": "6.0",
+      "evidence": "用于电力系统和电机控制同步的增强型锁相环 (EPLL)",
+      "tldr": "针对电力系统中增强型锁相环（EPLL）收敛慢和易受鞍点吸引的问题，本文基于Ahmadi-Chaudhry-Zhang (ACZ) 高阶牛顿框架设计了一种新型高阶EPLL。通过将离散ACZ方法转化为连续时间高阶牛顿流，并结合坐标优化策略，该方法在保持幅值更新简洁性的同时，显著提升了相位跟踪性能。研究表明，该方法消除了伪平衡点，扩大了吸引域，实现了更优的收敛特性。",
+      "tags": "query:pmsm",
+      "abstract_en": "The enhanced phase-locked loop (EPLL) is widely used in power systems to estimate the amplitude, phase, and frequency of sinusoidal voltages. Existing EPLL formulations are primarily derived from first- or second-order optimization methods, which may exhibit slow convergence, saddle-point attraction, or undesired oscillatory behavior. This paper presents a new higher-order EPLL based on the recently proposed Ahmadi-Chaudhry-Zhang (ACZ) higher-order Newton framework. Since the ACZ method was originally developed for scalar discrete-time optimization, a continuous-time higher-order Newton flow is formulated for adaptive systems. The resulting framework is then applied to the EPLL through a coordinate optimization strategy, whereby the higher-order Newton flow is applied only to the phase update, while the amplitude update retains its classical form because its cost function is exactly quadratic.   The proposed autonomous system is analyzed through phase portraits and compared with the standard, Newton, and modified EPLL formulations. Phase-portrait analysis of the autonomous model shows that the proposed flow eliminates the spurious equilibria and saddle points present in the autonomous Newton EPLL, substantially enlarges the basin of attraction associated with the desired equilibrium, and shares several desirable convergence characteristics with the modified EPLL.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
