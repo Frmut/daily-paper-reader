@@ -6,29 +6,26 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-07-19
-- 运行时间：2026-07-19 20:59:23 UTC
+- 最新运行日期：2026-07-20
+- 运行时间：2026-07-20 20:17:47 UTC
 - 运行状态：成功
-- 本次总论文数：2
+- 本次总论文数：1
 - 精读区：0
-- 速读区：2
+- 速读区：1
 
 ### 今日简报（AI）
-今日聚焦机器人动力学建模与高阶锁相环优化，探索神经执行器与数学框架的深度结合。
-重点关注 NeuralActuator 如何通过神经建模提升机器人外力感知，以及 ACZ 牛顿框架对增强型锁相环性能的提升。
-建议对机器人感知或信号处理感兴趣的读者，深入了解神经网络在硬件底层建模中的具体应用。
-- 详情：[/202607/19/README](/202607/19/README)
+1. 深度剖析并网型与构网型变流器接入发电机组时的系统稳定性表现。
+2. 核心结论揭示了 GFL 与 GFM 变流器在复杂电网环境下的动态交互与稳定性差异。
+3. 建议电力系统相关读者关注变流器控制策略对新型电力系统稳态的影响。
+- 详情：[/202607/20/README](/202607/20/README)
 
 ### 精读区论文标签
 - 本次无精读推荐。
 
 ### 速读区论文标签
-1. [NeuralActuator: Neural Actuation Modeling for Robot Dynamics and External Force Perception](/202607/19/2607.11734v1-neuralactuator-neural-actuation-modeling-for-robot-dynamics-and-external-force-perception)  
+1. [Stability Analysis of Grid-Following and Grid-Forming Converters Connected to Generators](/202607/20/2607.12697v1-stability-analysis-of-grid-following-and-grid-forming-converters-connected-to-generators)  
    标签：评分：6.0/10、query:pmsm
-   evidence：执行器动力学与电机状态评分
-2. [Design and Analysis of a Higher-Order Enhanced Phase-Locked Loop via the Ahmadi-Chaudhry-Zhang Newton Framework](/202607/19/2607.13752v1-design-and-analysis-of-a-higher-order-enhanced-phase-locked-loop-via-the-ahmadi-chaudhry-zhang-newton-framework)  
-   标签：评分：6.0/10、query:pmsm
-   evidence：用于电力系统和电机控制同步的增强型锁相环 (EPLL)
+   evidence：变换器与同步发电机的稳定性
 
 
 <div class="dpr-home-promo-card">

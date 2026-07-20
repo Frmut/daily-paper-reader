@@ -1,0 +1,368 @@
+Title: Stability Analysis of Grid-Following and Grid-Forming Converters Connected to Generators
+
+URL Source: https://arxiv.org/pdf/2607.12697v1
+
+Published Time: Wed, 15 Jul 2026 12:01:58 GMT
+
+Number of Pages: 6
+
+Markdown Content:
+# Stability Analysis of Grid-Following and Grid-Forming Converters Connected to Generators 
+
+Alessandra Casiraghi, Marzio Barresi, Samuele Grillo 
+
+Dipartimento di Elettronica, Informazione e Bioingegneria, Politecnico di Milano, Milan, Italy. 
+
+{alessandra.casiraghi, marzio.barresi, samuele.grillo }@polimi.it 
+
+© 2026 IEEE. Personal use of this material is permitted. Permission from IEEE must be obtained for all other uses, in any current or future media, including reprinting/republishing this material for advertising or promotional purposes, creating new collective works, for resale or redistribution to servers or lists, or reuse of any copyrighted component of this work in other works. 
+
+Abstract —This work presents an examination of the main in-teractions between grid-following (GFL) and grid-forming (GFM) voltage source converters (VSCs) and synchronous generators (SGs), capturing the dynamics of a real power grid and pointing out the limitations of considering an ideal one for stability studies. Eigenvalue trajectories and participation factors are studied to perform in-depth small-signal analyses. Specifically, the GFL and GFM converters are compared in different grid strength scenarios by varying their rating powers and the grid short circuit ratio. Then, time-domain simulations of the non-linear and the developed linear systems are run to validate the mathematical findings from the stability analysis. The results reveal that the stability of VSCs-dominated grids, either in GFL or GFM mode, is strongly affected by both the grid strength and the VSC power, due to the coupling between the VSC control and the SGs. 
+
+Index Terms —Grid-following, grid-forming, synchronous gen-erator, short circuit ratio, small-signal analysis. 
+
+I. I NTRODUCTION 
+
+The capacity of renewable energy sources has increased rapidly in the last decade and is expected to continue to rise in the near future [1]. In this context, the penetration of inverter-based resources (IBRs) is projected to grow significantly, and the pivotal role of power converters, such as voltage source converters (VSCs), is undeniable [2]. Currently, converters operate mainly in grid-following (GFL) mode and synchronize with the grid by measuring the voltage angle at the point of common coupling (PCC). Alternatively, grid-forming (GFM) converters can actively participate in frequency and voltage regulation, guaranteeing the highest IBRs penetration [3]. Numerous studies in the literature address the issue of stability in IBR-dominated power grids from various per-spectives: [4]–[6] highlight that grids with a high penetration of IBRs may experience significant converter-driven stability issues, emphasizing the urgent need for in-depth studies related to increasing IBRs integration. In particular, some of these challenges have been explored by examining the converter control modes under varying grid strength scenarios, showing that the GFL converter encounters instability in a weak power grid, while the GFM loses stability in a strong power grid [7], [8]; furthermore, the stability boundaries of both control strategies have proved to be highly dependent on proper tuning of regulators [9]. However, the majority of existing stability 
+
+This work has been funded by the EU fund Next Generation EU, Missione 4, Componente 1, CUP D53D23001650006, MUR PRIN project 2022ZJPPSN SCooPS. 
+
+studies, considering different grid strength conditions, have been performed assuming an ideal grid, thereby neglecting the frequency and voltage dynamics of a real power grid. In fact, to the best of our knowledge, few studies have explored the behavior of VSCs when connected to a synchronous generator (SG), which comprehensively captures the dynamics of a real power grid relying on conventional generating units, such as thermal or hydro-based generation [10]. In order to enhance the aforementioned analyses on VSCs operation in weak and strong grid scenarios, this work includes a detailed investigation of the interactions between GFL and GFM converters and SGs, through small-signal analyses based on eigenvalues and participation factors (PFs), highlighting the main differences in the interactions and stability margins when considering a real SG-based grid instead of an ideal one. Specifically, GFL and GFM performances are compared under different grid strength conditions by varying the VSC power and the grid short-circuit ratio (SCR), which denotes a strong grid if greater than 3 and a very weak grid if less than 2. II. S YSTEM MODELING 
+
+The system in Fig. 1 is analyzed in order to study an IBRs-dominated power grid: it includes an SG, which represents thermal-based units, an aggregate model of VSCs, which can operate both in GFL and in GFM modes, and a power demand. 
+
+Rf , Rfc Lf , Cf are the VSC filter resistances, inductance, and capacitance. A connection line links the aggregate VSC to the SG, and it is directly related to the grid strength when the other impedances are fixed: the line length and, in turn, its impedance ( Rl, Ll) are determined from a specific value of SCR through the Th´ evenin equivalent at the PCC. Lastly, the system operates at two voltage levels: the VSC and its filter are referred to the transformer LV side (660 V), while the connection line, the load, and the SG to the HV side (24 kV). 
+
+A. Synchronous Generator 
+
+The block diagram of the SG model in the rotor reference frame is shown in Fig. 2 with its control structures: the frequency regulation system and the excitation system. A round-rotor synchronous machine is considered. Its pa-rameters are taken from [11]. It includes the d and q stator windings with voltages vqd g and currents iqd g , the excitation circuit on the d-axis, and three damper windings. Mechanical arXiv:2607.12697v1 [eess.SY] 14 Jul 2026 dynamics is represented as a single mass model with constant moment of inertia, according to the swing equation. The excitation system, based on the IEEE AC4C standard model in (1), regulates the voltage at the SG terminals by providing the field voltage vf . τB and τC are the time constants of the lead-lag compensator, while kA and τA are the regulator gain and time constant, tuned according to [12]. 
+
+Gexc (s) = 1 + sτ C
+
+1 + sτ B
+
+· kA
+
+1 + sτ A
+
+(1) The governor and the turbine constitute the frequency regu-lation system, according to the standard IEEEG1. The turbine controls the mechanical power Pm to its reference value P ref m ;the simplified transfer function Gturb of a single reheat tandem compound turbine is considered in (2), where KHP and KLP 
+
+are the torque fractions of high- and low-pressure turbines, and TRH is the reheater time constant [11]. The governor, with transfer function Ggov , controls the shaft rotational speed ωr;
+
+k is the droop, and τR is the control valve time constant: 
+
+Gturb (s) = KHP + KLP 
+
+1 + sT RH 
+
+, Ggov (s) = k
+
+1 + sτ R
+
+(2) 
+
+B. Voltage Source Converter 
+
+As this paper aims to perform small-signal analyses, an average model is used, neglecting the switching. The AC port is modeled as a voltage source, controlled by the VSC control scheme. The DC port is decoupled from the AC side, and its dynamics is influenced by power exchanges with the AC grid. If not controlled, it is modeled as a constant voltage source, otherwise as a constant current source with a DC-link capacitor 
+
+Cc. To study high IBRs penetration scenarios, an aggregate model of N VSCs is used, following the procedures outlined in [13] and [14] for GFL and GFM, respectively. 
+
+1) Grid-following converter: GFL mode consists in inject-ing active and reactive power into an energized grid, with the VSC acting as a current source [15]. The phase-locked loop (PLL) plays a key role in guaranteeing its proper operation: it ensures grid synchronization by tracking frequency and angle at PCC and providing the reference frame for the control loops. Together with the PLL, the GFL vector control strategy consists of fast current control loops and outer computations to set the reference currents, as shown in Fig. 3. The PLL is modeled as a PI regulator, tuned by setting the time constant and damping [16], which determines the frequency ωPLL as output. Then, two PI controllers ensure that the VSC current 
+
+iqd c follows its reference, by providing the converter voltages 
+
+## ∼   
+
+> SG igvg
+> Load
+> il
+> RlLl
+> Line
+> it
+> vPCC
+> Rfc
+> Cf
+> Transformer
+> RfLf
+> ic
+> VSC
+> Fig. 1. Single line diagram of the studied system.
+
+vf
+
+vqd g 
+
+> Exciter
+
+V ref SG 
+
+ωn
+
+P ref m
+
+> Governor Turbine
+
+Pm
+
+ωr
+
+SG 
+
+vqd g iqd g                              
+
+> Fig. 2. SG equivalent representation.
+> PI i
+> −
+> iqc×Lf
+> −
+> vdPCC
+> vdc
+> eq
+> PI DC
+> eVDC
+> V2DC
+> (Vref DC )2
+> −
+> P∗
+> ÷
+> 32vqPCC
+> iq∗
+> c
+> ωPLL
+> PI PLL
+> ωPLL 1
+> sθPLL
+> ePLL
+> 0
+> vdPCC
+> −
+> PI i−
+> idc×Lf
+> +
+> vqPCC
+> vqc
+> id∗
+> ced
+> Qref ÷
+> 32vqPCC
+> Fig. 3. Grid-following control scheme.
+> PI i
+> −
+> iqc×Lf
+> −
+> vdPCC
+> vdc
+> iq∗
+> ceq
+> PI v
+> −
+> vq∗
+> PCC
+> +
+> Vref PCC
+> vqPCC ×Cf
+> −
+> idt
+> nq
+> −
+> Qref
+> Qc
+> ωGFM ωGFM
+> mp
+> ωn
+> ωGFM
+> 1
+> sθGFM Pref −
+> Pc
+> PI i
+> −
+> idc×Lf
+> +
+> vqPCC
+> vqc
+> id∗
+> ced
+> PI v0−
+> vdPCC ×Cf
+> +
+> iqt
+> Fig. 4. Grid-forming control scheme.
+
+vqd c as output; the gains are tuned by fixing the loop time con-stant. Lastly, the DC voltage PI regulator, with time constant 
+
+τDC , acts on V 2DC , providing the reference active power and, consequently, the reference q-axis current. It is tuned on the basis of the DC voltage open-loop transfer function, computed from the DC power expression. The reference d-axis current is computed directly from the reference reactive power Qref .
+
+2) Grid-forming converter: The VSC can also operate in GFM mode, acting as a voltage source by actively participating in both voltage and frequency regulation [3]. Unlike GFL con-verters that follow the grid frequency through the PLL, GFM converters can directly generate their frequency and phase angle with different strategies, such as virtual synchronous machine, synchronverter, and droop control [17]. The GFM control scheme adopted in this paper, in Fig. 4, consists of the current control loop, which is the same as in GFL, the voltage control loop, and the outer droop control. Unlike the GFL, here the DC voltage is not controlled. Two PI controllers, tuned according to [17], regulate the voltage at PCC to its reference vqd ∗ 
+
+> PCC
+
+by providing the reference currents as output. Lastly, the GFM frequency ωGFM derives from the active power synchronization loop, while the reactive power droop provides the reference q-axis PCC voltage; their droop coefficients mp and nq are set according to the grid code. III. S MALL -S IGNAL STABILITY ANALYSIS 
+
+In this section, the performances of GFL and GFM VSCs connected to SG-based or ideal power grids are compared using small-signal stability analyses (SSA) based on eigen-values and PFs. Different ratings of the aggregate VSC are considered, keeping the SG power constant: VSC power is set to 50% , 100% and 150% of SG power; the load absorbs 75% 
+
+of the total installed power, and the GFL and GFM VSCs operate at the same steady-state equilibrium point. Then, for each scenario, the grid SCR is varied from 3.5 to 1.5 with steps of 0.1, resulting in variations in the connection line impedance (more details about the system are available on GitHub 1). To perform SSA, the state-space linear model of the com-plete system is derived, considering different rotating reference frames (RFs): the grid and the SG align with the rotor, the GFL control with the PCC voltage, and the GFM control with the angle imposed by the synchronization loop; as widely recog-nized, transitions between RFs are possible using nonlinear rotation matrices, which depend on their angle difference ∆θ.In the following, eigenvalues are displayed in different col-ors according to the variables associated with sufficiently high PF ( > 30% ) [10]. Thus, the color legend indicates the state variables significantly participating in each mode: for example, in Fig. 6, the first color in the right list represents a mode where grid currents, VSC currents, and VSC voltages interact. PFs are displayed in a matrix, with columns representing modes and rows representing state variables: black denotes maximum participation, white denotes none [10]. 
+
+A. Grid-Following Converter 
+
+The eigenvalue trajectories of the system with the GFL converter are plotted in Fig. 5, considering the three VSC power ratings and varying the SCR from 3.5 to 1.5; the corresponding pole color legend is shown in Fig. 6. When the VSC operates at half SG power, the system maintains stability for each SCR tested: the load is supplied mainly by the SG and the voltage drop across the connection line is not high enough to cause GFL instability in a weak-grid scenario. Conversely, if the VSC and SG powers are equal, the system is unstable for SCR < 2.2 due to poles 9-10 with high participation of SG currents in Fig. 5b. Also, other interactions may contribute to instability: the DC voltage control stops to interact with SG (poles 11-12 change color as SCR is varied) as the grid becomes weaker, and the PLL interacts with SG (poles 13-14). In this case, the load is mainly supplied by the VSC and the voltage drop across the connection line increases, thereby increasing the VSC injected current; in weak grid conditions, this results in significant PCC voltage variations, negatively affecting DC-link dynamics, eventually leading to PLL loss of synchronism. The conditions become more critical when the VSC power exceeds the SG power, as the system 
+
+> 1
+
+https://github.com/AlessandraCasiraghi/SSA-GFL-and-GFM-VSCs -2000 -1000 0-5000 05000 135 8 12 247 11 6-150 -100 -50 0-500 0500 10 15 14 17 18 913 16 -10 -5 0                                  
+
+> Real axis
+> -100 -50 050 100
+> 21 19 20 22 23 (a) SVSC = 50% ·SSG .-2000 -1000 0-5000 05000 13587246-150 -100 -50 0-500 0500 15 12 14 17 10 18 16 11 13 9-10 -5 0
+> Real axis
+> -100 -50 050 100
+> 21 19 20 22 23 (b) SVSC = 100% ·SSG .-2000 -1000 0-5000 05000 13582476-150 -100 -50 0-500 0500 10 11 14 15 17 912 13 16 18 -10 -5 0
+> Real axis
+> -100 -50 050 100
+> 21 19 20 22 23 (c) SVSC = 150% ·SSG .
+
+Fig. 5. Eigenvalue trajectories of the system with GFL VSC when SCR is varied from 3.5 to 1.5, as indicated by the arrows. AC grid curr. PLL SG curr. SG exc. SG mech. VSC contr. VSC curr. VSC volt. AC grid curr. + VSC curr. + VSC volt. AC grid curr. + VSC volt. SG curr. + VSC contr. (DC) + VSC volt. (DC) PLL + SG curr. VSC contr. (I) + VSC curr. SG curr. + VSC curr. AC grid curr. + SG curr. + VSC curr. AC grid curr. + PLL + SG curr. + VSC curr. SG curr. + VSC contr. (DC) AC grid curr. + VSC curr. AC grid curr. + PLL + VSC volt. VSC curr. + VSC volt. SG curr. + VSC volt. (DC) AC grid curr. + PLL + SG curr. + VSC volt. AC grid curr. + PLL + SG curr. + VSC curr. + VSC volt. AC grid curr. + SG curr. 
+
+Fig. 6. Pole color based on state variables with PFs > 30% (GFL). 
+
+is always unstable due to poles 9-10 and 11-12, as shown in Fig. 5c: most of the power absorbed by the load comes from the VSC which thus cannot maintain its proper operation. Furthermore, to understand the limitations of stability stud-ies when considering an ideal AC grid, the same analyses are repeated by replacing the SG-based power plant with an ideal AC grid. First, the SCR stability boundaries change significantly: considering, for example, SVSC = Sgrid , the system becomes unstable for SCR < 1. The PFs shown in Fig. 7 reveal that, differently from the case with the SG, the PLL and the DC voltage control do not interact with currents (modes associated with pole pairs 9-10 and 7-8 in Fig. 7b); instead, the angle difference between the two RFs still couples with grid currents, leading to instability for low SCR values: modes 4, 5, 6 in Fig. 7b show high participation of grid currents and ∆θ as the SCR decreases. It is now evident that the ideal AC grid-based analysis exhibits a wider stability range compared to that with the real power grid and neglects the coupling effects between the GFL and the grid dynamics: ignoring the frequency and voltage dynamics of an SG-based power grid may lead to inaccurate evaluation of GFL-related oscillatory modes and consequently of its stability margins. 1 2 3 4 5 6 7 8 910 11 12 13 14 15 16 17 18 19 20 21 22 23         
+
+> "iqc
+> "idc
+> "vqcap
+> "vdcap
+> "iqt
+> "idtR"eqR"edR"eP LL
+> "3
+> "VDC
+> "eV DC R"eexc
+> "vf
+> "idg
+> "idk
+> "if
+> "iqg
+> "iqk1
+> "iqk2
+> "!r
+> "xgov
+> "xturb (a) GFL connected to SG. 1 2 3 4 5 6 7 8 910 11 12
+> "iqc
+> "idc
+> "vqcap
+> "vdcap
+> "iqt
+> "idtR"eq
+> R"ed
+> R"eP LL
+> "3
+> "VDC
+> "eV DC (b) GFL connected to ideal AC grid.
+
+Fig. 7. PFs of the system with GFL VSC for SCR varying from 3.5 to 1.5 and SVSC = SSG ; each vertical band corresponds to the SCR values. 
+
+B. Grid-Forming Converter 
+
+The same analysis is performed with the GFM converter and the eigenvalue trajectories are plotted in Fig. 8; the corresponding pole color legend is shown in Fig. 9. If the VSC power is half the SG power, that is, the load is mostly supplied by the SG, the system is always unstable due to poles 13-14 which represent an interaction between SG currents and GFM voltage control, as shown in Fig. 8a. In this case, since the VSC injects less power than the SG, the small phase difference between PCC and SG voltages may cause critical active power fluctuations, thus GFM loss of synchro-nism and instability. When the VSC matches the SG power, the system, initially unstable, becomes stable in weak-grid scenarios (SCR ≤ 2.4). As previously noted, the instability is caused by the interaction between SG currents and GFM voltage control (poles 13-14) and by the coupling between SG currents and synchronization loop (poles 15-16), as shown in Fig. 8b. In a strong power grid, the GFM converter and the SG are electrically close to each other, making the GFM voltage regulation and the active power-based synchronization more challenging. Lastly, if the VSC power exceeds the SG power, the system is stable for each SCR tested: the load is mainly supplied by the GFM converter, whose dynamics therefore prevails. In particular, the SG frequency is coupled with SG electrical and GFM synchronization loop state variables and not only with governor and turbine variables (poles 22-23 in Fig. 8c change color with respect to the previous cases). As before, substituting the SG with an ideal grid, yields different stability margins: if SVSC = Sgrid , the system is stable for SCR < 2.1, leading to a narrower stability range. Again, the instability is caused by the interaction between the GFM voltage control and synchronization loop with the grid currents, as shown by the PFs in Fig. 10b (poles 7-8). However, when considering an ideal AC grid, the coupling between the grid frequency and currents cannot be captured. Indeed, poles 22-23 in Fig. 10a indicate that the SG speed couples with both frequency regulation system and SG currents: the SG frequency depends both on the mechanical torque and the -2000 -1000 0-5000 05000 1 35 82 476-150 -100 -50 0-500 0500 10 12 16 18 911 17 15 13 14 -10 -5 0 
+
+> Real axis
+> -100 -50 050 100
+> 22 2426 2325
+
+(a) SVSC = 50% · SSG .-2000 -1000 0-5000 05000 1 35 872 46-150 -100 -50 0-500 0500 10 12 16 18 911 17 15 13 14 -10 -5 0  
+
+> Real axis
+> -100 -50 050 100
+> 22 2426 23 25
+
+(b) SVSC = 100% · SSG .-2000 -1000 0-5000 05000 1 35 82 476-150 -100 -50 0-500 0500 10 12 16 18 911 17 15 13 14 -10 -5 0  
+
+> Real axis
+> -100 -50 050 100
+> 22 2426 14 23 25 13
+
+(c) SVSC = 150% · SSG .
+
+Fig. 8. Eigenvalue trajectories of the system with GFM VSC when SCR is varied from 3.5 to 1.5, as indicated by the arrows. AC grid curr. SG curr. SG exc. SG mech. VSC contr. VSC curr. VSC volt. synch. loop AC grid curr. + VSC volt. SG curr. + VSC curr. SG curr. + VSC contr. (V) + synch. loop SG curr. + VSC contr. (V) VSC contr. (V) + synch. loop AC grid curr. + VSC curr. + VSC volt. SG curr. + SG mech. SG curr. + synch. loop SG curr. + SG mech. + synch. loop 
+
+Fig. 9. Pole color based on state variables with PFs > 30% (GFM). 1 2 3 4 5 6 7 8 910 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26           
+
+> "iqc
+> "idc
+> "vqcap
+> "vdcap
+> "iql
+> "idlR"eqR"edR"evq R"evd
+> "3
+> "F ilt P
+> "F ilt Q
+> "F ilt iq
+> "F ilt id R"eexc
+> "vf
+> "idg
+> "idk
+> "if
+> "iqg
+> "iqk1
+> "iqk2
+> "!r
+> "xgov
+> "xturb (a) GFM connected to SG. 1 2 3 4 5 6 7 8 910 11 12 13 14 15
+> "iqc
+> "idc
+> "vqcap
+> "vdcap
+> "iql
+> "idlR"eqR"edR"evq R"evd
+> "3
+> "F ilt P
+> "F ilt Q
+> "F ilt iq
+> "F ilt id (b) GFM connected to ideal AC grid.
+
+Fig. 10. PFs of the system with GFM VSC for SCR varying from 3.5 to 1.5 and SVSC = SSG ; each vertical band corresponds to the SCR values. 
+
+VSC power, meaning that the VSC may be able to actively compensate for any load variation. This analysis suggests that considering an ideal grid in SSA may prevent the observation of all GFM-related oscillatory modes and dynamics. IV. S IMULATION RESULTS 
+
+In order to verify the validity of the developed linear model and the aforementioned SSA, the case study with SVSC =
+
+SSG is implemented in MATLAB-Simulink and time-domain simulations are performed applying 1% step increment in the active power absorbed by the load at t = 1 .5 s. The SG and PLL frequencies and the active and reactive powers injected by GFL VSC are shown in Fig. 11. As the SCR decreases, the system damping decreases, leading to wider oscillations. When SCR = 1 .5, the system is unstable and the simulation stops at t = 1.82 s; the increasing-amplitude oscillations are caused by the DC-link control and the PLL, leading to instability due to the negative damping of oscillatory mode associated with pole pair 9-10 ( f = 62 Hz). Similarly, the SG and GFM frequencies and the active and reactive powers injected by GFM VSC are shown in Fig. 12. When SCR = 3 .5, the low-frequency oscillations are caused by VSC voltage control and then transferred to the system through the active power-based synchronization loop, causing oscillatory instability ( f = 10 Hz) due to negative damping of the oscillatory mode associated with poles 13-14. Lastly, the system response becomes slower and better damped when the SCR decreases from 2.4 to 1.5.V. C ONCLUSION 
+
+This work provides an analysis of the interactions between traditional SG-based power plants and VSCs, relying on conventional GFL and GFM control schemes. Different case studies have been conducted by varying the converter rating power and the grid SCR, revealing that the stability of VSCs-dominated grids is strongly influenced by both and highly depends on the modeling of the power grid dynamics. The GFL converter operates correctly if its power is lower than the SG power or in strong-grid scenarios. In weak-grid scenarios and when the GFL power is considerably greater 49.9 49.95 50        
+
+> fg
+> [Hz]
+> 49.9 50 50.1
+> fPLL
+> [Hz]
+> 0.895 0.9 0.905
+> PGFL
+> [pu]
+> t[s]
+> 0.095 0.1 0.105
+> t[s] t[s]
+> QGFL
+> [pu]
+> Non-Linear Linear
+> SCR = 3.5 SCR = 2.5 SCR = 1.5
+
+Fig. 11. Simulation results with GFL for different SCR. 49.96 49.98 50        
+
+> fg
+> [Hz]
+> 49.96 49.98 50
+> fGFM
+> [Hz]
+> 0.88 0.9 0.92
+> PGFM
+> [pu]
+> t[s]
+> 0.095 0.1 0.105
+> t[s] t[s]
+> QGFM
+> [pu] Non-Linear Linear
+> SCR = 3.5 SCR = 2.4 SCR = 1.5
+
+Fig. 12. Simulation results with GFM for different SCR. 
+
+than the SG power, the system is unstable due to DC-link dynamics and PLL loss of synchronism. In contrast, the GFM converter experiences unstable operation when it is electrically close to the SG; this occurs when its power is lower than SG power or in strong-grid scenarios and is primarily due to the GFM voltage control. When the GFM power exceeds the SG power, the converter dynamics prevails, the SG follows accordingly, and the system is always stable. Consequently, the limitations of assuming an ideal power grid instead of a real SG-based one have been investigated: compared to the real grid, the ideal grid-based analysis exhibits wider GFL and narrower GFM stability ranges. Moreover, some important coupling effects are neglected: in the case of GFL control, the DC voltage dynamics and PLL no longer interact with grid currents, while, in the case of GFM control, the grid frequency no longer interacts with grid currents. Lastly, the findings from the small-signal analysis have been validated with time-domain simulations. REFERENCES [1] REN21. (2024) Ren21. 2024. renewables 2024 – global status report. [Online]. [Online]. Available: https://www.ren21.net/gsr-2024/ [2] ENTSO-E, “Completing the map power systems needs in 2030 and 2040,” ENTSO-E, Tech. Rep., 2020. [3] T. Qoria, Q. Cossart, C. Li, F. Colas, F. Gruson, X. Guillaud, and X. Kestelyn, “Wp3 - control and operation of a grid with 100% converter-based devices,” MIGRATE, Technical report, 2018. [4] R. Rosso, X. Wang, M. Liserre, X. Lu, and A. S. Engelken, “Grid forming converters: Control approaches, grid-synchronization, and future trends,” IEEE Open Journal of Industry Applications , vol. 2, pp. 93–109, 2021. [5] L. Kong, Y. Xue, L. Qiao, and A. F. Wang, “Review of small-signal converter-driven stability issues in power systems,” IEEE Open Access Journal of Power and Energy , vol. 9, pp. 29–41, 2022. [6] C. Ecker, D. Babazadeh, and C. Becker, “Classification of converter-driven stability and suitable modeling and analysis methods,” IEEE Access , vol. 12, pp. 53 056–53 073, Dec 2024. [7] X. Gao, D. Zhou, A. Amjad-Moghaddam, and F. Blaabjerg, “Stability analysis of grid-following and grid-forming converters based on state-space modelling,” IEEE Transactions on Industry Applications , vol. 60, no. 3, pp. 4910–4920, 2024. [8] X. Wang, M. G. Taul, H. Wu, Y. Liao, F. Blaabjerg, and L. Harne-fors, “Grid-synchronization stability of converter-based resources—an overview,” IEEE Open Journal of Industry Applications , vol. 1, pp. 115– 134, 2020. [9] L. D. P. Ospina and D. Ramasubramanian, “Grid-forming and grid-following inverters: a dynamic performance evaluation using rms, emt and small-signal analysis,” in CSE Cigre Science & Engineering , June 2025. [10] C. Collados-Rodriguez, M. Cheah-Mane, E. Prieto-Araujo, and O. Gomis-Bellmunt, “Stability analysis of systems with high vsc pen-etration: Where is the limit?” IEEE Transactions on Power Delivery ,vol. 35, no. 4, Aug 2020. [11] P. Kundur, N. J. Balu, and M. J. Lauby, Power System Stability and Control . New York: McGraw-Hill, 1994. [12] R. J. Koessler, “Techniques for tuning excitation system parameters,” 
+
+IEEE Transactions on Energy Conversion , vol. 3, no. 4, pp. 785–791, Dec 1988. [13] A. Mishra, A. S. Saleem, and N. P. Padhy, “A reduced-order lumped model for solar power plant,” in IEEE International Conference on Power Electronics, Drives and Energy Systems (PEDES) , 2022. [14] H. Zhai, “Novel topological aggregation method for grid-forming con-verters of renewable energy with threshold correction,” Energies , vol. 18, no. 4, 2025. [15] X. Gao, D. Zhou, A. Anvari-Moghaddam, and F. Blaabjerg, “A compar-ative study of grid-following and grid-forming control schemes in power electronic-based power systems,” Power Electronics and Drives , vol. 8, no. 1, pp. 1–20, 2023. [16] S. K. Chung, “A phase tracking system for three phase utility interface inverters,” IEEE Transactions on Power Electronics , vol. 15, no. 3, pp. 431–438, 2000. [17] N. Mohammed, H. Udawatte, W. Zhou, D. J. Hill, and B. Bahrani, “Grid-forming inverters: A comparative study of different control strategies in frequency and time domains,” IEEE Open Journal of the Industrial Electronic Society , vol. 5, pp. 185–214, 2024.

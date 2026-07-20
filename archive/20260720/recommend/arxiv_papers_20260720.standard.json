@@ -1,0 +1,53 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-20T20:17:31.640362+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 1,
+    "quick_skim_target": 11,
+    "quick_selected": 1
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2607.12697v1",
+      "title": "Stability Analysis of Grid-Following and Grid-Forming Converters Connected to Generators",
+      "abstract": "This work presents an examination of the main interactions between grid-following (GFL) and grid-forming (GFM) voltage source converters (VSCs) and synchronous generators (SGs), capturing the dynamics of a real power grid and pointing out the limitations of considering an ideal one for stability studies. Eigenvalue trajectories and participation factors are studied to perform in-depth small-signal analyses. Specifically, the GFL and GFM converters are compared in different grid strength scenarios by varying their rating powers and the grid short circuit ratio. Then, time-domain simulations of the non-linear and the developed linear systems are run to validate the mathematical findings from the stability analysis. The results reveal that the stability of VSCs-dominated grids, either in GFL or GFM mode, is strongly affected by both the grid strength and the VSC power, due to the coupling between the VSC control and the SGs.",
+      "authors": [
+        "Alessandra Casiraghi",
+        "Marzio Barresi",
+        "Samuele Grillo"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY"
+      ],
+      "published": "2026-07-14T12:23:44+00:00",
+      "link": "https://arxiv.org/pdf/2607.12697v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "stability of converters and synchronous generators",
+      "llm_evidence_cn": "变换器与同步发电机的稳定性",
+      "llm_evidence": "变换器与同步发电机的稳定性",
+      "canonical_evidence": "变换器与同步发电机的稳定性",
+      "llm_tldr_en": "Analyzes interactions and stability between voltage source converters and synchronous generators.",
+      "llm_tldr_cn": "分析了电压源变换器与同步发电机之间的相互作用与稳定性。",
+      "llm_tldr": "分析了电压源变换器与同步发电机之间的相互作用与稳定性。",
+      "llm_tags": [
+        "query:pmsm:composite"
+      ],
+      "matched_query_tag": "query:pmsm:composite",
+      "matched_query_text": "Papers central to 三相及双三相永磁同步电机相关研究检索, especially work that connects or combines: m; s; f; Permanent Magnet Synchronous Motor research; dual three-phase permanent magnet synchronous motor control and design; fault-tolerant control of multi-phase motors; recent advances in dual three phase permanent magnet synchronous motor control; fault tolerant strategies for multi phase permanent magnet synchronous motors.",
+      "matched_requirement_id": "req-composite-pmsm",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "label": "2026-07-20",
+  "date": "2026-07-20",
+  "generated_at": "2026-07-20T20:17:56",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202607/20/2607.12697v1-stability-analysis-of-grid-following-and-grid-forming-converters-connected-to-generators",
+      "section": "quick",
+      "title_en": "Stability Analysis of Grid-Following and Grid-Forming Converters Connected to Generators",
+      "authors": "Alessandra Casiraghi, Marzio Barresi, Samuele Grillo",
+      "date": "2026-07-14",
+      "pdf": "https://arxiv.org/pdf/2607.12697v1",
+      "score": "6.0",
+      "evidence": "变换器与同步发电机的稳定性",
+      "tldr": "本研究探讨了跟网型（GFL）和构网型（GFM）电压源变流器与同步发电机之间的相互作用，分析了真实电网动态对系统稳定性的影响。通过特征值轨迹和参与因子进行小信号稳定性分析，并在不同电网强度和变流器功率场景下对比了GFL与GFM的表现。研究揭示了变流器控制与同步发电机之间的耦合关系是影响系统稳定性的关键因素，为变流器主导的电力系统设计提供了理论依据。",
+      "tags": "query:pmsm",
+      "abstract_en": "This work presents an examination of the main interactions between grid-following (GFL) and grid-forming (GFM) voltage source converters (VSCs) and synchronous generators (SGs), capturing the dynamics of a real power grid and pointing out the limitations of considering an ideal one for stability studies. Eigenvalue trajectories and participation factors are studied to perform in-depth small-signal analyses. Specifically, the GFL and GFM converters are compared in different grid strength scenarios by varying their rating powers and the grid short circuit ratio. Then, time-domain simulations of the non-linear and the developed linear systems are run to validate the mathematical findings from the stability analysis. The results reveal that the stability of VSCs-dominated grids, either in GFL or GFM mode, is strongly affected by both the grid strength and the VSC power, due to the coupling between the VSC control and the SGs.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
