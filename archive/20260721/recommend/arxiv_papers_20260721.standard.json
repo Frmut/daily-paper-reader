@@ -1,0 +1,102 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-21T20:23:00.339812+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 2,
+    "quick_skim_target": 11,
+    "quick_selected": 2
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2607.11734v2",
+      "title": "NeuralActuator: Neural Actuation Modeling for Robot Dynamics and External Force Perception",
+      "abstract": "Differentiable simulators have advanced policy learning and model-based control across robotic tasks. Yet actuator dynamics remain underexplored and can be a major source of sim-to-real error, particularly on low-cost platforms, where the linear current-to-joint-torque approximation $τ= K_t I$ becomes unreliable because of friction, hysteresis, backlash, and thermal effects. Accurate actuator models can also support force perception and integrated force/position control. We present NeuralActuator, which jointly predicts (i) a torque surrogate for trajectory propagation on low-cost servo platforms, (ii) external forces with a contact-probability gate for sensorless force perception, and (iii) a motor-condition score for a supervised joint, distinguishing normal from mechanically restricted operation. A twin-arm teleoperation system records robot states and actuator telemetry alongside external-force labels, yielding the Neural Actuation Dataset (NAD). The torque-surrogate head is trained through differentiable simulation from pose trajectories without ground-truth joint-torque measurements. A Transformer captures temporal dependencies while enabling real-time inference. We validate NeuralActuator on a 5-DoF OpenManipulator-X, a 6-DoF SO-101 from LeRobot, and a 7-DoF Franka Emika Panda, spanning three actuator families and costs from approximately \\$500 to more than \\$30{,}000. The low-cost platforms support physically plausible dynamics and force evaluation, while the offline Franka experiment provides a payload-force-estimation benchmark. We also demonstrate motor-condition estimation and improved behavior-cloning performance using NeuralActuator as a pretrained module. We release the dataset, code, and hardware configurations on the project page: https://frank-zy-dou.github.io/projects/NeuralActuator/index.html.",
+      "authors": [
+        "Zhiyang Dou",
+        "John U. Onyemelukwe",
+        "Hangxing Zhang",
+        "Heng Zhang",
+        "Minghao Guo",
+        "Yunsheng Tian",
+        "Michal Piotr Lipiec",
+        "Joshua Jacob",
+        "Chao Liu",
+        "Peter Yichen Chen",
+        "Yuri Ivanov",
+        "Wojciech Matusik"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.CV",
+        "cs.GR",
+        "cs.LG"
+      ],
+      "published": "2026-07-13T15:58:34+00:00",
+      "link": "https://arxiv.org/pdf/2607.11734v2",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Modeling motor dynamics and condition scoring for control",
+      "llm_evidence_cn": "电机动力学建模与状态评分用于控制",
+      "llm_evidence": "电机动力学建模与状态评分用于控制",
+      "canonical_evidence": "电机动力学建模与状态评分用于控制",
+      "llm_tldr_en": "NeuralActuator models complex motor dynamics and condition scores to improve robot control accuracy.",
+      "llm_tldr_cn": "NeuralActuator通过建模复杂的电机动力学和状态评分，提升了机器人控制精度。",
+      "llm_tldr": "NeuralActuator通过建模复杂的电机动力学和状态评分，提升了机器人控制精度。",
+      "llm_tags": [
+        "query:pmsm"
+      ],
+      "matched_query_tag": "query:pmsm",
+      "matched_query_text": "Permanent Magnet Synchronous Motor research",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.17635v1",
+      "title": "On Optimal Event-Triggered Distributed Control for Stochastic Multi-Agent Systems via Reinforcement Learning",
+      "abstract": "We propose a reinforcement learning (RL) based optimal distributed control algorithm for the multi-agent systems (MASs) with stochastic uncertainties. Unlike existing methods, during the optimized backstepping design process, we use the actor-critic-identifier structure. The actor neural network is used to reflect control behavior, the critic neural network works to evaluate control performance and the unknown stochastic uncertainties are handled by identifier neural network. Furthermore, a low-pass filter effectively suppresses problems stemming from non-affine nonlinear faults and a hybrid event-triggered control (ETC) strategy is proposed to reduce control frequency. We analyze our algorithm's operation, and we provide a Lyapunov-based stability proof that guarantees all errors are bounded, ensuring precise tracking between the leader and followers. We validate its correctness in a single-axis robotic manipulator simulation and finally, we compare against the non-optimal control algorithm highlighting our optimal control algorithm's operational advantages.",
+      "authors": [
+        "Ziming Wang",
+        "Bingbing Li",
+        "Karl H. Johansson",
+        "Apostolos I. Rikos"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY"
+      ],
+      "published": "2026-07-20T07:44:39+00:00",
+      "link": "https://arxiv.org/pdf/2607.17635v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Fault-tolerant control for stochastic multi-agent systems with nonlinear faults",
+      "llm_evidence_cn": "针对具有非线性故障的随机多智能体系统的容错控制",
+      "llm_evidence": "针对具有非线性故障的随机多智能体系统的容错控制",
+      "canonical_evidence": "针对具有非线性故障的随机多智能体系统的容错控制",
+      "llm_tldr_en": "Develops an RL-based optimal distributed control with fault-tolerant capabilities for stochastic multi-agent systems.",
+      "llm_tldr_cn": "开发了一种基于强化学习的分布式控制算法，具备处理随机多智能体系统非线性故障的容错能力。",
+      "llm_tldr": "开发了一种基于强化学习的分布式控制算法，具备处理随机多智能体系统非线性故障的容错能力。",
+      "llm_tags": [
+        "query:pmsm"
+      ],
+      "matched_query_tag": "query:pmsm",
+      "matched_query_text": "fault-tolerant control of multi-phase motors",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

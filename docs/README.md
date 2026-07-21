@@ -6,26 +6,29 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-07-20
-- 运行时间：2026-07-20 20:17:47 UTC
+- 最新运行日期：2026-07-21
+- 运行时间：2026-07-21 20:23:17 UTC
 - 运行状态：成功
-- 本次总论文数：1
+- 本次总论文数：2
 - 精读区：0
-- 速读区：1
+- 速读区：2
 
 ### 今日简报（AI）
-1. 深度剖析并网型与构网型变流器接入发电机组时的系统稳定性表现。
-2. 核心结论揭示了 GFL 与 GFM 变流器在复杂电网环境下的动态交互与稳定性差异。
-3. 建议电力系统相关读者关注变流器控制策略对新型电力系统稳态的影响。
-- 详情：[/202607/20/README](/202607/20/README)
+今日聚焦机器人动力学感知与多智能体分布式控制的智能化升级。
+重点关注利用 NeuralActuator 实现精准外力感知，以及通过强化学习优化随机多智能体系统的事件触发控制。
+建议关注神经网络如何深度融合物理建模与控制算法，以提升复杂环境下的系统鲁棒性。
+- 详情：[/202607/21/README](/202607/21/README)
 
 ### 精读区论文标签
 - 本次无精读推荐。
 
 ### 速读区论文标签
-1. [Stability Analysis of Grid-Following and Grid-Forming Converters Connected to Generators](/202607/20/2607.12697v1-stability-analysis-of-grid-following-and-grid-forming-converters-connected-to-generators)  
+1. [NeuralActuator: Neural Actuation Modeling for Robot Dynamics and External Force Perception](/202607/21/2607.11734v2-neuralactuator-neural-actuation-modeling-for-robot-dynamics-and-external-force-perception)  
    标签：评分：6.0/10、query:pmsm
-   evidence：变换器与同步发电机的稳定性
+   evidence：电机动力学建模与状态评分用于控制
+2. [On Optimal Event-Triggered Distributed Control for Stochastic Multi-Agent Systems via Reinforcement Learning](/202607/21/2607.17635v1-on-optimal-event-triggered-distributed-control-for-stochastic-multi-agent-systems-via-reinforcement-learning)  
+   标签：评分：6.0/10、query:pmsm
+   evidence：针对具有非线性故障的随机多智能体系统的容错控制
 
 
 <div class="dpr-home-promo-card">
