@@ -1,0 +1,23 @@
+{
+  "label": "2026-07-23",
+  "date": "2026-07-23",
+  "generated_at": "2026-07-23T21:23:05",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202607/23/2607.16512v1-a-unified-statistical-framework-for-multicopter-propeller-damage-diagnosis-based-on-functionally-pooled-models-and-bayesian-quantification-experimental-flight-test-assessment",
+      "section": "quick",
+      "title_en": "A Unified Statistical Framework for Multicopter Propeller Damage Diagnosis Based on Functionally Pooled Models and Bayesian Quantification: Experimental Flight Test Assessment",
+      "authors": "Shinan Huang, Jingxi Zhu, Fotis Kopsaftopoulos",
+      "date": "2026-07-17",
+      "pdf": "https://arxiv.org/pdf/2607.16512v1",
+      "score": "6.0",
+      "evidence": "电机级损伤识别与诊断框架",
+      "tldr": "本研究提出了一种基于随机时间序列的统一统计框架，用于多旋翼无人机螺旋桨损伤诊断。该框架利用功能池化自回归（FP-AR）模型，仅通过标准IMU数据即可实现损伤检测、电机定位及程度量化。通过室外六轴飞行器飞行实验验证，该方法在环境干扰下表现出良好的跨飞行一致性和鲁棒性，并能通过贝叶斯推理提供稳定的损伤估计及不确定性界限，为无人机健康监测提供了高效且严谨的方案。",
+      "tags": "query:pmsm",
+      "abstract_en": "In this work, a stochastic time series-based framework is introduced for multicopter propeller damage diagnosis using functionally pooled autoregressive (FP-AR) models. The framework addresses damage detection, motor-level identification, and damage magnitude estimation using only standard inertial measurement unit data, without requiring additional sensors. Functional pooling provides a compact representation of system dynamics across varying operating conditions and supports reliable model estimation from short data records. Damage detection is performed through statistical testing of prediction residuals, damage identification through model selection, and damage quantification through a Bayesian inference scheme that provides posterior estimates and uncertainty bounds. The framework is experimentally evaluated through outdoor flight tests of a custom-built hexacopter following figure-eight trajectories under ambient wind disturbances. Six IMU channels, including three-axis acceleration and angular velocity, are analyzed across multiple motors and propeller damage levels. The results demonstrate consistent cross-flight performance without case-specific retuning. Compared with conventional batch-based quantification, the Bayesian approach provides more stable estimates and explicit uncertainty characterization. Overall, the proposed framework offers a data-efficient, interpretable, and statistically rigorous solution for multicopter structural health monitoring.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

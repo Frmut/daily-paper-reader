@@ -1,0 +1,53 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-23T21:20:29.230065+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 1,
+    "quick_skim_target": 11,
+    "quick_selected": 1
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2607.16512v1",
+      "title": "A Unified Statistical Framework for Multicopter Propeller Damage Diagnosis Based on Functionally Pooled Models and Bayesian Quantification: Experimental Flight Test Assessment",
+      "abstract": "In this work, a stochastic time series-based framework is introduced for multicopter propeller damage diagnosis using functionally pooled autoregressive (FP-AR) models. The framework addresses damage detection, motor-level identification, and damage magnitude estimation using only standard inertial measurement unit data, without requiring additional sensors. Functional pooling provides a compact representation of system dynamics across varying operating conditions and supports reliable model estimation from short data records. Damage detection is performed through statistical testing of prediction residuals, damage identification through model selection, and damage quantification through a Bayesian inference scheme that provides posterior estimates and uncertainty bounds. The framework is experimentally evaluated through outdoor flight tests of a custom-built hexacopter following figure-eight trajectories under ambient wind disturbances. Six IMU channels, including three-axis acceleration and angular velocity, are analyzed across multiple motors and propeller damage levels. The results demonstrate consistent cross-flight performance without case-specific retuning. Compared with conventional batch-based quantification, the Bayesian approach provides more stable estimates and explicit uncertainty characterization. Overall, the proposed framework offers a data-efficient, interpretable, and statistically rigorous solution for multicopter structural health monitoring.",
+      "authors": [
+        "Shinan Huang",
+        "Jingxi Zhu",
+        "Fotis Kopsaftopoulos"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY"
+      ],
+      "published": "2026-07-17T21:27:55+00:00",
+      "link": "https://arxiv.org/pdf/2607.16512v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Motor-level damage identification and diagnosis framework",
+      "llm_evidence_cn": "电机级损伤识别与诊断框架",
+      "llm_evidence": "电机级损伤识别与诊断框架",
+      "canonical_evidence": "电机级损伤识别与诊断框架",
+      "llm_tldr_en": "Develops a statistical framework for motor-level damage diagnosis using functionally pooled models.",
+      "llm_tldr_cn": "开发了一个使用功能池化模型进行电机级损伤诊断的统计框架。",
+      "llm_tldr": "开发了一个使用功能池化模型进行电机级损伤诊断的统计框架。",
+      "llm_tags": [
+        "query:pmsm"
+      ],
+      "matched_query_tag": "query:pmsm",
+      "matched_query_text": "fault-tolerant control of multi-phase motors",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
