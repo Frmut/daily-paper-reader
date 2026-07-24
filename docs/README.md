@@ -6,26 +6,26 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-07-23
-- 运行时间：2026-07-23 21:20:50 UTC
+- 最新运行日期：2026-07-24
+- 运行时间：2026-07-24 21:12:20 UTC
 - 运行状态：成功
 - 本次总论文数：1
 - 精读区：0
 - 速读区：1
 
 ### 今日简报（AI）
-今日聚焦多旋翼无人机安全，探索螺旋桨损伤诊断的统一统计新框架。
-研究通过功能池化模型与贝叶斯量化，在真实飞行测试中验证了损伤评估的精准性。
-推荐关注无人机运维与飞行安全的读者，借鉴这种基于实测数据的故障诊断方案。
-- 详情：[/202607/23/README](/202607/23/README)
+今日聚焦电力驱动模型在 HELICS 框架下的互操作性，探索复杂系统的协同仿真。
+重点展示了如何通过分层引擎实现不同电驱模型间的无缝集成与数据交换。
+建议关注跨平台仿真技术在现代电网与交通系统融合中的实际应用。
+- 详情：[/202607/24/README](/202607/24/README)
 
 ### 精读区论文标签
 - 本次无精读推荐。
 
 ### 速读区论文标签
-1. [A Unified Statistical Framework for Multicopter Propeller Damage Diagnosis Based on Functionally Pooled Models and Bayesian Quantification: Experimental Flight Test Assessment](/202607/23/2607.16512v1-a-unified-statistical-framework-for-multicopter-propeller-damage-diagnosis-based-on-functionally-pooled-models-and-bayesian-quantification-experimental-flight-test-assessment)  
-   标签：评分：6.0/10、query:pmsm
-   evidence：电机级损伤识别与诊断框架
+1. [Interoperability of Electric Drive Models using HELICS](/202607/24/2607.21486v1-interoperability-of-electric-drive-models-using-helics)  
+   标签：评分：7.0/10、query:pmsm
+   evidence：电机驱动模型与机器系统的协同仿真框架
 
 
 <div class="dpr-home-promo-card">

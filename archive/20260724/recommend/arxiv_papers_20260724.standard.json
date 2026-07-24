@@ -1,0 +1,51 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-24T21:11:55.121685+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 1,
+    "quick_skim_target": 11,
+    "quick_selected": 1
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2607.21486v1",
+      "title": "Interoperability of Electric Drive Models using HELICS",
+      "abstract": "Accurate modeling and simulation are essential for the effective design, testing, and evaluation of electric machine systems. However, existing models often face interoperability challenges due to differences in programming languages (e.g., C, MATLAB, Python) and the separation of components such as inverters and controllers across diverse environments. These challenges are amplified by the growing use of advanced simulation platforms like Hardware-in-the-Loop (HIL) and Controller-HIL, which require repeated adaptations for compatibility. This paper presents a HELICS-based co-simulation framework that enables seamless coordination among heterogeneous tools and models, providing a unified platform for integrating and testing electric drive models regardless of their origin. The approach is demonstrated through the co-simulation of an inverter-fed permanent magnet synchronous machine (PMSM) drive under speed control, showcasing reduced development time, flexible reuse of existing models, and efficient integration into both software and HIL environments offering a scalable, modular solution for collaborative and repeatable electric drive system testing and development.",
+      "authors": [
+        "Ajay Pratap Yadav"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY"
+      ],
+      "published": "2026-07-23T16:27:59+00:00",
+      "link": "https://arxiv.org/pdf/2607.21486v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "co-simulation framework for electric drive models and machine systems",
+      "llm_evidence_cn": "电机驱动模型与机器系统的协同仿真框架",
+      "llm_evidence": "电机驱动模型与机器系统的协同仿真框架",
+      "canonical_evidence": "电机驱动模型与机器系统的协同仿真框架",
+      "llm_tldr_en": "Presents a co-simulation framework for electric drive models, supporting design and testing of motor systems.",
+      "llm_tldr_cn": "提出一种电机驱动协同仿真框架，支持电机系统的设计与测试，具有方法论相关性。",
+      "llm_tldr": "提出一种电机驱动协同仿真框架，支持电机系统的设计与测试，具有方法论相关性。",
+      "llm_tags": [
+        "query:pmsm:composite"
+      ],
+      "matched_query_tag": "query:pmsm:composite",
+      "matched_query_text": "Papers central to 三相及双三相永磁同步电机相关研究检索, especially work that connects or combines: m; s; f; Permanent Magnet Synchronous Motor research; dual three-phase permanent magnet synchronous motor control and design; fault-tolerant control of multi-phase motors; recent advances in dual three phase permanent magnet synchronous motor control; fault tolerant strategies for multi phase permanent magnet synchronous motors.",
+      "matched_requirement_id": "req-composite-pmsm",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}

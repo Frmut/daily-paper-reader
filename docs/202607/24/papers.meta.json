@@ -1,0 +1,23 @@
+{
+  "label": "2026-07-24",
+  "date": "2026-07-24",
+  "generated_at": "2026-07-24T21:12:34",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202607/24/2607.21486v1-interoperability-of-electric-drive-models-using-helics",
+      "section": "quick",
+      "title_en": "Interoperability of Electric Drive Models using HELICS",
+      "authors": "Ajay Pratap Yadav",
+      "date": "2026-07-23",
+      "pdf": "https://arxiv.org/pdf/2607.21486v1",
+      "score": "7.0",
+      "evidence": "电机驱动模型与机器系统的协同仿真框架",
+      "tldr": "针对电机驱动系统建模中存在的编程语言不统一及组件环境隔离导致的互操作性难题，本文提出了一种基于HELICS的联合仿真框架。该框架能够实现C、MATLAB、Python等异构工具与模型间的无缝协作，为逆变器、控制器及电机模型的集成提供统一平台。通过永磁同步电机驱动系统的案例验证，该方法显著缩短了开发周期，增强了模型复用性，并支持向硬件在环（HIL）环境的平滑迁移，为复杂电力电子系统的协同开发提供了高效方案。",
+      "tags": "query:pmsm",
+      "abstract_en": "Accurate modeling and simulation are essential for the effective design, testing, and evaluation of electric machine systems. However, existing models often face interoperability challenges due to differences in programming languages (e.g., C, MATLAB, Python) and the separation of components such as inverters and controllers across diverse environments. These challenges are amplified by the growing use of advanced simulation platforms like Hardware-in-the-Loop (HIL) and Controller-HIL, which require repeated adaptations for compatibility. This paper presents a HELICS-based co-simulation framework that enables seamless coordination among heterogeneous tools and models, providing a unified platform for integrating and testing electric drive models regardless of their origin. The approach is demonstrated through the co-simulation of an inverter-fed permanent magnet synchronous machine (PMSM) drive under speed control, showcasing reduced development time, flexible reuse of existing models, and efficient integration into both software and HIL environments offering a scalable, modular solution for collaborative and repeatable electric drive system testing and development.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
