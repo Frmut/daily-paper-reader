@@ -1,0 +1,51 @@
+{
+  "label": "2026-07-25",
+  "date": "2026-07-25",
+  "generated_at": "2026-07-25T19:51:39",
+  "count": 3,
+  "papers": [
+    {
+      "paper_id": "202607/25/2607.18133v1-physics-guided-spectral-parametric-reduced-order-modeling-for-transient-prediction-of-controlled-dynamical-systems",
+      "section": "quick",
+      "title_en": "Physics-Guided Spectral Parametric Reduced-Order Modeling for Transient Prediction of Controlled Dynamical Systems",
+      "authors": "Ao Zhang, Tian Zhang, Antonio Cammi, Xiang Wang",
+      "date": "2026-07-20",
+      "pdf": "https://arxiv.org/pdf/2607.18133v1",
+      "score": "6.0",
+      "evidence": "受控动力系统的瞬态预测",
+      "tldr": "针对受控动力系统在未知参数和工况下瞬态预测效率低、外推能力差的问题，本文提出一种物理引导的光谱参数化降阶模型框架。该框架利用带控制的动态模式分解（DMDc）解耦系统动力学与控制效应，结合二次动态模式分解（SDMD）和物理引导的参数变换实现参数空间内的光谱量传播。通过机械传动、布雷顿循环及卡门涡街等案例验证，该方法在保持高精度的同时展现了优异的外推预测能力。",
+      "tags": "query:pmsm",
+      "abstract_en": "Efficient parametric transient prediction at unseen parameter values and under new operating conditions remains challenging because repeated high-fidelity simulations are computationally prohibitive. Existing data-driven surrogates and parametric reduced-order models perform well within sampled ranges but often lose reliability beyond them. This study proposes a physics-guided spectral parametric reduced-order modeling framework for controlled dynamical systems. Parameter-dependent reduced spectral operators are identified from transient snapshots using Dynamic Mode Decomposition with control, separating intrinsic dynamics from external control effects. After physics-guided parameter transformation, aligned spectral quantities and reduced operator components are propagated across parameter conditions using Secondary Dynamic Mode Decomposition, with linear and radial basis function regressions as baselines. Baseline regularization and nondimensional time mapping improve robustness. Validation uses a mechanical transmission system, a Helium-Xenon closed Brayton cycle, and a Karman vortex street, covering linear transient, nonlinear transient, and nonlinear periodic dynamics. For the mechanical and Brayton systems, system-level multivariable responses at unseen parameter values and under new operating conditions are predicted with relative norm errors below 1%. For the vortex-street system, nondimensional time mapping preserves dominant vortex-shedding structures across Reynolds numbers. Further analyses compare the framework with an LSTM surrogate and assess extrapolation confidence using an auxiliary error-prediction model. Overall, the framework extends parametric reduced-order modeling from in-domain approximation toward extrapolative transient prediction of controlled dynamical systems under unseen conditions.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/25/2607.19665v1-human-on-the-loop-resilient-control-of-inverterbased-resources-under-actuator-degradation",
+      "section": "quick",
+      "title_en": "Human-on-the-loop Resilient Control of InverterBased Resources Under Actuator Degradation",
+      "authors": "Majid Dehghani, Taha Saeed Khan, Hamidreza Nazaripouya",
+      "date": "2026-07-22",
+      "pdf": "https://arxiv.org/pdf/2607.19665v1",
+      "score": "6.0",
+      "evidence": "执行器退化下的容错控制与弹性策略",
+      "tldr": "针对逆变器资源在执行器退化下的控制难题，本文提出一种人机在环（HOTL）弹性控制架构。该架构通过引入人类监督判断，结合生成储备容量（GRC）和受控性能退化（CPD）指标，动态调整控制目标。相比传统容错和自适应控制，该方法能有效防止参数漂移和执行器饱和，在保障系统长期运行准备度的同时，实现了更优的电压调节性能。",
+      "tags": "query:pmsm",
+      "abstract_en": "This paper proposes a human-on-the-loop resilient control architecture for grid-supporting inverter-based resources (IBRs) operating under actuator degradation. Conventional fault-tolerant control and adaptive control strategies each face notable limitations in this setting: active FTC depends on fast, accurate fault detection and isolation, leaving it vulnerable to misdiagnosis of incipient or ambiguous degradation, while passive FTC tends toward overly conservative operation. Adaptive controllers face a related problem as they typically assume sufficient control authority, but when actuator degradation erodes that authority, the adaptive law may misinterpret tracking errors, leading to parameter drift, performance loss, or instability. To overcome these limitations, the proposed framework embeds human supervisory judgment directly into the control loop, detecting subtle off-nominal behavior, validating or overriding controller parameters, and adjusting operational objectives when conditions exceed the modeled fault space. Two new metrics underpin this resilient decision-making: Generation Reserve Capacity (GRC), which quantifies remaining inverter capacity available for future contingencies, and Controlled Performance Degradation (CPD), which allows temporary, deliberate performance relaxation to preserve overall system operability. A human-selected resilience tuning parameter, μ, governs the trade-off between immediate tracking accuracy and long-term operational readiness. A stability analysis of the proposed HOTL μ-mod adaptive controller is presented. The approach is also validated through simulations of a grid-connected inverter under sequential actuator degradation. Results show that the proposed architecture preserves control reserves, prevents actuator saturation, and achieves superior voltage regulation compared with conventional adaptive control and FTC methods.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/25/2607.21292v1-an-llm-driven-workflow-for-automated-process-control-strategy-generation-and-tuning-from-dynamic-process-models",
+      "section": "quick",
+      "title_en": "An LLM-Driven Workflow for Automated Process Control Strategy Generation and Tuning from Dynamic Process Models",
+      "authors": "Ari Luna Rueda, Eike Cramer, Klaus Hellgardt, Mehmet Mercangöz",
+      "date": "2026-07-23",
+      "pdf": "https://arxiv.org/pdf/2607.21292v1",
+      "score": "6.0",
+      "evidence": "自动化多变量控制设计与调优",
+      "tldr": "本研究提出一种基于大语言模型（LLM）的结构化工作流，用于从动态过程模型中自动生成和优化多变量控制策略。该方法将设计任务分解为代码生成、变量配对、闭环仿真及贝叶斯优化调优等受限步骤，并具备基于反馈的自动修复功能。在非线性气体预热器基准测试中，该工作流成功构建了物理一致的解耦PI控制结构，并通过贝叶斯优化使控制性能提升了约26.5%，显著增强了压力回路的瞬态表现，展示了LLM在自动化控制系统设计中的巨大潜力。",
+      "tags": "query:pmsm",
+      "abstract_en": "We present a structured large-language-model-driven workflow for automated multi-variable control design from dynamic process models. The workflow decomposes the design task into constrained code-generation steps: plant-interface construction, normalization, manipulated-variable controlled-variable (MV-CV) pairing, controller specification, closed loop simulation, scenario generation, performance evaluation and Bayesian-optimization (BO) based tuning. Generated artifacts are executed and validated before downstream tasks proceed, and failed artifacts are repaired using validation feedback. The proposed approach is demonstrated on a nonlinear gas-preheater benchmark with coupled pressure and temperature dynamics. The generated workflow produces a physically consistent decentralized PI (proportional-integral) feedback-feedforward control structure and an executable tuning environment. Bayesian optimization reduces the closed loop performance objective, which aggregates set-point tracking and disturbance-rejection errors for the controlled variables, by approximately 26.5% relative to the initial controller generated by the workflow, mainly through improved pressure-loop transient performance. This figure quantifies the automated tuning stage rather than a comparison against a manually designed controller. The results demonstrate the feasibility of using structured large-language-model-based code generation to construct executable control-design workflows, while also highlighting the need for broader validation on larger plantwide-control benchmarks.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

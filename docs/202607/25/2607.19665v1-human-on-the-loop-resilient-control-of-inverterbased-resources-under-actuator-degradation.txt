@@ -1,0 +1,2614 @@
+Title: Final_Version
+
+URL Source: https://arxiv.org/pdf/2607.19665v1
+
+Published Time: Thu, 23 Jul 2026 00:18:08 GMT
+
+Number of Pages: 11
+
+Markdown Content:
+## 1
+
+## > REPLACE THIS LINE WITH YOUR MANUSCRIPT ID NUMBER (DOUBLE -CLICK HERE TO 
+
+## EDIT) < 
+
+# Human -on -the -loop Resilient Control of Inverter -
+
+# Based Resources Under Actuator Degradation 
+
+Majid Dehghani , Taha Saeed Khan, Student Member , IEEE , Hamidreza Nazaripouya , Senior Member, IEEE 
+
+Abstract —This paper proposes a human -on-the -loop (H OTL) 
+
+resilient control architecture for grid -supporting inverter -based 
+
+resources (IBRs) operating under actuator degradation. 
+
+Conventional fault -tolerant control (FTC) and adaptive control 
+
+strategies each face notable limitations in this setting: active FTC 
+
+depends on fast, accurate fault detection and isolation, leaving it 
+
+vulnerable to misdiagnosis of incipient or ambiguous degradation, 
+
+while passive FTC tends toward overly conservative operation. 
+
+Adaptive controllers face a related problem as they typically assume 
+
+sufficient control authority, but when actuator degradation erodes 
+
+that authority, the adaptive law may misinterpret tracking errors ,
+
+leading to parameter drift, performance loss, or instability. To 
+
+overcome these limitations, the proposed framework embeds human 
+
+supervisory judgment directly into the control loop , detecting subtle 
+
+off -nominal behavior, validating or overriding controller 
+
+parameters, and adjusting operational objectives when conditions 
+
+exceed the modeled fault space. Two new metrics underpin this 
+
+resilient decision -making: Generation Reserve Capacity (GRC), 
+
+which quantifies remaining inverter capacity available for future 
+
+contingencies, and Controlled Performance Degradation (CPD), 
+
+which allows temporary, deliberate performance relaxation to 
+
+preserve overall system operability. A human -selected resilience 
+
+tuning parameter, 𝝁 , governs the trade -off between immediate 
+
+tracking accuracy and long -term operational readiness. A stability 
+
+analysis of the proposed H OTL 𝝁 -mod adaptive controller is 
+
+presented. The approach is also validated through simulations of a 
+
+grid -connected inverter under sequential actuator degradation. 
+
+Results show that the proposed architecture preserves control 
+
+reserves, prevents actuator saturation, and achieves superior 
+
+voltage regulation compared with convention al adaptive control and 
+
+FTC methods .
+
+Index Terms — Adaptive Controllers, distributed energy 
+
+resources , inverter , fault -tolerant control (FTC) , human -on -the -
+
+loop control , human -supervised control .
+
+I. INTRODUCTION 
+
+odern power distribution networks are undergoing a 
+
+rapid shift driven by the widespread deployment of 
+
+inverter -based resources ( IBRs ) [1], [2] , including 
+
+solar photovoltaic (PV) systems [3] , fuel cells, type 3 and 4 
+
+wind turbines , and battery energy storage systems [4] . As these 
+
+IBRs are increasingly growing [5] , distribution feeders are 
+
+becoming dominated by fast -response power electronic 
+
+inverters . These IBRs provide essential services —such as 
+
+voltage regulation [6] and reactive -power support [7] .
+
+Majid Dehghani is with Electrical Engineering Department, Oklahoma State 
+
+University, Stillwater , OK, USA (e -mail: majid.dehghani @ okstate.edu ). 
+
+Taha Saeed Khan is with Electrical Engineering Department, Oklahoma 
+
+State University, Stillwater , OK, USA . (e -mail: taha_saeed.khan@okstate.edu ). 
+
+However, their operational performance may be substantially 
+
+degraded under contingencies, where even moderate IBR 
+
+degradation can significantly impair voltage support, limit 
+
+reactive power capability, and compromise the distribution 
+
+system’s ability to maintain secure and stable operation during 
+
+subsequent disturbances .
+
+Contingencies affecting IBRs can be broadly categorized as 
+
+communication/ cyber -related [8], [9] , [10] , and 
+
+actuator/ physical -related [11], [12] . To ensure re silient 
+
+operation under these contingencie s, resilient control has 
+
+emerged as a key functional requirement for IBRs [13], [14] ,
+
+[15] , [16] . Accordingly, significant research efforts have been 
+
+devoted to developing resilient control strategies for inverter -
+
+based power systems [17], [18], [19], [20] . Existing resilient -
+
+control approaches can also be classified into two categories: 
+
+communication/cyber -resilient control and actuator/physical -
+
+resilient control .
+
+Communication/cyber -resilient control methods focus on 
+
+maintaining system performance under corrupted 
+
+measurements and communication -layer contingencies .
+
+Existing studies have employed adaptive, observer -based, and 
+
+robust control strategies to mitigate cyber -attacks, 
+
+communication contingencies , and measurement corruption in 
+
+IBR -dominated systems. Ref [21] propose s a resilien t control 
+
+for frequency regulation in IBR s that remains robust under 
+
+cyber -attacks using an adaptive Type -2 fuzzy PID controller .
+
+Similarly, Ref [22] proposes an adaptive resilient secondary 
+
+control scheme for islanded AC microgrids that compensates 
+
+unknown, time -varying measurement co rruption without 
+
+requiring prior knowledge of attack bounds . Ref [23] proposes 
+
+a resilient 𝐻 ! control method for nonlinear systems with 
+
+bounded uncertainties and external disturbances , including 
+
+sensor and communication attacks , without relying on online 
+
+fault estimation . In Ref [24] a hybrid -observer -based resilient 
+
+control strategy is developed to mitigate delayed and sporadic 
+
+measurement and communication attacks in load –frequency 
+
+regulation systems . Ref [25] proposes a distributed integral 
+
+control strategy for power systems with synchronous generators 
+
+and IBRs to maintain stability under contingencies such as 
+
+cyber -attacks and measurement faults using invariant -set theory 
+
+and neighbor -to -neighbor communication .
+
+The second category , including actuator/physical -resilient 
+
+Hamidreza Nazaripouya is with the Electrical Engineering Department, 
+
+Oklahoma State University, Stillwater , OK, USA (e -mail: 
+
+hanazar@okstate.edu ). 
+
+# M2
+
+## > REPLACE THIS LINE WITH YOUR MANUSCRIPT ID NUMBER (DOUBLE -CLICK HERE TO 
+
+## EDIT) < 
+
+control methods , address es degradation in physical components 
+
+and actuator . The resilient control method in [26] primarily 
+
+focuses on maintaining system stability under actuator 
+
+degradation. Ref [27] proposes a distributed active power 
+
+control framework to address active power sharing and current 
+
+control in large -scale IBR systems under grid voltage variations 
+
+and partial or complete loss of inverters . Ref [28] introduces a
+
+distributed resilient secondary control framework for islanded 
+
+microgrids that compensate for actuator faults through local 
+
+adaptive compensators, restoring voltage and frequency 
+
+deviations induced by droop control .
+
+While both categories have advanced the state of resilient 
+
+control for IBRs, several important limitations remain . First, 
+
+existing approaches in both categories treat resilience 
+
+enhancement as a fully automated process and do not 
+
+incorporate real -time adaptation based on system operator 
+
+expertise and situational awareness. These methods rely solely 
+
+on model -based mechanisms — such as fault detection and 
+
+isolation, observer -based estimation, or invariant -set theory —
+
+that are inherently limited by their predefined fault sets and 
+
+modeling assumptions. As a result, they lack the contextual 
+
+judgment needed to recognize subtle off -nominal behavior, 
+
+validate or override control parameters, and adju st mission 
+
+goals or trajectories when degradation falls outside the modeled 
+
+fault set .
+
+Second, while frameworks such as [26] - [28] compensate for 
+
+degradation in individual actuators or inverter units, they do not 
+
+provide a systematic, tunable mechanism for balancing the 
+
+preservation of inverter reserve capacity against control 
+
+performance during degraded operation. These approaches 
+
+apply fixed compensation strategies without quantifiable 
+
+resilience metrics or a means to adjust the trade -off between 
+
+reserve margin and tracking accuracy based on the severity of 
+
+the contingency .
+
+These limitations highlight the need for a unified control 
+
+framework that can simultaneously incorporate human 
+
+supervisory intelligence , address actuator degradation, maintain 
+
+reserve capacity , and provide rigorous stability guarantees for the 
+
+closed -loop system under degraded operating conditions. 
+
+Motivated by these challenges, this paper introduces a
+
+human -on -the -loop (H OTL) adaptive control architecture 
+
+designed to enhance the resilient operation of IBRs under 
+
+actuator degradation, caused by cyber -physical attacks or 
+
+physical faults . The proposed framework integrates a fast 
+
+nonlinear adaptive control layer with a supervisory human 
+
+decision -making layer, enabling the controller to incorporate 
+
+real -time operator situational awareness and expertise into the 
+
+control process . To support this coordination, two resilience 
+
+metrics are developed: Generation Reserve Capacity (GRC), 
+
+which quantifies the available inverter capacity margin and 
+
+reflects the system ’s readiness for future contingencies ; and 
+
+Controlled Performance Degradation (CPD), which provides a 
+
+principled mechanism for temporarily relaxing voltage -
+
+tracking performance during contingencies. Using these 
+
+metrics, operators select an allowable CPD level through a 
+
+resilience tuning parameter, while the adaptive controller 
+
+rapidly adjusts the exchanged active and reactive power to 
+
+maintain system states such as bus voltages within permissible 
+
+operational bounds . Through this coordinated human –
+
+automation interaction, the proposed framework preserves 
+
+inverter reserve capacity, prevents the control effort from 
+
+reaching physical actuator saturation limits , and improves 
+
+system resilience compared with conventional fault -tolerant 
+
+and adaptive control approaches .
+
+The main contributions of this paper are summarized as 
+
+follows: 
+
+• Proposing a novel human -on -the -loop resilient control 
+
+architecture that integrates operator situational awareness 
+
+with adaptive inverter controller, enabling coordinated 
+
+decision -making under actuator degradation and operating 
+
+contingencies . In this framework, a supervisory 
+
+mechanism is proposed for operator -guided controller 
+
+tuning, where human operators evaluate the inverter -
+
+operating conditions and select the resilience parameter 𝜇 
+
+to balance immediate tracking performance against future 
+
+operational readiness. 
+
+• Introducing t wo quantitative resilience metrics —GRC and 
+
+CPD —that characterize the relationship between inverter 
+
+reserve capacity, performance, and system survivability 
+
+during contingencies. 
+
+• Proposing a 𝜇 -mod adaptive control law with dynamically 
+
+adjustable reference -model behavior, allowing the inverter 
+
+to operate under partial capacity degradation while 
+
+ensuring stable, graceful deviation from nominal tracking 
+
+objectives. 
+
+• Providing a rigorous stability analysis of the proposed 
+
+HOTL adaptive control architecture, proving that under the 
+
+𝜇 -mod adaptive control law with dynamically adjustable 
+
+reference -model behavior, all closed -loop signals remain 
+
+bounded and the state tracking error converges 
+
+asymptotically, even under actuator degradation caused by 
+
+cyber -physical attacks or faults 
+
+The remainder of this paper is organized as follows. Section 
+
+II introduces the problem formulation, including the 
+
+mathematical model of the system , the formulation of inverter 
+
+degradation and contingency conditions. Section III presents 
+
+the proposed HOTL 𝜇 -mod adaptive control architecture, 
+
+describing the adaptive control layer, the supervisory human 
+
+layer, and the resilience metrics that coordinate their 
+
+interaction. Section IV introduces two conventional 
+
+approaches —fault -tolerant control and baseline adap tive 
+
+control —for comparison with the proposed controller. Section 
+
+V demonstrates the effectiveness of the proposed method 
+
+through simulation studies on a grid -connected inverter 
+
+subjected to sequential degradation events. Finally, Section VI 
+
+provides conclusion remarks. 
+
+II. PROBLEM FORMULATION 
+
+In inverter -supported distribution systems, inverter -based 3
+
+## > REPLACE THIS LINE WITH YOUR MANUSCRIPT ID NUMBER (DOUBLE -CLICK HERE TO 
+
+## EDIT) < 
+
+resources (IBRs) serve as actuators that implement control 
+
+actions determined by supervisory or local controllers. Based on 
+
+system measurements and control objectives, these controllers 
+
+generate signals that are executed by IBRs through fast power -
+
+electron ic switching and embedded control loops. In this role, 
+
+IBRs act as the interface between control decisions and the 
+
+physical power network, enabling direct and flexible 
+
+manipulation of system variables in modern distribution systems. 
+
+This section formulates the dynamic model of an active 
+
+distribution network with IBRs , then defines the control 
+
+objectives under contingency conditions. The goal is to develop 
+
+a HOTL control architecture that maintains resilient operation 
+
+of IBRs through coordinated interaction between the human 
+
+operator and the adaptive controller. The proposed framework 
+
+aims to ensure stable voltage regulation and power dispatch 
+
+under contingencies , cyber -physical attacks , and degraded 
+
+operating conditions .
+
+A. Distribution Network Model 
+
+The generic model of an active distribution system including 
+
+IBR s and composite load models is represented as ( 1) [29] :
+
+𝑥 ̇ (𝑡 ) = 𝐴𝑥 (𝑡 ) + 𝐵 𝛬 "𝑢 (𝑡 ) + 𝑑 + 𝛷 $𝑓 (𝑥 );
+
+𝑦 (𝑡 ) = 𝐶𝑥 (𝑡 ) (1) 
+
+where 𝑥 (𝑡 ) ∈ 𝑅 % is the state of the system , such as bus voltages ,
+
+from steady state operating point , 𝑢 (t) ∈ 𝑅 & represents the 
+
+control input vector , including the active and reactive power 
+
+references of IBR s. The term 𝑑 represents uncertainties 
+
+associated with the steady state condition, and 𝛷 $𝑓 (𝑥 )
+
+represents higher order effects due to nonlinearities with 𝛷 as 
+
+an unknown vector parameter .
+
+The matrix Λ" = diag (𝜆 "! , 𝜆 "" , … , 𝜆 "# ) models the impact of 
+
+contingencies, where each 𝜆 "$ ∈ (0,1] denotes the fraction of 
+
+the total capacity of 𝐼𝐵𝑅 ' that remains effectively available 
+
+under adverse conditions such as cyber -attacks or varying 
+
+weather conditions . When no degradation is present, Λ" = 𝐼 &.
+
+To reflect realistic inverter operating conditions, the control 
+
+inputs are constrained by physical power limits of inverters as :
+
+𝑢 (𝑡 ) = 𝑢 &() $ ⋅ 𝑠𝑎𝑡 (𝑢 *(𝑡 )
+
+𝑢 &() 
+
+)
+
+= G 𝑢 * (𝑡 ), ∣ 𝑢 * (𝑡 ) ∣≤ 𝑢 &() 
+
+𝑢 &() $ ⋅ 𝑠𝑔𝑛 (𝑢 * (𝑡 )) ∣ 𝑢 * (𝑡 ) ∣> 𝑢 &() 
+
+(2)
+
+where 𝑢 &( )$ denotes the maximum allowable active or reactive 
+
+power of 𝐼𝐵𝑅 and 𝑢 * (𝑡 ) is the control signal generated by the 
+
+controller. The control objective is to regulate the distribution 
+
+system states 𝑥 (𝑡 ) (e.g., bus voltages) so that they follow a 
+
+desired reference trajectory that is adaptively adjusted under 
+
+system contingencies while remaining within permissible 
+
+operational bounds. 
+
+B. Control Objectives and Resilience Concepts 
+
+The proposed HOTL control architecture integrates an adaptive 
+
+controller layer with cognitive engineering principles to 
+
+incorporate the human operator ’s role in maintaining power 
+
+distribution -system resilience . The framework introduces two 
+
+resilience metrics , namely generation reserve capacity (GRC) 
+
+and controlled performance degradation (CPD) —that guide 
+
+control decisions during contingencies :
+
+• Generation Reserve Capacity (GRC): 
+
+GRC denotes the portion of system capacity that 
+
+remains available for futu re contingencies . It quantifies 
+
+the extra power capacity of IBRs beyond current 
+
+demand and thus represents the network’s reserve 
+
+capacity for responding to future events. Maintaining 
+
+sufficient GRC is critical for avoiding IBR saturation 
+
+and ensuring resilient operation. 
+
+• Controlled Performance Degradation (CPD): 
+
+CPD represents the tolerable reduction in performance 
+
+(e.g., voltage tracking ) post -contingency . When a severe 
+
+contingency occurs, exact tracking of pre -contingency 
+
+references may not be feasible. CPD acts as a tunable 
+
+variable —adjusted by the operator —to temporarily 
+
+relax performance requirements, thereby preserving 
+
+GRC and overall system stability .
+
+The primary goal of the control system is to maximize GRC 
+
+with minimal CPD, maintaining states (e.g. voltages) within 
+
+permissible operational bounds. During operation, when a
+
+contingency occurs, the human operator is tasked with high level 
+
+cognitive tasks, such as perception of contingenc ies and an 
+
+estimate of allowable CPD to achieve maximum GRC. The 
+
+distributed energy resource management systems (DERMS), 
+
+which are equipped with an adaptive controller, then rapidly 
+
+dispatches IB Rs to ensure stable system behavior. Fig. 1 depicts 
+
+th e proposed HOTL adaptive control architecture .
+
+Fig. 1. HOTL Control Architecture .
+
+C. HOTL Control Problem 
+
+The overall HOTL control problem can be summarized as 
+
+follows: 
+
+Objective: Design a control law 𝑢 *$ (𝑡 ) such that under 
+
+normal operating conditions, system states remain bounded and 
+
+asymptotically converge , while during operating contingencies 
+
+the system preserves sufficient GRC with minimal CPD. 
+
+Challenges: The main challenges include ( 𝑖 ) accounting for 
+
+inverter power capacity limits , ( 𝑖𝑖 ) adapting to uncertain or partial 4
+
+## > REPLACE THIS LINE WITH YOUR MANUSCRIPT ID NUMBER (DOUBLE -CLICK HERE TO 
+
+## EDIT) < 
+
+contingency information, and ( 𝑖𝑖𝑖 ) ensuring coordinated decision -
+
+making between automated control and human operator .
+
+To address these challenges , the proposed HOTL 
+
+architecture integrates: 
+
+1. An adaptive controller layer , embedded in the 
+
+DERMS, that performs fast, real -time control of IBRs’ 
+
+active and reactive power injections while accounting 
+
+for saturation and model uncertainties; and 
+
+2. A human operator, who performs supervisory 
+
+cognitive tasks —such as degradation identification ,
+
+degradation estimation 𝛬 N", and tuning of the resilience 
+
+trade -off parameter 𝜇 —to guide the adaptive controller 
+
+toward resilient operation. 
+
+In this framework , the adaptive control provides high -speed 
+
+response capability, while the operator offers contextual 
+
+awareness and judgment, forming a human -on -the -loop 
+
+resilient control system. Detailed architecture and control 
+
+design are presented in Section III. 
+
+III. HOTL CONTROL ARCHITECTURE 
+
+Building upon the formulation in Section II, this section 
+
+details the HOTL control structure that enables resilient 
+
+operation of IBRs . The proposed architecture incorporates a 
+
+two -layer hierarchy in which an adaptive control layer ensures 
+
+fast, autonomous adjustment of IBR active and reactive power 
+
+injections , while a huma n-supervisory layer adjusts control 
+
+objectives in response to contingencies. The human operator, 
+
+through DERMS interface, provides supervisory input 
+
+including degradation estimation ( and the resilience tuning 
+
+parameter (𝜇 ).
+
+The interaction between these two layers establishes a closed 
+
+loop supervisory control framework that maintains real -time 
+
+voltage regulation while explicitly managing the trade -off between 
+
+GRC and CPD. The following subsections describe the adaptive 
+
+control law and its supervisory coordination mechanisms. 
+
+A. μ–Mod Adaptive Controller for Inverter Network 
+
+The adaptive controller is designed to ensure stable tracking 
+
+performance of IBR s despite system nonlinearities, inverter 
+
+power capacity constraints , and parametric uncertainties .
+
+Reference Model: The desired dynamic behavior of the 
+
+voltage profile in an active distribution network is represented 
+
+by the reference model [30], [31] :
+
+𝑥 ̇&(𝑡 ) = 𝐴 &𝑥 &(𝑡 ) + 𝐵 &𝑟 +(𝑡 )
+
+𝑦 &(𝑡 ) = 𝐶 𝑥 &(𝑡 ) (3)
+
+where 𝑟 +(𝑡 ) is the desired reference, and 𝐴 & is a Hurwitz 
+
+matrix. 𝑥 & ∈ 𝑅 % is the state of the reference model, ( 𝐴 &, 𝐵 &)
+
+is controllable, and C is defined as given in (1), that is, 𝑦 & ∈
+
+𝑅 , corresponds to a reference model output . The reference 
+
+model represents the nominal operating trajectory of the 
+
+network under normal conditions. 
+
+𝝁 –Mod Adaptive Control Law: The objective of the 
+
+adaptive controller is to determine the control input 𝑢 * so that 
+
+the state deviation error 𝑒 (𝑡 ) = 𝑥 (𝑡 ) − 𝑥 &(𝑡 ) converges to zero 
+
+asymptotically and all the signals in the adaptive system remain 
+
+bounded. The proposed adaptive control is a combined 𝜇 -mod 
+
+and closed -loop reference model (CRM) adaptive control as 
+
+expressed in ( 4): 
+
+𝑢 * (𝑡 )
+
+= S
+
+𝑢 (- (𝑡 ), T𝑢 (- (𝑡 )T ≤ 𝑢 &() 
+
+> .
+
+1
+
+1 + 𝜇 U𝑢 (- (𝑡 ) + 𝜇 sgn (𝑢 (- (𝑡 ))𝑢 &()  
+
+> .
+
+W T𝑢 (-$ (𝑡 )T ≥ 𝑢 &() 
+
+> .
+
+(4) 
+
+where 
+
+𝑢 (-$ (𝑡 ) = 𝐾 )
+
+> $
+
+(𝑡 )𝑥 (𝑡 ) + 𝐾 /
+
+> $
+
+(𝑡 )𝑟 +(𝑡 ) + 𝑑 N(𝑡 )
+
++ 𝛷 Z0(𝑡 )𝑓 (𝑥 ) (5)
+
+and the virtual saturation limit is defined as 
+
+𝑢 &() $ 
+
+> .
+
+= (1 − 𝛿 )𝑢 &() $ , 0 ≤ 𝛿 < 1 (6)
+
+wh ere 𝛿 introduces a buffer region [(1 − 𝛿 )𝑢 &( )$ , 𝑢 &( )$ ]
+
+between the nominal and physical limits, ensuring that the 
+
+inverter operates safely within its capacity bounds. 
+
+The parameter 𝜇 determines how aggressively the control effort 
+
+approaches this limit: larger 𝜇 values correspond to more 
+
+conservative operation, preserving greater GRC but allowing 
+
+larger CPD. 
+
+Modified Reference Model under Contingency : Following 
+
+a contingency, the reference model is revised to account for the 
+
+degraded system capacity resulting from reduced available 
+
+generation capacity and inverter power limitations: 
+
+𝑥 ̇&(𝑡 ) = 𝐴 &𝑥 &(𝑡 ) + 𝐵 &(𝑟 +(𝑡 ) + 𝐾 1
+
+> $
+
+(𝑡 )∆𝑢 (-(𝑡 ))
+
+− 𝐿𝑒 (𝑡 ) (7)
+
+∆𝑢 (- (𝑡 ) = 𝑢 &() 𝑠𝑎𝑡 (𝑢 * (𝑡 ) 𝑢 &() ⁄ ) − 𝑢 (- (𝑡 ) (8)
+
+where 𝑒 (𝑡 ) = 𝑥 (𝑡 ) − 𝑥 &(𝑡 ) denotes the state deviation error 
+
+and 𝐿 < 0 is chosen such that 𝐴 & + 𝐿 is Hurwitz. 𝐾 1
+
+> $
+
+(𝑡 ) is the 
+
+feedforward compensation for reference tracking . This 
+
+structure allows the reference model to adapt dynamically in 
+
+response to inverter power capacity constraints, thereby 
+
+enabling graceful degradation instead of instability under 
+
+constrained operation conditions. 
+
+Adaptive Parameter Update Laws: The adaptive gains are 
+
+updated using the following laws: 
+
+𝐾 ̇)(𝑡 ) = −𝛤 )𝑥 (𝑡 )𝑒 $(𝑡 )𝑃𝐵 
+
+𝐾 ̇/(𝑡 ) = −𝛤 /𝑟 +(𝑡 )𝑒 $(𝑡 )𝑃𝐵 
+
+𝐾 ̇1(𝑡 ) = 𝛤 1𝛥 𝑢 (-𝑒 $(𝑡 )𝑃 𝐵 &
+
+𝑑 Ṅ (𝑡 ) = −𝛤 -𝑒 $(𝑡 )𝑃𝐵 
+
+𝛷 Ż (𝑡 ) = −𝛤 "𝑓 (𝑥 (𝑡 ))𝑒 $(𝑡 )𝑃𝐵 
+
+(9)
+
+where 𝑃 = 𝑃 $ > 0 satisfies the Lyapunov equation 𝐴 & 
+
+> $
+
+𝑃 +
+
+𝑃 𝐴 & = −𝑄 for 𝑄 > 0, and the adaptation gains 
+
+𝛤 ), 𝛤 /, 𝛤 1, 𝛤 -, 𝛤 " > 0. The adaptive inverter controller described 
+
+by (1) –(6) provides the control input 𝑢 *(𝑡 ) in (4) as a real -time 
+
+solution to the resilient regulation problem defined in Section 
+
+II. The controller consists of a combination of fixed and tunable 5
+
+## > REPLACE THIS LINE WITH YOUR MANUSCRIPT ID NUMBER (DOUBLE -CLICK HERE TO 
+
+## EDIT) < 
+
+parameters that determine the controller’s dynamic and 
+
+resilience characteristics. These include the resilience 
+
+parameters 𝜇 and 𝛿 , the reference model parameters 𝐴 &, 𝐵 &, 𝐿 ,
+
+and the adaptive controller initial conditions 
+
+𝐾 )(0), 𝐾 /(0), 𝐾 1(0), 𝑑 N(0), ΦZ (0). The choice of the buffer 
+
+coefficient 𝛿 sets the desired GRC margin, as defined in (6). A 
+
+smaller 𝛿 reduces the buffer region and allows the inverter to 
+
+operate closer to its physical limits, thereby reducing available 
+
+reserve capacity. Conversely, a larger 𝛿 increases GRC but may 
+
+restrict dynamic response. The resilience tuning parameter 
+
+𝜇 has a proportional influence on both GRC and CPD; 
+
+increasing 𝜇 enhances reserve preservation but permits higher 
+
+tracking deviation. In addition to 𝜇 and 𝛿 , the adaptive c ontroller 
+
+requires the reference model parameters 𝐴 &, 𝐵 &, 𝐿 and the initial 
+
+control parameters 𝐾 )(0), 𝐾 /(0), 𝐾 1(0). When no contingencies 
+
+are present ( Λ" = 𝐼 ), the matrices 𝐴 & and 𝐵 &, as well as the 
+
+control parameters, are initialized as ( 10 ): 
+
+𝐴 & = 𝐴 + 𝐵 𝐾 )
+
+> $
+
+(0)
+
+𝐾 /
+
+> $
+
+(0) = −(𝐴 &
+
+> 23
+
+𝐵 )23
+
+𝐾 1
+
+> $
+
+(0) = −𝐴 &
+
+> 23
+
+𝐵 
+
+𝐵 & = 𝐵 𝐾 /
+
+> $
+
+(0)
+
+(10 )
+
+Here, 𝐾 )(0) is obtained using a linear –quadratic regulator 
+
+(LQR) approach based on the nominal plant matrices (𝐴 , 𝐵 ),
+
+ensuring an optimal trade -off between state tracking and control 
+
+effort. 
+
+Quantitative Resilience Metrics: The resilience metri cs, 
+
+GRC and CPD , are quantitatively defined according to (11) -
+
+(12) to assess and tune the system’s resilience:              
+
+> 𝐺𝑅𝐶
+> =max
+> !𝑥 (𝑢 "# $!−𝑢 "# $!
+> %)𝑟𝑚𝑠 (𝑚𝑖𝑛 3𝑢 "# $!−4𝑢 !(𝑡 )4678𝑇
+> 𝑡 #
+
+(11) 
+
+𝐶𝑃𝐷 = 𝑟𝑚𝑠 (𝑦 & − 𝑟 +(𝑡 )) 𝑟𝑚𝑠 (𝑟 +(𝑡 ))⁄ , 𝑡 ∈ 𝑇 + (12) 
+
+where 𝑡 ( and 𝑇 denote the start and end of the degradation 
+
+period, and 𝑇 + is the observation window for post -contingency 
+
+performance. As 𝜇 increases, GRC improves, but CPD also 
+
+increases due to more conservative control action. Therefore, 𝜇 
+
+represents the resilience tuning parameter, enabling real -time 
+
+adjustment of the balance between reserve capacity and 
+
+performance degradation. 
+
+B. Human Operator and Supervisory Role 
+
+The human operator forms the upper layer of the proposed 
+
+control hierarchy and contributes to the system’s resilience 
+
+through supervisory assessment, decision -making, and 
+
+parameter tuning. While the adaptive controller executes rapid ,
+
+automated regulation, the operator mainta ins strategic oversight 
+
+by analyzing situational data and adjusting high -level 
+
+parameters that govern system behavior during contingencies. 
+
+When a contingency or abnormal event is detected, the operator 
+
+performs two primary tasks: 
+
+Degradation Assessment and Estimation : Using 
+
+situational awareness, operational experience, contextual 
+
+judgment, and available system information, the operator 
+
+assesses the severity and location of the contingency and 
+
+contributes to the estimation of the degradation matrix 𝛬 N". This 
+
+matrix quantifies the reduction in power capacity of individual 
+
+inverter or IBR unit resulting from equipment faults, cyber -
+
+physical attacks , weather conditions, or other adverse operating 
+
+conditions . Based on the operator’s evaluation , the adaptive 
+
+controller updates its internal reference model parameters as 
+
+(13): 
+
+𝐴 & = 𝐴 + 𝐵 𝛬 N"𝐾 )
+
+> $
+
+(𝑡 ()
+
+𝐾 /
+
+> $
+
+(𝑡 () = −U𝐴 &
+
+> 23
+
+𝐵 𝛬 N"(𝑡 ()W23
+
+𝐵 & = 𝐵 𝛬 N"𝐾 /
+
+> $
+
+(𝑡 ()
+
+𝐾 1
+
+> $
+
+(𝑡 () = −𝐴 &
+
+> 23
+
+𝐵 𝛬 N"(𝑡 ()
+
+(1 3)
+
+where 𝑡 ( denotes the degradation onset time. These updates 
+
+enable the adaptive controller to incorporate the operator’s 
+
+situational awareness and maintain model consistency under 
+
+degraded operating conditions. To represent the variability and 
+
+reliability of the human operator’s degradation assessment, a 
+
+confidence factor 𝜂 (𝑡 ) ∈ (0,1] is introduced. This coefficient 
+
+represents an evolving trust state that the adaptive controller 
+
+places in the operator's degradation assessment, formed and 
+
+updated over time based on the observed outcome of relying on 
+
+that assessment . A generalized expression for 𝜂 (𝑡 ) can be 
+
+defined as (14) :
+
+𝜂 (𝑡 ) = 𝑓 (OE ) (14) 
+
+where OE denotes the operator’s experience index, such as the 
+
+number of previously managed contingency events ,
+
+accumulated operational hours, or historical system reliability 
+
+performance metrics. The normalization function 𝑓 (. ) maps 
+
+these experience indicators into the range (0,1], ensuring 
+
+consistent scaling across different operators or system 
+
+configurations while allowing η(t) to increase when the 
+
+operator's judgment has led to favorable outcomes and decrease 
+
+when it has not . The final evaluation of the degradation matrix 
+
+used by the adaptive controller is then expressed as 
+
+𝛬 N" = 𝜂 (𝑡 ) 𝛬 N",5 + (1 − 𝜂 )𝛬 %5& (1 5)
+
+where 𝛬 N",5 represent the operator’s evaluation of the loss of control 
+
+effectiveness derived from real -time data analytics and 
+
+system‑level diagnostic tools . Λ%5& = 𝐼 denotes the nominal 
+
+condition. When 𝜂 (𝑡 ) approaches 1, the controller relies primarily 
+
+on the operator’s degradation assessment, indicating high 
+
+confidence or strong situational awareness. Conversely, smaller 
+
+values of 𝜂 (𝑡 ) reduce the influence of the operator’s evaluation ,
+
+causing the controller to rely more heavily on nominal system 
+
+assumptions. 
+
+Specification of the Resilience Parameter 𝝁 : The operator 
+
+determines the resilience tuning parameter 𝜇 , which governs the 
+
+trade -off between GRC and CPD. A larger 𝜇 increases GRC by 
+
+maintaining higher reserve margins but leads to greater CPD ( i.e., 
+
+looser voltage tracking), whereas a smaller 𝜇 prioritizes tracking 
+
+accuracy over the preservation of reserve capacity . The selection 
+
+of 𝜇 thus reflects the operator’s judgment, informed by 6
+
+## > REPLACE THIS LINE WITH YOUR MANUSCRIPT ID NUMBER (DOUBLE -CLICK HERE TO 
+
+## EDIT) < 
+
+experience, contingency situation , and operational objectives. 
+
+After these supervisory inputs (𝜇 and ΛZ") are specified, the 
+
+adaptive controller autonomously executes control actions 
+
+according to ( 1)–(15 ). This human –automation teaming ensures 
+
+that control authority is appropriately shared: the automation 
+
+manages real -time inverter dynamics, while the operator 
+
+supervises system operating conditions, evaluates contingency 
+
+severity, and adjusts the resilience parameter to preserve 
+
+inverter reserve margin and system stability .
+
+C. Stability Analysis 
+
+Theorem 1 establishes the stability of the proposed 
+
+controller. 
+
+Theorem 1 (Stability of the Proposed HOTL μ -Mod 
+
+Adaptive Controller): Consider the closed -loop system 
+
+described by (1) –(15). Under the proposed HOTL μ -mod 
+
+adaptive controller, all signals in the adaptive system remain 
+
+bounded, the tracking error 𝑒 (𝑡 ) = 𝑥 (𝑡 ) − 𝑥 6(𝑡 ) converges 
+
+to zero asymptotically, and the control input satisfies |𝑢 *' | ≤
+
+𝑈 &( )$ 
+
+> .
+
+for all t > 0, preventing actuator saturation. 
+
+Proof: Define the tracking error as: 
+
+𝑒 (𝑡 ) = 𝑥 (𝑡 ) − 𝑥 & (𝑡 ) (16) 
+
+Substituting the plant dynamics (1) and the reference model 
+
+(9) into the error definition, the tracking error dynamics are 
+
+obtained as:                   
+
+> 𝑒 ̇(𝑡 )=𝐴𝑥 (𝑡 )+𝐵 𝛬 !𝑢 (𝑡 )+𝑑 +𝛷 #𝑓 (𝑥 )−𝐴 $𝑥 $(𝑡 )
+> −𝐵 $[𝑟 %(𝑡 )+𝐾 &
+> #(𝑡 )𝛥 𝑢 '( (𝑡 )]+𝐿𝑒 (𝑡 ).(17)
+
+Following the standard matching condition used in model 
+
+reference adaptive control, let 𝐾 )
+
+> ∗
+
+, 𝐾 /
+
+> ∗
+
+, 𝐾 1
+
+> ∗
+
+, 𝑑 ∗, and Φ∗ denote 
+
+the ideal parameters satisfying: 
+
+𝐴 + 𝐵 𝛬 "(𝐾 )
+
+> ∗
+
+)$ = 𝐴 &
+
+𝐵 𝛬 "(𝐾 /
+
+> ∗
+
+)$ = 𝐵 &
+
+𝐵 𝛬 "𝑑 ∗ = 𝑑 
+
+𝐵 𝛬 "(𝛷 ∗)$ = 𝛷 $
+
+𝐵 &(𝐾 1
+
+> ∗
+
+)$ = 𝐵 𝛬 "
+
+(18) 
+
+Define the parameter estimation errors as 
+
+𝐾 m)(𝑡 ) = 𝐾 )(𝑡 ) − 𝐾 )
+
+> ∗
+
+𝐾 m/(𝑡 ) = 𝐾 /(𝑡 ) − 𝐾 /
+
+> ∗
+
+𝐾 m1(𝑡 ) = 𝐾 1(𝑡 ) − 𝐾 1
+
+> ∗
+
+𝑑 n(𝑡 ) = 𝑑 N(𝑡 ) − 𝑑 ∗
+
+𝛷 m(𝑡 ) = 𝛷 Z(𝑡 ) − 𝛷 ∗
+
+(19) 
+
+From (2) and the definition of Δ𝑢 (-(𝑡 ) in (10), it follows that 
+
+𝑢 (𝑡 ) = 𝑢 (-(𝑡 ) + Δ𝑢 (-(𝑡 ). Using the adaptive control law (5), 
+
+the term 𝐵 Λ"𝑢 (𝑡 ) in (17) can be expanded as: 
+
+𝐵 𝛬 "𝑢 (𝑡 ) = 𝐵 𝛬 "𝐾 )
+
+> $
+
+(𝑡 )𝑥 (𝑡 ) + 𝐵 𝛬 "𝐾 /
+
+> $
+
+(𝑡 )𝑟 +(𝑡 )
+
++ 𝐵 𝛬 "𝑑 N(𝑡 ) + 𝐵 𝛬 "𝛷 Z$ (𝑡 )𝑓 (𝑥 )
+
++ 𝐵 Λ"Δ𝑢 (-(𝑡 )
+
+(20) 
+
+Substituting the parameter estimation error definitions from 
+
+(19) into (20) and enforcing the matching conditions in (18), 
+
+yields 
+
+𝐵 𝛬 "𝑢 (𝑡 ) = (𝐴 & − 𝐴 )𝑥 (𝑡 ) + 𝐵 𝛬 "𝐾 m)
+
+> $
+
+(𝑡 )𝑥 (𝑡 )
+
++𝐵 &𝑟 +(𝑡 ) + 𝐵 𝛬 "𝐾 m/
+
+> $
+
+(𝑡 )𝑟 +(𝑡 ) + 𝑑 + 𝐵 𝛬 "𝑑 n(𝑡 )
+
++𝛷 $𝑓 (𝑥 ) + 𝐵 𝛬 "𝛷 m$(𝑡 )𝑓 (𝑥 ) + 𝐵 Λ"Δ𝑢 (-(𝑡 )
+
+(21) 
+
+Given that 𝐾 1(𝑡 ) = 𝐾 1 
+
+> ∗
+
++ 𝐾 m1(𝑡 ), the term −𝐵 &𝐾 1
+
+> $
+
+(𝑡 )𝛥 𝑢 (- (𝑡 )
+
+in (17) can be expanded as: 
+
+−𝐵 &𝐾 1
+
+> $
+
+(𝑡 )𝛥 𝑢 (-(𝑡 ) = −𝐵 &(𝐾 1
+
+> ∗
+
+)$𝛥 𝑢 (-(𝑡 )
+
+−𝐵 &𝐾 m1
+
+> $
+
+(𝑡 )𝛥 𝑢 (-(𝑡 ). (22) 
+
+Substituting (21) and (22) into (17), and using the 
+
+matching condition 𝐵 &(𝐾 1
+
+> ∗
+
+)$ = 𝐵 Λ", gives 
+
+𝑒 ̇ (𝑡 ) = (𝐴 & + 𝐿 )𝑒 (𝑡 ) + 𝐵 𝛬 "𝐾 m)
+
+> $
+
+(𝑡 )𝑥 (𝑡 )
+
++𝐵 𝛬 "𝐾 m/
+
+> $
+
+(𝑡 )𝑟 +(𝑡 ) + 𝐵 𝛬 "𝑑 n(𝑡 ) + 𝐵 𝛬 "𝛷 m$(𝑡 )𝑓 (𝑥 )
+
+−𝐵 &𝐾 m1
+
+> $
+
+(𝑡 )𝛥 𝑢 (-(𝑡 ).
+
+(23) 
+
+Defining 𝐴 8 = 𝐴 & + 𝐿 , the tracking error dynamics can be 
+
+written compactly as 
+
+𝑒 ̇ (𝑡 ) = 𝐴 8𝑒 (𝑡 ) + 𝐵 𝛬 "𝐾 m)
+
+> $
+
+(𝑡 )𝑥 (𝑡 ) + 𝐵 𝛬 "𝐾 m/
+
+> $
+
+(𝑡 )𝑟 +(𝑡 )
+
++𝐵 𝛬 "𝑑 n(𝑡 ) + 𝐵 𝛬 "𝛷 m$(𝑡 )𝑓 (𝑥 ) − 𝐵 &𝐾 m1
+
+> $
+
+(𝑡 )𝛥 𝑢 (-(𝑡 ). (24) 
+
+Remark 1: The structure of (24) forms the foundation for the 
+
+subsequent stability analysis. First, the CRM gain 𝐿 is selected 
+
+such that 𝐴 8 = 𝐴 & + 𝐿 is Hurwitz. Consequently, the system 
+
+𝑒 ̇ (𝑡 ) = 𝐴 8𝑒 (𝑡 ) is exponentially stable. Second, all uncertainties 
+
+appear only through the parameter estimation errors 𝐾 m), 𝐾 m/, 𝐾 m1,
+
+𝑑 n, and Φm. This structure enables cancellation of the cross terms 
+
+in the Lyapunov derivative. Finally, the degradation matrix 
+
+Λ" appears explicitly in the error dynamics, ensuring that the 
+
+adaptive controller accounts for reduced inverter capacity under 
+
+contingency conditions. 
+
+Since 𝐴 8 = 𝐴 & + 𝐿 is Hurwitz, for any symmetric positive 
+
+definite matrix 𝑄 = 𝑄 $ > 0, there exists a unique positive 
+
+definite matrix 𝑃 = 𝑃 $ > 0 satisfying. 
+
+𝐴 8
+
+> $
+
+𝑃 + 𝑃 𝐴 8 = −𝑄 . (25) 
+
+Consider the Lyapunov function candidate 
+
+𝑉 = 𝑒 $𝑃𝑒 + 𝑡𝑟 (𝛬 "𝐾 m)
+
+> $
+
+𝛤 )23𝐾 m)) + 𝑡𝑟 (𝛬 "𝐾 m/
+
+> $
+
+𝛤 /23𝐾 m/)
+
++𝛬 "𝑑 n$𝛤 -
+
+> 23
+
+𝑑 n + 𝑡𝑟 (𝛬 "𝛷 m$𝛤 "23𝛷 m) + 𝑡𝑟 (𝐾 m1
+
+> $
+
+𝛤 1
+
+> 23
+
+𝐾 m1) (26) 
+
+Taking the time derivative of 𝑉 along the trajectories of (24) 
+
+and substituting the adaptive update laws yields cancellation of 
+
+all parameter -error cross terms. Therefore, 
+
+𝑉 ̇ = 𝑒 $(𝐴 8
+
+> $
+
+𝑃 + 𝑃 𝐴 8)𝑒 (27) 
+
+Using (25), it follows that 
+
+𝑉 ̇ = −𝑒 $𝑄𝑒 ≤ 0 (28) 
+
+Hence, 𝑉 (𝑡 ) is non -increasing and satisfies 
+
+𝑉 (𝑡 ) ≤ 𝑉 (0) < ∞, ∀𝑡 ≥ 0 (29) 
+
+Therefore, 
+
+𝑒 (𝑡 ), 𝐾 m)(𝑡 ), 𝐾 m/(𝑡 ), 𝐾 m1(𝑡 ), 𝑑 n(𝑡 ), 𝛷 m(𝑡 ) ∈ 𝐿 ! (30) 
+
+Integrating (28) over [0, t] gives 
+
+s 𝑒 $
+
+> 9
+> +
+
+(𝜏 )𝑄𝑒 (𝜏 )𝑑𝜏 = 𝑉 (0) − 𝑉 (𝑡 ) ≤ 𝑉 (0). (31) 
+
+Since 𝑄 > 0,
+
+s ∥ 𝑒 (𝜏 )
+
+> !
+> +
+
+∥: 𝑑𝜏 < ∞ (32) 7
+
+## > REPLACE THIS LINE WITH YOUR MANUSCRIPT ID NUMBER (DOUBLE -CLICK HERE TO 
+
+## EDIT) < 
+
+which implies 
+
+𝑒 (𝑡 ) ∈ 𝐿 : (33) 
+
+Consequently, from (30) and (33): 
+
+𝑒 (𝑡 ) ∈ 𝐿 : ∩ 𝐿 ! (34) 
+
+Remark 2: Here, 𝐿 ! denotes the set of bounded signals, 
+
+while 𝐿 : denotes the set of finite -energy signals. Therefore, (30) 
+
+establishes boundedness of the tracking error and adaptive 
+
+parameter estimation errors, whereas (33) shows that the 
+
+tracking error possesses finite energy. These properties are used 
+
+in the subseque nt convergence analysis. 
+
+Since 𝑒 (𝑡 ) ∈ 𝐿 : ∩ 𝐿 !, and since all adaptive parameters 
+
+and system signals appearing in (24) are bounded, it follows 
+
+that 
+
+𝑒 ̇ (𝑡 ) ∈ 𝐿 !. (35) 
+
+Therefore, 𝑒 (𝑡 ) is uniformly continuous. 
+
+Lemma 1 (Barbalat’s Lemma [32] ): Suppose 𝑓 : [0, ∞) →
+
+ℝ is uniformly continuous and lim  
+
+> 9→!
+
+∫ 𝑓 (𝜏 ) 𝑑𝜏  
+
+> 9
+> +
+
+exists and is 
+
+finite. Then lim  
+
+> 9→!
+
+𝑓 (𝑡 ) = 0. The proof of this lemma is omitted 
+
+for brevity and can be found in [32] .
+
+By Barbalat’s Lemma, since 𝑒 (𝑡 ) ∈ 𝐿 : and 𝑒 ̇ (𝑡 ) ∈ 𝐿 !, the 
+
+tracking error satisfies 
+
+𝑙𝑖𝑚  
+
+> 9→!
+
+𝑒 (𝑡 ) = 0. (36) 
+
+Thus, 
+
+𝑙𝑖𝑚 
+
+> 9→!
+
+(𝑥 (𝑡 ) − 𝑥 & (𝑡 )) = 0. (36)
+
+Therefore, the plant state asymptotically tracks the modified 
+
+reference model state. 
+
+Since 𝑟 +(𝑡 ), 𝐾 1(𝑡 ), and Δ𝑢 (-(𝑡 ) are bounded, the input to 
+
+the modified reference model is bounded. Therefore, using (9) 
+
+and the Hurwitz property of 𝐴 &, it follows that 𝑥 & (𝑡 ) ∈ 𝐿 !.
+
+Given 𝑥 (𝑡 ) = 𝑒 (𝑡 ) + 𝑥 & (𝑡 ) and e(𝑡 ) ∈ 𝐿 !, it can be 
+
+concluded that 𝑥 (𝑡 ) ∈ 𝐿 !. Since 𝑥 (𝑡 ), 𝑟 +(𝑡 ), 𝑑 N(𝑡 ), ΦZ (𝑡 ), and 
+
+all adaptive parameters are bounded, the adaptive control signal 
+
+𝑢 (-(𝑡 ) is also bounded. Furthermore, the μ -mod saturation law 
+
+guarantees that the applied control signal remains bounded. 
+
+That is, 
+
+𝑢 *(𝑡 ) ∈ 𝐿 ! (37)
+
+To prove the saturation -prevention property, consider the 𝑖 -th 
+
+control channel. If ∣ 𝑢 (-(𝑡 ) ∣≤ 𝑢 &()  
+
+> .
+
+, then from (4), 𝑢 *(𝑡 ) =
+
+𝑢 (-(𝑡 ), and therefore ∣ 𝑢 *(t) ∣≤ 𝑢 &() , 
+
+> .
+
+< 𝑢 &() ,.
+
+If ∣ 𝑢 (-(𝑡 ) ∣> 𝑢 &() , 
+
+> .
+
+,
+
+𝑢 *(𝑡 ) = 1
+
+1 + 𝜇 U𝑢 (- (𝑡 ) + 𝜇 sgn( 𝑢 (- (𝑡 ))𝑢 &()  
+
+> .
+
+W (37) 
+
+Taking the absolute value of (37) gives: 
+
+∣ 𝑢 *(𝑡 ) ∣≤ 1
+
+1 + 𝜇 ∣ 𝑢 (-(𝑡 ) ∣ +𝜇 𝑢 &()  
+
+> .
+
+. (38) 
+
+Since 𝑢 (-(𝑡 ) ∈ 𝐿 !, there exists a finite constant 𝑢 ¯ (-,'such 
+
+that ∣ 𝑢 (-(𝑡 ) ∣≤ 𝑢 ¯ (-, ∀𝑡 ≥ 0. Thus, ∣ 𝑢 *(𝑡 ) ∣≤ 1¯ &' =>1#&(  
+
+> )
+> 3=>
+
+.
+
+Therefore, to ensure that the physical actuator limits are not 
+
+violated: 𝜇 can be chosen according to (39): 
+
+𝑢 ¯ (- + 𝜇 𝑢 &() 
+
+> .
+
+1 + 𝜇 ≤ 𝑢 &() . (39) 
+
+Solving (39) gives 
+
+𝜇 ≥ 𝑢 ¯ (- − 𝑢 &() 
+
+𝑢 &() − 𝑢 &()  
+
+> .
+
+(40) 
+
+Therefore, if the human operator adjusts μ such that 
+
+𝜇 ≥ 𝑚𝑎𝑥 0, 𝑢 ¯ (- − 𝑢 &() 
+
+𝑢 &() − 𝑢 &()  
+
+> .
+
+. (41) 
+
+Then, one can have: 
+
+∣ 𝑢 *(𝑡 ) ∣≤ 𝑢 &() , ∀𝑡 ≥ 0. (42) 
+
+Thus, actuator saturation is prevented. This completes the 
+
+proof. ¡
+
+Remark 3. The bound 𝑢 (-,'used in (40) –(41) depends on the 
+
+accuracy of the operator’s degradation estimate. Recall that, at 
+
+the degradation onset 𝑡 (, the reference model 𝐴 & in (13) is 
+
+constructed using the operator -supplied estimate ΛZ", whereas 
+
+the ideal parameters 𝐾 )
+
+> ∗
+
+, 𝐾 /
+
+> ∗
+
+, 𝐾 1
+
+> ∗
+
+, 𝑑 ∗, and Φ∗satisfy the matching 
+
+conditions in (18) with respect to the true degradation matrix 
+
+Λ". Define the degradation -estimation gap as 
+
+ΔΛ" ≜ Λ" − ΛZ" (43 )
+
+Accordingly, the initial parameter errors at 𝑡 ( are given by 
+
+𝐾 m)(𝑡 () = 𝐾 )(𝑡 ()Λ"
+
+> 23
+
+ΔΛ",
+
+𝐾 m/(𝑡 () = 𝐾 / (𝑡 ()Λ"
+
+> 23
+
+ΔΛ",
+
+𝐾 m1(𝑡 () = 𝐾 1(𝑡 ()Λ"
+
+> 23
+
+ΔΛ",
+
+𝑑 n(𝑡 () = 𝑑 (𝑡 ()Λ"
+
+> 23
+
+ΔΛ",
+
+Φm(𝑡 () = Φ(𝑡 ()Λ"
+
+> 23
+
+ΔΛ".
+
+(44 )
+
+Since 𝑉 ̇ ≤ 0 for all 𝑡 ≥ 𝑡 (, according to (28), the Lyapunov 
+
+function satisfies 
+
+𝑉 (𝑡 ) ≤ 𝑉 (𝑡 (), 𝑡 ≥ 𝑡 ( (45 )
+
+Moreover, every term in the Lyapunov function (26) is 
+
+nonnegative. Therefore, 
+
+tr Λ"𝐾 m) 
+
+> $
+
+(𝑡 )Γ)
+
+> 23
+
+𝐾 m)(𝑡 ) ≤ 𝑉 (𝑡 () (46 )
+
+which implies 
+
+∥∥𝐾 m)(𝑡 )∥∥ ≤ 𝜆 6?@ (Γ) )
+
+𝜆 6AB UΛ"W 𝑉 (𝑡 ( ) ≜ 𝑘 ) 
+
+> 6?@
+
+(47 )
+
+Similarly, 
+
+∥∥𝐾 m/ (𝑡 )∥∥ ≤ 𝜆 6?@ (Γ/)
+
+𝜆 6AB UΛ"W 𝑉 (𝑡 () ≜ 𝑘 /
+
+> 6?@
+
+,
+
+∥∥𝐾 m1(𝑡 )∥∥ ≤ 𝜆 6?@ (Γ1)
+
+𝜆 6AB UΛ"W 𝑉 (𝑡 () ≜ 𝑘 1
+
+> 6?@
+
+,
+
+∥∥𝑑 n(𝑡 )∥∥ ≤ 𝜆 6?@ (Γ-)
+
+𝜆 6AB UΛ"W 𝑉 (𝑡 () ≜ 𝑘 -
+
+> 6?@
+
+,
+
+∥∥Φm (𝑡 )∥∥ ≤ 𝜆 6?@ (ΓC)
+
+𝜆 6AB UΛ"W 𝑉 (𝑡 () ≜ 𝑘 C
+
+> 6?@
+
+.
+
+(48 )
+
+Substituting (4 8) into the Lyapunov function (26), and using 
+
+∥∥𝑀 Λ"
+
+> 23
+
+ΔΛ"∥∥ ≤ ∥ 𝑀 ∥D
+
+𝜆 6AB UΛ"W ∥∥ΔΛ"∥∥ (49 )
+
+gives the complete bound 8
+
+## > REPLACE THIS LINE WITH YOUR MANUSCRIPT ID NUMBER (DOUBLE -CLICK HERE TO 
+
+## EDIT) < 
+
+𝑉 (𝑡 () ≤ 𝜆 6?@ UΛ" W
+
+𝜆 6AB (Γ))𝜆 6AB  
+
+> :
+
+UΛ" W ∥∥𝐾 )(𝑡 ()∥∥:∥∥ΔΛ"∥∥:
+
++ 𝜆 6?@ UΛ"W
+
+𝜆 6AB (Γ/)𝜆 6AB  
+
+> :
+
+UΛ"W ∥∥𝐾 /(𝑡 ()∥∥:∥∥ΔΛ"∥∥:
+
++ 𝜆 6?@ UΛ"W
+
+𝜆 6AB (Γ1)𝜆 6AB  
+
+> :
+
+UΛ"W ∥∥𝐾 1(𝑡 ()∥∥:∥∥ΔΛ"∥∥:
+
++ 𝜆 6?@ UΛ"W
+
+𝜆 6AB (Γ-)𝜆 6AB  
+
+> :
+
+UΛ"W ∥∥𝑑 (𝑡 ()∥∥:∥∥ΔΛ"∥∥:
+
++ 𝜆 6?@ UΛ"W
+
+𝜆 6AB (ΓC)𝜆 6AB  
+
+> :
+
+UΛ"W ∥∥Φ(𝑡 ()∥∥:∥∥ΔΛ"∥∥:.
+
+(50 )
+
+Equivalently, define 
+
+𝐶 E ≜ 𝜆 6?@ UΛ"W
+
+𝜆 6AB  
+
+> :
+
+UΛ"W [∥ 𝐾 )(𝑡 () ∥:
+
+𝜆 6AB (Γ)) + ∥ 𝐾 /(𝑡 () ∥:
+
+𝜆 6AB (Γ/)
+
++ ∥ 𝐾 1(𝑡 () ∥:
+
+𝜆 6AB (Γ1) + ∥ 𝑑 (𝑡 () ∥:
+
+𝜆 6AB (Γ- ) + ∥ Φ(𝑡 ( ) ∥:
+
+𝜆 6AB (ΓC) ].
+
+(51 )
+
+Then, 
+
+(𝑡 () ≤ 𝐶 E∥∥ΔΛ"∥∥: (51 )
+
+Consequently, the parameter -error bounds can be expressed as 
+
+𝑘 ) 
+
+> 6?@
+
+≤ 𝑐 )∥∥ΔΛ"∥∥ , 𝑐 ) ≜ 𝜆 6?@ (Γ))
+
+𝜆 6AB UΛ"W 𝐶 E,
+
+𝑘 / 
+
+> 6?@
+
+≤ 𝑐 /∥∥ΔΛ"∥∥ , 𝑐 / ≜ 𝜆 6?@ (Γ/)
+
+𝜆 6AB UΛ"W 𝐶 E,
+
+𝑘 1 
+
+> 6?@
+
+≤ 𝑐 1∥∥ΔΛ"∥∥ , 𝑐 1 ≜ 𝜆 6?@ (Γ1)
+
+𝜆 6AB UΛ"W 𝐶 E,
+
+𝑘 - 
+
+> 6?@
+
+≤ 𝑐 -∥∥ΔΛ" ∥∥ ,   - ≜ 𝜆 6?@ (Γ-)
+
+𝜆 6AB UΛ"W 𝐶 E,
+
+𝑘 C 
+
+> 6?@
+
+≤ 𝑐 C∥∥ΔΛ"∥∥ , 𝑐 C ≜ 𝜆 6?@ (ΓC)
+
+𝜆 6AB UΛ"W 𝐶 E.
+
+(52 )
+
+Using the adaptive control law (5) together with these bounds, 
+
+the adaptive control input satisfies 
+
+𝑢 (- = (∥∥𝐾 )
+
+> ∗
+
+∥∥ + 𝑘 )
+
+> 6?@
+
+) ∥ 𝑥 ∥!+ (∥∥𝐾 /
+
+> ∗
+
+∥∥ + 𝑘 /
+
+> 6?@
+
+)𝑟 +,6?@ 
+
++(∣∣𝑑 ∗∣∣ + 𝑘 -
+
+> 6?@
+
+) + (∥∥Φ∗∥∥ + 𝑘 C
+
+> 6?@
+
+) ∥ 𝑓 (𝑥 ) ∥!
+
++(∥∥𝐾 1
+
+> ∗
+
+∥∥ + 𝑘 1
+
+> 6?@
+
+) ∥ Δ𝑢 * ∥!.
+
+(53 )
+
+Substituting ( 52 ) into ( 53 ) yields 
+
+𝑢 (- ≤ U∥∥𝐾 )
+
+> ∗
+
+∥∥ + 𝑐 ) ∥ ΔΛ" ∥ W ∥ 𝑥 ∥!
+
++U∥∥𝐾 /
+
+> ∗
+
+∥∥ + 𝑐 / ∥ ΔΛ" ∥ W𝑟 +,6?@ 
+
++U∣∣𝑑 ∗∣∣ + 𝑐 - ∥ ΔΛ" ∥ W
+
++U∥∥Φ∗∥∥ + 𝑐 C ∥ ΔΛ" ∥ W ∥ 𝑓 (𝑥 ) ∥!
+
++U∥∥𝐾 1
+
+> ∗
+
+∥∥ + 𝑐 1 ∥ ΔΛ" ∥ W ∥ Δ𝑢 * ∥!.
+
+(54 )
+
+Therefore, substituting this result into (41), the minimum 
+
+admissible value of 𝜇 satisfies 
+
+𝜇 ≥ max {0, 1
+
+𝑢 )*+ , − 𝑢 )*+ , 
+
+> -
+
+[B∥∥𝐾 .
+
+> ∗
+
+∥∥ + 𝑐 . ∥ ΔΛ! ∥ G ∥ 𝑥 ∥0
+
++B∥∥𝐾 1
+
+> ∗
+
+∥∥ + 𝑐 1 ∥ ΔΛ! ∥2G𝑟 %,)*+ 
+
++B∣∣𝑑 ∗∣∣ + 𝑐 ( ∥ ΔΛ! ∥ G
+
++B∥∥Φ∗∥∥ + 𝑐 3 ∥ ΔΛ! ∥ G ∥ 𝑓 (𝑥 ) ∥0
+
++B∥∥𝐾 &
+
+> ∗
+
+∥∥ + 𝑐 & ∥ ΔΛ! ∥ G ∥ Δ𝑢 4 ∥0− 𝑢 )*+ ,]}.
+
+(55 )
+
+Every term depending on ΔΛ"in (55 ) has a nonnegative 
+
+coefficient. Therefore, a larger discrepancy between the 
+
+operator -supplied estimate ΛZ" and the true actuator degradation 
+
+Λ" increases the minimum admissible value of 𝜇 . This 
+
+establishes a direct coupling between human -supervisory 
+
+estimation quality and the resilience –tracking tradeoff. A less 
+
+accurate degradation estimate requires a larger value of 𝜇 ,
+
+which, results in a less reserve bound .
+
+IV. Comparison With Other Control Strategies 
+
+In order to evaluate the effectiveness of the proposed HOTL 
+
+control framework, this section reviews a conventional fault -
+
+tolerant control (FTC) method. 
+
+A. Fault tolerant control 
+
+In previous studies such as [33] , a fault -tolerant control 
+
+(FTC) strategy was developed to mitigate actuator -related faults 
+
+and performance degradation in control systems . The FTC 
+
+framework is composed of two primary components: a fault -
+
+diagnosis module and a control reconfiguration module. The 
+
+diagnosis module assumes that the impact of a contingence can 
+
+be identified through estimation techniques such as banks of 
+
+Kalman filters or parameter observers. Once the abnormal 
+
+situation is detected and its magnitude estimated, the control 
+
+module adjusts its feedback structure accordingly. This 
+
+controller typically employs fixed feedback and feedforward 
+
+gains along with an updated reference model, which together 
+
+ensures stable operation after fault isolation. When degradation 
+
+in actuator performance is detected , the corresponding control 
+
+signals are intentionally reduced in magnitude to prevent 
+
+saturation and maintain bounded responses. A detailed 
+
+description of this FTC methodology and its stability analysis 
+
+can be found in [33] .
+
+V. Simulation Studies and Results 
+
+The proposed human -on -the -loop adaptive control 
+
+architecture was evaluated on a grid -connected inverter subject 
+
+to sequential actuator degradation. The test system, illustrated 
+
+in Fig. 2, consists of a grid -connected inverter integrated to the 
+
+grid at the point of common coupling (PCC). The system 
+
+consists of two inputs and one output, where the plant state is 
+
+defined as 𝑥 = [𝑉 ], representing the voltage magnitude at the 
+
+PCC bus . The control input 𝑢 = [𝑃 , 𝑄 ] corresponds to active 
+
+and reactive power of inverter . The controller adjust s both 
+
+active (𝑃 ) and reactive (𝑄 ) power to achieve stable tracking of 
+
+the voltage (𝑉 ∠𝜃 ), while respecting physical inverter power 
+
+capacity limits and preserving GRC under degraded operating 
+
+conditions .9
+
+## > REPLACE THIS LINE WITH YOUR MANUSCRIPT ID NUMBER (DOUBLE -CLICK HERE TO 
+
+## EDIT) < 
+
+To evaluate controller performance under contingency 
+
+conditions , the inverter is assumed to undergo two sequential 
+
+degradation events. During the first event, occurring at t = 100 
+
+s, the power capacity of the inverter actuators is reduced by 50%. 
+
+Then, the second degradation of 25% is added at t = 150 s, 
+
+resulting in a cumulative loss in inverter capacity . These 
+
+degradation events are represented by the effectiveness matrix 
+
+𝛬 ". In addition to actuator degradation, a load disturbance is 
+
+introduced at 𝑡 = 200 s, representing a sudden increase in power 
+
+demand at the PCC. two control frameworks are compared: 
+
+1. Human -on -the -loop adaptive controller 
+
+2. Fault tolerant controller 
+
+The control input is constrained by a physical saturation limit 
+
+of 𝑈 &() = 0.7 𝑝𝑢 , with a virtual saturation threshold defined 
+
+by (16): 
+
+𝑈 . = (1 − 𝛿 )𝑈 6?@ , 𝛿 = 0.15 (56)
+
+resulting in a virtual constraint of 𝑈 &()  
+
+> .
+
+= 0.6 𝑝𝑢 ,
+
+preserving a 15 % inverter reserve capacity , thereby maintaining 
+
+sufficient reserve capacity to support resilient operation under 
+
+contingencies .
+
+Fig. 2. A grid -connected inverter structure. 
+
+A. Human -on -the -loop Adaptive Controller Response 
+
+Under the human -on -the -loop control framework , the operator 
+
+performs two tasks: anomaly assessment and tuning of the 
+
+resilience parameter 𝜇 . At t = 100 s, after identifying the 50% 
+
+degradation, the operator provides an estimate of the effectiveness 
+
+matrix 𝛬 N" and selects 𝜇 = 1.2 based on prior operational 
+
+experience with similar degradation levels. This selection enables 
+
+the controller to prioritize tracking performance while adjusting the 
+
+reference model to address reduced actuator capacity .
+
+Fig . 3 presents the results obtained from applying the proposed 
+
+HOTL controller . Fig . 3 (a) displays the voltage magnitude, 
+
+denoted (𝑉 :). Fig 3 (b) and (c) illustrate the control inputs, with 
+
+(𝑃 :) and (𝑄 :) indicating active and reactive power of the inverter .
+
+As shown in Fig . 3 (a) –(c), the 𝑉 : trajectories is well 
+
+regulated with negligible overshoot, and the control inputs 
+
+(𝑃 :, 𝑄 :) maintain a safe distance from the saturation boundary. 
+
+At the second event, t = 150 s, the operator observes increased 
+
+stress on the inverter and increases the resilience parameter to 
+
+𝜇 = 10 according to his experience of new situation . This 
+
+change makes the controller substantially more conservative —
+
+increasing active and reactive power injection ( 𝑃 :, 𝑄 :) while 
+
+preserving inverter reserve capacity and preventing operation 
+
+near the physical saturation limits . This intervention is essential 
+
+to maintain controllability of the IBR following severe 
+
+degradation. The increased 𝜇 also induces controlled 
+
+performance degradation, reflected in reduced voltage -tracking 
+
+aggressiveness, however, still maintains 𝑉 : within allowable 
+
+voltage limits. At 𝑡 = 200 s, a load change is introduced, 
+
+resulting in an increase in both active and reactive power 
+
+demand. Despite this additional disturbance, the proposed 
+
+controller by utiliz ing the inverter reserve capacity is able to 
+
+compensate for the increased load. As a result, the voltage 𝑉 :
+
+remains within the acceptable operating range. 
+
+These results confirm that human supervisory input enables 
+
+dynamic adjustment of the control strategy, improving the 
+
+system’s ability for resilience operation and robust voltage 
+
+regulation under actuator degradation. 
+
+Fig. 3. The proposed HOTL controller: (a) Voltage 
+
+magnitude, (b) Active power, and (c) Reactive power. 
+
+B. Fault Tolerant Controller Response 
+
+The second control framework is a model -based fault -
+
+tolerant controller (FTC) [33] , whose tracking and control 
+
+trajectories are shown in Fig. 4. FTC strategies typically rely on 
+
+a bank of predesigned controller reconfiguration strategies 
+
+together with an anomaly detection and isolation mechanism. 
+
+Once a degradation is detected, the controller switches to the 
+
+closest admissible controller configuration to maintain stability. 
+
+As illustrated in Figs. 4(a) –4(c), the FTC maintains 10 
+
+## > REPLACE THIS LINE WITH YOUR MANUSCRIPT ID NUMBER (DOUBLE -CLICK HERE TO 
+
+## EDIT) < 
+
+acceptable tracking during the first degradation event at t = 100 
+
+s, and the voltage trajectories remain stable. However, unlike 
+
+the proposed HOTL adaptive controller, the FTC exhibits 
+
+limited adaptability after the second degradation at t = 150 s. As 
+
+it is shown in Fig. 4, the voltage level settles at a lower level, 
+
+indicating reduced regulation capability under compounded 
+
+actuator losses. At 𝑡 = 200 s, when the load change is 
+
+introduced. Due to the limited remaining inverter capacity, the 
+
+controller cannot supply sufficient additional active and 
+
+reactive power. Consequently, the voltage cannot be recovered 
+
+to the acceptable operating range and drops b elow 0.9 pu, 
+
+reflecting degraded performance and reduced resilience under 
+
+the combined effects of actuator degradation and load 
+
+disturbance. 
+
+Fig. 4. Fault Tolerant Controller: (a) Voltage magnitude, (b) 
+
+Active power, and (c) Reactive power. 
+
+VI. CONCLUSION 
+
+In this paper, a human -on -the -loop adaptive control 
+
+architecture was introduced to maintain the resilient operation of 
+
+IBRs under degradation of inverter capacity , cyber -physical 
+
+attacks , and uncertain operating conditions . The proposed 
+
+approach integrates a fast, nonlinear adaptive controller layer 
+
+with supervisory human input, enabling the control system to 
+
+incorporate operator situational awareness into the automation 
+
+process. This architecture overcomes critical challenges that limit 
+
+traditional fault -tolerant and adaptive control schemes , including 
+
+the inability to maintain inverter reserve capacity , the absence of 
+
+structured performance‑control mechanisms , and the lack of 
+
+human -guided resilience management. By introducing two 
+
+quantitative resilience metrics, GRC and CPD, the method 
+
+provides a principled framework to balance voltage -tracking 
+
+performance against the need for preparedness in future grid 
+
+events . Simulations conducted across various degradation 
+
+scenarios demonstrated that t he proposed controller achieves 
+
+superior performance by maintaining stable voltage regulation, 
+
+preventing saturation, and preserving reserve capacity compared to 
+
+fault -tolerant control method. The results confirm that coordinated 
+
+human –automation decision -making improves distribution -system 
+
+resilience .
+
+REFERENCE S
+
+[1] A. B. Nassif, B. Enayati, and K. Wheeler, “Sub -Transmission Ground 
+
+Fault Overvoltage Management Under IBR Reverse Flow,” IEEE 
+
+Transactions on Power Delivery , vol. 39, no. 4, pp. 2560 –2562, Aug. 
+
+2024, doi: 10.1109/TPWRD.2024.3409108. 
+
+[2] M. Dehghani and H. Nazaripouya, “Embedded Attack Detection and 
+
+Compensation in Distributed Secondary Control for Enhancing AC 
+
+Microgrid Resilience,” IEEE Transactions on Power Systems , pp. 1 –14, 
+
+2025, doi: 10.1109/TPWRS.2025.3638375. 
+
+[3] S. M. Rostami, M. Hamzeh, and H. Nazaripouya, “Distributed 
+
+Cooperative Reactive Power Control of PV Systems With Dynamic 
+
+Leader,” IEEE Transactions on Industrial Informatics , vol. 20, no. 6, pp. 
+
+8972 –8982, Jun. 2024, doi: 10.1109/TII.2024.3372615. 
+
+[4] H. Nazaripouya, C. -C. Chu, H. R. Pota, and R. Gadh, “Battery Energy 
+
+Storage System Control for Intermittency Smoothing Using an Optimized 
+
+Two -Stage Filter,” IEEE Transactions on Sustainable Energy , vol. 9, no. 
+
+2, pp. 664 –675, Apr. 2018, doi: 10.1109/TSTE.2017.2754478. 
+
+[5] L. A. Bediako, A. Hosseinipour, and J. Khazaei, “Enhancing resilience of 
+
+inverter -based resources: Adaptive neural network control for virtual 
+
+synchronous generator damping under grid impedance uncertainty,” 
+
+Electric Power Systems Research , vol. 248, p. 111893, Nov. 2025, doi: 
+
+10.1016/j.epsr.2025.111893. 
+
+[6] A. Suresh, R. Bisht, and S. Kamalasadan, “A Coordinated Control 
+
+Architecture With Inverter -Based Resources and Legacy Controllers of 
+
+Power Distribution System for Voltage Profile Balance,” IEEE 
+
+Transactions on Industry Applications , vol. 58, no. 5, pp. 6701 –6712, 
+
+Sep. 2022, doi: 10.1109/TIA.2022.3183030. 
+
+[7] Y. Zou and Y. Xu, “DER -Inverter Based Reactive Power Ancillary 
+
+Service for Supporting Peer -to -Peer Transactive Energy Trading in 
+
+Distribution Networks,” IEEE Transactions on Power Systems , vol. 40, 
+
+no. 1, pp. 753 –764, Jan. 2025, doi: 10.1109/TPWRS.2024.3408844. 
+
+[8] X. -C. Shangguan et al. , “Resilient Load Frequency Control of Power 
+
+Systems to Compensate Random Time Delays and Time -Delay Attacks,” 
+
+IEEE Transactions on Industrial Electronics , vol. 70, no. 5, pp. 5115 –
+
+5128, May 2023, doi: 10.1109/TIE.2022.3186335. 
+
+[9] W. Yao, Y. Wang, Y. Xu, and C. Deng, “Cyber -Resilient Control of an 
+
+Islanded Microgrid Under Latency Attacks and Random DoS Attacks,” 
+
+IEEE Transactions on Industrial Informatics , vol. 19, no. 4, pp. 5858 –
+
+5869, Apr. 2023, doi: 10.1109/TII.2022.3191315. 
+
+[10] P. Zhao, C. Gu, Y. Ding, H. Liu, Y. Bian, and S. Li, “Cyber -Resilience 
+
+Enhancement and Protection for Uneconomic Power Dispatch Under 
+
+Cyber -Attacks,” IEEE Transactions on Power Delivery , vol. 36, no. 4, 
+
+pp. 2253 –2263, Aug. 2021, doi: 10.1109/TPWRD.2020.3038065. 
+
+[11] X. Pang, S. Chi, Q. Ren, and A. Chen, “A Fault Tolerant Control Strategy 
+
+for Three -Level T -Type Inverter in LVRT/HVRT Operation,” in 2024 
+
+IEEE Applied Power Electronics Conference and Exposition (APEC) ,
+
+Feb. 2024, pp. 2743 –2748. doi: 10.1109/APEC48139.2024.10509256. 
+
+[12] Hou, Limin, et al “Research on Fault Tolerant Control Method of Three -
+
+Level TNPC Inverter | IEEE Conference Publication | IEEE Xplore.” 11 
+
+## > REPLACE THIS LINE WITH YOUR MANUSCRIPT ID NUMBER (DOUBLE -CLICK HERE TO 
+
+## EDIT) < 
+
+Accessed: Dec. 24, 2025. [Online]. Available: 
+
+https://ieeexplore.ieee.org/document/10345339 
+
+[13] M. Jamali, M. S. Sadabadi, M. Davari, S. Sahoo, and F. Blaabjerg, 
+
+“Resilient -by -Design Control for in Situ Primary Controller of Grid -
+
+Following Inverter -Based Resources by a Novel State Augmentation to 
+
+Tolerate False Data Injection Cyberattacks,” IEEE Transactions on 
+
+Power Electronics , vol. 40, no. 2, pp. 2746 –2760, Feb. 2025, doi: 
+
+10.1109/TPEL.2024.3465467. 
+
+[14] M. Jamali, M. S. Sadabadi, S. Sahoo, and Y. Zhang, “Resilient Control 
+
+of Power Electronic Converters Under Sensor and Control Input 
+
+Uncertainty,” in 2024 IEEE Design Methodologies Conference (DMC) ,
+
+Nov. 2024, pp. 1 –7. doi: 10.1109/DMC62632.2024.10812140. 
+
+[15] M. Dehghani and H. Nazaripouya, “Cyber -Resilient Consensus 
+
+Secondary Control Scheme for Microgrids with Two -Hop 
+
+Communication Links,” in 2023 North American Power Symposium 
+
+(NAPS) , Oct. 2023, pp. 1 –6. doi: 10.1109/NAPS58826.2023.10318654. 
+
+[16] P. S. Sarker, M. F. Rafy, and A. K. Srivastava, “Enabling Cyber -Resilient 
+
+Distribution Systems With DERs: Distributed vs. Centralized Control,” 
+
+IEEE Transactions on Power Delivery , vol. 40, no. 6, pp. 3710 –3720, 
+
+Dec. 2025, doi: 10.1109/TPWRD.2025.3626271. 
+
+[17] M. B. Khah, N. M. Dehkordi, M. Hamzeh, and H. Nazaripouya, “Cyber -
+
+Resilient PID Control for Grid -Connected Inverters Against DoS and FDI 
+
+Attacks,” in 2025 IEEE Power & Energy Society General Meeting 
+
+(PESGM) , Jul. 2025, pp. 1–5. doi: 
+
+10.1109/PESGM52009.2025.11225052. 
+
+[18] L. Xin and Z. -Q. Long, “A Learning -Based Passive Resilient Controller 
+
+for Cyber -Physical Systems: Countering Stealthy Deception Attacks and 
+
+Complete Loss of Actuators Control Authority,” IEEE/CAA Journal of 
+
+Automatica Sinica , vol. 12, no. 7, pp. 1368 –1380, Jul. 2025, doi: 
+
+10.1109/JAS.2024.124683. 
+
+[19] Z. Gao and X. Liu, “An Overview on Fault Diagnosis, Prognosis and 
+
+Resilient Control for Wind Turbine Systems,” Processes , vol. 9, no. 2, p. 
+
+300, Feb. 2021, doi: 10.3390/pr9020300. 
+
+[20] G. Li et al. , “A critical review of cyber -physical security for building 
+
+automation systems,” Annual Reviews in Control , vol. 55, pp. 237 –254, 
+
+Jan. 2023, doi: 10.1016/j.arcontrol.2023.02.004. 
+
+[21] D. K. Mishra, P. K. Ray, L. Li, J. Zhang, M. J. Hossain, and A. Mohanty, 
+
+“Resilient control based frequency regulation scheme of isolated 
+
+microgrids considering cyber attack and parameter uncertainties,” 
+
+Applied Energy , vol. 306, p. 118054, Jan. 2022, doi: 
+
+10.1016/j.apenergy.2021.118054. 
+
+[22] X. Li, Q. Xu, and F. Blaabjerg, “Adaptive Resilient Secondary Control 
+
+for Islanded AC Microgrids With Sensor Faults,” IEEE Journal of 
+
+Emerging and Selected Topics in Power Electronics , vol. 9, no. 5, pp. 
+
+5239 –5248, Oct. 2021, doi: 10.1109/JESTPE.2020.2988509. 
+
+[23] Z. Zhou, Y. Wang, and Q. Wu, “Resilient H_ınfty Control for Nonlinear 
+
+Systems With Uncertainties and Disturbances Based on Equivalence 
+
+Robust Passivity,” IEEE Transactions on Aerospace and Electronic 
+
+Systems , vol. 60, no. 3, pp. 3598 –3610, Jun. 2024, doi: 
+
+10.1109/TAES.2024.3367964. 
+
+[24] K. Xu, Y. Niu, and Z. Zhang, “Resilient Control Strategy for Smart Grid 
+
+Under Delayed Sporadic Measurements: Attack Estimation via Hybrid 
+
+Observer,” IEEE Transactions on Automation Science and Engineering ,
+
+vol. 22, pp. 19175 –19186, 2025, doi: 10.1109/TASE.2025.3593480. 
+
+[25] T. E. Kavvathas and G. C. Konstantopoulos, “Resilient Distributed 
+
+Control for Power Systems With Multiple Synchronous Generators and 
+
+DERs Satisfying Capability Curve Requirements,” IEEE Transactions on 
+
+Power Systems , vol. 40, no. 4, pp. 2994 –3007, Jul. 2025, doi: 
+
+10.1109/TPWRS.2024.3510924. 
+
+[26] R. Manivannan, R. Samidurai, J. Cao, and M. Perc, “Design of Resilient 
+
+Reliable Dissipativity Control for Systems With Actuator Faults and 
+
+Probabilistic Time -Delay Signals via Sampled -Data Approach,” IEEE 
+
+Transactions on Systems, Man, and Cybernetics: Systems , vol. 50, no. 11, 
+
+pp. 4243 –4255, Nov. 2020, doi: 10.1109/TSMC.2018.2846645. 
+
+[27] S. Ameli, A. Olajube, and O. M. Anubi, “Robust Adaptive Control for 
+
+Large -scale Inverter -based Resources with Partial and Complete Loss of 
+
+Inverters,” IFAC -PapersOnLine , vol. 56, no. 3, pp. 211 –216, Jan. 2023, 
+
+doi: 10.1016/j.ifacol.2023.12.026. 
+
+[28] N. M. Dehkordi and S. Z. Moussavi, “Distributed Resilient Adaptive 
+
+Control of Islanded Microgrids Under Sensor/Actuator Faults,” IEEE 
+
+Transactions on Smart Grid , vol. 11, no. 3, pp. 2699 –2708, May 2020, 
+
+doi: 10.1109/TSG.2019.2960205. 
+
+[29] S. Mat Zali and J. V. Milanović, “Generic Model of Active Distribution 
+
+Network for Large Power System Stability Studies,” IEEE Transactions 
+
+on Power Systems , vol. 28, no. 3, pp. 3126 –3133, Aug. 2013, doi: 
+
+10.1109/TPWRS.2012.2233223. 
+
+[30] A. B. Farjadian, B. Thomsen, A. M. Annaswamy, and D. D. Woods, 
+
+“Resilient Flight Control: An Architecture for Human Supervision of 
+
+Automation,” IEEE Transactions on Control Systems Technology , vol. 
+
+29, no. 1, pp. 29 –42, Jan. 2021, doi: 10.1109/TCST.2019.2959542. 
+
+[31] E. Lavretsky and N. Hovakimyan, “Stable adaptation in the presence of 
+
+input constraints,” Systems & Control Letters , vol. 56, no. 11, pp. 722 –
+
+729, Nov. 2007, doi: 10.1016/j.sysconle.2007.05.002. 
+
+[32] Farkas, Bálint, and Sven -Ake Wegner. “Variations on Barbălat’s Lemma: 
+
+The American Mathematical Monthly: Vol 123 , No 8 - Get Access,” The 
+
+American Mathematical Monthly , Accessed: Jun. 07, 2026. 
+
+[33] Zhang, Youmin, Jin Jiang, and Didier Theilliol “Incorporating 
+
+Performance Degradation in Fault Tolerant Control System Design with 
+
+Multiple Actuator Failures,” ResearchGate. Accessed: Nov. 18, 2025. 
+
+[Online]. Available: 
+
+https://www.researchgate.net/publication/228645629_Incorporating_Per 
+
+formance_Degrad ation_in_Fault_Tolerant_Control_System_Design_wit 
+
+h_Multiple_Actuator_Failures
