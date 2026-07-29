@@ -1,0 +1,79 @@
+{
+  "label": "2026-07-29",
+  "date": "2026-07-29",
+  "generated_at": "2026-07-29T21:10:23",
+  "count": 5,
+  "papers": [
+    {
+      "paper_id": "202607/29/2607.24395v1-optimization-of-current-lookup-tables-for-minimum-stator-copper-loss-and-torque-ripple-in-the-full-torque-speed-range-for-a-six-phase-pmsm-with-nonsinusoidal-back-emf",
+      "section": "deep",
+      "title_en": "Optimization of Current Lookup Tables for Minimum Stator Copper Loss and Torque Ripple in the Full Torque-Speed Range for a Six-Phase PMSM With Nonsinusoidal Back-EMF",
+      "authors": "Alejandro G. Yepes, Shirin Rahmanpour, Oscar López, Wessam E. Abdel-Azim, Petros Karamanakos, Ayman S. Abdel-Khalik, Jesús Doval-Gandoy",
+      "date": "2026-07-27",
+      "pdf": "https://arxiv.org/pdf/2607.24395v1",
+      "score": "10.0",
+      "evidence": "六相永磁同步电机的电流查找表优化",
+      "tldr": "本研究针对具有非正弦反电动势的六相永磁同步电机，优化了用于降低定子铜损和转矩脉动的电流查找表（LUT）。针对现有方法生成时间长、占用内存大的问题，通过改进断点选择、查找表构建和插值方法，在保证电机全转速范围内性能和运行区域几乎不变的前提下，显著减少了内存需求和离线计算时间，提升了工业DSP实现的实用性。",
+      "tags": "query:pmsm",
+      "abstract_en": "A recently proposed method was able to generate current references with minimum stator copper loss (SCL) and torque ripple over the full torque-speed range of multiphase nonsalient permanent-magnet synchronous machines (PMSMs) with nonsinusoidal back-electromotive force (back-EMF). However, it relied on large lookup tables (LUTs) generated offline, requiring several hours for generation and large memory for storage. Since on-chip memory in industrial digital signal processors (DSPs) is limited, this hinders practical implementation. This paper addresses this problem by analyzing how the LUTs of that method can be simplified and optimized, focusing on the example of a symmetrical six-phase PMSM drive. Breakpoint selection (BS), LUT construction (LC), and interpolation approaches are evaluated to optimize the tradeoff between LUT simplification and performance. It is shown that the required memory and LUT generation time can be greatly reduced while keeping nearly the same feasible torque-speed area and performance. Simulation results confirm negligible performance degradation.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/29/2607.24633v1-current-references-for-minimum-copper-loss-and-torque-ripple-in-the-full-torque-speed-range-for-symmetrical-six-phase-pmsms-with-nonsinusoidal-back-emf-under-an-open-phase-fault",
+      "section": "deep",
+      "title_en": "Current References for Minimum Copper Loss and Torque Ripple in the Full Torque-Speed Range for Symmetrical Six-Phase PMSMs With Nonsinusoidal Back-EMF Under an Open-Phase Fault",
+      "authors": "Alejandro G. Yepes, Wessam E. Abdel-Azim, Oscar López, Petros Karamanakos, Ayman S. Abdel-Khalik, Jesús Doval-Gandoy",
+      "date": "2026-07-27",
+      "pdf": "https://arxiv.org/pdf/2607.24633v1",
+      "score": "10.0",
+      "evidence": "六相永磁同步电机断相故障下的容错策略",
+      "tldr": "针对具有非正弦反电动势的对称六相永磁同步电机在缺相故障下的运行问题，本文提出了一种基于查找表（LUT）的电流引用生成方法。该方法通过离线计算傅里叶系数并采用词典式优化策略，在满足电压、电流及转矩约束的前提下，优先降低转矩脉动并最小化铜损。研究结果表明，该方法显著提升了电机的运行速度范围，并有效抑制了转矩脉动。",
+      "tags": "query:pmsm",
+      "abstract_en": "Current-reference generation based on lookup tables (LUTs) is here proposed for star-connected symmetrical six-phase nonsalient PMSMs with nonsinusoidal back-EMF under an open-phase fault. Fourier coefficients for all healthy phases are computed offline, enabling unbalanced nonsinusoidal currents. A lexicographic optimization minimizes torque ripple and then copper loss, subject to torque, zero-current-sum, peak-current, peak-voltage, and torque-ripple constraints. Cogging torque can be included for compensation. Simulations show a higher feasible speed limit: about 30% at low torque and 23% along an example load curve. Finite-element analysis shows a 77% reduction in peak-to-peak torque ripple with cogging-torque compensation.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/29/2607.25739v1-joint-identification-of-permanent-magnet-synchronous-machine-and-inverter",
+      "section": "deep",
+      "title_en": "Joint identification of permanent magnet synchronous machine and inverter",
+      "authors": "Giulio Montecchio, Sven Reimann, Benjamin Hartmann, Maximilian Manderla, Jan Achterhold, Daniel Görges",
+      "date": "2026-07-28",
+      "pdf": "https://arxiv.org/pdf/2607.25739v1",
+      "score": "10.0",
+      "evidence": "永磁同步电机与逆变器的联合辨识",
+      "tldr": "本研究针对永磁同步电机（PMSM）驱动建模中磁链图识别受逆变器非线性干扰的问题，提出了一种联合识别新方法。该方法无需预先辨识逆变器参数，直接利用控制器指令电压，通过张量积样条模型捕捉磁链的饱和与交叉饱和效应，并同步辨识简单的逆变器模型以补偿电压偏差。实验与仿真结果表明，该方法显著提高了磁链识别精度，为电机转矩预测和控制提供了更可靠的模型基础。",
+      "tags": "query:pmsm",
+      "abstract_en": "In electric drive modeling, identifying the magnetic flux maps is essential for predicting accurately the torque, parameterizing a controller for tracking the torque or creating a simulation model. However, the voltage output by the controller (commanded voltage) is usually disturbed by non-linearity of the inverter, which needs to be taken into account. This paper presents a novel approach to enhance the offline flux identification from commanded voltage inputs, circumventing the need for prior identification of inverter parameters. In the dq reference frame, the flux maps are represented as static relationships between dq fluxes and dq currents. We utilize a tensor product spline model to accurately capture saturation and cross-saturation effects. The effects of the voltage disturbance on the estimated flux maps are not negligible. It is demonstrated that a joint identification of the flux maps and a simple model of the inverter can highly improve the flux model. The method is validated on FEM simulation and test-bench data.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/29/2607.25037v1-ultra-low-energy-open-circuit-fault-diagnosis-for-three-phase-inverters",
+      "section": "deep",
+      "title_en": "Ultra-Low-Energy Open-Circuit Fault Diagnosis for Three-Phase Inverters",
+      "authors": "Xiaoyi Lei, Fanfu Wu, Yunting Liu",
+      "date": "2026-07-27",
+      "pdf": "https://arxiv.org/pdf/2607.25037v1",
+      "score": "8.0",
+      "evidence": "基于脉冲神经网络的三相逆变器故障诊断",
+      "tldr": "针对三相逆变器开路故障诊断中传统CNN能耗过高的问题，本文提出一种基于脉冲神经网络（SNN）的超低功耗神经形态框架。通过将电流矢量轨迹矩阵训练的CNN转换为SNN，并利用轨迹矩阵的稀疏性实现事件驱动计算。实验表明，该方法在保持100%准确率的同时，单次诊断能耗仅为11微焦耳，比GPU端CNN降低了382倍，且在复杂工况下具有强鲁棒性。",
+      "tags": "query:pmsm",
+      "abstract_en": "Embedded fault diagnosis in three-phase inverters must satisfy the sub-watt power budget of converter control hardware, but conventional convolutional neural network (CNN)-based methods require dense multiply-accumulate operations and impose substantial inference energy. This work proposes an event-driven neuromorphic framework for energy-efficient open-circuit (OC) fault diagnosis. A CNN trained on current-vector trajectory matrices is converted into a spiking neural network (SNN) and evaluated using the NengoLoihi framework with Loihi-based neuromorphic energy estimation. By exploiting the sparse structure of trajectory matrices, the SNN activates computation only in informative regions instead of processing the full feature map densely. Experiments on a three-phase inverter platform show that the proposed method achieves 11 microjoules per diagnosis, corresponding to a 382 times inference-energy reduction compared with a GPU-based CNN, while maintaining 100% diagnostic accuracy. Robustness is further validated under unbalanced loading, current amplitude step changes, and injected measurement noise.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/29/2607.24134v1-sensor-limited-observability-and-carrier-induced-reachability-of-low-order-rotor-coupled-nvh-in-production-electric-drives-a-magnetic-co-energy-gramian-and-active-projection-framework-for-production-signal-feasibility-analysis",
+      "section": "quick",
+      "title_en": "Sensor-Limited Observability and Carrier-Induced Reachability of Low-Order Rotor-Coupled NVH in Production Electric Drives: A Magnetic Co-Energy, Gramian, and Active Projection Framework for Production-Signal Feasibility Analysis",
+      "authors": "Meng-Chou Wu",
+      "date": "2026-07-27",
+      "pdf": "https://arxiv.org/pdf/2607.24134v1",
+      "score": "7.0",
+      "evidence": "使用dq电流进行量产电机驱动的NVH分析",
+      "tldr": "本研究针对量产电驱动系统中缺乏直接传感器监测转子耦合低阶NVH的问题，提出了一种基于磁共能、格拉姆矩阵和主动投影的分析框架。研究探讨了仅利用dq电流、电压和旋变信号推断及影响气隙变形的可能性，揭示了被动信号在观测局部气隙磁通分布时的局限性，并提出通过载波注入实现主动投影，从而增强NVH的可观测性和可控性。",
+      "tags": "query:pmsm",
+      "abstract_en": "This paper is motivated by a practical rotor-coupled Order-2 NVH problem observed under load in a production electric drive. Production controllers typically lack direct measurements of rotor vibration, air-gap deformation, or housing acceleration. The central question is therefore whether a mechanically important low-order vibration can be inferred or influenced using only dq currents, voltage commands, resolver angle, and resolver speed.   The selected vibration component is represented as an equivalent air-gap deformation mode in a magnetic co-energy-based electromechanical state-space model. Finite-time Gramians evaluate current-based observability, resolver-based observability, and plant-level voltage-to-air-gap reachability. The analysis identifies flux-linkage sensitivity as the common bottleneck for passive current observability and passive voltage reachability, while resolver observability depends on a separate torque-projection condition. A mechanically significant deformation may thus remain first-order invisible to passive dq signals because production measurements observe a winding-level global projection rather than local air-gap flux redistribution.   To address this degeneracy, the paper introduces carrier-induced active projection. A realizable electromagnetic carrier may create additional measurement and force projections, enabling carrier-on observability, reachability, and sideband signatures in production residuals. Two numerical studies examine passive low-order projection in a 48-slot, 8-pole symmetry proxy and sideband detectability under finite-window noise and near-order disturbance leakage. They demonstrate the computational structure of the framework but do not constitute FEM-calibrated motor validation.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

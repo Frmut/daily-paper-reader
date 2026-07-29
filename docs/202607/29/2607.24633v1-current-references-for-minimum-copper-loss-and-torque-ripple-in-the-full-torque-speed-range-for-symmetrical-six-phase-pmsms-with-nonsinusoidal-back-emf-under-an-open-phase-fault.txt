@@ -1,0 +1,1115 @@
+Title: Current References for Minimum Copper Loss and Torque Ripple in the Full Torque-Speed Range for Symmetrical Six-Phase PMSMs With Nonsinusoidal Back-EMF Under an Open-Phase Fault
+
+URL Source: https://arxiv.org/pdf/2607.24633v1
+
+Published Time: Tue, 28 Jul 2026 02:15:47 GMT
+
+Number of Pages: 8
+
+Markdown Content:
+# Current References for Minimum Copper Loss and Torque Ripple in the Full Torque-Speed Range for Symmetrical Six-Phase PMSMs With Nonsinusoidal Back-EMF Under an Open-Phase Fault 
+
+Alejandro G. Yepes 1, Wessam E. Abdel-Azim 1,2 , Oscar López 1,Petros Karamanakos 3, Ayman S. Abdel-Khalik 4, and Jesús Doval-Gandoy 1
+
+> 1
+
+CINTECX , Universidade de Vigo , APET , Vigo, Spain 
+
+> 2
+
+Department of Electrical Engineering , Alexandria University , Alexandria, Egypt 
+
+> 3
+
+Faculty of Information Technology and Communication Sciences , Tampere University , Tampere, Finland 
+
+> 4
+
+Department of Electrical and Computer Engineering , Sultan Qaboos University , Muscat, Oman Email: agyepes@uvigo.es, wessam.essam@uvigo.es, olopez@uvigo.es, p.karamanakos@ieee.org, a.abdelkhalik@squ.edu.om, jdoval@uvigo.es 
+
+Abstract —Current-reference generation based on lookup tables (LUTs) is here proposed for star-connected symmetrical six-phase nonsalient PMSMs with nonsinusoidal back-EMF under an open-phase fault. Fourier coefficients for all healthy phases are computed offline, enabling unbalanced nonsinusoidal currents. A lexicographic optimization minimizes torque ripple and then copper loss, subject to torque, zero-current-sum, peak-current, peak-voltage, and torque-ripple constraints. Cogging torque can be included for compensation. Simulations show a higher feasible speed limit: about 30% at low torque and 23% along an example load curve. Finite-element analysis shows a 77% reduction in peak-to-peak torque ripple with cogging-torque compensation. 
+
+Index Terms —Fault tolerance, full-range minimum loss, har-monics, open phase, six-phase, torque-speed range. 
+
+NOMENCLATURE 
+
+0μ×ν Null matrix of size μ×ν.
+
+1μ×ν All-ones matrix of size μ×ν.
+
+A Constraint matrix of the optimization problems. 
+
+b Constraint vector of the optimization problems. 
+
+D Six-phase vector space decomposition (VSD). 
+
+ek(t) Back-electromotive force (back-EMF) in phase k.
+
+e′
+
+> k
+
+(t) Back-EMF ek(t) normalized by mechanical speed. 
+
+h Selected current harmonic orders, within {1, 3, ..., H }.
+
+ik(t) Instantaneous current in stator phase k.
+
+ipk Per-cycle maximum of phase-current peaks. 
+
+imx pk Maximum admissible peak current of the drive, exclud-ing switching ripple. 
+
+IRe ,Im  
+
+> k,h
+
+Fourier coefficients of hth phase-k current harmonic. 
+
+JSCL SCL normalized by stator resistance. 
+
+k Healthy stator phase (2 for phase b, 3 for c, etc.). 
+
+G′ Selection matrix of line-voltage signals. 
+
+nh Number of current harmonics considered. 
+
+nt Number of time samples in offline optimization. 
+
+θr(t) Rotor electrical position. 
+
+t Time. The argument (t) is included only for variables whose values remain time-varying for fixed T ∗ and ω.
+
+T (t) Electromagnetic torque. 
+
+T ∗ Reference for T , prior to computing current references. 
+
+τ Peak-to-peak T ripple. 
+
+τ min Minimum achievable τ per operating point (T ∗, ω ).
+
+τ mx Maximum acceptable τ value, never to be surpassed. 
+
+vk(t) Instantaneous phase voltage in stator phase k.
+
+v′(t) Instantaneous vector of healthy line voltages. 
+
+vpk Maximum peak of v′(t) per electrical cycle. 
+
+vmx pk Maximum admissible vpk (given by dc-link voltage). 
+
+ω Fundamental electrical frequency (speed). 
+
+ωm Fundamental mechanical frequency (speed). 
+
+ω↓ For each T ∗, lowest ω for which x varies with ω, i.e., lowest ω for which the vmx pk constraint is active. 
+
+ω↑ For each T ∗, highest ω for which a solution exists. 
+
+x Vector of optimization variables. 
+
+xopt Lexicographic-optimization solution for given (T ∗, ω ).
+
+z1, z 2 Auxiliary variables to limit τ in the optimization. Boldface denotes vectors and matrices. I. I NTRODUCTION 
+
+High torque density and reliability motivate the use of multi-phase permanent-magnet synchronous machines (PMSMs) [1], [2]. The six-phase option balances these advantages and com-plexity [2]. Torque density can be further increased with non-sinusoidal back-electromotive-force (back-EMF) designs [3], [4], typically based on fractional-slot concentrated windings with usually small saliency [5]–[7]. Symmetrical windings are preferred over asymmetrical ones for fault tolerance [8] and current quality [9], while a single neutral point maximizes postfault torque range compared with two neutrals [8], [10]. For PMSMs driven by field-oriented control (Fig. 1), cur-rent references for the inner current loop must be generated from the torque command, rotor speed and position. In [11], 
+
+> © 2026 IEEE. Personal use of this material is permitted. Permission from IEEE must be obtained for all other uses, in any current or future media, including reprinting/republishing this material for advertising or promotional purposes, creating new collective works, for resale or redistribution to servers or lists, or reuse of any copyrighted component of this work in other works. arXiv:2607.24633v1 [eess.SY] 27 Jul 2026
+
+an online method, the nonsinusoidal-back-EMF full-torque-range minimum-loss (NSBE-FRML) strategy, was proposed for nonsalient PMSMs with any phase number, arbitrary back-EMF waveform, symmetrical or asymmetrical windings, and healthy or open-phase operation. It provides nonsinusoidal current references minimizing stator copper loss (SCL) and torque ripple under current and torque-ripple limits. However, it is not able to fully exploit the available speed. Current-reference generation for PMSMs under voltage constraints has been addressed by several works [12]–[18]. As reviewed in [19], these solutions do not meet all targeted requirements. Some cannot accommodate arbitrary back-EMF harmonic content [12], [16]–[18], do not consider current harmonic injection [12], [18], or are not applicable to sym-metrical six-phase PMSMs [12], [15]–[18]. Others use fewer control degrees of freedom, reducing efficiency and torque-speed capability [13], [14], or do not exploit an admissible torque-ripple margin to enlarge torque-speed region [12]–[18]. To address these limitations, [19] introduced an alternative current-reference generation strategy for nonsalient PMSMs. It retains the generality of [11] regarding phase number, back-EMF waveform and winding arrangement, while incorporating the voltage limit to minimize SCL and torque ripple over the full torque-speed region [19], thereby overcoming the limita-tions of [12]–[18]. Optimal Fourier coefficients of the current references are obtained offline by quadratic optimization and stored in lookup tables (LUTs); online, the LUTs generate the references from torque command and speed. However, the method from [19] has several drawbacks. Open-phase faults, such as those caused by converter-leg, line or winding open-circuit faults, or by remedial actions to isolate a faulty part of one phase or leg [3], [8], [12], [20], were not considered. Moreover, despite substantially simplifying the offline optimization by assuming healthy balanced conditions, the LUT generation process took multiple hours. This was because the optimization problem was repeatedly solved while increasing the allowed torque ripple from nearly zero in very small steps until feasibility was reached. In addition, the torque ripple due to cogging torque was not compensated. This paper addresses these gaps by improving the current-reference generation method from [19], for the case of a six-phase PMSM with symmetrical star-connected windings and a single neutral point. The scenario of an open-phase fault is considered (see Fig. 1), so that minimum SCL, smooth torque, maximum (full) torque-speed range, and compliance with the drive constraints are fulfilled despite the postfault imbalance. The extra required time for LUT generation due to the increased number of degrees of freedom is counterbalanced by formulating (simplifying) the optimization problem in lexicographic form as two stages for each operating point: a linear program to minimize the torque ripple, followed by a quadratic program to minimize the SCL while limiting to such torque-ripple value. Furthermore, the cogging torque is included in the offline optimization for LUT generation to enable its compensation during online operation. Simulation results confirm the functionality of the proposal. Firing Control platform signals                 
+
+> ikreferences Current control +-
+> 6-phase converter
+> ik
+> 5
+> T*
+> reference Torque
+> 5
+> vdc 6
+> PMSM 6-phase c(k=3)
+> e(k=5)
+> b(k=2)
+> d(k=4)
+> f(k=6)
+> aRotor po-sition
+> r(t)Speed
+> 
+> Current-reference generation (Fig. 2) Open phase
+> Fig. 1. Star-connected symmetrical six-phase PMSM drive based on field-oriented control under an open-phase fault in phase a, including current-reference generation, on which this paper is focused.
+
+II. M ODEL OF THE SIX -P HASE PMSM The stator voltage equation of a multiphase nonsalient PMSM can be written as [19] 
+
+Dv (t) = RDi (t) + L ddt Di (t) + De (t) (1) where the phase-domain vectors v, i and e collect the six stator voltages, currents and back-EMFs, with the general form 
+
+u(t) =  u1(t) u2(t) · · · uk(t) · · · u6(t) T ∈ R6×1.
+
+(2) The indices k = 1 , . . . , 6 correspond to phases a–f , respec-tively. D ∈ R6×6 in (1) is the vector-space-decomposition (VSD) matrix, which for a six-phase PMSM with symmetrical windings (three-phase sets displaced by δ = 60 ◦) is [21] 
+
+D = 13
+
+
+
+1 cos( δ) cos(2 δ) cos(3 δ) cos(4 δ) cos(5 δ)0 sin( δ) sin(2 δ) sin(3 δ) sin(4 δ) sin(5 δ)1 cos(2 δ) cos(4 δ) cos(6 δ) cos(8 δ) cos(10 δ)0 sin(2 δ) sin(4 δ) sin(6 δ) sin(8 δ) sin(10 δ)1/2 1/2 1/2 1/2 1/2 1/21/2 −1/2 1/2 −1/2 1/2 −1/2
+
+
+
+(3) such that 
+
+ uα(t) uβ (t) ux(t) uy (t) u0+ (t) u0− (t) T = Du (t).
+
+(4) 
+
+R, L ∈ R6×6 are diagonal matrices of the VSD-axis stator resistances and self-inductances. The instantaneous electromagnetic torque is [13], [22], [23] 
+
+T (t) = e′
+
+> 1
+
+(t)i1(t)+ e′
+
+> 2
+
+(t)i2(t)+ . . . +e′
+
+> 6
+
+(t)i6(t)+ Tcog (t) (5) where Tcog (t) is the cogging torque, and e′
+
+> k
+
+(t) = ek(t)/ω m is the back-EMF of phase k per unit of mechanical speed ωm.For a phase-k open-phase fault, these model equations can be applied while setting ik(t) = 0 [10], [20]. III. N EW CURRENT -R EFERENCE GENERATION METHOD 
+
+The proposed method comprises online and offline stages (Sections III-A and III-B). In the online stage, the current ref-erences are obtained from the rotor position, speed and LUT-stored Fourier coefficients of the phase-current harmonics. The LUTs are indexed by the operating point (T ∗, ω ), with torque reference T ∗ and speed ω, and are generated offline by solving Re 
+
+I k,h 
+
+(6)-(7) i k(t)5
+
+ r(t)5nhIm 
+
+I k,h 
+
+
+
+T *
+
+LUTs LUTs 
+
+5nhFig. 2. Online implementation of the current-reference generation method. 
+
+a lexicographic optimization problem over a grid of (T ∗, ω )
+
+values for the phase-a open-phase-fault case. 1
+
+A. Online Generation of Current References 
+
+Fig. 2 shows the online implementation, applied after a phase-a open-phase fault is detected. Unlike [19], unbalanced currents are enabled by assigning each healthy phase k ∈{2, 3, 4, 5, 6} its own Fourier coefficients IRe  
+
+> k,h
+
+and IIm  
+
+> k,h
+
+for odd harmonics h ∈ 1, 3, ..., H , while phase a is open: 
+
+ik(t) = X
+
+> h
+
+IRe  
+
+> k,h
+
+cos ( hθ k(t)) 
+
+| {z }
+
+> ck,h (t)
+
++ X
+
+> h
+
+IIm  
+
+> k,h
+
+sin ( hθ k(t)) 
+
+| {z }
+
+> sk,h (t)
+
+(6) for k, whereas i1(t) = 0 . In (6), 
+
+θk(t) = ωt |{z} 
+
+> θr(t)
+
+− (k − 1) π
+
+3| {z }
+
+> ϕk
+
+. (7) The rotor electrical position is θr(t), with ω being the fun-damental electrical frequency, and ϕk is the electrical phase displacement. The dependence on t is indicated explicitly just for quantities that vary with time even under constant T ∗ and 
+
+ω. In Fig. 2, nh denotes the number of current harmonics. For each operating point (T ∗, ω ), the healthy-phase Fourier coefficients IRe  
+
+> k,h
+
+and IIm  
+
+> k,h
+
+in (6) are obtained from the LUTs using linear interpolation. The LUT inputs T ∗ and ω are saturated to remain inside the tabulated feasible region for the phase-a open-phase-fault case. The LUT only generates current references (see Fig. 1); hence, closed-loop stability, reference tracking, and disturbance rejection depend on the current controller rather than on the LUT itself. 
+
+B. Offline LUT Generation 
+
+Fig. 3 depicts the offline LUT-generation process. For each operating point (T ∗, ω ), a lexicographic optimization problem finds the healthy-phase coefficients IRe  
+
+> k,h
+
+and IIm 
+
+> k,h
+
+, to be stored in the LUTs per (T ∗, ω ). A compact statement of this lexicographic problem is first given in Section III-B1. This lexicographic problem is then decomposed into two optimization stages, detailed in Sections III-B2 and III-B3. The overall offline process to generate the LUTs for all operating points is explained in Section III-B4. 
+
+1) Compact Statement of Lexicographic Optimization: Alexicographic problem to find the healthy-phase coefficients 
+
+> 1
+
+Current references for the cases of open-phase faults in other phases may be obtained by simply shifting them circularly, due to symmetry [8], [10]. Initialization Start T ∗ sweep Start ω sweep per T ∗                               
+
+> Solve linear program (16) to minimize torque ripple τ
+> for (T∗, ω )→Result: τmin
+> τmin ≤τmx ?Solve quadratic program (19) to minimize SCL for (T∗, ω )
+> while imposing τ≤τmin
+> →Result: xopt
+> xopt →Extract: IRe
+> k,h ,IIm
+> k,h
+> xopt
+> found?
+> ω≈0?Increase ω
+> Increase T∗
+> Reduce & save LUTs Lexicographic problem (8) Yes No No ( ωsweep finished) Yes Yes ( T∗sweep finished) No
+
+Fig. 3. Flowchart of the offline stage of the proposed current-reference generation method, to generate the LUTs for the phase-a-open case. The colors indicate initialization (gray), T ∗ sweeps (red), ω sweeps per T ∗ (blue), lexicographic optimization problem (green), and finalizing the LUTs (purple). 
+
+IRe  
+
+> k,h
+
+and IIm  
+
+> k,h
+
+for each (T ∗, ω ) may be written compactly: 
+
+lex minimize  
+
+> x
+
+τ, J SCL (8a) subject to i1(t) = 0 ∀t (8b) 
+
+1
+
+nt
+
+X
+
+> t
+
+T (t) = T ∗ (8c) 
+
+11×6 i(t) = 0 ∀t (8d) 
+
+ik(t) ≤ imx pk ∀k, ∀t (8e) 
+
+v′ 
+
+> r
+
+(t) ≤ vmx pk ∀r, ∀t (8f) 
+
+T (t) ≤ z1 ∀t (8g) 
+
+T (t) ≥ z2 ∀t (8h) 
+
+τ ≤ τ mx , where τ = z1 − z2. (8i) In (8a), “lex minimize” means that lexicographic minimiza-tion is applied, i.e., τ is minimized first and then, among all solutions attaining the minimum τ , JSCL is minimized. JSCL 
+
+represents SCL normalized by stator resistance: 
+
+JSCL =
+
+> 6
+
+X
+
+> k=2
+
+i2 
+
+> k, rms
+
+= 12
+
+> 6
+
+X
+
+> k=2
+
+X
+
+> h
+
+î IRe 
+
+> k,h
+
+2 +  IIm 
+
+> k,h
+
+2ó . (9) This lexicographic priority is adopted because torque smooth-ness is often the primary requirement for the drive [11], [13], [24], to mitigate vibration, acoustic noise, mechanical stress, and low-frequency speed oscillations. The optimization variable vector x in (8a) contains the current Fourier coefficients of all phases except k = 1 (phase a is open) as xi, plus auxiliary variables z1 and z2:
+
+x =  xTi z1 z2
+
+T ∈ R(10 nh+2) ×1 (10) where 
+
+xi =  xT2 xT3 · · · xk · · · xT6
+
+T ∈ R10 nh×1 (11) 
+
+xk =  xT 
+
+> k, 1
+
+xT 
+
+> k, 3
+
+· · · xT 
+
+> k,h
+
+· · · xT
+
+> k,H
+
+T ∈ R2nh×1 (12) 
+
+xk,h =  IRe  
+
+> k,h
+
+IIm 
+
+> k,h
+
+T . (13) The time variable t takes in (8) values according to t ∈{t1, t 2, . . . , t nt }, where t1, t 2, . . . , t nt are discrete instants within a fundamental period, and nt must be sufficiently large to ensure an accurate evaluation of the peak-based constraints. The constraint (8b) sets to zero the current of the open phase in the optimization, so that this condition is taken into account when evaluating the constraints and objective functions. Constraint (8c) imposes equality between the average value of the torque T (t) [see (5)] and its reference T ∗. Constraint (8d) enforces the single-neutral zero-sum condition ( i0+ = 0 ), where 1μ×ν is a μ×ν all-ones matrix. Constraints (8e), (8f) and (8g)-(8i) limit, respectively, the instantaneous healthy-phase currents ik(t), the instantaneous line voltages v′ 
+
+> r
+
+(t)
+
+physically constrained by the dc-link voltage, and the torque ripple τ to the respective limits imx pk , vmx pk and τ mx .In (8e) and (8f), the positive-valued constraints also bound the negative peaks of the phase-current and voltage signals. This is because these signals have half-wave symmetry, as-suming that only odd current harmonics h are considered and the back-EMF waveforms also satisfy half-wave symmetry. In (8f), v′ 
+
+> r
+
+(t) denotes the rth component of v′(t), i.e., 
+
+v′ 
+
+> r
+
+(t) = [ v′(t)] r , and represents the rth line-voltage signal to be limited by the dc-link voltage. Under phase-a open operation, the phase voltages become unbalanced, and hence all line voltages between healthy terminals must be checked: 
+
+v′(t) = G′v(t) = v′
+
+> 1
+
+(t) v′
+
+> 2
+
+(t) · · · v′
+
+> 10
+
+(t)T ∈ R10 ×1
+
+(14) with G′ selecting, in order, the ten signals v′
+
+> 1
+
+(t) = v2(t) −
+
+v3(t), v′
+
+> 2
+
+(t) = v2(t) − v4(t), . . . , and v′
+
+> 10
+
+(t) = v5(t) − v6(t):
+
+G′ =
+
+
+
+0 1 −1 0 0 00 1 0 −1 0 00 1 0 0 −1 00 1 0 0 0 −10 0 1 −1 0 00 0 1 0 −1 00 0 1 0 0 −10 0 0 1 −1 00 0 0 1 0 −10 0 0 0 1 −1
+
+
+
+∈ R10 ×6. (15) In (8g) and (8h), z1 and z2 are auxiliary variables represent-ing, respectively, upper and lower torque envelopes, so that the torque ripple is τ = z1 − z2 in (8i), as done in [19]. Since Tcog (t) is included in T (t) in (5), cogging torque is accounted for in the optimization through the mean-torque constraint (8c) and the torque-envelope constraints (8g)–(8i). To make the optimization problem (8) easier to solve, it is next decomposed into two consecutive stages, as shown in Fig. 3: first, a convex linear program that minimizes τ ; and second, a convex quadratic program that minimizes the SCL. 
+
+2) First-Stage Linear Program for Minimum Torque Ripple: 
+
+For each (T ∗, ω ), the minimum achievable sampled torque ripple τ min is first found by solving the linear program 
+
+minimize  
+
+> x
+
+cT 
+
+> τ
+
+x (16a) subject to Aeq x = beq (16b) 
+
+Aineq x ≤ bineq (16c) where 
+
+cτ =  01×10 nh 1 −1 T ∈ R(10 nh+2) ×1 (17) with 0μ×ν denoting a null matrix of size μ×ν. Let xτ denote an optimal solution of (16). The optimum value 
+
+τ min = cT 
+
+> τ
+
+xτ (18) is the minimum τ attainable while satisfying the mean-torque, current-sum, peak-current and peak-voltage constraints. The operating point is discarded if τ min > τ mx .The equality constraint in (16b) corresponds to (8c) and (8d), and the inequality constraint in (16c) to (8e)–(8h), both written linearly as a function of x. The matrices/vectors Aeq ,
+
+Aineq , beq and bineq are given in the Appendix. Constraint (8b) is not explicit in (16) because i1(t) = 0 is already embedded in the objective and other constraints. Since the objective and constraints are linear, (16) is a convex linear program. Although MATLAB fmincon could be used, linprog 
+
+better exploits the linear structure, improving robustness and efficiency while yielding a global optimum. 
+
+3) Second-Stage Quadratic Program for Minimum SCL: 
+
+If τ min ≤ τ mx , the final current Fourier coefficients for the considered (T ∗, ω ) are obtained by minimizing the SCL while constraining τ to the τ min value found in the first stage. The resulting quadratic program is 
+
+minimize  
+
+> x
+
+JSCL (x) = 12 xTQx (19a) subject to Aeq x = beq (19b) 
+
+A′
+
+> ineq
+
+x ≤ b′ 
+
+> ineq
+
+(19c) where Aeq and beq are the same as in (16), and 
+
+A′ 
+
+> ineq
+
+=
+
+ï Aineq 
+
+Aτ
+
+> ineq
+
+ò
+
+∈ R(17 nt+1) ×(10 nh+2) (20) 
+
+b′ 
+
+> ineq
+
+=
+
+ï bineq 
+
+bτ
+
+> ineq
+
+ò
+
+∈ R(17 nt+1) ×1. (21) 
+
+Aineq and bineq are as in (16). Aτ 
+
+> ineq
+
+and bτ 
+
+> ineq
+
+impose τ ≤
+
+τ min + λ1 ≈ τ min in (19c) linearly as a function of x:
+
+Aτ 
+
+> ineq
+
+= cT 
+
+> τ
+
+=  01×10 nh 1 −1  ∈ R1×(10 nh+2) (22) 
+
+bτ 
+
+> ineq
+
+= τ min + λ1 (23) where λ1 > 0 is a small tolerance to improve numerical robustness while preserving the priority of τ min . It can be set to an insignificant value in terms of practical torque ripple (e.g., 0.01 Nm ) but not extremely low, so that the SCL is not unnecessarily increased. In any case, λ1 may be neglected compared with τ mx . The Hessian matrix in (19a) is 
+
+Q =
+
+ï III10 nh 00 λ2III2
+
+ò
+
+∈ R(10 nh+2) ×(10 nh+2) (24) with IIIm being an m×m identity matrix, and λ2 > 0 being a small (e.g., 10 −6) Tikhonov regularization weight to ensure strict convexity, unique solution and improve numerical robust-ness [19]. Given that Q is positive definite and the constraints are linear, (19) is indeed a convex quadratic program, as in-tended, and can be solved efficiently to global optimality with conventional quadratic-program solvers, e.g., using MATLAB 
+
+quadprog . The resulting optimum x, containing the optimum 
+
+IRe  
+
+> k,h
+
+and IIm  
+
+> k,h
+
+for the considered operating point, is called xopt .Although the first-stage solution xτ may not be unique, the second-stage problem (19) depends not on the particular 
+
+x obtained, but only on the optimal value τ min . Thus, first-stage nonuniqueness is not a problem, since (19) selects the minimum-SCL point within the near-minimum-τ feasible set. 
+
+4) Description of the LUT Generation Process: The offline flowchart in Fig. 3 generates the LUTs of IRe  
+
+> k,h
+
+and IIm  
+
+> k,h
+
+by solving the lexicographic problem over a grid of (T ∗, ω )
+
+points. For each T ∗, ω is swept from zero in ∆ω steps until infeasibility. T ∗ is then swept from zero in ∆T steps until no solution is found even for ω ≈ 0. The resulting coefficients are saved in the LUTs. Finally, since they are speed-invariant while the voltage constraints are inactive, the entries for ω < min( ω↓) are removed to reduce the LUTs, where ω↓ collects, for each T ∗, the lowest speed at which any vpk constraint is active. IV. S IMULATION RESULTS 
+
+The model of the real symmetrical six-phase nonsalient 12-slot/10-pole PMSM used in [19] is considered here for simulation analysis, using star connection and phase a open. Its rated current, voltage, torque, and speed are 3.2 A , 100 V ,
+
+16 .7 Nm , and 1100 r /min , respectively. In the VSD model (see Section II), the stator inductances associated with the 
+
+αβ , xy , and 0− subspaces are 12 mH , 11 .3 mH , and 9.4 mH ,respectively. The stator resistance is 1.4 Ω in every VSD axis. The phase back-EMF voltage waveforms at 1100 r /min over one fundamental electrical cycle are shown in Fig. 4. The limits specified for the proposed method are, as in [19], as follows: vmx pk = 290 V , imx pk = 4 .34 A , τ mx = 2 Nm .
+
+A. Compensation of Cogging Torque 
+
+Next, Ansys Maxwell finite-element analysis (FEA) evalu-ates cogging-torque compensation by the proposed method. First, current references are generated with the proposed method for phase a open (ia = 0) for T ∗ = 5 Nm 
+
+and 1100 r /min with H = 21 and nt = 450 , assuming 
+
+Tcog (t) = 0 . Fig. 5(a) shows that, at steady state, these currents -150 -100 -50 050 100 150 0 60 120 180 240 300 360                                           
+
+> eaebecedeeef
+> Electrical phase angle (deg)
+> Back-EMF (V)
+> Fig. 4. Phase back-EMF voltage waveforms of the considered PMSM at
+> 1100 r /min over one fundamental electrical cycle. 4.5 4.75 55.25 5.5 012345678910
+> Time (ms)
+> Torque (Nm)
+> -2 -1 012iaibicidieif
+> Phase current (A)
+> (a) 4.5 4.75 55.25 5.5 012345678910
+> Time (ms)
+> Torque (Nm)
+> -4 -3 -2 -1 01234
+> iaibicidieif
+> Phase current (A)
+> (b) Fig. 5. Evaluation of current references under phase a open in presence of cogging torque by FEA, when the current references are obtained by the proposed method either (a) ignoring the cogging torque [ Tcog (t) = 0 is assumed] or (b) including in Tcog (t)the cogging torque obtained at no load.
+
+prevent the typical open-phase low-frequency torque oscilla-tions, ensuring fault tolerance. However, a 12th-order torque-ripple component remains, mainly due to cogging torque. Next, Maxwell is run with zero stator currents at the same speed, and the resulting torque waveform [similar to the T (t)
+
+ac part in Fig. 5(a)] is stored. The lexicographic optimization problem is afterward solved while using this waveform as 
+
+Tcog (t) to generate suitable current references. As shown in Fig. 5(b), the resulting currents, for the same conditions as in Fig. 5(a), include greater harmonic content, but remain below the specified current limit imx pk = 4 .34 A . Provided a current controller capable of accurately tracking the harmonic references is available [4], [11], [19], [22], [23], these currents achieve an effective reduction in peak-to-peak τ from 0.94 Nm 
+
+to just 0.22 Nm (see Fig. 5). The remaining small τ may be 850 900 950 1000 1050 1100 1150 1200 1250 1300 1350 1400 1450 1500 1550   
+
+> Mechanical speed (r/min) Torque reference (Nm)
+> 012345678910 11 12 13 14 15
+> No active inequality constraints
+> imx pk
+> vmx pk
+> imx pk &vmx pk
+> Infeasible
+
+ω↓
+
+ω↓
+
+> LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLo oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooa aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaad dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddLoad
+
+ω↑
+
+ω↑Fig. 6. Active inequality constraints over the feasible torque-speed regions, and infeasible region, for the proposed method under phase a open. 
+
+due to neglected effects such as reluctance torque and flux saturation, which may be addressed in future work. 
+
+B. Evaluation of Feasible Torque-Speed Range 
+
+Using the aforesaid parameters and limits, the feasible T -ω
+
+range is evaluated in MATLAB for phase a open. Tcog (t) = 0 ,
+
+H = 21 and nt = 250 are used for this and the following figures. Setting a conservative breakpoint resolution of 0.1 Nm 
+
+and 0.2π rad /s [19], each LUT has a size of 303 ×532 . Fig. 6 shows the feasible region and active inequality constraints: gray means no active inequality constraint, and colored areas indicate active ipk and/or vpk limits. The region is limited by 
+
+imx pk and vmx pk at high T and ω, respectively. Fig. 7 compares the feasible T -ω boundary with the healthy case of [19] and previous open-phase methods. NSBE-FRML [11] and the method of Atallah et al. [13] are evaluated under the same phase-a open condition by setting ia = 0 and enforcing the isolated-neutral current-sum constraint. For the latter [13], several γ values are considered, with γ scaling its flux-weakening weighting factor [14], [19]. Fig. 7 confirms that including the voltage constraint and all healthy-phase Fourier coefficients substantially enlarges the postfault torque-speed region. Previous postfault methods reach only about 1220 –1225 r /min at low torque, even after increasing γ in the method of Atallah et al. ; by contrast, the proposed method remains feasible up to about 1588 r /min at low torque. The remaining gap with the healthy benchmark of [19] ( 1748 r /min , 19 .8 Nm ) is due to the phase-a open fault, which inevitably reduces the drive capability; nevertheless, the proposed method keeps this reduction moderate. 
+
+C. Evaluation of Metrics Over Example Load Curve 
+
+Fig. 8 evaluates the main metrics along the example load curve of Figs. 6 and 7. Here, T is cycle-average torque, 
+
+vpk = max θr ∥v′(θr)∥∞, and ipk = max k,θ r |ik(θr)|, with these maxima being taken within one electrical cycle at each load-curve point. NSBE-FRML yields small SCL, but soon exceeds vmx pk because voltage is not constrained. Increasing γ
+
+in the method of Atallah et al. reduces vpk [14], but at the cost of higher current and SCL. Moreover, vpk still surpasses 
+
+vmx pk well below 1500 r /min even in the best case, at about Load Load Load Load Load Load Load Load Load Load Load Load Load Load Load Load Load Load Load Load Load Load Load Load Load Load Load Load Load Load Load Load Load Load Load Load Load Load Load Load Load Load Load Load Load Load Load Load Load Load Load Load Load Load Load Load Load Load Load Load Load Load Load Load Load Load Load Load Load Load Load Load Load Load Load Load Load Load Load Load Load Load Load Load Load Load Load Load Load Load Load Load Load Load Load Load Load       
+
+> Mechanical speed (r/min)
+> 850 900 950 1000 1050 1100 1150 1200 1250 1300 1350 1400 1450 1500 1550 1600 1650 1700 1750
+> Torque reference (Nm)
+> 012345678910 11 12 13 14 15 16 17 18 19 20
+> Healthy [19] Open-phase fault:
+> NSBE-FRML [11]
+> Atallah [13], .= 1
+> Atallah [13], .= 2.3
+> Atallah [13], .= 3
+> Proposed
+
+Fig. 7. Feasible T -ω limit curve of the proposed method under phase a open, compared with the healthy case of [19] and with NSBE-FRML [11] and Atallah et al. [13] evaluated for phase a open. For Atallah et al. , three values of the flux-weakening weighting-factor multiplier γ [14], [19] are shown. T (Nm)         
+
+> 3456
+> (Nm)
+> 00.5 11.5 2mx
+> vpk  (V)
+> 200 225 250 275 300 325 350 375
+> vpk mx
+> ipk  (A)
+> 01234ipk
+> mx
+> Mechanical speed (r/min)
+> SCL (W)
+> 020 40 60 80
+> 900 1000 1100 1200 1300 1400 1500
+
+NSBE-FRML [11] Atallah [13], γ = 1 
+
+Atallah [13], γ = 2.3 Atallah [13], γ = 3 Proposed 
+
+Fig. 8. From top to bottom: average torque, peak-to-peak torque ripple, peak line voltage, peak phase current, and SCL along the example load curve (see Figs. 6 and 7) under phase a open, comparing the proposed method with NSBE-FRML [11] and Atallah et al. [13] for several values of the flux-weakening weighting-factor multiplier γ.
+
+1220 r /min . For γ = 3 , the line is interrupted before reaching 
+
+1500 r /min because the current limit prevents torque tracking at high speeds. In contrast, the proposed method tracks T while keeping τ , vpk , and ipk within their prescribed limits, up to 
+
+1500 r /min , and with lower SCL than the method of Atallah 
+
+et al. despite satisfying the constraints. V. C ONCLUSIONS 
+
+This paper has presented a LUT-based current-reference generation method for a star-connected symmetrical six-phase nonsalient PMSM with phase a open and nonsinusoidal back-EMF. Fourier coefficients of all healthy phases are optimized offline, allowing unbalanced nonsinusoidal currents, by a two-stage lexicographic procedure that first minimizes torque rip-ple and then SCL, under mean-torque, zero-current-sum, peak-current, peak-voltage, and torque-ripple constraints. FEA results show that the method is able to substantially compensate cogging torque, provided its waveform is recorded in advance at zero load and included in the offline optimization for the LUTs. MATLAB simulation results show a larger phase-a-open torque-speed region than the considered previous methods: at low torque, the feasible speed limit increases from about 1220 –1225 r /min to 1588 r /min (roughly 30% ), whereas along the example load curve it increases from at most about 1220 r /min (best case) to 1500 r /min (roughly 
+
+23% ), within all prescribed limits. Future work may generalize the approach to arbitrary phase numbers, fault scenarios, and winding arrangements, while addressing other nonidealities such as saturation, saliency, and thermal parameter drift. APPENDIX 
+
+MATRICES AND VECTORS OF THE COMMON CONSTRAINTS 
+
+This appendix gives the common matrices and vectors used in the two stages of the offline lexicographic optimization in Section III-B. They implement the constraints (8c)–(8h) linearly in x [see (10)] for the consecutive problems (16) and (19). They are derived based on (8b)–(8h) and the current-reference construction equation (6) combined with (7). In the following, superscripts of A and b indicate the corresponding constraint equations of (8). First, let us define 
+
+aT(t) = 
+
+> 6
+
+X
+
+> k=2
+
+e′
+
+> k
+
+(t)fk(t) ∈ R1×10 nh (25) 
+
+fk(t) =  01×2( k−2) nh qk(t) 01×2(6 −k)nh
+
+ ∈ R1×10 nh
+
+(26) 
+
+qk(t) =  qk, 1(t) qk, 3(t) · · · qk,H (t)  ∈ R1×2nh
+
+(27) 
+
+qk,h (t) =  ck,h (t) sk,h (t)  ∈ R1×2 (28) where ck,h (t) and sk,h (t) are defined as in (6). The common matrix Aeq and vector beq of the equality constraints of both stages, in (16b) and (19b), are 
+
+Aeq =
+
+ñ A(8c) eq 
+
+A(8d) eq 
+
+ô
+
+∈ R(1+2 nh)×(10 nh+2) (29) 
+
+beq =
+
+ñ b(8c) eq 
+
+b(8d) eq 
+
+ô
+
+∈ R(1+2 nh)×1 (30) where the submatrices and vector blocks are 
+
+A(8c) eq = 1
+
+nt
+
+ P  
+
+> l
+
+aT(tl) 0 0  ∈ R1×(10 nh+2) (31) 
+
+A(8d) eq =
+
+
+
+...
+
+ac
+
+> h
+
+as
+
+> h
+
+...
+
+ ∈ R2nh×(10 nh+2) (32) 
+
+b(8c) eq = T ∗ − 1
+
+nt
+
+X
+
+> l
+
+Tcog (tl); b(8d) eq = 02nh×1. (33) To derive A(8d) eq in (32), note that (8d) is equivalent to 
+
+> 6
+
+X
+
+> k=2
+
+ik(t) = 0 . (34) Then, (6) and (7) are substituted into (34), and angle-difference trigonometric identities are used to decompose each 
+
+cos( h(θr(t)−ϕk)) and sin( h(θr(t)−ϕk)) term into four cosine and sine functions. The coefficients multiplying the resulting 
+
+cos( hθ r(t)) and sin( hθ r(t)) terms should be zero for all t to satisfy (34). Thus, for each harmonic h, two rows ac 
+
+> h
+
+and as
+
+> h
+
+are included in (32), whose entries associated with xk,h [see (11)–(13)], for k ∈ { 2, . . . , 6}, are 
+
+[ac
+
+> h
+
+]xk,h =  cos( hϕ k) − sin( hϕ k)  (35) 
+
+[as
+
+> h
+
+]xk,h =  sin( hϕ k) cos( hϕ k)  . (36) All other entries (columns) of ac 
+
+> h
+
+and as 
+
+> h
+
+are zero. Thus, 
+
+A(8d) eq x = b(8d) eq enforces (34) for all t without the redundant rows from sampling (8d) at all nt instants. The common Aineq and bineq in (16c) and (19c), excluding the second-stage-only τ bound [(20), (21)], are 
+
+Aineq =
+
+
+
+A(8e) ineq 
+
+A(8f) ineq 
+
+A(8g) ineq 
+
+A(8h) ineq 
+
+ ∈ R17 nt×(10 nh+2) (37) 
+
+bineq =
+
+
+
+b(8e) ineq 
+
+b(8f) ineq 
+
+b(8g) ineq 
+
+b(8h) ineq 
+
+ ∈ R17 nt×1. (38) The inequality-constraint submatrices of Aineq in (37) are 
+
+A(8e) ineq =
+
+
+
+Fa(t1) 05×1 05×1
+
+Fa(t2) 05×1 05×1
+
+... ... ...
+
+Fa(tnt ) 05×1 05×1
+
+ ∈ R5nt×(10 nh+2) (39) 
+
+A(8f) ineq =
+
+
+
+G(t1)
+
+G(t2)
+
+...
+
+G(tnt )
+
+ ∈ R10 nt×(10 nh+2) (40) 
+
+A(8g) ineq =
+
+
+
+aT(t1) −1 0
+
+aT(t2) −1 0
+
+... ... ...
+
+aT(tnt ) −1 0
+
+ ∈ Rnt×(10 nh+2) (41) 
+
+A(8h) ineq = −
+
+
+
+aT(t1) 0 −1
+
+aT(t2) 0 −1
+
+... ... ...
+
+aT(tnt ) 0 −1
+
+ ∈ Rnt×(10 nh+2) (42) where 
+
+G(t) =  Gi(t) 010 ×1 010 ×1
+
+ ∈ R10 ×(10 nh+2) (43) 
+
+Gi(t) = G′D−1
+
+n
+
+RDF (t) + ωLDF ′(t)
+
+o
+
+∈ R10 ×10 nh
+
+(44) 
+
+F (t) = 
+
+
+
+f1(t)
+
+f2(t)
+
+...
+
+f6(t)
+
+ , F ′(t) = 
+
+
+
+f ′
+
+> 1
+
+(t)
+
+f ′
+
+> 2
+
+(t)
+
+...
+
+f ′
+
+> 6
+
+(t)
+
+ ∈ R6×10 nh (45) 
+
+Fa(t) = 
+
+
+
+f2(t)
+
+f3(t)
+
+f4(t)
+
+f5(t)
+
+f6(t)
+
+ ∈ R5×10 nh (46) 
+
+f ′
+
+> k
+
+(t) =  01×2( k−2) nh q′
+
+> k
+
+(t) 01×2(6 −k)nh
+
+ ∈ R1×10 nh
+
+(47) 
+
+f1(t) = f ′
+
+> 1
+
+(t) = 01×10 nh (48) 
+
+q′
+
+> k
+
+(t) =  q′
+
+> k, 1
+
+(t) q′
+
+> k, 3
+
+(t) · · · q′ 
+
+> k,H
+
+(t)  ∈ R1×2nh
+
+(49) 
+
+q′
+
+> k,h
+
+(t) =  −hs k,h (t) hc k,h (t)  ∈ R1×2. (50) Since open-phase Fourier current coefficients are excluded from the optimization vector x in (10), the phase-a rows of 
+
+F (t) and F ′(t) are set to zero in (45), in accordance with (48). Gi(t) in (44) is obtained based on PMSM model (1). The inequality-constraint vector blocks of bineq in (38) are 
+
+b(8e) ineq = imx pk 15nt×1 ∈ R5nt×1 (51) 
+
+b(8f) ineq = vmx pk 110 nt×1 − ωmbe ∈ R10 nt×1 (52) 
+
+b(8g) ineq = −
+
+
+
+Tcog (t1)
+
+Tcog (t2)
+
+...
+
+Tcog (tnt )
+
+ ∈ Rnt×1 (53) 
+
+b(8h) ineq = −b(8g) ineq ∈ Rnt×1 (54) 
+
+be =
+
+
+
+G′e′(t1)
+
+G′e′(t2)
+
+...
+
+G′e′(tnt )
+
+ ∈ R10 nt×1. (55) REFERENCES [1] A. G. Yepes, O. Lopez, I. Gonzalez-Prieto, M. Duran, and J. Doval-Gandoy, “A comprehensive survey on fault tolerance in multiphase ac drives, Part 1: General overview considering multiple fault types,” 
+
+Machines , vol. 10, no. 3, 2022, Art. no. 208. [2] W. Taha, P. Azer, A. Poorfakhraei, S. Dhale, and A. Emadi, “Compre-hensive analysis and evaluation of dc-link voltage and current ripples in symmetric and asymmetric two-level six-phase voltage source inverters,” 
+
+IEEE Trans. Power Electron. , vol. 38, no. 2, pp. 2215–2229, Feb. 2023. [3] H. Wang et al. , “Open-circuit fault-tolerant control for nonsinusoidal back EMF five-phase PMSM with copper loss reduction,” IEEE Trans. Ind. Electron. , vol. 71, no. 7, pp. 6524–6533, Jul. 2024. [4] A. Cervone, O. Dordevic, and G. Brando, “General approach for modelling and control of multiphase PMSM drives,” IEEE Trans. Power Electron. , vol. 36, no. 9, pp. 10 490–10 503, Sep. 2021. [5] Y. Fan, R. Cui, and A. Zhang, “Torque ripple minimization for inter-turn short-circuit fault based on open-winding five phase FTFSCW-IPM motor for electric vehicle application,” IEEE Trans. Veh. Technol. ,vol. 69, no. 1, pp. 282–292, Jan. 2020. [6] L. Chong and M. F. Rahman, “Saliency ratio derivation and optimisation for an interior permanent magnet machine with concentrated windings using finite-element analysis,” IET Electric Power Appl. , vol. 4, no. 4, pp. 249–258, Apr. 2010. [7] X. Zhang, J. Ji, J. Zheng, and X. Zhu, “Improvement of reluctance torque in fault-tolerant permanent-magnet machines with fractional-slot concentrated-windings,” IEEE Trans. Appl. Supercond. , vol. 28, no. 3, pp. 1–5, Apr. 2018. [8] W. N. W. A. Munim et al. , “A unified analysis of the fault tolerance capability in six-phase induction motor drives,” IEEE Trans. Power Electron. , vol. 32, no. 10, pp. 7824–7836, Oct. 2017. [9] A. Gonzalez-Prieto, I. Gonzalez-Prieto, A. G. Yepes, M. J. Duran, and J. Doval-Gandoy, “On the advantages of symmetrical over asymmetrical multiphase ac drives with even phase number using direct controllers,” 
+
+IEEE Trans. Ind. Electron. , vol. 69, no. 8, pp. 7639–7650, Aug. 2022. [10] H. S. Che, M. J. Duran, E. Levi, M. Jones, W.-P. Hew, and N. Abd Rahim, “Postfault operation of an asymmetrical six-phase induction machine with single and two isolated neutral points,” IEEE Trans. Power Electron. , vol. 29, no. 10, pp. 5406–5416, Oct. 2014. [11] A. G. Yepes et al. , “Open-phase-tolerant online current references for maximum torque range and minimum loss with current and torque-ripple limits for n-phase nonsalient PMSMs with nonsinusoidal back EMF,” 
+
+IEEE Trans. Transport. Electrific. , vol. 10, no. 1, pp. 432–449, Mar. 2024. [12] Y. Lu, B. Ding, X. Xiao, and G. Feng, “Full torque–speed range minimum loss (FT-SRML) fault-tolerant control of dual three-phase PMSMs under open-phase fault,” IEEE Trans. Power Electron. , vol. 41, no. 8, pp. 13 023–13 033, Aug. 2026. [13] K. Atallah, J. Wang, and D. Howe, “Torque-ripple minimization in mod-ular permanent-magnet brushless machines,” IEEE Trans. Ind. Appl. ,vol. 39, no. 6, pp. 1689–1695, 2003. [14] Z. Sun, J. Wang, G. W. Jewell, and D. Howe, “Enhanced optimal torque control of fault-tolerant PM machine under flux-weakening operation,” 
+
+IEEE Trans. Ind. Electron. , vol. 57, no. 1, pp. 344–353, Jan. 2010. [15] D. T. Vu, N. K. Nguyen, E. Semail, and T. J. dos Santos Moraes, “Control strategies for non-sinusoidal multiphase PMSM drives in faulty modes under constraints on copper losses and peak phase voltage,” IET Electric Power Appl. , vol. 13, pp. 1743–1752, Nov. 2019. [16] T. J. dos Santos Moraes, H. Wu, E. Semail, N. K. Nguyen, and D. T. Vu, “Optimal torque/speed characteristics of a five-phase synchronous machine under peak or rms current control strategies,” in Proc. EPE ECCE , Sep. 2020, pp. 1–7. [17] J. Laksar et al. , “Analysis and taxonomy of optimal current setpoints for five-phase synchronous motor drives,” IEEE Trans. Ind. Electron. ,vol. 73, no. 3, pp. 3602–3613, Mar. 2026. [18] Y. Lu, Z. Tong, C. Lai, B. Ding, and G. Feng, “An efficient analytical solution to speed-extended fault-tolerant control of dual three-phase PMSMs under open-phase fault,” IEEE Trans. Transport. Electrific. ,vol. 11, no. 6, pp. 14 154–14 165, 2025. [19] A. G. Yepes et al. , “General current-reference generation for minimum stator copper loss and torque ripple per operating point in the full torque-speed range for multiphase nonsalient PMSMs with arbitrary back-EMF,” IEEE Trans. Ind. Electron. , in press. [20] A. G. Yepes, I. Gonzalez-Prieto, O. Lopez, M. Duran, and J. Doval-Gandoy, “A comprehensive survey on fault tolerance in multiphase ac drives, Part 2: Phase and switch open-circuit faults,” Machines , vol. 10, no. 3, 2022, Art. no. 221. [21] A. G. Yepes et al. , “Per-phase stator-resistance estimation by dc-signal injection in open-phase fault-tolerant six-phase induction motor drives,” 
+
+IEEE Trans. Ind. Electron. , vol. 72, no. 2, pp. 1101–1112, Feb. 2025. [22] X. Kestelyn and E. Semail, “A vectorial approach for generation of op-timal current references for multiphase permanent-magnet synchronous machines in real time,” IEEE Trans. Ind. Electron. , vol. 58, no. 11, pp. 5057–5065, Nov. 2011. [23] A. Mohammadpour and L. Parsa, “Global fault-tolerant control tech-nique for multiphase permanent-magnet machines,” IEEE Trans. Ind. Appl. , vol. 51, no. 1, pp. 178–186, Jan./Feb. 2015. [24] C. Xiong, T. Guan, P. Zhou, and H. Xu, “A fault-tolerant FOC strategy for five-phase SPMSM with minimum torque ripples in the full torque operation range under double-phase open-circuit fault,” IEEE Trans. Ind. Electron. , vol. 67, no. 11, pp. 9059–9072, Nov. 2020.

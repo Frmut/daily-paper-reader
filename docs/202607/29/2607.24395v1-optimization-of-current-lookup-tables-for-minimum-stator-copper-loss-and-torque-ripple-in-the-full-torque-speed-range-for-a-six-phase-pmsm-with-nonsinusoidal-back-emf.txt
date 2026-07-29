@@ -1,0 +1,595 @@
+Title: Optimization of Current Lookup Tables for Minimum Stator Copper Loss and Torque Ripple in the Full Torque-Speed Range for a Six-Phase PMSM With Nonsinusoidal Back-EMF
+
+URL Source: https://arxiv.org/pdf/2607.24395v1
+
+Published Time: Tue, 28 Jul 2026 01:58:23 GMT
+
+Number of Pages: 8
+
+Markdown Content:
+# Optimization of Current Lookup Tables for Minimum Stator Copper Loss and Torque Ripple in the Full Torque-Speed Range for a Six-Phase PMSM With Nonsinusoidal Back-EMF 
+
+Alejandro G. Yepes 1, Shirin Rahmanpour 2, Oscar López 1, Wessam E. Abdel-Azim 1,3 ,Petros Karamanakos 2, Ayman S. Abdel-Khalik 4, and Jesús Doval-Gandoy 1
+
+> 1
+
+CINTECX , Universidade de Vigo , APET , Vigo, Spain 
+
+> 2
+
+Faculty of Information Technology and Communication Sciences , Tampere University , Tampere, Finland 
+
+> 3
+
+Department of Electrical Engineering , Alexandria University , Alexandria, Egypt 
+
+> 4
+
+Department of Electrical and Computer Engineering , Sultan Qaboos University , Muscat, Oman Email: agyepes@uvigo.es, shirin.rahmanpour@tuni.fi, olopez@uvigo.es, wessam.essam@uvigo.es, p.karamanakos@ieee.org, a.abdelkhalik@squ.edu.om, jdoval@uvigo.es 
+
+Abstract —A recently proposed method was able to generate current references with minimum stator copper loss (SCL) and torque ripple over the full torque-speed range of multiphase non-salient permanent-magnet synchronous machines (PMSMs) with nonsinusoidal back-electromotive force (back-EMF). However, it relied on large lookup tables (LUTs) generated offline, requiring several hours for generation and large memory for storage. Since on-chip memory in industrial digital signal processors (DSPs) is limited, this hinders practical implementation. This paper addresses this problem by analyzing how the LUTs of that method can be simplified and optimized, focusing on the example of a symmetrical six-phase PMSM drive. Breakpoint selection (BS), LUT construction (LC) and interpolation approaches are evaluated to optimize the tradeoff between LUT simplification and performance. It is shown that the required memory and LUT generation time can be greatly reduced while keeping nearly the same feasible torque-speed area and performance. Simulation results confirm negligible performance degradation. 
+
+Index Terms —Lookup table, maximum torque, minimum losses, multiphase, six-phase, speed range, voltage constraint. 
+
+I. I NTRODUCTION 
+
+Multiphase permanent-magnet synchronous machines (PMSMs) are well suited for applications requiring high reliability and torque density, as well as low per-phase power [1]. In particular, six-phase PMSMs offer a good tradeoff between these features and complexity [1], while symmetrical six-phase stator windings are advantageous over asymmetrical ones in terms of fault tolerance [2], dc-link capacitor size [1], etc. In addition, PMSMs with nonsinusoidal back-electromotive force (back-EMF), such as those based on fractional-slot concentrated windings (FSCWs), can further increase torque density [3]. Although FSCW PMSMs usually exhibit negligible saliency, they also offer high fault tolerance and reduced end windings [4]. To fully exploit the torque-speed capability of PMSMs driven by field-oriented control, suitable current references must be generated for the inner current controller according to the torque reference, actual speed and rotor position. Different current-reference generation techniques for multi-phase PMSMs with current and voltage constraints have been proposed [5]–[7]. However, they exhibit important drawbacks [8] such as unsuitability for symmetrical six-phase PMSMs [5], [7] or for any back-EMF harmonics [5], [7], inability to allow moderate torque ripple to further extend the torque-speed range [5]–[7], reduced efficiency and torque-speed capability due to fewer degrees of freedom [6], etc. In [8], a nonsinusoidal current-reference generation method overcoming these limitations was introduced for nonsalient PMSMs with any phase number, any sinusoidal or nonsinu-soidal back-EMF waveforms, and symmetrical or asymmetri-cal windings. It consists of an offline stage and an online stage. First, the optimum Fourier coefficients of the nonsinusoidal current references are found offline by solving a quadratic op-timization problem for multiple torque-speed operating points, and stored in lookup tables (LUTs) with uniformly spaced torque/speed breakpoints. This offline optimization minimizes stator copper loss (SCL) 1 and torque ripple per operating point, while mean-torque tracking is imposed through an equality constraint. Torque ripple, peak current, and peak voltage are limited, enabling operation over the full torque-speed range. In the online stage, the current references are generated from the LUTs by linear interpolation as a function of the torque reference and actual speed [8]. However, 4.4 MB was needed to store the ten required LUTs, assuming 16 bits per value [8]. This exceeds the available on-chip RAM space in most standard digital sig-nal processors (DSPs). Furthermore, solving the optimization problem to generate LUTs with so many entries took several hours despite using a powerful computer [8]. In addition, since the rectangular LUTs contain feasible and infeasible 
+
+> 1
+
+In a PMSM, SCL is commonly the most important heat source [8]. 
+
+> © 2026 IEEE. Personal use of this material is permitted. Permission from IEEE must be obtained for all other uses, in any current or future media, including reprinting/republishing this material for advertising or promotional purposes, creating new collective works, for resale or redistribution to servers or lists, or reuse of any copyrighted component of this work in other works. arXiv:2607.24395v1 [eess.SY] 27 Jul 2026
+
+operating points, this memory requirement of 4.4 MB was estimated assuming that only the values corresponding to feasible operating points were stored. However, this would produce variable-length LUT rows and require more complex indexing and access logic. Otherwise, storing the full ten rectangular LUTs from [8], with as many as 389 × 790 
+
+elements per LUT, would imply even more memory ( 6.1 MB ). This paper addresses the simplification and optimization of the LUTs for the current-reference generation method from [8], focusing on a symmetrical star-connected six-phase PMSM drive with nonsinusoidal back-EMF. After review-ing the method from [8] (Section II), different possibilities for simplification of its original LUTs (OLUTs) are intro-duced (Section III), including various LUT-construction (LC), breakpoint-selection (BS) and interpolation approaches. Two main types of BS are considered: LUTs with uniformly spaced breakpoints of various resolutions, and LUTs with nonuniform spacing obtained by an alternative LUT reduction procedure. For the selected case-study parameters and metrics (Section IV), the reduced LUTs are evaluated (Section V) to optimize the tradeoff between LUT simplification and resulting performance. LUT simplification is assessed through generation time and memory, whereas the performance is evaluated through the reduction in the feasible torque-speed area under acceptable limits on peak line voltage, peak phase current, torque ripple and mean-torque deviation. Several options achieving a favorable compromise between simplicity and performance are identified and compared. The required memory and generation time are remarkably reduced, with a very small decrease in feasible torque-speed region. Sim-ulation results (Section VI) confirm negligible performance degradation, despite the remarkable LUT simplification. II. C URRENT -R EFERENCE GENERATION METHOD OF [8] Fig. 1 depicts a PMSM drive with field-oriented control. The current references for the inner current control are generated based on the torque T reference T ∗, electrical speed ω and rotor position θr.2 The current reference-generation method from [8] involves online and offline stages, reviewed next. 
+
+A. Online Stage: Current-Reference Generation 
+
+In the online stage (see Fig. 2), the nonsinusoidal current references are generated at each instant t based on the rotor electrical position θr(t) = ωt and the Fourier coefficients IRe 
+
+> h
+
+and IIm  
+
+> h
+
+of each current harmonic h ∈ { 1, 3, ..., H }. The number of harmonics is nh. IRe  
+
+> h
+
+and IIm  
+
+> h
+
+are read from 2nh
+
+LUTs as a function of T ∗ and ω, limited (see the saturation blocks) to their feasible ranges. In particular, for a symmetrical six-phase PMSM, the current reference ik(t) of each phase 
+
+k ∈ { 1, 2, ..., 6} is [8] 
+
+ik(t) = X
+
+> h
+
+IRe  
+
+> h
+
+cos ( hθ k(t)) + X
+
+> h
+
+IIm  
+
+> h
+
+sin ( hθ k(t)) (1) where 
+
+θk(t) = θr(t) − (k − 1) 2π
+
+6 . (2)                
+
+> 2Hereafter, for simplicity, the asterisk in T∗is omitted when referring to
+> T∗breakpoints, breakpoint steps ∆T∗,T∗-ωareas or T∗-ωcurves. Firing Control platform signals
+> ikreferences Current control
+
++-                
+
+> 6-phase converter
+> ik
+> 6
+> T*
+> reference Torque
+> 6
+> vdc 6
+> PMSM 6-phase c(k=3)
+> e(k=5)
+> b(k=2)
+> d(k=4)
+> f(k=6)
+> a(k=1)
+> Rotor po-sition
+> r(t)Speed
+> 
+> Current-reference generation (Fig. 2)
+> Fig. 1. Six-phase PMSM drive based on field-oriented control [8], including current-reference generation, on which this paper is focused.
+
+(1), (2) i k(t)6
+
+ r(t)
+
+nh
+
+nh I h
+
+> Im
+
+I h
+
+> Re
+
+
+
+T *
+
+LUTs LUTs  
+
+> Fig. 2. Internal structure of the current-reference generation block in Fig. 1, corresponding to the online stage of the method proposed in [8].
+
+B. Offline Stage: OLUT Generation 
+
+In the offline stage, the 2nh LUTs of IRe  
+
+> h
+
+and IIm  
+
+> h
+
+in Fig. 2 are generated by solving an optimization problem for each operating point ( T ∗, ω ), for subsequent storage in a DSP [8]. These LUTs are in principle rectangular, but only a tapered (T ∗, ω ) region is feasible and of interest [8]. To sweep the feasible operating points, T ∗ is increased from zero toward positive T ∗ with uniform steps ∆T , and for each T ∗, ω is increased from zero toward positive ω with uniform steps ∆ω,until no solution is found. The process is then repeated for 
+
+T ∗ increasing from zero toward negative T ∗. Only ω ≥ 0 is considered, since the outputs for ω < 0 would be very similar to those of ω > 0 with opposite T ∗ sign. The optimization problem per ( T ∗, ω ) minimizes torque ripple with strict priority and, among the solutions with minimum torque ripple, the SCL. This is done while imposing the equality constraint that the mean permanent-magnet torque 
+
+T equals that of the reference ( T = T ∗), as well as inequality constraints that limit the peak line voltage vpk , peak phase current ipk and torque ripple τ to the respective limits 3 [8]: 
+
+T err = 0; vpk ≤ vmx pk ; ipk ≤ imx pk ; τ ≤ τ mx (3) where T err = T − T ∗ is mean T error. This is solved using MATLAB quadprog with negligible numerical tolerances. The ω breakpoints below ω↓ are removed, as the LUT values there do not vary with ω (the vpk constraint is inactive) [8]. III. D EFINITION OF LUT S IMPLIFICATION APPROACHES 
+
+Different LC, BS and interpolation approaches for LUT reduction are considered.       
+
+> 3The limit τMX from [8] is here called τmx for the sake of convenience.
+
+The reduced LUTs may be constructed using LC1 or LC2.  
+
+> •
+
+LC1 (downsampling): High-resolution OLUTs according to [8] using small steps ∆T and ∆ω are first generated. Reduced LUTs are then obtained by retaining only OLUT entries with steps λ∆T and λ∆ω, where λ is an integer.  
+
+> •
+
+LC2 (direct generation): High-resolution OLUTs are not generated. Instead, the offline LUT-generation procedure from [8] (Section II-B) is run at a reduced breakpoint set, using steps λ∆T and λ∆ω, to directly form the new LUTs. LC1 requires prior OLUT generation, whereas LC2 does not. To select the breakpoints, several BS approaches are defined next. BS1–BS3 and BS3B use (mostly) uniform spacing, whereas BS4 uses nonuniform spacing. BS1, BS2 and BS4 rely on LC1, whereas BS3 and BS3B rely on LC2. Fig. 3 depicts the BS4 flowchart, and the grids in Fig. 4 indicate the BSs (starting breakpoints, in red; retained OLUT outermost breakpoints, by bold tick labels) for several examples together with the OLUT T -ω limit curve in purple. The other curves in Fig. 4, discussed later, correspond to the reduced LUTs.  
+
+> •
+
+BS1 (uniform top-down ∆T ): As indicated by the grid in Fig. 4(a), using LC1, the T breakpoints are selected from the OLUT highest positive one (retained) using equal decrements λ∆T , except for a smaller last step to also retain the lowest negative OLUT T breakpoint. The OLUT highest 
+
+ω breakpoint is retained, and the other ω breakpoints are set using equal decrements λ∆ω until ω↓ (796 r /min ), below which the OLUT values do not vary with ω [8].  
+
+> •
+
+BS2 (uniform zero-based ∆T ): As shown in Fig. 4(b), using LC1, the ω breakpoints are set as in BS1. The T breakpoints are defined starting from zero torque and applying λ∆T
+
+toward the largest positive and negative feasible torques of the OLUTs (also retained as breakpoints), leaving the outermost interval on each side smaller than λ∆T . 
+
+> •
+
+BS3 (uniform zero-based ∆T &∆ ω): As shown in Figs. 4(c) and 4(d), using LC2, uniform breakpoint spacings λ∆T
+
+and λ∆ω are applied starting from zero torque (toward positive and negative T ) and speed (toward positive ω)until no solution of the optimization problem is found. The ω breakpoints below ω↓ are removed. The outermost 
+
+ω and T breakpoints from the high-resolution OLUTs are not included (may be unknown, if such OLUTs are not previously generated). A variant of this approach, denoted as BS3B and shown in Fig. 4(e), then applies high-resolution steps with smaller λ (e.g., λ = 1) from the outermost breakpoints for which a solution was found, until new outermost feasible breakpoints are identified and included in the BS. These would match the outermost breakpoints of the high-resolution OLUTs, but saving the computation time that would be required to generate the OLUTs beforehand.  
+
+> •
+
+BS4 (nonuniform): A nonuniform BS [see Fig. 4(f)] is obtained by the LC1-based flowchart in Fig. 3. Selected 
+
+T and ω breakpoints of the OLUTs are iteratively removed one by one, until the total number of LUT entries is below a specified target. A high-resolution grid with uniform T and 
+
+ω spacing is defined beforehand for evaluation, using linear interpolation between the remaining entries. The feasible T -            
+
+> Load OLUTs
+> Set target LUT size, limits ( vmx pk ,imx pk and τmx ), allowed excess ϵ, evaluation grid, etc.
+> Evaluate removing each of the LUT rows and columns: feasible-area loss & error metric δin (4)
+> For the evaluation-grid points affected by the last breakpoint removal, update evaluation of removing each of the remaining LUT rows and columns: feasible-area loss & error metric δin (4)
+> Select candidate row/column with minimum feasible-area loss (tie-break: minimum error δ)
+> Update retained breakpoint set and feasible-region map
+> Target LUT size reached?
+> Store final breakpoint sets and reduced LUTs
+> Yes
+> No
+> Fig. 3. Flowchart for LUT reduction with nonuniform spacing, i.e., BS4.
+
+ω region is the ( T ∗, ω ) set for which the variables of interest remain within admissible bounds allowing an excess ϵ over the nominal limits (further detailed in the next section). At each iteration, the removed breakpoint is the one causing the smallest reduction in feasible T -ω area or, in case of a tie, the one yielding the lowest value of the error metric 
+
+δ = 1
+
+Npoints 
+
+X
+
+> points
+
+î T − T OLUT 
+
+2 + ( τ − τOLUT )2ó (4) where the summation is performed over all evaluation-grid points affected by the evaluated breakpoint removal (i.e., those in the feasible area between the previous breakpoint and the following one in the same dimension); Npoints is the number of such points; and the OLUT subscript denotes the T and τ values obtained for the OLUT at the same evaluation-grid point. Note that T OLUT ≈ T ∗. For this evaluation in Fig. 3, double-precision (64-bit) floating-point format is used to ensure BS accuracy, but lower precision may be used for resulting-LUT storage. For each T -ω breakpoint pair such that no feasible so-lution is found when solving the optimization problem of Section II-B (when generating the OLUTs for LC1, or the reduced LUTs for LC2) for such point, the values in the reduced LUT are set equal to those of the highest ω breakpoint for which a solution was found for the same T .When evaluating any of the reduced LUTs, different types of interpolation may also be adopted, e.g., those available in the MATLAB griddedInterpolant function [9]: linear, Modified Akima, cubic convolution, and cubic spline. IV. P ARAMETERS AND METRICS FOR THE EVALUATION 
+
+A. Parameters of PMSM and of LUT Generation Algorithm 
+
+For the subsequent analysis, the PMSM considered in this paper is the same as in [8]. Namely, it is a six-phase nonsalient 784.8 805.2 825.6 846.0 866.4 886.8 907.2 927.6 948.0 968.4 988.8 1009.2 1029.6 1050.0 1070.4 1090.8 1111.2 1131.6 1152.0 1172.4 1192.8 1213.2 1233.6 1254.0 1274.4 1294.8 1315.2 1335.6 1356.0 1376.4 1396.8 1417.2 1437.6 1458.0 1478.4 1498.8 1519.2 1539.6 1560.0 1580.4 1600.8 1621.2 1641.6 1662.0 1682.4 1702.8 1723.2 1743.6 1764.0 
+
+Mechanical speed (r/min) 
+
+-19.3 -18.1 -16.4 -14.7 -13.0 -11.3 -9.6 -7.9 -6.2 -4.5 -2.8 -1.1 0.6 2.3 4.0 5.7 7.4 9.1 10.8 12.5 14.2 15.9 17.6 19.3 
+
+> Torque reference  T ∗ (Nm)
+
+Original LUTs 
+
+BS1 & λ = 17: 
+
+ǫ = 1% 
+
+ǫ = 3% 
+
+ǫ = 5% 
+
+∆T
+
+∆ω(a) 784.8 805.2 825.6 846.0 866.4 886.8 907.2 927.6 948.0 968.4 988.8 1009.2 1029.6 1050.0 1070.4 1090.8 1111.2 1131.6 1152.0 1172.4 1192.8 1213.2 1233.6 1254.0 1274.4 1294.8 1315.2 1335.6 1356.0 1376.4 1396.8 1417.2 1437.6 1458.0 1478.4 1498.8 1519.2 1539.6 1560.0 1580.4 1600.8 1621.2 1641.6 1662.0 1682.4 1702.8 1723.2 1743.6 1764.0 
+
+Mechanical speed (r/min) 
+
+> Torque reference  T ∗ (Nm)
+
+-17.0 -15.3 -13.6 -11.9 -10.2 -8.5 -6.8 -5.1 -3.4 -1.7 0.0 1.7 3.4 5.1 6.8 8.5 10.2 11.9 13.6 15.3 17.0 -19.3 -18.7 18.7 19.3 
+
+Original LUTs 
+
+BS2 & λ = 17: 
+
+ǫ = 1% 
+
+ǫ = 3% 
+
+ǫ = 5% 
+
+∆ω
+
+∆T
+
+∆T (b) 795.6 816.0 836.4 856.8 877.2 897.6 918.0 938.4 958.8 979.2 999.6 1020.0 1040.4 1060.8 1081.2 1101.6 1122.0 1142.4 1162.8 1183.2 1203.6 1224.0 1244.4 1264.8 1285.2 1305.6 1326.0 1346.4 1366.8 1387.2 1407.6 1428.0 1448.4 1468.8 1489.2 1509.6 1530.0 1550.4 1570.8 1591.2 1611.6 1632.0 1652.4 1672.8 1693.2 1713.6 1734.0 
+
+Mechanical speed (r/min) 
+
+> Torque reference  T ∗ (Nm)
+
+-18.7 -17.0 -15.3 -11.9 -10.2 -8.5 -6.8 -5.1 -3.4 -1.7 0.0 1.7 3.4 5.1 6.8 8.5 10.2 11.9 13.6 15.3 17.0 18.7 
+
+Original LUTs 
+
+BS3 & λ = 17 :
+
+ǫ = 1% 
+
+ǫ = 3% 
+
+ǫ = 5% 
+
+∆T
+
+∆T
+
+∆ω-13.6 
+
+(c) 798.0 820.8 843.6 866.4 889.2 912.0 934.8 957.6 980.4 1003.2 1026.0 1048.8 1071.6 1094.4 1117.2 1140.0 1162.8 1185.6 1208.4 1231.2 1254.0 1276.8 1299.6 1322.4 1345.2 1368.0 1390.8 1413.6 1436.4 1459.2 1482.0 1504.8 1527.6 1550.4 1573.2 1596.0 1618.8 1641.6 1664.4 1687.2 1710.0 1732.8 
+
+Mechanical speed (r/min) 
+
+> Torque reference  T ∗ (Nm)
+
+-19.0 -17.1 -15.2 -11.4 -9.5 -7.6 -5.7 -3.8 -1.9 0.0 1.9 3.8 5.7 7.6 9.5 11.4 13.3 15.2 17.1 19.0 
+
+Original LUTs 
+
+BS3 & λ = 19 :
+
+ǫ = 1% 
+
+ǫ = 3% 
+
+ǫ = 5% 
+
+∆T
+
+∆T
+
+-13.3 
+
+∆ω (d) 816.0 836.4 856.8 877.2 897.6 918.0 938.4 958.8 979.2 999.6 1020.0 1040.4 1060.8 1081.2 1101.6 1122.0 1142.4 1162.8 1183.2 1203.6 1224.0 1244.4 1264.8 1285.2 1305.6 1326.0 1346.4 1366.8 1387.2 1407.6 1428.0 1448.4 1468.8 1489.2 1509.6 1530.0 1550.4 1570.8 1591.2 1611.6 1632.0 1652.4 1672.8 1693.2 1713.6 1734.0 1749.6 1764.0 
+
+Mechanical speed (r/min) 
+
+> Torque reference  T ∗ (Nm)
+
+-17.0 -15.3 -13.6 -11.9 -10.2 -8.5 -6.8 -5.1 -3.4 -1.7 0.0 1.7 3.4 5.1 6.8 8.5 10.2 11.9 13.6 15.3 17.0 -19.3 -18.7 18.7 19.3 
+
+Original LUTs 
+
+BS3B & λ = 17: 
+
+ǫ = 1% 
+
+ǫ = 3% 
+
+ǫ = 5% 
+
+∆T
+
+∆T
+
+∆ω
+
+(e) Mechanical speed (r/min) 
+
+> 795.6 1170.0 1184.4 1203.6 1230.0 1249.2 1266.0 1297.2 1316.4 1341.6 1363.2 1376.4 1392.0 1429.2 1459.2 1498.8 1534.8 1549.2 1580.4 1618.8 1638.0 1663.2 1693.2 1710.0 1740.0 1764.0
+> Torque reference  T ∗ (Nm)
+> -19.3 -17.6 -15.5 -13.0 -11.9 -10.5 -8.7 -6.0 -4.5 -2.8 -1.2 0.0 1.6 3.3 5.0 6.6 7.6 8.9 10.1 12.5 14.4 16.2 17.7 19.3
+
+Original LUTs 
+
+BS4: 
+
+ǫ = 1% (f) Fig. 4. Grid indicating T and ωm BSs of reduced LUTs (starting BS, in red; retained OLUT outermost breakpoints, by bold tick labels), and limit curves of the feasible area for OLUTs [8] and for reduced LUTs, evaluated using linear interpolation and different ϵ. For speeds below those shown, the limit boundaries continue horizontally. Green and yellow curves practically overlap with purple ones, not with blue ones. (a) BS1 and λ = 17 . (b) BS2 and λ = 17 , (c) BS3 and λ = 17 . (d) BS3 and λ = 19 . (e) BS3B and λ = 17 . (f) BS4 and ϵ = 1% , omitting some tick labels (cf. Table III) to avoid visual clutter. 0 30 60 90 120 150 180 210 240 270 300 330 360    
+
+> Fundamental phase angle (deg)
+> -0.14 -0.12 -0.1 -0.08 -0.06 -0.04 -0.02 00.02 0.04 0.06 0.08 0.1 0.12 0.14
+> Back-EMF (V/r/min)  eaefeeebeced
+
+Fig. 5. PMSM back-EMF waveforms normalized by mechanical speed [8]. 
+
+12-slot/10-pole PMSM with symmetrical windings, using star connection with a single neutral point. The PMSM ratings for current, voltage, torque and speed are 3.2 A , 100 V , 16 .7 Nm 
+
+and 1100 r /min . Using the vector space decomposition (VSD) [10], the stator inductance is 12 mH , 11 .3 mH and 9.4 mH in the α1β1 plane, α2β2 plane, and zero-sequence α3 axis, re-spectively. The stator resistance is 1.4 Ω in all VSD subspaces. The back-EMF waveforms are shown in Fig. 5. Saliency, cogging torque and flux saturation are neglected [8]. Most parameters of the LUT generation algorithm are here set as in [8]: vmx pk = 290 V , imx pk = 4 .34 A , τ mx = 2 Nm , and 
+
+h ∈ { 1, 3, 5, 7, 9} (H = 9 , nh = 5 ). As shown in [8], H = 9 
+
+preserves nearly the same torque-speed range as higher H,while avoiding extra complexity. The number of samples per period nt is set to 150 for high accuracy [8]. 
+
+B. Evaluation Metrics 
+
+The reduced LUTs will be evaluated in terms of LUT simplification (required generation time and memory) and performance (feasible T -ω area). For memory assessment, 16 bits per LUT entry are assumed [8], and the full rectangular LUTs, including infeasible oper-ating points, are stored for indexing simplicity. For the offline LUT generation time, a computer with 5200 -MHz DDR5 RAM and i9-14900K processor is employed [8]. For each LUT set, the feasible T -ω range is defined as the T -ω area where variables of interest satisfy an allowed excess ϵ. For ϵ in p.u., the allowed values within this area are 
+
+vpk ≤ (1 + ϵ)vmx pk , ipk ≤ (1 + ϵ)imx pk and τ ≤ (1 + ϵ)τ mx .Compared with (3), ϵ represents allowed excess in vmx pk , imx pk 
+
+and τ mx .4 In addition, the mean-torque error T err = T − T ∗
+
+must satisfy T err ≤ ϵT rt , where T rt is the PMSM rated torque. The τ excess τerr over that of the OLUTs must satisfy 
+
+τerr = τ −τOLUT ≤ ϵT rt . The feasible T -ω area for a certain ϵ
+
+is assessed by evaluating 5 vpk , ipk , τ , T err and τerr over a uni-form evaluation grid with resolution 0.1 Nm and 2.4π r/min 
+
+for T and ω, respectively, which also match the resolution 
+
+∆T and ∆ωm of the OLUTs, with ωm being mechanical 
+
+> 4
+
+ϵ > 0 need not imply above-rated operation, since vmx pk , imx pk and τ mx 
+
+may include margins below rated values [8]. 
+
+> 5
+
+The allowed excess ϵ during the evaluation of the feasible T -ω area of given LUTs is independent of the numerical tolerances (negligible) used with 
+
+quadprog to solve the quadratic optimization (Section II-B) during the generation of the OLUTs for LC1 or of the reduced LUTs for LC2. 10 1  
+
+> 10 2
+> 10 3
+> 10 4
+> 10 5
+> 10 6
+> Number of entries per LUT
+> 020 40 60 80 100
+> Feasible torque-speed area (%)
+> Allowed excess ǫ:1% 3% 5%
+
+(a) 10 1  
+
+> 10 2
+> 10 3
+> 10 4
+> 10 5
+> 10 6
+> Number of entries per LUT
+> 020 40 60 80 100
+> Feasible torque-speed area (%)
+> Allow ed excess ǫ:1% 3% 5%
+
+(b) 10 1  
+
+> 10 2
+> 10 3
+> 10 4
+> 10 5
+> 10 6
+> Number of entries per LUT
+> 020 40 60 80 100
+> Feasible torque-speed area (%)
+> Allowed excess ǫ:1% 3% 5%
+
+(c) 10 1  
+
+> 10 2
+> 10 3
+> 10 4
+> 10 5
+> 10 6
+> Number of entries per LUT
+> 94 95 96 97 98 99 100
+> Feasible torque-speed area (%)
+> Allowed excess ǫ:1%
+
+(d) Fig. 6. Feasible T -ω area, normalized by that of the OLUTs [8], versus the number of entries per LUT, evaluated using various ϵ (colors) and linear interpolation between LUT breakpoints. Stars indicate λ = 1 (i.e., OLUTs); diamonds, λ = 17 ; triangles, λ = 19 ; and a square, 1209 entries obtained by BS4 with target LUT size of 1225 . (a) BS1. (b) BS2. (c) BS3. (d) BS4. 
+
+speed. For evaluation-grid points located between (outside) LUT breakpoints, interpolation (extrapolation) is used. Only points within the OLUT feasible region are evaluated. For ω
+
+below the lowest ω breakpoint ( ≈ ω↓), the LUT outputs of that breakpoint are taken without extrapolation [8]. TABLE I COMPARISON OF SELECTED REDUCED LUT S                                                                                                 
+
+> BS LC Downsampling factor
+> λ
+> Resolution
+> λ∆T×λ∆ωm
+> (Nm ×r/min) Stored
+> T×ωentries per LUT Feasible
+> T-ωarea (%) for ϵ= 1%
+> Area-size tradeoff vs. alternatives
+> T-ωm
+> limit curve Total memory (MB) Total LUT generation time (min) OLUTs [8] LC2 10.1×2.4π389 ×790 ≈3·10 5100 Fig. 6 (stars) Fig. 4 (purple) 6.15 574
+> BS1 LC1 17 1.7×40 .8π24 ×49 = 1176 99 .1Fig. 6(a) (diamonds) Fig. 4(a) 0.024 574
+> BS2 LC1 17 1.7×40 .8π∗25 ×49 = 1225 99 .4Fig. 6(b) (diamonds) Fig. 4(b) 0.025 574
+> BS3 LC2 17 1.7×40 .8π∗23 ×47 = 1081 97 .2Fig. 6(c) (diamonds) Fig. 4(c) 0.022 9
+> BS3 LC2 19 1.9×45 .6π21 ×42 = 882 98 .3Fig. 6(c) (triangles) Fig. 4(d) 0.018 9
+> BS3B LC2 17 1.7×40 .8π∗25 ×48 = 1200 99 .3−Fig. 4(e) 0.024 10
+> BS4 LC1 −Nonuniform 39 ×31 = 1209 99 .8Fig. 6(d) (square) Fig. 4(f) 0.024 1549
+> ∗As an exception, one, two or three of the outermost torque/speed breakpoints are separated with a smaller spacing. TABLE II FEASIBLE T-ωAREA RELATIVE TO ORIGINAL [8] FOR BS2 U SING
+> λ= 17 AND ϵ= 1% DEPENDING ON INTERPOLATION METHOD
+> Interpolation method Feasible T-ωarea ( %)Linear (selected) 99 .4
+> Modified Akima 93 .2
+> Cubic convolution 84 .3
+> Cubic spline 84 .3
+
+V. S TUDY OF LUT S IMPLIFICATION AND PERFORMANCE 
+
+The reduced LUTs are evaluated for the BS, LC and interpolation approaches according to the introduced metrics. Fig. 6 shows the feasible T -ω area (for ϵ = 1% , 3% , and 
+
+5% ) versus the number of entries per LUT, for λ swept from 1
+
+to 300 for BS1 and BS2, and from 1 to 193 for BS3. While the LUT size (resolution) varies, the resolution of the evaluation grid is kept as aforesaid. Linear interpolation (extrapolation) is adopted. The feasible T -ω area is normalized by that of the OLUTs, evaluated on the same dense grid and under the same 
+
+ϵ. Fig. 6 was obtained by using just 16 bits per LUT entry (as for memory storage): 16 -bit signed fixed-point values allocated as 8 bits for the integer part and 8 bits for the fractional part. It was verified that the use of 64 -bit instead of 16 -bit LUT entries produces no noticeable differences. Fig. 6 shows that the LUT size can be greatly reduced with little performance loss. Using BS1 with λ = 17 [diamonds in Fig. 6(a)], each LUT is reduced from 389 ×790 ≈ 3·10 5 entries (stars) to 24 × 49 = 1176 , i.e., by a factor of 261 . For these points, the feasible T -ω area decreases by only 0.9% , 0.0% 
+
+and 0.0% for ϵ = 1% , 3% and 5% , respectively. This agrees with Fig. 4(a), where the limit curves for ϵ = 3% and 5% 
+
+practically overlap with the OLUT limit (purple). For ϵ = 1% ,the little reduction ( 0.9% ) occurs in Fig. 4(a) mainly between the two highest T breakpoints. For the same λ = 17 but using BS2, Fig. 4(b) shows that this approach, by adding an extra 
+
+T breakpoint in that region, is very effective in mitigating the feasible-area reduction for ϵ = 1% near the highest T ,compared with Fig. 4(a). In fact, this increases the feasible area for λ = 17 and ϵ = 1% from 99 .1% to 99 .4% [blue diamonds in Fig. 6(a) and (b)], just with an extra T breakpoint, giving 25 × 49 = 1225 entries. The main features of these two cases and the OLUTs are also compared in the first rows of Table I, along with other possibilities discussed later. In any case, BS1 and BS2, which rely on LC1, require generating the OLUTs beforehand. This is acceptable if the main goal is to save DSP memory, but not if LUT generation time must also be reduced (see Table I). For the latter purpose, BS3 may be adopted using LC2, slightly reducing the LUT sizes to 23 × 47 = 1081 entries and greatly shortening the generation time to 9 min (see Table I). However, the feasible 
+
+T -ω range then decreases from the BS2 values of 99 .4% ,
+
+100% , and 100% for ϵ = 1% , 3% , and 5% [diamonds in Fig. 6(b)] to 97 .2% , 98 .4% , and 99 .3% , respectively [dia-monds in Fig. 6(c)]. As shown in Fig. 4(c), this reduction is mainly concentrated near the positive and negative T limits. For BS3, this can be substantially mitigated using λ = 19 ,which increases the feasible area to 98 .3% , 99 .9% , and 100% 
+
+[triangles in Fig. 6(c)] while further reducing the LUT size to 21 × 42 = 882 entries. As depicted in Fig. 4(d), this improvement over Fig. 4(c) is mainly achieved because the outermost T breakpoints ( ±19 .0 instead of ±18 .7 Nm ) are closer to the OLUT T limits ( ±19 .3 Nm ). Nevertheless, even for a case like that in Fig. 4(c), it is possible to add feasible T
+
+and ω breakpoints matching the outermost ones of the OLUTs by using BS3B without much longer overall LUT generation time. This gives a feasible area [see Fig. 4(e) and Table I] similar to BS2 ( 99 .3% versus 99 .4% ) with just different ω
+
+breakpoints [cf. Fig. 4(b)], in a relatively short time. For BS1–BS3 and BS3B, the reduced LUT breakpoints were mostly uniformly spaced, for simplicity. To further mitigate the impact of the LUT reduction on T -ω range, BS4 may be used. However, BS4 requires the OLUT data. As shown at the bottom of Table I, e.g., when setting the target LUT size to 1225 entries and ϵ = 1% , applying the simplification procedure in Fig. 3 takes 975 min ; this is added to the 574 min 
+
+for the OLUTs, giving 1549 min (see Table I). This results in LUTs with 39 × 31 = 1209 entries, whose reduced breakpoint sets are displayed in Table III. 6 Compared with other LUTs of similar sizes (see Table I), the feasible T -ω range is increased to 99 .8% [see Figs. 4(f) and 6(d)], despite its comparable memory. Moreover, the curve of feasible area versus size is                                                                                      
+
+> 6BS4 retains rectangular storage but its nonuniform BS needs (at most) 11
+> binary-search comparisons ( 6for T,5for ω) per update; the resulting indices and weights serve all 10 LUTs, while its 70 16 -bit breakpoints occupy 140 B .TABLE III NONUNIFORMLY SPACED BREAKPOINTS AFTER APPLYING BS4 W ITH TARGET LUT S IZE OF 1225 E NTRIES
+> Speed breakpoints
+> (r /min) 796 ,1170 ,1184 ,1204 ,1230 ,1249 ,1266 ,1285 ,1297 ,1308 ,1316 ,1332 ,1342 ,1350 ,1363 ,1376 ,
+> 1392 ,1429 ,1459 ,1499 ,1535 ,1549 ,1580 ,1619 ,1638 ,1663 ,1693 ,1710 ,1740 ,1760 ,1764
+> Torque breakpoints
+> (Nm)
+> −19 .3,−18 .8,−18 .1,−17 .6,−16 .8,−16 .2,−15 .5,−14 .6,−13 .0,−11 .9,−10 .5,−8.7,−6.0,−4.5,−2.8,−1.2,0.0,
+> 1.6,3.3,5.0,6.6,7.6,8.9,10 .1,11 .5,11 .9,12 .5,13 .0,13 .5,13 .9,14 .4,15 .0,15 .4,16 .2,17 .0,17 .7,18 .3,18 .8,19 .3
+
+much smoother in Fig. 6 using BS4 than other approaches. Table II compares the feasible T -ω areas for the different interpolation methods [9], for BS2 using λ = 17 (as an exam-ple) and ϵ = 1% . Besides being simpler, linear interpolation is clearly the best option regarding feasible area. This was also verified for the other cases in Figs. 4 and 6. This is because the LUT surfaces, as shown in [8], are largely piecewise smooth, with extended flat regions and sharp slope changes near the activation of inequality constraints. Hence, linear interpolation preserves these features more faithfully, whereas higher-order methods tend to smooth or overshoot them. To sum up, Table I shows that the selected LUTs reduce the total memory of the ten LUTs from 6.1 MB to just 
+
+18 –25 kB (i.e., by 340 –250 times), for any of the BS and LC approaches. Thus, the storage requirements of all the selected configurations can be expected to fit industrial DSPs. If only the LUT entries of feasible points were stored, at the cost of more complex indexing, the size would be decreased from 4.4 MB to even lower values. On the other hand, the memory saving of the reduced LUTs is achieved while keeping nearly unaltered feasible T -ω area ( 97 .2–99 .8% ), with BS4 particularly excelling in this regard. Concerning offline LUT generation time, it is shortened from 574 min to only 9–
+
+10 min , i.e., by about 64 times, 7 by using BS3 or BS3B (based on LC2). In all cases, linear interpolation is preferred. VI. S IMULATION RESULTS 
+
+Simulation results of the PMSM described in Section IV are performed in MATLAB under a speed ramp from 850 to 
+
+1563 r /min for the same T -ω load curve as the experimental one in [8], so that the mean torque T , the fundamental q-axis current iq1 and the fundamental current amplitude I1 increase with speed. The green plots in Fig. 7 correspond to using the OLUTs as in [8]. The peak line voltage vpk rises with speed until the base speed of 1100 r /min , after which vpk is kept at the specified limit vmx pk = 290 V . This is achieved by increasing the fundamental d-axis current id1 , as well as the current harmonic amplitudes I3, I5, I7 and I9 of the third, fifth, seventh and ninth harmonics, respectively, along with the SCL. When the peak phase current ipk reaches its limit 
+
+imx pk = 4 .34 A , the torque ripple τ begins to rise moderately to further extend the operation range, without exceeding the limit τ mx = 2 Nm . This behavior aligns well with the design of the OLUTs in [8] to extend the feasible T -ω region. The blue, red and purple plots in Fig. 7 are obtained for the reduced LUTs using BS2 with λ = 17 , BS3 with     
+
+> 7The original required time of 574 min was also given in Supplementary Appendix B of [8], for the assumed time resolution given by nt= 150 .
+
+λ = 19 , and BS4 with target LUT size of 1225 entries (it reaches 1209 ), respectively (see Table I). The results provided in Fig. 7 for the OLUTs (green) and reduced LUTs using BS2 and BS3 (blue and red) overlap almost perfectly for most of the T -ω range, until 1558 r /min is surpassed. The current harmonics using BS4 (purple) vary to some extent in that interval, but this is not problematic because the SCL, T
+
+and τ are as good as for the other approaches, and ipk , vpk 
+
+and τ do not exceed their respective limits. Once the speed rises above 1558 r /min , the peak line voltage vpk obtained with the simplified LUTs increases to around 1% of its limit 
+
+vmx pk = 290 V , i.e., 1.01 vmx pk = 292 .9 V (see the zoomed view in Fig. 8). On the other hand, vpk for the OLUTs is kept below that 1% threshold even when the maximum speed 1563 r /min is reached. In any case, this performance degradation of the reduced LUTs is arguably small (under 2% 
+
+vpk excess), despite the significant LUT simplification, and acceptable in many applications. Alternatively, even if such 
+
+vpk excess is deemed unacceptable for a certain application, the consequent reduction in maximum feasible speed is very small (about 5 r /min in Fig. 7). Although not shown to avoid visual clutter, similar results have been obtained for the cases of BS1 and BS3B from Table I. VII. C ONCLUSIONS 
+
+This paper has addressed the simplification and optimization of the LUTs needed for a recent method of current-reference generation with minimum losses and torque ripple in the full torque-speed range of six-phase PMSMs with nonsinusoidal back-EMF. Different approaches to construct the LUTs (i.e., LC), to select the breakpoints (i.e., BS) and to perform inter-polation were evaluated for this purpose. Four BS approaches based on uniformly spaced torque/speed breakpoints (BS1– BS3 and BS3B) were considered, as well as an alternative iterative approach with nonuniform breakpoint spacing, BS4, based on removing one by one the torque/speed breakpoint that minimizes the torque-speed area loss. Several of them (BS1, BS2 and BS4) are based on downsampling existing high-resolution OLUTs (i.e., LC1), whereas BS3 and BS3B (relying on LC2) can be obtained without those OLUTs. Most importantly, the study showed that any of the selected approaches is able to drastically decrease the needed storage. Namely, the required memory was reduced from 6.1 MB 
+
+(original) to 18 –25 kB by any of them. The LUT generation time, was shortened from 574 min to 9–10 min by using BS3 or BS3B (i.e., LC2). Meanwhile, even with a stringent 1% 
+
+allowable deviation in mean-torque error and 1% allowable excess over the specified voltage, current, and torque-ripple ωm (kr/min)        
+
+> 0.8 11.2 1.4 1.6
+> Original BS2, λ= 17 BS3, λ= 19 BS4
+> T (Nm)
+> 44.5 55.5 6
+> τ (Nm)
+> 00.2 0.4 0.6 0.8
+> vpk  (V)
+> 220 260 290 305
+> ipk  (A)
+> 12344.5
+> irms  (A)
+> 0.5 1.5 2.5 3.5
+> id1 (A)
+> -4.5 -3 -1.5 0
+> iq1 (A)
+> 1.1 1.2 1.3 1.4 1.5 1.6
+> I1 (A)
+> 012345
+> I3 (A)
+> 00.2 0.4 0.6 0.8 1
+> I5 (A)
+> 00.1 0.2 0.3 0.4
+> I7 (A)
+> 00.1 0.2 0.3 0.4 0.5
+> I9 (A)
+> 00.1 0.2 0.3 0.4 0.5
+
+Time (s)       
+
+> 0123456
+> SCL (W)
+> 020 40 60 80 100
+
+Fig. 7. Results under a speed ramp from 850 to 1563 r /min , for the OLUTs (green) [8], for the reduced LUTs using BS2 with λ = 17 (blue), BS3 with 
+
+λ = 19 (red), and BS4 with target LUT size of 1225 (purple). 
+
+limits, the feasible torque-speed area with BS2 and BS3B decreases by just 0.6–0.7% . BS4 especially excels in this Time (s)               
+
+> 5.6 5.65 5.7 5.75 5.8 5.85 5.9 5.95 6
+> Peak line voltage  vpk  (V)
+> 290.0 290.5 291.0 291.5 292.0 292.5 293.5
+> (1 + ǫ)vmx pk
+> 293.0 Original BS2, λ= 17 BS3, λ= 19 BS4
+
+Fig. 8. Zoom of the final interval of vpk in the simulation shown in the fourth subplot of Fig. 7. The dashed line indicates (1 + ϵ)vmx pk for ϵ = 1% .
+
+regard, retaining as much as 99 .8% of the original feasible torque-speed range, at the cost of longer LUT generation time. It has also been found that linear interpolation retains a larger feasible range than other interpolation methods. Simulation results with the parameters of a real six-phase PMSM have confirmed that, despite the simplification, the performance degradation is practically negligible. Future work may investigate using different breakpoints for the LUT of each harmonic component, or directly identifying regions requiring higher breakpoint density in nonuniform grids without first computing the complete OLUT set. REFERENCES [1] W. Taha, P. Azer, A. Poorfakhraei, S. Dhale, and A. Emadi, “Compre-hensive analysis and evaluation of dc-link voltage and current ripples in symmetric and asymmetric two-level six-phase voltage source inverters,” 
+
+IEEE Trans. Power Electron. , vol. 38, no. 2, pp. 2215–2229, Feb. 2023. [2] A. G. Yepes, F. Baneira, J. Malvar, A. Vidal, D. Perez-Estevez, O. Lopez, and J. Doval-Gandoy, “Selection criteria of multiphase induction ma-chines for speed-sensorless drives based on rotor slot harmonics,” IEEE Trans. Ind. Electron. , vol. 63, no. 8, pp. 4663–4673, Aug. 2016. [3] H. Wang et al. , “Open-circuit fault-tolerant control for nonsinusoidal back EMF five-phase PMSM with copper loss reduction,” IEEE Trans. Ind. Electron. , vol. 71, no. 7, pp. 6524–6533, Jul. 2024. [4] X. Zhang, J. Ji, J. Zheng, and X. Zhu, “Improvement of reluctance torque in fault-tolerant permanent-magnet machines with fractional-slot concentrated-windings,” IEEE Trans. Appl. Supercond. , vol. 28, no. 3, pp. 1–5, Apr. 2018. [5] Y. Lu, B. Ding, X. Xiao, and G. Feng, “Full torque–speed range minimum loss (FT-SRML) fault-tolerant control of dual three-phase PMSMs under open-phase fault,” IEEE Trans. Power Electron. , vol. 41, no. 8, pp. 13 023–13 033, Aug. 2026. [6] Z. Sun, J. Wang, G. W. Jewell, and D. Howe, “Enhanced optimal torque control of fault-tolerant PM machine under flux-weakening operation,” 
+
+IEEE Trans. Ind. Electron. , vol. 57, no. 1, pp. 344–353, 2010. [7] J. Laksar et al. , “Analysis and taxonomy of optimal current setpoints for five-phase synchronous motor drives,” IEEE Trans. Ind. Electron. ,vol. 73, no. 3, pp. 3602–3613, Mar. 2026. [8] A. G. Yepes et al. , “General current-reference generation for minimum stator copper loss and torque ripple per operating point in the full torque-speed range for multiphase nonsalient PMSMs with arbitrary back-EMF,” IEEE Trans. Ind. Electron. , in press. [9] MathWorks, “griddedInterpolant - Gridded data interpolation -MATLAB,” accessed: Apr. 3, 2026. [Online]. Available: https://www.ma thworks.com/help/matlab/ref/griddedinterpolant.html#inputarg_method [10] A. G. Yepes, J. Doval-Gandoy, F. Baneira, and H. A. Toliyat, “Speed estimation based on rotor slot harmonics in multiphase induction ma-chines under open-phase fault,” IEEE Trans. Power Electron. , vol. 33, no. 9, pp. 7980–7993, Sep. 2018.

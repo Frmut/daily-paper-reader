@@ -1,0 +1,557 @@
+Title: Joint identification of permanent magnet synchronous machine and inverter
+
+URL Source: https://arxiv.org/pdf/2607.25739v1
+
+Published Time: Wed, 29 Jul 2026 01:14:06 GMT
+
+Number of Pages: 5
+
+Markdown Content:
+# Joint identification of permanent magnet synchronous machine and inverter 
+
+## Giulio Montecchio 1* , Sven Reimann 1, Benjamin Hartmann 1, Maximilian Manderla 1, Jan Achterhold 1, Daniel Görges 2
+
+> 1
+
+Robert Bosch GmbH, Renningen, Germany 
+
+> 2
+
+RPTU University Kaiserslautern-Landau, Germany *E-mail: giulio.montecchio@de.bosch.com 
+
+Keywords: Flux Map Identification, Inverter Nonlinearities, Joint Identification, Tensor Product Splines, Electric Drive Modeling. 
+
+## Abstract 
+
+In electric drive modeling, identifying the magnetic flux maps is essential for predicting accurately the torque, parameterizing a controller for tracking the torque or creating a simulation model. However, the voltage output by the controller (commanded voltage) is usually disturbed by non-linearity of the inverter, which needs to be taken into account. This paper presents a novel approach to enhance the offline flux identification from commanded voltage inputs, circumventing the need for prior identification of inverter parameters. In the dq reference frame, the flux maps are represented as static relationships between dq fluxes and dq currents. We utilize a tensor product spline model to accurately capture saturation and cross-saturation effects. The effects of the voltage disturbance on the estimated flux maps are not negligible. It is demonstrated that a joint identification of the flux maps and a simple model of the inverter can highly improve the flux model. The method is validated on FEM simulation and test-bench data. 
+
+## 1 Introduction 
+
+Accurate modeling of Permanent Magnet Synchronous Machines (PMSMs) is critical for various tasks, such as sim-ulation or model predictive control. A key element of this modeling is the identification of the magnetic flux maps. Typ-ically, this quantity is not directly measured, but inferred from its role in the dq frame voltage equation. However, offline identification based on collected data is susceptible to volt-age disturbances caused by inverter nonlinearities. Prior work has addressed the impact of these disturbances on linear flux maps in steady-state experiments [1] and proposed an experi-ment design for such conditions [2], or compensate it before the identification through known inverter parameters, e.g. [3]. This paper investigates the identification of a more general flux map model under transient conditions and approaches the inverter disturbance without relying on offline inverter characterization. By jointly estimating the flux maps and a simplified inverter model, the effects of the inverter can be distinguished from the intrinsic flux map characteristics, leading to a more accurate flux map model. This approach for identifying flux maps does not require inverter compensation or prior inverter parameter identification. The subsequent sections detail the mathemati-cal model, describe the implemented identification process and illustrate the results. 
+
+> https://doi.org/10.1049/icp.2025.2025 © The Institution of Engineering & Technology 2025
+
+## 2 Modeling of the electric drive 
+
+Flux identification in electric machines aims to model the non-linear relationship between stator currents ( idq ) and magnetic fluxes ( ψdq ) in the dq frame. For brevity, the subscript "dq" (e.g., xdq ) denotes a column vector with components along the direct ( xd) and quadrature ( xq) axes. We use boldface ( x)for vectors and capitalized boldface ( X) for matrices. The lin-ear representation of the flux ψdq as the sum of a permanent magnet component ψm along the d axis and a linkage com-ponent as the product of the inductance matrix Ldq and the currents idq is widely accepted and utilized. However, it does not represent saturation and cross-saturation effects present in real machines. Consequently, various alternative models have been proposed, as for example in [2] or [4]. As discussed in [5, p. 37], the traditional separation of permanent magnet flux and inductance flux becomes less beneficial when considering saturation, as the permanent magnet flux can no longer be con-sidered constant. Therefore, this paper uses the term flux map rather than inductance, recognizing that they essentially repre-sent the same underlying quantity. We define the flux maps as general nonlinear vector functions 
+
+ψdq = fdq (idq ). (1) Because ψdq is typically not directly measured, identifying the flux maps relies solely on observing their effect within the dq frame voltage equation. 
+
+1arXiv:2607.25739v1 [eess.SY] 28 Jul 2026 2.1 PMSM Model 
+
+The dq frame voltage equation for the PMSM is 
+
+¯udq = Ridq + ωJf dq (idq ) + d
+
+dt fdq (idq ), (2) where  
+
+> •
+
+R is the stator resistance,  
+
+> •
+
+ω is the electrical angular frequency,  
+
+> •
+
+¯udq is the dq frame terminal voltage,  
+
+> •
+
+J =
+
+[0 −11 0
+
+]
+
+.In the following, we assume a reasonably well-tuned and sta-ble current controller is employed, enabling motor operation even with voltage disturbances. Although the electrical angle 
+
+ϕel does not explicitly appear in (2), it is required for the Clarke-Park transformation, which converts commanded uabc 
+
+and measured iabc quantities into the dq frame variables idq and 
+
+udq . For this study, a resolver is available. The resolver pro-vides measurements of the electrical angle ϕel and an estimate of the angular speed ω.Given the flux maps (1) that depend on idq only, their deriva-tive in (2) can be computed as a total derivative. Therefore, we get the differential equation in the current 
+
+d
+
+dt idq = D−1 
+
+> f
+
+(idq ) [ −Ridq − ωJf (idq ) + ¯ udq ] (3) where Df is the Jacobian of the flux maps with respect to idq ,namely 
+
+Df (idq ) = 
+
+[ ∂f d(idq )   
+
+> ∂i d
+> ∂f d(idq )
+> ∂i q
+> ∂f q(idq )
+> ∂i d
+> ∂f q(idq )
+> ∂i q
+
+]
+
+. (4) 
+
+2.2 Flux Model 
+
+The flux is modeled using a tensor product of splines [6, Section 8.2.1]. Tensor product splines offer advantages such as regularization during learning, locality, recursive computa-tion, straightforward analytical derivation, and linearity in the parameters. The d- and q-axis mappings can be expressed as 
+
+fd(idq ) = bd(idq )γd (5) 
+
+fq(idq ) = bq(idq )γq (6) where γd and γq are column arrays of parameters to be iden-tified and bd(idq ) and bq(idq ) are the row arrays of activated basis functions, and depend only on the currents idq . The number of basis functions is an hyperparameter of the chosen flux model. For notation brevity, we can still group the two mappings in a single dq array form as 
+
+fdq (idq ) = B(idq )γ, (7) where 
+
+γ =
+
+[γd
+
+γq
+
+]
+
+(8) and 
+
+B(idq ) = 
+
+[bd(idq ) 00 bq(idq )
+
+]
+
+. (9) It is important to note that while the approach presented here is demonstrated using this specific model, it is not limited to it. Generalization to other linear-in-the-parameters methods, such as the one in [2], is straightforward. 
+
+2.3 Inverter Model 
+
+Controller Inverter PMSM 
+
+udq ¯udq = udq + ˜ udq 
+
+idq 
+
+Fig. 1: Voltage disturbance schematic. In practice, the terminal voltage ¯udq in (3) does not corre-spond to the commanded voltage udq due to disturbances ˜udq 
+
+introduced by the inverter, as sketched in Figure 1. The identifi-cation and compensation of inverter-induced effects have been extensively addressed in the literature. A common approach, focusing on the impact of disturbances on the phase output voltage, is described in [7]. A more detailed physical model, which accounts for parasitic capacitance, is presented in [8]. Following the justification in [8], with the assumption that the inverter legs are identical, the voltage disturbance across each phase can be parsimoniously modeled as 
+
+˜uabc ≈ ue tanh ( iabc ). (10) This qualitative model of the disturbance depends on a single parameter, the voltage error ue. The voltage error summarizes various effects, such as dead-time and average voltage drops across the switch and the free-wheeling diode (see [8] for details). This simple model sufficiently improves flux map fit-ting in uncompensated experiments, as shown later. Identifica-tion of physical inverter parameter is beyond this paper’s scope. Readers interested in compensation methods are referred to the many online/offline methods, as for example to [4] or [9]. 
+
+2.4 Joint model of PMSM and inverter 
+
+The effects of the inverter nonlinearities on the estimation of PMSM parameters have been studied in [1], together with the effects of disturbance of the DC-link voltage. However, the study is limited to the effect of disturbances on the parame-ters of the linear model and on steady state experiments. In this paper, the study is extended to the identification of a general flux map as (1), and to general transient experiments. As reported in [7], the inverter resistances along the diode 
+
+Rdiode and the switch Rsw are in series with the machine resistance. Their average can be assimilated with the machine 
+
+2resistance R in a single resistance 
+
+˜R = Rdiode + Rsw 
+
+2 + R. (11) This means that when we are learning the flux maps from an experiment with unknown inverter, also the resistance needs to be estimated. The inverter offset due to the inverter expressed in (10) in the dq coordinates can be written 
+
+˜udq = ueK (ϕel ) tanh ( iabc ). (12) where K (ϕel ) is the Clarke-Park transform 
+
+2
+
+3
+
+[ cos ( ϕel ) cos (ϕel − 2π
+
+> 3
+
+) cos (ϕel + 2π
+
+> 3
+
+)
+
+− sin ( ϕel ) − sin (ϕel − 2π
+
+> 3
+
+) − sin (ϕel + 2π
+
+> 3
+
+)]
+
+. (13) With (11) and (12), and splitting the terminal voltage in its commanded component and disturbance component, we can rewrite (2) as 
+
+udq = ˜Ridq + ωJf dq (idq ) + d
+
+dt fdq (idq ) − ˜udq , (14) and similarly also (3) can be extended as 
+
+d
+
+dt idq = D−1 
+
+> f
+
+(idq )
+
+·
+
+[
+
+− ˜Ridq − ωJf (idq ) + udq + ˜ udq 
+
+]
+
+. (15) 
+
+## 3 Identification approach 
+
+The identification aims to determine the resistance and the flux maps of the PMSM in the continuous-time model using mea-surements from an experiment. We achieve this by discretizing either the standard voltage equation (2) or the extended equa-tion (14), which incorporates inverter effects. Subsequently, we employ an optimization procedure to find the parameters that minimize the discrepancy between the left-hand and right-hand sides of the discretized equation at each measurement point. An experiment consists of an ordered sequence of N sam-ples of the quantities 
+
+{ωk , ϕ k
+
+> el
+
+, uk
+
+> abc
+
+, ik
+
+> abc
+
+} with k = 1 , . . . , N. (16) They are collected with a constant sampling time T .One possible approach to discretize (14) is to compute its integral at each sampling interval as 
+
+∫ T
+
+> 0
+
+udq dτ =
+
+∫ T
+
+> 0
+
+˜Ridq dτ +
+
+∫ T
+
+> 0
+
+ωJf dq (idq )dτ 
+
++ [ fdq (idq )] T 
+
+> 0
+
+−
+
+∫ T
+
+> 0
+
+˜udq dτ. (17) Substituting the flux model (7) and the inverter model (10), considering ω to be constant during a sampling instant, we can rewrite (14) as 
+
+∫ T
+
+> 0
+
+udq dτ = ˜R
+
+∫ T
+
+> 0
+
+idq dτ + ωJ
+
+∫ T
+
+> 0
+
+B(idq )dτ γ
+
++ [ B(idq )] T 
+
+> 0
+
+γ − ue
+
+∫ T
+
+> 0
+
+K (ϕel ) tanh ( iabc )dτ. (18) Each integral quantity is then to be either computed exactly, if possible, or approximated with the so-called quadrature rules. The integrals in this work are computed as 
+
+∫ T
+
+> 0
+
+udq dτ = uk
+
+> abc
+
+∫ T
+
+> 0
+
+K (ϕk + ωkτ ) dτ (19) 
+
+∫ T
+
+> 0
+
+idq dτ ≈
+
+∫ T
+
+> 0
+
+K (ϕk + ωk τ )
+
+·
+
+(
+
+ik+1 abc + ik+1 abc − ik
+
+> abc
+
+T τ
+
+)
+
+dτ (20) 
+
+∫ T
+
+> 0
+
+B(idq )dτ ≈ T
+
+2
+
+(B(ik+1 dq ) + B(ik
+
+> dq
+
+)) (21) 
+
+∫ T
+
+> 0
+
+K (ϕel ) tanh ( iabc )dτ ≈
+
+T
+
+2
+
+(K (ϕk+1 el 
+
+) tanh (ik+1 abc 
+
+) + K (ϕk
+
+> el
+
+) tanh (ik
+
+> abc
+
+)) . (22) Different quadrature rules are used:  
+
+> •
+
+(19): Zero-order hold on uk 
+
+> abc
+
+allows explicit integration of the Clarke-Park transformation.  
+
+> •
+
+(20): A piecewise linear approximation of iabc is integrated with the Clarke-Park transformation.  
+
+> •
+
+(21) and (22): Midpoint approximation. The error introduced by these approximations depends on the sampling time T . It is now possible to use the sum of the dif-ferences between the left hand term and right hand term in (18) between each couple of consecutive measured points k and 
+
+k + 1 as a cost function for the identification of the unknown parameters ˜R, γ and ue. For the sake of simplicity, we denote at each time instant k
+
+vk =
+
+∫ T
+
+> 0
+
+udq dτ (23) 
+
+qk 
+
+> 1
+
+=
+
+∫ T
+
+> 0
+
+idq dτ (24) 
+
+Qk 
+
+> 2
+
+= ωJ
+
+∫ T
+
+> 0
+
+B(idq )dτ (25) 
+
+Qk 
+
+> 3
+
+= [ B(idq )] T 
+
+> 0
+
+(26) 
+
+qk 
+
+> 4
+
+= −
+
+∫T
+
+> 0
+
+K (ϕel ) tanh ( iabc )dτ (27) Then, thanks to the linearity in the parameters of the chosen models, (18) can be rewritten as 
+
+vk = ˜Rqk 
+
+> 1
+
++ (Qk 
+
+> 2
+
++ Qk
+
+> 3
+
+) γ + ueqk 
+
+> 4
+
+(28) 
+
+3and the optimization problem can be expressed as a least square regression 
+
+
+
+v1
+
+v2
+
+...
+
+vN−1
+
+ =
+
+
+
+q11 (Q12 + Q13) q14
+
+q21 (Q22 + Q23) q24
+
+... ... ...
+
+qN−11 (QN−12 + QN−13 ) qN−14
+
+
+
+˜R
+
+γ
+
+ue
+
+ .
+
+(29) Since (28) represents a two-equation system, each time step in the regression (29) contributes two rows to the regressor matrix. Notice that the joint identification of inverter and flux maps is enabled by the last column of the regressor matrix. Without it, the estimation of the resistance and the flux map parameters would suffer the omitted variable bias. 
+
+## 4 Results 
+
+The validity of the approach is confirmed both with the simula-tion of a detailed FEM-based model including harmonic effects and with test-bench data. To assess the improvement obtained from the joint identification, Tables 1, 2 and 3 report two rows; The first one refers to the identification of the flux parame-ters and resistance, the second row to the joint identification of inverter, flux parameters and resistance. There are two metrics:  
+
+> •
+
+Normalized Root Mean Square Error (NRMSE ) with respect to the ground truth flux maps, and normalized with the maximum value of the fluxes. The ground truth quan-tities are available from the FEM model of the simulated PMSM but not on the test-bench.  
+
+> •
+
+Mean Absolute Deviation ( MAD ) of the simulated current from the measured one. Given an experiment in the form of (16), the simulated current 
+
+ˆidq is obtained from integration of (15) starting form a known initial condition idq ,0 and using identified parameters ˜R, γ, ue.At each time instant k, the simulation is fed with uk 
+
+> dq
+
+and ωk
+
+from the experiment. The MAD can then be computed from the difference between the simulated current ˆidq and the measured 
+
+idq .In this study, we model the flux maps using tensor prod-uct splines. Specifically, we use 8 cubic splines, equally dis-tributed, for both the d-axis current ( id) and the q-axis cur-rent ( iq). This results in a total of 128 parameters in γ (64 parameters for each flux component, ψd and ψq). The experiments consist of a designed trajectory in the dq current disc, limited by the maximum nominal current 
+
+Imax , which is followed at constant motor speed (that is, 
+
+500 rpm). As a trajectory, a constrained Lissajous (also known as double-sine sweep) is chosen. The current references for such trajectory are 
+
+iq,ref = Imax sin (Φ qt) (30) 
+
+id,ref =
+
+√
+
+I2max − i2q,ref sin (Φ dt) , (31) where the angular frequencies Φd and Φq are design parameters of the trajectory. In this paper, the experiments for the identi-fication data last 10 s, with a sampling time of T = 0 .1 ms. These experiments thoroughly explore the dq -current disc. As a remark, an optimal design of experiment may be crucial for the choice of electrical speed ω and the Lissajous frequencies, but this is out of the scope of this work. Table 1 NRMSE of flux maps in simulation. 
+
+Approach d-flux NRMSE q-flux NRMSE 
+
+PSM Identification 10.95% 18.19 % Joint identification 2.74 % 4.18 %
+
+Table 2 MAD of current in simulation. 
+
+Approach id MAD iq MAD 
+
+PSM Identification 6.74 A 4.98 A Joint Identification 1.35 A 1.11 A
+
+Table 3 MAD of current at test-bench. 
+
+Approach id MAD iq MAD 
+
+PSM Identification 4.15 A 3.68 A Joint Identification 1.42 A 1.50 A
+
+The joint identification was applied also to data from a sim-ulation without inverter and to data from the test-bench with active compensation. In both cases the joint identification con-sistently estimated the same parameters as the PMSM only identification, reporting an inverter voltage error ue ≈ 0.The two identification approaches yield different q-axis flux maps ( ψq), as visualized in Figure 2, and different d-axis flux maps ( ψd), as visualized in Figure 3.The flux maps identi-fied without accounting for inverter effects (Figures 2b and 3b) exhibits unwanted distortions, particularly at low current, due to the influence of the inverter. 
+
+## 5 Conclusion 
+
+This paper has presented a novel approach for the offline iden-tification the parameters of the PMSMs from measured data and commanded voltage. By jointly estimating the flux maps, the resistance and a simplified inverter model, the proposed method effectively mitigates the impact of inverter nonlinear-ities on flux map accuracy, as demonstrated by the improved NRMSE and MAD values obtained in both simulations and experimental validation. Importantly, this approach does not compromise flux map identification accuracy in scenarios where voltage disturbances are already compensated. This work offers a practical and robust solution for offline PMSM modeling, eliminating the need for prior inverter parame-ter identification or complex compensation techniques. Future work could investigate the use of more detailed models of the inverter. 
+
+4(a) 
+
+> (b)
+
+Fig. 2: Flux map ψq obtained with (a) joint identification and (b) without modeling the inverter effects. 
+
+## 6 References 
+
+[1] Liu, K., Zhu, Z. Q., Zhang, Q. et al.: ‘Influence of Nonideal Voltage Measurement on Parameter Estima-tion in Permanent-Magnet Synchronous Machines’, IEEE Transactions on Industrial Electronics, 2012, 59, (6), pp. 2438–2447 [2] Liu, K., Feng, J., Guo, et al.: ‘Identification of Flux Link-age Map of Permanent Magnet Synchronous Machines Under Uncertain Circuit Resistance and Inverter Nonlin-earity’, IEEE Transactions on Industrial Informatics, 2018, 14, (2), pp. 556-568 [3] Mink, F., Kubasiak, N., Ritter, B., and Binder, A.: ‘Para-metric model and identification of PMSM considering the influence of magnetic saturation’, in 2013 13th Inter-national Conference on Optimization of Electrical and Electronic Equipment (OPTIM), IEEE, Brasov, Romania, May 2012, pp. 444-452. [4] Bedetti, N., Calligaro, S., Petrella, R.: ‘Stand-Still Self-Identification of Flux Characteristics for Synchronous Reluctance Machines Using Novel Saturation Approxi-mating Function and Multiple Linear Regression’, IEEE Transactions on Industry Applications, 2016, 52, (4), pp. 
+
+> (a)
+> (b)
+
+Fig. 3: Flux map ψd obtained with (a) joint identification and (b) without modeling the inverter effects. 3083–3092 [5] Kühl, S.: ‘Parameter Identification and Analysis of Syn-chronous Machines Incorporating Magnetic Saturation and Iron Effects’. PhD thesis, TUM, 2021. [6] Fahrmeir, L., Kneib, T., Lang, S., et al.: ‘Regression: Models, Methods and Applications’ (Springer, Berlin, Heidelberg, 2013). [7] Choi, J.-W., Sul, S.-K.: ‘Inverter output voltage synthesis using novel dead time compensation’, IEEE Transactions on Power Electronics, 1996, 11, (2), pp. 221–227 [8] Bedetti, N., Calligaro, S., Petrella, R.: ‘Accurate modeling, compensation and self-commissioning of inverter voltage distortion for high-performance motor drives’, in 2014 IEEE Applied Power Electronics Conference and Expo-sition - APEC 2014, Fort Worth, TX, USA, 2014, pp. 1550–1557 [9] Kim, H.-W., Youn, M.-J., Cho, K.-Y., et al.: ‘Nonlin-earity estimation and compensation of PWM VSI for PMSM under resistance and flux linkage uncertainty’, IEEE Transactions on Control Systems Technology, 2006, 14, (4), pp. 589–601 
+
+5

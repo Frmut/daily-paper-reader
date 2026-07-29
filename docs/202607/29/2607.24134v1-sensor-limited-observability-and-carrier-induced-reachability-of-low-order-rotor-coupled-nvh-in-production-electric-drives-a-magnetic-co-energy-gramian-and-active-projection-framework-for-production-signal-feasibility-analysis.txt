@@ -1,0 +1,3187 @@
+Title: Sensor-Limited Observability and Carrier-Induced Reachability of Low-Order Rotor-Coupled NVH in Production Electric Drives: A Magnetic Co-Energy, Gramian, and Active Projection Framework for Production-Signal Feasibility Analysis
+
+URL Source: https://arxiv.org/pdf/2607.24134v1
+
+Published Time: Tue, 28 Jul 2026 01:41:03 GMT
+
+Number of Pages: 29
+
+Markdown Content:
+> 1
+
+# Sensor-Limited Observability and Carrier-Induced Reachability of Low-Order Rotor-Coupled NVH in Production Electric Drives 
+
+## A Magnetic Co-Energy, Gramian, and Active Projection Framework for Production-Signal Feasibility Analysis 
+
+Meng-Chou Wu 
+
+Abstract —This paper is motivated by a practical rotor-coupled Order-2 NVH problem observed under load in a production elec-tric drive. The issue appears as a low-order vibration and noise component that can contribute to acoustic discomfort, durability risk, and vibration-induced wear. In high-speed traction motors, conventional mechanical mitigation is difficult because the rotor is a compact rotating structure with limited air-gap clearance, strict strength and balance requirements, and strong electromag-netic performance constraints. As a result, increasing structural stiffness or adding damping through conventional mechanical changes is often impractical after the motor architecture has been fixed. At the same time, production electric-drive controllers typ-ically do not measure rotor vibration or housing acceleration directly. They mainly have access to electrical and rotor-position signals such as Id/I q , voltage commands, resolver angle, and re-solver speed. This creates a fundamental feasibility question: Can a mechanically important low-order rotor-coupled vibration be inferred or influenced using only production-accessible signals? Although the motivating case is Order-2 NVH, this paper formulates the problem for selected low-order rotor-coupled deformation orders, 
+
+r ∈ { 1, 2, 3, 4}
+
+because low-order components tend to produce larger mechan-ical amplitudes and are especially relevant to durability, acoustic radiation, ride comfort, and perceived electric-drive refinement. The selected vibration component is represented as an equivalent air-gap deformation mode with state 
+
+xg = [ g, v g ]T
+
+where g is the generalized air-gap deformation coordinate and 
+
+vg is its modal velocity. Starting from a magnetic co-energy formulation, this paper derives dq flux linkages, incremental inductance, current dy-namics, electromagnetic torque, and generalized air-gap force. The passive linearized model is then analyzed using finite-time Gramians for current-based observability, resolver-based observability, and plant-level voltage-to-air-gap reachability. The analysis identifies the flux-linkage sensitivity vector ℓλ as the common physical bottleneck for passive current observability and passive voltage reachability, while resolver observability is governed by a separate torque-projection condition. This paper further shows that a low-order air-gap deformation may be mechanically significant while remaining first-order invisible to passive dq electrical signals. This occurs because pro-duction electrical measurements observe a winding-level global 
+
+Independent Research, Taiwan (e-mail: martin.mc.wu@gmail.com). 
+
+electromagnetic projection rather than the local air-gap flux redistribution itself. This passive degeneracy motivates an active carrier-induced projection mechanism. By injecting a physically realizable electromagnetic carrier, the controller may create carrier-dependent measurement and force projections, denoted by Γy (m) and ΓF (m). These projections define carrier-on observability and reachability Gramians and provide measurable sideband signatures in production residuals. The resulting framework reframes the original Order-2 NVH problem as a sensor-limited observability and carrier-induced reachability problem for low-order rotor-coupled modes. To make the projection mechanisms computationally explicit, this paper includes two physically anchored numerical feasibility studies. The first evaluates passive low-order projection under a 48-slot, 8-pole architecture-aware symmetry proxy. The second evaluates the residual detectability threshold for carrier-induced sidebands under finite-window noise and near-order disturbance leakage. These studies do not constitute FEM-calibrated motor validation, but they demonstrate the computational structure of the proposed framework. FEM-calibrated magnetic maps, carrier-on LTV/LTP simulation, controller dynamics, inverter nonidealities, and experimental validation remain future work. 
+
+Index Terms —Carrier injection, electric drives, finite-time Gramians, magnetic co-energy, noise, vibration, and harshness (NVH), observability, permanent magnet synchronous machines, reachability analysis. 
+
+I. I NTRODUCTION 
+
+This paper develops a control-oriented feasibility framework for analyzing sensor-limited observability and carrier-induced reachability of low-order rotor-coupled NVH in production electric drives [1], [2]. The analysis focuses on selected low-order rotor-coupled deformation orders, r ∈ { 1, 2, 3, 4},where r denotes the spatial order of the air-gap deformation component under consideration. The motivating production case corresponds to r = 2 , but the mathematical framework is written for a general selected low-order mode within this set. The key modeling step is to represent the selected rotor-coupled vibration component as an equivalent air-gap defor-mation mode. The air-gap state is defined as 
+
+xg =
+
+ gvg
+
+arXiv:2607.24134v1 [eess.SY] 27 Jul 2026 2
+
+where g denotes the generalized air-gap deformation coordi-nate of the selected low-order mode and vg denotes its modal velocity. The corresponding spatial mode shape is written as 
+
+ϕr (β) = cos( rβ + ϕg )
+
+where β is the rotor-fixed circumferential coordinate. This reduced representation does not attempt to reconstruct the full structural deformation field. Instead, it isolates the elec-tromagnetic projection of the selected rotor-coupled mode that can interact with dq currents, resolver response, voltage commands, and carrier-induced electromagnetic forcing. The electromechanical coupling is expressed through the chain 
+
+g → Λg → λd, λ q → Id, I q , T e, F e,g 
+
+Here, the deformation coordinate g modifies the air-gap permeance Λg , which changes dq flux linkages λd, λ q , incre-mental inductance, electromagnetic torque Te, and generalized air-gap force Fe,g . This chain provides the physical basis for evaluating whether the unmeasured air-gap state can be inferred from production electrical or resolver signals and whether it can be influenced through production-accessible electromagnetic input. This paper addresses four feasibility questions. First, can 
+
+g and vg be observed from Id/I q current residuals? Second, can g and vg be observed from resolver angle and speed, 
+
+θr , ω r ? Third, can voltage commands Vd/V q influence g and 
+
+vg through the passive electromagnetic plant? Fourth, if the passive dq projection is degenerate, can an injected carrier create an additional measurement or force projection that makes the selected low-order mode observable or reachable through production-accessible signals? Existing carrier-injection, fault-diagnosis, and harmonic-current methods provide important background but address dif-ferent primary objectives. High-frequency carrier injection in electric drives is commonly used to extract saliency-dependent information for sensorless rotor-position or flux-angle esti-mation [3]–[5]. Eccentricity and fault-diagnosis studies often interpret current, voltage, or sideband signatures as indicators of machine faults or abnormal operating conditions [6]–[11]. Active NVH and harmonic-current-injection approaches often begin after a target torque ripple, radial-force harmonic, or measurable vibration response has already been identified [12]–[16]. In contrast, this paper does not formulate the prob-lem as rotor-position estimation, fault classification, or direct harmonic cancellation. The selected rotor-coupled deformation is modeled as a dynamic air-gap state xg = [ g vg ]T , and the central question is whether this unmeasured modal state has any production-accessible measurement path or electromag-netic force path before a cancellation controller is designed. The contribution is therefore not the use of carrier injection alone. Rather, the carrier is treated as an active electromagnetic projection mechanism that may change the observability and reachability of an otherwise passive-invisible low-order air-gap deformation state. In the passive analysis, the flux-linkage sensitivity vector ℓλ identifies when current residuals and plant-level voltage perturbations have a first-order coupling path to the selected mode. In the carrier-induced analysis, the projection coefficients Γy (m) and ΓF (m) describe whether a physically realizable carrier can create additional measurement or force projections. This positioning separates the present feasibility framework from conventional sensorless-control, fault-diagnosis, and active-NVH formulations. The analysis begins with a magnetic co-energy formulation. The co-energy model defines dq flux linkages, incremental flux-current coupling, electromagnetic torque, and generalized air-gap force in an energy-consistent form. The selected air-gap deformation coordinate enters the electromagnetic model through permeance modulation, enabling the flux-linkage and inductance sensitivities with respect to g to be derived explic-itly. These sensitivities are embedded into a nonlinear six-state electromechanical model, 
+
+x = Id Iq θr ωr g vg
+
+T
+
+which is linearized around a fixed-speed, fixed-current loaded operating trajectory. The resulting perturbation model is expressed through a state transition matrix and used to de-fine three finite-time Gramians: current observability, resolver observability, and voltage reachability. The passive Gramian analysis identifies the flux-linkage sensitivity vector 
+
+ℓλ =
+
+ ¯λd,g 
+
+¯λq,g 
+
+
+
+as the shared coupling quantity governing passive current observability and passive voltage reachability. Resolver ob-servability is governed by a separate torque-projection margin. The local coupling analysis then interprets these conditions as spatial projection requirements and shows how passive degeneracy can occur when the selected low-order deformation is orthogonal to the dq electromagnetic projection. The final technical part of this paper introduces carrier-induced electromagnetic projection. With an injected carrier, the relevant quantities become the carrier-dependent measure-ment projection Γy (m) and ΓF (m). These projections de-fine carrier-on observability and reachability conditions, while order-domain sideband detection provides an implementation-level signature in production residuals. To support the analytical framework without overstating validation, this paper further includes two physically anchored numerical feasibility studies. The first study evaluates whether the passive low-order projection collapse predicted by the ideal harmonic argument persists under a 48-slot, 8-pole architecture-aware symmetry proxy. The second study treats the composite carrier-induced projection strength as a free parameter and evaluates the residual sideband SNR required for finite-window detectability under noise and near-order disturbance leakage. These studies are not FEM-calibrated production-motor simulations. Their purpose is to demonstrate the computational structure, scaling behavior, and limitations of the proposed observability and carrier-induced projection framework. 3
+
+The remainder of this paper is organized as follows. Section II presents the control-oriented governing equations. Section III defines the magnetic co-energy closure and low-order air-gap deformation parameterization. Section IV derives the linearized perturbation model around a loaded operating trajectory. Section V defines the state transition matrix and finite-time Gramians. Section VI derives local passive cou-pling conditions and passive degeneracy mechanisms. Sec-tion VII develops the carrier-induced electromagnetic projec-tion framework for observability and reachability. Section VIII presents two physically anchored numerical feasibility studies: an architecture-aware passive projection study and a carrier-induced residual detectability study. Section IX summarizes the conclusions and outlines a high-level future validation roadmap. II. C ONTROL -O RIENTED GOVERNING EQUATIONS 
+
+This section establishes the nonlinear governing equations used throughout this paper. The objective is to define a control-oriented electromechanical model before introducing the de-tailed magnetic co-energy closure and air-gap deformation parameterization. The model contains dq current dynamics, rotor mechanical dynamics, and a reduced air-gap deformation mode representing the selected low-order rotor-coupled NVH component. 
+
+A. State, Inputs, Disturbances, and Measurements 
+
+The state vector is defined as 
+
+x = Id Iq θr ωr g vg
+
+T
+
+where Id and Iq are dq-axis currents, θr is the rotor mechanical angle, ωr is the rotor mechanical speed, g is the generalized air-gap deformation coordinate of the selected low-order rotor-coupled mode, and vg is its modal velocity. Although g and vg are included in the model state, they are not production measurements. They must be inferred indirectly from electrical residuals, resolver signals, or carrier-induced response signatures. The air-gap state is 
+
+xg =
+
+ gvg
+
+
+
+vg = ˙ g
+
+The voltage command input is 
+
+u =
+
+Vd
+
+Vq
+
+
+
+Two disturbance inputs are considered: 
+
+d =
+
+ Tload 
+
+Fload,g 
+
+
+
+where Tload is the external load torque applied to the rotor mechanical dynamics, and Fload,g is an external generalized force acting on the air-gap deformation coordinate. The production current measurement channel is 
+
+yI =
+
+Id
+
+Iq
+
+
+
+= CI x yR =
+
+θr
+
+ωr
+
+
+
+= CRx
+
+with 
+
+CI =
+
+1 0 0 0 0 00 1 0 0 0 0
+
+
+
+CR =
+
+0 0 1 0 0 00 0 0 1 0 0
+
+
+
+These two measurement channels are treated separately in the later Gramian analysis because current sensing and resolver sensing interact with the air-gap deformation state through different physical paths. 
+
+B. Co-Energy-Based Electromagnetic Variables 
+
+The electromagnetic model is written in terms of a dq-normalized magnetic co-energy function, following standard electric-machine reference-frame and energy-based modeling conventions [17]–[20], 
+
+wc = wc(Id, I q , θ r , g )
+
+The dq flux linkages are defined by 
+
+λd = ∂ wc
+
+∂I d
+
+λq = ∂ wc
+
+∂I q
+
+The incremental flux-current matrix is 
+
+Mλ = ∂(λd, λ q )
+
+∂(Id, I q ) =
+
+λd,I d λd,I q
+
+λq,I d λq,I q
+
+
+
+For an energy-consistent magnetic co-energy model, 
+
+λd,I q = λq,I d
+
+so Mλ is symmetric. The current dynamics require Mλ to be locally invertible. Therefore, the regularity condition is 
+
+det (Mλ)̸ = 0 
+
+A stronger physical condition is positive definiteness, 
+
+Mλ ≻ 0
+
+which corresponds to local convexity of the magnetic co-energy with respect to current. The total three-phase electromagnetic co-energy is repre-sented by the factor 3/2 multiplying the dq-normalized co-energy. This convention is used consistently in the electro-magnetic torque and generalized force definitions below. 
+
+C. dq Electrical Dynamics 
+
+The dq voltage equations are 
+
+Vd = RsId + ˙λd − pω r λq
+
+Vq = RsIq + ˙λq + pω r λd
+
+where Rs is the stator phase resistance and p is the pole-pair number. 4
+
+Since λd and λq depend on Id, Iq , θr , and g, their time derivatives are 
+
+˙λd = λd,I d
+
+˙Id + λd,I q
+
+˙Iq + λd,θ r ωr + λd,g vg
+
+˙λq = λq,I d
+
+˙Id + λq,I q
+
+˙Iq + λq,θ r ωr + λq,g vg
+
+In matrix form, 
+
+" ˙λd
+
+˙λq
+
+#
+
+= Mλ
+
+" ˙Id
+
+˙Iq
+
+#
+
++
+
+ λd,θ r
+
+λq,θ r
+
+
+
+ωr +
+
+ λd,g 
+
+λq,g 
+
+
+
+vg
+
+Solving the voltage equations for the current derivatives gives 
+
+" ˙Id
+
+˙Iq
+
+#
+
+= M −1
+
+> λ
+
+ rd
+
+rq
+
+
+
+where 
+
+rd = Vd−RsId + pω r λq − ωr λd,θ r − vg λd,g 
+
+rq = Vq −RsIq − pω r λd − ωr λq,θ r − vg λq,g 
+
+These equations show how the air-gap deformation state enters the electrical dynamics through the flux-linkage maps and their derivatives with respect to g.
+
+D. Rotor Mechanical Dynamics 
+
+The rotor mechanical dynamics are 
+
+˙θr = ωr
+
+˙ωr = 1
+
+J (Te − Bω r − Tload )
+
+where J is the rotor inertia and B is the viscous damping coefficient of the rotor mechanical coordinate. The electro-magnetic torque is derived from the magnetic co-energy as 
+
+Te = 32 [p (λdIq − λq Id) + wc,θ r ]
+
+The first term is the conventional dq electromagnetic torque contribution. The second term accounts for explicit mechanical-angle dependence of the co-energy, such as spatial magnetic saliency or other angle-dependent magnetic effects. Since θr is the mechanical rotor angle, the derivative wc,θ r is taken with respect to mechanical angle and does not receive an additional pole-pair multiplier. This torque expression provides the pathway by which the air-gap deformation can become visible in resolver speed. If 
+
+g changes the flux linkages or the angle-dependent co-energy term, then it may perturb Te, which can then propagate to ωr
+
+and θr .
+
+E. Air-Gap Mode Dynamics 
+
+The air-gap deformation mode is modeled as a second-order generalized coordinate: 
+
+˙g = vg
+
+˙vg = 1
+
+mg
+
+(Fe,g − cg vg − kg g + Fload,g )
+
+where mg , cg , and kg are the equivalent modal mass, damping, and stiffness of the air-gap deformation coordi-nate. The term Fload,g represents external generalized forcing from load-path excitation, structural interaction, or other non-electromagnetic sources projected onto the air-gap mode. The coordinate g is measured relative to the selected loaded operating equilibrium. Therefore, constant electromagnetic or load-path bias forces are absorbed into the equilibrium defini-tion, while Fload,g represents perturbation forcing around that operating point. The electromagnetic generalized force is defined as 
+
+Fe,g = sg
+
+32 wc,g 
+
+where sg is a sign convention factor that maps the positive direction of g to the positive generalized electromagnetic force direction. The derivative wc,g captures how the magnetic co-energy changes with the air-gap deformation coordinate. This is the main coupling through which dq currents and magnetic field energy can excite or modify the air-gap mode. 
+
+F. Modeling Scope of the Air-Gap Coordinate 
+
+The coordinate g is a reduced electromagnetic projection of the selected low-order rotor-coupled vibration component. It should not be interpreted as a complete structural description of the rotor, shaft, bearings, stator, or load path. In a more general representation, the air-gap deformation field can be expanded as 
+
+δg (β, t ) = 
+
+> Ng
+
+X
+
+> k=1
+
+qk(t)ϕk(β)
+
+where each generalized coordinate qk represents a different spatial deformation component. Each component would then have its own electromagnetic sensitivity vector, 
+
+ℓλ,k =
+
+ ¯λd,q k
+
+¯λq,q k
+
+
+
+The present single-coordinate model corresponds to one selected low-order rotor-coupled deformation component. The motivating production case is r = 2 , but the formulation is written for a general selected order r ∈ { 1, 2, 3, 4}. This reduc-tion is used to expose the core coupling mechanism between air-gap deformation, dq flux-linkage sensitivity, current resid-uals, resolver response, and voltage-to-air-gap reachability. The single-coordinate model should therefore be interpreted as a minimal control-oriented electromagnetic projection, not as a complete structural reduction of the rotor-bearing-stator system. Its purpose is to reveal the dominant projection and 5
+
+degeneracy mechanisms under production-signal constraints. Additional radial, tangential, bending, tilting, load-path, or three-dimensional deformation coordinates can be appended when FEM or experimental identification indicates that they contribute significantly to the measured response. 
+
+G. Compact Nonlinear State-Space Form 
+
+Combining the current dynamics, rotor dynamics, and air-gap dynamics gives the nonlinear state-space model 
+
+˙x = f (x, u, d )
+
+where 
+
+x =
+
+
+
+Id
+
+Iq
+
+θr
+
+ωr
+
+gvg
+
+
+
+u =
+
+Vd
+
+Vq
+
+
+
+d =
+
+ Tload 
+
+Fload,g 
+
+
+
+Explicitly, 
+
+˙x =
+
+
+
+˙Id
+
+˙Iq
+
+˙θr
+
+˙ωr
+
+˙g
+
+˙vg
+
+
+
+=
+
+M −1 
+
+> λ
+
+r
+
+> 1
+
+M −1 
+
+> λ
+
+r
+
+> 2
+
+ωr
+
+1/J (Te − Bω r − Tload )
+
+vg
+
+1/m g (Fe,g − cg vg − kg g + Fload,g )
+
+
+
+with 
+
+r =
+
+rd
+
+rq
+
+
+
+This governing model is written before specifying the detailed magnetic co-energy closure. The next section de-fines the co-energy structure, introduces the low-order air-gap deformation parameterization, and derives the magnetic sensitivities that determine the observability and reachability coupling terms used later in the Gramian analysis. III. M AGNETIC CO-E NERGY CLOSURE AND LOW -O RDER 
+
+AIR -G AP DEFORMATION PARAMETERIZATION 
+
+This section specifies the magnetic co-energy closure used in the governing equations introduced in Section II. The objec-tive is to express the dq flux linkages, incremental flux-current matrix, and air-gap deformation sensitivities in terms of a physically interpretable electromagnetic model. The selected air-gap deformation coordinate g enters the electromagnetic model through local permeance modulation, which modifies PM flux linkage, dq inductance, electromagnetic torque, and generalized air-gap force. 
+
+A. Magnetic Co-Energy Expansion 
+
+The dq-normalized magnetic co-energy is written as 
+
+wc(Id, I q , θ r , g ) = w0(θr , g ) + ψd(θr , g )Id + ψq (θr , g )Iq
+
++ 12 Ldd (θr , g )I2 
+
+> d
+
++ Ldq (θr , g )IdIq
+
++ 12 Lqq (θr , g )I2 
+
+> q
+
++ wsat (Id, I q )
+
+Here, w0 (θr , g ) represents the current-independent mag-netic co-energy contribution, including PM-field energy terms. The functions ψd (θr , g ) and ψq (θr , g ) represent PM-induced dq flux-linkage components. The terms Ldd (θr , g ),
+
+Ldq (θr , g ), and Lqq (θr , g ) represent the dq inductance map, including possible saliency and air-gap deformation depen-dence. The term wsat (Id, I q ) is a local current-saturation correc-tion. Energy-based and saturation-aware PMSM models have been used to preserve consistency between flux linkage, incre-mental inductance, torque, and injected-signal response [19], [20]. In this paper, it is modeled by a third-order polynomial, 
+
+wsat (Id, I q ) = 16 Cddd I3 
+
+> d
+
++ 12 Cddq I2 
+
+> d
+
+Iq
+
++ 12 Cdqq IdI2 
+
+> q
+
++ 16 Cqqq I3
+
+> q
+
+The coefficients Cddd , Cddq , Cdqq , and Cqqq are local phenomenological saturation coefficients. They are treated as constants in the baseline model. This approximation preserves an energy-consistent relationship between flux linkage and incremental flux-current coupling while avoiding the need for a full nonlinear saturation map at this stage. The co-energy closure should therefore be interpreted as a local operating-point model, not as a high-fidelity magnetic replacement for FEM. Its purpose is to preserve the derivative structure needed to define flux linkages, incremental induc-tance, electromagnetic torque, and generalized air-gap force in a mutually consistent way. In a numerical implementation, the polynomial saturation term and the maps ψi(θr , g ) and 
+
+Li,j (θr , g ) may be replaced by FEM-calibrated or experimen-tally identified co-energy maps without changing the state-space and Gramian framework. More detailed current-, air-gap-, or carrier-dependent sat-uration models can later be incorporated using FEM-derived co-energy data or experimental calibration. 
+
+B. Flux Linkages and Incremental Flux-Current Matrix 
+
+The dq flux linkages are obtained from the co-energy derivatives, 
+
+λd = ∂ wc
+
+∂I d
+
+λq = ∂ wc
+
+∂I q
+
+Using the co-energy expansion above, 
+
+λd = ψd + Ldd Id + Ldq Iq + 12 Cddd I2 
+
+> d
+
++ Cddq IdIq + 12 Cdqq I2
+
+> q6
+
+λq = ψq + Ldq Id + Lqq Iq + 12 Cddq I2 
+
+> d
+
++ Cdqq IdIq + 12 Cqqq I2
+
+> q
+
+For compactness, the dependence of ψd, ψq , Ldd , Ldq , Lqq 
+
+on θr and g is omitted in the equations above, but it is retained in the model. Therefore, 
+
+λd = λd(Id, I q , θ r , g ) λq = λq (Id, I q , θ r , g )
+
+The incremental flux-current matrix is defined as 
+
+Mλ = ∂(λd, λ q )
+
+∂(Id, I q ) =
+
+M11 M12 
+
+M12 M22 
+
+
+
+where 
+
+M11 = Ldd + Cddd Id + Cddq Iq
+
+M12 = Ldq + Cddq Id + Cdqq Iq
+
+M22 = Lqq + Cdqq Id + Cqqq Iq
+
+Since Mλ is the Hessian of the magnetic co-energy with respect to current, 
+
+Mλ = ∇2 
+
+> I
+
+wc
+
+it is symmetric by construction. The current dynamics require local invertibility, 
+
+∆ = M11 M22 − M 212 ̸ = 0 
+
+A physically stronger condition is 
+
+Mλ ≻ 0
+
+or equivalently, 
+
+M11 > 0 ∆ > 0
+
+This condition corresponds to local convexity of the mag-netic co-energy with respect to Id and Iq . Because the cubic saturation model is local, positive definiteness should be interpreted as an operating-point condition rather than a global property over all possible currents. 
+
+C. Low-Order Air-Gap Deformation Parameterization 
+
+The air-gap deformation coordinate g is now connected to the electromagnetic model through a rotor-fixed spatial parameterization. Let α denote the stator-fixed mechanical cir-cumferential coordinate, and let θr denote the rotor mechanical angle. The rotor-fixed coordinate is 
+
+β = α − θr
+
+The selected low-order air-gap deformation component is represented by the normalized mode shape 
+
+ϕr (β) = cos( rβ + ϕg )
+
+where ϕg is the spatial phase of the projected air-gap deformation component. The effective local air gap is modeled as 
+
+gef f (β, t ) = g0 + g(t)ϕr (β)
+
+or 
+
+gef f (β, t ) = g0 + g(t) cos( rβ + ϕg )
+
+Here, g0 is the nominal air-gap length, while g(t) is the generalized deformation coordinate measured relative to the selected loaded operating equilibrium. The model requires the local air gap to remain positive, 
+
+g0 + g (t) ϕr (β) > 0
+
+for all relevant β. A sufficient local condition is 
+
+|g(t)| ∥ ϕr ∥∞ < g 0
+
+With the normalization ∥ϕr ∥∞ = 1 , this reduces to 
+
+|g(t)| < g 0
+
+This parameterization should not be interpreted as a com-plete structural mode shape of the rotor. It is the electromag-netic air-gap projection of the selected low-order rotor-coupled vibration component. 
+
+D. Air-Gap Permeance Model and Local Derivatives 
+
+The local air-gap permeance is modeled as 
+
+Λg (β, g ) = μ0
+
+g0 + gϕ r (β)
+
+where μ0 is the permeability of free space. The first deriva-tive with respect to g is 
+
+∂Λg
+
+∂g = − μ0ϕr (β)[g0 + gϕ r (β)] 2
+
+Evaluated at the nominal deformation coordinate g = 0 ,
+
+∂Λg
+
+∂g g=0 
+
+= − μ0
+
+g20
+
+ϕr (β)
+
+The second derivative is 
+
+∂2Λg
+
+∂g 2 = 2μ0ϕ2r (β)[g0 + gϕ r (β)] 3
+
+At g = 0 ,
+
+∂2Λg
+
+∂g 2 g=0 
+
+= 2μ0
+
+g30
+
+ϕ2r (β)
+
+These permeance derivatives provide the physical source of the flux-linkage sensitivity, inductance sensitivity, and elec-tromagnetic stiffness terms that appear later in the linearized model. 7
+
+E. Flux-Linkage and Inductance Maps 
+
+The PM-induced dq flux-linkage components are modeled as projections of the PM magnetomotive force onto the dq winding basis through the air-gap permeance. Let bd(β) and 
+
+bq (β) denote the dq winding basis functions, and let Fm(β)
+
+denote the rotor-fixed PM magnetomotive force distribution. In the baseline rotor-fixed analytical closure, the flux-linkage and inductance maps are written as functions of g. More general maps may retain explicit θr -dependence if stator-fixed asymmetry, slotting interaction, or manufacturing variation is included. The PM-induced dq flux-linkage map is written as 
+
+ψi (g) = Kψ
+
+Z 2π
+
+> 0
+
+bi(β)Fm(β)Λ g (β, g )dβ i ∈ { d, q }
+
+Similarly, the dq inductance map is written as 
+
+Lij (g) = Lσij + KL
+
+Z 2π
+
+> 0
+
+bi(β)bj (β)Λ g (β, g )dβ i, j ∈ { d, q }
+
+Here, Kψ and KL are scaling constants that absorb wind-ing turns, stack length, geometric factors, and normalization conventions. The terms Lσij represent leakage or non-air-gap inductance contributions. The baseline dq basis can be written as 
+
+bd (β) = cos( pβ ) bq (β) = sin( pβ )
+
+where p is the pole-pair number. The PM MMF can be represented by the harmonic expansion 
+
+Fm (β) = X
+
+> n∈Hm
+
+Fmn cos ( npβ + φmn )
+
+Here, n ∈ Hm denotes the PM MMF spatial-harmonic index. The dq projection and harmonic representation are consis-tent with standard PMSM reference-frame and electromagnetic modeling treatments [17], [18]. These expressions are not used to claim that the simplified harmonic model fully captures the motor electromagnetic field. Instead, they provide an analytical closure for identifying which spatial components of the air-gap deformation project into dq flux-linkage and inductance sensitivities. The resulting harmonic-selection arguments should be in-terpreted as symmetry-limit predictions. They identify when a selected low-order deformation is expected to be first-order invisible under an idealized full-circumference dq projection. Real machines may break this ideal symmetry through slotting, saturation, winding distribution, rotor or stator asymmetry, ec-centricity, manufacturing variation, local magnetic saturation, end effects, or control-dependent carrier fields. Detailed elec-tromagnetic NVH studies commonly rely on electromagnetic force, flux, and structural-response models to capture these nonideal effects [1], [2], [21]. These nonidealities can generate small but nonzero effective projection coefficients even when the ideal harmonic closure predicts cancellation. Therefore, the analytical maps in this section should be viewed as a baseline mechanism for understanding passive degeneracy. In a later numerical implementation, ψi (g) and 
+
+Lij (g) can be obtained directly from FEM or calibrated experimental maps. 
+
+F. Air-Gap Sensitivities of Flux Linkage and Inductance 
+
+Differentiating the PM flux-linkage map with respect to g,and evaluating at g = 0 , gives 
+
+¯ψi,g = − Kψ μ0
+
+g20
+
+Z 2π
+
+> 0
+
+bi(β)Fm(β)ϕr (β)dβ i ∈ { d, q }
+
+and 
+
+¯Lij,g = − KLμ0
+
+g20
+
+Z 2π
+
+> 0
+
+bi(β)bj (β)ϕr (β)dβ i ∈ { d, q }
+
+The second derivatives are 
+
+¯ψi,gg = 2Kψ μ0
+
+g30
+
+Z 2π
+
+> 0
+
+bi(β)Fm(β)ϕ2r (β)dβ 
+
+¯Lij,gg = 2KLμ0
+
+g30
+
+Z 2π
+
+> 0
+
+bi(β)bj (β)ϕ2r (β)dβ 
+
+These first- and second-order sensitivities determine how the air-gap deformation enters the current dynamics, elec-tromagnetic torque, generalized air-gap force, and effective electromagnetic stiffness. At the frozen-time nominal loaded operating point, 
+
+¯x = Id0 Iq0 ¯θr Ω 0 0T
+
+the nominal flux-linkage sensitivity vector is defined as 
+
+ℓλ =
+
+ ¯λd,g 
+
+¯λq,g 
+
+
+
+Using the flux-linkage expressions, 
+
+¯λd,g = ¯ψd,g + ¯Ldd,g Id0 + ¯Ldq,g Iq0
+
+¯λq,g = ¯ψq,g + ¯Ldq,g Id0 + ¯Lqq,g Iq0
+
+Thus, 
+
+ℓλ =
+
+ ¯ψd,g + ¯Ldd,g Id0 + ¯Ldq,g Iq0
+
+¯ψq,g + ¯Ldq,g Id0 + ¯Lqq,g Iq0
+
+
+
+This vector is the central electromagnetic coupling quantity of this paper. It measures how the air-gap deformation co-ordinate changes the dq flux linkages at the selected loaded operating point. In later sections, ℓλ appears in both the 8
+
+current-based observability path and the voltage-to-air-gap reachability path. However, the existence of ℓλ̸ = 0 should be interpreted as a first-order coupling condition, not as a complete guarantee of practical observability or usable actuation authority under noise, controller dynamics, inverter nonidealities, voltage sat-uration, or finite measurement bandwidth. Conversely, a small value of ℓλ under the ideal analytical closure should not be interpreted as proof that all production signatures vanish in the real motor. It indicates that passive dq projection is weak or degenerate at first order and that any usable coupling must come from nonideal asymmetries, calibrated magnetic effects, load-path interaction, or active carrier-induced projection. 
+
+G. Baseline Symmetry Interpretation 
+
+The formulation above retains general dependence on θr
+
+and g at the governing-equation level. This is intentional: explicit angle dependence allows the model to include spatial saliency, rotor-fixed asymmetry, manufacturing variation, or other angle-dependent magnetic effects. For the baseline analytical closure, however, the air-gap deformation and magnetic quantities are expressed in the rotor-fixed coordinate β = α − θr . Under an ideal symmetric machine approximation without a low-order stator-fixed asym-metry, the resulting PM flux-linkage and inductance maps can be treated as functions of g without explicit dependence on 
+
+θr . In that case, 
+
+ψi = ψi (g) Lij = Lij (g)
+
+and the mixed derivatives involving explicit mechanical angle dependence may vanish, 
+
+λi,θ r ,g = 0 wc,θ r ,g = 0 
+
+unless additional low-order asymmetry, geometric imperfec-tion, or stator-fixed spatial modulation is introduced. This baseline symmetry interpretation should not be con-fused with the absence of rotor-coupled NVH. The air-gap deformation coordinate g still exists and can still affect dq flux linkages through permeance modulation. The statement is only that, under the baseline symmetry assumptions, explicit 
+
+θr -dependent magnetic coupling terms are not the primary mechanism. More detailed FEM-based maps can later restore angle-dependent coupling if the physical motor shows signif-icant asymmetry, slotting interaction, dynamic eccentricity, or manufacturing-induced spatial variation. IV. L INEARIZATION AROUND A LOADED OPERATING 
+
+TRAJECTORY 
+
+This section linearizes the nonlinear governing equations around a fixed-speed, fixed-current loaded operating trajectory. The objective is to obtain a perturbation model that separates the current states, resolver states, and air-gap deformation states. This block structure is later used to define finite-time observability and reachability Gramians and to identify the local coupling mechanisms. The linearization in this section should be interpreted as a local passive plant model around a representative operating window, not as a global model of the full electric-drive system. It is intended to expose the first-order electrome-chanical coupling paths among dq currents, rotor motion, and the selected air-gap deformation coordinate. Controller dynamics, PWM implementation, inverter saturation, current-loop rejection, thermal limits, and carrier-induced modulation are not included in this passive linearization. These effects enter later either as practical weighting terms in the finite-time Gramians or as carrier-on LTV/LTP dynamics in Section VII. 
+
+A. Nominal Loaded Operating Trajectory 
+
+The nominal trajectory is selected as a fixed-speed, fixed-current loaded operating condition, 
+
+¯x(t) = 
+
+
+
+Id0
+
+Iq0
+
+θ0 + Ω( t − t0)Ω00
+
+
+
+where Id0 and Iq0 are the nominal dq currents, Ω is the nominal rotor mechanical speed, and θ0 is the rotor mechanical angle at the initial time t0. The air-gap deformation coordinate is measured relative to the selected loaded operating equilib-rium, so the nominal deformation state is 
+
+¯xg =
+
+00
+
+
+
+The nominal voltage command ¯u(t) is chosen such that the dq current derivatives vanish along the nominal trajectory, 
+
+˙¯Id = 0 ˙¯Iq = 0 
+
+Using the dq voltage equations, the nominal voltage com-mands satisfy 
+
+¯Vd = RsId0 − pΩ¯λq + Ω ¯λd,θ r
+
+¯Vq = RsIq0 + pΩ¯λd + Ω ¯λq,θ r
+
+where all flux linkages and derivatives are evaluated along 
+
+¯x(t). Under the baseline symmetry assumptions in which explicit θr -dependence is absent, these reduce to 
+
+¯Vd = RsId0 − pΩ¯λq
+
+¯Vq = RsIq0 + pΩ¯λd
+
+The nominal load torque satisfies the rotational equilibrium condition 
+
+¯Tload (t) = ¯Te(t) − BΩ
+
+Similarly, the nominal generalized air-gap force balance is absorbed into the definition of the loaded equilibrium for 
+
+g. Therefore, the perturbation dynamics describe deviations around the selected loaded operating condition rather than absolute static deformation. 9
+
+B. Perturbation Variables 
+
+Perturbation variables are defined as 
+
+δx = x − ¯x, δu = u − ¯u, δd = d − ¯d
+
+The state perturbation is 
+
+δx = δI d δI q δθ r δω r δg δv g
+
+T
+
+The input perturbation is 
+
+δu =
+
+δV d
+
+δV q
+
+
+
+and the disturbance perturbation is 
+
+δd =
+
+ δT load 
+
+δF load,g 
+
+
+
+The linearized perturbation model takes the form 
+
+δ ˙x = A(t)δx + Bu(t)δu + E(t)δd 
+
+where 
+
+A (t) = ∂f ∂x ¯x(t),¯u(t), ¯d(t)
+
+Bu (t) = ∂f ∂u ¯x(t),¯u(t), ¯d(t)
+
+and 
+
+E (t) = ∂f ∂d ¯x(t),¯u(t), ¯d(t)
+
+The resulting perturbation model follows the standard local linearization form used in finite-dimensional state-space anal-ysis [22], [23]. These Jacobians describe the passive plant at the selected loaded operating trajectory. If the electromagnetic maps retain explicit dependence on θr , then A(t) may be time-varying along the rotating nominal trajectory. Under the baseline rotor-fixed symmetric closure, the same formulation reduces locally to a frozen-time or constant-coefficient pertur-bation model around the selected operating point. The nonlinear current dynamics can be written compactly as 
+
+˙xI = M −1 
+
+> λ
+
+r xI =
+
+Id
+
+Iq
+
+
+
+r =
+
+rd
+
+rq
+
+
+
+Linearizing around the nominal trajectory gives 
+
+δ ˙xI = δ M −1 
+
+> λ
+
+r
+
+Using the first-order variation, 
+
+δ(M −1 
+
+> λ
+
+r) = ¯M −1 
+
+> λ
+
+δr − ¯M −1 
+
+> λ
+
+(δM λ) ¯M −1 
+
+> λ
+
+¯r. 
+
+Along the fixed-current nominal trajectory, 
+
+˙¯xI = 0 ¯r = 0 
+
+Therefore, the current perturbation dynamics simplify to 
+
+δ ˙xI = ¯M −1 
+
+> λ
+
+δr 
+
+Equivalently, for each state component xj ,
+
+AI,j (t) = ¯M −1
+
+> λ
+
+∂r ∂x j ¯x(t),¯u(t), ¯d(t)
+
+The voltage input matrix for the current dynamics is 
+
+BI (t) = ¯M −1
+
+> λ
+
+Writing 
+
+¯Mλ =
+
+ ¯M11 ¯M12 
+
+¯M12 ¯M22 
+
+
+
+with 
+
+¯∆ = ¯M11 ¯M22 − ¯M 212 
+
+the inverse is 
+
+¯M −1 
+
+> λ
+
+= 1¯∆
+
+ ¯M22 − ¯M12 
+
+− ¯M12 ¯M11 
+
+
+
+This term maps dq voltage perturbations into dq current perturbations at the plant level. 
+
+C. Linearized Rotor Mechanical Dynamics 
+
+The rotor mechanical equations are 
+
+˙θr = ωr
+
+˙ωr = 1
+
+J (Te − Bω r − Tload )
+
+Linearization gives 
+
+δ ˙θr = δω r
+
+δ ˙ωr = 1
+
+J (δT e − Bδω r − δT load )
+
+The torque perturbation can be written as 
+
+δT e = ¯Te,I d δI d + ¯Te,I q δI q + ¯Te,θ r δθ r
+
++ ¯Te,ω r δω r + ¯Te,g δg + ¯Te,v g δv g
+
+where direct dependence of Te on vg and ωr is neglected in the baseline co-energy model. Therefore, 
+
+δ ˙ωr = 1
+
+J
+
+  ¯Te,I d δI d + ¯Te,I q δI q + ¯Te,θ r δθ r
+
++ ¯Te,g δg − Bδω r − δT load 
+
+
+
+The term ¯Te,g is the torque-projection pathway from air-gap deformation to resolver speed and angle. Its physical condition is analyzed later in the local coupling and degeneracy section. At this stage, the resolver pathway should be interpreted as a structural coupling path in the linearized plant. Its practical conditioning depends on rotor inertia, speed-estimator band-width, resolver quantization, and measurement noise, which are not included in the local Jacobian itself but are accounted for later through weighted observability measures and scope limitations. 10 
+
+D. Linearized Air-Gap Deformation Dynamics 
+
+The air-gap deformation dynamics are 
+
+˙g = vg
+
+˙vg = 1
+
+mg
+
+(Fe,g − cg vg − kg g + Fload,g )
+
+Linearization gives 
+
+δ ˙g = δv g
+
+δ ˙vg = 1
+
+mg
+
+ δF e,g − cg δv g − kg δg + δF load,g 
+
+
+
+The electromagnetic generalized-force perturbation is 
+
+δF e,g = ¯Fe,g,I d δI d + ¯Fe,g,I q δI q + ¯Fe,g,θ r δθ r
+
++ ¯Fe,g,ω r δω r + ¯Fe,g,g δg + ¯Fe,g,v g δv g
+
+Since 
+
+Fe,g = sg
+
+32 wc,g 
+
+the force derivatives are 
+
+Fe,g,I d = sg
+
+32 λd,g Fe,g,I q = sg
+
+32 λq,g 
+
+Fe,g,θ r = sg
+
+32 wc,gθ r Fe,g,g = sg
+
+32 wc,gg 
+
+The baseline model does not include direct dependence of 
+
+Fe,g on ωr or vg , so 
+
+Fe,g,ω r = 0 Fe,g,v g = 0 
+
+Therefore, 
+
+δ ˙vg = 1
+
+mg
+
+h
+
+sg
+
+32 ¯λd,g δI d + sg
+
+32 ¯λq,g δI q
+
++ sg
+
+32 ¯wc,gθ r δθ r +
+
+
+
+sg
+
+32 ¯wc,gg − kg
+
+
+
+δg 
+
+− cg δv g + δF load,g 
+
+i
+
+This equation shows that the same flux-linkage sensitivity components ¯λd,g and ¯λq,g govern the current-to-air-gap force pathway. Non-electromagnetic load-path forcing, structural cross-coupling, bearing interaction, and other unmodeled dis-turbances are represented at this level by δF load,g . If future FEM or experimental identification shows that additional deformation coordinates or nonconservative force terms are significant, they can be appended to the air-gap subsystem without changing the basic observability and reachability construction. 
+
+E. Block State Partition 
+
+For the observability and reachability analysis, the pertur-bation state is partitioned into three two-dimensional blocks: 
+
+δx I =
+
+δI d
+
+δI q
+
+
+
+δx R =
+
+δθ r
+
+δω r
+
+
+
+δx g =
+
+ δg δv g
+
+
+
+Thus, 
+
+δx =
+
+
+
+δx I
+
+δx R
+
+δx g
+
+
+
+The linearized model can then be written as 
+
+
+
+δ ˙xI
+
+δ ˙xR
+
+δ ˙xg
+
+ =
+
+
+
+AII AIR AIg 
+
+ARI ARR ARg 
+
+AgI AgR Agg 
+
+
+
+δx I
+
+δx R
+
+δx g
+
+
+
++
+
+BI
+
+00
+
+ δu + Eδd 
+
+The voltage input matrix is 
+
+Bu(t) = 
+
+BI (t)02×2
+
+02×2
+
+
+
+where 
+
+BI (t) = ¯M −1 
+
+> λ
+
+(t)
+
+The disturbance matrix for 
+
+δd =
+
+ δT load 
+
+δF load,g 
+
+
+
+is 
+
+E =
+
+
+
+0 00 00 0
+
+− 1 
+
+> J
+
+00 00 1
+
+> mg
+
+
+
+The production measurement perturbations are inherited from the measurement channels defined in Section II: 
+
+δ yI = CI δx δ yR = CRδx 
+
+Although δg and δv g are included in the state vector, they are not directly measured in the production signal set. The key blocks for the subsequent analysis are: 
+
+AIg : δx g → δ ˙xI
+
+ARg : δx g → δ ˙xR
+
+AgI : δx I → δ ˙xg11 
+
+The next section uses this linearized model to define the state transition matrix and the finite-time Gramians for current observability, resolver observability, and voltage reachability. The explicit physical interpretation of the coupling blocks is deferred to the local coupling and degeneracy analysis. V. S TATE TRANSITION MATRIX AND FINITE -T IME 
+
+GRAMIANS 
+
+This section uses the linearized perturbation model from Section IV to define finite-time observability and reachability measures for the air-gap deformation state. The purpose is to evaluate whether the unmeasured air-gap state can be inferred from production current or resolver measurements, and whether it can be influenced by plant-level dq voltage perturbations. The Gramians in this section are defined for the pas-sive, carrier-off linearized plant. They measure finite-time channel structure between the selected air-gap deformation state, production-accessible measurements, and dq voltage perturbations. They should not be interpreted as closed-loop controller performance metrics or as carrier-on Gramians. Once an injected carrier is introduced, the relevant matrices become carrier-dependent and are defined separately using the carrier-on transition matrix in Section VII. For the observability and reachability definitions in this section, disturbance inputs are set to zero. The Gramians defined below should therefore be interpreted as finite-time channel measures of the linearized plant model, not as com-plete closed-loop performance guarantees. 
+
+A. State Transition Matrix 
+
+The state transition matrix associated with the homogeneous linearized system 
+
+δ ˙x(t) = A(t)δx (t)
+
+is defined by 
+
+ddt Φ( t, t 0) = A(t)Φ( t, t 0) Φ( t0, t 0) = I6
+
+This definition does not require A(t) to be constant. Under a frozen-time approximation, A(t) may be replaced locally by 
+
+¯A, but the finite-time formulation itself remains compatible with LTV dynamics over the selected observation window. In this section, however, the matrices correspond to the passive carrier-off plant defined in Section IV. For any initial perturbation δx (t0), the zero-input state response is 
+
+δx (t) = Φ( t, t 0)δx (t0)
+
+Using the state partition 
+
+δx =
+
+
+
+δx I
+
+δx R
+
+δx g
+
+
+
+where 
+
+δx I =
+
+δI d
+
+δI q
+
+
+
+δx R =
+
+δθ r
+
+δω r
+
+
+
+δx g =
+
+ δg δv g
+
+
+
+the state transition matrix is partitioned as 
+
+Φ( t, t 0) = 
+
+ΦII (t, t 0) ΦIR (t, t 0) ΦIg (t, t 0)ΦRI (t, t 0) ΦRR (t, t 0) ΦRg (t, t 0)ΦgI (t, t 0) ΦgR (t, t 0) Φgg (t, t 0)
+
+
+
+The state-transition formulation and finite-time input-output maps follow standard linear-system theory [22], [23]. The block ΦIg (t, t 0) maps an initial air-gap deformation pertur-bation into the current state response, 
+
+δx I (t) = Φ Ig (t, t 0) δx g (t0)
+
+when the other initial perturbations are set to zero. Similarly, 
+
+ΦRg (t, t 0) maps an initial air-gap deformation perturbation into the resolver-state response, 
+
+δx R (t) = Φ Rg (t, t 0) δx g (t0)
+
+For reachability analysis, the block ΦgI (tf , τ ) maps current-state forcing at time τ into the final air-gap deforma-tion state at tf .
+
+B. Current-Based Observability Gramian 
+
+The current measurement channel is 
+
+δ yI (t) = CI δx (t) = δx I (t)
+
+To evaluate whether the air-gap deformation state δx g (t0)
+
+is observable from current residuals over the finite interval 
+
+[t0, t f ], the unweighted current-based observability Gramian is first defined as 
+
+W Io,g (t0, t f ) = 
+
+Z tf
+
+> t0
+
+ΦTIg (t, t 0)Φ Ig (t, t 0) dt 
+
+Finite-time observability and reachability Gramians provide standard measures of state-to-output and input-to-state channel conditioning in linear systems [22], [23]. This unweighted Gramian characterizes the structural finite-time coupling from the air-gap deformation state to the Id/I q current response under the linearized model. It does not require any sensor-noise assumption. For practical feasibility assessment, a calibrated or noise-weighted version can be introduced as 
+
+W I,R o,g (t0, t f ) = 
+
+Z tf
+
+> t0
+
+ΦTIg (t, t 0)R−1 
+
+> I
+
+ΦIg (t, t 0) dt 
+
+Here, 
+
+RI =
+
+σ2 
+
+> Id
+
+00 σ2
+
+> Iq
+
+
+
+is an effective current-residual uncertainty matrix. It is intended as an experimental data interface that can later be populated from current sensor specifications, controller 12 
+
+logs, steady-state current residuals, band-limited noise mea-surements, dq transformation effects, filtering, and inverter nonidealities. The use of RI does not assume that all production current errors are white, stationary, or independent. It only provides a first calibration layer for comparing the air-gap-induced current response against the effective uncertainty level of the residual channel. More detailed colored-noise, filtering, or controller-dependent residual models can be incorporated by replacing this weighting with an experimentally identified residual covariance or frequency-domain weighting. Thus, W Io,g defines the theoretical current-observation struc-ture, while W I,R o,g provides a calibration-ready extension for production current-residual uncertainty. 
+
+C. Resolver-Based Observability Gramian 
+
+The resolver measurement channel is 
+
+δ yR(t) = CRδx (t) = δx R(t)
+
+The unweighted resolver-based finite-time observability Gramian is defined as 
+
+W θω 
+
+> o,g
+
+(t0, t f ) = 
+
+Z tf
+
+> t0
+
+ΦTRg (t, t 0)Φ Rg (t, t 0) dt 
+
+This Gramian measures whether the air-gap deformation state produces a finite-time resolver angle or speed response under the linearized plant model. It is defined separately from the current-based Gramian because the resolver channel does not directly sense flux-linkage perturbations. Instead, it observes the air-gap deformation state only through its effect on electromagnetic torque and rotor mechanical motion. A calibrated resolver-weighted version is 
+
+W θω ,R o,g (t0, t f ) = 
+
+Z tf
+
+> t0
+
+ΦTRg (t, t 0)R−1 
+
+> θω
+
+ΦRg (t, t 0) dt 
+
+The resolver uncertainty matrix is 
+
+Rθω =
+
+σ2 
+
+> θ
+
+00 σ2
+
+> ω
+
+
+
+This matrix is also an experimental data interface. It can be estimated from resolver resolution, demodulation error, angle quantization, speed-estimator noise, constant-speed residuals, controller logs, or band-limited noise measurements near the frequency of interest. Since ωr is typically estimated from θr ,the effective uncertainty in ωr depends strongly on the speed-estimation algorithm and filtering bandwidth. Therefore, W θω 
+
+> o,g
+
+represents the ideal finite-time resolver response structure, while W θω ,R o,g represents the same structure after calibration by production resolver uncertainty. 
+
+D. Voltage-to-Air-Gap Reachability Gramian 
+
+The plant-level voltage input enters the perturbation model through 
+
+Bu(t) = 
+
+
+
+BI (t)00
+
+ BI (t) = ¯M −1 
+
+> λ
+
+(t)
+
+For zero initial state, the response at final time tf due to an input perturbation δu (τ ) is 
+
+δx (tf ) = 
+
+Z tf
+
+> t0
+
+Φ( tf , τ )Bu(τ )δu (τ ) dτ 
+
+Selecting only the air-gap deformation state gives 
+
+δx g (tf ) = 
+
+Z tf
+
+> t0
+
+ΦgI (tf , τ )BI (τ )δu (τ ) dτ 
+
+The unweighted plant-level voltage-to-air-gap reachability Gramian is defined as 
+
+W Vr,g (t0, t f ) = 
+
+Z tf
+
+> t0
+
+ΦgI (tf , τ )BI (τ )BTI (τ )ΦTgI (tf , τ ) dτ 
+
+This Gramian characterizes the intrinsic plant-level voltage-to-air-gap reachability of the air-gap deformation state. It answers whether dq voltage perturbations have a physical pathway to influence δg and δv g through the motor electrical dynamics and electromagnetic generalized force. A weighted version is 
+
+W V,R r,g (t0, t f ) = 
+
+Z tf
+
+> t0
+
+ΦgI (tf , τ )BI (τ )R−1
+
+> u
+
+BTI (τ )Φ TgI (tf , τ ) dτ 
+
+Here, 
+
+Ru =
+
+rVd 00 rVq
+
+
+
+is an input weighting matrix, not a sensor-noise covariance. It represents a calibration-ready interface for actuation cost, voltage authority, available voltage headroom, command un-certainty, or relative weighting between d- and q-axis voltage perturbations. In a later implementation, Ru may be informed by DC-bus voltage limits, field-weakening margin, inverter dead time, voltage saturation, current-loop rejection, or com-mand filtering. Therefore, W Vr,g defines the theoretical plant-level reacha-bility structure, while W V,R r,g provides a practical extension for weighting the usable voltage authority. This reachability measure remains plant-level. It answers whether a physical voltage-to-current-to-force pathway exists in the linearized plant, not whether a production inverter can supply enough voltage, current, bandwidth, or energy to suppress the selected NVH component. Practical actuation capability is limited by DC-bus voltage, voltage saturation, PWM resolution, current-regulation bandwidth, current-loop rejection, field-weakening margin, thermal and loss budgets, and the possibility that injected perturbations introduce addi-tional torque ripple or electromagnetic noise. Therefore, W Vr,g 
+
+should be interpreted as a channel-existence and conditioning measure, not as a guarantee of executable closed-loop attenu-ation. 13 
+
+E. Summary 
+
+This section defined the state transition matrix and three finite-time Gramians for the air-gap deformation state: the current-based observability Gramian, the resolver-based ob-servability Gramian, and the plant-level voltage-to-air-gap reachability Gramian. The unweighted forms describe the finite-time coupling structure of the linearized plant, while the weighted forms retain interfaces for future experimental cali-bration through current-residual uncertainty, resolver-estimator uncertainty, and voltage-authority weighting. These Gramians provide the mathematical objects used in the subsequent local feasibility analysis. Section VI derives the physical coupling mechanisms behind the Gramian kernels, while Section VII extends the passive projection framework to carrier-induced observability and reachability. VI. L OCAL PASSIVE COUPLING CONDITIONS AND 
+
+DEGENERACY MECHANISMS 
+
+Section V defined finite-time observability and reachability Gramians in terms of the state-transition subblocks ΦIg , ΦRg ,and ΦgI . These Gramians provide a system-level measure of whether the air-gap deformation state can be observed from production current residuals, observed from resolver signals, or influenced by plant-level dq voltage perturbations. This section derives the local physical coupling conditions that appear inside those Gramian kernels. The analysis is not intended to replace full state-transition-matrix integration. Instead, it identifies the leading-order passive coupling paths that must exist before the corresponding finite-time Gramians can become well-conditioned. The analysis is performed around a frozen-time nominal loaded operating condition. Let 
+
+H = tf − t0
+
+denote a short local analysis horizon. Over this horizon, the linearized dynamics are approximated by 
+
+A(t) ≈ ¯A
+
+The local results retain the direct leading-order coupling paths between current states, resolver states, and air-gap defor-mation states. Long-horizon recirculation through the full state matrix, damping and resonance effects, controller dynamics, inverter nonidealities, disturbance forcing, measurement noise, and input constraints are not included in the local derivation. These effects must be evaluated through the complete finite-time framework or future numerical validation. The resulting conditions should therefore be interpreted as passive feasibility boundaries. A nonzero local coupling does not guarantee practical observability or usable control authority, while a locally degenerate passive path indicates that additional mechanisms, such as calibrated nonideal asymmetry or carrier-induced projection, may be required. 
+
+A. From Finite-Time Gramians to Local Coupling Blocks 
+
+The current-based finite-time Gramian is 
+
+W Io,g (t0, t f ) = 
+
+Z tf
+
+> t0
+
+ΦTIg (t, t 0) Φ Ig (t, t 0) dt 
+
+The subblock ΦIg maps an initial air-gap deformation per-turbation into the current-state response. For a short horizon, with t = t0 + τ ,
+
+ΦIg (t0 + τ, t 0) = AIg τ + O(τ 2)
+
+where 
+
+AIg = ∂ ˙xI
+
+∂x g ¯x, ¯u
+
+Therefore, 
+
+W Io,g = H3
+
+3 ATIg AIg + O(H4)
+
+Similarly, the weighted current Gramian has the local form 
+
+W I,R o,g = H3
+
+3 ATIg R−1 
+
+> I
+
+AIg + O(H4)
+
+Thus, local current observability is controlled by the cou-pling block AIg .For resolver-based observation, the relevant local coupling block is 
+
+ARg = ∂ ˙xR
+
+∂x g ¯x, ¯u
+
+Unlike the current channel, resolver response arises through torque perturbation and rotor integration, so ΦRg includes additional time-integration structure. Nevertheless, the local resolver Gramian is ultimately controlled by whether ARg 
+
+contains a nonzero torque-projection path from the air-gap deformation state. For voltage-to-air-gap reachability, the local reachability kernel is governed by the cascade 
+
+δu → δx I → δx g
+
+where 
+
+BI = ∂ ˙xI
+
+∂u ¯x, ¯u
+
+AgI = ∂ ˙xg
+
+∂x I ¯x, ¯u
+
+Consequently, the finite-time Gramians reduce locally to three physical coupling questions: 
+
+AIg ̸ = 0 ARg ̸ = 0 AgI BI̸ = 0 
+
+The remainder of this section derives these blocks from the co-energy model. 14 
+
+B. Current-Based Observation Path 
+
+The current-based observation path is governed by 
+
+AIg = ∂ ˙xI
+
+∂x g ¯x, ¯u
+
+which maps air-gap deformation perturbations into current perturbation dynamics, 
+
+δx g → δ ˙xI
+
+From the linearized current dynamics, 
+
+δ ˙xI = ¯M −1 
+
+> λ
+
+δr 
+
+the leading-order dependence of the residual vector on δg 
+
+and δv g gives 
+
+AIg = ¯M −1
+
+> λ
+
+ pΩ¯λq,g −¯λd,g 
+
+−pΩ¯λd,g −¯λq,g 
+
+
+
+Let 
+
+¯λd,g = a ¯λq,g = b
+
+The determinant of inner coupling matrix is 
+
+det 
+
+ pΩb −a
+
+−pΩa −b
+
+
+
+= −pΩ( a2 + b2)
+
+Since 
+
+det   ¯Mλ
+
+̸ = 0 
+
+the block AIg has full column rank when 
+
+Ω̸ = 0 ℓλ̸ = 0 
+
+Thus, a nonzero flux-linkage sensitivity vector provides a first-order current observation path from the air-gap deforma-tion state to the Id/I q current residuals. For a short horizon, 
+
+W Io,g ≈ H3
+
+3 ATIg AIg 
+
+If 
+
+ℓλ = 0 
+
+then 
+
+AIg = 0 
+
+and the leading-order current observation path collapses. In that case, the air-gap deformation may still exist mechanically, but it does not project into dq current residuals at first order under the passive electromagnetic closure. 
+
+C. Resolver Torque-Projection Path 
+
+The resolver channel observes the air-gap deformation state through a different physical mechanism. It does not measure local flux redistribution directly. Instead, the deformation must perturb electromagnetic torque, and that torque perturbation must propagate into rotor speed and rotor angle. The relevant block is 
+
+ARg = ∂ ˙xR
+
+∂x g ¯x, ¯u
+
+which maps air-gap deformation perturbations into resolver-state dynamics, 
+
+δx g → δ ˙xR
+
+From the rotor mechanical dynamics, the direct air-gap contribution is governed by ¯Te,g . Using the co-energy-based torque expression, 
+
+Te = 32 [p (λdIq − λq Id) + wc,θ r ]¯Te,g = 32
+
+p  ¯λd,g Iq0 − ¯λq,g Id0
+
+ + ¯ wc,θ r ,g 
+
+
+
+Define 
+
+aT = ¯Te,g 
+
+J = 32J
+
+p  ¯λd,g Iq0 − ¯λq,g Id0
+
+ + ¯ wc,θ r ,g 
+
+
+
+The leading-order resolver coupling block is 
+
+ARg =
+
+ 0 0
+
+aT 0
+
+
+
+The corresponding torque-projection margin is 
+
+ρT = p  ¯λd,g Iq0 − ¯λq,g Id0
+
+ + ¯ wc,θ r ,g 
+
+Resolver observability degenerates when 
+
+ρT → 0
+
+This can occur even when ℓλ̸ = 0 . Under the baseline symmetry approximation, 
+
+¯wc,θ r ,g ≈ 0
+
+so the torque-projection margin reduces to 
+
+ρT ≈ p ¯λd,g Iq0 − ¯λq,g Id0
+
+Thus, resolver visibility depends not only on the existence of flux-linkage sensitivity, but also on whether that sensitivity produces torque perturbation at the selected current operating point. For short-time analysis, 
+
+ΦRg (t0 + τ, t 0) ≈ aT
+
+1/2τ 2 1/6τ 3
+
+τ 1/2τ 2
+
+
+
+Therefore, the resolver observability Gramian is locally proportional to a2 
+
+> T
+
+. The resolver channel loses leading-order sensitivity as 15 
+
+aT → 0
+
+This result explains why current-based observability and resolver-based observability are not equivalent. Current resid-uals depend directly on ℓλ, whereas resolver response depends on the torque-projection margin ρT .This resolver path should be interpreted as a theoretical torque-to-motion observation channel. In practice, rotor inertia and speed-estimator filtering can strongly attenuate medium-and high-frequency torque perturbations before they appear in ωr or θr . Therefore, resolver-based observability may be poorly conditioned at high speed or high order, even when 
+
+ρT̸ = 0 
+
+This limitation motivates treating resolver sensing as a separate and potentially weak observation channel, rather than assuming that torque projection automatically provides a us-able production measurement. It also motivates the electrical-residual and carrier-sideband channels developed later. 
+
+D. Voltage-to-Air-Gap Reachability Path 
+
+The plant-level voltage input first perturbs dq currents through the electrical dynamics. Those current perturbations then generate generalized electromagnetic force on the air-gap deformation coordinate. Therefore, the voltage-to-air-gap reachability path is the cascade 
+
+δu → δx I → δx g
+
+From the linearized air-gap deformation dynamics, 
+
+δ ˙vg = 1
+
+mg
+
+(δF e,g − cg δv g − kg δg + δF load,g )
+
+and 
+
+Fe,g = sg
+
+32 wc,g 
+
+the current derivatives of generalized electromagnetic force are 
+
+Fe,g,I d = sg
+
+32 ¯λd,g Fe,g,I q = sg
+
+32 ¯λq,g 
+
+Therefore, 
+
+AgI =
+
+ 0 0
+
+γ¯λd,g γ¯λq,g 
+
+
+
+γ = 3sg
+
+2mg
+
+This expression shows that the same flux-linkage sensitivity vector ℓλ that governs current-based observability also governs the passive voltage-to-air-gap reachability path. For a local reachability approximation, let 
+
+∆ = tf − τ
+
+The leading-order map from current perturbation at time τ
+
+to final air-gap deformation state is 
+
+ΦgI (tf , τ ) ≈ γ
+
+ 12 ∆2
+
+∆
+
+
+
+ℓTλ
+
+Combining this with the voltage-to-current map gives 
+
+ΦgI (tf , τ ) BI ≈ γ
+
+ 12 ∆2
+
+∆
+
+
+
+ℓTλ ¯M −1
+
+> λ
+
+The unweighted local voltage reachability Gramian becomes 
+
+W Vr,g ≈ γ2ℓTλ ¯M −1 
+
+> λ
+
+¯M −Tλ ℓλ
+
+H5/20 H4/8
+
+H4/8 H3/3
+
+
+
+Since Mλ is invertible, the unweighted scalar is positive whenever 
+
+ℓλ̸ = 0 
+
+Therefore, under the plant-level passive model, a nonzero flux-linkage sensitivity vector provides a first-order voltage-to-air-gap reachability path. This result should be interpreted as a local channel-existence condition. It does not imply that the production inverter has sufficient voltage, current, bandwidth, or thermal margin to generate a practically useful air-gap force. Those implemen-tation limits are outside the passive local derivation and must be evaluated through input weighting, controller modeling, and experimental validation. The three local paths derived above show that passive current observation and passive voltage reachability share a common bottleneck: the flux-linkage sensitivity vector ℓλ. Re-solver visibility, in contrast, depends on the torque-projection margin ρT .
+
+E. Physical Interpretation: Global Projection and Harmonic Orthogonality 
+
+The preceding local conditions show that ℓλ is the com-mon bottleneck for passive current observation and voltage reachability. The remaining question is whether this vector is expected to be nonzero for the selected low-order rotor-coupled air-gap deformation. This requires examining the electromagnetic projection that generates ℓλ.A key limitation of production-signal-based observability is that Id/I q does not measure local air-gap flux density. The controller observes winding-level electrical quantities after spatial integration through the three-phase winding distribution and dq transformation. Therefore, a local air-gap flux redistri-bution may be mechanically significant while producing little or no net first-order change in dq current. This distinction can be expressed as a projection problem. A local air-gap deformation modifies the permeance field, 
+
+δΛg (β, t )
+
+but the current channel can only sense its projection through a dq electromagnetic kernel, 
+
+δλ i(t) ∼
+
+Z 2π
+
+> 0
+
+Ki(β)δΛg (β, t ) dβ i ∈ { d, q }
+
+Thus, local flux-density variation is not equal to observable dq flux-linkage variation. Only the component of the air-gap 16 
+
+deformation that survives this global projection can appear in 
+
+Id/I q residuals. For a selected low-order deformation mode, write the nor-malized spatial deformation shape as 
+
+ϕr (β) = cos( rβ + ϕg )
+
+with 
+
+r ∈ { 1, 2, 3, 4}
+
+the flux-linkage sensitivity vector is generated by the phys-ical chain 
+
+g → Λg → ψi, L i,j → λd, λ q
+
+At the nominal loaded operating condition, 
+
+¯λd,g = ¯ψd,g + ¯Ldd,g Id0 + ¯Ldq,g Iq0
+
+¯λq,g = ¯ψq,g + ¯Ldq,g Id0 + ¯Lqq,g Iq0
+
+Using 
+
+∂Λg
+
+∂g g=0 
+
+= − μ0
+
+g20
+
+ϕr (β)
+
+the PM flux-linkage sensitivities and the inductance sensi-tivities are 
+
+¯ψi,g = − Kψ μ0
+
+g20
+
+Z 2π
+
+> 0
+
+bi(β)Fm(β)ϕr (β)dβ i ∈ { d, q }
+
+¯Lij,g = − KLμ0
+
+g20
+
+Z 2π
+
+> 0
+
+bi(β)bj (β)ϕr (β)dβ i, j ∈ { d, q }
+
+Therefore, 
+
+¯λd,g = − μ0
+
+g20
+
+h
+
+Kψ
+
+Z 2π
+
+> 0
+
+bd(β)Fm(β)ϕr (β) dβ 
+
++ KLId0
+
+Z 2π
+
+> 0
+
+b2
+
+> d
+
+(β)ϕr (β) dβ 
+
++ KLIq0
+
+Z 2π
+
+> 0
+
+bd(β)bq (β)ϕr (β) dβ 
+
+i
+
+¯λq,g = − μ0
+
+g20
+
+h
+
+Kψ
+
+Z 2π
+
+> 0
+
+bq (β)Fm(β)ϕr (β) dβ 
+
++ KLId0
+
+Z 2π
+
+> 0
+
+bd(β)bq (β)ϕr (β) dβ 
+
++ KLIq0
+
+Z 2π
+
+> 0
+
+b2 
+
+> q
+
+(β)ϕr (β) dβ 
+
+i
+
+These equations show that ℓλ is determined by the spatial overlap among 
+
+g0 ϕr (β) bd (β) , b q (β) Fm(β) Id0, I q0
+
+The PM terms determine whether the selected low-order air-gap deformation projects into PM-induced dq flux linkage. The inductance terms determine whether the same deforma-tion changes the current-produced magnetic field. The loaded currents Id0, I q0 enter through the current-loaded inductance contribution. Under an ideal symmetric electromagnetic closure, the integrals defining ℓλ are full-circumference projections. A nonzero integral requires that the product being integrated contain a zero-order spatial component. Otherwise, the positive and negative spatial contributions cancel over one mechanical revolution. For the PM flux-linkage sensitivity, 
+
+¯ψi,g ∝
+
+Z 2π
+
+> 0
+
+bi(β)Fm(β)ϕr (β)dβ 
+
+Using the baseline dq basis, 
+
+bd (β) = cos( pβ )
+
+bq (β) = sin( pβ )
+
+and the PM MMF harmonic expansion, 
+
+Fm (β) = X
+
+> n
+
+Fmn cos( npβ + φmn )
+
+while the selected low-order deformation is 
+
+ϕr (β) = cos( rβ + ϕg )
+
+the PM flux-linkage projection contains spatial orders of the form 
+
+±p ± np ± r
+
+A nonzero full-circumference projection requires one of these combinations to produce a zero-order term, 
+
+±p ± np ± r = 0 
+
+Equivalently, 
+
+p(±1 ± n) ± r = 0 
+
+This interpretation is consistent with the use of spatial harmonic projection and force-harmonic analysis in PMSM electromagnetic modeling and NVH studies [1], [2], [17], [18], [21]. This condition provides a general harmonic-matching criterion for PMSM architectures. It shows that passive dq visibility is not determined merely by the existence of a mechanical deformation mode, but by whether that mode generates a zero-order projection after multiplication by the winding and PM field harmonics. For a broad class of multi-pole PMSMs, low-order mechan-ical deformation modes satisfy 
+
+0 < r < p 17 
+
+In that case, the term p(±1 ± n) is an integer multiple of 
+
+p, and a low-order r < p term cannot generally cancel it. Therefore, under the ideal symmetric harmonic closure, a low-order rotor-coupled air-gap deformation with 0 < r < p is not expected to produce a first-order PM flux-linkage projection. For the 48-slot, 8-pole numerical example considered in Section VIII, p = 4 , and thus r = 4 constitutes a boundary case rather than satisfying the strict condition 0 < r < p . It is nevertheless retained in the numerical sweep because the study evaluates the prescribed low-order set r ∈ { 1, 2, 3, 4}
+
+and because r = 4 remains within the selected low-order deformation subspace. Under the specific PM-harmonic and inductance-projection closure adopted in Section VIII, the corresponding projection also remains below the numerical floor. The same argument applies to the inductance sensitivity terms. Products such as 
+
+b2 
+
+> d
+
+(β) b2 
+
+> q
+
+(β) bd (β) bq (β)
+
+generate spatial components at order 0 and 2p. Multiplica-tion by the selected deformation mode ϕr (β) produces spatial orders 
+
+0 ± r 2p ± r
+
+A zero-order component would require either 
+
+r = 0 r = 2 p
+
+For nonzero low-order deformation modes satisfying 
+
+0 < r < 2p
+
+these terms do not contain a zero-order component. There-fore, the ideal first-order inductance sensitivity to a low-order air-gap deformation also vanishes under the same symmetric closure. Consequently, for a broad class of multi-pole PMSMs under the ideal symmetric closure, 
+
+¯ψi,g ≈ 0 ¯Lij,g ≈ 0
+
+and therefore 
+
+ℓλ ≈ 0
+
+This result is a passive orthogonality boundary, not a univer-sal statement that real machines have exactly zero coupling. Slotting, saturation, winding-distribution effects, skew, finite stack length, end effects, rotor or stator asymmetry, dynamic eccentricity, and manufacturing variation may create small but nonzero effective projection coefficients. Such effects are typically captured through detailed electromagnetic or coupled electromagnetic-structural simulation rather than ideal full-circumference harmonic closure [1], [2], [21], [24]. In that case, the finite-time Gramians from Section V can quantify the resulting weak passive observability or reachability once the effective maps are calibrated. The framework applies to arbitrary selected deformation order r, but passive degeneracy occurs whenever the spatial harmonic content of the mechanical deformation does not generate a zero-order component after projection through the dq electromagnetic kernel. A rotor-coupled low-order deformation can therefore be mechanically significant while remaining first-order invisible to production dq electrical signals if its spatial deformation pattern is orthogonal to the dq electromagnetic sensitivity. The mode is mechanically present, but electrically invisible at first order under the passive symmetric projection. 
+
+F. Feasibility Boundary and Scope 
+
+The central implication of the local analysis is that the existence of a low-order rotor-coupled air-gap deformation mode does not by itself imply production-signal observability. For a selected deformation order r, first-order passive current observability and plant-level voltage reachability require a nonzero electromagnetic projection, 
+
+ℓλ =
+
+¯λd,g 
+
+¯λq,g 
+
+̸
+
+= 0 
+
+If the selected mode is orthogonal to the dq electromagnetic projection, then 
+
+ℓλ ≈ 0
+
+and the leading-order current-observation and voltage-reachability paths collapse: 
+
+AIg ≈ 0 AgI ≈ 0
+
+In that case, the deformation mode may be mechanically significant while remaining first-order invisible to passive pro-duction current signals. Similarly, resolver visibility requires a nonzero torque projection, 
+
+ρT = p  ¯λd,g Iq0 − ¯λq,g Id0
+
+ + ¯ wc,θ r ,g 
+
+and degenerates as 
+
+ρT → 0
+
+Thus, current visibility, resolver visibility, and voltage reachability are related but not equivalent. Current observation and voltage reachability share the same electromagnetic pro-jection bottleneck, ℓλ, whereas resolver observation depends on the torque-projection margin ρT .This result should not be interpreted as a weakness of the modeling framework. Rather, it identifies the condition under which passive production-signal-based observation and reachability are physically unavailable at first order. If cal-ibrated magnetic maps or experimental residuals produce a nonzero effective ℓλ, the Gramians from Section V quantify the resulting observability and reachability. If ℓλ remains near zero, the framework predicts that passive production electrical signals are insufficient for the selected mode. The conditions derived in this section are local, leading-order passive feasibility conditions. They identify the dominant physical couplings that enter the finite-time Gramians, but they 18 
+
+do not replace full numerical integration of the state transi-tion matrix. Long-horizon modal recirculation, damping and resonance effects, controller dynamics, inverter nonidealities, disturbance forcing, magnetic-map uncertainty, measurement noise, and input constraints must be evaluated through the complete finite-time framework or future validation. This passive feasibility boundary motivates the next step. If a selected low-order rotor-coupled deformation mode is first-order invisible under the passive dq projection, then passive sensing alone may be insufficient. The next section there-fore examines whether active symmetry-breaking mechanisms, such as saturation-assisted carriers or intentional harmonic injection, can create an additional carrier-dependent measure-ment or force projection for an otherwise passive-invisible mode. The transition from Section VI to Section VII should there-fore be understood as a shift from passive projection analysis to active projection design. Section VI identifies when the unmodified production signal set may be poorly conditioned. Section VII asks whether a physically realizable carrier can modify the electromagnetic projection itself, producing new carrier-dependent coefficients Γy (m) or ΓF (m).VII. C ARRIER -I NDUCED ELECTROMAGNETIC PROJECTION FOR OBSERVABILITY AND REACHABILITY 
+
+This section examines whether an active carrier can modify the projection problem. The central idea is not to directly measure local air-gap flux density. The controller cannot do that with production signals. Instead, the objective is to inject a known electromagnetic carrier that creates a carrier-dependent spatial weighting or force component. If this carrier interacts with the selected deformation mode, the otherwise passive-invisible mode may become visible through measurable side-bands or reachable through a carrier-induced generalized force. The carrier introduced here should not be interpreted as a conventional sensorless-position injection signal. High-frequency signal injection and carrier-based methods are well established for saliency-based or saturation-assisted sensorless position estimation [3]–[5]. Its role is not to estimate rotor position, classify eccentricity faults, or directly cancel a pre-measured harmonic response. Instead, the carrier is treated as an active electromagnetic projection mechanism that may cre-ate additional measurement or force channels for the selected air-gap deformation state. The key question is whether the injected carrier can change the projection structure from the passive coefficients ℓλ and ρT to carrier-dependent coefficients 
+
+Γy (m) and ΓF (m).Once the carrier is injected, the relevant system is generally not the same passive linearized plant used in Sections IV– VI. The carrier-on air-gap subsystem and residual channel are generally LTV, or LTP when the carrier is rotor-synchronous and the operating speed is locally constant. Therefore, the carrier-induced Gramians below are defined using carrier-on quantities such as Ag,c (t), Cg,c (t), Bg,c (t), and Φg,c .The reduced analytical expressions in this section expose the projection mechanism; complete carrier-on Floquet, harmonic-balance, or full finite-time LTV/LTP evaluation is left for future numerical validation. 
+
+A. Passive Degeneracy and the Need for Carrier-Induced Projection 
+
+The passive first-order flux-linkage perturbation has the form 
+
+δλ i(t) ≈ ¯λi,g g(t) i ∈ { d, q }
+
+When the passive projection degenerates, 
+
+¯λi,g ≈ 0
+
+the current channel loses first-order sensitivity to the se-lected deformation mode. This is the passive invisibility result derived in Section VI. However, this result only concerns the unmodified dq pro-jection. If an active carrier with amplitude ϵ is introduced, the flux linkage becomes a function of both the deformation coordinate and the carrier: 
+
+λi = λi(g, ϵ, t )
+
+The use of saturation-aware or energy-based models in signal-injection analysis motivates treating carrier response as a local mixed or bilinear electromagnetic effect [4], [5], [19], [20]. A local expansion gives 
+
+λi(g, ϵ, t ) = λi(0 , 0) + λi,ε ϵc (t) + λi,g g(t)+ λi,gε g(t)ϵc (t) + O(g2 + ϵ2)
+
+If the passive channel is degenerate, the mixed term may still remain: 
+
+δλ mix i (t) ≈ λi,gε ϵg (t)c(t)
+
+Thus, 
+
+λi,g = 0 ⇏ λi,gε = 0 
+
+This is the theoretical basis of carrier-assisted observability. Passive invisibility rules out the unmodified first-order dq projection, but it does not rule out bilinear coupling between the deformation and an injected carrier. The expansion above is a local small-signal statement. It does not imply that arbitrarily large carrier amplitudes are acceptable or that all carrier-induced sidebands are useful. The carrier amplitude must remain within a regime where the mixed projection is identifiable, while inverter limits, current-loop behavior, thermal loss, and additional electromagnetic noise remain acceptable. 
+
+B. Carrier-Induced Low-Order Saturation Masks 
+
+The controller cannot directly prescribe an arbitrary spatial weighting function around the air gap. It can only command voltages or currents through the available three-phase winding and inverter. Therefore, a useful carrier must be physically realizable by the motor winding and must create a nonzero spatial mixing component through saliency, saturation, slot-ting, winding harmonics, or other machine nonlinearities. 19 
+
+Let the dominant electromagnetic field have spatial order p,corresponding to the pole-pair number. In simplified form, the main field may be written as 
+
+Bp (β, t ) = Bp cos( pβ − ωet)
+
+Assume that the controller injects a small carrier that produces a spatial field component of order m,
+
+Bc (β, t ) = ϵB m cos( mβ − ωct + ϕc)
+
+The total field is approximately 
+
+B(β, t ) = Bp cos( pβ − ωet)+ ϵB m cos( mβ − ωct + ϕc)
+
+Magnetic saturation and Maxwell stress depend nonlinearly on the local field amplitude. A simple way to see the spatial mixing is to consider the cross term in B2:
+
+B2 ⊃ 2ϵB pBm cos( pβ − ωet) cos( mβ − ωct + ϕc)
+
+Using the product identity, the cross term contains spatial orders 
+
+m + p |m − p|
+
+Therefore, if the carrier order satisfies 
+
+|m − p| = r
+
+or equivalently, 
+
+m = p ± r
+
+then the carrier and the main field generate an r-order spatial beating pattern. The temporal frequency of this beating pattern depends on the carrier implementation and the reference frame, so it is represented compactly by a known carrier waveform 
+
+c(t).This field-mixing relation is a necessary spatial-matching condition in the simplified analytical picture, not a suffi-cient guarantee of useful projection. The winding distribu-tion, inverter bandwidth, current-regulation bandwidth, voltage headroom, saturation level, skew, slotting, and magnetic-map nonlinearity determine whether the commanded carrier actu-ally produces a usable m-order electromagnetic component. Therefore, the carrier must belong to the physically available carrier set, 
+
+m ∈ Mact 
+
+where Mact depends on winding factors, inverter band-width, current regulation bandwidth, voltage headroom, and allowed harmonic injection. Carrier realizability and useful injected-signal response are limited by winding saliency, sat-uration, inverter dynamics, and current-loop implementation, as also emphasized in signal-injection and harmonic-current studies [3]–[5], [12]–[16]. This r-order beating pattern acts as a carrier-induced satu-ration mask or force mask: 
+
+Wsat (β, t ) = 1 + ϵW r cos( rβ + ϕc)c(t) + O(ϵ2)
+
+This is the physical mechanism by which the controller may create useful asymmetry. The controller does not di-rectly impose a local air-gap sensor. It injects a realizable electromagnetic carrier. The motor’s nonlinear magnetic field converts the interaction between the main p-order field and the carrier m-order field into a low-order spatial mask. Here, m denotes the spatial order of the carrier-induced field component. Later, h denotes the order-domain or time-domain carrier order used in residual detection. The mapping between 
+
+h and m depends on winding distribution, reference frame, inverter dynamics, and current-loop behavior. 
+
+C. Carrier-Dependent Observation Coefficient 
+
+The carrier-induced saturation mask changes the measure-ment projection. Under passive sensing, the selected deforma-tion is projected through an unmodified dq kernel, 
+
+Z 2π
+
+> 0
+
+Ki(β)ϕr (β)dβ 
+
+If this projection vanishes, passive current observability degenerates. With a carrier-induced mask, the mixed projection becomes 
+
+Γy,i (m) = 
+
+Z 2π
+
+> 0
+
+Wm(β)Ki(β)ϕr (β) dβ i ∈ { d, q }
+
+where Wm(β) is the effective spatial weighting produced by the injected carrier of order m. The active observation condition is 
+
+Γy,i (m)̸ = 0 
+
+for at least one measured electrical channel i.If this condition holds, the mixed flux-linkage perturbation has the form 
+
+δλ mix i (t) ≈ ϵΓy,i (m) g(t)c (t)
+
+Define the carrier-dependent observation vector 
+
+Γy (m) = 
+
+Γy,d (m)Γy,q (m)
+
+
+
+Then the carrier-induced mixed flux perturbation can be written compactly as 
+
+δλ mix (t) ≈ ϵΓy (m) g(t)c(t)
+
+The time-frequency signature of this mixed term is dis-cussed in Section VII-E. 20 
+
+D. Carrier-Dependent Output Equation and Observability Gramian 
+
+To make the carrier-induced observation mechanism pre-cise, a specific production-accessible residual channel is se-lected. The primary channel in this framework is the carrier-synchronous dq voltage-equation residual, constructed from 
+
+V cmd d V cmd q Id Iq θr ωr
+
+This channel is preferred over raw current ripple because the current regulator may suppress current perturbations while the required compensation remains visible in voltage command, current-loop effort, or model residual form. Let 
+
+yc (t) = 
+
+rd,c (t)
+
+rq,c (t)
+
+
+
+denote the carrier-synchronous dq residual after subtracting the nominal voltage-equation prediction. The known carrier-only response is also removed, giving 
+
+˜yc (t) = yc (t) − ˆy0 (t) − ˆyϵ (t)
+
+where ˆy0 (t) is the nominal residual and ˆyϵ (t) is the residual produced by the injected carrier in the absence of the target deformation. With the carrier on, the local air-gap subsystem is generally LTV or LTP: 
+
+˙xg (t) = Ag,c (t)xg (t) + · · · 
+
+Periodic-system and LTV/LTP formulations provide the ap-propriate framework for analyzing carrier-on dynamics when the injected signal is rotor-synchronous or periodically mod-ulated [22], [23], [25]. The carrier-on state-transition matrix satisfies 
+
+˙Φg,c (t, t 0) = Ag,c (t)Φ g,c (t, t 0) Φg,c (t0, t 0) = I2
+
+If the carrier is rotor-synchronous and the operating speed is locally constant, then Ag,c (t) is locally periodic. If the carrier is fixed-frequency or the speed varies over the window, the system should be treated as LTV. The corresponding carrier-on output equation is 
+
+˜yc (t) = Cg,c (t) xg (t) + ν (t)
+
+where ν (t) represents residual noise and modeling error. In the small-carrier expansion, 
+
+Cg,c (t) = Cg, 0 (t) + ϵC g,ϵ (t) + O(ϵ2)
+
+The passive degeneracy discussed in Section VI corresponds to 
+
+Cg, 0 (t) ≈ 0
+
+for the selected deformation mode. The carrier-induced term is modeled as 
+
+Cg,ϵ (t) = c(t)Γ y(m) 1 0
+
+Thus, under the output-dominant small-carrier approxima-tion, 
+
+˜yc (t) ≈ ϵc (t)Γ y (m) g(t) + ν (t)
+
+Under the passive-degenerate output-dominant approxima-tion, this corresponds to 
+
+Cg,c (t) = ϵc (t)Γ y(m) 1 0
+
+The carrier-induced observability Gramian for the air-gap state is 
+
+W co,g (t0, t f ) = 
+
+Z tf
+
+> t0
+
+ΦTg,c (t, t 0)CTg,c (t)R−1
+
+> c
+
+Cg,c (t)Φ g,c (t, t 0) dt 
+
+where Rc is the effective covariance of the carrier-synchronous residual channel. Substituting the small-carrier output matrix gives 
+
+W co,g ≈ ϵ2
+
+Z tf
+
+> t0
+
+c2(t)Φ Tg,c (t, t 0)
+
+10
+
+
+
+ΓT 
+
+> y
+
+(m)R−1 
+
+> c
+
+Γy(m) 1 0 Φg,c (t, t 0) dt 
+
+Since 
+
+ΓT 
+
+> y
+
+(m)R−1 
+
+> c
+
+Γy(m)
+
+is scalar, this can be written as 
+
+W co,g ≈ ϵ2  ΓT 
+
+> y
+
+(m)R−1 
+
+> c
+
+Γy(m)Z tf
+
+> t0
+
+c2(t)Φ Tg,c (t, t 0)
+
+10
+
+ 1 0 Φg,c (t, t 0) dt 
+
+This expression shows that carrier-induced observability requires 
+
+ΓT 
+
+> y
+
+(m) R−1 
+
+> c
+
+Γy (m) > 0
+
+If 
+
+Γy (m) = 0 
+
+then the carrier does not create an observation channel, regardless of its amplitude. For analytical interpretation, one may further adopt an output-dominant approximation in which the carrier changes the residual channel more strongly than it changes the modal dynamics: 
+
+Ag,c (t) ≈ Ag (t) Φg,c (t, t 0) ≈ Φg (t, t 0)
+
+Then the reduced expression becomes 
+
+W co,g ≈ ϵ2  ΓT 
+
+> y
+
+(m)R−1 
+
+> c
+
+Γy(m)Z tf
+
+> t0
+
+c2(t)Φ Tg (t, t 0)
+
+10
+
+ 1 0 Φg (t, t 0) dt 21 
+
+This reduced form is not a replacement for the full carrier-on LTV/LTP Gramian. It is a first-order analytical approximation that exposes the carrier-induced measurement mechanism. In full numerical evaluation, Ag,c (t), Cg,c (t), and Φg,c should be computed using the carrier-on dynamics. When 
+
+Γy (m)̸ = 0 
+
+and the carrier has nonzero energy over the observation window, the residual provides a finite-time measurement of the deformation coordinate g. Through the air-gap dynamics, 
+
+˙g = vg
+
+finite-time evolution of this measurement can provide ob-servability of both g and vg , subject to conditioning, band-width, and noise limitations. 
+
+E. Sideband Detection in Production Residuals 
+
+The Gramian formulation establishes the carrier-induced observability mechanism. Sideband detection provides an im-plementation method. Suppose the selected deformation is rotor-synchronous, 
+
+g (t) = Ag cos( rθ r (t) + ϕg )
+
+and the injected carrier is 
+
+ch (t) = cos( hθ r (t) + ϕh)
+
+the mixed term is 
+
+g (t) ch (t) = Ag cos( rθ r + ϕg ) cos( hθ r + ϕh)
+
+Using the product identity, 
+
+g(t)ch(t) = Ag
+
+2
+
+h
+
+cos(( h + r)θr + ϕh + ϕg )+ cos(( h − r)θr + ϕh − ϕg )
+
+i
+
+Thus, the selected deformation does not need to appear directly at rX . Under carrier-assisted observation, it may appear as sidebands at 
+
+(h ± r) X
+
+In frequency-domain form, for a time-domain carrier fre-quency ωc, the sidebands appear at 
+
+ωc ± rΩ
+
+A lock-in detector can be applied to the carrier-synchronous residual: 
+
+zh±r =
+
+Z tf
+
+> t0
+
+˜yc(t)e−j(h±r)θr (t) dt 
+
+If carrier-induced observation exists, then the sideband magnitude scales approximately as 
+
+|zh±r | ∝ ϵA g |Γy(m)|
+
+This scaling provides an experimental consistency check. A useful carrier should produce sidebands that are absent or much weaker when the carrier is off, and whose magnitude increases approximately linearly with carrier amplitude ϵ in the small-signal regime. Order-domain signal-processing methods are commonly used to separate speed-synchronous compo-nents and nearby orders in rotating machinery [26], [27]. Thus, the practical search for a useful observation carrier can be written as 
+
+m, h, ϕ h, ω c, ϵ → | zh+r |2 + |zh−r |2
+
+The lock-in detector is therefore an implementation of the carrier-induced output equation, not a substitute for the observability analysis. The observability condition remains governed by the carrier-dependent projection Γy (m) and the finite-time Gramian W co,g .The sideband signature should be interpreted as a controlled consistency check rather than a standalone proof of modal observability. Similar sidebands may also arise from inverter nonlinearities, PWM effects, slotting harmonics, load ripple, or unrelated electromagnetic asymmetries. Therefore, a useful validation should compare carrier-off and carrier-on residuals, sweep carrier amplitude and phase, and verify the expected small-signal scaling 
+
+|zh±r | ∝ ϵA g |Γy(m)|
+
+Only sidebands that are repeatable, carrier-synchronous, phase-consistent, and distinguishable from the carrier-only baseline should be interpreted as evidence of carrier-induced observation. 
+
+F. Carrier-Induced Force Projection and Reachability Gramian 
+
+Carrier-induced observability does not automatically imply carrier-induced reachability. Observation depends on whether the selected deformation modulates a measurable electrical residual. Reachability depends on whether the injected car-rier can generate generalized electromagnetic force along the selected deformation mode. The generalized force associated with the air-gap deforma-tion coordinate is 
+
+Qg (t) = 
+
+Z 2π
+
+> 0
+
+pem (β, t )ϕr (β)dβ 
+
+where pem is the electromagnetic pressure distribution. If the injected carrier creates an r-order pressure component, 
+
+pem (β, t ) ⊃ Pr (t)ϕr (β)
+
+then 
+
+Qg (t)̸ = 0 
+
+and the selected deformation mode becomes reachable through carrier-induced electromagnetic forcing. 22 
+
+Using the same field-mixing argument, the cross term between the main p-order field and a carrier m-order field generates pressure components at 
+
+|m − p| = r
+
+Therefore, a carrier satisfying m = p ± r can, in the simpli-fied field-mixing picture, produce an r-order electromagnetic pressure component. If this component survives the winding, inverter, saturation, and magnetic-map projections, it may have nonzero projection onto ϕr , creating a generalized force path. Define the carrier-induced force projection coefficient 
+
+ΓF (m) = 
+
+Z 2π
+
+> 0
+
+pm(β)ϕr (β)dβ 
+
+where pm(β) is the carrier-induced pressure shape. The active reachability condition is 
+
+ΓF (m)̸ = 0 
+
+With the carrier on, the air-gap subsystem is generally LTV or LTP: 
+
+˙xg (t) = Ag,c (t) xg (t) + Bg,c (t) uc (t)
+
+where uc (t) denotes the carrier-amplitude or carrier-phase control input associated with the selected carrier. Since the generalized force enters the air-gap acceleration equation, the carrier-induced input matrix has the form 
+
+Bg,c (t) = ϵΓF (m)
+
+mg
+
+c(t)
+
+01
+
+
+
+The carrier-induced reachability Gramian is therefore 
+
+W cr,g (t0, t f ) = 
+
+Z tf
+
+> t0
+
+Φg,c (tf , τ )Bg,c (τ )R−1
+
+> u,c
+
+BTg,c (τ )Φ Tg,c (tf , τ ) dτ 
+
+where Ru,c is the input weighting associated with the carrier command. For a scalar carrier input, this becomes 
+
+W cr,g ≈ ϵ2Γ2 
+
+> F
+
+(m)
+
+m2
+
+> g
+
+R−1
+
+> u,c
+
+Z tf
+
+> t0
+
+c2(τ )Φ g,c (tf , τ )
+
+01
+
+0 1 ΦTg,c (tf , τ ) dτ 
+
+This expression shows that carrier-induced reachability re-quires 
+
+ΓF (m)̸ = 0 
+
+and nonzero carrier energy over the control horizon, 
+
+Z tf
+
+> t0
+
+c2 (τ ) dτ > 0
+
+For analytical interpretation, one may again use an output/input-dominant approximation, 
+
+Ag,c (t) ≈ Ag (t) Φg,c (tf , τ ) ≈ Φg (tf , τ )
+
+Then 
+
+W cr,g ≈ ϵ2Γ2 
+
+> F
+
+(m)
+
+m2
+
+> g
+
+R−1
+
+> u,c
+
+Z tf
+
+> t0
+
+c2(τ )Φ g (tf , τ )
+
+01
+
+0 1 ΦTg (tf , τ ) dτ 
+
+For a short-horizon approximation, let 
+
+∆ = tf − τ
+
+Neglecting damping and stiffness over an infinitesimal hori-zon, 
+
+Φg (tf , τ )
+
+01
+
+
+
+≈
+
+∆1
+
+
+
+Therefore, 
+
+W cr,g ≈ ϵ2Γ2 
+
+> F
+
+(m)
+
+m2
+
+> g
+
+R−1
+
+> u,c
+
+Z H
+
+> 0
+
+c2(tf − ∆) 
+
+∆2 ∆∆ 1
+
+
+
+d∆
+
+This reduced expression is the carrier-induced analogue of the passive reachability Gramian. It shows explicitly that the carrier force projection enters through modal acceleration, not directly through modal displacement. Carrier-induced reachability is a channel-existence and con-ditioning measure, not a guarantee of practical active sup-pression. Harmonic current injection and torque-ripple miti-gation studies demonstrate that injected electrical harmonics can influence electromagnetic torque and force components, but practical implementation remains constrained by inverter, current-loop, loss, and NVH limitations [12]–[16]. Practical force authority depends on whether the inverter and current regulator can synthesize the required carrier without violating DC-bus voltage limits, current limits, PWM resolution, carrier-frequency ratio, field-weakening margin, thermal and loss budgets, acoustic constraints, or electromagnetic compatibility constraints. A carrier may satisfy ΓF (m)̸ = 0 and still be unusable if the required amplitude is too large or if it introduces unacceptable torque ripple, copper loss, iron loss, or additional NVH components. Therefore, the reachability condition in this section should be interpreted as a necessary feasibility condition for active excitation or suppression, not as a sufficient condition for closed-loop attenuation. 
+
+G. Order-Domain Verification of Carrier-Induced Reachabil-ity 
+
+The reachability Gramian in Section VII-F establishes whether the injected carrier can generate generalized electro-magnetic force along the selected air-gap deformation mode. In implementation, this force path is usually not measured directly. It must be inferred from the response of the system to a known carrier command. Let the carrier command be 
+
+uc (t) = Uc cos( hθ r (t) + ϕu)23 
+
+where Uc and ϕu are the carrier amplitude and phase. If the selected carrier produces a nonzero force projection, 
+
+ΓF (m)̸ = 0 then the air-gap subsystem receives a carrier-induced modal forcing term, 
+
+˙xg (t) = Ag,c (t) xg (t) + Bg,c (t) uc (t)
+
+The resulting deformation response is given by the finite-time input-to-state map 
+
+xg (t) = Φ g,c (t, t 0)xg (t0)+
+
+Z tt0
+
+Φg,c (t, τ )Bg,c (τ )uc(τ ) dτ 
+
+If a carrier-dependent observation channel is also available, 
+
+Γy (m)̸ = 0 
+
+then the modal response appears in the carrier-synchronous residual, 
+
+˜yc (t) = Cg,c (t) xg (t) + ν (t)
+
+Substituting the input-to-state response gives the production-measurable input-output relation 
+
+˜yc(t) ≈ Cg,c (t)
+
+Z tt0
+
+Φg,c (t, τ )Bg,c (τ )uc(τ ) dτ 
+
++ ν(t)
+
+after neglecting the free response or after subtracting the carrier-off baseline. Thus, a nonzero production-measurable reachability signa-ture requires both a force path and a measurement path: 
+
+ΓF (m)̸ = 0 Γy (m)̸ = 0 
+
+Carrier-induced reachability can be checked by sweep-ing carrier amplitude and phase and observing the carrier-synchronous residual response. In the small-signal regime, the response magnitude should scale approximately with carrier amplitude, 
+
+|zy| ∝ Uc|ΓF (m)|| Γy(m)|| Hg |
+
+where Hg denotes the finite-time modal compliance from carrier-induced generalized force to the air-gap deformation coordinate. This production-residual test verifies the combined input-output path, not the force path alone. If Γy (m) is weak or zero, a nonzero ΓF (m) may still exist but remain invisible in production electrical residuals. In that case, carrier-induced force authority must be validated using external NVH or vibration measurements, such as housing acceleration, acoustic response, shaft vibration, or dynamometer instrumentation. A phase sweep provides an additional consistency check. If the carrier generates modal force, changing the carrier phase 
+
+ϕu should rotate the phase of the measured residual response. Near resonance, the response phase should also reflect the dynamics of the air-gap subsystem. For order-domain implementation, the response can be eval-uated using the same carrier sideband structure discussed in Section VII-E. A carrier command at order h interacting with a selected deformation order r produces measurable residual components at 
+
+(h ± r) X
+
+provided that the carrier both excites the mode and allows the resulting response to be observed. Therefore, the reacha-bility verification metric can be written as 
+
+JF (m) = |zh+r |2 + |zh−r |2
+
+evaluated under controlled sweeps of Uc, ϕu, and operating condition. If no production-accessible observation channel exists, pro-duction data alone cannot verify reachability. In that case, a nonzero ΓF (m) must be validated using external NVH or vibration measurements, such as housing acceleration, acoustic response, shaft vibration, or dynamometer instrumentation. This distinction is important: carrier-induced force authority may exist even when the production electrical residual remains weak. 
+
+H. Summary and Scope of Carrier-Induced Coupling 
+
+The carrier-induced framework changes the passive projec-tion problem. In the passive model, a selected low-order air-gap deformation may satisfy ℓλ ≈ 0, causing the first-order current-observation and voltage-reachability paths to collapse. With an injected carrier, the relevant quantities become the carrier-dependent measurement and force projections, Γy (m)
+
+and ΓF (m).The condition 
+
+Γy (m)̸ = 0 
+
+indicates that the selected deformation can modulate aproduction-accessible residual channel. The condition 
+
+ΓF (m)̸ = 0 
+
+indicates that the carrier can generate generalized electro-magnetic force along the selected deformation mode. These conditions are related but not equivalent. Diagnostic observation requires Γy (m)̸ = 0 , active excitation or suppres-sion requires ΓF (m)̸ = 0 , and closed-loop active attenuation requires both 
+
+Γy (m)̸ = 0 ΓF (m)̸ = 0 
+
+The useful carrier is not arbitrary. For a selected low-order deformation of order r, the simplified field-mixing condition is 
+
+m = p ± r
+
+with 
+
+m ∈ Mact 24 
+
+Thus, the feasibility of carrier-induced observability or reachability depends on whether the winding, inverter, current regulator, magnetic saturation, and allowable harmonic injec-tion can synthesize a carrier that creates a nonzero projection for the selected mode. Carrier-induced probing is therefore not ordinary small-signal probing through the passive linear channel. It introduces a known electromagnetic carrier that can create a new bilinear measurement or force projection. Hence 
+
+ℓλ ≈ 0
+
+does not imply 
+
+Γy(m) = 0 or ΓF (m) = 0 
+
+This reframes the limitation from passive observability to active carrier design. The coefficients Γy (m) and ΓF (m) should be interpreted as carrier-on feasibility quantities. In a production validation workflow, they should be estimated from FEM-calibrated co-energy maps, carrier-on electromagnetic simulation, controlled carrier sweeps, or residual measurements rather than assumed from the simplified harmonic closure alone. The simplified field-mixing argument identifies promising carrier orders and projection mechanisms; it does not replace numerical magnetic calibration, controller modeling, or experimental validation. VIII. P HYSICALLY ANCHORED NUMERICAL FEASIBILITY 
+
+STUDIES 
+
+The previous sections derived the passive and carrier-induced coupling mechanisms using magnetic co-energy, finite-time Gramians, and local projection arguments. This section provides two numerical feasibility studies that make those mechanisms computationally explicit. The objective is not to validate the production motor or predict absolute current, voltage, vibration, or acoustic amplitudes. Instead, the objective is to test two framework-level questions under physically anchored but non-FEM-calibrated assumptions. First, the passive projection study evaluates whether se-lected low-order deformation components survive a symmetry-preserving dq projection when the motor architecture is repre-sented by a 48-slot, 8-pole configuration. Second, the carrier-induced residual study evaluates how large the composite carrier-induced projection must be before a sideband becomes detectable under finite-window residual noise and near-order disturbance leakage. These studies should therefore be interpreted as numerical feasibility demonstrations of the proposed framework. They do not replace FEM-calibrated magnetic maps, structural modal validation, controller-in-the-loop simulation, inverter-constrained carrier synthesis, or dynamometer experiments. High-fidelity PMSM NVH prediction generally requires cou-pled electromagnetic, structural, and acoustic modeling or FEM-calibrated force maps [1], [2], [21], [24]. 
+
+A. Architecture-Aware Passive Projection Study 
+
+The first study evaluates the passive projection mechanism derived in Section VI. The motivating machine architecture is represented as a 48-slot, 8-pole electric machine. Therefore, the total number of magnetic poles and the pole-pair number are 
+
+Npole = 8 p = Npole 
+
+2 = 4 
+
+The ideal continuous dq basis is defined as 
+
+bd(β) = cos( pβ ) bq (β) = sin( pβ )
+
+where β is the rotor-fixed circumferential coordinate. The selected deformation component is represented as 
+
+ϕr (β) = cos( rβ + ϕg )
+
+where r is the selected low-order deformation order and ϕg
+
+is the deformation phase. To evaluate the projection numerically, a representative normalized PM MMF field is used, 
+
+Fm(β) = X
+
+> n∈Hm
+
+an cos( npβ + φn)
+
+where the baseline study includes the fundamental and selected higher PM harmonics. The purpose of this field representation is not to reproduce the real magnetic field. It only provides a normalized electromagnetic kernel through which the low-order deformation is projected. For each selected deformation order, the PM flux-linkage sensitivity terms are approximated by the normalized spatial averages 
+
+ψ(r) 
+
+> d,g
+
+= − ⟨ M (β)bd(β)Fm(β)ϕr (β)⟩
+
+ψ(r) 
+
+> q,g
+
+= − ⟨ M (β)bq (β)Fm(β)ϕr (β)⟩
+
+where ⟨·⟩ denotes the full-circumference average and M (β)
+
+is the projection mask. The ideal continuous case uses 
+
+M (β) = 1 
+
+A second architecture-aware proxy is also evaluated using a 48-slot winding kernel with six skew layers. This proxy preserves the slot count, pole-pair number, distributed winding structure, and axial skew averaging, but it is not a measured winding function or FEM-derived magnetic map. The inductance-sensitivity terms are approximated simi-larly: 
+
+L(r) 
+
+> dd,g
+
+= − M (β)b2
+
+> d
+
+(β)ϕr (β)
+
+L(r) 
+
+> dq,g
+
+= − ⟨ M (β)bd(β)bq (β)ϕr (β)⟩
+
+L(r) 
+
+> qq,g
+
+= − M (β)b2 
+
+> q
+
+(β)ϕr (β)25 1 2 3 4
+
+Deformation order r
+
+10 -10 
+
+10 0
+
+> Normalized max k`6 (r)k
+
+Numerical .oor (10!12 )
+
+Ideal continuous dq basis 
+
+48-slot + 6-layer skew proxy  
+
+> Fig. 1. Normalized passive projection magnitude for selected low-order deformation orders under an ideal continuous dq basis and a 48-slot six-layer skew proxy.
+
+For a representative normalized loaded operating point 
+
+(Id0, I q0), the passive flux-linkage sensitivity vector is then computed as 
+
+ℓ(r) 
+
+> λ
+
+=
+
+"
+
+λ(r)
+
+> d,g
+
+λ(r)
+
+> q,g
+
+#
+
+where 
+
+λ(r) 
+
+> d,g
+
+= ψ(r) 
+
+> d,g
+
++ Id0L(r) 
+
+> dd,g
+
++ Iq0L(r)
+
+> dq,g
+
+λ(r) 
+
+> q,g
+
+= ψ(r) 
+
+> q,g
+
++ Id0L(r) 
+
+> dq,g
+
++ Iq0L(r)
+
+> qq,g
+
+The reported magnitude is normalized by the projection ob-tained from a uniform air-gap perturbation, r = 0 . Therefore, 
+
+∥ℓλ(r)∥norm =max ϕg ℓ(r) 
+
+> λ
+
+(ϕg ) 2
+
+max ϕg ℓ(0)  
+
+> λ
+
+(ϕg ) 2
+
+This normalization avoids assigning physical units to the non-FEM-calibrated model and allows the study to focus on relative projection strength. Fig. 1 shows that the selected low-order deformation orders 
+
+r = 1 , 2, 3, 4
+
+remain below the numerical floor under both the ideal continuous dq basis and the 48-slot six-layer skew proxy. This indicates that the architecture-aware proxy preserves the same symmetry-conditioned cancellation predicted by the ideal con-tinuous projection model. Under this symmetric closure, the selected low-order deformation can be mechanically present while producing no first-order passive dq electrical projection. To evaluate whether this passive cancellation is structurally fragile, a controlled low-order symmetry-breaking perturbation is introduced: 
+
+Mη (β) = 1 + η cos(2 β + ϕη )Low-order asymmetry amplitude 2 (%)
+
+0 1 2 3 4 5
+
+> Normalized max k`6k for r = 2
+
+0
+
+0.005 
+
+0.01 
+
+0.015 
+
+0.02 
+
+0.025 
+
+Ideal continuous dq basis 
+
+48-slot + 6-layer skew proxy     
+
+> Fig. 2. Reopening of the r= 2 passive projection under a controlled low-order symmetry-breaking perturbation.
+
+where η is the low-order asymmetry amplitude. This per-turbation is not intended to represent a specific manufacturing defect. It is used only to test how an order-2 symmetry-breaking component can reopen the passive projection path. Fig. 2 shows that the normalized passive projection for the motivating r = 2 case increases approximately linearly with η. This result demonstrates that passive invisibility is a symmetry-conditioned cancellation result, not a universal absence of electromechanical coupling. In a real machine, manufacturing variation, rotor or stator eccentricity, localized saturation, magnet-to-magnet variation, skew imperfections, or calibrated magnetic-map asymmetry may reopen a weak passive electrical path. 
+
+B. Carrier-Induced Residual Detectability Study 
+
+The second study evaluates the detectability of a carrier-induced residual sideband under finite-window noise and near-order disturbance conditions. This study supports the carrier-induced observability mechanism developed in Section VII. The carrier-on residual model is written in order-domain form as 
+
+˜yc(θ) = α cos( hθ + ϕh) cos( rθ + ϕg ) + ν(θ)
+
+where θ is the mechanical angle, r is the selected deforma-tion order, h is the carrier order, and ν(θ) represents residual noise. The composite projection strength is 
+
+α = ϵA g ∥Γy∥
+
+where ϵ is the carrier amplitude, Ag is the deformation amplitude, and ∥Γy∥ is the carrier-induced measurement pro-jection magnitude. The study does not assume a calibrated value of Γy. Instead, 
+
+α is treated as an independent variable. This reframes carrier-induced observability as a detectability-threshold problem: 26 
+
+How large must α be for the carrier-induced sideband to exceed the residual noise floor? For the motivating Order-2 case, 
+
+r = 2 
+
+The carrier order is selected as 
+
+h = 6 
+
+which corresponds to the p + r candidate for p = 4 . The target sidebands are therefore 
+
+h − r = 4 X h + r = 8 X
+
+Using the product identity 
+
+cos( hθ + ϕh) cos( rθ + ϕg ) = 12 cos(( h + r)θ + ϕh + ϕg )+ 12 cos(( h − r)θ + ϕh − ϕg )
+
+each ideal sideband has amplitude 
+
+α
+
+2
+
+A lock-in detector is used to estimate the sideband ampli-tude at a selected order s:
+
+zs = 2 
+
+P 
+
+> k
+
+wk ˜yc(θk)e−jsθ k
+
+P 
+
+> k
+
+wk
+
+where wk is a Hann window over the finite observation interval. The sideband response is evaluated at both 
+
+s = h ± r
+
+The sideband SNR is defined as 
+
+SNR = 
+
+q 12
+
+ z2 
+
+> h−r
+
++ z2
+
+> h+r
+
+
+
+σz
+
+where σz is the lock-in noise floor estimated from noise-only Monte Carlo trials. Fig. 3 shows the sideband SNR as a function of α. The Monte Carlo estimate follows the analytical α/ 2 sideband scal-ing, confirming that the lock-in detector recovers the carrier-induced residual projection in the finite-window simulation. More importantly, the plot identifies the projection strengths 
+
+α3 α5
+
+which indicate the projection strength required to exceed SNR levels of 3 and 5. Since the ideal sideband amplitude is 
+
+α/ 2, these thresholds satisfy approximately 
+
+α3 = 6 σz α5 = 10 σz
+
+Thus, a nonzero carrier-induced projection coefficient is not sufficient by itself. Practical residual observability requires the composite projection strength 
+
+ϵA g ∥Γy∥10 -4 10 -3 10 -2 
+
+Carrier-induced projection strength , = 0Ag k!y k
+
+10 0
+
+10 1
+
+10 2                      
+
+> Sideband SNR jzh'r j=<z
+> SNR=3
+> SNR=5,3
+> ,5
+> MonteCarloestimate
+> Analytical,=2scaling
+> Fig. 3. Sideband SNR as afunction of the composite carrier-induced projection strength α=ϵA g∥Γy∥
+
+Near-order disturbance strength / reference target strength
+
+0 0.5 1 1.5 2
+
+> False lock-in level / noise .oor
+
+0
+
+1
+
+2
+
+3
+
+4
+
+5           
+
+> SNR=3
+> 20 revolutions
+> 80 revolutions
+> Fig. 4. False lock-in response at the target h±rsidebands caused by near-order disturbances at 1.85 X,1.95 X,2.05 X, and 2.15 X.
+
+to exceed a finite-window noise threshold. The second part of the study evaluates false lock-in caused by near-order disturbances. The target Order-2 component is turned off, and near-order disturbance components are introduced at 
+
+1.85 X 1.95 X 2.05 X 2.15 X
+
+These components are mixed with the same carrier order 
+
+h = 6 . Although they do not generate sidebands exactly at 
+
+4X and 8X, finite-window spectral leakage can cause them to appear in the h ± r lock-in detectors. Fig. 4 compares false lock-in levels for 20-revolution and 80-revolution observation windows. The short 20-revolution window shows increasing false lock-in response as the near-order disturbance strength increases. In contrast, the 80-revolution window remains close to the noise floor over the tested range. This indicates that carrier-synchronous residual validation must account for observation-window length and 27 
+
+near-order disturbance leakage. Longer order-domain obser-vation windows improve discrimination between true h ±
+
+r carrier-induced sidebands and nearby disturbance-induced components. The use of longer order-domain observation win-dows to improve separation of nearby components is consis-tent with rotating-machinery order-domain signal-processing practice [26], [27]. 
+
+C. Interpretation and Limitations 
+
+The two numerical studies support the projection and de-tectability mechanisms developed in the previous sections, but they do not validate the real production motor. The first study shows that the passive-degeneracy mecha-nism survives a symmetry-preserving architecture-aware pro-jection proxy. Under both the ideal continuous dq basis and the 48-slot six-layer skew proxy, the selected low-order de-formation components remain below the numerical floor. This supports the argument that a mechanically present low-order mode may be first-order invisible to passive dq electrical pro-jection under symmetric conditions. The symmetry-breaking sweep further shows that this invisibility can be weakened by low-order asymmetry. The second study shows that carrier-induced observability should be interpreted as a finite-window residual detectabil-ity problem. The carrier-induced projection must be strong enough to exceed the residual noise floor, and the detected sideband must be distinguishable from near-order disturbance leakage. Therefore, a sideband signature should not be treated as standalone proof of modal observability. It should be interpreted together with carrier-off baselines, carrier-on re-peatability, phase consistency, observation-window length, and disturbance rejection. The limitations of these studies are explicit. The passive projection study does not use FEM-calibrated magnetic maps, measured winding functions, measured PM fields, or real manufacturing variations. The carrier-induced detectability study does not estimate the real value of Γy(m), does not model inverter voltage constraints, does not include current-loop dynamics, and does not use measured residual noise spectra. Therefore, the results should be read as numerical feasibility demonstrations of the framework, not as predictions of production motor behavior. A complete validation workflow would require FEM-calibrated co-energy maps, structural or experimental modal identification of the selected air-gap deformation coordinate, carrier-on electromagnetic simulation, controller and inverter feasibility analysis, and controlled dynamometer experiments with production signal logging and external NVH reference measurements. IX. C ONCLUSIONS AND FUTURE VALIDATION ROADMAP 
+
+This paper developed a sensor-limited observability and carrier-induced reachability framework for low-order rotor-coupled NVH in production electric drives. The motivating problem is a low-order rotor-coupled vibration component that is mechanically relevant under load but not directly mea-sured by production sensors. The central question is therefore whether such a mode can be inferred or influenced using production-accessible current, voltage-command, resolver, and carrier-synchronous residual signals. The analysis represented the selected vibration component as a reduced air-gap deformation state, 
+
+xg =
+
+ gvg
+
+
+
+and embedded it into a magnetic co-energy-based elec-tromechanical model. Finite-time Gramians were then used to evaluate passive current observability, resolver observability, and plant-level voltage-to-air-gap reachability. The passive analysis identified the flux-linkage sensitivity vector ℓλ as the common bottleneck for passive current observability and passive voltage reachability, while resolver observability was shown to depend on a separate torque-projection condition. This paper further showed that passive dq invisibility does not necessarily imply carrier-induced invisibility. With an injected carrier, the relevant feasibility quantities become the carrier-dependent measurement and force projections, Γy(m)
+
+and ΓF (m). Two physically anchored numerical studies were included to demonstrate the computational structure of the framework: an architecture-aware passive projection study and a carrier-induced residual detectability study. These studies support the feasibility logic but do not replace FEM-calibrated magnetic maps, controller/inverter modeling, or experimental validation. 
+
+A. Main Conclusions 
+
+The main conclusions are as follows. First, a low-order rotor-coupled air-gap deformation can be mechanically relevant while remaining first-order invisible to passive dq electrical signals. This occurs when the selected deformation is orthogonal to the winding-level dq electromag-netic projection. Second, passive current observability and passive voltage-to-air-gap reachability share the same electromagnetic bottle-neck, ℓλ. When ℓλ ≈ 0, both the passive current-observation path and the passive plant-level voltage-to-air-gap force path become locally degenerate. Third, resolver observability is governed by a separate torque-projection condition, ρT . A nonzero flux-linkage sen-sitivity vector does not automatically imply a usable resolver signature, because the deformation-induced torque must sur-vive rotor inertia, filtering, estimator bandwidth, quantization, and noise. Fourth, passive invisibility does not imply carrier-induced invisibility. A carrier can introduce a bilinear measurement or force projection through carrier-dependent coefficients Γy(m)
+
+and ΓF (m). Therefore, 
+
+ℓλ ≈ 0
+
+does not imply 
+
+Γy(m) = 0 ΓF (m) = 0 28 
+
+Fifth, carrier-induced observability and reachability are dis-tinct. A carrier may create a measurable residual projection without generating useful modal force, or it may gener-ate modal force that remains invisible to production elec-trical residuals. Therefore, observation feasibility and force-authority feasibility must be evaluated separately. Sixth, carrier-induced residual detection is a finite-window signal-conditioning problem. A nonzero Γy(m) is not suffi-cient by itself. The composite projection strength ϵA g ∥Γy∥
+
+must exceed the residual noise floor and remain distinguish-able from carrier-off baselines, carrier-only response, near-order leakage, inverter nonlinearities, and unrelated harmonic disturbances. 
+
+B. Future Validation Roadmap 
+
+This paper establishes the theoretical and computational framework, but it does not provide full production-motor validation. A complete validation workflow should proceed through five high-level stages. 
+
+1) FEM-Calibrated Magnetic Projection: The first vali-dation step is to replace the analytical co-energy closure with FEM-calibrated or experimentally identified magnetic maps. FEM-calibrated electromagnetic force, flux, and skew effects are commonly required for quantitative PMSM NVH prediction [1], [2], [21], [24]. The required maps are 
+
+wc(Id, I q , θ r , g )
+
+λd(Id, I q , θ r , g ) λq (Id, I q , θ r , g )
+
+and their derivatives with respect to the selected air-gap deformation coordinate. The key quantities to estimate are 
+
+λd,g λq,g wc,θ r ,g wc,gg 
+
+These quantities determine the passive current-observation path, the passive voltage-to-air-gap reachability path, the re-solver torque-projection path, and the electromagnetic stiffness contribution. For the carrier-on problem, FEM-calibrated or experimen-tally identified magnetic maps should also be used to estimate 
+
+Γy(m) ΓF (m)
+
+rather than assuming them from the simplified harmonic field-mixing argument alone. This step would convert the current analytical feasibility framework into a calibrated elec-tromagnetic projection model. 
+
+2) Reduced Air-Gap Modal Validation: The second vali-dation step is to identify whether the selected air-gap coordi-nate g corresponds to a measurable structural or operational deformation component. This paper treats g as a reduced electromagnetic projection coordinate, not as a full structural model. A validation workflow should therefore estimate or identify the modal parameters 
+
+mg cg kg
+
+and relate the selected deformation order r to measured vibration, housing acceleration, shaft response, acoustic re-sponse, or operational deflection behavior. This step may use structural FEM, rotor-bearing-stator modal analysis, impact or shaker testing, operational vibration measurements, or dynamometer-based modal response fitting. The objective is not to replace the electromagnetic projection framework, but to ground the reduced coordinate g in a physically identifiable deformation or response component. 
+
+3) Carrier-On LTV/LTP Simulation: The third validation step is to simulate the carrier-on dynamics using calibrated electromagnetic and modal quantities. Once a carrier is in-jected, the relevant system is generally LTV, or LTP when the carrier is rotor-synchronous and the operating speed is locally constant. Therefore, future simulation should compute 
+
+Ag,c (t) Cg,c (t) Bg,c (t) Φg,c (t, t 0)
+
+and the corresponding carrier-on Gramians, 
+
+W co,g W cr,g 
+
+This step should evaluate how carrier amplitude, carrier phase, carrier order, operating speed, current operating point, saturation level, and observation-window length affect carrier-induced observability and reachability. Floquet analysis, har-monic balance, or direct finite-time LTV integration may be used depending on the carrier implementation and operating condition. 
+
+4) Controller and Inverter Feasibility: The fourth valida-tion step is to evaluate whether the carrier required by the projection analysis can be implemented by the production inverter and current controller. The carrier must be feasible not only electromagnetically, but also electrically and thermally. The relevant constraints include DC-bus voltage, voltage headroom, field-weakening margin, current limit, current-loop bandwidth, command filtering, PWM frequency, inverter dead time, sampling rate, thermal and loss budgets, acoustic side effects, and electromagnetic compatibility constraints. This stage should determine whether a carrier satisfying 
+
+m = p ± r m ∈ Mact 
+
+can be synthesized with acceptable voltage, current, loss, and NVH side effects. It should also determine whether the current regulator suppresses the desired perturbation, whether the carrier remains visible in voltage-equation residuals, and whether the injected carrier creates unacceptable torque ripple or new acoustic components. 
+
+5) Experimental Validation with Production Signals and External NVH References: The final validation step is con-trolled experimental testing. Production-accessible logs should include 
+
+Id Iq V cmd d V cmd q θr ωr
+
+while external reference measurements should include at least one independent NVH or vibration channel, such as housing acceleration, microphone response, laser vibrometer 29 
+
+measurement, shaft vibration, torque ripple, or dynamometer instrumentation. The experimental workflow should compare carrier-off residuals, carrier-on residuals, carrier-only baselines, and ex-ternal NVH response. A useful carrier-induced observation signature should be repeatable, carrier-synchronous, phase-consistent, and distinguishable from near-order leakage and unrelated harmonic disturbances. A useful force-path signature should show that the injected carrier can influence the exter-nal NVH or vibration response associated with the selected mode. External vibration and order-domain measurements are standard tools for rotating-machine validation and condition monitoring [26], [27]. Closed-loop attenuation should be treated as a later ob-jective. The present framework establishes observability and reachability feasibility. Active suppression would require ad-ditional controller design, stability analysis, robustness assess-ment, constraint handling, and validation that the carrier does not introduce unacceptable secondary NVH or loss. 
+
+C. Closing Statement 
+
+The main contribution of this paper is a feasibility frame-work for deciding whether a production electric drive has enough signal and actuation structure to observe or influence a selected low-order rotor-coupled NVH mode. The framework separates four questions that are often conflated: passive elec-trical visibility, resolver torque-path visibility, carrier-induced residual observability, and carrier-induced force reachability. This separation is important for production electric drives because a low-order vibration may be mechanically important yet nearly invisible to passive electrical measurements. Con-versely, an active carrier may create a measurable residual projection or a force projection even when the passive dq projection is degenerate. The practical value of the approach is therefore not the assumption that carrier injection always works, but the ability to define when it can work, what must be calibrated, and what failure modes must be checked before attempting active NVH suppression. The framework remains incomplete without calibrated mag-netic maps, structural or experimental modal validation, con-troller and inverter feasibility analysis, and dynamometer test-ing. However, it provides a structured path from a production NVH observation to a research program in sensor-limited esti-mation, electromagnetic projection, and learning- or probing-assisted control of intelligent physical systems under limited measurement conditions. REFERENCES [1] F. Soresini, D. Barri, F. Ballo, M. Gobbi, and G. Mastinu, “Noise and vibration modeling of permanent magnet synchronous motors: A review,” IEEE Transactions on Transportation Electrification , vol. 10, no. 4, pp. 8728–8745, Dec. 2024. [2] L. Wang, X. Wang, N. Li, and T. Li, “Modelling and analysis of electro-magnetic force, vibration, and noise in permanent magnet synchronous motor for electric vehicles under different working conditions consider-ing current harmonics,” IET Electric Power Applications , vol. 17, no. 7, pp. 952–964, 2023. [3] M. J. Corley and R. D. Lorenz, “Rotor position and velocity estimation for a salient-pole permanent magnet synchronous machine at standstill and high speeds,” IEEE Transactions on Industry Applications , vol. 34, no. 4, pp. 784–789, 1998. [4] A. K. Jebai, F. Malrait, P. Martin, and P. Rouchon, “Signal injection and averaging for position estimation of permanent-magnet synchronous motors,” arXiv:1203.5672, 2012. [5] ——, “Sensorless position estimation of permanent-magnet synchronous motors using a saturation model,” arXiv:1207.5743, 2012. [6] S. Nandi, H. A. Toliyat, and X. Li, “Condition monitoring and fault diagnosis of electrical motors-A review,” IEEE Transactions on Energy Conversion , vol. 20, no. 4, pp. 719–729, Dec. 2005. [7] A. Aggarwal and E. G. Strangas, “Review of detection methods of static eccentricity for interior permanent magnet synchronous machine,” 
+
+Energies , vol. 12, no. 21, 2019, art. no. 4105. [8] B. M. Ebrahimi, J. Faiz, and M. J. Roshtkhari, “Static-, dynamic-, and mixed-eccentricity fault diagnoses in permanent-magnet synchronous motors,” IEEE Transactions on Industrial Electronics , vol. 56, no. 11, pp. 4727–4739, Nov. 2009. [9] B. M. Ebrahimi, M. J. Roshtkhari, J. Faiz, and S. V. Khatami, “Advanced eccentricity fault recognition in permanent magnet synchronous motors using stator current signature analysis,” IEEE Transactions on Industrial Electronics , vol. 61, no. 4, pp. 2041–2052, Apr. 2014. [10] T. Goktas, M. Zafarani, and B. Akin, “Discernment of broken magnet and static eccentricity faults in permanent magnet synchronous motors,” 
+
+IEEE Transactions on Energy Conversion , vol. 31, no. 2, pp. 578–587, Jun. 2016. [11] R. Z. Haddad, C. A. Lopez, S. N. Foster, and E. G. Strangas, “A voltage-based approach for fault detection and separation in permanent magnet synchronous machines,” IEEE Transactions on Industry Applications ,vol. 53, no. 6, pp. 5305–5314, Nov.–Dec. 2017. [12] T. M. Jahns and W. L. Soong, “Pulsating torque minimization techniques for permanent magnet AC motor drives-A review,” IEEE Transactions on Industrial Electronics , vol. 43, no. 2, pp. 321–330, Apr. 1996. [13] L. Yan, Y. Liao, H. Lin, and J. Sun, “Torque ripple suppression of permanent magnet synchronous machines by minimal harmonic current injection,” IET Power Electronics , vol. 12, no. 6, pp. 1368–1375, 2019. [14] F. Erken, E. Oksuztepe, and H. Kurum, “Online adaptive decision fusion based torque ripple reduction in permanent magnet synchronous motor,” 
+
+IET Electric Power Applications , vol. 10, no. 3, pp. 189–196, 2016. [15] L. Dai, S. Niu, X. Yuan, and C. C. Chan, “Data-driven current harmonic optimization for minimizing torque ripple and injection losses in PMSM drives,” IEEE Transactions on Industrial Electronics , vol. 73, no. 3, pp. 4495–4505, Mar. 2026. [16] F. Soresini, D. Barri, F. Ballo, and M. Gobbi, “Numerical modeling of PMSM noise reduction by harmonic current injection,” IEEE Access ,vol. 13, pp. 60 245–60 257, 2025. [17] P. C. Krause, O. Wasynczuk, S. D. Sudhoff, and S. D. Pekarek, Analysis of Electric Machinery and Drive Systems , 3rd ed. Hoboken, NJ, USA: Wiley-IEEE Press, 2013. [18] R. Krishnan, Permanent Magnet Synchronous and Brushless DC Motor Drives . Boca Raton, FL, USA: CRC Press, 2010. [19] A. K. Jebai, P. Combes, F. Malrait, P. Martin, and P. Rouchon, “Energy-based modeling of electric motors,” arXiv:1403.6641, 2014. [20] A. K. Jebai, F. Malrait, P. Martin, and P. Rouchon, “Estimation of saturation of permanent-magnet synchronous motors through an energy-based model,” arXiv:1103.2923, 2011. [21] Z. Yang, W. Li, Y. Gou, and T. Cai, “Research on radial force of permanent magnet synchronous motor based on Maxwell stress tensor,” 
+
+Journal of Electrical Engineering & Technology , vol. 15, no. 6, pp. 2601–2608, 2020. [22] W. J. Rugh, Linear System Theory , 2nd ed. Upper Saddle River, NJ, USA: Prentice Hall, 1996. [23] T. Kailath, Linear Systems . Englewood Cliffs, NJ, USA: Prentice Hall, 1980. [24] K. M¨ uller, A. Wanke, Y. Burkhardt, and H. De Gersem, “Evaluation of torque ripple and tooth forces of a skewed PMSM by 2D and 3D FE simulations,” arXiv:2503.16279, 2025. [25] S. Bittanti and P. Colaneri, Periodic Systems: Filtering and Control .London, U.K.: Springer, 2009. [26] R. B. Randall, Vibration-Based Condition Monitoring: Industrial, Aerospace and Automotive Applications . Chichester, U.K.: Wiley, 2011. [27] K.-S. Wang and P. S. Heyns, “Vold-Kalman filter order tracking in vibration monitoring of electrical machines,” Journal of Vibration and Control , vol. 15, no. 9, pp. 1325–1347, 2009.
