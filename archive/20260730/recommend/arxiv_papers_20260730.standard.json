@@ -1,0 +1,133 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-30T21:01:12.011976+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 2,
+    "deep_cap": 6,
+    "deep_selected": 2,
+    "quick_candidates": 1,
+    "quick_skim_target": 11,
+    "quick_selected": 1
+  },
+  "deep_dive": [
+    {
+      "id": "2607.24395v2",
+      "title": "Optimization of Current Lookup Tables for Minimum Stator Copper Loss and Torque Ripple in the Full Torque-Speed Range for a Six-Phase PMSM With Nonsinusoidal Back-EMF",
+      "abstract": "A recently proposed method was able to generate current references with minimum stator copper loss (SCL) and torque ripple over the full torque-speed range of multiphase nonsalient permanent-magnet synchronous machines (PMSMs) with nonsinusoidal back-electromotive force (back-EMF). However, it relied on large lookup tables (LUTs) generated offline, requiring several hours for generation and large memory for storage. Since on-chip memory in industrial digital signal processors (DSPs) is limited, this hinders practical implementation. This paper addresses this problem by analyzing how the LUTs of that method can be simplified and optimized, focusing on the example of a symmetrical six-phase PMSM drive. Breakpoint selection (BS), LUT construction (LC), and interpolation approaches are evaluated to optimize the tradeoff between LUT simplification and performance. It is shown that the required memory and LUT generation time can be greatly reduced while keeping nearly the same feasible torque-speed area and performance. Simulation results confirm negligible performance degradation.",
+      "authors": [
+        "Alejandro G. Yepes",
+        "Shirin Rahmanpour",
+        "Oscar López",
+        "Wessam E. Abdel-Azim",
+        "Petros Karamanakos",
+        "Ayman S. Abdel-Khalik",
+        "Jesús Doval-Gandoy"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY"
+      ],
+      "published": "2026-07-27T13:12:45+00:00",
+      "link": "https://arxiv.org/pdf/2607.24395v2",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 10.0,
+      "llm_evidence_en": "Optimization of current lookup tables for six-phase PMSM control",
+      "llm_evidence_cn": "六相永磁同步电机控制的电流查找表优化",
+      "llm_evidence": "六相永磁同步电机控制的电流查找表优化",
+      "canonical_evidence": "六相永磁同步电机控制的电流查找表优化",
+      "llm_tldr_en": "Optimizes current lookup tables for six-phase PMSMs to minimize copper loss and torque ripple efficiently.",
+      "llm_tldr_cn": "优化了六相永磁同步电机的电流查找表，以高效降低铜损和转矩脉动。",
+      "llm_tldr": "优化了六相永磁同步电机的电流查找表，以高效降低铜损和转矩脉动。",
+      "llm_tags": [
+        "query:pmsm"
+      ],
+      "matched_query_tag": "query:pmsm",
+      "matched_query_text": "dual three-phase permanent magnet synchronous motor control and design",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.24633v2",
+      "title": "Current References for Minimum Copper Loss and Torque Ripple in the Full Torque-Speed Range for Symmetrical Six-Phase PMSMs With Nonsinusoidal Back-EMF Under an Open-Phase Fault",
+      "abstract": "Current-reference generation based on lookup tables (LUTs) is here proposed for star-connected symmetrical six-phase nonsalient PMSMs with nonsinusoidal back-EMF under an open-phase fault. Fourier coefficients for all healthy phases are computed offline, enabling unbalanced nonsinusoidal currents. A lexicographic optimization minimizes torque ripple and then copper loss, subject to torque, zero-current-sum, peak-current, peak-voltage, and torque-ripple constraints. Cogging torque can be included for compensation. Simulations show a higher feasible speed limit: about 30% at low torque and 23% along an example load curve. Finite-element analysis shows a 77% reduction in peak-to-peak torque ripple with cogging-torque compensation.",
+      "authors": [
+        "Alejandro G. Yepes",
+        "Wessam E. Abdel-Azim",
+        "Oscar López",
+        "Petros Karamanakos",
+        "Ayman S. Abdel-Khalik",
+        "Jesús Doval-Gandoy"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY"
+      ],
+      "published": "2026-07-27T16:29:11+00:00",
+      "link": "https://arxiv.org/pdf/2607.24633v2",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 10.0,
+      "llm_evidence_en": "Fault-tolerant current references for six-phase PMSM under open-phase fault",
+      "llm_evidence_cn": "六相永磁同步电机开路故障下的容错电流给定",
+      "llm_evidence": "六相永磁同步电机开路故障下的容错电流给定",
+      "canonical_evidence": "六相永磁同步电机开路故障下的容错电流给定",
+      "llm_tldr_en": "Develops fault-tolerant current references for six-phase PMSMs to maintain performance during open-phase faults.",
+      "llm_tldr_cn": "研究六相永磁同步电机在缺相故障下的容错电流给定策略，提高运行范围和效率。",
+      "llm_tldr": "研究六相永磁同步电机在缺相故障下的容错电流给定策略，提高运行范围和效率。",
+      "llm_tags": [
+        "query:pmsm"
+      ],
+      "matched_query_tag": "query:pmsm",
+      "matched_query_text": "fault tolerant strategies for multi phase permanent magnet synchronous motors",
+      "matched_requirement_id": "req-8",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2607.26519v1",
+      "title": "A Data-Driven Vibration Analysis Framework for Micro-Motor Fault Diagnosis and Quality Control",
+      "abstract": "The reliability of the internal micro-motors is crucial for the performance and lifespan of electric toothbrushes. In this paper, a vibration-based fault detection method is proposed to identify micro-motor defects in electric toothbrushes. A dedicated signal acquisition device was designed and developed to capture the vibration signals of micro-motors using a high-precision accelerometer. To effectively characterize the micro-motor conditions, comprehensive features were extracted from the raw vibration data in both the time and frequency domains. A random forest (RF) algorithm was then employed to evaluate the importance of all extracted features. To better interpret the extracted features based on fault mechanisms, and to reduce dimensionality and computational overhead while avoiding overfitting, the top three features with the highest importance scores were selected to form the optimal feature subset. Finally, a support vector machine (SVM) model was utilized to classify the motor states based on the selected features. Experimental results demonstrate that the proposed method, combining RF-based feature selection and SVM classification, achieves outstanding diagnostic performance. Specifically, the model yields a balanced accuracy of 94.44%, a defect recall of 88.89%, a defect F1-score of 94.12%, a Matthews correlation coefficient of 93.74%, a geometric mean of 94.28%, and an area under the receiver operating characteristic curve of 100.00%. These robust metrics confirm that the proposed approach can accurately and efficiently detect micro-motor faults in electric toothbrushes, providing a practical and reliable solution for quality control and condition monitoring in manufacturing.",
+      "authors": [
+        "Xuan Chen",
+        "Xinjun Zuo",
+        "Yancheng Bi",
+        "Shunli Yu",
+        "Yunqi Cao"
+      ],
+      "primary_category": "eess.SP",
+      "categories": [
+        "eess.SP"
+      ],
+      "published": "2026-07-29T06:39:19+00:00",
+      "link": "https://arxiv.org/pdf/2607.26519v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "vibration-based fault diagnosis for micro-motors",
+      "llm_evidence_cn": "基于振动的微型电机故障诊断",
+      "llm_evidence": "基于振动的微型电机故障诊断",
+      "canonical_evidence": "基于振动的微型电机故障诊断",
+      "llm_tldr_en": "Develops a data-driven vibration analysis framework for diagnosing faults in micro-motors.",
+      "llm_tldr_cn": "开发了一种基于数据驱动振动分析的微型电机故障诊断框架。",
+      "llm_tldr": "开发了一种基于数据驱动振动分析的微型电机故障诊断框架。",
+      "llm_tags": [
+        "query:pmsm"
+      ],
+      "matched_query_tag": "query:pmsm",
+      "matched_query_text": "Permanent Magnet Synchronous Motor research",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}

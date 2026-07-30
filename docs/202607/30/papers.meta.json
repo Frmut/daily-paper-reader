@@ -1,0 +1,51 @@
+{
+  "label": "2026-07-30",
+  "date": "2026-07-30",
+  "generated_at": "2026-07-30T21:02:16",
+  "count": 3,
+  "papers": [
+    {
+      "paper_id": "202607/30/2607.24395v2-optimization-of-current-lookup-tables-for-minimum-stator-copper-loss-and-torque-ripple-in-the-full-torque-speed-range-for-a-six-phase-pmsm-with-nonsinusoidal-back-emf",
+      "section": "deep",
+      "title_en": "Optimization of Current Lookup Tables for Minimum Stator Copper Loss and Torque Ripple in the Full Torque-Speed Range for a Six-Phase PMSM With Nonsinusoidal Back-EMF",
+      "authors": "Alejandro G. Yepes, Shirin Rahmanpour, Oscar López, Wessam E. Abdel-Azim, Petros Karamanakos, Ayman S. Abdel-Khalik, Jesús Doval-Gandoy",
+      "date": "2026-07-27",
+      "pdf": "https://arxiv.org/pdf/2607.24395v2",
+      "score": "10.0",
+      "evidence": "六相永磁同步电机控制的电流查找表优化",
+      "tldr": "本研究针对具有非正弦反电动势的六相永磁同步电机，优化了用于降低定子铜损和转矩脉动的电流查找表（LUT）。针对现有方法生成时间长、内存占用大的问题，通过改进断点选择、查找表构建和插值方法，在保证电机全转速范围性能和可行转矩区域的同时，显著减少了存储需求和离线计算时间，提升了工业DSP实现的实用性。",
+      "tags": "query:pmsm",
+      "abstract_en": "A recently proposed method was able to generate current references with minimum stator copper loss (SCL) and torque ripple over the full torque-speed range of multiphase nonsalient permanent-magnet synchronous machines (PMSMs) with nonsinusoidal back-electromotive force (back-EMF). However, it relied on large lookup tables (LUTs) generated offline, requiring several hours for generation and large memory for storage. Since on-chip memory in industrial digital signal processors (DSPs) is limited, this hinders practical implementation. This paper addresses this problem by analyzing how the LUTs of that method can be simplified and optimized, focusing on the example of a symmetrical six-phase PMSM drive. Breakpoint selection (BS), LUT construction (LC), and interpolation approaches are evaluated to optimize the tradeoff between LUT simplification and performance. It is shown that the required memory and LUT generation time can be greatly reduced while keeping nearly the same feasible torque-speed area and performance. Simulation results confirm negligible performance degradation.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/30/2607.24633v2-current-references-for-minimum-copper-loss-and-torque-ripple-in-the-full-torque-speed-range-for-symmetrical-six-phase-pmsms-with-nonsinusoidal-back-emf-under-an-open-phase-fault",
+      "section": "deep",
+      "title_en": "Current References for Minimum Copper Loss and Torque Ripple in the Full Torque-Speed Range for Symmetrical Six-Phase PMSMs With Nonsinusoidal Back-EMF Under an Open-Phase Fault",
+      "authors": "Alejandro G. Yepes, Wessam E. Abdel-Azim, Oscar López, Petros Karamanakos, Ayman S. Abdel-Khalik, Jesús Doval-Gandoy",
+      "date": "2026-07-27",
+      "pdf": "https://arxiv.org/pdf/2607.24633v2",
+      "score": "10.0",
+      "evidence": "六相永磁同步电机开路故障下的容错电流给定",
+      "tldr": "针对具有非正弦反电动势的对称六相永磁同步电机在缺相故障下的运行问题，本文提出了一种基于查找表的电流引用生成方法。该方法通过词典式优化策略，在满足转矩、电流和电压限制的前提下，优先降低转矩脉动并最小化铜损。研究还引入了齿槽转矩补偿，显著提升了电机的运行速度范围并大幅降低了转矩脉动，为多相电机在故障工况下的高性能控制提供了有效方案。",
+      "tags": "query:pmsm",
+      "abstract_en": "Current-reference generation based on lookup tables (LUTs) is here proposed for star-connected symmetrical six-phase nonsalient PMSMs with nonsinusoidal back-EMF under an open-phase fault. Fourier coefficients for all healthy phases are computed offline, enabling unbalanced nonsinusoidal currents. A lexicographic optimization minimizes torque ripple and then copper loss, subject to torque, zero-current-sum, peak-current, peak-voltage, and torque-ripple constraints. Cogging torque can be included for compensation. Simulations show a higher feasible speed limit: about 30% at low torque and 23% along an example load curve. Finite-element analysis shows a 77% reduction in peak-to-peak torque ripple with cogging-torque compensation.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/30/2607.26519v1-a-data-driven-vibration-analysis-framework-for-micro-motor-fault-diagnosis-and-quality-control",
+      "section": "quick",
+      "title_en": "A Data-Driven Vibration Analysis Framework for Micro-Motor Fault Diagnosis and Quality Control",
+      "authors": "Xuan Chen, Xinjun Zuo, Yancheng Bi, Shunli Yu, Yunqi Cao",
+      "date": "2026-07-29",
+      "pdf": "https://arxiv.org/pdf/2607.26519v1",
+      "score": "7.0",
+      "evidence": "基于振动的微型电机故障诊断",
+      "tldr": "本研究针对电动牙刷微型电机的可靠性问题，提出了一种基于振动分析的故障诊断框架。通过自主研发的高精度信号采集设备获取振动数据，提取时频域特征，并利用随机森林算法筛选出最具代表性的前三个特征以降低维度。最后，结合支持向量机模型进行状态分类。该方法在实验中展现了极高的诊断精度和鲁棒性，为微型电机的生产质量控制和状态监测提供了一种高效、实用的数据驱动解决方案。",
+      "tags": "query:pmsm",
+      "abstract_en": "The reliability of the internal micro-motors is crucial for the performance and lifespan of electric toothbrushes. In this paper, a vibration-based fault detection method is proposed to identify micro-motor defects in electric toothbrushes. A dedicated signal acquisition device was designed and developed to capture the vibration signals of micro-motors using a high-precision accelerometer. To effectively characterize the micro-motor conditions, comprehensive features were extracted from the raw vibration data in both the time and frequency domains. A random forest (RF) algorithm was then employed to evaluate the importance of all extracted features. To better interpret the extracted features based on fault mechanisms, and to reduce dimensionality and computational overhead while avoiding overfitting, the top three features with the highest importance scores were selected to form the optimal feature subset. Finally, a support vector machine (SVM) model was utilized to classify the motor states based on the selected features. Experimental results demonstrate that the proposed method, combining RF-based feature selection and SVM classification, achieves outstanding diagnostic performance. Specifically, the model yields a balanced accuracy of 94.44%, a defect recall of 88.89%, a defect F1-score of 94.12%, a Matthews correlation coefficient of 93.74%, a geometric mean of 94.28%, and an area under the receiver operating characteristic curve of 100.00%. These robust metrics confirm that the proposed approach can accurately and efficiently detect micro-motor faults in electric toothbrushes, providing a practical and reliable solution for quality control and condition monitoring in manufacturing.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
