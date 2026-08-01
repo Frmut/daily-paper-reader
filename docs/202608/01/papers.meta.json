@@ -1,0 +1,23 @@
+{
+  "label": "2026-08-01",
+  "date": "2026-08-01",
+  "generated_at": "2026-08-01T20:36:13",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202608/01/2607.27793v1-robust-pidnet-control-of-a-dual-actuator-thrust-vectoring-platform",
+      "section": "quick",
+      "title_en": "Robust PIDNet Control of a Dual-Actuator Thrust Vectoring Platform",
+      "authors": "Connor Calme, Lundon Salley, AJ Munoz-Vazquez, Luis F. Zapata-Rivera",
+      "date": "2026-07-30",
+      "pdf": "https://arxiv.org/pdf/2607.27793v1",
+      "score": "6.0",
+      "evidence": "双执行器平台的鲁棒控制",
+      "tldr": "本研究针对双执行器推力矢量平台的姿态跟踪问题，提出了一种鲁棒PIDNet控制器。该方法结合了有界非线性PD控制与径向基函数（RBF）神经网络，通过在线权重自适应实现状态相关的积分补偿。该控制器采用多输入多输出结构，无需精确模型即可补偿摩擦和几何耦合。实验证明，该方法在跟踪精度上优于传统PID和超螺旋算法，且在不增加控制量的情况下显著降低了跟踪误差。",
+      "tags": "query:pmsm",
+      "abstract_en": "This paper presents a robust controller for attitude tracking on a dual-actuator thrust vectoring platform. The control objective is to track a desired thrust direction on the unit sphere using two linear actuators connected through a universal joint. The proposed framework combines a bounded nonlinear PD action with a radial basis function (RBF) network that generates state-dependent integral compensation through online weight adaptation, relying solely on tracking error and its time derivative from actuator-displacement measurements. The control law is formulated as a coupled multiple-input--multiple-output structure, enabling the RBF network to compensate cross-channel effects, including direction-dependent friction and geometric coupling, with model-free implementation. Stability is established through a convex Lyapunov function whose gradient is naturally bounded along the error manifold. An H-infinity gain bound is derived for the extended error, with a local linearized interpretation in terms of tracking accuracy. The proposed controller is validated experimentally on a two-degree-of-freedom gimbal rig, achieving improved performance relative to a conventional PID and to a super-twisting controller, with online adaptation reducing the ITNE by 10% over the non-adaptive baseline at no additional control effort.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
