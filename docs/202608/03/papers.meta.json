@@ -1,0 +1,37 @@
+{
+  "label": "2026-08-03",
+  "date": "2026-08-03",
+  "generated_at": "2026-08-03T21:31:36",
+  "count": 2,
+  "papers": [
+    {
+      "paper_id": "202608/03/2607.29195v1-interturn-short-circuit-fault-mitigation-in-pmsms",
+      "section": "deep",
+      "title_en": "Interturn Short Circuit Fault Mitigation in PMSMs",
+      "authors": "Lukas Zezula, Matus Kozovsky, Ludek Buchta, Petr Blaha",
+      "date": "2026-07-31",
+      "pdf": "https://arxiv.org/pdf/2607.29195v1",
+      "score": "10.0",
+      "evidence": "永磁同步电机匝间短路故障抑制及磁场定向控制",
+      "tldr": "针对永磁同步电机（PMSM）中严重的匝间短路故障，本文提出一种无需额外硬件的控制缓解方法。该方法通过改进磁场定向控制（FOC）结构，引入电阻损耗受限的电流参考生成和反馈路径中的转矩电流重构机制。实验证明，该方法能显著降低故障引起的输入功率和局部损耗增加，并能实时适应故障恶化，实现故障后的安全运行。",
+      "tags": "query:pmsm",
+      "abstract_en": "Interturn short circuits are among the most critical faults in permanent magnet synchronous motor drives, as they combine localized heating in the shorted stator phase with electrical asymmetry that distorts the current feedback used for torque-producing control. This article proposes a control-based mitigation method enabling the post-fault operation of standard three-phase motor drives without additional dedicated hardware. Using the diagnostic features inferred from standard control-loop signals, the method augments the field-oriented control structure with two mechanisms: resistive-loss-limited current-reference generation and reconstruction of the torque-producing current components in the feedback path. The reference generator is derived from a discrete-time post-fault model and minimizes resistive losses, whereas the feedback reconstruction provides fault-free torque-producing current components as controlled variables of the current loop. The experimental validation has demonstrated reductions of up to 23-36% in the fault-induced increase in the input power and 18-27% in the local segment-loss increase, while confirming real-time adaptation to progressive fault aggravation emulated by stepped changes in the short circuit resistance.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202608/03/2607.29416v1-hybrid-virtual-space-vector-modulation-with-extended-power-factor-range-for-coupled-eight-switch-three-phase-three-level-inverter",
+      "section": "quick",
+      "title_en": "Hybrid Virtual Space Vector Modulation With Extended Power Factor Range for Coupled Eight-Switch Three-Phase Three-Level Inverter",
+      "authors": "Xiaojun Deng, Hongliang Wang, Tianfu Sun, Yang Jiang, Yibo Si, Wenbo Tang, Mingrui Yang, Xiumei Yue",
+      "date": "2026-07-31",
+      "pdf": "https://arxiv.org/pdf/2607.29416v1",
+      "score": "7.0",
+      "evidence": "用于电机驱动的三相逆变器调制技术",
+      "tldr": "针对耦合八开关三相三电平逆变器在高功率因数范围外的应用局限，本文提出了一种混合虚拟空间矢量调制（HVSVM）策略。通过深入分析功率因数限制机制，构建了三种不同功率因数范围的虚拟矢量调制方案，并结合电流极性检测实现了功率因数角从[-30°, 30°]到[-90°, 90°]的显著扩展。此外，引入了主动中点电压控制方法，通过调节冗余小矢量的作用时间实现精确的电压平衡。实验验证了该方法在光伏和电机驱动领域的有效性。",
+      "tags": "query:pmsm",
+      "abstract_en": "With the development of photovoltaic (PV) and motor drive, the coupled eight-switch three-phase three-level inverter (TP-TLI) is receiving more attentions. However, the previous modulation strategies for coupled eight-switch TP-TLI are suitable for high power factor (PF), which cannot satisfy the requirement for PV and motor drive. Aiming at this, this paper proposes a hybrid virtual space vector modulation (HVSVM) for the coupled eight switch TP-TLI with extended PF range. The mechanism of PF limitation is analyzed in deep. Two virtual vectors are constructed in each sector, and three basic VSVMs with different PF range are proposed according to the number of virtual small vectors used. Combined with three VSVMs, the HVSVM is proposed by detecting the three-phase current polarities. The PF angle range of the HVSVM is extended from about [-30°, 30°] to [-90°, 90°]. Besides, an active neutral-point voltage control (NPVC) is also presented by using two coefficients to adjust the dwell times of the two pairs of redundant small vectors. This approach considers the NP current and the derivation of NPV, and thereby it is accurate to control the NPV. The correctness and feasibility of the proposed HVSVM and active NPVC are verified by experiments through a 3 kVA prototype.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

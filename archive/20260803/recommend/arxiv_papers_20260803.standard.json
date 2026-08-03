@@ -1,0 +1,95 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-08-03T21:30:30.083415+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 1,
+    "deep_cap": 6,
+    "deep_selected": 1,
+    "quick_candidates": 1,
+    "quick_skim_target": 11,
+    "quick_selected": 1
+  },
+  "deep_dive": [
+    {
+      "id": "2607.29195v1",
+      "title": "Interturn Short Circuit Fault Mitigation in PMSMs",
+      "abstract": "Interturn short circuits are among the most critical faults in permanent magnet synchronous motor drives, as they combine localized heating in the shorted stator phase with electrical asymmetry that distorts the current feedback used for torque-producing control. This article proposes a control-based mitigation method enabling the post-fault operation of standard three-phase motor drives without additional dedicated hardware. Using the diagnostic features inferred from standard control-loop signals, the method augments the field-oriented control structure with two mechanisms: resistive-loss-limited current-reference generation and reconstruction of the torque-producing current components in the feedback path. The reference generator is derived from a discrete-time post-fault model and minimizes resistive losses, whereas the feedback reconstruction provides fault-free torque-producing current components as controlled variables of the current loop. The experimental validation has demonstrated reductions of up to 23-36% in the fault-induced increase in the input power and 18-27% in the local segment-loss increase, while confirming real-time adaptation to progressive fault aggravation emulated by stepped changes in the short circuit resistance.",
+      "authors": [
+        "Lukas Zezula",
+        "Matus Kozovsky",
+        "Ludek Buchta",
+        "Petr Blaha"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY"
+      ],
+      "published": "2026-07-31T09:15:16+00:00",
+      "link": "https://arxiv.org/pdf/2607.29195v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 10.0,
+      "llm_evidence_en": "Interturn short circuit fault mitigation in PMSMs using field-oriented control",
+      "llm_evidence_cn": "永磁同步电机匝间短路故障抑制及磁场定向控制",
+      "llm_evidence": "永磁同步电机匝间短路故障抑制及磁场定向控制",
+      "canonical_evidence": "永磁同步电机匝间短路故障抑制及磁场定向控制",
+      "llm_tldr_en": "Proposes a control-based method to mitigate interturn short circuit faults in PMSM drives without extra hardware.",
+      "llm_tldr_cn": "提出一种基于控制的方法，在无需额外硬件的情况下抑制永磁同步电机的匝间短路故障。",
+      "llm_tldr": "提出一种基于控制的方法，在无需额外硬件的情况下抑制永磁同步电机的匝间短路故障。",
+      "llm_tags": [
+        "query:pmsm"
+      ],
+      "matched_query_tag": "query:pmsm",
+      "matched_query_text": "Permanent Magnet Synchronous Motor research",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2607.29416v1",
+      "title": "Hybrid Virtual Space Vector Modulation With Extended Power Factor Range for Coupled Eight-Switch Three-Phase Three-Level Inverter",
+      "abstract": "With the development of photovoltaic (PV) and motor drive, the coupled eight-switch three-phase three-level inverter (TP-TLI) is receiving more attentions. However, the previous modulation strategies for coupled eight-switch TP-TLI are suitable for high power factor (PF), which cannot satisfy the requirement for PV and motor drive. Aiming at this, this paper proposes a hybrid virtual space vector modulation (HVSVM) for the coupled eight switch TP-TLI with extended PF range. The mechanism of PF limitation is analyzed in deep. Two virtual vectors are constructed in each sector, and three basic VSVMs with different PF range are proposed according to the number of virtual small vectors used. Combined with three VSVMs, the HVSVM is proposed by detecting the three-phase current polarities. The PF angle range of the HVSVM is extended from about [-30°, 30°] to [-90°, 90°]. Besides, an active neutral-point voltage control (NPVC) is also presented by using two coefficients to adjust the dwell times of the two pairs of redundant small vectors. This approach considers the NP current and the derivation of NPV, and thereby it is accurate to control the NPV. The correctness and feasibility of the proposed HVSVM and active NPVC are verified by experiments through a 3 kVA prototype.",
+      "authors": [
+        "Xiaojun Deng",
+        "Hongliang Wang",
+        "Tianfu Sun",
+        "Yang Jiang",
+        "Yibo Si",
+        "Wenbo Tang",
+        "Mingrui Yang",
+        "Xiumei Yue"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY"
+      ],
+      "published": "2026-07-31T13:38:45+00:00",
+      "link": "https://arxiv.org/pdf/2607.29416v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Three-phase inverter modulation for motor drives",
+      "llm_evidence_cn": "用于电机驱动的三相逆变器调制技术",
+      "llm_evidence": "用于电机驱动的三相逆变器调制技术",
+      "canonical_evidence": "用于电机驱动的三相逆变器调制技术",
+      "llm_tldr_en": "Proposes a hybrid virtual space vector modulation for three-phase three-level inverters in motor drive applications.",
+      "llm_tldr_cn": "提出了一种用于电机驱动三相三电平逆变器的混合虚拟空间矢量调制方法。",
+      "llm_tldr": "提出了一种用于电机驱动三相三电平逆变器的混合虚拟空间矢量调制方法。",
+      "llm_tags": [
+        "query:pmsm:composite"
+      ],
+      "matched_query_tag": "query:pmsm:composite",
+      "matched_query_text": "Papers central to 三相及双三相永磁同步电机相关研究检索, especially work that connects or combines: m; s; f; Permanent Magnet Synchronous Motor research; dual three-phase permanent magnet synchronous motor control and design; fault-tolerant control of multi-phase motors; recent advances in dual three phase permanent magnet synchronous motor control; fault tolerant strategies for multi phase permanent magnet synchronous motors.",
+      "matched_requirement_id": "req-composite-pmsm",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}
