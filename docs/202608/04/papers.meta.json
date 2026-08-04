@@ -1,0 +1,23 @@
+{
+  "label": "2026-08-04",
+  "date": "2026-08-04",
+  "generated_at": "2026-08-04T21:13:00",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202608/04/2607.29399v1-memristor-based-pulse-width-modulation-circuit-for-power-converters-with-programmable-frequencies",
+      "section": "quick",
+      "title_en": "Memristor-Based Pulse Width Modulation Circuit for Power Converters with Programmable Frequencies",
+      "authors": "Fanfu Wu, Xiaoyi Lei, Yunting Liu",
+      "date": "2026-07-31",
+      "pdf": "https://arxiv.org/pdf/2607.29399v1",
+      "score": "6.0",
+      "evidence": "功率变换器的脉宽调制电路",
+      "tldr": "本研究针对电源转换器控制中数字PWM功耗高和模拟PWM可编程性差的问题，提出了一种基于忆阻器的可编程脉冲宽度调制（PWM）电路。该设计结合了数字控制的可编程性与模拟电路的低功耗优势，通过商用忆阻器实现了144.7 kHz至204.2 kHz的频率调节。实验表明，与传统DSP方案相比，该电路能显著降低92%的功耗，为高效能电源管理提供了新思路。",
+      "tags": "query:pmsm",
+      "abstract_en": "Memristors can achieve up to a 1000-times reduction in energy consumption in neuromorphic and in-memory computing, but their integration into power converter control remains incomplete. Existing implementations either convert memristor outputs into digital signals for DSP-based pulse-width modulation (PWM), reintroducing computational overhead, or use analog PWM circuits with limited programmability. Since PWM generation is the final essential stage of power converter control, a programmable memristor-based PWM circuit is needed to fully realize the energy-efficiency benefits of memristive computing. This paper presents a programmable memristor-based PWM circuit operating at approximately two hundred kilohertz for switching power converters. The design combines digital-controller programmability with the low power consumption of analog PWM generators. Experimental validation using commercially available memristors achieves a programmable switching frequency from 144.7 kHz to 204.2 kHz. Compared with a commonly used DSP implementation in power converter control, the proposed design achieves a 92% reduction in power consumption.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

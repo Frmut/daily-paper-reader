@@ -1,6 +1,9 @@
 * <a class="dpr-sidebar-root-link" href="#/">首页</a>
 * <a class="dpr-sidebar-root-link dpr-sidebar-noactive-link" href="javascript:void(0)" data-dpr-hash="#/tutorial/README">使用教程</a>
 * Daily Papers
+  * 2026-08-04 <!--dpr-date:20260804-->
+    * 速读区
+      * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202608/04/2607.29399v1-memristor-based-pulse-width-modulation-circuit-for-power-converters-with-programmable-frequencies" data-sidebar-item="{&quot;title&quot;: &quot;Memristor-Based Pulse Width Modulation Circuit for Power Converters with Programmable Frequencies&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2607.29399v1-memristor-based-pulse-width-modulation-circuit-for-power-converters-with-programmable-frequencies&quot;, &quot;score&quot;: &quot;6.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;pmsm&quot;}], &quot;evidence&quot;: &quot;功率变换器的脉宽调制电路&quot;}">Memristor-Based Pulse Width Modulation Circuit for Power Converters with Programmable Frequencies</a>
   * 2026-08-03 <!--dpr-date:20260803-->
     * 精读区
       * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202608/03/2607.29195v1-interturn-short-circuit-fault-mitigation-in-pmsms" data-sidebar-item="{&quot;title&quot;: &quot;Interturn Short Circuit Fault Mitigation in PMSMs&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2607.29195v1-interturn-short-circuit-fault-mitigation-in-pmsms&quot;, &quot;score&quot;: &quot;10.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;pmsm&quot;}], &quot;evidence&quot;: &quot;永磁同步电机匝间短路故障抑制及磁场定向控制&quot;}">Interturn Short Circuit Fault Mitigation in PMSMs</a>
