@@ -1,0 +1,37 @@
+{
+  "label": "2026-08-05",
+  "date": "2026-08-05",
+  "generated_at": "2026-08-05T21:23:51",
+  "count": 2,
+  "papers": [
+    {
+      "paper_id": "202608/05/2608.00379v1-discovering-explicit-magnetic-core-loss-equations-via-learnable-symbolic-sparse-identification",
+      "section": "quick",
+      "title_en": "Discovering Explicit Magnetic Core Loss Equations via Learnable Symbolic Sparse Identification",
+      "authors": "Haoyu Wang, Jialin Zheng, Yihao Wu, Ziyang Xu, Alex Hanson",
+      "date": "2026-08-01",
+      "pdf": "https://arxiv.org/pdf/2608.00379v1",
+      "score": "6.0",
+      "evidence": "功率磁性元件设计的磁芯损耗方程",
+      "tldr": "针对高频功率磁性设计中传统经验公式精度不足及机器学习模型缺乏物理可解释性的问题，本文提出了一种可学习符号稀疏识别（LSSI）框架。该方法将磁芯损耗建模为符号回归问题，通过扩展候选函数库并利用稀疏识别技术筛选主导项，同时将指数和系数设为可学习参数。实验表明，LSSI仅需4个项和15个参数即可达到极高精度，实现了物理透明性与预测性能的平衡。",
+      "tags": "query:pmsm",
+      "abstract_en": "Explicit magnetic core loss equations with simple expressions and physical interpretability are significant tools in the design of high-frequency power magnetics. Traditional fits to empirical data like the Steinmetz Equation (SE) often struggle with accuracy, whereas modern machine learning approaches improve precision but deviate from physics. To fill this gap, this paper proposes a Learnable Symbolic Sparse Identification (LSSI) framework for data-driven equation discovery. Specifically, LSSI reformulates magnetic core loss equations for sinusoidal drives as a symbolic regression problem derived directly from experimental data. Building upon the SE, an expanded library of candidate functions are introduced and a sparse identification framework is implemented to select the dominant ones. More importantly, crucial parameters like exponents and coefficients of candidate functions are treated as learnable ones, simultaneously achieving equation simplicity and high expressiveness of the underlying fractional power laws. Experimental results demonstrate that LSSI achieves superior accuracy with a state-of-the-art $\\mathbf{R^2}$ of $\\mathbf{0.9999}$ and a MAPE of $\\mathbf{1.04\\%}$ through a highly compact explicit equation containing only $\\mathbf{4}$ active terms. Furthermore, it drastically reduces the parameter count from $\\mathbf{4417}$ in neural network methods to $\\mathbf{15}$, showcasing exceptional compactness and efficiency. The LSSI framework thus provides a physically transparent and highly accurate solution suitable for complex modern magnetic characterization and design.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202608/05/2608.02965v1-a-physics-informed-hybrid-neural-operator-for-transient-magnetization-prediction-in-power-magnetics",
+      "section": "quick",
+      "title_en": "A Physics-Informed Hybrid Neural Operator for Transient Magnetization Prediction in Power Magnetics",
+      "authors": "Yachao Zhu, Qiujie Huang, Sinan Li, Yang Li, Gang Lei, Jianguo Zhu",
+      "date": "2026-08-03",
+      "pdf": "https://arxiv.org/pdf/2608.02965v1",
+      "score": "6.0",
+      "evidence": "功率磁性元件中的瞬态磁化预测",
+      "tldr": "本研究针对高频高功率密度变换器中复杂的非正弦磁化过程，提出了一种物理信息混合神经算子（PI-HNO）。该模型结合了局部循环分支和受Preisach启发的全局分支，并引入B-H能量一致性正则化，实现了对瞬态磁化响应的精确预测。在14种铁氧体材料上的实验表明，该模型在保持极小参数量（4777个）的同时，显著提升了序列预测精度和能量一致性。",
+      "tags": "query:pmsm",
+      "abstract_en": "Magnetic components in high-frequency, high-power-density converters are increasingly driven by non-sinusoidal flux-density waveforms with fast transitions, minor-loop operation, dc bias, and temperature variation. Under these conditions, steady-state core-loss formulas and single-valued material curves cannot fully capture transient magnetization responses. This work proposes the Physics-Informed Hybrid Neural Operator (PI-HNO), a compact material-specific neural model with B-H energy-consistency regularization for core-loss-oriented transient magnetization prediction. Given the measured B(t)-H(t) history, the input B(t) series over the prediction interval and operating-condition information, PI-HNO predicts the H(t) series and the corresponding reconstructed B-H trajectory. The model integrates a local recurrent branch for boundary-state representation and rate-dependent response evolution with a Preisach-inspired global branch that extracts waveform-level hysteresis context. Evaluation on the MagNetX transient database using material-specific models for 14 ferrite materials demonstrates that PI-HNO achieves a compact trade-off between sequence accuracy and B(t)-H(t) energy consistency, with the mean and 95th percentile B(t)-H(t) energy consistency errors of 1.92% and 7.60%, respectively, using only 4777 trainable parameters per model. Ablation studies further demonstrate that the local, global, and energy-aware regularized components provide distinct contributions to transient magnetization prediction.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
