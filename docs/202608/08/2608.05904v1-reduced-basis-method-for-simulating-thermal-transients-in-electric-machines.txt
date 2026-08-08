@@ -1,0 +1,251 @@
+Title: Reduced Basis Method for Simulating Thermal Transients in Electric Machines
+
+URL Source: https://arxiv.org/pdf/2608.05904v1
+
+Published Time: Fri, 07 Aug 2026 00:51:46 GMT
+
+Number of Pages: 8
+
+Markdown Content:
+# Reduced Basis Method for Simulating Thermal Transients in Electric Machines 
+
+Herbert Egger [0000 −0003 −3769 −8791 ] and Eva-Maria Haslhofer [0009 −0003 −0969 −5427 ]
+
+Abstract Reduced Basis (RB) methods provide low-dimensional approximations of parametrized partial differential equations with controllable accuracy. We discuss the construction of RB approximations for transient thermal simulation of an induction motor and compare their performance to Finite Element (FE) models and Lumped Parameter Thermal Networks (LPTNs) after calibration to measurements. Numerical results demonstrate that RB models can achieve FE accuracy, allow for a fully automatic construction, and offer computational efficiency comparable to traditional LPTNs. 
+
+Keywords Thermal Modeling · Electric Machines · Model Order Reduction 
+
+1 Introduction 
+
+Thermal behavior is a key limiting factor in the design and operation of modern electric machines, particularly under increasing power density and efficiency requirements [1]. Reliable prediction of temperature distributions is essential to ensure safe operation and prevent thermal damage [2]. Since only a limited number of temperature sensors are available in practice, state estimation is required to assess the temperature distribution in the machine, and reduced-order models are used for online control applications[3]. A widely used industrial approach for simulating transients in electric machines are Lumped Parameter Thermal Networks [4]. They partition the machine into a small number of thermally homogeneous regions connected by equivalent thermal resistances; see Figure 1. This approach is computationally efficient and often performs well after 
+
+Herbert Egger Johann Radon Institute for Computational and Applied Mathematics, Linz Austria, e-mail: herbert.egger@ricam.oeaw.ac.at Eva-Maria Haslhofer Institute of Numerical Mathematics, Johannes Kepler University Linz, Austria, e-mail: eva-maria.haslhofer@jku.at 1arXiv:2608.05904v1 [math.NA] 6 Aug 2026 2 Herbert Egger and Eva-Maria Haslhofer G01  
+
+> G24
+> G12
+> G23
+> T0
+> T1
+> T2T3
+> T4
+> C1
+> P1
+> C2
+> P2
+> C3
+> P3
+> C4
+> P4
+> T0... Cooling jacket
+> T1... Stator yoke
+> T2... Stator teeth
+> T3... Stator windings
+> T4... Rotor
+> 1
+
+Fig. 1 LPTN set-up with five nodes (Left) set up by [5]; Cross section of induction machine (Right); Colors indicate affiliation to respective compartments. 
+
+calibration to measurement data. However, LPTN models are inherently ad-hoc, require significant expert knowledge for construction, and do not provide systematic control of approximation accuracy or spatial resolution. These limitations can be overcome by reduced order models based on physically consistent descriptions of thermal transfer by partial differential equations (PDEs). In this work, we consider Reduced Basis methods constructed from high-fidelity finite element approximations of the underlying PDE system. The RB framework pro-vides systematic low-dimensional approximations of parametrized PDEs with rigorous error control and efficient online evaluation [6, 7]. The key modeling steps include: 
+
+• 3D heat transfer equations in stator and rotor using co-rotating coordinate systems; 
+
+• a spatially homogeneous air-gap temperature representing average temperatures; 
+
+• appropriate interface conditions describing heat-exchange within the subdomains. This strategy eliminates the need for modelling rotation explicitly. The heat-transfer between subdomains is described by appropriate interface conditions which allow for parameter estimation and to include dependence on the speed-of-rotation. All methods studied in this paper lead to parameter dependent differential equations 
+
+𝐶 (𝜇 ) ¤ 𝑢 + 𝐾 (𝜇 ) 𝑢 = 𝐹 (𝜇 ) (1) with model parameters 𝜇 representing heat capacitances, conductances, and sources. Calibration of these parameters allows to compensate for unmodeled effects and to significantly improve the accuracy of the reduced order models. 
+
+Contributions and outline. This paper develops a reduced-order modeling framework for transient heat transfer in rotating electric machines. We introduce a model for heat transfer across the air gap, analyze the resulting PDE model and its Galerkin discretizations (finite element and RB), and investigate parameter identification using measurement data from an induction machine. The proposed approach is assessed against FE and LPTN models in terms of accuracy, computational efficiency, and modeling flexibility. The remainder of the paper is organized as follows: Section 2 introduces the mathematical model, Section 3 describes the discretization by finite elements, Section 4 is concerned with the RB approximation, and Section 5 presents numerical results and parameter estimation studies. Reduced Basis Method for Simulating Thermal Transients in Electric Machines 3
+
+2 Modeling Heat Transfer in Rotating Electric Machines 
+
+We consider an induction machine consisting of stator, rotor, and air gap; see Figure 2. The heat transfer in stator and rotor is described in co-rotating coordinate systems by 
+
+𝑐 𝐷 𝜕 𝑡 𝑢 𝐷 − div (𝜅 𝐷 ∇𝑢 𝐷 ) = 𝑓 𝐷 in Ω𝐷 , (2) 
+
+(𝜅 𝐷 ∇𝑢 𝐷 ) · 𝑛 + 𝛾 𝐷 (𝑢 𝐷 − ¯𝑢 ∞) = 0 on Γ𝐷 . (3) Here Ω𝐷 , 𝐷 ∈ { 𝑆, 𝑅 }, denotes stator and rotor domain, Γ𝐷 the boundary to the surrounding, 𝑢 𝐷 the temperature in the stator and rotor, 𝑐 𝐷 the volumetric heat capacity, 
+
+𝜅 𝐷 the thermal conductivity, and 𝑓 𝐷 the power loss density; 𝛾 𝐷 is a heat transfer coefficient and ¯ 𝑢 ∞ the ambient temperature. The coefficients 𝑐 𝐷 , 𝜅 𝐷 , and 𝛾 𝐷 vary ΩR
+
+> ΩS
+> ΩA
+> ΓR,A
+> ΓS,A
+> ΓA
+> ΓS
+> ΓR
+> 1
+
+Figure 2.5: Geometry of machine 3D (left) and 2D radial cross section (right) The heat conduction is described analogously to (2.12) for the stator and rotor separately with corresponding capacity values and conductivity matrices, as well as different right hand sides, see (2.15) and (2.16). 
+
+cS ∂tuS − div (κS ∇uS ) = fS in ΩS (2.15) 
+
+cR∂tuR − div (κR∇uR) = fR in ΩR (2.16) As shown in Figure 2.5, the rotor is the inner part of our machine. Therefore, it can transfer heat via the surface ΓR,A to the air gap and at both front ends ΓFS,E and ΓBS,E to the surrounding with temperature u¯∞. The stator can transfer heat to the ambient via the mantle surface ΓS,M and at both front ends ΓS,E , which include the front and back face side. These heat transfers over the boundaries to the surrounding are modeled with the equations (2.17)–(2.19) introducing the heat transfer coefficients γh, γS and γR.
+
+(κS ∇uS ) · n + γh(uS − u¯∞) = 0 on ΓS,M (2.17) 
+
+(κS ∇uS ) · n + γS (uS − u¯∞) = 0 on ΓS,E = Γ FS,E ∪ ΓBS,E (2.18) 
+
+(κR∇uR) · n + γR(uR − u¯∞) = 0 on ΓR,E = Γ FR,E ∪ ΓBR,E (2.19) The heat transfer through the air gap from the rotor to the stator is described by the coupling conditions in (2.20)–(2.23) which act on the interface surfaces ΓS,A and ΓR,A .With the notation u¯Γ 
+
+> S
+
+we denote the average value of u on ΓS,A . The first condition respectively states that heat flux is conserved across the interface. The second condition is a Robin-type condition, which states that the heat flux over the interface is proportional to the temperature difference between two neighboring regions. In these equations the   
+
+> November, 2025 Eva-Maria Haslhofer 16/85
+
+Fig. 2 Model geometry of the induction machine (left) and corresponding cross section (right). Colors indicate different material regions. 
+
+between the material regions shown in Figure 2. Since laminated steel sheets and windings are represented by homogenized materials, the conductivity tensor 𝜅 𝐷 is in general anisotropic. Details are described in [8]. The air gap is treated as a separate subdomain Ω𝐴 . We assume that the air-gap temperature is spatially homogeneous and denote it by ¯𝑢 𝐴 . This approximation is justified by the small width of the air gap and the strong mixing induced by rotation. Heat transfer between air gap, stator/rotor, and the surrounding is described by 
+
+(𝜅 𝐷 ∇𝑢 𝐷 ) · 𝑛 + 𝛼 𝐷 (𝑢 𝐷 − ¯𝑢 𝐴 ) = 0 on Γ𝐷, 𝐴 , (4) ¯𝑐 𝐴 𝜕 𝑡 ¯𝑢 𝐴 + ¯𝛾 𝐴 ( ¯𝑢 𝐴 − ¯𝑢 ∞) + ¯𝛼 𝑆 ( ¯𝑢 𝐴 − ¯𝑢 𝑆 ) + ¯𝛼 𝑅 ( ¯𝑢 𝐴 − ¯𝑢 𝑅 ) = 0 in Ω𝐴 . (5) Here 𝛼 𝐷 is a heat transfer coefficient, and ¯ 𝑐 𝐴 , ¯ 𝛾 𝐴 , ¯ 𝛼 𝐷 are appropriately scaled by the air gap volume and the interface areas. Furthermore, ¯ 𝑢 𝐷 denotes the average of the temperature 𝑢 𝐷 along the interface Γ𝐷, 𝐴 between Ω𝐷 and Ω𝐴 . The 26 parameters 𝑐 𝐷 ,
+
+𝜅 𝐷 , 𝛾 𝐷 and 𝛼 𝐷 characterizing different materials and interfaces are collected in the parameter vector 𝜇 in the following discussion and will be estimated later on. 4 Herbert Egger and Eva-Maria Haslhofer 
+
+3 Variational Formulation and Finite Element Approximation 
+
+We now formulate the thermal model of Section 2 in a weak setting suitable for analysis and discretization. The temperature field is written as 𝑢 = (𝑢 𝑆 , 𝑢 𝑅 , 𝑢 𝐴 ). For the subsequent analysis, we introduce the Hilbert spaces 
+
+𝑉 := 𝐻 1 (Ω𝑆 ) × 𝐻 1 (Ω𝑅 ) × R, 𝐻 := 𝐿 2 (Ω𝑆 ) × 𝐿 2 (Ω𝑅 ) × R.
+
+The weak formulation is obtained in the standard way by testing the governing equations with functions in 𝑉 and applying integration by parts. This leads to 
+
+Problem 1. Find 𝑢 ∈ 𝐿 ∞ (0, 𝑇 ; 𝑉 ) with 𝑢 ′ ∈ 𝐿 2 (0, 𝑇 ; 𝐻 ) such that 
+
+𝑐 (𝑢 ′ (𝑡 ), 𝑣 ; 𝜇 ) + 𝑎 (𝑢 (𝑡 ), 𝑣 ; 𝜇 ) = ℓ(𝑡 ; 𝑣 ; 𝜇 ) ∀𝑣 ∈ 𝑉, 𝑡 ∈ ( 0, 𝑇 ), (6) 
+
+𝑐 (𝑢 (0), 𝑣 ; 𝜇 ) = 𝑐 (𝑢 0, 𝑣 ; 𝜇 ) ∀𝑣 ∈ 𝑉 . (7) Here 𝑎 (· , ·; 𝜇 ) and 𝑐 (· , ·; 𝜇 ) are parameter-dependent bilinear forms incorporating heat diffusion, coupling between subdomains, and thermal capacity effects, while ℓ(· ; 𝜇 )
+
+represents heat sources and boundary contributions. The parameter vector 𝜇 collects material properties such as thermal conductivities, heat capacities, and heat transfer coefficients, and will later be used for calibration to measurement data. 
+
+Assumption 2. The bilinear forms 𝑎 (· , ·; 𝜇 ) and 𝑐 (· , ·; 𝜇 ) are symmetric, continuous, and coercive on 𝑉 and 𝐻 , respectively, uniformly with respect to 𝜇 ∈ P . The admissible parameter set P is finite dimensional and compact. 
+
+These assumptions are easily verified in practice. They guarantee well-posedness of the continuous problem [8, 9] and will be used for error analysis below. 
+
+Truth approximation. In practice, the system is solved after spatial and temporal discretization. Let 𝑉 ℎ ⊂ 𝑉 be a finite-dimensional conforming subspace obtained from a standard finite element discretization of the stator and rotor domains. The air-gap component remains scalar. All subsequent reduced-order models are constructed from this discrete reference space. For time integration, we employ the implicit Euler scheme with uniform time step 𝜏 > 0. The resulting semi-discrete problem reads: 
+
+Problem 3. Find 𝑢 𝑛 ℎ ∈ 𝑉 ℎ such that for 𝑛 = 0, . . . , 𝑁 𝑡 :
+
+𝑐 (𝑑 𝜏 𝑢 𝑛 ℎ, 𝑣 ℎ; 𝜇 ) + 𝑎 (𝑢 𝑛 ℎ, 𝑣 ℎ; 𝜇 ) = ℓ(𝑡 𝑛 ; 𝑣 ℎ; 𝜇 ) ∀𝑣 ℎ ∈ 𝑉 ℎ, (8) 
+
+𝑐 (𝑢 0
+
+> ℎ
+
+, 𝑣 ℎ; 𝜇 ) = 𝑐 (𝑢 0, 𝑣 ℎ; 𝜇 ) ∀𝑣 ℎ ∈ 𝑉 ℎ . (9) 
+
+Here 𝑑 𝜏 𝑢 𝑛 ℎ := (𝑢 𝑛 ℎ − 𝑢 𝑛 −1 
+
+> ℎ
+
+)/ 𝜏 denotes the backward difference quotient. 
+
+The implementation of Problem 3 leads to a time-discrete version of system (1). Assumption 2 allows to establish the well-posedness of the discrete problem and to show that the error between 𝑢 and 𝑢 ℎ can be made arbitrarily small by choosing ℎ and 𝜏 
+
+small enough; see [10]. This high-dimensional system serves as the reference solution for all subsequent reduced-order constructions, i.e., as a truth approximation [6, 7]. Reduced Basis Method for Simulating Thermal Transients in Electric Machines 5
+
+4 Reduced Basis Method 
+
+The Reduced Basis (RB) method constructs low-dimensional approximations of the truth approximation by restricting the discrete problem to a suitably chosen subspace 
+
+𝑉 𝑁 ⊂ 𝑉 ℎ, 𝑁 := dim (𝑉 𝑁 ) ≪ dim (𝑉 ℎ).
+
+A low dimensional approximation of Problem 3 is then obtained by restriction to 𝑉 𝑁 .
+
+Problem 4. Find 𝑢 𝑛 𝑁 ∈ 𝑉 𝑁 for 𝑛 = 0, . . . , 𝑁 𝑡 , such that 
+
+𝑐 (𝑑 𝜏 𝑢 𝑛 𝑁 , 𝑣 𝑁 ; 𝜇 ) + 𝑎 (𝑢 𝑛 𝑁 , 𝑣 𝑁 ; 𝜇 ) = ℓ(𝑡 𝑛 ; 𝑣 𝑁 ; 𝜇 ) ∀𝑣 𝑁 ∈ 𝑉 𝑁 , (10) 
+
+𝑐 (𝑢 0 
+
+> 𝑁
+
+, 𝑣 𝑁 ; 𝜇 ) = 𝑐 (𝑢 0, 𝑣 𝑁 ; 𝜇 ) ∀𝑣 𝑁 ∈ 𝑉 𝑁 . (11) The two Problems 3 and 4 lead to time-discrete versions of system (1) with dimension 
+
+𝑛 and 𝑁 , respectively. The main goal of the RB approximation is therefore to construct 
+
+𝑉 𝑁 such that 𝑁 remains small while maintaining high fidelity with respect to the truth approximation. This can be motivates the following considerations. 
+
+Error structure of the RB approximation. The following result shows that the RB error can be fully controlled by approximation properties of the reduced space with respect to the FE solution manifold; see the discussion below. 
+
+Theorem 5. Let Assumption 2 hold and ||| 𝑢 ℎ ||| 2 = Í𝑛 𝜏 ∥𝑢 𝑛 ℎ ∥2 
+
+> 𝑉
+
+. Then 
+
+||| 𝑢 ℎ (𝜇 ) − 𝑢 𝑁 (𝜇 )||| 2 ≤ 𝐶 ||| 𝑢 ℎ (𝜇 ) − 𝑅 𝑁 𝑢 ℎ (𝜇 )||| 2
+
+where 𝑅 𝑁 : 𝑉 → 𝑉 𝑁 denotes the Ritz projection based on the bilinear form 𝑎 (· , ·; 𝜇 ).Moreover, the constant 𝐶 is independent of 𝑉 ℎ, 𝑉 𝑁 , 𝜏 , and 𝜇 ∈ P .
+
+The proof follows standard arguments for Galerkin approximations of parabolic problems; see [10]. For detailed derivation of similar estimates, we refer to [8]. 
+
+Interpretation. Theorem 5 shows that the RB error is fully determined by how well the finite element snapshots 𝑢 𝑛 ℎ (𝜇 ) can be approximated in the reduced space 𝑉 𝑁 . In particular, uniform accuracy follows if 
+
+∥𝑢 𝑛 ℎ (𝜇 ) − 𝑅 𝑁 𝑢 𝑛 ℎ (𝜇 )∥ 𝑉 ≤ 𝜀 ∀𝜇 ∈ P , 𝑛 = 1, . . . , 𝑁 𝑡 .
+
+This motivates the definition of the parameter-dependent solution manifold 
+
+Mℎ := {𝑢 𝑛 ℎ (𝜇 ) : 𝜇 ∈ P , 0 ≤ 𝑡 𝑛 ≤ 𝑇 } ⊂ 𝑉 ℎ,
+
+and the construction of 𝑉 𝑁 can be interpreted as seeking a low-dimensional space that approximates Mℎ efficiently. Standard results in reduced basis theory [7] show that low-dimensional approximation is possible when the solution depends sufficiently smoothly on the parameters and the underlying problem data. In this case, Mℎ can often be approximated with rapidly decaying error using small-dimensional spaces 𝑉 𝑁 .6 Herbert Egger and Eva-Maria Haslhofer 
+
+Construction of the reduced basis. The setup of the RB space follows standard arguments [7]. For completeness of the presentation, we provide some details about the practical implementation we use for our numerical tests later on. 1. Snapshot generation: The full-order problem is solved for selected parameter values 
+
+𝜇 𝑗 ∈ P , 𝑗 = 1, . . . , 𝑛 𝑗 . The resulting trajectories 𝑢 𝑛 ℎ (𝜇 𝑗 ) are collected as columns of the snapshot matrix 𝑆 . Parameter samples are generated by random perturbations around reference configurations as described in [8]. Comparable results are obtained with other sampling strategies, e.g., Latin hypercube sampling. 2. Basis extraction: A reduced basis is obtained using Proper Orthogonal Decompo-sition (POD). To alleviate the computational cost of the SVD of the large snapshot matrix, we employ a randomized SVD strategy as proposed in [11]. The reduced basis consists of the first 𝑁 left singular vectors, where 𝑁 is chosen such that 
+
+Í𝑁 𝑖 =1 𝜎 2
+
+> 𝑖
+
+Í𝑟 𝑖 =1 𝜎 2
+
+> 𝑖
+
+≥ 1 − 𝜀 2POD , 𝜎 1 ≥ 𝜎 2 ≥ · · · ≥ 𝜎 𝑟 ,
+
+with 𝑟 denoting the rank of the snapshot matrix. In accordance with Theorem 5, the POD is performed with respect to the energy-norm ∥ · ∥ 𝑉 ; compare with [7]. 3. Reduced basis space: The selected POD modes define the reduced space 𝑉 𝑁 :=
+
+span {𝜙 1, . . . , 𝜙 𝑁 } ⊂ 𝑉 ℎ. This step yields the discrete trial space used in the Galerkin projection. This space is represented algebraically by projection matrix, which allows to assemble the main building blocks of the RB method in the offline stage .4. Affine decomposition: The particular modeling approach for the air-gap coupling provides affine parameter dependence [7]; see eq. (2)–(5) and also [8] for details. The system matrices of the RB approximation appearing in (1) thus have the form 
+
+𝐾 (𝜇 ) =∑︁ 𝑞 𝜃 𝑞 𝑎 (𝜇 )𝐾 𝑞 , 𝐶 (𝜇 ) =∑︁ 𝑞 𝜃 𝑞 𝑐 (𝜇 )𝐶 𝑞 , and 𝐹 (𝜇 ) =∑︁ 𝑞 𝜃 𝑞 𝑓 (𝜇 )𝐹 𝑞 .
+
+Since the components 𝐾 𝑞 , 𝐶 𝑞 , 𝐹 𝑞 can be pre-computed in the offline phase, the assembly cost on the online phase becomes negligible. 5. Online evaluation: The RB approximation leads to systems of the form (1) of small size 𝑁 . Since the systems are time-invariant, we use diagonalization of the matrices to allow for efficient time-integration. Assuming 𝑁 ≪ 𝑁 𝑡 , the online-complexity of a forward simulation can thus be reduced to 𝑂 (𝑁 · 𝑁 𝑡 ) operations, which is optimal. The resulting reduced basis model provides a fully computable low-dimensional ap-proximation of the thermal system, combining data-driven basis construction with structure-preserving projection of the underlying PDE model. The affine decomposi-tion and the smooth dependence of the solution on 𝜇 provide reducibility of the problem and are therefore key ingredients of the RB method, see [7]. In the following section, we investigate the numerical performance of the proposed approach. In particular, we compare the RB method with the full finite element model and classical Lumped Pa-rameter Thermal Networks in terms of accuracy, computational cost, and robustness with respect to parameter variations and measurement-based calibration. Reduced Basis Method for Simulating Thermal Transients in Electric Machines 7
+
+5 Numerical validation 
+
+We now compare the accuracy and performance of finite element (FE), reduced basis (RB), and lumped parameter thermal network (LPTN) for reproducing measurements from a real induction machine experiment conducted at TU Graz [12]. In the experiment, three-phase AC is supplied such that the rotational speed is increased iteratively from 0 to 2500 rpm, while the motor load is increased during each speed interval. Temperature sensors detect the temperatures in the stator and rotor and power losses are calculated using the measured input power, frequency and flux linkage, together with analytical formulas [12], see Figure 3. To obtain good agreements with measurements, parameter estimation is performed for all computational models using a nonlinear least-squares approach. All computations are carried out in Matlab and on a desktop computer with 11th Gen Intel Core i7-1165G7 CPU, clock rate 2.701 GHz. The results of our validation studies are reported in Figure 3. 0 100 200 300 Time (s) 050 100 150 200 250 300 Power (W)        
+
+> Calculated power losses
+> Pcopper
+> Piron
+> Protor 050 100 150 200 250 300 350
+> Time (s)
+> 24 26 28 30 32 34 36
+> Temperature (°C)
+> Comparison of FE/RB/LPTN results
+> Rotor Stator yoke Stator teeth Stator lower windings Stator upper windings Experiment FE Simulation RB Simulation LPTN Simulation
+
+Fig. 3 Calculated power losses for conducted experiment (Left) [12] and comparison of FE/RB/LPTN results in sensor points with measurements (Right). 
+
+Implementation details. To ensure a fair comparison between all methods, several common and method-specific implementation choices are made. For the FE model, geometric symmetries are exploited such that only one stator slot and one rotor bar are resolved; this reduction is justified by the structure of the air-gap coupling. In addition, a tensor-product discretization is used, combining a triangular finite element mesh in the cross-section with global polynomial basis functions in the axial direction. Since temperature variations in axial direction are small, only three axial modes are retained, resulting in a highly efficient FE approximation. All methods employ the same implicit Euler time-stepping scheme to ensure consistency of the temporal discretization with a uniform time step 𝜏 = 1 𝑠 . For the RB and LPTN models, system matrices are diagonalized, leading to optimal online complexity of order 𝑂 (𝑁 × 𝑁 𝑡 ). For the FE model, a pre-factorization of the system matrices is used, yielding an efficient online evaluation with complexity close to 𝑂 (𝑛 log (𝑛 ) 𝑁 𝑡 ), where 𝑛 denotes the FE dimension. 8 Herbert Egger and Eva-Maria Haslhofer 
+
+Results. All considered methods achieve comparable accuracy after calibration. The system dimension and thus computational efficiency, however, differs significantly be-tween the high-fidelity method (FE: 𝑛 = 1032) and the reduced basis approximations (RB: 𝑁 = 5; LPTN: 𝑁 = 5). The LPTN and RB Method not only decrease computation times but also significantly reduce the memory requirements; see Table 1 for details. 
+
+FE Model RB Model LPTN Computation time 0.013 s 0.004 s 0.004 s Online memory 84 KB 200 B 200 B 
+
+Table 1 Comparison of FE, RB, and LPTN models in terms of computational performance for a single simulation, including both execution time and memory requirements. The results highlight the efficiency gains of reduced-order approaches compared to the full finite element model. 
+
+Both RB and LPTN models achieve a substantial reduction in computational ressources, while providing similar accuracy to FE simulations, which seems par-ticularly relevant for real-time embedded applications. The RB approach further offers a systematic and fully automated construction of reduced-order spaces together with rigorous control of the approximation quality. This is in contrast to LPTN models, which typically rely on manual model design. Moreover, RB models provide information about spatial temperature distributions, while LPTNs only yield compartment averages. 
+
+Acknowledgements This research was funded by the Austrian Science Fund (FWF) 10.55776/F90. 
+
+References 
+
+1. U.S: DRIVE. Electrical and Electronics Technical Team Roadmap. Report. Washington: U.S. Department of Energy, 2024. 
+
+2. M. A. Laughton and D. J. Warne. Electrical Engineer’s Reference Book. Newnes, 2013. 3. D. Hartmann, M. Herz, and U. Wever. Model Order Reduction a Key Technology for Digital Twins. Reduced-Order Modeling (ROM) for Simulation and Optimization. Springer, 2018. 4. D. Staton, E. Chong, S. Pickering, and A. Boglietti. Cooling of Rotating Electrical Machines: Fundamentals, Modelling, Testing and Design. IET 2022. 5. H. T. Eickhoff. AM-Temp Pr¨ ufling – Transientes Temperaturmodel. PhD Thesis, TU Graz, 2021. 6. J. S. Hesthaven, G. Rozza, and B. Stamm. Certified Reduced Basis Methods for Parametrized Partial Differential Equations . Springer, 2015. 7. A. Quarteroni, A. Manzoni, and F. Negri. Reduced Basis Methods for Partial Differential Equa-tions: An Introduction . Springer, 2016. 8. E.-M. Haslhofer. Modeling and Simulation of Thermal Transients in Rotating Electric Machines. 
+
+https://resolver.obvsg.at/urn:nbn:at:at-ubl:1-96904 M.Sc. Thesis JKU Linz, 2025. 9. L. C. Evans. Partial Differential Equations. AMS 2010. 10. V. Thom´ ee. Galerkin Finite Element Methods for Parabolic Problems. Springer, 1997. 11. J. A. Tropp and R. J. Webber. Randomized algorithms for low-rank matrix approximation: Design, analysis, and applications. arXiv:2306.12418, 2023. 12. K. Heidarikani, P. K. Dhakal, A. M¨ utze, and R. Seebacher. CREATOR Case: PMSM and IM Electric Machine Data for Validation and Benchmarking of Simulation and Modeling Approaches. 
+
+Technical Report, TU Graz, 2024.

@@ -1,0 +1,323 @@
+Title: A semi-smooth Newton method for efficient evaluation of the inverse hysteresis operator
+
+URL Source: https://arxiv.org/pdf/2608.03191v1
+
+Published Time: Wed, 05 Aug 2026 00:35:30 GMT
+
+Number of Pages: 8
+
+Markdown Content:
+# A semi-smooth Newton method for efficient evaluation of the inverse hysteresis operator 
+
+Herbert Egger [0000 −0003 −3769 −8791 ] and Felix Engertsberger [0009 −0001 −6799 −8317 ]
+
+Abstract We study the numerical evaluation of an energy-based vector hysteresis model and its incorporation into finite element simulations based on a vector potential formu-lation. The inherent non-smoothness of the hysteresis model poses challenges for both numerical analysis and implementation. Using tools from convex analysis, we charac-terize the forward and inverse hysteresis operators in terms of energy densities. This characterization yields well-posedness of the resulting models and leads to robust al-gorithms for their evaluation based on generalized semi-smooth Newton methods. It furthermore enables a seamless integration into magnetic field simulations, leading to nonlinear and non-smooth optimization problems at every load step. We discuss the finite element discretization, present a semi-smooth Newton method for the iterative solution, and establish global linear convergence with mesh-independent convergence rates. The theoretical results are illustrated by numerical experiments. 
+
+Keywords magnetic hysteresis, inverse hysteresis operator, vector potential formula-tion, semi-smooth Newton methods, mesh-independent convergence 
+
+## 1 Introduction 
+
+Hysteresis is recognized as one of the dominant loss mechanisms in ferromagnetic ma-terials and therefore plays a crucial role in the analysis and optimization of high-power electromagnetic devices such as electric machines and transformers. Various hysteresis models and approaches for their incorporation into finite element simulations have been 
+
+Herbert Egger Johann Radon Institute for Computational and Applied Mathematics, Austrian Academy of Sciences, Altenbergerstr. 69, 4040 Linz, Austria, e-mail: herbert.egger@ricam.oeaw.ac.at 
+
+Felix Engertsberger Institute for Numerical Mathematics, Johannes Kepler University, Altenbergerstr. 69, 4040 Linz, Austria e-mail: felix.engertsberger@jku.at 
+
+1arXiv:2608.03191v1 [math.NA] 4 Aug 2026 2 Herbert Egger and Felix Engertsberger 
+
+proposed in the literature; see [1, 2] and the references therein. We here consider the energy-based hysteresis model proposed by Henrotte et al. [3], based on earlier work by Bergqvist [4]. The model is vectorial, thermodynamically consistent by construction, and well suited for implementation in magnetic scalar potential formulations [5, 6]. The inherent non-smoothness of the model, however, makes both its analysis and its numerical realization rather delicate. These difficulties can be addressed using tools from convex analysis [7]. In this work, we study the numerical evaluation of the associ-ated inverse hysteresis operator [8] and its incorporation into magnetic field simulations based on a vector potential formulation. 
+
+Outline and main contributions. We first recall the energy-based hysteresis model, review its main properties, and discuss its efficient implementation. We then introduce the inverse hysteresis operator, summarize the properties established in [9], and propose a semi-smooth Newton method [10] for its evaluation. This approach resolves numerical difficulties observed in related work [11]. We further discuss the incorporation of the inverse hysteresis model into vector potential formulations of magnetic field problems and their discretization by finite elements. The resulting nonlinear systems are solved by globally convergent iterative methods. The performance of the proposed methods is illustrated using representative benchmark problems. 
+
+## 2 Energy-based hysteresis model 
+
+As a first step of our analysis, we briefly recall the energy-based hysteresis model proposed by Henrotte et al. [3]. The model is based on the relation 
+
+B = 𝜇 0H +
+
+Õ 
+
+> 𝑘
+
+J𝑘 (1) between magnetic flux B, magnetic field H, and partial magnetic polarizations J𝑘 . The latter are defined implicitly via an incremental energy-dissipation principle 
+
+J𝑘 = arg min J{𝑈 𝑘 (J) − 〈 J, H〉 + 𝜒 𝑘 |J − J𝑘, 𝑝 |} , (2) which immediately guarantees thermodynamic consistency of the model. The internal energy densities 𝑈 𝑘 (·) and the pinning coefficients 𝜒 𝑘 are material-dependent quantities, while J𝑘, 𝑝 denotes the partial polarization from the previous time step encoding the memory of the system. Together with (1), this yields the constitutive relation 
+
+B(H; J𝑝 ) = 𝜇 0H +
+
+Õ 
+
+> 𝑘
+
+J𝑘 (H; J𝑘, 𝑝 ), (3) where J𝑘 (H; J𝑘, 𝑝 ) denotes the solution of (2), and J𝑝 = {J𝑘, 𝑝 } abbreviates the collec-tion of partial polarizations from the previous load step. This relation will be called the 
+
+forward hysteresis operator . We impose the following assumptions [5]. 
+
+Assumption 1 Let J𝑘, 𝑝 ∈ R3, 𝑑 = 3, 𝜒 𝑘 ≥ 0, and the internal energy densities have the form 𝑈 𝑘 (J) = − 2𝐴 𝑠 𝐽 𝑠,𝑘  
+
+> 𝜋
+
+log (cos ( 𝜋  
+
+> 2
+> |J|
+> 𝐽 𝑠,𝑘
+
+)) with positive constants 𝐴 𝑠 and 𝐽 𝑠,𝑘 > 0.A semi-smooth Newton method for the inverse hysteresis operator 3
+
+The functions 𝑈 𝑘 are continuously differentiable and 𝜎 𝑘 -strongly convex with con-stant 𝜎 𝑘 = 𝐴 𝑠 𝜋  
+
+> 2𝐽 𝑠,𝑘
+
+. This allows to establish the following important properties. 
+
+Lemma 1 (i) The problems (2) have unique minimizers and the forward hysteresis operator (3) can be expressed as B(H; J𝑝 ) = ∇H|∗ (H; J𝑝 ) with co-energy density 
+
+|∗ (H; J𝑝 ) = 𝜇 0
+
+2 |H|2 −
+
+Õ 
+
+> 𝑘
+
+min J
+
+(
+
+𝑈 𝑘 (J) − 〈 H, J〉 + 𝜒 𝑘 |J − J𝑘, 𝑝 |
+
+)
+
+. (4) 
+
+(ii) The gradients ∇H|∗ (H; J𝑝 ) are strongly monotone and Lipschitz continuous, i.e., 
+
+〈∇ H|∗ (H; J𝑝 ) − ∇ H|∗ (H′; J𝑝 ), H − H′〉 ≥ 𝑐 1 |H − H′ |2 (5) 
+
+|∇ H|∗ (H; J𝑝 ) − ∇ H|∗ (H′; J𝑝 )| ≤ 𝑐 2 |H − H′ | (6) 
+
+with constants 𝑐 1 = 𝜇 0 and 𝑐 2 = 𝜇 0 + 2 Í𝑘 𝐽 𝑠,𝑘   
+
+> 𝐴 𝑠 𝜋
+
+independent of H and J𝑝 .(iii) The mapping B(H; J𝑝 ) = ∇H|∗ (H; J𝑝 ) is semi-smooth as a function of H and an element in the generalized Jacobian 𝜕 HB(H; J𝑝 ) is given by SB = 𝜇 0 𝐼 + Í𝑘 S𝑘  
+
+> J
+
+with 
+
+S𝑘  
+
+> J
+
+=
+
+
+
+0, if J𝑘 = J𝑘, 𝑝 
+
+(
+
+∇2
+
+> JJ
+
+𝑈 𝑘 + 𝜒 𝑘   
+
+> |J𝑘 −J𝑘, 𝑝 |
+
+(
+
+𝐼 − (J𝑘 −J𝑘, 𝑝 ) ⊗ ( J𝑘 −J𝑘, 𝑝 )|J𝑘 −J𝑘, 𝑝 |2
+
+)) −1
+
+, if J𝑘 ≠ J𝑘, 𝑝 
+
+(7) For details on the terminology and a complete proof of the assertions, we refer to [7, 9]. Note that the hysteresis operator B(H; J𝑝 ) is not differentiable in a classical sense. This is a consequence of the non-smooth term in the minimization problem (2) and represents a characteristic feature of rate-independent hysteresis models [12]. The fol-lowing observation simplifies the numerical solution of (2); see [5, 8] for further details. 
+
+Lemma 2 The solutions of (2) are given by J𝑘 = ∇𝑈 ∗ 
+
+> 𝑘
+
+(Y𝑘 ) with 
+
+Y𝑘 = arg min |H−Y| ≤ 𝜒 𝑘 {𝑈 ∗ 
+
+> 𝑘
+
+(Y) − 〈 Y, J𝑘, 𝑝 〉} (8) 
+
+and conjugate functions 𝑈 ∗ 
+
+> 𝑘
+
+(Y) = 2𝐽 𝑠,𝑘 
+
+> 𝜋
+
+(
+
+|Y| arctan ( |Y| 
+
+> 𝐴 𝑠
+
+) − 12 𝐴 𝑠 log ( 𝐴 2 
+
+> 𝑠
+
++ | Y|2)
+
+)
+
+.Remark 1 The minimization problems (8) are convex and their unique solution can be computed as follows: If Y𝑘 = ∇J𝑈 𝑘 (J𝑘, 𝑝 ) fulfills the constraint, then J𝑘 = J𝑘, 𝑝 .Otherwise the solution lies on the boundary |H − Y| = 𝜒 𝑘 and can be determined efficiently by Newton-type methods; see [13] and [5]. Once the quantities J𝑘 have been determined, the co-energy density |∗ (H; J𝑝 ), the hysteresis operator B(H; J𝑝 ), and the generalized Jacobians SB can be evaluated efficiently using the formulas of Lemma 1. 
+
+## 3 Inverse hysteresis operator 
+
+The results of Lemma 1 imply that the mapping H 7 → B(H; J𝑝 ) is invertible. The inverse mapping B 7 → H(B; J𝑝 ) is called the inverse hysteresis operator . It is well-defined and inherits important properties from the forward operator. In particular, it can 4 Herbert Egger and Felix Engertsberger 
+
+be characterized as the gradient of the magnetic energy density, defined by 
+
+|(B; J𝑝 ) = sup H{〈 B, H〉 − |∗ (H; J𝑝 )} . (9) Note that the functions |(B; J𝑝 ) and |∗ (H; J𝑝 ) are related by convex duality [7], which is the key ingredient for proving the following properties. 
+
+Lemma 3 Under Assumption 1, the following assertions hold true: (i) The function (9) is well-defined and continuously differentiable. Its gradient is 
+
+∇B|(B; J𝑝 ) = H, (10) 
+
+where H is the optimal point in the maximization problem (9) .(ii) The mapping ∇B|(B; J𝑝 ) is the inverse of ∇H|∗ (H; J𝑝 ) and satisfies 
+
+〈∇ B|(B) − ∇ B|(B′), B − B′〉 ≥ 1 
+
+> 𝑐 2
+
+|B − B′ |2 (11) 
+
+|∇ B|(B) − ∇ B|(B′)| ≤ 1 
+
+> 𝑐 1
+
+|B − B′ | (12) 
+
+with the same constants 𝑐 1, 𝑐 2 as introduced in Lemma 1 above. (iii) The operator H(B; J𝑝 ) = ∇B|(B; J𝑝 ) is semi-smooth as a function of B and an element of the generalized Jacobian 𝜕 BH(B; J𝑝 ) is given by SH = (SB)−1.
+
+The assertions follow from standard properties about conjugate functions; see [7, 14]. A detailed proof can be found in [9]. We next discuss the efficient evaluation of (9). To do so, we consider the equivalent minimization problem min H 𝑓 (H) with 𝑓 (H) = |∗ (H; J𝑝 ) − 〈 B, H〉. (13) For minimization of 𝑓 (H), we employ a line-search method of the form 
+
+H𝑛 +1 = H𝑛 + 𝛼 𝑛 𝛿 H𝑛 , 𝑛 ≥ 0. (14) The search directions 𝛿 H𝑛 are chosen as generalized gradient descent directions 
+
+𝛿 H𝑛 = −S𝑛 ∇ 𝑓 (H𝑛 ) (15) where S𝑛 is an appropriate scaling matrix. For determination of the step size 𝛼 𝑛 we utilize Armijo backtracking , i.e., 
+
+𝛼 𝑛 = max {𝛼 = 𝜌 𝑚 : 𝜙 (𝛼 ) ≤ 𝜙 (0) + 𝜎𝛼𝜙 ′ (0), 𝑚 ≥ 0}, (16) with merit function 𝜙 (𝛼 ) = 𝑓 (H𝑛 + 𝛼𝛿 H𝑛 ) and parameters 0 < 𝜎 < 12 and 𝜌 < 1. 
+
+Theorem 1 Let Assumption 1 hold and the matrices S𝑛 be symmetric and positive definite with eigenvalues bounded by 0 < 𝑐 3 ≤ 𝜆 (S𝑛 ) ≤ 𝑐 4. Then for any H0 ∈ R𝑑 the iterates H𝑛 defined by (14) –(16) converge to the unique minimizer H of (13) at a linear rate and the contraction factor only depends on the constants 𝑐 𝑖 , 𝑖 = 1, . . . , 4. For the choice S𝑛 = S𝑛 
+
+> H
+
+, see Lemma 1(iii), the convergence is locally superlinear. A semi-smooth Newton method for the inverse hysteresis operator 5
+
+Proof. Global linear convergence follows from the results of [13, Ch. 3] and the prop-erties of the function 𝑓 (H) resulting from Lemma 3. For S𝑛 = S𝑛  
+
+> H
+
+= (S𝑛 
+
+> B
+
+)−1, the iteration (14)–(16) amounts to a damped semi-smooth Newton method and superlinear convergence is guaranteed by the results of [10]. ⊓⊔
+
+Remark 2 The update step of the iterative scheme can be written equivalently as 
+
+H𝑛 +1 = H𝑛 + 𝛼 𝑛 S𝑛 (B − B(H𝑛 ; J𝑝 )). (17) This corresponds to a fixed-point iteration for solving B(H; J𝑝 ) = B, i.e., for invert-ing the forward hysteresis operator. A closely related scheme has been proposed in [11],which however did not include a line search and approximated the Jacobian at turning points of the hysteresis curve by finite differences. Convergence of this method can, in general, not be expected and, indeed, numerical convergence difficulties and convergence problems have been reported in [11]. By combining the monotonicity and semi-smoothness properties of the forward operator stated in Lemma 1 with standard globalization arguments for Newton-type methods for convex problems [13], we obtain a globally convergent method that overcomes all numerical issues provably. 
+
+## 4 Incorporation into a vector potential formulation 
+
+The inverse hysteresis operator H = H(B; J𝑝 ) = ∇B|(B; J𝑝 ) introduced in the previous section is well-suited for magnetic field simulations based on the vector potential formulation. For an incremental load step, the corresponding problem can be written as min  
+
+> A∈V
+
+𝐹 (A) with 𝐹 (A) =
+
+¹
+
+> Ω
+
+|(curl A; J𝑝 ) − j𝑠 · A 𝑑𝑥. (18) Here Ω ⊂ R3 is the computational domain and V ⊂ 𝐻 (curl; Ω) is an appropriate subspace encoding the relevant boundary and gauge conditions. This formulation is sufficiently general to cover problems in 2d and 3d as well as their finite element discretizations [15, 16]. For the iterative solution of (18), we use a line-search method 
+
+A𝑛 +1 = A𝑛 + 𝛼 𝑛 𝛿 A𝑛 , 𝑛 ≥ 0 (19) with 𝛿 A𝑛 ∈ V determined from the linearized variational problems 
+
+¹
+
+> Ω
+
+S𝑛 curl 𝛿 A𝑛 · curl v 𝑑𝑥 =
+
+¹
+
+> Ω
+
+j𝑠 · v − ∇ B|(curl A𝑛 ) · curl v 𝑑𝑥 ∀v ∈ V. (20) The step size 𝛼 𝑛 is again determined by Armijo backtracking, i.e., 
+
+𝛼 𝑛 = max {𝛼 = 𝜌 𝑚 : Φ(𝛼 ) ≤ Φ(0) + 𝜎𝛼 Φ′ (0), 𝑚 ≥ 0}, (21) with merit function Φ(𝛼 ) = 𝐹 (A𝑛 + 𝛼𝛿 A𝑛 ). From the analysis developed in [16], we can immediately deduce the following convergence results. 6 Herbert Egger and Felix Engertsberger 
+
+Theorem 2 Let Ω ⊂ R3 be a bounded Lipschitz domain, j𝑠 ∈ 𝐿 2 (Ω)3, V be a closed subspace of 𝐻 (curl; Ω) such that ‖v‖𝐿 2 (Ω) ≤ 𝑐 5 ‖ curl v‖𝐿 2 (Ω) for all v ∈ V. Further-more let |(B; J𝑝 ) satisfy the conditions of Lemma 3 and S𝑛 be symmetric and positive definite with eigenvalues bounded by 𝑐 3, 𝑐 4. Then for any A0 ∈ V, the iterates A𝑛 of 
+
+(19) –(21) converge to the unique solution A ∈ Vg of (18) at a linear rate, i.e., 
+
+‖ curl (A𝑛 − A)‖ 𝐿 2 (Ω) ≤ 𝐶 𝑞 𝑛 ‖ curl (A0 − A)‖ 𝐿 2 (Ω) (22) 
+
+and the contraction factor 𝑞 only depends on the constants 𝑐 𝑖 , 𝑖 = 1, . . . , 5.Remark 3 In ferromagnetic materials, we may choose S𝑛 = S𝑛  
+
+> H
+
+∈ 𝜕 BH(curl A𝑛 ; J𝑝 ),as defined in Lemma 3. The iteration then becomes a semi-smooth Newton method for minimizing (18). This method exhibits at least global linear convergence on the contin-uous and discrete level, and the contraction factor 𝑞 is independent of the discretization level; see [16, 9] for numerical results highlighting this mesh-independent convergence. 
+
+## 5 Numerical validation 
+
+We now illustrate the theoretical results by numerical experiments for the stable in-version scheme and the magnetic field simulations based on the vector potential for-mulation. All computations were carried out in Matlab on a laptop equipped with a 13th Gen Intel Core i5-1335U CPU with a clock rate of 1.30 GHz. To accelerate the evaluation of the material law, the constitutive model was compiled into a .mex function using Matlab Coder with OpenMP-enabled shared-memory parallelization. 
+
+Stable numerical inversion on a material point. To demonstrate the robustness and efficiency of the numerical inversion scheme, we first present results for a single material point. For the experiment, we use 11 pinning forces fitted to the measurement data reported in [17]. The corresponding material parameters are summarized in Table 1. As magnetic field excitation we choose Hℓ = 700 (sin (𝑡 ℓ (5/2)𝜋 ), 0) with 200 time steps 𝑡 ℓ uniformly distributed in the interval [0, 1]. Using the forward hysteresis opera-tor (3), we compute the corresponding magnetic fluxes Bℓ , starting from a completely demagnetized state J𝑘, 𝑝 (𝑡 0) = 0. The resulting sequence serves as the input for the inverse hysteresis operator (10). For the numerical inversion, we employ the method of Lemma 2. Iterations are stopped with a relative tolerance of tol = 10 −8. The corre-sponding results are depicted in Figure 1. The left plot clearly illustrates the equivalence of both models. The right plot visualizes the number of iterations and average step sizes required for the individual load steps. Note that only 3–4 iterations are required on aver-age, which illustrates the efficiency of the proposed method. Furthermore, the frequent occurrence of values 𝛼 avg < 1 highlights the necessity of the line search method. 
+
+Magnetic field simulation. Next we present numerical results for a finite element simulation of the three-limbed transformer of the TEAM 32 benchmark problem [17]. The specific setup allows the consideration of a quasi-2d setting; the relevant two-dimensional cross-section Ω2𝑑 of the domain Ω is depicted in the left plot of Fig. 2. In A semi-smooth Newton method for the inverse hysteresis operator 7          
+
+> -600 -400 -200 0200 400 600 -1.5 -1 -0.5 00.5 11.5
+> 050 100 150 200 1234500.5 1
+
+Fig. 1 Hysteresis curve of forward and inverse hysteresis operator for an unidirectional excitation (left), iteration number and average step sizes 𝛼 of the inversion scheme for different time-steps (right) 
+
+Parameter Values Description 
+
+𝐴 𝑠 20 field strength 
+
+𝐽 𝑠,𝑘 0.08, 0.55, 0.49, 0.05, 0.04, 0.07, 0.02, 0.02, 0.02, 0.02, 0.03 reference polarization 
+
+𝜒 𝑘 0, 43, 73, 128, 164, 202, 241, 280, 320, 360, 400 pinning strength 
+
+Table 1 Material data for the energy-based hysteresis model used in both numerical tests.           
+
+> 00.02 0.04 0.06 0.08 0.1 0.12 0.14 0.16 0.18 0.2 -1.5 -1 -0.5 00.5 11.5
+
+Fig. 2 Two-dimensional geometry of a three-limbed transformer for the TEAM 32 benchmark prob-lem (left), and comparison of the simulated magnetic induction at the measurement point C6 to the measurements (right) 
+
+the air and the coils we consider a quadratic energy density |(B) = 𝜈 0 
+
+> 2
+
+|B|2 while in the ferromagnetic core we use the hysteretic energy |(B; J𝑝 ) with the material data from Table 1. For the discretization of the relevant component A𝑧 , we use piecewise linear finite elements defined on a triangular mesh of the 2d cross section Ω2𝑑 . After every loading step the previous values J𝑘, 𝑝 at every quadrature point are updated. In the coils we impose a sinusoidal current with some higher harmonics, which corresponds to the CASE 2 configuration of the benchmark problem. Finally, we terminate the algorithm if the difference in energy is smaller than a relative tolerance of tol = 10 −7.The magnetic induction at the pick-up coil C6 is depicted in the right plot of Fig. 2 and compared to measurements and an anhysteretic simulation. In Table 2, we sum-marize the convergence behavior for different mesh resolutions. The nearly constant average iteration counts for varying mesh sizes clearly illustrate the mesh-independent convergence behavior of the proposed method. To compute the total losses the power density 𝑝 𝐻 = 1
+
+> Δ𝑡
+
+Í𝑘 𝜒 𝑘 |J𝑘 − J𝑘, 𝑝 | is integrated in time and over the whole domain Ω,and then multiplied by the length 𝐿 = 2.5 mm of the transformer. The corresponding results of our computations are summarized in Table 2. 8 Herbert Egger and Felix Engertsberger 
+
+# DoF # Elements Time Iterations Iron losses 
+
+369 661 2.01 s 5.04 it 8.29 J 1,369 2,644 5.72 s 5.37 it 8.28 J 5,439 10,576 24.3 s 5.73 it 8.29 J 21,453 42,304 117 s 5.97 it 8.30 J 85,209 169,216 788 s 6.12 it 8.31 J 
+
+Table 2 Total computation times, average iteration counts, and iron losses for simulation of transformer benchmark with 200 time steps and varying discretization levels. 
+
+Acknowledgements This work was supported by the joint DFG/FWF Collaborative Research Centre CREATOR (DFG: Project-ID 492661287/TRR 361; FWF: 10.55776/F90). 
+
+## References 
+
+1. N. Sadowski, N. J. Batistela, J. P. A. Bastos, and M. Lajoie-Mazenc. An inverse Jiles-Atherton model to take into account hysteresis in time-stepping finite-element calculations. IEEE Trans. Magn. , 38:797–800, 2002. 2. B. Upadhaya, P. Rasilo, L. Perkki¨ o, P. Handgruber, A. Belahcen, and A. Arkkio. Comparison of anisotropic energy-based and Jiles–Atherton models of ferromagnetic hysteresis. IEEE Trans. Magn. , 56:1–7, 2020. 3. V. Francois-Lavet, F. Henrotte, L. Stainier, L. Noels, and C. Geuzaine. An energy-based variational model of ferromagnetic hysteresis for finite element computations. J. Comp. Appl. Math. , 246:243– 250, 2013. 4. A. Bergqvist. Magnetic vector hysteresis model with dry friction-like pinning. Physica B: Condensed Matter , 233:342–347, 1997. 5. L. Prigozhin, V. Sokolovsky, J. W. Barrett, and S. E. Zirka. On the energy-based variational model for vector magnetic hysteresis. IEEE Trans. Magn. , 52:1–11, 2016. 6. L. Domenig, K. Roppert, and M. Kaltenbacher. Incorporation of a 3-d energy-based vector hysteresis model into the finite element method using a reduced scalar potential formulation. 
+
+IEEE Trans. Magn. , 60:1–8, 2024. 7. A. Beck. First-Order Methods in Optimization . SIAM, Philadelphia, PA, 2017. 8. H. Egger, F. Engertsberger, L. Domenig, K. Roppert, and M. Kaltenbacher. On forward and inverse magnetic vector hysteresis operators. IEEE Trans. Magn. , 61:7300207, 2025. 9. H. Egger and F. Engertsberger. A semi-smooth Newton method for magnetic field problems with hysteresis. arXiv:2506.01499, 2025. 10. M. Ulbrich. Semismooth Newton Methods for Variational Inequalities and Constrained Optimiza-tion Problems in Function Spaces . SIAM, Philadelphia, PA, 2011. 11. K. Jacques, R. Sabariego, C. Geuzaine, and J. Gyselinck. Inclusion of a direct and inverse energy-consistent hysteresis model in dual magnetostatic finite element formulations. IEEE Trans. Magn. ,52:7300304, 2015. 12. A. Mielke and T. Roub´ ıˇ cek. Rate-Independent Systems. Theory and Applications. Springer, 2015. 13. J. Nocedal and S. Wright. Numerical Optimization. 2nd ed. . Springer, 2006. 14. M. S. Gowda. Inverse and implicit function theorems for 𝐻 -differentiable and semismooth functions. Optim. Methods Softw. , 19:443–461, 2004. 15. G. Meunier. The Finite Element Method for Electromagnetic Modeling . Wiley, 2008. 16. H. Egger, F. Engertsberger, and B. Radu. On the convergence of higher-order finite element methods for nonlinear magnetostatics. SIAM J. Numer. Anal. , 64:55–75, 2026. 17. O. Bottauscio, M. Chiampi, C. Ragusa, L. Rege, and M. Repetto. A test case for validation of magnetic field analysis with vector hysteresis. IEEE Trans. Magn. , 38:893–896, 2002.

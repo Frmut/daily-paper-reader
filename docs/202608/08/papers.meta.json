@@ -1,0 +1,37 @@
+{
+  "label": "2026-08-08",
+  "date": "2026-08-08",
+  "generated_at": "2026-08-08T20:43:56",
+  "count": 2,
+  "papers": [
+    {
+      "paper_id": "202608/08/2608.03191v1-a-semi-smooth-newton-method-for-efficient-evaluation-of-the-inverse-hysteresis-operator",
+      "section": "quick",
+      "title_en": "A semi-smooth Newton method for efficient evaluation of the inverse hysteresis operator",
+      "authors": "Herbert Egger, Felix Engertsberger",
+      "date": "2026-08-04",
+      "pdf": "https://arxiv.org/pdf/2608.03191v1",
+      "score": "6.0",
+      "evidence": "磁场仿真中的磁滞算子评估",
+      "tldr": "本研究针对能量基矢量磁滞模型在有限元模拟中的非光滑性挑战，利用凸分析工具通过能量密度表征磁滞算子。提出了一种基于广义半光滑牛顿法的鲁棒算法，用于高效评估逆磁滞算子，并将其集成到磁场仿真中。该方法在离散化后表现出全局线性收敛性且收敛速度与网格无关，通过数值实验验证了其高效性与稳定性。",
+      "tags": "query:pmsm",
+      "abstract_en": "We study the numerical evaluation of an energy-based vector hysteresis model and its incorporation into finite element simulations based on a vector potential formulation. The inherent non-smoothness of the hysteresis model poses challenges for both numerical analysis and implementation. Using tools from convex analysis, we characterize the forward and inverse hysteresis operators in terms of energy densities. This characterization yields well-posedness of the resulting models and leads to robust algorithms for their evaluation based on generalized semi-smooth Newton methods. It furthermore enables a seamless integration into magnetic field simulations, leading to nonlinear and non-smooth optimization problems at every load step. We discuss the finite element discretization, present a semi-smooth Newton method for the iterative solution, and establish global linear convergence with mesh-independent convergence rates. The theoretical results are illustrated by numerical experiments.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202608/08/2608.05904v1-reduced-basis-method-for-simulating-thermal-transients-in-electric-machines",
+      "section": "quick",
+      "title_en": "Reduced Basis Method for Simulating Thermal Transients in Electric Machines",
+      "authors": "Herbert Egger, Eva-Maria Haslhofer",
+      "date": "2026-08-06",
+      "pdf": "https://arxiv.org/pdf/2608.05904v1",
+      "score": "6.0",
+      "evidence": "电机热仿真的方法论桥梁，可应用于永磁同步电机研究。",
+      "tldr": "本研究探讨了利用约化基（RB）方法对感应电机进行瞬态热仿真。针对参数化偏微分方程，RB方法能提供精度可控的低维近似。通过与有限元（FE）模型和集总参数热网络（LPTN）的对比，证明了RB模型在保持FE级别精度的同时，实现了全自动构建，且计算效率可与传统的LPTN相媲美，为电机热管理提供了高效且准确的仿真手段。",
+      "tags": "query:pmsm",
+      "abstract_en": "Reduced Basis (RB) methods provide low-dimensional approximations of parametrized partial differential equations with controllable accuracy. We discuss the construction of RB approximations for transient thermal simulation of an induction motor and compare their performance to Finite Element (FE) models and Lumped Parameter Thermal Networks (LPTNs) after calibration to measurements. Numerical results demonstrate that RB models can achieve FE accuracy, allow for a fully automatic construction, and offer computational efficiency comparable to traditional LPTNs.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
