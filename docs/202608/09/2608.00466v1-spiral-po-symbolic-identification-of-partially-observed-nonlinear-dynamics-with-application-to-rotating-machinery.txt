@@ -1,0 +1,2051 @@
+Title: SPIRAL-PO: Symbolic Identification of Partially Observed Nonlinear Dynamics with Application to Rotating Machinery
+
+URL Source: https://arxiv.org/pdf/2608.00466v1
+
+Published Time: Tue, 04 Aug 2026 00:33:13 GMT
+
+Number of Pages: 32
+
+Markdown Content:
+# SPIRAL-PO: Symbolic Identification of Partially Observed Nonlinear Dynamics with Application to Rotating Machinery 
+
+## Mohammad A. Ayoubi 1* and Sina Piramoon 2* 
+
+> 1*
+
+Department of Mechanical Engineering, Santa Clara University, Santa Clara, CA, 95053, USA. 
+
+> 2*
+
+Laboratory Products Division, Thermo Fisher Scientific, Santa Clara, CA, 95054, USA. *Corresponding author(s). E-mail(s): maayoubi@scu.edu; spiramoon@scu.edu; 
+
+Abstract 
+
+Many engineering systems are governed by states that cannot be directly measured—tilt angles in rotating machines, internal flow variables, aeroelastic modes—yet these hidden states couple into the measured outputs. Identifying the governing equations from such partial observations is the problem addressed here. We present SPIRAL-PO (Symbolic Physics-Informed Residual Augmentation Loop — Partially Observed), a framework that treats hidden-state effects not as nuisances to be eliminated but as structured, physically interpretable signatures in the observable equations of motion. From a minimal physics seed in measured coordinates, the method iteratively fits a multi-output residual net-work to the projection residual, projects the learned structure onto a physics-constrained candidate library, and admits terms through a sequential statistical gating protocol. We give sufficient condi-tions for unique recovery of the hidden-coupling coefficients, a matching impossibility result showing that insufficiently rich excitation makes recovery impossible for any estimator, and a closed-form sample-complexity bound. These guarantees concern the coefficients of the hidden-state coupling as projected onto the observable library —not the hidden trajectory itself, which is subsequently recon-structed by a separate state estimator. The framework is demonstrated on a vertical flexible rotor with Duffing supports, where only the lateral displacements of the rotor are measured while the tilt angles remain hidden. A constant-speed run is provably unidentifiable, whereas a speed sweep restores identifiability; from noisy coast-down data, SPIRAL-PO recovers the gyroscopic coupling, the Duff-ing nonlinearity, and the translation–tilt cross-coupling, each with a standard error and t-statistic. An Extended Kalman Filter built on the validated model then reconstructs the hidden tilt trajectory from observed displacements alone. 
+
+Keywords: Nonlinear system identification, Partially observed systems, Symbolic regression, Physics-informed machine learning, Identifiability, Rotordynamics 
+
+A recurring challenge in engineering dynamics is that the models we need are governed by states we cannot measure. Tilt angles in rotating machines, internal flow variables in fluid sys-tems, and aeroelastic modes in flexible structures all exert observable effects—they couple into the measured outputs—yet direct sensing is imprac-tical or impossible. The governing equations of the observable channels then contain structured, unknown terms that look like cross-coupling or nonlinearity from the sensor’s point of view. Iden-tifying these terms, and distinguishing genuine 1arXiv:2608.00466v1 [eess.SY] 1 Aug 2026 physics from noise artifacts, is the problem this paper addresses. Existing data-driven methods handle the full-state case well. SINDy [1] recovers sparse gov-erning equations by library regression on state measurements and their time derivatives for the observed states; Weak SINDy [2] extends this to noisy data by projecting onto smooth test func-tions; physics-informed neural networks [3] embed governing equations into the training loss and have been applied across a broad range of forward and inverse problems. What all these approaches share is the assumption that every state entering the library is directly measurable. In rotordynam-ics, that assumption fails by construction: the tilt angles α, β evolve dynamically and are coupled to the lateral displacements x, y through the bearing geometry, but the sensors sit at the disk and see only x(t) and y(t). A growing body of work tackles exactly this partially observed setting, and it is useful to place SPIRAL-PO against it. The classical route is time-delay embedding : Takens’ theorem guarantees that stacking delayed copies of a limited measurement reconstructs an attractor diffeomorphic to that of the full-state system, an idea made operational for linear-operator analysis by the Hankel alterna-tive view of Koopman (HAVOK) [4]. Building on delay coordinates, deep delay autoencoders learn a closed-form model from a single measured channel [5], while related autoencoder–SINDy architec-tures jointly discover latent coordinates and the equations that govern them [6]. A distinct line absorbs the influence of the unobserved states by regressing higher-order time derivatives of the measured variables [7]. Orthogonally, clas-sical state-estimation methods — extended and unscented Kalman filtering, moving-horizon esti-mation — reconstruct hidden states from a known model rather than discovering the model itself. What the discovery methods share is that they recover a model in surrogate coordinates — delay, latent, or derivative coordinates — whose phys-ical meaning must then be inferred after the fact. SPIRAL-PO instead keeps the observable coordinates fixed and projects the hidden-state dynamics onto them as physically labeled library terms, so that every discovered term retains a direct mechanical interpretation. The original SPIRAL method [8] was devel-oped for nonlinear unsteady aerodynamics—a dif-ferent partial-observation problem—and showed that iterative residual augmentation from aphysics seed can recover interpretable, statisti-cally validated models when the full state is not available. The present work generalizes this idea to a broad class of partially observed nonlinear systems. Three additions distinguish it from the original. The first is a projection residual for-mulation that maps hidden-state dynamics onto the observable subspace as structured candidate library terms, making explicit which physical mechanisms the sensor channels can and can-not distinguish. Building on this, we construct a physics-structured bivariate library from both the x and y displacement channels, so that gyroscopic coupling, isotropic Duffing nonlinear-ity, and tilt-mediated cross-channel terms are all representable—none of which can appear in a single-channel reduction. Finally, a frequency-domain whiteness guard replaces the variance-based coverage threshold with a Ljung–Box test on the validation residual, a criterion better suited to the multi-harmonic, non-stationary signals typ-ical of a coast-down experiment. The framework is applied to a four-degree-of-freedom (4-DOF) vertical flexible rotor with Duffing bearing supports [9], where the tilt angles 
+
+α(t), β(t) are genuinely unmeasured and the only sensor channels are the lateral displacements x(t), 
+
+y(t) at the disk. We show that SPIRAL-PO cor-rectly identifies the governing equation structure from x, y alone, and that an Extended Kalman Filter built on the validated dynamics can sub-sequently reconstruct all four states—including α
+
+and β—with sub-2% relative error against syn-thetic ground truth. Section 1 formalizes the partially observed system class and the SPIRAL-PO algorithm; Section 2 develops the identifiability, impossibility, and sample-complexity results; Section 3 applies the method to the 4-DOF rotor, validating recov-ery against synthetic ground truth, reconstructing the hidden tilt with an Extended Kalman Fil-ter, and testing it on the laboratory rig; and Sections 5 and 6 cover related work, limitations, and conclusions. 21 Methodology 
+
+## 1.1 General problem formulation 
+
+Before presenting the theory, let us define “par-tially observed” term. Rather than absorbing the hidden states into a latent-space representation or eliminating them by differentiation, we retain the full-state equations and partition them, so that the role of each unmeasured variable is structurally explicit from the outset. In general, a nonlinear system can be repre-sented as ˙z = F  z, u(t), p, z(t) = 
+
+zo(t)
+
+zh(t)
+
+
+
+, (1) in which only the sub-state zo(t) is measured, 
+
+zh(t) is hidden, u(t) is a known input, and p col-lects physical parameters. Splitting the measured rows of F into a part expressible in measured quantities alone and a remainder, ˙zo = F obs o
+
+ zo, u, p + ∆  zo, zh, u, p, (2) collects every effect of the hidden sub-state on the measured channels into a single coupling term ∆. This pair — a measured derivative on the left, a structured but unknown hidden-coupling term on the right — is all that SPIRAL-PO requires: the residual loop, the physics-structured library, and the identifiability theory of Sect. 2 oper-ate on the form (2), regardless of the order of the underlying system, provided every candidate term carries the physical units of the governing equation. Mechanical and structural systems, the focus of this paper, arrive naturally in second-order form, so the remainder of the development is phrased in generalized coordinates and their derivatives. Concretely, consider a second-order system with nq generalized coordinates whose configura-tion vector partitions into an observable part and a hidden part: 
+
+q(t) = 
+
+qobs (t)
+
+qhid (t)
+
+
+
+,
+
+qobs ∈ Rno , qhid ∈ Rnh , no + nh = nq .
+
+(3) The full equations of motion are given below. 
+
+M ¨q + D(q, ˙q, p) ˙ q + K(q, p) q = f (t, p), (4) where M , D, K are mass, damping/gyroscopic, and stiffness operators (possibly state-dependent), 
+
+f is a known forcing, and p is a vector of physical parameters. Conformally with the partition (3), each operator splits into observable ( o) and hidden (h) blocks, 
+
+M =
+
+Moo Moh 
+
+Mho Mhh 
+
+
+
+, D =
+
+Doo Doh 
+
+Dho Dhh 
+
+
+
+,
+
+K =
+
+Koo Koh 
+
+Kho Khh 
+
+
+
+,
+
+(5) where the oo blocks are no × no, the oh blocks 
+
+no × nh, the ho blocks nh × no, and the hh 
+
+blocks nh × nh. The observable–observable block 
+
+Moo maps observable accelerations to observable forces, while the observable–hidden blocks Doh 
+
+and Koh are precisely the channels through which the unmeasured coordinates qhid act on the mea-sured ones. Projecting (4) onto its observable rows and assuming block-diagonal inertia ( Moh = 0), isolates Moo ¨qobs and collects hidden-block actions 
+
+Doh ˙qhid , Koh qhid together with nonlinear cross-coupling in the term ∆ of (10). Only qobs (t)(and its time derivatives, estimated from data) is available. The operators M , D, K in (4) are kept deliberately general: they may depend on the instantaneous state ( q, ˙q) and on the parameter vector p, and D in particular absorbs any velocity-proportional coupling, including speed-dependent gyroscopic effects, so that a scheduling param-eter (e.g. a rotor spin speed) enters through p
+
+rather than as a separate operator. This general-ity is all the SPIRAL-PO development requires; the concrete rotordynamic instantiation—with an explicit gyroscopic matrix and Duffing bearing stiffness—is deferred to the application of Sect. 3. 
+
+1.1.1 Observable equations of motion 
+
+The partition above is useful only if it leads to equations that can be written solely in terms of measurable quantities. Projecting the full equations onto the observable rows achieves exactly this: it isolates the dynamics of qobs while collecting all hidden-state influence into a single, 3structured residual term ∆. That term is unknown and inherits the physical constraints of the hid-den dynamics, a property that SPIRAL-PO will exploit in the discovery step. To separate linear structure from nonlinear coupling, decompose the operators into constant and state-dependent parts, 
+
+D(q, ˙q, p) = ¯D(p) + Dnl (q, ˙q, p),
+
+K(q, p) = ¯K(p) + Knl (q, p), (6) and partition both parts into blocks conformal with (3), ¯D =
+
+Doo Doh 
+
+Dho Dhh 
+
+
+
+,
+
+Dnl =
+
+Dnl ,oo Dnl ,oh 
+
+Dnl ,ho Dnl ,hh 
+
+
+
+,
+
+(7) and analogously for ¯K, Knl , where the nonlinear blocks retain their dependence on the full state (q, ˙q). Taking the observable block row of (4) (with Moh = 0) gives 
+
+Moo ¨qobs = fo − Doo ˙qobs − Koo qobs 
+
+− Doh ˙qhid − Koh qhid 
+
+− g(qobs , qhid , ˙qobs , ˙qhid ),
+
+(8) where 
+
+g(qobs , qhid , ˙qobs , ˙qhid ) = Dnl ,oo ˙qobs + Dnl ,oh ˙qhid 
+
++ Knl ,oo qobs + Knl ,oh qhid ,
+
+(9) collects all nonlinear cross-coupling: even the terms acting on qobs , ˙qobs involve the hidden states through the state dependence of the nonlinear blocks. Let’s write (8) in the following form 
+
+Moo ¨qobs = fo(t, p) − Doo ˙qobs − Koo qobs 
+
+− ∆(qobs , qhid , ˙qobs , ˙qhid ), (10) 
+
+∆(qobs , qhid , ˙qobs , ˙qhid ) := Doh ˙qhid + Koh qhid 
+
++ g(qobs , qhid , ˙qobs , ˙qhid ),
+
+(11) where the bracketed term ∆ is unknown. Intrinsically ∆ depends on the hidden states, ∆( qobs , qhid , ˙qobs , ˙qhid ); but along any solution of (4) the hidden coordinates qhid (t), ˙qhid (t) are themselves determined by the dynamics, so the restriction of ∆ to the realized trajectory is a func-tion of the observed coordinates and time alone, written ∆( qobs , ˙qobs , t ) with the explicit t carry-ing the (unmeasured) hidden-state contribution. It is this trajectory restriction that condition (C1) of Theorem 1 approximates by observable library terms. SPIRAL-PO exploits this structure to build a targeted candidate library without ever measur-ing qhid .
+
+1.1.2 Identification objective 
+
+With the problem structure in place, the iden-tification objective can be stated concisely. The goal is not to reconstruct qhid directly, instead, to determine which terms belong in ∆ and what their coefficients are, using only the observable trajectory. Measurements of the observable coordinates are corrupted by noise, ˜qobs (tk) = qobs (tk) + εk, k = 1 , . . . , N, (12) where εk ∼ N (0, σ 2I) is i.i.d. measurement noise. Given (12) and a known excitation f (t, p), the identification objective is the pair ( fphys , θ∗): a functional form fphys (qobs , ˙qobs , t ; θ) and coeffi-cients 
+
+θ∗ = arg min 
+
+> θ
+> N
+
+X
+
+> k=1
+
+r(tk; θ) 22,
+
+r(tk; θ) = ¨˜qobs (tk) − fphys 
+
+
+
+˜qobs (tk), ˙˜qobs (tk), t k; θ
+
+
+
+,
+
+(13) where the residual r is the portion of the measured acceleration unexplained by the physics model, reported with standard errors, t-statistics, and model-selection diagnostics. Before presenting the individual components of the SPIRAL-PO framework, it is helpful to step back and view the identification problem from a broader perspective. In a partially observed sys-tem, the goal is not merely to fit the measured trajectories. Rather, the objective is to determine which physical mechanisms must be present in the observable equations to explain the measured response. From this viewpoint, the hidden states are not treated as nuisance variables to be recon-structed in an abstract latent space. Instead, their 4influence is inferred through the structured signa-tures they leave behind in the measured dynamics. SPIRAL-PO is designed around this principle: begin with the simplest physically meaningful model, explain the remaining discrepancy using a residual learner, and then convert that discrep-ancy into interpretable mathematical terms that can be tested, validated, and either accepted or rejected. 
+
+## 1.2 The SPIRAL-PO algorithm 
+
+The method is built around a single organiz-ing principle: at each iteration, ask whether the current model leaves unexplained structure in the residual, and if so, determine what physics-consistent terms would best account for it. The loop advances only when a candidate term sur-vives two independent statistical gates and does not harm held-out prediction accuracy; it ter-minates the moment the residual is statistically indistinguishable from white noise. Every admit-ted term is accompanied by a standard error, a 
+
+t-statistic, and a physical label, so the final model can be interrogated in the same way as a conven-tional engineering model — not just trusted as a black-box fit. 
+
+1.2.1 Overview of the loop 
+
+SPIRAL-PO is an iterative closed-loop algorithm. At each iteration n the observable acceleration is decomposed as ¨˜qobs (t) = f (n)phys 
+
+ ξ(t); θ(n) + ∆ (n) ξ(t) + ε(t),
+
+(14) where ξ(t) is the observable regressor vector (Sect. 1.2.2), f (n)phys is the current physics model, ∆(n) is the systematic projection residual, and ε(t)is zero-mean noise. The residual signal is 
+
+r(n)(t) = ¨˜qobs (t) − f (n)phys 
+
+ ξ(t); θ(n), (15) and the loop advances as 
+
+f (n)phys project 
+
+−−−−−→ r(n) NN fit 
+
+−−−−−→ f (n)NN Halton 
+
+−−−−−→ f (n)poly Gate 1 
+
+−−−−−→ Gate 2 
+
+−−−−−→ f (n+1) phys .
+
+(16) The objects appearing in (16) are, in order of use: 
+
+f (n)NN : Rnξ → Rno , the multi-output residual neu-ral network fitted to r(n) (Step 2, Sect. 1.2.5); 
+
+L(n), the physics-structured candidate library at iteration n (Step 3, Sect. 1.2.6), from which the already-active set A(n) ⊆ L (n) of terms already present in f (n)phys is excluded to avoid double-counting; f (n)poly , the polynomial projection of f (n)NN 
+
+onto L(n) obtained on a Halton grid (Step 4, Sect. 1.2.7); and S(n) ⊆ L (n), the subset of candi-dates that survive the Gate 1 significance screen (Step 5, Sect. 1.2.8). Each object is defined in full where it is introduced; the definitions are collected here so that no symbol in (16) is used before it is named. 
+
+1.2.2 Observable regressor vector 
+
+The augmented observable regressor is 
+
+ξ(t) =  qT
+
+> obs
+
+, ˙qT
+
+> obs
+
+, pT
+
+> sched
+
+T ∈ Rnξ , (17) where psched contains any known scheduling parameters (e.g., spin speed Ω in rotating machin-ery, flow speed U in aerodynamics, temperature in thermomechanical systems. Note that qhid does not appear in ξ — the regressor is formed entirely from measurable quantities. Time derivatives ˙ qobs 
+
+are estimated from ˜ qobs by the method appropri-ate to the signal type (Sect. 1.3). 
+
+1.2.3 Step 1 — Physics seed 
+
+SPIRAL-PO begins from the minimal physics model expressible in the observable subspace alone. Let f (0) phys contain only terms whose coef-ficients are knowable from the system’s physical parameters without any hidden-state contribu-tion: 
+
+f (0) phys (ξ; θ(0) ) = M −1
+
+> oo
+
+h
+
+fo(t)−D(0)  
+
+> oo
+
+˙qobs −K(0)  
+
+> oo
+
+qobs 
+
+i
+
+.
+
+(18) All coupling to hidden states, all nonlinear cor-rections, and all scheduling-parameter-dependent terms start inactive and must be earned from data. The seed coefficients θ(0) are estimated by ordinary least squares (OLS) on the training split. 51.2.4 Whiteness guard and termination test 
+
+Run first in each iteration (before the network fit), a whiteness guard answers the termination ques-tion: does the current residual r(n) still contain any discoverable structure, or is it indistinguish-able from noise? The original SPIRAL uses a vari-ance coverage threshold to decide this, calibrated for narrow-band harmonic inputs. For broadband response data (e.g., rotor run-up, random excita-tion), the residual energy is spread across many frequencies and the variance threshold is unre-liable. SPIRAL-PO replaces that threshold with the Ljung–Box whiteness test [10], which tests the hypotheses, 
+
+H0 : ρ1 = · · · = ρm = 0 ,H1 : ρk̸ = 0 for some k ∈ { 1, . . . , m }. (19) Here, H0 indicates that r(n) is white up to lag m.The hypotheses are evaluated using the Ljung– Box statistic 
+
+Q(n)LB = N (N + 2) 
+
+> m
+
+X
+
+> k=1
+
+ˆρ2
+
+> k
+
+ r(n)
+
+N − k , (20) where N is the number of residual samples, m
+
+is the maximum tested lag, and ˆ ρk
+
+ r(n) denotes the sample autocorrelation of r(n) at lag k. where 
+
+N is the number of residual samples, m is the maximum tested lag, and ˆρk
+
+ r(n) denotes the sample autocorrelation of r(n) at lag k. where m
+
+is the number of lags tested and ˆ ρk is the sam-ple autocorrelation of r(n) at lag k. Under H0,
+
+Q(n)LB ∼ χ2(m). If Q(n)LB < χ 20.95 (m), H0 is not rejected: the residual is deemed white (no discov-erable structure remains) and the loop terminates; otherwise structure remains and the iteration pro-ceeds to the neural-network fit and the admission gates. That this guard must eventually fire—so the loop stops after finitely many iterations—is established in Section 2 (Proposition 3). 
+
+1.2.5 Step 2 — Projection residual and NN fit 
+
+At each iteration the projection residual r(n) (15) captures what the current model f (n)phys cannot yet explain: systematic, autocorrelated signal in it flags a missing hidden-state coupling or nonlinear term. A shallow fully-connected neural network 
+
+f (n)NN : Rnξ → Rno ,f (n)NN (ξ) = WL σ
+
+
+
+· · · σ(W1ξ + b1) · · · 
+
+
+
++ bL,
+
+(21) with tanh activations and L hidden layers is trained to fit r(n) with Adam [11] and early stop-ping on the validation split. The network is not the final model; it is only a smooth, nonpara-metric oracle from the observable regressor to the residual. Fitting a network first, rather than regressing the noisy residual directly onto the can-didate library, is deliberate: the network supplies a smooth, denoised estimate of the unexplained dynamics, so the subsequent library projection (Step 4) and statistical gates (Steps 5–6) operate on a clean target rather than on noise-corrupted, time-correlated samples—sharply reducing spuri-ous term selection. It is multi-output ( ξ → Rno ) so that cross-channel coupling—e.g. the gyroscopic term linking the x-equation to ˙ y—is captured in one pass, which independent single-output net-works would miss. The rotor architecture (five inputs, two hidden tanh layers, two outputs) is shown in Fig. 1. 6Fig. 1 : Architecture of the residual neural net-work f (n)NN for the 4-DOF rotor application. Five observable quantities ξ = ( x, y, ˙x, ˙y, Ω) T enter the input layer (blue); two hidden layers with W neu-rons each use tanh activations (orange, with the activation curve drawn inside each neuron); the two-dimensional output (green) provides simulta-neous residual estimates ˆ r(n) 
+
+> x
+
+and ˆ r(n) 
+
+> y
+
+for the x-and y-equations. Training the network as a single multi-output unit ensures that cross-channel cou-pling between the two equations is captured. 
+
+1.2.6 Step 3 — Physics-structured library construction 
+
+The residual network obtained in Step 2 provides an accurate approximation of the unexplained dynamics, but its weights and activation functions do not possess direct physical interpretation. The objective of this step is therefore to transform the learned residual into a finite set of physically interpretable candidate basis functions suitable for symbolic identification. Rather than employing a generic polynomial or Fourier expansion, SPIRAL-PO constructs a physics-informed candidate library whose basis functions are selected according to the govern-ing mechanisms of the underlying system. Since the hidden-state dynamics satisfy (4), dimensional analysis and conservation laws constrain which observable combinations can legitimately appear in the projected equations of motion. In particu-lar, every candidate basis function must carry the same physical dimensions as the observable accel-eration M −1 
+
+> oo
+
+fo. This dimensional-admissibility requirement is enforced during library construc-tion, ensuring that only physically meaningful terms are considered before any statistical regres-sion is performed. Consequently, the candidate library is orga-nized according to physical mechanisms rather than polynomial degree alone, improving both model interpretability and statistical efficiency by eliminating physically inadmissible basis functions before sparse regression. The structured library at iteration n is defined as 
+
+L(n) = Lknown ∪ L (n)hidden \ A (n), (22) where Lknown contains basis functions derived directly from the observable dynamics, whereas 
+
+L(n)hidden contains candidate terms generated by projecting the hidden-state dynamics onto the observable subspace.For the rotor application con-sidered in this paper, the resulting library contains linear, quadratic, gyroscopic, isotropic Duffing, nonlinear damping, imbalance-forcing, and FFNN residual terms, as summarized in Table 3. Instead of constructing an unrestricted polynomial basis, the hidden-state library is assembled from phys-ically meaningful mechanisms expected in rotat-ing machinery. These include gyroscopic coupling (e.g., Ω ˙ qo,j ), isotropic Duffing nonlinear stiffness (e.g., ∥qo∥2qo,i ), amplitude-dependent nonlinear damping (e.g., ∥qo∥2 ˙qo,i ), rotating-imbalance exci-tation, and rotating-imbalance excitation, and data-driven residual corrections provided by afeedforward neural network (FFNN). Here, qo,i 
+
+denotes the i-th scalar component of the observ-able coordinate vector qo, and ∥qo∥2 = P 
+
+> i
+
+q2
+
+> o,i
+
+.The active set A(n) contains terms already present in the current physics model f (n)phys and is excluded from L(n) to prevent duplicate admission during successive iterations. Whether the coefficients associated with these physically structured candidates are uniquely recoverable depends on the richness of the observable trajectory. Section 2 establishes suf-ficient conditions for unique coefficient recovery (Theorem 1) and proves that a rank-deficient excitation renders recovery impossible for any estimator (Proposition 1). 
+
+1.2.7 Step 4 — Halton sampling and polynomial extraction 
+
+To estimate the library coefficients without inher-iting the measurement noise, the trained net-work is evaluated on a dense quasi-random grid 7rather than on the training time series. A low-discrepancy Halton sequence [12] of NH = 10 5
+
+points spanning the observed range of ξ fills the domain more uniformly than pseudorandom sampling, giving a better-conditioned regressor matrix Φ(n) 
+
+> H
+
+and a fitting error that decays as 
+
+O(N −1 
+
+> H
+
+(log NH )nξ ) rather than the O(N −1/2 
+
+> H
+
+)Monte Carlo rate. Evaluating the network on this grid, ˆr(n) 
+
+> j
+
+= f (n)NN (ξHj ), j = 1 , . . . , N H , (23) yields a clean, noise-free surface, decoupled from the time-correlated training data. The polynomial approximant f (n)poly then follows by OLS on the Halton data: ˆθ(n) 
+
+> H
+
+= arg min  
+
+> θ
+
+ˆr(n) − Φ(n) 
+
+> H
+
+θ 2
+
+, (24) where Φ(n) 
+
+> H
+
+∈ RNH ×|L (n)| is the regressor matrix built from the structured library (22) evaluated at the Halton points. 
+
+1.2.8 Step 5 — Gate 1: Bonferroni 
+
+t-test screening 
+
+Gate 1 answers a per-term question: taken on its own, does candidate ℓ carry a coefficient dis-tinguishable from zero on the noise-free Halton surface? Formally, each term ℓ ∈ L (n) is subjected to the two-sided hypothesis test 
+
+H0 : θℓ = 0 versus H1 : θℓ̸ = 0 , (25) using the t-statistic ˆ tℓ = ˆθ(n)
+
+> H,ℓ
+
+/SE( ˆθ(n)
+
+> H,ℓ
+
+) formed from the Halton OLS fit (24), which under H0
+
+follows a Student-t distribution with NH − |L (n)|
+
+degrees of freedom. Because |L (n)| terms are tested simultaneously, the family-wise error rate is held at α = 0 .05 by the Bonferroni correction [13, 14]: 
+
+H0 is rejected—term ℓ passes Gate 1—if 
+
+|ˆtℓ| > t α/ (2 |L (n)|), N H −|L (n)|. (26) Section 2 shows that this per-term screen holds the family-wise error rate at α (Proposition 2) and fixes the sample size needed to detect a genuine term (Proposition 4). 
+
+1.2.9 Step 6 — Gate 2: Partial F -test with validation rollback 
+
+Passing Gate 1 individually is necessary but not sufficient: a term can be significant on its own yet add nothing once the current model is accounted for, either through collinearity with an admit-ted term or because its significance reflects the noise realization. Gate 2 poses the complemen-tary joint question: taken together, does the batch 
+
+S(n) of Gate 1 survivors explain enough addi-tional variance to be worth admitting, and does it improve out-of-sample prediction? This is the joint hypothesis test 
+
+H0 : θℓ = 0 ∀ ℓ ∈ S (n) versus 
+
+H1 : θℓ̸ = 0 for some ℓ ∈ S (n), (27) i.e. under H0 the whole batch adds nothing to 
+
+f (n)phys . If H0 is rejected the model is augmented; if not—or if the augmented model generalizes worse on held-out data—the batch is discarded and the loop terminates. This validation rollback is the primary safeguard against overfitting: training-data significance alone does not admit a term, out-of-sample accuracy must improve. Let S(n) ⊆ L (n) be the set of terms that passed Gate 1. A joint OLS is performed on the training data with the current model augmented by S(n):ˆθ(n+1) tr = arg min 
+
+> θ
+
+¨˜qobs − Φ(n+1) tr θ 2
+
+, (28) where Φ(n+1) tr is the training-data regressor matrix for the model augmented by S(n). The partial F -statistic [15] measures how much of the residual sum of squares the batch removes, relative to the residual variance of the augmented model: 
+
+F (n) =
+
+RSS (n) − RSS (n+1) /|S (n)|
+
+RSS (n+1) /(Ntr − p(n+1) ) . (29) Here RSS (n) is the residual sum of squares of f (n)phys on the Ntr training samples and p(n)
+
+is the number of active parameters (admitted terms) in f (n)phys . Under H0 of (27) it follows an 
+
+F|S (n)|, N tr −p(n+1) distribution, so H0 is rejected and the batch passes Gate 2 when F (n) >F0.05 , |S (n)|, N tr −p(n+1) . As a final safeguard, the augmented model is evaluated on the held-out 8validation split: if the validation RMSE worsens relative to f (n)phys , the batch is rolled back regardless of the F -statistic. After Gate 2, each admitted term is mapped back to its physical origin (observable self-coupling, hidden-state gyroscopic coupling, hidden-state nonlinear coupling, etc.) via the dimensional-analysis tags attached to L(n)hidden ,so every discovered coefficient carries a direct physical interpretation. Equations (28)–(29) describe Gate 2 as a sin-gle joint test of the whole batch S(n) against a single training/validation split. On monotonic run-up or run-down records the batch can become severely collinear, and three practical refinements to Gate 2 (correlation-clustered screening, K-fold cross-validation, and a contribution-magnitude plausibility check) are then required. Because they are motivated by, and validated on, the rotor coast-down data, these refinements are described where they are used, in Sect. 3.8. 
+
+1.2.10 Termination 
+
+The loop terminates when either: (1) the Ljung– Box test fails to reject whiteness of r(n) (Guard 1), so no discoverable structure remains; or (2) S(n) =
+
+∅, meaning Gate 1 screens out all candidates. The final model is f (N ∗)phys , where N ∗ is the termination iteration. 
+
+## 1.3 Derivative estimation for observable states 
+
+The regressor ξ requires ˙ qobs and (for second-order systems) ¨qobs , and the appropriate estimation strategy depends on the character of the signal. When qobs (t) is driven by a known harmonic input at frequency ω, the cleanest route is to fit a Fourier series and differentiate it analytically, which intro-duces no numerical-differentiation noise; this is the strategy used by the original SPIRAL for aerodynamic inputs. For a steady-state periodic response—the constant-speed rotor case, valid when Ω is known and constant—one instead fits a multi-harmonic Fourier series ˜qo,i (t) ≈ X
+
+> k
+
+Ak cos( kΩt) + Bk sin( kΩt), (30) by least squares and differentiates the fitted series. A broadband or run-up response calls for total-variation (TV) regularized differentiation [16], ˆ˙qo,i = arg min 
+
+> v
+
+Z Z t
+
+> 0
+
+v dτ − ˜qo,i 
+
+2
+
+dt + λ
+
+Z
+
+| ˙v| dt, 
+
+(31) with λ selected by cross-validation. Finally, when 
+
+qobs is measured at several spatial locations, spa-tial finite differences or algebraic inversion of known shape functions can recover additional state information without differentiation at all. 
+
+## 1.4 Diagnostic statistics 
+
+Three statistics are computed from the joint OLS (28) and reported every iteration as model health indicators (non-blocking: they do not gate admis-sion). The predicted residual error sum of squares (PRESS) [17], PRESS (n) =
+
+> Ntr
+
+X
+
+> i=1
+
+ ei
+
+1 − hii 
+
+2
+
+, hii = ∥Q(i, :) ∥22 ,
+
+(32) estimates leave-one-out prediction error without re-fitting Ntr times, using the economy QR decom-position Φ(n)tr = QR , where ei is the i-th training residual and hii its leverage. The variance inflation factor (VIF) [17] for term j,VIF j = [R−1]j, : 
+
+> 22
+
+· (Ntr − 1) , (33) flags potential collinearity. VIF j > 10 warrants inspection but does not block admission when Gate 2 passes. Finally, the adjusted coefficient of determina-tion, 
+
+R2,(n)adj = 1 − Ntr − 1
+
+Ntr − p(n) · RSS (n)
+
+SS T
+
+, (34) penalizes model complexity so that admitting an uninformative term causes R2adj to fall; here SS T
+
+is the total sum of squares of ¨˜qobs about its mean. 91.5 Algorithm summary 
+
+Algorithm 1 states the full procedure, and Fig. 2 shows the corresponding control flow: each iter-ation forms the projection residual, applies the whiteness guard, and—while structure remains— generates and screens candidate terms through Gates 1 and 2 before augmenting the model. 
+
+# 2 Identifiability theory 
+
+## 2.1 Motivation 
+
+Before running SPIRAL-PO on any dataset it is essential to know whether the hidden-coupling terms are recoverable in principle from the observ-able projection residual. Without such a guaran-tee, the method may converge to a misidentified model even in the noise-free limit. This section establishes formal sufficient conditions for identi-fiability (Theorem 1), together with a matching necessity result for the excitation requirement (Proposition 1), constituting the theoretical back-bone of SPIRAL-PO and differentiating it from purely heuristic sparse-regression approaches. 
+
+Scope of identifiability. The results below estab-lish identifiability of the coefficients of the projected hidden-state coupling within the prescribed observ-able library, and only up to the persistent library-approximation bias of Theorem 1. They do not 
+
+imply unique recovery of the hidden-state trajec-tory qhid (t) itself, nor of the complete governing equations; recovering qhid (t) requires the additional observability assumptions and the state-estimation step of Sect. 3.9. 
+
+It is useful to separate what is proved from what is empirically validated . The theory of this section concerns an idealized regression problem: the projected coupling admits the library repre-sentation of (C1), the excitation satisfies the per-sistency condition (C2), and the noise is zero-mean with bounded variance. In this setting Theorem 1 bounds the coefficient error and Propositions 2–4 govern the statistical gates. The full SPIRAL-PO algorithm additionally introduces numerical dif-ferentiation, finite-capacity neural-network resid-ual fitting, Halton-sampled regression, and finite-sample decision errors; these practical elements are not covered by the theorems and are instead assessed numerically (Sect. 3.8) and experimen-tally (Sect. 4). The theorems should therefore be 
+
+Algorithm 1 SPIRAL-PO 
+
+Require: { ˜qobs (tk)}Nk=1 , known forcing f (t), scheduling parameters psched , physics seed 
+
+f (0) phys , structured library L(0) , significance level 
+
+α, Halton size NH , Ljung–Box lags m.
+
+Ensure: f (N ∗)phys , θ(N ∗), standard errors, 
+
+t-statistics, physical annotations.  
+
+> 1:
+
+Estimate ˙ qobs , ¨ qobs from ˜ qobs (Sect. 1.3).  
+
+> 2:
+
+Split data: training (70%), validation (30%).  
+
+> 3:
+
+Form regressor ξ via (17).  
+
+> 4:
+
+Fit seed θ(0) by QR-OLS on training data.  
+
+> 5:
+
+n ← 0.  
+
+> 6:
+
+repeat  
+
+> 7:
+
+r(n) ← ¨˜qobs − f (n)phys (ξ; θ(n)).  
+
+> 8:
+
+Guard 1 — Ljung–Box: compute Q(n)LB via (20).  
+
+> 9:
+
+if Q(n)LB < χ 20.95 (m) then  
+
+> 10:
+
+Terminate: residual is white. break  
+
+> 11:
+
+end if  
+
+> 12:
+
+Train f (n)NN on r(n) (Adam + early stop-ping).  
+
+> 13:
+
+Update L(n) via (22).  
+
+> 14:
+
+Evaluate f (n)NN on NH Halton points; solve (24).  
+
+> 15:
+
+Gate 1 — Bonferroni t-test: retain S(n). 
+
+> 16:
+
+if S(n) = ∅ then  
+
+> 17:
+
+Terminate: no terms pass. break  
+
+> 18:
+
+end if  
+
+> 19:
+
+Gate 2 — Partial F -test: augment model; compute F (n) via (29).  
+
+> 20:
+
+if F (n) ≤ F0.05 ,|S (n)|,N tr −p(n+1) then  
+
+> 21:
+
+Discard S(n); Terminate.  
+
+> 22:
+
+end if  
+
+> 23:
+
+Validation rollback: evaluate on validation split.  
+
+> 24:
+
+if val. RMSE worsens then  
+
+> 25:
+
+Discard S(n); Terminate.  
+
+> 26:
+
+end if  
+
+> 27:
+
+Assign physical annotations to admitted terms.  
+
+> 28:
+
+f (n+1) phys ← f (n)phys + f (n)poly |S(n) . 
+
+> 29:
+
+Compute PRESS, VIF, R2adj (Sect. 1.4).  
+
+> 30:
+
+n ← n + 1.  
+
+> 31:
+
+until termination  
+
+> 32:
+
+return f (N ∗)phys , θ(N ∗), standard errors, t-statistics, physical annotations. read as characterizing the estimation core that 10 Physics seed f (0) phys (OLS) Projection residual 
+
+r(n) = ¨qobs − f (n)phys  
+
+> Guard 1:
+> r(n)white? (Ljung–Box)
+
+Train multi-output neural network 
+
+f (n)NN (tanh, Adam) Construct physics-structured library 
+
+L(n)
+
+Halton evalua-tion and OLS 
+
+⇒ f (n)poly 
+
+Gate 1: Bon-ferroni t-screen 
+
+⇒ S(n) 
+
+> Gate 2:
+> F-test and validation pass?
+
+Final annotated model f ⋆
+
+> phys
+> No No: rollback Yes
+
+Augment model 
+
+f (n+1) phys = f (n)phys + S(n)
+
+n ← n + 1 
+
+> Yes
+
+Fig. 2 : SPIRAL-PO closed-loop discovery process. A minimal physics seed f (0) phys is iteratively augmented: at each iteration the projection residual r(n) is tested for whiteness by the Ljung–Box statistic (Guard 1) and the loop terminates if no structure remains; otherwise a multi-output tanh network fits the residual, a physics-structured library is screened on Halton samples by a Bonferroni t-test (Gate 1), and the surviving batch S(n) is admitted only if it passes the partial F -test and does not worsen the held-out validation RMSE (Gate 2, with rollback). Admitted terms are folded into f (n+1) phys and the loop repeats. 11 the algorithm approximates, not the end-to-end pipeline. 
+
+## 2.2 Definitions 
+
+Several objects recur throughout the analysis. For a candidate term ϕℓ(ξ) ∈ L hidden , its observable signature is the time history 
+
+sℓ(t) ≜ ϕℓ
+
+ ξ(t). (35) Stacking these signatures for p candidate terms across N time samples gives the signature matrix 
+
+Φξ = ϕ1(ξ(t1)) , . . . , ϕ p(ξ(t1)); . . . ;
+
+ϕ1(ξ(tN )) , . . . , ϕ p(ξ(tN )) , (36) so that ∆ ≈ Φξ θ∗. We say the observable trajec-tory ξ(t) is persistently exciting of order p if there exist T > 0 and μ > 0 such that 1
+
+T
+
+Z T
+
+> 0
+
+ξ(t) ξ(t)T dt ⪰ μ Inξ , (37) The left-hand side is the time average of the outer product ξ(t)ξ(t)T over the window [0 , T ]— the empirical second-moment (covariance) matrix of the regressor—and the requirement ⪰ μInξ
+
+makes it uniformly positive definite, i.e. the motion excites every one of the nξ regressor directions with energy at least μ rather than collapsing onto a lower-dimensional subspace. Correspondingly, the induced signature Gram matrix satisfies λmin (N −1ΦT 
+
+> ξ
+
+Φξ) ≥ μΦ > 0. This induced Gramian N −1ΦT 
+
+> ξ
+
+Φξ has ( k, ℓ ) entry 
+
+N −1 P 
+
+> t
+
+sk(t) sℓ(t), the time-averaged inner prod-uct of two candidate signatures; λmin > 0 there-fore states that the signatures are linearly inde-pendent along the trajectory—no candidate term is reproducible as a combination of the others— which is exactly what allows their coefficients to be separated. Finally, a candidate term ϕℓ is dimen-sionally admissible if it carries the same physical dimensions as [ M −1 
+
+> oo
+
+fo], that is, acceleration units (for a general system in the form (2), the units of ˙zo). 
+
+## 2.3 Identifiability: when is recovery possible? 
+
+When can the hidden-coupling coefficients θ∗ be recovered uniquely from the observable residual? Two conditions suffice: the hidden influence must be expressible in the library up to a small remain-der (functional separability), and the trajectory must excite all candidate directions (persistent excitation). Dimensional admissibility is not ahypothesis here—it is enforced at library con-struction (Sect. 1.2.6). That rich excitation is also 
+
+necessary is established by Proposition 1. The proof is the standard least-squares consistency and bias–variance argument [18]; what is spe-cific to SPIRAL-PO is that the excitation quality 
+
+μΦ governs both error terms. Before establish-ing the formal result, it is useful to explain its engineering interpretation. Recovery of hidden-state coefficients requires two ingredients: first, the unknown dynamics must be representable by the candidate library, and second, the experimental excitation must sufficiently illuminate every can-didate direction. The theorem below formalizes these requirements. 
+
+Theorem 1 (Coefficient consistency and error bound) 
+
+Let the full system satisfy (4) with true coefficient vec-tor θ∗ ∈ Rp, and let every candidate ϕℓ ∈ L hidden be dimensionally admissible (Sect. 1.2.6). Suppose: 
+
+(C1) Functional separability. The trajectory restric-tion ∆( qobs , ˙qobs , t ) of the hidden coupling (defined at (10) ) satisfies ∆( qobs , ˙qobs , t ) =Ppℓ=1 θ∗ 
+
+> ℓ
+
+ϕℓ(ξ(t)) + η(t), with ∥η∥L2 / ∥∆∥L2 ≤
+
+ϵ0. Here ∥·∥ L2 denotes the L2(0 , T ) signal norm, ∥v∥L2 =  R T 
+
+> 0
+
+|v(t)|2 dt 1/2, so that 
+
+∥η∥L2 / ∥∆∥L2 is the relative energy of the unmodeled remainder η against the total hidden coupling ∆.
+
+(C2) Persistent excitation. λmin (N −1ΦT 
+
+> ξ
+
+Φξ) ≥ μΦ >
+
+0.Then the OLS estimator ˆθ = ( ΦT 
+
+> ξ
+
+Φξ)−1ΦT 
+
+> ξ
+
+¨˜qobs is unique and satisfies 
+
+ˆθ − θ∗ 
+
+> 2
+
+≤ ϵ0 ∥∆∥L2
+
+√T μ Φ
+
+| {z }
+
+> library bias
+> (persistent )
+
++ Op
+
+
+
+σε
+
+q pN μ Φ
+
+| {z }
+
+> noise variance
+> (→0)
+
+, (38) 
+
+where T is the excitation window of (37) . The vari-ance term vanishes as N → ∞ , whereas the library bias does not; hence ˆθ → θ∗ requires all three of 
+
+ϵ0 → 0 (rich library), σε → 0, and N → ∞ .
+
+12 Remark 1 (Scope of Theorem 1) The theorem certi-fies identifiability of the coefficients of the projected 
+
+hidden-state coupling within the observable library, up to the persistent bias of (43). It does not by itself reconstruct the hidden-state trajectory qhid (t), which is recovered separately by the state estimator of Sect. 3.9. 
+
+Proof The proof has three parts: exis-tence/uniqueness, the deterministic bias, and the stochastic variance. 
+
+Existence and uniqueness. Under (C2), 
+
+λmin (ΦT 
+
+> ξ
+
+Φξ) ≥ N μ Φ > 0, so the Gram matrix is symmetric positive definite and invertible; the normal equations therefore have the unique solution ˆθ [18]. Writing the sampled observation model ¨˜qobs = Φξθ∗ + η + ε, (39) with η the deterministic library mismatch of (C1) and 
+
+ε the zero-mean measurement noise, the estimation error splits into a deterministic (bias) and a random (variance) part, ˆθ − θ∗ = ( ΦT 
+
+> ξ
+
+Φξ)−1ΦT 
+
+> ξ
+
+η
+
+| {z }
+
+> bias
+
++ ( ΦT 
+
+> ξ
+
+Φξ)−1ΦT 
+
+> ξ
+
+ε
+
+| {z }
+
+> variance
+
+. (40) 
+
+Bias. The spectral norm of the least-squares map is the reciprocal smallest singular value of Φξ, bounded through (C2) by 
+
+(ΦT 
+
+> ξ
+
+Φξ)−1ΦT  
+
+> ξ2
+
+= λmin (ΦT 
+
+> ξ
+
+Φξ)−1/2 ≤ (N μ Φ)−1/2.
+
+(41) Condition (C1) bounds the mismatch in the con-tinuous L2 norm, whereas (41) acts on the sampled (Euclidean) vector η; the two are linked by the Riemann-sum identity 
+
+∥η∥22 =
+
+> N
+
+X
+
+> k=1
+
+η(tk)2 = NT ∥η∥2
+
+> L2
+
+ 1 + o(1) , (42) so that ∥η∥2 = pN/T ∥η∥L2 (1 + o(1)). The sam-pling factor √N in (42) cancels the √N in (41). With 
+
+∥η∥L2 ≤ ϵ0 ∥∆∥L2 from (C1), 
+
+(ΦT 
+
+> ξ
+
+Φξ)−1ΦT 
+
+> ξ
+
+η 2 ≤ ∥η∥2√N μ Φ
+
+≤ ϵ0 ∥∆∥L2
+
+√T μ Φ
+
+. (43) The bias is thus independent of N : enlarging the record cannot remove error caused by an incomplete library—only a richer library ( ϵ0 ↓) or stronger exci-tation ( μΦ ↑) can. (Writing the bias with the spurious factor 1 /√N , as would follow from equating ∥η∥2 with 
+
+∥η∥L2 , is the one subtlety the empirical-norm bridge (42) resolves.) 
+
+Variance. The noise term is zero-mean, so we bound it in mean square. For a fixed matrix M and noise with E[εε T] = σ2 
+
+> ε
+
+I, the trace identity 
+
+E ∥M ε∥22 = σ2 
+
+> ε
+
+tr( M M T), (44) holds [18], where tr( ·) is the matrix trace (sum of diag-onal entries). Taking M = ( ΦT 
+
+> ξ
+
+Φξ)−1ΦT 
+
+> ξ
+
+, for which 
+
+M M T = ( ΦT 
+
+> ξ
+
+Φξ)−1,
+
+E (ΦT 
+
+> ξ
+
+Φξ)−1ΦT 
+
+> ξ
+
+ε 22 = σ2 
+
+> ε
+
+tr (ΦT 
+
+> ξ
+
+Φξ)−1 ≤ σ2 
+
+> ε
+
+pN μ Φ
+
+,
+
+(45) the last bound using tr[( ΦT 
+
+> ξ
+
+Φξ)−1] = Ppℓ=1 λ−1 
+
+> ℓ
+
+≤
+
+p λ −1min and (C2). By Markov’s inequality this is 
+
+Op(σε
+
+pp/ (N μ Φ)), which—unlike the bias—vanishes as N → ∞ .
+
+Combination. Inserting (43) and (45) into (40) and applying the triangle inequality gives (38). Under library mismatch ( ϵ0 > 0) the estimator converges to 
+
+θ∗ plus the persistent bias (43); only when the library spans the coupling exactly ( ϵ0 = 0) does ˆθ P
+
+→ θ∗ as 
+
+N → ∞ . □
+
+Remark 2 (Design insight) Both terms in (38) scale as μ−1/2Φ , so richer excitation (larger μΦ, e.g. a run-up) reduces bias and variance together — experiment design, not sensor precision, is the primary lever on accuracy. 
+
+Remark 3 (On the functional-separability assump-tion) Condition (C1) carries most of the weight of Theorem 1 and deserves an honest accounting: it asserts that the hidden-state influence ∆ is captured, up to a relative residual ϵ0, by a finite linear combi-nation of the physics-structured candidates. It is an approximation, not an identity. 
+
+## 2.4 Impossibility: when is recovery impossible? 
+
+Theorem 1 says when recovery is possible; the complementary question is when it is provably impossible. If the excitation is too poor for the candidate signatures to be linearly independent— so the signature matrix loses column rank—then two distinct coefficient vectors produce identical observable dynamics, and no estimator can tell them apart, however long the record or precise the sensors. This is the classical persistent-excitation (rank) condition of system identification [19, 20], specialized to the observable signature matrix: a rank-deficient Φξ leaves the coefficients non-identifiable, and Le Cam’s two-point bound [21] makes the impossibility estimator-independent. We state it only to set up its concrete consequence for rotor experiment design (Corollary 1). 13 Proposition 1 (Non-identifiability under insufficient excitation) Suppose the signature matrix is rank-deficient over the observed record, rank Φξ < p (equiv-alently μΦ = λmin (N −1ΦT 
+
+> ξ
+
+Φξ) = 0 ). Then there exist 
+
+θ(1) ̸ = θ(2) that induce identical observable accelera-tions, Φξθ(1) = Φξθ(2) . Consequently θ(1) and θ(2) 
+
+are statistically indistinguishable: whatever the record length N or sensor precision σε ≥ 0, no estimator 
+
+ˆθ can identify which generated the data, and none is consistent. Proof Rank deficiency furnishes a nonzero null vector 
+
+v ∈ null( Φξ). Fixing the data-generating value θ(1) =
+
+θ∗ and setting θ(2) = θ∗ + cv with c̸ = 0 gives 
+
+Φξθ(2) = Φξθ(1) , (46) so both vectors produce the same mean observable acceleration at every sample. Under the model ¨˜qobs =
+
+Φξθ + ε with ε independent of θ, the induced data distributions are equal, so their total-variation dis-tance TV( P, Q ) ≜ sup A |P (A) − Q(A)| vanishes, TV( Pθ(1) , P θ(2) ) = 0, and the Le Cam two-point bound [21] gives, for any test ψ ∈ { 1, 2},inf  
+
+> ψ
+
+max  
+
+> i∈{ 1,2}
+
+Pθ(i) (ψ̸ = i) ≥ 12
+
+ 1−TV( Pθ(1) , P θ(2) ) = 12 .
+
+(47) Any estimator induces such a test, so by (47) it cannot distinguish θ(1) from θ(2) better than chance; the data-generating vector is therefore unrecoverable and no estimator is consistent, uniformly in N and 
+
+σε. □
+
+Remark 4 (What triggers rank deficiency) The hypothesis is about the functional rank of the library along the trajectory—the number of linearly indepen-dent signatures {ϕℓ(ξ(·)) }—not the geometric dimen-sion of the state manifold. A low-dimensional tra-jectory usually triggers it: the constant-speed rotor (Corollary 1) is the archetype, where distinct can-didates alias onto a common set of harmonics and rank Φξ drops below p.
+
+## 2.5 Gate consistency: does the algorithm recover the right model? 
+
+Do the two gates deliver the guarantees of the idealised estimate? Theorem 1 and Proposition 1 concern the least-squares solution on a fixed library; the algorithm instead admits terms batch by batch through Gate 1 (per-term significance) and Gate 2 (joint improvement). The next two propositions show it inherits those guarantees— detecting true terms and controlling false discover-ies (Proposition 2), then halting once no structure remains (Proposition 3). Each ingredient—the Bonferroni bound [13], the t-test, and the Ljung– Box whiteness test [10]—is standard; the contri-bution is their assembly into guarantees for the iterative gating loop. 
+
+Proposition 2 (Statistical validity of the two-gate screening) Assume (C1)–(C2) of Theorem 1 and 
+
+(C3) Noise bound. SNR ≜ ∥∆∥L2 /σ ε > SNR min ,where 
+
+SNR min =
+
+√p
+
+√μΦ (1 − ϵ0)
+
+r F0.05 , p, N −p
+
+N . (48) 
+
+Then (i) each true term ϕℓ (θ∗
+
+> ℓ
+
+̸ = 0 ) passes Gate 1 with probability → 1; and (ii) each null term ( θ∗ 
+
+> ℓ
+
+= 0 )is rejected with family-wise error rate ≤ α.Proof Throughout we work in the small-bias regime 
+
+ϵ0
+
+√N → 0—exactly satisfied when the coupling lies in the library span, ∆ ∈ span( Lhidden )—so that by Theorem 1 the persistent library bias (43) is negligi-ble relative to the sampling standard error and the estimator is effectively unbiased at the sampling scale. 
+
+(i) Detection of true terms. Fix a true term, θ∗
+
+> ℓ
+
+̸ =0. In the small-bias regime Theorem 1 gives ˆθℓ =
+
+θ∗ 
+
+> ℓ
+
++Op(N −1/2), and, by the coefficient covariance (45) and (C2), its standard error obeys ˆσℓ = σε
+
+q(ΦT 
+
+> ξ
+
+Φξ)−1 
+
+> ℓℓ
+
+≤ σε
+
+√N μ Φ
+
+. (49) The Gate-1 t-statistic is therefore 
+
+|ˆtℓ| = |ˆθℓ|
+
+ˆσℓ
+
+≥ |θ∗ 
+
+> ℓ
+
+|√N μ Φ
+
+σε
+
++ Op(N −1/2), (50) which grows without bound like √N . The Bonfer-roni critical value tα/ (2 p), N −p in (26) grows only like √2 log p, so once the signal exceeds the thresh-old (48) the statistic overtakes the critical value with probability → 1: every true term passes Gate 1. 
+
+(ii) Control of false discoveries. Fix a null term, 
+
+θ∗ 
+
+> ℓ
+
+= 0. In the small-bias regime its projected bias is negligible, so ˆθℓ is pure estimation noise and, by standard regression theory [15, 18], its studentized statistic follows the null distribution ˆ tℓ ∼ tN −p. A two-sided test at the Bonferroni-reduced tail level 
+
+α/ (2 p) therefore falsely admits any one null term with probability α/p , and the union bound over the at most 
+
+p candidates gives 
+
+P(any null term admitted) ≤ X  
+
+> ℓ:θ∗
+> ℓ=0
+
+αp ≤ α, (51) 
+
+14 so the family-wise error rate is at most α. □
+
+Proposition 3 (Finite termination) Suppose the can-didate library L is finite and 
+
+(C4) Residual whiteness. The measurement noise {εk}
+
+is zero-mean and serially uncorrelated (already implied by the i.i.d. model (12) ), and the library-mismatch signal η is asymptotically uncorrelated in time, i.e. its sample autocorrelations satisfy 
+
+ˆρk[η] → 0 as N → ∞ for each lag k.Then the loop terminates in finitely many iterations, 
+
+N ∗ < ∞.Proof Two independent mechanisms cap the number of iterations. 
+
+Finiteness of expansions. Each accepted iteration adds at least one new term from the finite library L
+
+and never removes one, so the active set grows strictly, 
+
+A(k) ⊊ A(k+1) , and at most |L| = p acceptances can occur. 
+
+Whiteness after the last addition. Once every true term has been admitted, Theorem 1 gives Φξ(θ∗ −
+
+ˆθ) = oP (1), so the residual reduces to 
+
+r(N ∗) = ∆ − Φξ ˆθ = η + ε + oP (1) , (52) that is, only library mismatch and measurement noise remain. By (C4) both are asymptotically serially uncorrelated, so every sample autocorrelation obeys ˆρk(r(N ∗)) → 0. Consequently the Ljung–Box statistic [10] 
+
+QLB = N (N + 2) 
+
+> m
+
+X
+
+> k=1
+
+ˆρ 2
+
+> k
+
+N − k
+
+> d
+
+−→ χ2(m) (53) converges to its null law, and the stopping test satisfies 
+
+P
+
+
+
+QLB < χ 20.95 (m)
+
+
+
+→ 0.95 , (54) so the whiteness guard fires and the loop halts. Com-bining the two mechanisms, the algorithm terminates at a finite (random) index N ∗ < ∞. □
+
+## 2.6 Sample complexity: how much data is enough? 
+
+How much data is enough? The following propo-sition gives the minimum sample count Nmin in closed form. Its key consequence is Nmin ∝ μ−1Φ :excitation quality is a stronger lever than sen-sor precision, since noise enters only through σ2 
+
+> ε
+
+.The bound is a standard Wald-test power (sample-size) calculation [18] specialized to the Gate-1 threshold. 
+
+Proposition 4 (Sample size for term detection) 
+
+Under (C1)–(C3) of Theorem 1 and Proposition 2, the Bonferroni Gate 1 passes every true term ϕℓ (with 
+
+|θ∗ 
+
+> ℓ
+
+| ≥ θmin > 0) with probability at least 1−δ provided 
+
+N ≥ Nmin (δ) = σ2
+
+> ε
+
+μΦ θ2min 
+
+·
+
+h
+
+z1−δ/ 2 + z1−α/ (2 p)
+
+i2
+
++p, 
+
+(55) 
+
+where zγ = Φ −1(γ) is the standard normal quantile, and μΦ = λmin (N −1ΦT 
+
+> ξ
+
+Φξ).Proof Consider a single true coefficient with |θ∗ 
+
+> ℓ
+
+| ≥ 
+
+θmin in the small-bias regime of Proposition 2, so that the library bias (43) is negligible against the standard error. Then, by the coefficient covariance (45) and the asymptotic normality of least squares [18], ˆθℓ ∼ N  θ∗ 
+
+> ℓ
+
+, σ 2 
+
+> ε
+
+[( ΦT 
+
+> ξ
+
+Φξ)−1]ℓℓ 
+
+, (56) and under (C2) its variance is controlled by the exci-tation quality, [( ΦT 
+
+> ξ
+
+Φξ)−1]ℓℓ ≤ (N μ Φ)−1, so ˆ σℓ ≤
+
+σε/√N μ Φ. Gate 1 rejects H0 : θℓ = 0 when |ˆtℓ| >z1−α/ (2 p), the Gaussian limit of the Bonferroni thresh-old. Under the alternative θℓ = θmin the statistic is centered at θmin /ˆσℓ, so its power reaches 1 − δ
+
+exactly when this center clears the critical value by the δ-quantile margin, 
+
+θmin 
+
+ˆσℓ
+
+≥ z1−α/ (2 p) + z1−δ/ 2. (57) Substituting ˆσℓ ≤ σε/√N μ Φ and solving (57) for N gives N ≥ Nmin (δ) of (55), the additive p
+
+accounting for the degrees of freedom consumed by the fit. □
+
+Remark 5 (Scope of the bound) Proposition 4 is a per-term detection bound, not a support-recovery guarantee: it does not control the joint probability that no null term is admitted—that false-discovery side is handled by the family-wise control of Proposition 2(ii) and the Gate 2 rollback. 
+
+# 3 Application: Vertical Flexible Rotor with Cubic Stiffness Nonlinearity 
+
+SPIRAL-PO is validated on a partially observed 4-DOF rigid-disk rotor: first in simulation, where ground truth for the hidden tilt states is known, and then on a laboratory-scale vertical rotor test rig, to assess performance under realistic operat-ing conditions. 15 3.1 Partially Observed 4-DOF Rotor and Observable Subspace 
+
+The 4-DOF vertical flexible rotor of [9] has gen-eralized coordinates q = {x, y, α, β }T, where x(t), 
+
+y(t) are lateral disk displacements and α(t), β(t)are the tilt angles. In an experimental setting, 
+
+x and y are readily measured by eddy-current proximity probes, while α and β are not directly accessible. The observable and hidden sub-states are therefore 
+
+qobs =
+
+xy
+
+
+
+, qhid =
+
+αβ
+
+
+
+. (58) The scheduling parameter is the known spin speed Ω( t). Recovering the projected effect of qhid on the observable dynamics does not imply a unique recovery of qhid (t) itself: multiple hidden-state realizations can produce equivalent observable behavior, and the discovered equations remain expressed entirely in observable quantities, with no qhid term to solve for. SPIRAL-PO’s identifica-tion step (Sects. 3.7–3.8) is therefore restricted to recovering an accurate observable closure model; reconstructing qhid (t) itself is a separate, comple-mentary task, carried out afterward by a standard state estimator applied to the validated dynamics (Sect. 3.9), not by SPIRAL-PO itself. 
+
+## 3.2 Four-DOF equations of motion 
+
+The rotor is idealized as a rigid disk mounted at axial station z = a on a slender flexible shaft of length L supported by two bearings (at z = 0 , L )and driven at a prescribed spin speed Ω( t); the disk-location ratios are ξ = a/L and ¯ξ = 1 − ξ.This is the four-degree-of-freedom vertical flexible-rotor model of Friswell et al. [9], to which the reader is referred for the full derivation; we recall only the elements the identification uses. The mechanical idealization is shown in Fig. 3. 
+
+Fig. 3: Schematic representation of the four-degree-of-freedom vertical rotor system. The disk has mass m, diametral and polar iner-tias Id, Ip, and mass eccentricity e; each bearing 
+
+i = 1 , 2 has linear stiffness kLi , cubic (Duffing) stiffness kN Li , and damping cbi . Only the lateral displacements x, y are measured, while the tilts 
+
+α, β remain hidden. It can be shown that with the reduced slender-shaft approximation, ( Ks ≈ 0), the equations of motion are [9] 
+
+M ¨q+ Cb +Ω G ˙q+KL +KN L (q) q = funb (t),
+
+(59) with q = {x, y, α, β }T as in (58). With disk mass 
+
+m, diametral inertia Id, and polar inertia Ip, the mass and gyroscopic matrices are 
+
+M = diag( m, m, I d, I d),
+
+G =
+
+
+
+0 0 0 00 0 0 00 0 0 Ip
+
+0 0 −Ip 0
+
+ , (60) where G is skew-symmetric (GT = −G), so the gyroscopic term Ω G ˙q contributes zero net power to the system for any trajectory — the standard structural requirement for a physically admissible gyroscopic coupling, verified numeri-cally in Sect. 3.8. The linear bearing stiffness 
+
+KL and bearing damping Cb are built from the 16 same influence-matrix projection as the nonlin-ear stiffness (63), without the ∥Liq∥2 amplitude-dependent factor: 
+
+KL =
+
+> 2
+
+X
+
+> i=1
+
+kLi LT 
+
+> i
+
+Li,
+
+Cb =
+
+> 2
+
+X
+
+> i=1
+
+cbi LT 
+
+> i
+
+Li,
+
+(61) where kLi , cbi are the linear stiffness and damping of bearing i; both the restoring force and the dis-sipation originate at the same bearing locations, so (61) is the natural completion of the nonlinear stiffness (63) rather than an ad hoc addition. It is positive definite for any kLi , c bi > 0, and KN L (q)q
+
+is the gradient of the quartic potential 
+
+VN L (q) = 14
+
+X
+
+> i
+
+kN Li ∥Liq∥4 , (62) so the conservative part of (59) is a genuine mechanical system, not an ad hoc combination of terms. The Duffing nonlinear stiffness matrix is 
+
+KN L (q) = 
+
+> 2
+
+X
+
+> i=1
+
+kN Li ∥Liq∥2 LT 
+
+> i
+
+Li. (63) Each bearing is loaded by the lateral dis-placement of the shaft centerline at its own axial station, not by the disk displacement x, y . A small tilt β (about Oy ) or α (about Ox ) adds a lever-arm contribution to the disk translation, so the centerline displacements at bearing 1 (axial dis-tance a = ξL from the disk) and bearing 2(distance b = ¯ξL ) are 
+
+u1 =
+
+x + ξL β y − ξL α 
+
+
+
+,
+
+u2 =
+
+x − ¯ξL β y + ¯ξL α 
+
+
+
+.
+
+(64) In the reduced flexible-shaft model of [9], each bearing reacts the disk load in proportion to its static participation in the simply-supported span — fraction ¯ξ at bearing 1, ξ at bearing 2 — so the constitutive displacement is r1 = ¯ξ u1, r2 = ξ u2.Writing ri = Liq combines the rigid-shaft lever arms of (64) with these participation weights to give the influence matrices Li ∈ R2×4 (ξ = a/L ,¯ξ = 1 − ξ): 
+
+L1 =
+
+ ¯ξ 0 0 ξ ¯ξL 
+
+0 ¯ξ −ξ ¯ξL 0
+
+
+
+,
+
+L2 =
+
+ξ 0 0 −ξ ¯ξL 
+
+0 ξ ξ ¯ξL 0
+
+
+
+.
+
+(65) Forcing is translational only, 
+
+funb (t) = 
+
+
+
+me Ω2 cos(Ω t + ϕ0)
+
+me Ω2 sin(Ω t + ϕ0)00
+
+
+
+, (66) consistent with (67)–(68). 
+
+## 3.3 Observable equations of motion 
+
+Extracting the x- and y-rows of (59): 
+
+m¨x = me Ω2 cos(Ω t + ϕ0) − ceff ˙x
+
+−
+
+> 2
+
+X
+
+> i=1
+
+kLi + kN Li ∥ri∥2( ¯ξi x + ξi ¯ξiL β )
+
+| {z }  
+
+> hidden β, |ri|2
+
+,
+
+(67) 
+
+m¨y = me Ω2 sin(Ω t + ϕ0) − ceff ˙y
+
+−
+
+> 2
+
+X
+
+> i=1
+
+kLi + kN Li ∥ri∥2( ¯ξi y − ξi ¯ξiL α )
+
+| {z }  
+
+> hidden α, |ri|2
+
+.
+
+(68) For reference, the two (unmeasured) tilt rows of (59) are 
+
+Id ¨α = − ΩIp ˙β − ceff ˙α
+
++ ξ ¯ξL 
+
+> 2
+
+X
+
+> i=1
+
+(−1) i−1kLi + kN Li ∥ri∥2 riy ,
+
+(69) 
+
+Id ¨β = + Ω Ip ˙α − ceff ˙β
+
+− ξ ¯ξL 
+
+> 2
+
+X
+
+> i=1
+
+(−1) i−1kLi + kN Li ∥ri∥2 rix ,
+
+(70) 17 where rix , r iy are the components of ri = Liq
+
+from (65) and ( −1) i−1 encodes the opposite lever-arm sense of the two bearings. The hidden states enter the observable rows through (i) the linear bearing coupling ξi ¯ξiL α, β and (ii) the Duffing amplitude |ri|2, itself a function of α, β through 
+
+Liq. Conversely, the gyroscopic terms Ω Ip ˙β, Ω Ip ˙α
+
+in (69)–(70) couple the two tilt channels, and this coupling — transmitted back through the bearing reactions — is what produces the Ω ˙ y, Ω ˙ x gyro-scopic signatures SPIRAL-PO must recover from 
+
+x, y alone. 
+
+## 3.4 Observable regressor and physics-structured library 
+
+The observable regressor is 
+
+ξ(t) = {x, y, ˙x, ˙y, Ω}T ∈ R5. (71) No tilt angles appear. Dimensional analysis of (67)–(68) yields the physics-structured library 
+
+Lhidden in five classes: self-coupling terms x, y, ˙x, ˙y;the gyroscopic signature Ω ˙ y (x-equation) and Ω ˙ x
+
+(y-equation), arising when Ω Ip ˙β, Ω Ip ˙α are pro-jected through the support coupling onto x, y ;the Duffing nonlinearity ( x2 + y2)x, ( x2 + y2)y,which follows from the small-tilt approximation 
+
+|ri|2 ≈ ¯ξ2 
+
+> i
+
+(x2 + y2) with γ = P 
+
+> i
+
+¯ξ3 
+
+> i
+
+kN Li ; a cross-channel linear class ( y in the x-equation, x in the 
+
+y-equation) capturing the tilt-mediated coupling; and a reserve set of higher-order Duffing terms (( x2 + y2) ˙ x, ( x2 + y2) ˙ y, x3, y3, x2y, xy 2) activated only if later residuals warrant it. 
+
+## 3.5 Physics seed for the rotor 
+
+The minimal observable seed (linear planar oscil-lator, no hidden coupling) is 
+
+f (0) phys (ξ) = 
+
+m−1
+
+(me Ω2 cos(Ω t + ϕ0) − c(0)  
+
+> x
+
+˙x − k(0)  
+
+> x
+
+xme Ω2 sin(Ω t + ϕ0) − c(0)  
+
+> y
+
+˙y − k(0)  
+
+> y
+
+y
+
+)
+
+,
+
+(72) with c(0)  
+
+> x
+
+, k (0)  
+
+> x
+
+, c (0)  
+
+> y
+
+, k (0)  
+
+> y
+
+estimated by OLS; no gyroscopic, Duffing, or cross-channel term is present, so all such structure must be earned from data. 
+
+## 3.6 Expected discovery sequence 
+
+Based on (67)–(68), the discovery loop is expected to admit the gyroscopic and Duffing terms (Ω ˙ y,Ω ˙ x, (x2 + y2)x, (x2 + y2)y) at the first iter-ation, where residual coverage is highest; the tilt-mediated cross-coupling ( y in the x-equation, 
+
+x in the y-equation) at the second; and termi-nate at the third once the Ljung–Box whiteness test no longer rejects. This qualitative prediction is checked against the actual admitted terms in Table 3. 
+
+## 3.7 Identifiability of the rotor 
+
+The impossibility result (Proposition 1) has astriking practical consequence here. At constant speed the disk traces a near-circular orbit on which all candidate signatures collapse onto alow-order trigonometric span (Corollary 1): the signature matrix loses column rank, and the gyro-scopic coupling and Duffing nonlinearity become unidentifiable at any noise level, however much data is collected. A speed sweep (run-up or coast-down) varies the excitation frequency and restores full column rank, making swept-speed testing a mathematical necessity rather than a convenient choice — a theoretical justification for the stan-dard practice of run-up/coast-down testing in rotor diagnostics. 
+
+Corollary 1 (Constant-Speed Rotor is Unidentifi-able) At constant speed Ω = Ω 0 the steady-state orbit is 
+
+ξ(t) = 
+
+
+
+Ax cos Ω 0tAy sin Ω 0t
+
+−AxΩ0 sin Ω 0tAy Ω0 cos Ω 0t
+
+Ω0
+
+ + O(εunb ). (73) 
+
+Every candidate’s signature is then a low-order trigonometric polynomial in Ω0t: the linear, gyro-scopic, and cross-channel terms are all first-harmonic (cos Ω 0t, sin Ω 0t), while the Duffing term inherits 
+
+x2 + y2 = 12 (A2 
+
+> x
+
++ A2 
+
+> y
+
+) + 12 (A2 
+
+> x
+
+− A2 
+
+> y
+
+) cos 2Ω 0t and so contributes only first and third harmonics. For a near-circular orbit ( Ax ≈ Ay ) the amplitude x2 +
+
+y2 is essentially constant, (x2 + y2)x collapses to a multiple of x, and every signature lives in the two-dimensional span {cos Ω 0t, sin Ω 0t}, so rank Φξ ≤ 2;even for an elliptical orbit the added third harmonic leaves rank Φξ ≤ 4 < 6 = p. The signature matrix is thus rank-deficient and Proposition 1 applies: θ∗ 
+
+> Ω ˙ y
+
+,
+
+18 θ∗          
+
+> (x2+y2)x, and θ∗
+> ycannot be recovered from constant-speed data by any algorithm. A run-up sweeps Ωacross the record, so the harmonic content changes from one instant to the next and the candidate signatures are no longer confined to a fixed low-order span; the columns of Φξbecome linearly independent ( rank Φξ=p), and the persistent-excitation condition (C2) of Theorem 1 is restored. Remark 6 (Practical significance) Corollary 1 is an experiment design theorem: it proves that a run-up test is not merely convenient but mathematically nec-essary for the unique recovery of gyroscopic coupling and Duffing nonlinearity from lateral displacement measurements alone.
+
+On the rig this dichotomy is directly mea-surable. For a steady 60 Hz (3600 RPM) run (N = 20 ,000 samples, 5 s at 4 kHz), we form 
+
+ξ(t) = ( x, y, ˙x, ˙y, Ω) T, the signature matrix Φξ
+
+over the six rotor candidates {x, y, Ω ˙ y, Ω2x, (x2 +
+
+y2)x, x 3}, and the normalized Gram matrix 
+
+N −1ΦT 
+
+> ξ
+
+Φξ (columns scaled to unit norm). As predicted, the measured trajectory is confined to a low-order harmonic span: the Gram matrix is rank-deficient (numerical rank 5 < 6), with 
+
+λmin = μΦ ≈ 0 (numerically ∼ 10 −21 , i.e. zero to machine precision) against λmax ≈ 1.9 × 10 −4
+
+and condition number ≈ 8.8 × 10 11 . Thus μΦ in condition (C2) is numerically zero and the six candidates are not linearly independent, so no esti-mator can separate their coefficients. By contrast, the coast-down record used above (Ω swept from 32 .3 Hz to rest) evaluates the same candidates over a continuum of frequencies, restoring full column rank and yielding the gyroscopic, Duffing, and cross-channel terms from the measured x, y alone (Table 3). The measured rig thus reproduces, on real data, the constant-speed-unidentifiable / coast-down-identifiable dichotomy of Sect. 2.4. The sample-complexity bound of Proposition 4 specializes to the rotor as follows.                                
+
+> Corollary 2 (Sample Complexity for the Rotor) For the 4-DOF rotor with σε= 5% of orbit RMS, p= 6 ,
+> θmin = 0 .1θtrue ,α= 0 .05 ,δ= 0 .05 :
+> Nmin ≈(0 .05) 2
+> μΦ(0 .1) 2·30 .3≈7.6
+> μΦ
+> .(74)
+> For a run-up experiment with μΦ≈0.15 , this gives
+> Nmin ≈51 samples per channel. The formula reveals that Nmin ∝μ−1Φ: poor excitation is far more costly than high noise.
+
+## 3.8 Numerical validation with genuinely hidden tilt states 
+
+We integrate the full 4-DOF system (59)–(61) with a fourth-order Runge–Kutta scheme over an 8 s run-down from 60 to 5 Hz, matching the rig coast-down of Sect. 4 (parameters in Table 1). The peak tilt is ≈ 4.6◦, within the small-angle regime of (65). The tilt angles α, β are simulated as genuine coupled states and then discarded: only 
+
+x(t), y (t), corrupted by 2% Gaussian noise, enter the pipeline, as for the rig. The target translational properties in Table 1 were used to construct physically consistent bear-ing matrices. The resulting mass, gyroscopic, assembled linear-stiffness, damping, and nonlin-ear bearing matrices are reported in Appendix A to enable exact numerical reconstruction of the benchmark. The conservative part of the model (undamped, unforced, constant Ω) conserves the mechanical energy 
+
+E = 12 ˙qTM ˙q + 12 qTKLq + VN L (q), (75) to a relative drift below 10 −12 over 0 .2 s, and KL is positive definite for these parameters, so the model is mechanically self-consistent. On a single coast-down Ω( t) is monotonic, so envelope terms such as Ω 2x, ˙Ωx, and the Duff-ing ( x2 + y2)x become nearly collinear (variance inflation factors 10 9–10 10 ). Three refinements keep Gate 2 robust in this regime: correlation clustering (|ρ| > 0.7), carrying only the strongest represen-tative of each cluster; K-fold cross-validation [22] (K = 7, amplitude-stratified), admitting a term only if it passes both the partial F -test and a non-worsening validation-RMSE check in a majority of folds; and a scale-invariant plausibility check that rejects terms whose contribution |ˆθℓ| RMS( ϕℓ) is negligible against the residual RMS. Across independent noise realizations, SPIRAL-PO recovers all three hidden-state signa-tures from x(t), y (t) alone: the gyroscopic terms (Ω ˙ y in the x-equation, Ω ˙ x in the y-equation), the bearing-mediated Duffing nonlinearity (via its aliased cluster, e.g. ( x2 + y2)x or Ω 2x), and the tilt-mediated cross-channel coupling ( y in x,19 Table 1 : Parameters of the synthetic 4-DOF rotor model used for hidden-state validation in Sect. 3.8. 
+
+Parameter Symbol Value 
+
+Effective disk mass m 1.15 kg Disk radius R 0.0735 m Polar mass moment of inertia Ip 3.1063 × 10 −3 kg m 2
+
+Diametral mass moment of inertia Id 1.5531 × 10 −3 kg m 2
+
+Shaft span L 1.0 m Disk location from Bearing 1 a 0.25 m Nondimensional disk location ξ = a/L 0.25 Complementary location ratio ¯ξ = 1 − ξ 0.75 Target natural frequencies fnx , f ny 16 .0, 17 .5 Hz Target translational stiffnesses kx, tar , k y, tar 1.1622 × 10 4, 1.3904 × 10 4 N/mTarget cross-coupled stiffness kxy, tar 1.5890 × 10 3 N/mTarget translational damping cx, tar , c y, tar 5.0, 3.0 N s /mTarget cross-coupled damping cxy, tar 0.1 N s /mTarget cubic stiffness βtar 1.0 × 10 11 N/m3
+
+Static mass unbalance U 1.8 × 10 −5 kg m Equivalent eccentricity e = U/m 1.5652 × 10 −5 mInitial imbalance phase θ0 0.4 rad Initial and final rotational speeds f0, f f 40 , 0 Hz Angular acceleration ˙Ω −16 .7552 rad /s2
+
+Simulation time step ∆t 1.0 × 10 −3 sSimulation duration T 14 s Initial state z(0) 08×1
+
+Numerical integrator — ode45 , RelTol = 10 −9, AbsTol =10 −11 
+
+Measurement-noise level — 0% of each noise-free observable-channel standard deviation Random-number seed — 11 
+
+x in y). Each reaches x, y only through the bear-ing projection (65), so recovering it is a genuine partial-observation test, not a direct fit of non-linearity in the observed coordinates. Coefficient magnitudes need not match the nominal values — the minimal linear seed (Sect. 3.5) absorbs part of each effect before the loop runs — but detection is reliable across noise draws and the recovered terms are the physically correct ones. 
+
+## 3.9 State reconstruction via extended Kalman filtering 
+
+Sect. 3.8 validates the discovered equation struc-ture but does not, by construction, produce a trajectory of α(t), β (t): the discovered equations are expressed entirely in observable quantities. A standard state estimator is used as a com-plementary second step to reconstruct the states SPIRAL-PO has confirmed are physically present but does not directly observe. An Extended Kalman Filter is built over the full 8-state system z = {x, y, α, β, ˙x, ˙y, ˙α, ˙β}, using (59)–(61) as the process model and {x, y } as the only observation. The mean is propagated by fourth-order Runge–Kutta integration of the non-linear dynamics at time step dt = 5 × 10 −4 s (both synthetic and real, after 2 × downsampling of the rig’s 4 kHz channels). The covariance is advanced by the second-order discretization 
+
+Φk ≈ I + dt Fk + 12 dt 2F 2 
+
+> k
+
+, (76) where Fk = ∂f /∂ z is the state Jacobian of the process model, 
+
+Fk =
+
+" 04 I4
+
+−M −1KL + JN L (q) −M −1Cb + Ω G#
+
+,
+
+(77) 20 where the Jacobian of the cubic bearing force is 
+
+JN L (q) = ∂[KN L (q)q]
+
+∂q
+
+=
+
+> 2
+
+X
+
+> i=1
+
+kN Li 
+
+h
+
+∥Liq∥2 LT 
+
+> i
+
+Li
+
++ 2 ( LT 
+
+> i
+
+Liq)( LT 
+
+> i
+
+Liq)Ti
+
+.
+
+(78) In the implementation Fk is evaluated by finite differences at each step, avoiding manual differ-entiation of JN L . The linear measurement model is 
+
+H = I2 02×6
+
+, (79) selecting only x, y from the 8-state vector. Table 2 summarizes the remaining settings: Q is weighted more heavily on the four rate states, where model mismatch tends to appear first; R is estimated automatically from the second-difference energy of each channel; P0 reflects high confidence in 
+
+x(0) , y (0) and substantial uncertainty in the unob-served states; and the filter is initialised from rest, with zero initial tilt and velocity for every state, the least-informative starting point avail-able without prior knowledge of the rig’s tilt at 
+
+t = 0. Observability of the linearized system from 
+
+{x, y } alone was verified directly: the observabil-ity matrix has full rank (8 /8) at a representa-tive operating speed, though its singular values span roughly eleven orders of magnitude, indi-cating that ˙α, ˙β are substantially more weakly conditioned than the position-like states x, y, α, β 
+
+– consistent with position states reconstructing more cleanly than rate states in practice. The observable-state equations were constructed using a library of candidate basis functions selected to capture the dominant dynamics of flexible rotary machines. The library consisted of aconstant term, linear displacement and velocity terms, quadratic polynomial terms, displacement– velocity coupling terms, velocity products, gyro-scopic coupling terms proportional to the rotor speed Ω, isotropic cubic nonlinearities, nonlinear velocity interactions, synchronous imbalance exci-tation terms Ω 2 cos θ and Ω 2 sin θ, and the learned neural-network residual corrections rFFNN  
+
+> x
+
+and 
+
+rFFNN  
+
+> y
+
+. This combination incorporates the princi-pal linear, nonlinear, gyroscopic, and unbalance-induced effects while allowing the hybrid SPIRAL-PO framework to compensate for residual dynam-ics not explicitly represented in the physics-based model. Table 3 collects the admitted terms for both the synthetic test of Sect. 3.8 and the real rig (Sect. 4). As noted in Sect. 1.2.9, several candi-dates are mutually aliased on a single coast-down trajectory, so a term such as Ω 2x standing in for the Duffing mechanism (rather than the literal (x2 + y2)x) is expected, not a discrepancy. Applied to the same simulation (the filter never receives α, β or their derivatives, only noisy 
+
+x(t), y (t)), the EKF recovers the hidden tilt states 
+
+α, β at correlation 0 .9999 against ground truth, with the observed x, y tracked comparably well (Table 4, Fig. 4); the filter is thus not merely echoing the measured channels. This is a direct demonstration of the partial-observation claim: the correct equation structure is discovered, and the hidden-state trajectory is then reconstructed from that model. The bearing/disk parameters used throughout this section were validated against the synthetic system’s natural amplitude ( x, y standard devia-tion ∼ 0.02–0 .03 m, peak ∼ 0.08 m). The real rig’s centered displacement signal has standard devia-tion ∼ 0.2, roughly 8 × larger; since the Duffing term scales as amplitude 3, feeding the real signal in at its natural scale makes KN L (q)q roughly 83 ≈ 500 × stronger than the filter’s process model was tuned for, and the EKF diverges. Dividing the real x, y by SCALE = 8 before discovery and fil-tering keeps the nonlinear term in the validated regime; every reported and plotted quantity is multiplied back by SCALE before display, so x, y 
+
+appear in original sensor units (Fig. 6). This is a numerical workaround, not a physical calibra-tion: α, β share the restored scale of x, y but are not independently verified to be in true physical radians, since kL1, k L2, k N L 1, k N L 2, m were never measured for this specific rig. The identical filter was applied to the real 
+
+x(t), y (t) channels of Sect. 4 (Fig. 6), producing an estimate of the rig’s unmeasured tilt motion, subject to three limitations reported for complete-ness rather than as a validated physical result: (i) no ground truth exists for the real rig’s tilt, so 21 Table 2 : Extended Kalman Filter settings for the 8-state system z = {x, y, α, β, ˙x, ˙y, ˙α, ˙β} (position states first, then rate states). 
+
+Quantity Description Value 
+
+dt integration / update step 5 × 10 −4 s
+
+Q process-noise covariance (rate states weighted higher) 
+
+q0 diag(10 −214, 14), q0 = 10 −3
+
+R measurement-noise covariance, auto-estimated diag( σ2
+
+> x
+
+, σ 2 
+
+> y
+
+), ˆ σ2 = Var(∆ 2q)/6
+
+P0 initial covariance (positions, tilts, veloci-ties, tilt rates) diag(10 −612, 10 −412, 10 −412, 10 −312)
+
+z0 initial state ( x, y from first sample, rest zero) 
+
+{x(t1), y (t1), 0, 0, 0, 0, 0, 0}T
+
+Table 3 : Physics-informed basis functions and hybrid residual components employed in the SPIRAL-PO framework for rotary machine.                                                    
+
+> Category Basis functions Physical interpretation
+> Constant 1Bias term Linear x, y, ˙x, ˙yLinear stiffness and damping Quadratic x2, xy, y 2Weak geometric nonlinearities Quadratic displacement–velocity x˙x, x ˙y, y ˙x, y ˙yState coupling and nonlinear damping interactions Quadratic velocity ˙x2,˙x˙y, ˙y2Velocity-dependent nonlinear effects Speed coupling Ωx, ΩySpeed-dependent stiffness and coupling Gyroscopic Ω ˙ x, Ω ˙ yGyroscopic dynamics Duffing nonlinear stiffness (x2+y2)x, (x2+y2)yAmplitude-dependent isotropic restoring force Nonlinear damping (x2+y2) ˙ x, (x2+y2) ˙ yAmplitude-dependent nonlinear damping Imbalance forcing Ω2cos θ, Ω2sin θRotating mass imbalance excitation Residual closure rFFNN
+> x, r FFNN
+> yLearned residual dynamics
+
+these estimates demonstrate reconstruction capa-bility rather than a verified measurement; (ii) the bearing stiffness, disk inertia, and eccentric-ity are the illustrative values validated synthet-ically, not independently calibrated for this rig, so α, β should be read on a relative, illustra-tive scale; and (iii) the filter diverges approaching the resonance/critical-speed crossing identified in Sect. 4 ( t ≈ 16–17 s) and is reported only on the stable preceding segment. This last point is cor-roborated independently: the discovered SPIRAL-PO models for this record also fit worst in the same window, so the resonance crossing emerges as the genuinely hardest part of this record across two unrelated analyses. Independent calibration of the bearing and disk parameters would be needed before the real-rig reconstruction could be treated as an actual engineering measurement rather than an illustrative demonstration. 
+
+## 3.10 Robustness of the reconstruction: parameter mismatch and noise 
+
+The synthetic reconstruction of Sect. 3.8 uses a filter whose internal model shares the structure and parameters of the simulator that generated the data, so the near-perfect agreement ( ≈ 1.5% RMSE, correlation 0 .9999) could in principle be an inverse crime rather than evidence that the hidden states are genuinely recoverable. Three controls guard against this reading: identifica-tion and reconstruction are run on independent records (equations discovered on one coast-down realization, the EKF applied to a second with a different noise seed and unbalance phase), so the reported metrics constitute an out-of-sample gen-eralization test in which the model is never fit to the trajectory it is evaluated on; the filter’s bear-ing parameters are deliberately perturbed from their true values by a relative mismatch δ applied jointly to kL, kN L , and cb; and the measurement-noise level on x, y is swept well above the nominal 22 Fig. 4 : Synthetic validation: true (blue dashed) versus SPIRAL-PO + EKF reconstructed (red) trajecto-ries for all four states over the 14 s coast-down. Top two rows: the observed lateral displacements x(t), y (t). Bottom two rows: the hidden tilt angles α(t), β (t), reconstructed from the observed x, y alone. Right col-umn: an 8 .4–10 .6 s zoom. The states track ground truth with correlation 0 .9999 throughout the transient deceleration, including the resonance-crossing region (Table 4). 
+
+Table 4 : State reconstruction error criteria. Synthetic states are checked against true ground truth; real-rig x, y against the measured signal (the best available reference); real-rig α, β have no ground truth, so only the filter’s own self-reported 1 σ uncertainty is given.                                                   
+
+> Dataset State RMSE rel. error correlation Synthetic x3.65 ×10 −42.0% 0.9998 Synthetic y4.12 ×10 −42.0% 0.9998 Synthetic α(hidden) 2.86 ×10 −41.4% 0.9999 Synthetic β(hidden) 2.80 ×10 −41.6% 0.9999 Real rig x1.44 ×10 −90.0% —Real rig y3.35 ×10 −90.0% —Real rig α(illustrative) mean 1 σuncertainty = 0 .040 Real rig β(illustrative) mean 1 σuncertainty = 0 .040
+
+2%. Tables 5 and 6 report how the reconstruction degrades along each axis; the matched, low-noise entry of each table reproduces the baseline result, and the trend away from it indicates whether the reconstruction reflects genuine observability or merely a self-consistent model. We run both parameter-mismatch and measurement-noise sweeps and report the result-ing metrics; in both cases the degradation is modest. A 20% simultaneous mismatch in the bearing parameters increases the tilt RMSE only 23 Table 5 : Hidden-state reconstruction under bearing-parameter mismatch (measurement noise held at the nominal 2%). Mismatch δ is applied jointly to kL, kN L , cb in the filter model; the δ = 0% row is the matched (inverse-crime) baseline. Metrics are computed against the true hidden trajectories on an independent validation record.                                                        
+
+> Mismatch δαRMSE αcorr. βRMSE βcorr. x, y RMSE 0% (matched) 2.9×10 −40.9999 2.8×10 −40.9999 3.8×10 −4
+> 5% 3.5×10 −40.9999 3.6×10 −40.9998 3.8×10 −4
+> 10% 4.6×10 −40.9997 5.0×10 −40.9996 3.8×10 −4
+> 20% 7.0×10 −40.9994 7.6×10 −40.9990 3.8×10 −4
+
+Table 6 : Hidden-state reconstruction under increasing measurement noise (bearing parameters matched, 
+
+δ = 0). Noise is expressed as a percentage of each channel’s standard deviation; the 2% row is the nominal baseline. “Stable window” is the longest leading segment over which the filter remains convergent before the resonance crossing.                                               
+
+> Noise σαRMSE αcorr. βRMSE βcorr. Stable window 2% (nominal) 2.9×10 −40.9999 2.8×10 −40.9999 8.0 s 5% 7.0×10 −40.9994 6.8×10 −40.9992 8.0 s 10% 1.3×10 −30.9978 1.3×10 −30.9971 8.0 s 20% 2.4×10 −30.9929 2.3×10 −30.9910 8.0 s
+
+from ≈ 2.9 × 10 −4 to ≈ 7 × 10 −4, while the correla-tion stays above 0 .999 and the x, y reconstruction errors are essentially unchanged. Likewise, mea-surement noise up to 20% of the channel RMS keeps tilt correlations above 0 .99 without reduc-ing the 8 s interval of stable reconstruction. The reconstruction thus degrades gracefully under both modeling errors and measurement noise rather than failing catastrophically as an inverse crime would, providing strong evidence that the hidden dynamics are genuinely observable. 
+
+# 4 Experimental test rig 
+
+The experimental test rig used to validate the SPIRAL-PO framework was originally developed to investigate physics-based, data-driven identifi-cation and active vibration control of a laboratory-scale vertical-shaft rotary machine [23], designed to replicate the key dynamical features of indus-trial centrifugal machinery in a controllable, instrumented setting. 
+
+## 4.1 Laboratory-Scale Rotary System 
+
+Experimental validation was performed using a laboratory-scale vertical rotor-bearing platform specifically configured to acquire high-quality vibration measurements for nonlinear system identification. The test rig enables repeatable experiments under constant-speed, acceleration, and deceleration operating conditions, thereby providing a representative dataset for evaluat-ing the proposed SPIRAL-PO framework. An overview of the experimental apparatus is pre-sented in Fig. 5, while the corresponding four-degree-of-freedom mathematical model employed throughout this paper is illustrated in Fig. 3. The mechanical drive system comprises avariable-speed AC motor 1○ mounted on a rigid support frame 2○. The motor drives the rotor assembly through a flexible shaft 4 ○, which carries the rotor with mounted test tubes 5○. The shaft is supported by the upper bearing housing 3 ○, the primary rotor-bearing assembly 6○, and the lower bearing housing 7○. This configuration provides the lateral compliance necessary to excite cou-pled translational and rotational dynamics over the operating speed range considered in this study. For operator protection, the rotating assembly is enclosed by a transparent safety shield 8○.The resulting vibration measurements are used as the observable inputs to the SPIRAL-PO iden-tification algorithm. These measurements provide 24 the information required to identify the governing nonlinear dynamics while simultaneously recon-structing the hidden rotor states through the reduced-order estimation framework presented in the following sections. Only the lateral transla-tional responses are directly measured during the experiments, whereas the rotational coordinates associated with disk tilting remain unmeasured. Consequently, the experimental platform provides a practical benchmark for assessing the capability of the proposed SPIRAL-PO framework to infer hidden states from partial observations. 
+
+Fig. 5: Laboratory-scale vertical rotor test rig and its components: an AC motor 1○ is mounted on the chassis 2○ and applies torque to the drive mechanism, which includes the disk rotor 5○ mounted on a slender, flexible shaft 4○. This shaft extends through the rotor and connects to the actuator force transmission assembly, which in turn connects to the rotor bearing 6 ○. This assem-bly is linked to the bearing housing at the top 3○
+
+and at the bottom 7○. A safety shield 8○ covers the front panel. The mechanical assembly consists of a disk-shaped rotor mounted on a slender flexible steel shaft. Multiple circumferential apertures in the disk permit calibrated trial masses at prescribed radial and angular locations, so imbalance mag-nitude and phase can be varied in a controlled, repeatable manner; the resulting rotating imbal-ance force provides the persistent synchronous excitation used for identification. The rotor is driven by a variable-frequency AC electric motor through a gearbox, damping plate, and flexible coupling, transmitting torque through a 6 mm-diameter steel shaft. Lovejoy ® couplings accommodate small shaft misalignments, attenu-ate impulsive loads, and limit the transmission of motor-side disturbances to the rotor. A cen-trifugal clutch between the drive shaft and rotor further reduces the influence of small geomet-ric and assembly misalignments on the measured response, and the bearing housing is supported by a cylindrical elastomeric element providing structural flexibility and damping in both lateral directions. The complete system is mounted on an alu-minum base plate and C-channel chassis, which provides repeatable mounting locations for the displacement sensors, accelerometers, actuators, and safety shield. The two lateral actuators are part of the general-purpose platform but are not used to apply feedback forces during the open-loop system-identification experiments considered here. The motor command is prescribed as aconstant-speed, acceleration, or deceleration pro-file. For a linear speed ramp, Ω( t) = Ω 0 + ˙Ωt, (80) where Ω 0 is the initial angular velocity and ˙Ω is the constant angular acceleration (positive: accel-eration; negative: deceleration). Variable-speed experiments excite the rotor over a continuous frequency interval, providing information on res-onance passage, speed-dependent dynamic behav-ior, cross-axis coupling, and gyroscopic effects in the 4-DOF model. 25 4.2 Measurement and Data-Acquisition System 
+
+Lateral vibration is measured by two orthogo-nally positioned Micro-Epsilon opto-NCDT 1420 non-contact laser displacement sensors, mounted directly at the rotor disk level in the X- and 
+
+Y -axes, and providing the observable sub-state 
+
+qobs (t) = [ x(t), y (t)] T required by SPIRAL-PO without introducing additional mass, stiffness, or damping. The sensors support rates up to 4 kHz and are operated through RS422 interfaces at 24 V. The orbit radius r(t) = px(t)2 + y(t)2
+
+is formed directly from these two channels. Two orthogonally mounted accelerometers indepen-dently record the lateral acceleration response, used for estimator initialization, signal validation, and comparison against reconstructed quantities. Spin speed Ω( t) — the scheduling parameter in (17) — is measured independently as a known input, not reconstructed from x, y . For a swept-speed run (run-up or coast-down), Ω traverses a range of order Ω cr at constant angular accelera-tion, satisfying the persistent-excitation condition (C2) of Sect. 4.2.1; the records analyzed here are coast-downs. Real-time acquisition and control use aQuanser Q8 DAQ board (16-bit resolution, ±10 V I/O range) interfaced to MATLAB ®/Simulink ®
+
+via the QUARC TM real-time toolchain, sampling at ∆t = 0 .001 s , fs = 1∆t = 1000 Hz . (81) A Crystal Instruments Spider-20 dynamic sig-nal analyzer with Engineering Data Management (EDM) software provides an independent moni-toring path in both time and frequency domains, enabling online verification of run-up quality and sensor health. Before identification, measured voltages are converted to physical units via sensor calibration factors, each stationary channel’s mean offset is removed, and the displacement, acceleration, and rotor-speed channels are synchronized to common time samples. The experimental measurement vec-tor is 
+
+yk =
+
+xk
+
+yk
+
+
+
++ vk, (82) where xk, y k are the measured lateral displace-ments at the kth sample and vk is measurement noise. The overall mechatronic implementation is as follows: the instrumented rotor supplies 
+
+{x(t), y (t), Ω( t)} to the SPIRAL-PO workflow, which combines physics-guided library construc-tion, residual modeling, statistical screening, and validation-based model selection to identify the governing observable dynamics. For each can-didate parameter vector generated during the search, an extended Kalman filter reconstructs the unmeasured rotational states and computes the measurement innovation, which quantifies agree-ment between the candidate model and the mea-sured response and feeds into model selection. 
+
+4.2.1 Identifiability conditions at the test rig 
+
+The identifiability conditions of Sect. 2 specialize to this rig as follows. (C1) Functional separability. The hidden cou-pling in (67)–(68) contains terms β, α, and |ri|2,which project onto the observable library, under the slender-shaft assumption, via 
+
+β ≈ cβ ˙x/ Ω, α ≈ cα ˙y/ Ω, (83) and 
+
+|ri|2 ≈ ¯ξ2 
+
+> i
+
+(x2 + y2) + O(ξ2 ¯ξ2L2). (84) The leading library approximation has 
+
+∥η∥L2 / ∥∆∥L2 = O(ξ ¯ξL/R ), where R is the char-acteristic orbit radius — small for L ≫ R, as holds for well-balanced rotors. (C2) Persistent excitation. A constant-speed unbalance run confines the observable trajectory to a Lissajous curve in the ( x, y ) plane — a 1-dimensional manifold in R5 — rendering ΦT 
+
+> ξ
+
+Φξ
+
+rank-deficient (Corollary 1). A swept-speed run (run-up or coast-down) evaluates the candidate signatures over a continuum of excitation fre-quencies, lifting the harmonic degeneracy and satisfying (C2) — a hard design requirement on the experiment. Dimensional admissibility (enforced at library construction, Sect. 1.2.6, not a hypothesis of the identifiability theorem). All six SPIRAL-PO library candidates (Ω ˙ y, Ω ˙ x, ( x2 + y2)x, ( x2 + y2)y,
+
+y in the x-equation, x in the y-equation) have 26 Fig. 6 : Experimental validation of the proposed SPIRAL-PO algorithm during transient rotor decelera-tion. The left column presents the complete experimental response, whereas the right column provides an enlarged view of the shaded interval to emphasize the prediction accuracy during the transient regime. Panels (a) and (b) compare the measured and SPIRAL-PO predicted lateral displacements in the x- and 
+
+y-directions, respectively. Panels (c) and (d) show the model-based estimates of the hidden tilt states ˆ α
+
+and ˆβ with the filter’s self-reported 95% intervals; no independent tilt measurement is available on the rig, so these are illustrative rather than validated. Panels (e)–(h) present the enlarged views of the high-lighted interval in (a)–(d): the reconstruction of the measured x, y dynamics is high-fidelity, while the hidden tilt estimates are shown without ground truth. dimensions of m s −2 (acceleration), confirming admissibility. (C3) SNR requirement. With p = 6 library candidates and N = 5000 samples at SNR = 20 dB, (48) gives SNR min ≈ 8 dB, comfortably satisfied. At SNR = 10 dB, SNR min remains below 10 dB provided N > 2000. 
+
+# 5 Discussion 
+
+## 5.1 Comparison with related methods 
+
+Most equation-discovery methods do not directly apply to the partial-observation problem studied here. Sparse-regression methods such as SINDy [1] and its weak form WSINDy [2] regress the dynamics from the full measured state: with 
+
+α, β unmeasured, their regression library cannot even be formed. This structural inapplicability— not a decision to omit them—is why a like-for-like quantitative benchmark against full-state SINDy/WSINDy is not reported here. Physics-informed neural networks [3] tolerate sparse data but require the governing-equation form to be sup-plied, so they solve a known equation rather than discover an unknown one. The one established data-driven method that operates on a genuinely partial measurement is delay-coordinate SINDy, taken here as the relevant comparator. The idea rests on Takens’ embedding theorem [24]: for a generic partial mea-surement q(t), the time-delayed vector [ q(t), q (t − τ ), . . . , q (t − (d − 1) τ ) ] traces an attractor diffeomorphic to that of the full state for large enough embedding dimension d. In the HAVOK realization (Hankel Alternative View 27 Of Koopman) [25], these delays are stacked into a Hankel matrix whose SVD yields dominant delay coordinates, in which sparse regression is then applied, typically returning a linear model with intermittent forcing; deep-learning variants learn the embedding and sparse model jointly and have been applied directly to hidden-variable discovery [5]. Because it is defined on the observ-able subspace, delay-coordinate SINDy — unlike full-state SINDy — can be applied to the rotor’s 
+
+x(t), y (t) alone, making it a fair benchmark for SPIRAL-PO (Table 7). The contrast is one of representation, not raw predictive accuracy. Delay-coordinate meth-ods reconstruct and forecast the observable signal, but the recovered state lives in abstract delay or SVD coordinates whose diffeomorphism back to the physical attractor is generically unknown [5]; the resulting model contains no α, β, or bearing-stiffness/gyroscopic coefficient an engineer can read off. SPIRAL-PO instead works in the origi-nal physical coordinates with a physics-structured library, so its discovered terms — gyroscopic, Duffing, tilt cross-coupling — are the physical cou-plings themselves, and the subsequent EKF stage reconstructs the actual tilt trajectories α(t), β (t). Put briefly, delay-SINDy answers “what surro-gate predicts x, y ?” whereas SPIRAL-PO answers “which physical mechanism produced them?” — the question that matters for model trust, fault diagnosis, and control. Relative to this comparator, SPIRAL-PO’s contributions are: (i) a projection-residual for-mulation (15) that converts unmeasured state effects into structured, discoverable signatures without full-state measurement; (ii) an impossi-bility result (Proposition 1), specialized to the rotor as Corollary 1, proving that constant-speed data cannot recover the gyroscopic and Duffing terms at any sample size or sensor precision, so a swept-speed test is mathematically necessary rather than a design preference; (iii) a closed-form sample-complexity bound Nmin (δ) (Proposi-tion 4) showing excitation quality to be a stronger lever than noise reduction; (iv) a bias–variance decomposition (Theorem 1) bounding convergence under library mismatch by ϵ and σε/√N μ Φ; (v) a dimensionally-constructed library that reduces false discovery relative to combinatorial enumera-tion; and (vi) physical annotation of every admit-ted term, producing a fully interpretable model. 
+
+## 5.2 Interpretation and limitations 
+
+Partial observability is a filter, not an obstacle: it limits which equations are discoverable rather than preventing discovery. With rich excitation the hidden-state coupling leaves a distinguishable imprint in the observable residual and SPIRAL-PO extracts it reliably; with poor excitation the signatures alias and no estimator can separate them. Corollary 1’s constant-speed/swept-speed dichotomy is a geometric property of the data, not a shortcoming of the algorithm, and recogniz-ing it in advance turns an inconclusive run into experiment-design guidance. Discovery and state estimation are comple-mentary, not interchangeable (Sects. 3.1, 3.9): SPIRAL-PO certifies which mechanisms are present in the observable equations and their coef-ficients, and the EKF uses a physical model to reconstruct the hidden trajectory, reaching sub-2% relative RMSE on synthetic data (Table 4). Crucially, the full governing equations—including the hidden-state dynamics—can be reconstructed only when their structure is known a priori, as it is here for the 4-DOF rotor model supply-ing the EKF process equations. In the general case this structure is unavailable: SPIRAL-PO closes only the observable subspace, and full-state recovery would require an assumed model of the hidden dynamics or a purely data-driven surrogate observer that does not return the labeled physical states. Three further limitations bound the results. The physics-structured library assumes the hid-den coupling is well-approximated by a finite combination of observable monomials; for non-polynomial couplings Theorem 1 bounds but does not remove the resulting bias. The real-rig EKF reconstruction is a demonstration of capability, not a calibrated measurement (uncalibrated bear-ing/disk parameters, no ground truth, divergence near resonance; Sect. 3.9). And the scheduling parameter Ω( t) must be measured independently; an unmeasured drive signal would require further extension. Future work will calibrate the bearing parameters experimentally and extend the library to fault-detection signatures such as crack-induced stiffness asymmetry. 28 Table 7 : Capability comparison in the partial-observation setting. Full-state sparse-regression methods (SINDy, WSINDy) and equation-known solvers (PINNs) are not directly applicable when the state is only partially measured; the relevant data-driven comparator is delay-coordinate SINDy (HAVOK) [5, 24, 25], shown alongside the full-state SINDy/WSINDy family for reference. Entries marked “No †” may be supplied by later extensions (see note).                                         
+
+> Property SPIRAL-PO delay-SINDy [25] SINDy / WSINDy [1, 2] Operates on partial (hidden) state? Yes Yes No Works in original physical coordinates? Yes No (delay coords) Yes Recovers labeled hidden states? Yes No n/a Physics seed embedded? Yes No No Physics-structured library? Yes No No Interpretable / annotated terms? Yes No Partial Identifiability theorem? Yes No No Impossibility theorem? Yes No No Sample-complexity bound? Yes No No †
+> Coefficient uncertainty? Yes No No †
+> Broadband whiteness guard? Ljung–Box No No Overfitting guards 2 gates + rollback rank trunc. ℓ1
+> †Not provided by the method’s original formulation; some later extensions add the capability — e.g., ensemble SINDy yields coefficient uncertainty, and sample-complexity analyses exist for sparse regression more broadly.
+
+Throughout, SPIRAL-PO preserves physical interpretability: candidates come from dimen-sional analysis rather than combinatorial enumer-ation, each admitted term maps to a mechanical mechanism, and coefficients carry standard errors. An engineer can thus check a recovered gyro-scopic coefficient against the disk’s polar inertia, or a Duffing coefficient against the bearing manu-facturer’s stiffness specification—the auditability needed before a discovered model enters a control or fault-detection loop. 
+
+# 6 Conclusions 
+
+SPIRAL-PO extends the SPIRAL framework to the practically important class of nonlinear dynamical systems where the full state is not mea-surable. By reformulating the identification prob-lem in the observable subspace, building a physics-structured candidate library from dimensional analysis of hidden-variable dynamics, replac-ing the variance-based guard with a frequency-domain whiteness test, and using a multi-output residual neural network, the method discovers interpretable, statistically validated equations of motion from partial observations only. Applied to a four-degree-of-freedom vertical rotor with Duffing supports (Sect. 3) and motivated by the laboratory test rig described in Sect. 4, the frame-work’s recovery of the gyroscopic coupling, the bearing-mediated Duffing nonlinearity, and the tilt-mediated linear cross-coupling from x(t) and 
+
+y(t) measurements alone is confirmed numeri-cally (Sect. 3.8) against a synthetic 4-DOF system in which the tilt states are simulated as gen-uine hidden dynamics and never exposed to the discovery algorithm — a direct test of the partial-observation claim, not merely of the discovery algorithm’s mechanics on a fully-observed sys-tem. Beyond discovering the governing equations, Sect. 3.9 shows that an Extended Kalman Fil-ter built on the SPIRAL-PO-validated dynamics reconstructs the hidden tilt trajectory itself from 
+
+x(t), y (t) alone, with sub-2% relative error against ground truth on synthetic data; applied to the real rig, the same filter produces an illustrative tilt esti-mate, though without independent bearing cali-bration this should be read as a demonstration of capability rather than a calibrated physical mea-surement. Future work will report experimental validation on the physical test rig, independently calibrate the bearing and disk parameters needed for a quantitatively trustworthy real-rig state reconstruction, and extend the physics-structured library to fault-detection applications. It will also add quantitative benchmarks—delay-coordinate SINDy and component ablations (physics seed alone, residual network without the statistical gates)—on common datasets, together with an out-of-sample prediction of the measured x, y 
+
+responses across distinct experimental records. 29 Declarations 
+
+Author Contributions 
+
+M.A.A. and S.P. conceived and designed the study. M.A.A. developed the theoretical frame-work. M.A.A. and S.P. ran the synthetic sim-ulations. S.P. collected the experimental data. M.A.A. wrote the majority of the manuscript, and S.P. edited portions of it. All authors reviewed and approved the final manuscript. 
+
+Funding 
+
+Not applicable. 
+
+Conflicts of Interest/Competing Interests 
+
+The authors have no relevant financial or non-financial interests to disclose. 
+
+Ethics Approval 
+
+Not applicable. 
+
+Consent to Participate 
+
+Not applicable. 
+
+Consent for Publication 
+
+Not applicable. 
+
+Data Availability 
+
+The MATLAB code and data used to generate the synthetic benchmark results reported in this paper are available from the corresponding author upon reasonable request. 
+
+# References 
+
+[1] Brunton, S.L., Proctor, J.L., Kutz, J.N.: Dis-covering governing equations from data by sparse identification of nonlinear dynamical systems. Proc Natl Acad Sci USA 113 (15), 3932–3937 (2016) https://doi.org/10.1073/ pnas.1517384113 [2] Messenger, D.A., Bortz, D.M.: Weak SINDy for partial differential equations. J Comput Phys 443 , 110525 (2021) https://doi.org/10. 1016/j.jcp.2021.110525 [3] Raissi, M., Perdikaris, P., Karniadakis, G.E.: Physics-informed neural networks: a deep learning framework for solving forward and inverse problems involving nonlinear partial differential equations. J Comput Phys 378 ,686–707 (2019) https://doi.org/10.1016/j. jcp.2018.10.045 [4] Brunton, S.L., Brunton, B.W., Proctor, J.L., Kaiser, E., Kutz, J.N.: Chaos as an inter-mittently forced linear system. Nat Com-mun 8, 19 (2017) https://doi.org/10.1038/ s41467-017-00030-8 [5] Bakarji, J., Champion, K., Kutz, J.N., Brunton, S.L.: Discovering governing equations from partial measure-ments with deep delay autoencoders. Proc R Soc A 479 , 20230422 (2023) https://doi.org/10.1098/rspa.2023.0422 [6] Champion, K., Lusch, B., Kutz, J.N., Brun-ton, S.L.: Data-driven discovery of coordi-nates and governing equations. Proc Natl Acad Sci USA 116 (45), 22445–22451 (2019) https://doi.org/10.1073/pnas.1906995116 [7] Somacal, A., Barrera, Y., Boechi, L., Jon-ckheere, M., Lefieux, V., Picard, D., Smu-cler, E.: Uncovering differential equations from data with hidden variables. Phys Rev E 105 (5), 054209 (2022) https://doi.org/10. 1103/PhysRevE.105.054209 [8] Nguyen, N., Ayoubi, M.A.: Nonlinear unsteady aerodynamic model identification via symbolic physics-informed residual aug-mentation. In: To Be Presented at the AIAA SciTech Forum (2027) [9] Friswell, M.I., Penny, J.E.T., Gar-vey, S.D., Lees, A.W.: Dynamics of Rotating Machines. Cambridge Univer-sity Press, Cambridge (2010). https: //doi.org/10.1017/CBO9780511780509 [10] Ljung, G.M., Box, G.E.P.: On a measure of lack of fit in time series models. Biometrika 
+
+65 (2), 297–303 (1978) https://doi.org/10. 1093/biomet/65.2.297 [11] Kingma, D.P., Ba, J.: Adam: a method 30 for stochastic optimization. In: Interna-tional Conference on Learning Representa-tions (ICLR) (2015). arXiv:1412.6980 [12] Halton, J.H.: On the efficiency of certain quasi-random sequences of points in evaluat-ing multi-dimensional integrals. Numer Math 
+
+2(1), 84–90 (1960) https://doi.org/10.1007/ BF01386213 [13] Dunn, O.J.: Multiple comparisons among means. J Am Stat Assoc 56 (293), 52– 64 (1961) https://doi.org/10.1080/01621459. 1961.10482090 [14] Miller, R.G.: Simultaneous Statistical Infer-ence, 2nd edn. Springer, New York (1981) [15] Montgomery, D.C.: Design and Analysis of Experiments, 9th edn. John Wiley & Sons, Hoboken (2017) [16] Chartrand, R.: Numerical differentiation of noisy, nonsmooth data. ISRN Appl Math 
+
+2011 , 164564 (2011) https://doi.org/10. 5402/2011/164564 [17] Montgomery, D.C., Runger, G.C.: Applied Statistics and Probability for Engineers, 7th edn. John Wiley & Sons, Hoboken, NJ (2018). Chap. 12 [18] Lehmann, E.L., Casella, G.: Theory of Point Estimation, 2nd edn. Springer, New York, NY (1998) [19] Ljung, L.: System Identification: Theory for the User, 2nd edn. Prentice Hall, Upper Saddle River, NJ (1999) [20] S¨ oderstr¨ om, T., Stoica, P.: System Identifica-tion. Prentice Hall, New York (1989) [21] Tsybakov, A.B.: Lower bounds on the minimax risk, pp. 77–135. Springer, New York, NY (2009). https://doi. org/10.1007/978-0-387-79052-7 2 .
+
+https://doi.org/10.1007/978-0-387-79052-7 2 
+
+[22] Hastie, T., Tibshirani, R., Friedman, J.: The Elements of Statistical Learning: Data Mining, Inference, and Prediction, 2nd edn. Springer, New York (2009). https://doi.org/ 10.1007/978-0-387-84858-7 [23] Piramoon, S., Ayoubi, M.A., Bashash, S.: Modeling and vibration suppression of rotat-ing machines using the sparse identifi-cation of nonlinear dynamics and termi-nal sliding mode control. IEEE Access 
+
+12 , 119272–119291 (2024) https://doi.org/ 10.1109/ACCESS.2024.3449913 [24] Takens, F.: Detecting strange attractors in turbulence. In: Rand, D., Young, L.S. (eds.) Dynamical Systems and Turbulence, War-wick 1980. Lecture Notes in Mathemat-ics, vol. 898, pp. 366–381. Springer, Berlin, Heidelberg (1981). https://doi.org/10.1007/ BFb0091924 [25] Brunton, S.L., Brunton, B.W., Proctor, J.L., Kaiser, E., Kutz, J.N.: Chaos as an inter-mittently forced linear system. Nat Com-mun 8, 19 (2017) https://doi.org/10.1038/ s41467-017-00030-8 
+
+# Appendix A Synthetic 4-DOF Rotor Matrices                     
+
+> For the generalized-coordinate vector
+> q=x y α β T,(A1) the synthetic benchmark presented in Section 3.8 was generated using the following numerical system matrices and nonlinear force representation. The governing equations of motion are
+> M¨q+ ( Cb+ Ω G) ˙ q+KLq+fNL (q) = fu(t).(A2)
+
+## A.1 System matrices                               
+
+> The mass matrix is
+> M=
+> 
+> 1.15 0000 1 .15 0000 1 .5532 ×10 −30000 1 .5532 ×10 −3
+> .(A3) The gyroscopic matrix is
+> G=
+> 
+> 0 0 000 0 000 0 0 3 .1063 ×10 −3
+> 0 0 −3.1063 ×10 −30
+> .(A4) The assembled linear stiffness matrix is
+
+31 KL =
+
+
+
+11622 .4461 1589 .0063 −238 .3509 1743 .3669 1589 .0063 13903 .8052 −2085 .5708 238 .3509 
+
+−238 .3509 −2085 .5708 1564 .1781 −178 .7632 1743 .3669 238 .3509 −178 .7632 1307 .5252 
+
+ .
+
+(A5) The assembled damping matrix is 
+
+Cb =
+
+
+
+5.0000 0.1000 −0.0150 0.7500 0.1000 3.0000 −0.4500 0.0150 
+
+−0.0150 −0.4500 0.3375 −0.01125 0.7500 0.0150 −0.01125 0.5625 
+
+ . (A6) The assembled stiffness and damping matrices are obtained from the bearing influence matrices according to 
+
+KL = LT1 Kb1L1 + LT2 Kb2L2, (A7) 
+
+Cb = LT1 Cb1L1 + LT2 Cb2L2. (A8) 
+
+## A.2 Bearing influence matrices 
+
+The bearing-plane displacement vectors are defined by 
+
+ri = Liq, i ∈ { 1, 2}, (A9) where 
+
+L1 =
+
+0.75 0 0 0.1875 0 0.75 −0.1875 0
+
+
+
+, (A10) 
+
+L2 =
+
+0.25 0 0 −0.1875 0 0.25 0 .1875 0
+
+
+
+. (A11) 
+
+## A.3 Nonlinear bearing restoring force 
+
+The nonlinear bearing restoring force is evaluated from the bearing-plane displacements according to 
+
+fNL (q) = 
+
+> 2
+
+X
+
+> i=1
+
+LT 
+
+> i
+
+KN Li 
+
+
+
+rT 
+
+> i
+
+ri
+
+
+
+ri. (A12) The numerical values reported in this appendix correspond exactly to the MATLAB implementation used to generate the synthetic benchmark throughout this paper, thereby enabling complete reproduction of the reported simulation results. 
+
+32

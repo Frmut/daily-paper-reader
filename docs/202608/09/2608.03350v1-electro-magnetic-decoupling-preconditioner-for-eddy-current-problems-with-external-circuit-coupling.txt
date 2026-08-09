@@ -1,0 +1,1084 @@
+Title: 2608.03350v1.pdf
+
+URL Source: https://arxiv.org/pdf/2608.03350v1
+
+Published Time: Wed, 05 Aug 2026 00:46:31 GMT
+
+Number of Pages: 6
+
+Markdown Content:
+> FOR CONFERENCE-RELATED PAPERS, REPLACE THIS LINE WITH YOUR SESSION NUMBER, E.G. , AB-02 (DOUBLE-CLICK HERE) <
+
+> 0018-9464 © 2015 IEEE. Personal use is permitted, but republication/redistribution requires IEEE permission. See http://www.ieee.org/publications_standards/publications/rights/index.html for more information. (Inserted by IEEE.)
+
+1
+
+# Electro -Magnetic Decoupling Preconditioner for Eddy Current 
+
+# Problems with  External Circuit Coupling 
+
+S. Hiruma 1, T. Mifune 2, and T . Matsuo 2
+
+> 1
+
+Graduate School of Information Science and Technology, Hokkaido University, Hokkaido, 060 -0814, Japan 
+
+> 2
+
+Graduate School of Engineering, Kyoto University, Kyoto, 615 -8510, Japan 
+
+This paper proposes an efficient and scalable preconditioning strategy for eddy current problems  involving coupled external circuits .
+
+The approach, named  Electro -Magnetic Decoupling  (EMD) preconditio ner , decomposes the discrete system into vector and scalar 
+
+potential components and applies tailored preconditioners to each. In particular, strong preconditioning is applied to the sc alar 
+
+component  to  address  the spectral degradation induced by the discrete Laplacian . The method was evaluated on  four  eddy current 
+
+models with varying frequencies, conductor topologies, and excitation types. Compared to the conventional incomplete Cholesky 
+
+preconditioner,  the EMD approach achieved up to  20  times fewer iterati on counts and up to  20  times faster iterative solver time .
+
+Moreover, the method supports physics -level parallelization, allowing efficient treatment of independently excited conductor domains. 
+
+The EMD framework is compatible with algebraic multigrid, domain decomposition, and direct solvers, offering flexibility and 
+
+robustness for large -scale electromagnetic simulations. 
+
+Index Terms —Circuit coupling,  Current and voltage excitations , Eddy current problems, Finite element method , Preconditioner .
+
+I.  INTRODUCTION 
+
+he finite element method (FEM), particularly when using 
+
+edge elements, has become an indispensable tool for 
+
+analyzing eddy current phenomena in electrical machinery and 
+
+power devices. Accurate prediction of eddy current 
+
+distributions is critical in the design and optimization of such 
+
+systems, as eddy current losses can significantly impact 
+
+efficiency, thermal pe rformance, and reliability. For instance, 
+
+in passive components driven by high -frequency power sources, 
+
+such as those employing pulse width modulati on (PWM), eddy 
+
+current losses in the windings and surrounding conductive 
+
+structures can lead to substantial energy dissipation. Similarly, 
+
+in high -speed rotating electrical machines, alternating magnetic 
+
+fields induce eddy currents in the conductors and st ructural 
+
+components,  resulting in  alternating current (AC) losses. These 
+
+losses include those caused by the skin and proximity effects in 
+
+windings, as well as eddy current losses in permanent magnets. 
+
+Capturing these loss mechanisms with high fidelity requ ires 
+
+advanced numerical modeling techniques that can accurately 
+
+resolve both geometric complexities and material 
+
+inhomogeneities .
+
+In current practice, the finite element analysis of eddy current 
+
+problems widely relies on iterative solvers based on the 
+
+conjugate gradient (CG) method combined with incomplete 
+
+Cholesky (IC) decomposition as a preconditioner. The ICCG 
+
+approach is highly robust and versatile, offering reliable 
+
+convergence across a broad range of problems. Furthermore, 
+
+the use of  parallelization techniques such as  localized 
+
+incomplete Cholesky (localized IC)  [1] enables theoretically 
+
+high parallel efficiency, making ICCG particularly well -suited 
+
+for modern large -scale computational architectures. 
+
+In recent years, mathematically sophisticated 
+
+preconditioning techniques have attracted attention, including 
+
+algebraic multigrid (AMG) methods  [2],[3] , auxiliary space 
+
+preconditioners (ASP)  [4], and domain decomposition methods 
+
+(DDM)  [5]. Each of these approaches  provides notable 
+
+advantages : AMG is known for its ability to accelerate 
+
+convergence in curl -curl type problems, ASP leverages 
+
+auxiliary spaces to efficiently handle H(curl) or H(div) 
+
+formulations, and DDM provides a natural framework for 
+
+paralleliz ation by dividing the domain into smaller subproblems. 
+
+However, practical limitations remain. AMG often  faces 
+
+challenges in achieving  high parallel efficiency on unstructured 
+
+meshes, which are common in complex eddy current 
+
+simulations. ASP is primarily formulated for time -domain 
+
+problems, and its effectiveness for frequency -domain analyses 
+
+has not been extensively studied . Although DDM holds promise, 
+
+applying it effectively to edge -element -based finite element 
+
+formulations requires special considerations  [6] , and published 
+
+reports demonstrating its practical success for such cases are 
+
+still limited. 
+
+Consequently, despite the existence of more advanced 
+
+methods, IC -based preconditioning continues to be widely used 
+
+in industrial eddy current simulations, owing to its simplicity 
+
+and robustness.  Yet, when external circuits are coupled to the 
+
+eddy current  model  and  eddy currents are  induced  in  windings ,
+
+the performance of IC preconditioners deteriorates significantly, 
+
+often resulting in a dramatic increase in iteration count. 
+
+Addressing this issue is therefore of great importance for 
+
+enabling efficient and scalable eddy current simulations under 
+
+such ch allenging conditions. 
+
+Motivated by these challenges, this study aims to develop a 
+
+novel and effective preconditioning strategy for eddy current 
+
+problems with coupled external circuits. We propose the 
+
+electro -magnetic decoupling (EMD) preconditioner, which is 
+
+designed to separat ely address the magnetic and electric 
+
+# T             
+
+> Manuscript received April 1, 201 5; revised May 15, 201 5and June 1,
+> 2015 ; accepted July 1, 201 5. Date of publication July 10, 201 5; date of current
+> version July 31 , 2015 .(Dates will be inserted by IEEE; “published” is the date
+> the accepted preprint is posted on IEEE Xplore®; “current version” is the date
+> the typeset version is posted on Xplore®). Corresponding author: S.Hiruma
+> (e-mail: hiruma @is t. hokudai.ac.jp ).
+> Color versions of one or more of the figures in this paper are available
+> online at http://ieeexplore.ieee.org.
+> Digital Object Identifier (inserted by IEEE ).
+
+> FOR CONFERENCE-RELATED PAPERS, REPLACE THIS LINE WITH YOUR SESSION NUMBER, E.G. , AB-02 (DOUBLE-CLICK HERE) < 2
+
+components of the system matrix. The core idea of the EMD 
+
+preconditioner is to apply distinct preconditioning strategies to 
+
+the magnetic vector potential and the electric scalar potential 
+
+components, thereby improving the condition number of the 
+
+system whi le minimizing additional computational overhead. 
+
+By tailoring the strength of the preconditioners for each 
+
+component, the method effectively mitigates the convergence 
+
+issues caused by poor conditioning, particularly those 
+
+associated with the coupling of ex ternal circuits and elongated 
+
+conductor geometries. 
+
+The contributions of this work are threefold.  First, we 
+
+identify the root cause of the poor conditioning observed in 
+
+eddy current problems coupled with external circuits. Second, 
+
+we propose a block -structured preconditioning strategy that 
+
+accelerates iterative solvers by separately treating the vector 
+
+and scalar potential components.  Third, we provide 
+
+comprehensive numerical experiments demonstrating that the 
+
+proposed method significantly reduces the iteration count and 
+
+computational time compared to conven tional IC -based solvers, 
+
+across a range of realistic test cases including models with 
+
+complex winding geometries and skin -effect -resolving meshes. 
+
+The remainder of this paper is organized as follows. Section 
+
+II  formulates the eddy current problem and its finite element 
+
+discretization.  Also, it  details the design and theoretical basis of 
+
+the proposed preconditioner. Section  III  presents the numerical 
+
+experiments and results , and  Section  IV  concludes the paper 
+
+with remarks on future work .
+
+II.  MATHEMATICAL  FORMULATION 
+
+A.  Governing Equation s
+
+We consider the time -harmonic eddy current problem 
+
+formulated using the magnetic vector potential  𝑨  and the 
+
+electric scalar potential  𝜑  (𝐴 -𝜑  formulation).  Let  Ω ⊂ ℝ³ be a 
+
+bounded computational domain comprising conducting  Ω𝑐  and 
+
+non -conducting  Ω ∖ Ω𝑐  subdomains.  The governing Maxwell’s 
+
+equations reduce to: 
+
+∇ × (𝜈 ∇ × 𝑨 ) + 𝑗𝜔𝜎 𝑨  + 𝜎 ∇𝜑  = 0, in  Ω (1)
+
+∇ ⋅ 𝜎 (𝑗𝜔 𝑨  + ∇𝜑 ) = 0, in  Ω𝑐  (2)
+
+where  𝜈 , 𝜎 , 𝜔  and  𝑗  denote the  reluctivity , conductivity, angular 
+
+frequency  and  imaginary unit , respectively.  Eq.  (1) represents 
+
+Ampère’s law with Ohm’s law substitution, and (2) enforces 
+
+current continuity. 
+
+B.  Excitation Through Boundary  Condition 
+
+In this paper, we focus on voltage and current excitation 
+
+through the  exterior  boundary condition s and local excitation ,
+
+which is also  referred  to as contacts at  𝜕 Ω [7]. 
+
+1)  Voltage  Excitation 
+
+Voltage excitation is implemented by imposing Dirichlet 
+
+conditions on the scalar potential  𝜑 
+
+𝜑  = 𝑈 𝑘 , on  Γ𝑘  (3)
+
+where  𝑈 𝑘  is the voltage applied to the k -th port surface  Γ𝑘 .
+
+The  weak  formulation of (1) and (2)  considering the voltage 
+
+excitation (3)  yie lds: 
+
+∫ 𝜈 ∇ × 𝑨  ⋅ ∇ × 𝑨 ′𝑑 Ω
+
+> Ω
+
++ 𝑗𝜔  ∫ 𝜎 𝑨  ⋅ 𝑨 ′𝑑 Ω
+
+> Ωc
+
++ ∫ 𝜎 ∇𝜑  ⋅ 𝑨 ′𝑑 Ω
+
+> Ωc
+
+= − ∑ (∫ 𝜎 ∇𝑣 ̃𝑘  ⋅ 𝑨 ′𝑑 Ω
+
+> Ω𝑐
+
+) 𝑈 𝑘 
+
+> 𝑘
+
+(4)
+
+∫ 𝜎 𝑨  ⋅ ∇𝜑 ′𝑑 Ω
+
+> Ωc
+
++ 1
+
+𝑗𝜔  ∫ 𝜎 ∇𝜑  ⋅ ∇𝜑 ′𝑑 Ω
+
+> Ωc
+
+= − ∑ ( 1
+
+𝑗𝜔  ∫ 𝜎 ∇𝑣 ̃𝑘  ⋅ ∇𝜑 ′𝑑 Ω
+
+> Ω𝑐
+
+) 𝑈 𝑘 
+
+> 𝑘
+
+(5)
+
+where  𝑨 ′, 𝜑 ′ are the test functions  for magnetic vector potential 
+
+and electric scalar potential , and  𝑣 ̃𝑘  is an arbitrary scalar 
+
+function that  is  1 on  Γ𝑘  and  0 on  𝜕 Ω ∖ Γ𝑘 .
+
+2)  Current  Excitation 
+
+Current excitation is imposed via integral constraints on the 
+
+normal component of the conduction current 
+
+∫ 𝜎 (𝑗𝜔 𝑨  + ∇𝜑 )
+
+> Γ𝑘
+
+∙ 𝒏 𝑑𝑆  = −𝐼 𝑘 , (6)
+
+where  𝐼 𝑘  is the net current injected into the domain through port 
+
+Γ𝑘 . The  weak formulation (4) and (5) are  simultaneously  solved 
+
+with the following  equation derived from (6): 
+
+∫ 𝜎 (𝑗𝜔 𝑨  + ∇𝜑 ) ⋅ ∇𝑣 ̃𝑘 𝑑 Ω
+
+> Ωc
+
++ 𝑈 𝑘  ∫ 𝜎 |∇𝑣 ̃𝑘 |2𝑑 Ω
+
+> Ωc
+
+= −𝐼 𝑘  (7)
+
+C.  Finite Element Discretization  and Circuit Coupling 
+
+The system is discretized using edge (Nédélec) elements for 
+
+𝑨 , and Lagrange nodal elements for  𝜑 . This results in a mixed 
+
+finite element formulation coupling edge -based and node -based 
+
+degrees of freedom. 
+
+The finite element  equation  considering the voltage excitation 
+
+yield s: 
+
+[
+
+𝐶 ⊤𝑀 𝜈 𝐶  + 𝑗𝜔 𝑀 𝜎  𝑀 𝜎 𝐺 
+
+𝐺 ⊤𝑀 𝜎 
+
+1
+
+𝑗𝜔  𝐺 ⊤𝑀 𝜎 𝐺 ] [𝑎 
+
+𝜙 ] = ∑ [𝑏 𝑘 1
+
+𝑏 𝑘 2
+
+] 𝑈 𝑘 
+
+> 𝑘
+
+(8)
+
+where  𝐶 , 𝐺 , 𝑀 𝜈 , 𝑀 𝜎 , 𝑎 , 𝜙 , 𝑏 𝑘 1 and  𝑏 𝑘 2 are the discrete curl 
+
+operator matrix, discrete gradient operator matrix,  reluctivity 
+
+matrix, conductivity matrix, vector of unknown coefficients for 
+
+𝑨 , vector of unknown coefficients for  𝜑  and contributions of 
+
+impressed  sources and boundary conditions, respectively. 
+
+In the case of current excitation,  (8)  is extended by 
+
+incorporating the constraint equation (7), which links the net 
+
+current to the potentials via integral conditions. 
+
+The coupling with external circuits is realized by directly 
+
+linking the excitation variables  𝑈 𝑘  and  𝐼 𝑘  to circuit equations. 
+
+Specifically,  𝑈 𝑘  and  𝐼 𝑘  are treated as interface variables that 
+
+interact with the external circuit through algebraic coupling, 
+
+enabling bidirectional interaction between the finite element > FOR CONFERENCE-RELATED PAPERS, REPLACE THIS LINE WITH YOUR SESSION NUMBER, E.G. , AB-02 (DOUBLE-CLICK HERE) < 3
+
+model and external lumped -element circuits .
+
+D.  Preconditioner Design 
+
+1)  Motivation and Theoretical Basis 
+
+In eddy current problems with external circuit coupling, the 
+
+system matrix arising from the finite element discretization 
+
+often exhibits a large condition number  compared  with  that in 
+
+magneto -static  problems , which severely deteriorates the 
+
+convergence rate of iterative solvers. This is primarily caused 
+
+by the presence of small singular values in the matrix  𝐺 ⊤𝑀 𝜎 𝐺 ,
+
+the discrete Laplacian associated with the continuity equation 
+
+in the conducting domain. Such small singular values are 
+
+particularly pronounced in cases involving long conductors or 
+
+specific  mesh  configurations. They significantly increase the 
+
+condition number and thus degrade the performance of 
+
+conventional preconditioned iterative solvers. 
+
+Although the singular value s of the discrete Laplacian can, in 
+
+principle, be related to the analytical eigenvalues of Laplace 
+
+problems  [8], these results are well known and are therefore 
+
+omitted here for brevity. The key point is that the poor 
+
+conditioning originates from the electric scalar potential 
+
+component, which  necessitates  a preconditioning strategy that 
+
+targets this specific part of the system. 
+
+To address this, we propose applying separate 
+
+preconditioners to the magnetic vector potential and the electric 
+
+scalar potential components.  This approach efficiently 
+
+mitigates  the convergence issues caused by poor conditioning 
+
+while maintaining computational efficiency. 
+
+2)  Structure of the EMD preconditioner 
+
+The proposed electro -magnetic decoupling (EMD) 
+
+preconditioner is designed to exploit the block structure of the 
+
+system matrix. It is defined as: 
+
+𝑀  = [𝑀 1 𝑂 
+
+𝑂  𝑀 2
+
+] (9)
+
+where  𝑀 1 is the preconditioner applied to the magnetic vector 
+
+potential component associated with the matrix  𝐶 ⊤𝑀 𝜈 𝐶  +
+
+𝑗𝜔 𝑀 𝜎  , and  𝑀 2 is the preconditioner applied to the electric 
+
+scalar potential  and circuit  unknown s associated with the  matrix  
+
+> 1
+> 𝑗𝜔
+
+𝐺 ⊤𝑀 𝜎 𝐺  and  constraint  and circuit  equation s.
+
+The design guidelines for the EMD preconditioner are as 
+
+follows: 
+
+- The first preconditioner  𝑀 1 can  be  computationally 
+
+inexpensive , such as the  IC  preconditioner. This is 
+
+important because the matrix corresponding to the 
+
+magnetic vector potential component is generally large, 
+
+and minimizing its computational cost is essential. 
+
+- The second preconditioner  𝑀 2 can  be stronger, chosen to 
+
+efficiently increase the lower bound of the nonzero 
+
+minimum singular value of the system. Suitable choices for 
+
+𝑀 2 include  AMG  methods,  DDM  or direct solvers. Since 
+
+the number of degrees of freedom for the scalar potential 
+
+(i.e., the number of nodes) is typically much smaller than 
+
+that for the vector potential (i.e., the number of edges), the 
+
+overall increase in computational cost remains lim ited even 
+
+when employing a stronger preconditioner for  𝑀 2.
+
+By selecting appropriate preconditioners for  𝑀 1 and  𝑀 2 , the 
+
+EMD approach can achieve substantial improvement in 
+
+convergence while keeping additional computational overhead 
+
+to a minimum. 
+
+3)  Implementation  Considerations 
+
+The block -diagonal structure of the EMD preconditioner 
+
+allows the preconditioners for the magnetic vector potential 
+
+( 𝑀 1 ) and the electric scalar potential (  𝑀 2 ) to be applied 
+
+independently and in parallel. This separation is based on the 
+
+distinct physical roles of these  components and  can thus be 
+
+regarded as a form of physics -level parallelization. This design 
+
+facilitates high parallel efficiency on modern computational 
+
+architectures, including  non -uniform memory access ( NUMA )-
+
+based systems and multi -node clusters, by enabling flexible 
+
+load balancing and scalability. 
+
+Moreover, the structure of  𝑀 2 offers an additional physics -
+
+level parallelization. In practical electromagnetic devices, coil 
+
+regions typically consist of multiple independent conductor 
+
+regions. Since the continuity equation applies independently 
+
+within each conductor, the discrete Lap lacian  𝐺 ⊤𝑀 𝜎  𝐺 
+
+associated with the scalar potential exhibits a block -diagonal 
+
+structure across these conductor regions. Consequently,  𝑀 2
+
+inherits this block -diagonal structure  such that  𝑀 2 =
+
+blockdiag (𝑀 21 , 𝑀 22 , … , 𝑀 2𝑚 ), where  𝑚  is the number of the 
+
+independent conductor regions , and  can additionally be 
+
+parallelized  across conductor regions. 
+
+This dual -level physics -based parallelization  — first between 
+
+𝑀 1 and  𝑀 2, and second within  𝑀 2 across conductor regions  —
+
+complements algorithm -level parallelization methods such as 
+
+domain decomposition or computational domain partitioning, 
+
+which are widely used in localized IC and other preconditioners. 
+
+These combined approaches facilitate  the proposed 
+
+preconditioner to fully exploit the parallel processing 
+
+capabilities of modern hardware  as shown in Fig. 1 .
+
+E.  Relation to Existing Methods and Novelty 
+
+The proposed EMD preconditioner can also be interpreted                      
+
+> Fig. 1. Schematic illustration of the parallelization structure of the proposed
+> EMD preconditioner. The upper layer shows physics -level parallelization,
+> where the magnetic vector potential ( 𝑀 1) and electric scalar potential ( 𝑀 2)
+> components are processed independently, and 𝑀 2is further parallelized across
+> independent conductor regions. The lower layer shows algorithm -level
+> parallelization, where each preconditioner ( 𝑀 1,𝑀 2blocks) is parallelized
+> through domain decomposition or other numerical techniques. This dual -level
+> design enables efficient use of modern high -performance computing
+> architectures. Physics-level parallelization Core Algorithm-level parallelization
+
+> FOR CONFERENCE-RELATED PAPERS, REPLACE THIS LINE WITH YOUR SESSION NUMBER, E.G. , AB-02 (DOUBLE-CLICK HERE) < 4
+
+within the framework of the  𝐴  formulation as a two -level 
+
+additive Schwarz preconditioner, expressed as: 
+
+𝑀 −1 = 𝑀 1 
+
+> −1
+
++ (𝑗𝜔 )−2𝐺 𝑀 2
+
+> −1
+
+𝐺 ⊤. (10 )
+
+This form of preconditioner is not entirely new; Hiptmair’s 
+
+hybrid smoother for edge -element -based multigrid methods  [9]
+
+can be written in a  same  structure . In the context of Hiptmair’s 
+
+original work, both preconditioners corresponded to smoothers 
+
+based on Gauss -Seidel relaxation, reflecting the focus on 
+
+general eddy current problems and multigrid convergence 
+
+acceleration. 
+
+The novelty of the present work lies in the specific design 
+
+principle applied to the EMD preconditioner. Unlike previous 
+
+studies where both levels of the preconditioner employed 
+
+similar smoothing strategies, we propose a targeted approach .
+
+This design is motivated by the specific numerical challenges 
+
+arising in eddy current problems with external circuit coupling, 
+
+where the continuity equation component is the primary source 
+
+of poor conditioning. By explicitly addressing this source with 
+
+a s tronger precondi tioner for  𝑀 2, the proposed method provides 
+
+a practical and effective solution distinct from conventional 
+
+hybrid smoothers or multigrid -based preconditioners. This 
+
+tailored design enables substantial improvements in 
+
+convergence without introducing prohibitive computati onal 
+
+cost. 
+
+III.  NUMERICAL  RESULT 
+
+A.  Model Description 
+
+1)  Model A: 21 -turn coil model 
+
+This model consists of 21 turns wound around a magnetic 
+
+core  as shown in Fig. 2 . It is  excited  by a 1 V voltage source at 
+
+50 Hz  with  one input and one  output port defined . The winding 
+
+material is copper  with a conductivity of  5.96  × 10⁷  S/m, and 
+
+the magnetic core is assumed to be linear with a relative 
+
+permeability of 1000. The mesh contains 1,441,102 edge DOFs 
+
+in  Ω and  130,811  conducting  node DOFs  in  Ωc.
+
+2)  Model A p: Parametric elongated  coil model 
+
+Coils with  𝑁 turn  ∈ {2,3,4,5,21 } share the Model A materials 
+
+and  circuit topology , only the geometry varies depending on the 
+
+turn count, increasing conductor length.  To isolate the 
+
+conditioning driven by  the  scalar potential block, the magneto -
+
+static problem with current excitation is solved as well as the 
+
+eddy current problems. 
+
+3)  Model B: 21 -turn coil model with skin -effect mesh 
+
+This model extends Model A by adding a finer mesh in the 
+
+conductor regions to capture  high -frequency  skin effects  as 
+
+shown in Fig. 3 . It is excited by a 1  V voltage source at 30 kHz .
+
+The mesh size increases with 3,670,328 edge DOFs  in  Ω and 
+
+514,650  node DOFs  in  Ωc.
+
+4)  Model C: 18 -turn independent conductor model 
+
+This model represents a different  case involving 18 
+
+independently defined conductors forming a one -fourth 
+
+symmetric coil geometry  as shown in Fig.  4. Each conductor is 
+
+excited  independently with a 1 A current source  at 30 kHz . Due 
+
+to the symmetry assumption, 18 input and 18 output ports are                    
+
+> (a) (b)
+> Fig. 2 (a) Geometry of the 21 -turn coil model (Models A and B ).(b) Equivalent
+> external circuit with voltage excitation.
+> (a) (b)
+> Fig. 3 Cross -sectional views of coil mesh configurations. (a) Coarse mesh used
+> in Model A. (b) Fine skin -effect -resolving mesh used in Models B and C.
+> (a) (b)
+> Fig. 4 (a) Geometry of the 18 -turn independent conductor model (Model C). (b)
+> Equivalent e xternal c ircuit with current excitation.
+
+defined. The model includes 828,300 edge DOFs  in  Ω and 
+
+129,445  node DOFs  in  Ωc.
+
+Each model was constructed to investigate specific features of 
+
+the preconditioner: Model A for baseline performance at low -
+
+frequency,  Model Ap for evaluating robustness against 
+
+geometry -dependent spectral degradation,  Model B for 
+
+evaluating robustness against  high -frequency  configuration  and 
+
+large -scale model , and Model C  for assessing the effectiveness 
+
+of physics -level parallelization  across independent conductor 
+
+regions. 
+
+B.  Experimental Setup 
+
+All simulations were performed on a workstation equipped 
+
+with Intel(R) Xeon(R) Gold 6244 CPU  (3.60 GHz, 8 cores) and 
+
+192 GB of DDR4 -2933 memory (6 × 32 GB modules). The 
+
+parallelization was implemented using OpenMP shared -
+
+memory threading. Each computation used up to 8 threads. 
+
+The following preconditioning configurations were tested: 
+
+- IC: Incomplete Cholesky preconditioner  with  a diagonal 
+
+shift parameter  𝛼  = 1.1 (baseline)  [10 ]
+
+- EMD (IC + AMG V -cycle): EMD preconditioner with IC 
+
+for  𝑀 1 and  V-cycle  AMG for  𝑀 2
+
+- EMD (IC + AMG W -cycle): EMD preconditioner with W -Conductor 
+
+> GND Conductor 1
+> GND
+> Conductor 2 Conductor 3
+> …
+> Conductor 18
+
+> FOR CONFERENCE-RELATED PAPERS, REPLACE THIS LINE WITH YOUR SESSION NUMBER, E.G. , AB-02 (DOUBLE-CLICK HERE) < 5
+
+cycle AMG for  𝑀 2
+
+- EMD (IC +  GenEO -DDM ): EMD preconditioner with 
+
+DDM  using  generalized eigen problems  in the  overlaps 
+
+(GenEO)  coarse space  method  for  𝑀 2 [5]
+
+- EMD (IC +  LU ): EMD preconditioner with a direct solver 
+
+applied to  𝑀 2
+
+All solvers used the  conjugate orthogonal  conjugate gradient 
+
+(CO CG) method and all test cases were performed using 
+
+double -precision arithmetic.  The numerical implementation 
+
+utilizes the PARDISO [11] library as a sparse direct solver for 
+
+GenEO -DDM , and the AMGCL [12] framework as  AMG  and 
+
+IC  preconditioner s. These components were selected for their 
+
+robustness and compatibility with large -scale electromagnetic 
+
+simulations and were incorporated into the EMD framework 
+
+accordingly. 
+
+Finally,  the following  convergence criteria  were  considered :
+
+- In voltage  excitation  problems (Models A , A p and B),  the 
+
+stopping condition was set to a relative residual norm of 
+
+‖𝑟 ‖2 ‖𝑏 ‖2⁄ < 10 −10  defined from (8) .
+
+- In current  excitation  problems (Model C),  the stopping 
+
+condition was  set to a relative residual norm of 
+
+‖𝑟 ‖2 ‖𝑏 ‖2⁄ < 10 −8 defined from (7) and (8) .
+
+C.  Results  and Discussion 
+
+The performance of various preconditioners was evaluated 
+
+across the three benchmark models described in Section  III -A.
+
+Tables  I–IV summarize the  iteration count , iterative solver  time ,
+
+per -iteration time and speed -up ratio  for each configuration. 
+
+Convergence  histories  of Model A  are illustrated in Fig . 5.
+
+The numerical results demonstrate the clear effectiveness of 
+
+the proposed EMD preconditioner across various eddy current 
+
+models. In Model A, a low -frequency configuration,  EMD with 
+
+IC + AMG V -cycle achieved the shortest  iterative solver  time 
+
+among all tested methods. Notably, it also exhibited the lowest 
+
+per -iteration cost, outperforming even the conventional IC 
+
+preconditioner.  This advantage can be attributed to the block -
+
+diagonal structure inherent in the EMD  preconditioner . While 
+
+the IC preconditioner op erates on the entire system matrix, the 
+
+EMD method decouples the vector and scalar components, 
+
+allowing each to be preconditioned independently. The 
+
+resulting preconditioner matrix is sparser. Although AMG 
+
+generally has higher computational cost per iterat ion and lower 
+
+parallel efficiency compared to IC, the reduced number of 
+
+nonzero s due to the block decomposition compensates for this, 
+
+leading to an overall reduction in both  iterative  solver  and per -
+
+iteration time. 
+
+In Model A p, increasing the number of turns raises the 
+
+effective conductor length while keeping local cross -sectional 
+
+scales unchanged. Under this change, iterations  of  the magneto -
+
+static  with IC  grow moderately.  In contrast, for the eddy current 
+
+problems with IC, the  iteration count  increases sharply with the 
+
+number of turns, and the iteration ratio relative to the magneto -
+
+static baseline rises from 6.47 to 18.08. This monotone growth 
+
+is consistent with the deterioration of the spectrum associated                                                                                                                                                       
+
+> TABLE I
+> PERFORMANCE METRICS FOR MODEL A(21 -TURN COIL AT 50 HZ)
+> Preconditioner #Subdomains #Iterations Solver time [s] Per -iteration time [s] Speed -up ratio
+> IC ( baseline )-5949 452.5 0.0760 1.00
+> EMD (IC + AMG V -cycle) -288 21. 80.0755 20.8
+> EMD (IC + AMG W -cycle) -267 24.2 0.0906 18.7
+> EMD (IC + GenEO -DDM )8356 45.0 0.1264 10.0
+> TABLE II
+> PERFORMANCE METRICS FOR MODEL AP(PARAMETRIC ELONGATED COIL AT 0HZ AND 50 HZ).
+> #Turns
+> #Iterations Ratio:
+> (eddy current, IC) /
+> (magneto -static, IC)
+> Ratio:
+> (eddy current, EMD) /
+> (magneto -static, IC)
+> Magneto -static Eddy current with external circuit coupling
+> IC IC EMD (IC + LU)
+> 2127 822 114 6.47 0.898
+> 3139 1094 124 7.87 0.892
+> 4147 1454 133 9.89 0.905
+> 5172 1711 151 9.95 0.878
+> 21 329 5949 273 18.08 0.830
+> TABLE III
+> PERFORMANCE METRICS FOR MODEL B(21 -TURN COIL WITH SKIN -EFFECT -RESOLVING MESH AT 30 KHZ).
+> Preconditioner #Subdomains #Iterations Solver time [s] Per -iteration time [s] Speed -up ratio
+> IC ( baseline )-15838 5964 .80.3 77 1.0 0
+> EMD (IC + AMG V -cycle) -4069 1716.8 0.4 22 3. 47
+> EMD (IC + AMG W -cycle) -2935 15 52.9 0.5 29 3. 84
+> EMD (IC + GenEO -DDM )81106 654.2 0. 591 9.12
+> EMD (IC + GenEO -DDM )16 1138 593.1 0.5 21 10. 06
+> EMD (IC + GenEO -DDM )24 1004 550.8 0.5 49 10.83
+> TABLE IV
+> PERFORMANCE METRICS FOR MODEL C(18 -TURN INDEPENDENT CONDUCTORS AT 30 KHZ).
+> Preconditioner Parallelization #Iterations Solver time [s] Per -iteration time [s] Speed -up ratio
+> IC ( baseline )Algorithm -level 247 6125 .90.0509 1.00
+> EMD (IC + LU) Physics -level 776 72. 40.0933 1.74
+> EMD (IC + LU) Algorithm -level 776 385 .0 0.4961 0.33
+
+> FOR CONFERENCE-RELATED PAPERS, REPLACE THIS LINE WITH YOUR SESSION NUMBER, E.G. , AB-02 (DOUBLE-CLICK HERE) < 6
+
+with the discrete  Laplacian operator  𝐺 ⊤𝑀 𝜎 𝐺 . Applying EMD 
+
+(IC  + LU) restores robustness across all cases: the eddy -current 
+
+iteration counts remain close to the magneto -static baseline. 
+
+These results confirm that EMD effectively neutralizes the 
+
+elongation -induced ill -conditioning while preserving favorable 
+
+convergence b ehavior as the conductor length increases. 
+
+Model B highlighted the robustness of the method under 
+
+high -frequency conditions with fine skin -effect -resolving 
+
+meshes. While the conventional IC preconditioner required 
+
+over  15,000 iterations, EMD with AMG and DDM 
+
+preconditioners  reduced the  iteration count  by more than an 
+
+order of magnitude. The  iterative solver  time  was  up to  10 times 
+
+faster . At low frequency, AMG -based preconditioners exhibit 
+
+superior efficiency, whereas DDM -based approaches become 
+
+more advantageous in higher -frequency regimes .
+
+In Model C, which features multiple independently excited 
+
+conductors, the effect of physics -level parallelization became 
+
+evident. By exploiting the block -diagonal structure of the 
+
+continuity equation across conductor regions, the 
+
+preconditioner  𝑀 2 was independently applied to each region. 
+
+This yielded nearly  5 times  speed -up in  iterative  solver time 
+
+when compared to a n algorithm -level parallelization of  𝑀 2
+
+where the forward  elimination  and backward  substitution  are 
+
+parallelized in the algorithm level . Note that  the per -iteration 
+
+time increases because each application of  𝑀 2 invokes 
+
+triangular solves from the LU factors; the total speed -up  in 
+
+physics -level parallelization  is therefore modest.  However, the 
+
+important point is that physics -level parallelization allows each 
+
+block to maintain complete independence while simultaneously 
+
+using algorithm -level parallelization, which is important from 
+
+the perspective of utilizing computational resources  in large -
+
+scale calculations. 
+
+Overall, the experiments confirm that the EMD framework 
+
+enables substantial improvements in both convergence and 
+
+scalability. It provides a practical alternative to conventional 
+
+IC -based solvers, especially for problems involving coupling 
+
+with external cir cuits or complex conductor topologies. 
+
+IV.  CONCLUSION 
+
+This study proposed a novel block -structured 
+
+preconditioning framework, termed EMD, for solving eddy 
+
+current problems  involving coupled external circuits . The key 
+
+idea is to separately precondition the vector and scalar potential 
+
+components in the discrete system, thereby addressing the 
+
+spectral degradation induced by  the discrete  Laplacian .
+
+Alt hough the effectiveness of the proposed method was 
+
+demonstrated under the A –𝜑  formulation for time -harmonic 
+
+regime , several directions remain for future work. First, the 
+
+applicability of the  EMD  concept should be examined for 
+
+transient  regime  including nonlinear ity  and  hysteresis  in silicon 
+
+steel sheet , as well as for alternative formulations such as the 
+
+T– Ω method. Moreover, the current study focused on local 
+
+voltage and current excitations; extending the framework to 
+
+handle non -local excitation types, such as distributed sources or 
+
+coupled systems, requires further investigation. In principle, the 
+
+core idea  of EMD remains promising for these cases  because 
+
+the underlying algebraic ill -conditioning persists.  Finally, in 
+
+practical scenarios involving a large number of conductors 
+
+connected in  series and  parallel, the development of efficient 
+
+preconditioning strategies that account for such electrical 
+
+connectivity is another important research direction .
+
+ACKNOWLEDGMENT 
+
+This work was supported  in part  by JSPS KAKENHI Grant 
+
+Number  JP24K17261 .
+
+REFERENCES

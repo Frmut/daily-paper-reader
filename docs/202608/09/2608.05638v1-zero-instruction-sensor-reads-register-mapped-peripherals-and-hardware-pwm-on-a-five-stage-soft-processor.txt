@@ -1,0 +1,286 @@
+Title: Zero-Instruction Sensor Reads: Register-Mapped Peripherals and Hardware PWM on a Five-Stage Soft Processor
+
+URL Source: https://arxiv.org/pdf/2608.05638v1
+
+Published Time: Fri, 07 Aug 2026 00:38:24 GMT
+
+Number of Pages: 10
+
+Markdown Content:
+# Zero-Instruction Sensor Reads: Register-Mapped Peripherals and Hardware PWM on a Five-Stage Soft Processor 
+
+Nathanael Ren 
+
+Duke University Durham, NC, USA 
+
+Abstract —We present a case study in application-driven spe-cialization of a five-stage soft processor, evaluated on the inner control loop of a reaction-wheel self-balancing bicycle. Starting from a custom 32-bit RISC core in the MIPS tradition—five pipeline stages, full operand forwarding with a single-cycle load-use interlock, and a 33.33 MHz clock on an Artix-7 FPGA—we specialize the design in two ways. First, two frequently accessed peripheral inputs are mapped directly into architectural register state, written every cycle by hardware and owned exclusively through the register file’s write-port structure rather than by ar-bitration. Second, four periodic pulse-width-modulation (PWM) channels are offloaded to hardware and driven continuously from four exported registers, removing periodic actuation from software entirely. Because peripheral values are addressable as ordinary register operands, all ten sensor reads in the control loop cost no dedicated instruction and no dedicated cycle, folding into arithmetic that executes anyway; the memory-mapped equivalent requires an explicit load per snapshot and costs five extra instructions and cycles. The actuation path likewise removes waveform maintenance from software entirely. We report two configurations, because the extensions and the single-cycle array multiplier they were deployed alongside are not present together in a single archived build: an archived configuration, whose worst-case loop is 91 cycles ( 2.73 μs), and the integrated configuration matching the deployed system, at 43 cycles ( 1.29 μs). Against a 20 ms actuation frame these are margins of roughly 7,300 ×
+
+and 15 ,000 ×. The deadline is met by so wide a margin in either case that the specialization was not necessary for real-time compliance; its value lies in instruction count and software simplicity, not in determinism, which an on-chip single-cycle I/O region already provides. The zero-instruction sensor read is independent of that choice: the multiplier cannot affect whether a peripheral read needs an instruction of its own. The contribution is a carefully measured account of what this design point does, and does not, buy. 
+
+I. I NTRODUCTION 
+
+Soft processors—general-purpose cores synthesized onto reconfigurable logic—are attractive for embedded control be-cause they place the programmable core and its peripherals on the same die, under the designer’s full control. Mature ecosystems such as MicroBlaze, Nios II, and the many RISC-V soft cores expose peripherals through memory-mapped I/O (MMIO): the processor reads a sensor or writes an actuator by issuing a load or store to a reserved address, and a bus fabric routes the access to the peripheral. MMIO is general, scales to thousands of devices, and is the default for good reason. But it is not free. Every peripheral read is a distinct load instruction, and on an in-order pipeline with a load-use interlock that load can also cost a stall cycle before its result is usable. When the same programmable fabric hosts both the core and the peripherals, a designer is free to specialize the interface between them. This paper is a case study in doing exactly that, and in measuring the result. We take a custom five-stage 32-bit RISC core in the MIPS tradition and specialize it for one application, a reaction-wheel self-balancing bicycle, in two ways. First, we map two frequently accessed peripheral inputs directly into architectural register state: two general-purpose registers are converted into dedicated hardware-written flip-flop banks that re-capture their peripheral inputs every cy-cle, so that reading a sensor is reading a register. Second, we offload periodic actuation to hardware: four pulse-width-modulation (PWM) generators run continuously in logic, each driven by a register the software writes once, so that com-manding an actuator is writing a register. Figure 1 shows this software view of the machine. The contribution of this paper is a careful, quantified ac-count of what this specialization buys on a real design point, and what it does not. The answer has two parts. On the benefit side, at the instruction level the register mapping is free . Because a sensor value is an ordinary register, it can serve as an operand field inside an arithmetic instruction that would execute anyway; in the control loop studied here, all ten peripheral reads and one of the actuator writes disappear into existing instructions and cost zero dedicated cycles. A memory-mapped interface struc-turally cannot reach zero: it requires a distinct load instruction to bring the value into a register before it can be used. Mea-sured against the correct reference loop, the memory-mapped equivalent costs five extra instructions and five extra cycles, about 11 .6% per iteration, even when a competent programmer snapshots each input once and schedules around the load-use interlock. The actuation offload contributes a qualitative simplification that is harder to price but real: no deadline counters in the loop, no software waveform maintenance, no peripheral base-address register, and no address arithmetic in the loop. On the cost side, and this is the finding we consider most important, the specialization was not necessary. We report two configurations, because the extensions and the single-cycle array multiplier alongside which they were deployed are arXiv:2608.05638v1 [cs.AR] 6 Aug 2026 $1 $2 $26 $27 $28 $29     
+
+> Processor Register File
+> Joystick (4-bit) Sensor (16-bit)
+> written by hardware, every cycle
+> PWM PWM PWM PWM
+> written by software, one instruction
+> Servo / Motor
+> hardware-owned ($1, $2) software-written ($26–$29)
+> Fig. 1. The software’s view of the machine. Two peripheral inputs are mapped into architectural registers that hardware writes every cycle ( $1 ,$2 ); four registers written once by software ( $26 –$29 ) are exported continuously to the hardware PWM units that drive the actuators. Reading a sensor is reading a register; commanding an actuator is writing a register.
+
+not present together in a single archived build: the archived 
+
+configuration, whose worst-case loop is 91 cycles ( 2.73 μs), and the integrated configuration matching the deployed sys-tem, at 43 cycles ( 1.29 μs) at the core’s 33.33 MHz clock. The actuation deadline is one 20 ms PWM frame, so the loop consumes roughly 0.0137% or 0.0065% of its deadline: margins of about 7,300 × and 15 ,000 ×. The zero-instruction sensor read holds in both, since the multiplier cannot affect whether a peripheral read needs an instruction of its own. At either margin, an ordinary memory-mapped implementation on the same core would also have met the deadline with room to spare. The value of the specialization is not real-time compliance, and it is not determinism, since an on-chip single-cycle I/O region is already deterministic. What it buys is the instruction-count reduction and the software simplicity described above. We state this counterargument plainly because it is the strongest one against the work. The remainder of this paper is organized as follows. Sec-tion II surveys background and related work. Section III describes the baseline core: its ISA, pipeline, forwarding and hazard behavior, and arithmetic units. Section IV presents the two specializations—the register-mapped input interface and the hardware PWM actuation path—and the register-file structure that enforces hardware ownership without arbitration. Section V evaluates the control loop cycle by cycle, establishes the zero-cost peripheral-access result, compares it against a memory-mapped counterfactual, and reports the timing-headroom finding. Section VI briefly describes the physical platform. Section VII discusses limitations, and Section VIII concludes with future work. II. B ACKGROUND AND RELATED WORK 
+
+We acknowledge prior art specifically, at the level of access mechanism .
+
+A. Register-Mapped Peripherals in Microcontrollers 
+
+Register-mapping peripherals is standard microcontroller practice since the 1980s. The Intel MCS-51 (8051) exposes ports, timers, and serial peripherals as special-function reg-isters in a dedicated address space [1]; the Atmel AVR uses dedicated in /out instructions to a separate I/O register space [2]; Microchip PIC follows suit [3]. The mechanism is an I/O space fetched by an explicit instruction , not a GPR hardware writes. 
+
+B. Peripheral and Coprocessor Interfaces in Soft Processors 
+
+Closer are FPGA soft-processor interfaces. Xilinx MicroB-laze provides Fast Simplex Link (FSL), later AXI4-Stream, channels reached by get /put instructions [4]: a dedicated instruction reading a stream FIFO . Intel/Altera Nios II custom instructions wire dataa /datab operands and a result port to the register file [5]—the nearest relative of our design, but an instruction feeding a functional unit, not a register reading back a live value. Tensilica Xtensa TIE adds ports, queues, and state registers as architecturally-visible I/O [6]; the ARM coprocessor interface ( MRC /MCR , CP15) reaches non-core state by dedicated instructions [7]. Each uses a dedicated instruction or side channel; none an ordinary GPR operand. 
+
+C. Architecturally-Visible State Beyond the GPRs 
+
+RISC-V control and status registers (CSRs) form a sepa-rate register space accessed by csrr /csrw instructions [8], [9]; hardware-updated CSRs ( cycle /time ) are the closest analogue—hardware writes visible state—but in the 12-bit CSR space, not the GPR file. Rocket Chip’s Rocket Custom Coprocessor (RoCC) interface attaches accelerators via custom instructions [10], and transport-triggered architectures [11] make computation be data movement to functional-unit ports. Closest in name, Biswas et al. add architecturally visible stor-age : compiler-managed storage private to an instruction-set-extension accelerator, reached through the extension instruc-tion [12]—not a GPR a sensor overwrites and any instruction reads as an operand. 
+
+D. Positioning 
+
+We claim no new mechanism. Our narrow difference: a GPR that hardware rewrites every cycle, read as an ordinary operand with no access instruction at all —so access cost can reach the zero-instruction floor the mechanisms above cannot (Section V). A focused search surfaced no published description of it, likely reflecting narrowness, not originality: 32 GPRs cap it at a few peripherals. The contribution is quantifying this on a real-time workload, negative finding and all. III. B ASELINE CORE 
+
+The specializations of Section IV are built on a custom 32-bit RISC core designed from scratch. This section documents the baseline so that the cost and effect of the specializations can be attributed precisely. The core follows the MIPS tra-dition [13] in its instruction encoding and register model but is an independent implementation with its own conventions; where those conventions differ from MIPS, we say so, because the differences are what make the specializations inexpensive. 
+
+A. Instruction Set 
+
+The ISA comprises eleven opcodes plus eight R-type ALU operations. Instructions are 32 bits with a 5-bit opcode field. R-type instructions carry three 5-bit register fields and a 5-bit ALU-operation selector; the eight ALU operations are add, subtract, bitwise AND, bitwise OR, logical left shift, arithmetic right shift, multiply, and divide. Immediate-type instructions carry a 17-bit immediate that is sign-extended to 32 bits, and jump-type instructions carry a 27-bit target. The opcode set covers register-register and register-immediate arithmetic, loads and stores, conditional branches (branch-not-equal, branch-less-than), unconditional and register-indirect jumps, jump-and-link, and two instructions for exception state. Register fields are 5 bits, naming 32 general-purpose registers. There is no C compiler and no standard application binary interface for this core. All software is hand-written assembly, and the register conventions are the author’s own rather than the MIPS ABI. This point matters for the rest of the paper. Because no compiler and no calling convention depend on the general-purpose registers, reserving specific registers ( $1 , $2 ,and $26 –$29 ) for dedicated hardware use costs nothing: there is no ABI contract to violate and no allocator to constrain. A reviewer who assumes MIPS conventions might expect these reservations to be expensive; under this design’s hand-written-assembly model they are free. 
+
+B. Pipeline 
+
+The core is a five-stage in-order pipeline—fetch (F), decode (D), execute (X), memory (M), and writeback (W)—separated by four inter-stage latches (FD, DX, XM, MW). Figure 2 shows the structure together with the exact forwarding and hazard behavior described below. In steady state the pipeline sustains one instruction per cycle. 
+
+C. Forwarding and Hazards 
+
+Operand forwarding covers M →X and W →X on both ALU operands, plus W →M for store data. This network resolves every read-after-write hazard except the load-use case at zero cost: an arithmetic producer’s result is available in the execute stage’s input whether the consumer is one or two slots behind it. The single exception is a load feeding an immediately de-pendent instruction. A loaded word only reaches the writeback stage; while the value is in transit, the memory-stage register holds the load’s address , not its data. A dependent instruction exactly one slot behind the load therefore cannot be satisfied        
+
+> FDXMW
+> FD DX XM MW
+> M→XW→XW→Mload-use interlock (1 cycle) branch resolves in X: 2-cycle squash
+> Fig. 2. Five-stage pipeline (F/D/X/M/W) with four latches. Forwarding covers M→X and W →X on both ALU operands and W →M for store data. The load-use hazard is the only RAW case not covered by forwarding and costs exactly one interlock cycle. Branches resolve in execute under a predict-not-taken policy, costing a two-cycle squash when taken and nothing when not taken.
+
+by the M →X path, because the value it needs is not yet where forwarding could take it from. The hardware detects this case and interlocks for exactly one cycle: it freezes the program counter and the FD latch and injects a NOP into the decode-to-execute latch. After the single bubble, the loaded value has advanced to writeback and the W →X path delivers it. The load-use penalty is thus exactly one cycle, and it is the only stall the forwarding network cannot eliminate. 
+
+D. Branches 
+
+Branches resolve in the execute stage under a static predict-not-taken policy. Fetch proceeds sequentially; when a branch is found to be taken, the two younger instructions already fetched behind it are squashed to NOPs. A taken branch therefore costs two squash cycles, and a not-taken branch costs nothing. There is no dynamic branch prediction, no branch target buffer, and no delay slot. Resolving branches late, in execute rather than decode, is a deliberate choice: it lets branch and jump-register operands reuse the same forwarding network as arithmetic instructions rather than requiring a separate bypass into decode. 
+
+E. Arithmetic Units 
+
+The adder is a two-level 32-bit carry-lookahead adder built from four 8-bit carry-lookahead blocks, with a second level of lookahead computing the inter-block carries from per-block generate and propagate signals. The shifter is a five-stage logarithmic barrel shifter: logical left-shift and arithmetic right-shift are realized by five fixed-shift stages (16, 8, 4, 2, and 1 positions), each gated by one bit of the shift amount. Multiplication is performed by a single-cycle combinational array multiplier in the form of a Wallace tree. The array is Python-generated and uses Baugh–Wooley sign correction; it comprises 32 rows of full adders (993 full-adder instances in all), with carries propagating within each row and each row consuming the previous row’s partial sum. Because the multiplier is combinational and single-cycle, a multiply does not stall the pipeline. Division is performed by a separate non-restoring divider that is multi-cycle (approximately 32 cycles) and blocking: a divide freezes the pipeline latches until it completes. 
+
+F. Exceptions 
+
+The core supports arithmetic overflow exceptions only. Overflow on an add, add-immediate, subtract, multiply, or divide produces an exception code (1 through 5, respectively) that is written to register $30 , which serves as the exception-status register. The exception-state instructions ( setx and bex )operate through $30 : setx writes a value into it, and bex 
+
+branches when it is nonzero. In the steady-state control loop this mechanism is never triggered. 
+
+G. Clocking and Target Device 
+
+The core runs at 33.33 MHz, a 30 ns clock period, derived from the 100 MHz board oscillator by a divide-by-three PLL. The design targets a Xilinx Artix-7 XC7A100T on a Nexys A7-100T board and is built with Vivado. The 30 ns period is not incidental: as Section IV-C shows, the PWM frame arithmetic only produces the correct 20 ms servo frame at this clock. The design constraint file specifies only the 100 MHz input clock; the 33.33 MHz core domain is derived by the clocking IP. IV. S PECIALIZATIONS 
+
+We specialize the baseline core in two ways: two general-purpose registers are turned into hardware-written inputs (Sec-tion IV-B), and periodic actuation is offloaded to four hardware PWM generators driven by exported registers (Section IV-C). Both specializations rely on one detail of the design’s clocking scheme, which we state first because it is the mechanism that makes a hardware write visible to a software read within the same cycle. 
+
+A. Clocking Scheme 
+
+The datapath state—the program counter and the four pipeline latches—updates on the negative edge of the core clock, while the execute-stage logic and the PWM generators update on the positive edge. A hardware-written register captured on one edge is therefore stable and readable by the pipeline on the other, so a value driven into a register by hardware becomes visible to an instruction that reads that register in the same clock period. This half-cycle relationship is the mechanism by which the register-mapped inputs of Section IV-B behave as ordinary readable registers. 
+
+B. Register-Mapped Peripheral Input Interface 
+
+Problem. A control loop reads its sensors on every iteration. On this core a sensor read must ultimately place a value into a register, because only registers can be arithmetic operands. 
+
+Conventional approach. The standard solution is memory-mapped I/O: the peripheral is assigned an address, and soft-ware issues a load to that address to bring the current value into a register before using it. 
+
+Drawbacks. A memory-mapped read is always a distinct load instruction. On this pipeline that load also exposes the load-use interlock (Section III-C): if the loaded value is used by the next instruction, the read costs a stall cycle in addition to the load itself. The value must be resident in a register before it can participate in any computation; there is no way to make the peripheral value an operand directly. 
+
+Chosen design. We map two peripheral inputs directly into architectural register state. Registers $1 and $2 are im-plemented as real 32-bit flip-flop banks—not combinational muxes of a live input—each with a dedicated write-data input and a write-enable tied permanently high. Because the enable is always asserted, the two banks re-capture their peripheral inputs on every clock edge; each register holds a stable, one-cycle-registered snapshot of its input rather than a transparent pass-through of a live wire. Reads use the ordinary register read path: the read decoder selects the stored flop output for 
+
+$1 or $2 exactly as it does for any other register. From the software side, $1 and $2 are simply registers whose contents happen to track the peripherals. This creates three independent write domains in the register file, shown in Figure 3: the conventional single write port, which drives register $0 and $3 through $31 via a 5-to-32 decoder; a dedicated port that drives $1 from its peripheral input; and a dedicated port that drives $2 from its peripheral in-put. Hardware ownership of $1 and $2 is enforced structurally rather than by arbitration. The conventional write decoder still 
+
+generates enable outputs for indices 1 and 2, but those enable nets are left unconnected: no wire carries them into the $1 /$2 
+
+banks, which listen only to their tied-high hardware enables. A software writeback targeting $1 or $2 is therefore not merely ignored at run time; it is structurally unrepresentable, because no path exists from the software write port to those two registers. There is no arbiter and no priority logic because no conflict can occur. 
+
+Consequences. A sensor value is now an ordinary reg-ister operand. Reading it requires no load instruction and no interlock cycle; the value can be named directly in the operand field of whatever arithmetic instruction consumes it. Section V quantifies this: in the control loop, peripheral reads cost zero dedicated instructions and zero cycles. The structural ownership makes the design correct by construction, at the cost of permanently dedicating two registers—a cost that, as Section III-A argued, is zero on a core with no ABI. 
+
+C. Hardware PWM Actuation 
+
+Problem. The platform’s actuators—servos and a motor driver—are commanded by pulse-width-modulated signals with a fixed 20 ms frame. The control loop must maintain four such waveforms continuously while it computes. 
+
+Conventional approach. On a processor with a timer and an interrupt controller, periodic waveforms are generated in software: a timer interrupt fires at the required resolution and a service routine toggles output pins to build each pulse. This core has neither. Its only exception sources are arithmetic— overflow and division by zero—so there is no timer tick to hang a service routine on. The software baseline available here is therefore not interrupt-driven but polled : the control loop itself must carry four deadline counters and toggle the output $0 $1 $2 $3 ...$25 $26 $27 $28 $29 ...$31 
+
+> Register File (32 entries)
+> 5→32 decoder Writeback stage
+> write data + 5-bit index enable[0], enable[3..31] enable[1], enable[2]
+> unconnected
+> – software writes cannot reach $1/$2
+> data joystick
+> enable = 1’b1
+> data gyroscope
+> enable = 1’b1
+> PWM 0 PWM 1 PWM 2 PWM 3
+> continuous read exports (always driven, not muxed) hardware ownership enforced structurally: no conflict is representable
+
+Fig. 3. Register file with three independent write domains. The conventional writeback port drives $0 and $3 –$31 through a 5-to-32 decoder; the decoder’s enable outputs for indices 1 and 2 are left unconnected (open stubs), so software cannot reach the hardware-owned registers. Dedicated always-enabled ports drive $1 and $2 from their peripheral inputs, and $26 –$29 are exported continuously to the PWM units. No write conflict is representable. 
+
+pins inline, interleaving waveform maintenance with control computation on every iteration. 
+
+Drawbacks. Polled waveform generation couples actuation timing to instruction timing, and does so more tightly than an interrupt-driven implementation would. Because edges can only be emitted where the loop happens to test its counters, edge placement is quantized to the loop period rather than to the timer resolution: a pulse edge lands, in the worst case, one whole loop iteration late. That quantization appears directly as pulse-width jitter. The bookkeeping also consumes cycles on every iteration and complicates the control code with timing logic that has nothing to do with control. 
+
+Chosen design. We offload actuation to four hardware PWM generators, one per channel, driven by registers $26 
+
+through $29 . Registers $26 –$29 are ordinary writable regis-ters: software writes them through the normal write port. They are also exported as continuous, always-driven read outputs to the PWM units (they are wired out directly, not selected through a read mux). Each generator, shown in Figure 4, is a 32-bit counter clocked at 33.33 MHz. A period comparator resets the counter at a terminal count of 666667, so the counter sequence 0 through 666667 spans 666668 clocks; at 30 ns per clock this is a 20.00 ms frame. A duty comparator drives the output high while the counter is below the value in the channel’s register, giving a duty resolution of 30 ns per least-significant bit. The output is a registered flip-flop, so it is glitch-free. The four generators drive four board pins (Pmod header JD); the design constraint file constrains only the 100 MHz input clock. 
+
+Consequences. Actuation leaves the software timeline en-tirely. There are no deadline counters in the loop and no software waveform maintenance; commanding a servo is a single register write, and the hardware maintains the waveform     
+
+> 33.33 MHz clk 32-bit counter
+> =
+> 666667
+> reset (terminal count) period = 666668 clk ×30 ns = 20.00 ms
+> <
+> dutyhi
+> num clocks high (reg $26)
+> duty input, not latched
+> FF PWM out
+> registered – glitch-free
+> t
+> high pulse: 1.3 / 1.5 / 1.7 ms 20 ms frame (resolution 30 ns / LSB)
+
+Fig. 4. One hardware PWM generator. A 32-bit counter clocked at 33.33 MHz is reset at terminal count 666667; the 666668-clock sequence at 30 ns per clock is a 20.00 ms frame. A duty comparator drives the registered (glitch-free) output high while the counter is below the duty value read live from the channel register ( $26 shown); duty resolution is 30 ns per LSB. The inset shows one frame with the 1.3/1.5/1.7 ms servo pulse widths. 
+
+indefinitely thereafter. The servo pulse widths used by the platform—1.3, 1.5, and 1.7 ms—are simply the corresponding counts written to the duty registers. One caveat follows from the design as built: the duty input is not latched inside the generator, but read live from the register. Rewriting a duty register in the middle of a frame changes the comparison threshold immediately, so the in-flight pulse is perturbed rather than updated cleanly at the next frame boundary. In the control loop this is benign because duty values change slowly relative to the frame, but it is a real property of the design and we return to it in Section VII. 
+
+D. Sensor Input Interface 
+
+The two hardware-written registers carry the loop’s inputs. Register $1 carries a 4-bit command input, zero-extended into the 32-bit register. Register $2 carries a 16-bit sensor word, also zero-extended, so its upper half is always zero. In the archived build analyzed here, these inputs come from the development board: $2 is driven by the 16 board slide switches and $1 by 4 push buttons, a bring-up configuration. The deployed system instead drove $2 from an off-chip sen-sor acquisition path—an inertial measurement unit read over I2C—whose result reached the processor as a 16-bit parallel word and was captured into $2 by the dedicated hardware write port. Neither build contains an on-chip I2C master; in both, the register-mapped interface sees a 16-bit parallel word. V. E VALUATION 
+
+We evaluate the specializations on the reaction-wheel con-troller’s inner loop—a proportional/derivative regulator [14] that reads the sensor, decodes the operator command, com-putes an actuation value, and writes the PWM registers. This section establishes three results: the peripheral interface is free at the instruction level; a memory-mapped equivalent costs five instructions and five cycles per iteration ( 11 .6% of the integrated loop, about 5.5% of the archived one); and the loop clears its 20 ms deadline by roughly 7,300 × in the archived configuration and 15 ,000 × in the integrated one. 
+
+A. Methodology 
+
+We analyze two hardware configurations that differ only in the multiplier, and use these labels throughout. The archived configuration is a single archived source tree that contains the peripheral extensions of Section IV, the off-chip sensor path of Section IV-D, and the core’s original multiplier: a sequential radix-4 Booth unit that stalls the pipeline for about 16 cycles per multiply (Section III-E). Its numbers can be recomputed from that one tree, so we report it as the primary result. The integrated configuration replaces the Booth unit with the single-cycle array multiplier and is otherwise identical. It matches the deployed system, but no single archived build con-tains the extensions and the single-cycle multiplier together, so we analyze it rather than time it. Because these elements were developed in parallel, the numbers below are a static cycle analysis of the control program, not measurements of one timed bitstream. The cycle model uses the pipeline behavior established in Section III: one instruction per cycle in steady state, a two-cycle squash on every taken control transfer, and a one-cycle load-use interlock. The two configurations share this model and differ only in multiply latency: about 16 cycles per multiply in the archived configuration, one cycle in the integrated one. We report cycle counts to enable a reader to recompute them; we do not report measured wall-clock timing. We also did not measure resource utilization. We report no LUT, flip-flop, or DSP counts, and we do not estimate them; the cost of the specialization in fabric area is outside what the available artifacts let us state. 
+
+B. The Control Loop and Peripheral Accesses 
+
+The loop reads $1 and $2 a total of ten times (static reads) and writes three of the four PWM channels— $26 , $27 , and 
+
+$28 ; the fourth channel, $29 , is left at its setup value. The controller’s gains, as coded, are Kp = 1 and Kd = 0 ; there is no integral term. With Kd = 0 the derivative term is inert as written: the control law reduces to pure proportional action, and the multiply that computes the derivative term is a multiply by zero. One of the three counted multiplies is therefore dead code, so the loop as measured includes work a tuned controller would not perform. We report the loop as coded rather than as intended. The central result concerns where the peripheral accesses appear in the cycle budget , and the answer is that they do not appear as a separate cost at all. Because $1 and $2 are ordinary registers, each of the ten reads is an operand field inside an instruction that executes anyway—an and that masks a button bit, a sub that forms the control error, an sra that scales a term. There is no distinct read instruction to count. One of the PWM writes is likewise fused: the value written to $28 
+
+is the destination of the mul that computes it, so that write, too, costs no dedicated instruction. At the instruction level                                       
+
+> TABLE I WORST -CASE CONTROL -LOOP ITERATION BY BLOCK ,AND THE COST ADDED BY A MEMORY -MAPPED (MMIO) EQUIVALENT . T HE CYCLE COLUMNS DEPICT THE INTEGRATED CONFIGURATION (SINGLE -CYCLE MULTIPLIER ), WHERE CYCLES =INSTRUCTION -CYCLES +TAKEN -BRANCH PENALTY ,AND ITS MMIO COUNTERFACTUAL ,WHICH GROWS ONLY
+> BLOCKS 1AND 4, TO 48 CYCLES (+11 .6% ). T HE ARCHIVED CONFIGURATION (SEQUENTIAL BOOTH MULTIPLIER )DIFFERS ONLY IN
+> BLOCK 3: ITS THREE MULTIPLIES EACH STALL THE PIPELINE ABOUT 16
+> CYCLES ,ADDING 48 CYCLES ,SO BLOCK 3IS 63 RATHER THAN 15 AND THE LOOP TOTAL IS 91.
+
+Block Instr Pen. Cycles (int/MMIO) 1. Peripheral reads (10 × $1 ,$2 ) 0 0 0 / 2 2. Command decode + branch 10 8 18 / 18 3. P/D compute (3 muls) 15 0 15 / 15 4. PWM writes ( $26 , $27 ) 2 0 2 / 5 5. Loop-back overhead 4 4 8 / 8 
+
+Total 31 12 43 / 48 
+
+the register-mapped interface is free, and a memory-mapped interface structurally cannot match this, because it requires a distinct load to move a peripheral value into a register before the value can be used. Table I breaks the integrated configuration’s 43-cycle worst-case iteration into five blocks. The 43 cycles are 31 instruction-cycles plus 12 taken-branch penalty cycles. Block 1—all ten peripheral reads—contributes zero instructions and zero cycles, exactly as the argument above predicts, and it does so in both configurations: the choice of multiplier cannot change whether reading a peripheral needs its own instruction. The zero-instruction sensor read is therefore independent of the hardware configuration. Two observations follow from the table. First, all 12 penalty cycles are taken-branch squashes: 8 in the command-decode block and 4 in the loop-back. Branch overhead ( 12 cycles, about 28% of the integrated loop) thus dwarfs anything the peripheral interface costs, which reinforces the reading that the specialization optimized a part of the loop that was never the bottleneck. This 12-cycle figure assumes an unconditional jump squashes two cycles exactly as a conditional branch does; three of the loop’s jumps are redundant fall-through no-ops that a peephole optimizer would remove, either of which would lower it. Second, the multiplier sets the loop length. In the archived configuration the three multiplies in Block 3 use the sequential Booth unit, which stalls the pipeline about 16 cycles each; the three together add 48 cycles, so Block 3 costs 63 cycles and the loop runs 91. Substituting the single-cycle array multiplier reduces Block 3 from 63 to 15 cycles and the loop from 91 to 43—the integrated configuration. The multiplier, not the peripheral interface, sets the loop length in both cases. 
+
+C. Memory-Mapped Counterfactual 
+
+To price the register mapping, we ask what the same loop would cost under MMIO on the same core. A competent implementation keeps a peripheral base pointer in a register (set up once, amortized to zero per iteration), snapshots each input once per iteration rather than reloading it at every use, and schedules the loads so their results are not needed in the very next instruction, hiding the load-use interlock. Under those best-case assumptions, only two blocks of Table I grow. Block 1 gains two loads to snapshot $1 and $2 (0 to 2 cycles), and Block 4 gains a store for each PWM channel written this iteration— $26 , $27 , and $28 —growing from 2 to 5 cycles. The $28 value is produced by the fused multiply in Block 3, but MMIO cannot fold its store into that multiply and needs a separate instruction. Blocks 2, 3, and 5 are unchanged. The counterfactual adds 5 instructions and 5 cycles per iteration: 11 .6% of the 43-cycle integrated loop, and about 5.5% of the 91-cycle archived loop. Figure 5 draws the integrated configuration against its counterfactual block by block, isolating where the cost appears. A naive MMIO version that reloads each peripheral value on every use, back to back, would cost more ( +13 instructions and +23 cycles), but that larger number is an artifact of poor scheduling: a competent programmer avoids it by hoisting the load out of the interlock shadow. We therefore do not present the larger figure as the cost of MMIO. The cost of a memory-mapped interface on this core is five instructions and five cycles per iteration, and it arises entirely because MMIO cannot make a peripheral value a direct operand. 
+
+D. Timing Headroom 
+
+The archived configuration’s worst-case iteration is 91 cy-cles. At the 30 ns clock period that is 91 × 30 ns = 2 .73 μs, a loop rate of about 366 kHz. The actuation deadline is one 20 ms PWM frame, so the loop consumes 2.73 μs/20 ms ≈
+
+0.014% of its deadline—a margin of roughly 7,300 ×. The integrated configuration, with the single-cycle multiplier, com-pletes the same worst case in 43 cycles: 1.29 μs (about 775 kHz), or 0.0065% of the deadline, a margin of roughly 
+
+15 ,000 ×. Figure 6 draws the integrated iteration against the frame; the active work is a sliver too thin to see without a broken axis. The headroom finding does not depend on the configura-tion. Whether the loop takes 91 cycles or 43, it clears the 20 ms deadline by three to four orders of magnitude, so the finding that the specialization was not necessary for deadline compliance holds either way. This is the paper’s most important finding. The special-ization was not necessary for the loop to meet its deadline. At a margin of three to four orders of magnitude—in either configuration—an ordinary memory-mapped implementation on this same core, even the naive one above, would have met the 20 ms deadline comfortably. The value of the register mapping is therefore not real-time compliance, and it is not determinism: an on-chip single-cycle I/O region is already deterministic. The value is what Sections V-B and V-C mea-sured: one fewer instruction and one fewer potential stall per access, the resulting reduction in loop size, and the qualitative software simplification of the actuation offload. 
+
+E. Qualitative Software Simplification 
+
+Beyond the cycle counts, the specialization removes whole categories of software from the loop. Because the PWM hard-ware maintains the waveforms, the loop carries no deadline counters and performs no waveform maintenance. Because peripherals are named as registers rather than addressed, the loop carries no address arithmetic and no peripheral base-address register. This is the benefit that does not reduce to a percentage: the control program contains only control. 
+
+F. Bounding the Software Actuation Baseline 
+
+The following is an analytical bound rather than a mea-surement. It is worth stating because it sets the scale of what the actuation offload avoids, and because the bound is tight enough that measurement would add little. As Section IV-C notes, this core has no timer and no in-terrupt controller, so a software implementation must poll: the control loop carries a deadline counter per channel and toggles the output pins inline. Two consequences follow directly from the loop period. First, edge placement is quantized to one loop iteration, because an edge can only be emitted where the loop tests its counters. A pulse edge is therefore up to one iteration late— 1.29 μs in the integrated configuration, 
+
+2.73 μs in the archived one—and that quantization appears as pulse-width jitter. Against the 1.3–1.7 ms pulse widths the platform uses, this is a jitter of roughly 0.1% to 0.2% of pulse width. Second, maintaining four channels costs a counter comparison and a conditional branch per channel per iteration, which on this branch-expensive core (Section V-B) would add cycles comparable to the command-decode block, plausibly increasing the loop period by half again. Neither figure threatens the deadline; a servo will not resolve 
+
+2 μs of jitter in a 20 ms frame, and the loop has three to four orders of magnitude of headroom to absorb the extra cycles. The hardware PWM’s jitter is zero by construction, so the offload converts a small, bounded, timing-dependent error into no error at all. That is a real benefit and a small one, which is the same conclusion the cycle counts reached by a different route. VI. P LATFORM 
+
+The processor drives a reaction-wheel self-balancing bicy-cle [15], shown as a whole system in Figure 7. The chassis is 3D-printed (designed in Onshape over seven revisions). A continuous-rotation servo provides drive and a micro-servo provides steering; a 6:1 geared 12 V brushed DC motor spins a reaction wheel, a disc flywheel carrying two bolt rings whose placement adjusts its inertia. Power is a 12 V supply with a 12-to-5 V regulator and a 3.3-to-5 V level shifter between the FPGA I/O and the actuators. The reaction-wheel motor was sized from a torque budget: with a chassis inertia of 51 .168 in 2 oz and a wheel inertia of 7.536 in 2 oz, the required wheel torque is 80 .37 in oz at about 101.8 RPM. In the deployed system the inertial measurement unit is read over I2C; as Section IV-D notes, that acquisition is off-chip and the value reaches the processor as a 16-bit parallel word 0Reference                     
+
+> (register-mapped) joystick decode+br P/D compute loop-back
+> MMIO
+> (load/store)
+> 18 15 818 15 8252
+> sensor reads: 0 →2 cyc PWM writes: 2→5 cyc +5 cycles (+11.6%)
+> = 43 cyc = 48 cyc Only the sensor-read and PWM-write blocks grow: MMIO needs explicit load/store instruc-tions where the reference design uses register operands. The other three blocks are unchanged.
+> Fig. 5. Per-block comparison of the integrated configuration (single-cycle multiplier) against its memory-mapped counterfactual. Only two blocks grow: the sensor reads, from zero to two cycles for a pair of loads that snapshot the peripheral values once per iteration, and the actuation writes, by three cycles for a store after each PWM update ( $26 ,$27 , and $28 ). The decode, computation, and loop-back blocks are unchanged. The total difference is five cycles, or
+> 11 .6% of the 43-cycle integrated iteration (about 5.5% of the 91-cycle archived iteration).
+
+mapped to $2 . The archived build analyzed here uses a bring-up configuration instead, in which $2 is driven by the board slide switches and $1 by push buttons. We are explicit about the platform’s status: sustained au-tonomous balancing was not achieved within the project timeline. The platform validated the processor’s peripheral interface—sensor values arriving in registers, PWM com-mands leaving through registers, and the control loop closing over both—but it did not validate the balancing controller itself. VII. D ISCUSSION AND LIMITATIONS 
+
+The specialization adds no dedicated instructions to the sensor-read path and simplifies software, but the design as built has real limitations, and we set them out plainly. 
+
+No clock-domain-crossing synchronizer on the input path. The peripheral inputs feed the $1 /$2 flip-flop banks through a single capture flop, not a two-flop synchronizer. For inputs that are synchronous to the core clock this is adequate, but for a genuinely asynchronous sensor source a single capture flop provides no metastability protection, and a two-flop synchronizer would be required. We note that the design does contain a two-flop synchronizer elsewhere—on the data-memory read path—so the technique was available and simply not applied to the register-mapped inputs. We list this synchronizer as future work. 
+
+No snapshot, valid bit, or double buffer. Nothing in the register-mapped path guarantees that a multi-field sensor sample is coherent: there is no valid bit to mark a complete sample and no double buffer to hold one sample stable while another arrives. The demonstrated system sidesteps this rather than solving it, by reading a single axis so that no multi-field coherency question arises. A design that assembled a multi-word sample would need explicit snapshot logic that this one does not have. 
+
+Unlatched PWM duty. As Section IV-C described, each generator reads its duty value live rather than latching it at a frame boundary. A mid-frame rewrite perturbs the in-flight pulse. This is benign for slowly varying duties but is a correctness hazard for any control law that updates duties aggressively within a frame. 
+
+Scalability. The approach consumes one architectural reg-ister per mapped peripheral, and the ISA has 32 general-purpose registers. Register mapping therefore caps out at a handful of peripherals, whereas MMIO scales to thousands of devices behind a single address space. The technique is thus a targeted optimization for a small number of frequently accessed peripherals, not a general I/O strategy. 
+
+Toolchain cost. A hardware-owned register breaks an in-variant that compilers rely on—that a general-purpose register is stable across reads and holds what software last wrote. A conventional register allocator cannot safely allocate $1 or $2 ,because their contents change underneath it. This design is viable only because its software is hand-written assembly with author-defined conventions (Section III-A); on a core with a compiler and an ABI, mapping peripherals into allocatable registers would be considerably more disruptive. 
+
+Reconstruction and unmeasured cost. As Section V-A stated, the archived and integrated configurations are ana-lyzed statically rather than measured from a single archived bitstream, and we did not measure resource utilization. The cycle-level claims are therefore analytic. The fabric-area cost is likewise unmeasured and is plausibly non-trivial: the four PWM read ports are exported as always-on wires and the register file drives an internal tri-state read bus, adding routing and fan-out that we did not quantify. joystick decode + branch dispatch P/D compute loop-back 
+
+18 cyc 15 cyc 8 cyc PWM writes ($26,$27): 2 cyc 
+
+One control-loop iteration = 43 cycles = 1.29 μs (30 ns/cycle) 
+
+31 instruction cycles + 12 taken-branch penalty cycles = 43 
+
+0sensor reads: 0 cycles 
+
+peripheral values are register operands — no access instruction 
+
+= taken-branch penalty (8 cyc in decode/dispatch, 4 cyc in loop-back) 1.29 μs of 20 ms = 0.0065% utilization 
+
+20 ms PWM frame 
+
+frame end        
+
+> Fig. 6. Control-loop timing budget for the integrated configuration (single-cycle multiplier). Top: one worst-case iteration, 43 cycles ( 1.29 μs at 30 ns/cycle), split into the blocks of Table I. Bottom: the same 1.29 μs against the 20 ms PWM frame—about 0.0065% of the deadline, drawn as a sliver with a broken axis to convey the scale gap. The deadline is met with a margin of roughly 15 ,000 ×; the archived configuration’s 91-cycle iteration meets it by roughly
+> 7,300 ×.
+
+VIII. C ONCLUSION AND FUTURE WORK 
+
+We specialized a five-stage soft processor for one real-time control application by mapping two frequently accessed peripheral inputs into architectural registers and offloading four periodic actuation channels to hardware PWM generators. The register mapping is free at the instruction level: because a sensor value is an ordinary register operand, the control loop’s ten sensor reads cost no dedicated instruction and no dedicated cycle. A memory-mapped interface cannot achieve this, because it must load a value before using it. The memory-mapped equivalent costs five instructions and five cycles per iteration, and the actuation offload removes waveform maintenance from software entirely. Yet the worst-case loop finishes in 2.73 μs in the archived configuration and 1.29 μsin the integrated one, against a 20 ms deadline—margins of roughly 7,300 × and 15 ,000 ×—so the specialization was not necessary for real-time compliance. Its value is instruction count and software simplicity, not determinism, which the on-chip single-cycle I/O region already provided. This paper’s contribution is a precise account of what the design point buys. Several extensions follow directly from Section VII. A two-flop synchronizer on the $1 /$2 input path would make the interface safe for asynchronous sensor sources. Snapshot registers with a valid bit would let the interface carry a coherent multi-axis sample rather than a single axis. Measuring resource utilization would close the one cost dimension this study left unquantified. REFERENCES [1] MCS-51 Microcontroller Family User’s Manual , Intel Corporation, Feb. 1994, order Number 272383-002; archival scan via bitsavers. [Online]. Available: https://bitsavers.org/components/intel/8051/MCS-51 Users Manual Feb94.pdf [2] AVR Instruction Set Manual , Microchip Technology (formerly Atmel), 2016, formerly Atmel document 0856 (rev. L, Nov 2016). [Online]. Available: https://ww1.microchip.com/downloads/en/DeviceDoc/AVR-Instruction-Set-Manual-DS40002198A.pdf [3] PICmicro Mid-Range MCU Family Reference Manual , Mi-crochip Technology Inc., Dec. 1997. [Online]. Available: https://ww1.microchip.com/downloads/en/DeviceDoc/33023a.pdf [4] MicroBlaze Processor Reference Guide , AMD (Xilinx), Jun. 2026. [Online]. Available: https://docs.amd.com/r/en-US/ug984-vivado-microblaze-ref [5] Nios II Custom Instruction User Guide , Intel/Altera, current edition, page updated 2025-04-14. [Online]. Available: https://docs.altera.com/r/docs/683242/current/nios-ii-custom-instruction-user-guide [6] R. E. Gonzalez, “Xtensa: A configurable and extensible processor,” 
+
+> IEEE Micro , vol. 20, no. 2, pp. 60–70, 2000. [Online]. Available: https://doi.org/10.1109/40.848473
+
+100 MHz oscillator /3 PLL 33.33 MHz Register File Comb. Array Multiplier (single-cycle) 
+
+> Soft Processor (5-stage)
+
+ROM (instructions) RAM $1 $2 $26–$29 Push buttons 16-bit parallel in 4×
+
+PWM 2× Servo DC motor via H-bridge Reaction-wheel bicycle 
+
+> Artix-7 XC7A100T (Nexys A7-100T)
+
+IMU 
+
+> I2C (off-chip) off-chip: IMU, servos, DC motor, bicycle
+
+Fig. 7. Complete system. A 100 MHz oscillator is divided by three to the 33.33 MHz core clock; the soft processor holds the register file and the single-cycle array multiplier alongside instruction and data memory. Push buttons feed $1 ; the off-chip IMU is acquired over I2C and presented as a 16-bit parallel word feeding $2 ; $26 –$29 drive four hardware PWM channels to two servos and a DC motor. The dashed boundary is the Artix-7 XC7A100T; the IMU, servos, motor, and bicycle are off-chip. 
+
+Fig. 8. The assembled reaction-wheel bicycle. [7] ARM Architecture Reference Manual , ARM Limited, 2005, issue I; documents the MRC/MCR coprocessor instructions and CP15. [Online]. Available: https://developer.arm.com/documentation/ddi0100/latest/ [8] A. Waterman and K. Asanovi´ c, The RISC-V Instruction Set Manual, Volume I: Unprivileged ISA , RISC-V International, 2019, document Version 20191213 (ratified); Zicsr CSR instructions. [Online]. Available: https://riscv.org/technical/specifications/ [9] The RISC-V Instruction Set Manual, Volume II: Privileged Architecture , RISC-V International, 2021, version 1.12 ratified December 2021; CSR address space. [Online]. Available: https://riscv.org/technical/specifications/ [10] K. Asanovi´ c, R. Avizienis, J. Bachrach, S. Beamer, D. Biancolin, C. Celio, H. Cook, D. Dabbelt, J. Hauser, A. Izraelevitz, S. Karandikar, B. Keller, D. Kim, J. Koenig, Y. Lee, E. Love, M. Maas, A. Magyar, H. Mao, M. Moreto, A. Ou, D. A. Patterson, B. Richards, C. Schmidt, S. Twigg, H. Vo, and A. Waterman, “The rocket chip generator,” EECS Department, University of California, Berkeley, Tech. Rep. UCB/EECS-2016-17, Apr. 2016. [Online]. Available: https://www2.eecs.berkeley.edu/Pubs/TechRpts/2016/EECS-2016-17.html [11] H. Corporaal, Microprocessor Architectures: From VLIW to TTA .Chichester, UK: John Wiley & Sons, 1997. [12] P. Biswas, N. D. Dutt, L. Pozzi, and P. Ienne, “Introduction of architecturally visible storage in instruction set extensions,” IEEE Transactions on Computer-Aided Design of Integrated Circuits and Systems , vol. 26, no. 3, pp. 435–446, 2007. [Online]. Available: https://doi.org/10.1109/TCAD.2006.890582 [13] D. A. Patterson and J. L. Hennessy, Computer Organization and Design: The Hardware/Software Interface , 5th ed. Waltham, MA, USA: Morgan Kaufmann, 2013. [14] K. J. ˚Astr¨ om and R. M. Murray, Feedback Systems: An Introduction for Scientists and Engineers . Princeton, NJ, USA: Princeton University Press, 2008, freely available from the authors. [Online]. Available: http://www.cds.caltech.edu/˜murray/books/AM08/pdf/am08-complete 28Sep12.pdf [15] J. P. Meijaard, J. M. Papadopoulos, A. Ruina, and A. L. Schwab, “Linearized dynamics equations for the balance and steer of a bicycle: a benchmark and review,” Proceedings of the Royal Society A: Mathematical, Physical and Engineering Sciences ,vol. 463, no. 2084, pp. 1955–1982, 2007. [Online]. Available: https://doi.org/10.1098/rspa.2007.1857

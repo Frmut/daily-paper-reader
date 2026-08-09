@@ -6,29 +6,38 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-08-08
-- 运行时间：2026-08-08 20:43:46 UTC
+- 最新运行日期：2026-08-09
+- 运行时间：2026-08-09 19:33:57 UTC
 - 运行状态：成功
-- 本次总论文数：2
+- 本次总论文数：5
 - 精读区：0
-- 速读区：2
+- 速读区：5
 
 ### 今日简报（AI）
-今日聚焦电机热瞬态与磁滞算子的高效数值模拟技术。
-重点介绍了利用半光滑牛顿法优化磁滞逆算子求解，以及通过缩减基法（RBM）加速电机热特性仿真。
-建议关注复杂物理场仿真中的降阶模型与快速收敛算法，以提升工程计算效率。
-- 详情：[/202608/08/README](/202608/08/README)
+今日聚焦农业机器人再制造与高性能控制算法，探索从废旧电池利用到GPU加速求解的前沿应用。
+重点关注利用退役动力电池打造的低功耗除草机器人，以及通过GPU原生求解器大幅提升模型预测控制的计算效率。
+建议关注硬件循环利用与端侧AI的结合，这为低成本、高性能的工业自动化提供了新思路。
+- 详情：[/202608/09/README](/202608/09/README)
 
 ### 精读区论文标签
 - 本次无精读推荐。
 
 ### 速读区论文标签
-1. [A semi-smooth Newton method for efficient evaluation of the inverse hysteresis operator](/202608/08/2608.03191v1-a-semi-smooth-newton-method-for-efficient-evaluation-of-the-inverse-hysteresis-operator)  
+1. [TS-MAMP: A Remanufactured Agricultural Robot Powered by Second-Life EV Components and NMS-Free On-Device Weed Detection](/202608/09/2608.02270v1-ts-mamp-a-remanufactured-agricultural-robot-powered-by-second-life-ev-components-and-nms-free-on-device-weed-detection)  
+   标签：评分：7.0/10、query:pmsm
+   evidence：电动汽车动力总成中无刷直流轮毂电机的应用
+2. [SPIRAL-PO: Symbolic Identification of Partially Observed Nonlinear Dynamics with Application to Rotating Machinery](/202608/09/2608.00466v1-spiral-po-symbolic-identification-of-partially-observed-nonlinear-dynamics-with-application-to-rotating-machinery)  
    标签：评分：6.0/10、query:pmsm
-   evidence：磁场仿真中的磁滞算子评估
-2. [Reduced Basis Method for Simulating Thermal Transients in Electric Machines](/202608/08/2608.05904v1-reduced-basis-method-for-simulating-thermal-transients-in-electric-machines)  
+   evidence：识别具有隐藏状态的旋转机械控制方程
+3. [CUDA MPC: A GPU-Native Solver for Model Predictive Control](/202608/09/2608.03051v1-cuda-mpc-a-gpu-native-solver-for-model-predictive-control)  
    标签：评分：6.0/10、query:pmsm
-   evidence：电机热仿真的方法论桥梁，可应用于永磁同步电机研究。
+   evidence：用于快速模型预测控制的GPU原生求解器
+4. [Electro-Magnetic Decoupling Preconditioner for Eddy Current Problems with External Circuit Coupling](/202608/09/2608.03350v1-electro-magnetic-decoupling-preconditioner-for-eddy-current-problems-with-external-circuit-coupling)  
+   标签：评分：6.0/10、query:pmsm
+   evidence：电磁模型中涡流问题的预处理技术
+5. [Zero-Instruction Sensor Reads: Register-Mapped Peripherals and Hardware PWM on a Five-Stage Soft Processor](/202608/09/2608.05638v1-zero-instruction-sensor-reads-register-mapped-peripherals-and-hardware-pwm-on-a-five-stage-soft-processor)  
+   标签：评分：6.0/10、query:pmsm
+   evidence：用于电机控制回路的硬件PWM卸载
 
 
 <div class="dpr-home-promo-card">

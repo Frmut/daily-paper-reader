@@ -1,0 +1,79 @@
+{
+  "label": "2026-08-09",
+  "date": "2026-08-09",
+  "generated_at": "2026-08-09T19:34:07",
+  "count": 5,
+  "papers": [
+    {
+      "paper_id": "202608/09/2608.02270v1-ts-mamp-a-remanufactured-agricultural-robot-powered-by-second-life-ev-components-and-nms-free-on-device-weed-detection",
+      "section": "quick",
+      "title_en": "TS-MAMP: A Remanufactured Agricultural Robot Powered by Second-Life EV Components and NMS-Free On-Device Weed Detection",
+      "authors": "Weijie Shi, Zicheng Xu, Zhenbang Cheng, Haoran Xuan, Mingbo Duan, Gan Ge",
+      "date": "2026-08-03",
+      "pdf": "https://arxiv.org/pdf/2608.02270v1",
+      "score": "7.0",
+      "evidence": "电动汽车动力总成中无刷直流轮毂电机的应用",
+      "tldr": "本研究针对农业自动化成本高及废旧电动车组件浪费问题，开发了TS-MAMP再制造机器人。该平台利用退役电机与电池，结合可调节底盘，将成本降低约60%。同时集成无需NMS的YOLOv10n算法，在嵌入式设备上实现高效杂草检测，为小农户提供了低成本的AI自动化方案。",
+      "tags": "query:pmsm",
+      "abstract_en": "Agriculture 4.0 robotic systems improve field efficiency yet remain too capital-intensive for the fragmented smallholdings that dominate global agriculture. Meanwhile, a growing number of retired low-speed electric-vehicle (LSEV) powertrains retain functional electromechanical value but are destructively recycled. This paper presents TS-MAMP (Telescopic-Sleeve Modular Agricultural Mobile Platform), a remanufactured robot built under 3R (reduce, reuse, recycle) circular-economy principles. Retired 48 V brushless-DC (BLDC) hub motors are paired via back-EMF matching, and lead-acid battery modules screened at 60%-80% state of health are actively balanced within a 100 mV inter-module voltage deviation. Together, these reused components reduce the powertrain-and-chassis BOM cost by approximately 60%, to below USD 450 (perception and weeding modules excluded). The truss chassis provides >=200 kg static load, continuously adjustable track width from 1200 mm to 2000 mm, and <=5-minute module changeover. An NMS-free (non-maximum-suppression-free) YOLOv10n detector with consistent dual-assignment training and negative-sample learning achieves 80.87% mean average precision (mAP)@0.5 (58.41% mAP@0.5:0.95) on the Wanxi Crop-Weed dataset, and is deployed via FP16 TensorRT on a Jetson Nano, confirming on-device inference feasibility. TS-MAMP demonstrates that retired EV components, under modest screening, can be re-engineered into affordable, AI-enabled agricultural robots--opening a remanufacturing pathway for the smallholder fields that commercial automation leaves unserved.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202608/09/2608.00466v1-spiral-po-symbolic-identification-of-partially-observed-nonlinear-dynamics-with-application-to-rotating-machinery",
+      "section": "quick",
+      "title_en": "SPIRAL-PO: Symbolic Identification of Partially Observed Nonlinear Dynamics with Application to Rotating Machinery",
+      "authors": "Mohammad A. Ayoubi, Sina Piramoon",
+      "date": "2026-08-01",
+      "pdf": "https://arxiv.org/pdf/2608.00466v1",
+      "score": "6.0",
+      "evidence": "识别具有隐藏状态的旋转机械控制方程",
+      "tldr": "针对旋转机械等工程系统中隐藏状态难以直接测量的问题，本文提出SPIRAL-PO框架，用于从部分观测数据中识别非线性动力学方程。该方法将隐藏状态效应视为可观测方程中的结构化物理特征，结合残差网络、物理约束库和统计门控协议实现符号识别。研究给出了唯一恢复的理论保证，并在柔性转子系统上验证了其在噪声环境下准确识别非线性项及重建隐藏轨迹的能力。",
+      "tags": "query:pmsm",
+      "abstract_en": "Many engineering systems have states that cannot be directly measured-tilt angles in rotating machines, internal flow variables, aeroelastic modes-yet these hidden states couple into the measured outputs. This paper addresses identifying the governing equations from such partial observations. We present SPIRA-PO (Symbolic Physics-Informed Residual Augmentation Loop-Partially Observed), a framework that treats hidden-state effects not as nuisances to be eliminated but as structured, physically interpretable signatures in the observable equations of motion. From a minimal physics seed in measured coordinates, the method fits a multi-output residual network to the projection residual, projects the learned structure onto a physics-constrained candidate library, and admits terms through a sequential statistical gating protocol. We give sufficient conditions for unique recovery of the hidden-coupling coefficients, a matching impossibility result showing that insufficiently rich excitation makes recovery impossible for any estimator, and a closed-form sample-complexity bound. These guarantees concern the projected hidden-coupling coefficients, not the hidden trajectory itself, which is reconstructed separately by a state estimator. The framework is demonstrated on a vertical flexible rotor with Duffing supports, where only the lateral displacements are measured while the tilt angles remain hidden. A constant-speed run is provably unidentifiable, whereas a speed sweep restores identifiability; from noisy coast-down data, SPIRAL-PO recovers the gyroscopic coupling, the Duffing nonlinearity, and the translation-tilt cross-coupling, each with a standard error and t-statistic. An Extended Kalman Filter built on the validated model then reconstructs the hidden tilt trajectory from observed displacements alone.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202608/09/2608.03051v1-cuda-mpc-a-gpu-native-solver-for-model-predictive-control",
+      "section": "quick",
+      "title_en": "CUDA MPC: A GPU-Native Solver for Model Predictive Control",
+      "authors": "Babak Akbari, Melissa Greeff",
+      "date": "2026-08-04",
+      "pdf": "https://arxiv.org/pdf/2608.03051v1",
+      "score": "6.0",
+      "evidence": "用于快速模型预测控制的GPU原生求解器",
+      "tldr": "针对模型预测控制（MPC）在处理高维、长时域系统时计算延迟高的问题，本文提出了CUDA MPC。这是一种GPU原生的求解框架，通过协同设计并行ADMM算法与融合CUDA内核，将整个迭代过程置于GPU片上完成。该方法利用共享内存和原子标志同步，显著降低了内核调度和内存传输开销。实验表明，其在长时域机器人任务中比传统求解器快一到两个数量级，且在多智能体协同等复杂场景下表现出卓越的实时性和鲁棒性。",
+      "tags": "query:pmsm",
+      "abstract_en": "Model Predictive Control (MPC) delivers constraint-aware control, but its reliance on online optimization limits its use on systems with fast dynamics, high-dimensional models, or long horizons. Existing GPU implementations typically treat the device as a linear-algebra accelerator, leaving the optimization loop dependent on repeated kernel launches and high-latency memory transfers. This paper introduces CUDA MPC, a GPU-native MPC framework that co-designs the optimization algorithm, execution model, and memory architecture for CUDA hardware. CUDA MPC pairs a parallel-in-horizon alternating direction method of multipliers (ADMM) splitting with a fused CUDA kernel that runs the entire iterative solve on the device. Intermediate optimization variables stay in low-latency, on-chip shared memory, and a localized atomic-flag protocol synchronizes only adjacent horizon blocks, minimizing host intervention, kernel-dispatch overhead, and global-memory traffic. Across six nonlinear robotics benchmarks spanning increasing state dimension and constraint density, CUDA MPC sustains real-time rates at horizons one to two orders of magnitude longer than CPU solvers: it solves an optimization-based collision-avoidance parking problem with 100 s of lookahead within a 0.1 s sampling interval, and is the only solver evaluated that achieves both real-time execution and collision-free coordination for a centralized 10-agent swarm, where acados and CasADi return no feasible solution and require 3.5 s and 4.5 s per solve. Against tensor-framework implementations of the same ADMM splitting, the fused kernel is up to $965\\times$ faster.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202608/09/2608.03350v1-electro-magnetic-decoupling-preconditioner-for-eddy-current-problems-with-external-circuit-coupling",
+      "section": "quick",
+      "title_en": "Electro-Magnetic Decoupling Preconditioner for Eddy Current Problems with External Circuit Coupling",
+      "authors": "Shingo Hiruma, Takeshi Mifune, Tetsuji Matsuo",
+      "date": "2026-08-04",
+      "pdf": "https://arxiv.org/pdf/2608.03350v1",
+      "score": "6.0",
+      "evidence": "电磁模型中涡流问题的预处理技术",
+      "tldr": "本研究针对耦合外部电路的涡流问题，提出了一种名为电磁解耦（EMD）的高效可扩展预处理策略。该方法通过将离散系统分解为矢量和标量势分量，并对标量分量应用针对性预处理，有效解决了离散拉普拉斯算子导致的频谱退化问题。实验表明，该方法在迭代次数和求解速度上均比传统方法提升高达20倍，且支持物理级并行化，为大规模电磁仿真提供了灵活稳健的解决方案。",
+      "tags": "query:pmsm",
+      "abstract_en": "This paper proposes an efficient and scalable preconditioning strategy for eddy current problems involving coupled external circuits. The approach, named Electro-Magnetic Decoupling (EMD) preconditioner, decomposes the discrete system into vector and scalar potential components and applies tailored preconditioners to each. In particular, strong preconditioning is applied to the scalar component to address the spectral degradation induced by the discrete Laplacian. The method was evaluated on four eddy current models with varying frequencies, conductor topologies, and excitation types. Compared to the conventional incomplete Cholesky preconditioner, the EMD approach achieved up to 20 times fewer iteration counts and up to 20 times faster iterative solver time. Moreover, the method supports physics-level parallelization, allowing efficient treatment of independently excited conductor domains. The EMD framework is compatible with algebraic multigrid, domain decomposition, and direct solvers, offering flexibility and robustness for large-scale electromagnetic simulations.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202608/09/2608.05638v1-zero-instruction-sensor-reads-register-mapped-peripherals-and-hardware-pwm-on-a-five-stage-soft-processor",
+      "section": "quick",
+      "title_en": "Zero-Instruction Sensor Reads: Register-Mapped Peripherals and Hardware PWM on a Five-Stage Soft Processor",
+      "authors": "Nathanael Ren",
+      "date": "2026-08-06",
+      "pdf": "https://arxiv.org/pdf/2608.05638v1",
+      "score": "6.0",
+      "evidence": "用于电机控制回路的硬件PWM卸载",
+      "tldr": "本研究针对五级流水线软处理器，以自平衡自行车控制回路为案例，提出了一种应用驱动的硬件定制化方法。通过将传感器输入直接映射到架构寄存器，实现了“零指令”传感器读取，并利用硬件卸载PWM任务。该方法显著降低了指令计数和软件复杂度，在控制回路中将执行周期从91个减少至43个，极大提升了处理效率。",
+      "tags": "query:pmsm",
+      "abstract_en": "We present a case study in application-driven specialization of a five-stage soft processor, evaluated on the inner control loop of a reaction-wheel self-balancing bicycle. Starting from a custom 32-bit RISC core in the MIPS tradition, we specialize the design in two ways. First, two frequently accessed peripheral inputs are mapped directly into architectural register state, written every cycle by hardware and owned exclusively through the register file's write-port structure rather than by arbitration. Second, four periodic PWM channels are offloaded to hardware and driven continuously from four exported registers, removing periodic actuation from software entirely. Because peripheral values are addressable as ordinary register operands, all ten sensor reads in the control loop cost no dedicated instruction and no dedicated cycle, folding into arithmetic that executes anyway; the memory-mapped equivalent requires an explicit load per snapshot and costs five extra instructions and cycles. The actuation path likewise removes waveform maintenance from software entirely. We report two configurations, because the extensions and the single-cycle array multiplier they were deployed alongside are not present together in a single archived build: an archived configuration, whose worst-case loop is 91 cycles, and the integrated configuration matching the deployed system, at 43 cycles. Against a 20 ms actuation frame these are margins of roughly 7,300x and 15,000x. The deadline is met by so wide a margin in either case that the specialization was not necessary for real-time compliance; its value lies in instruction count and software simplicity, not in determinism, which an on-chip single-cycle I/O region already provides. The zero-instruction sensor read is independent of that choice: the multiplier cannot affect whether a peripheral read needs an instruction of its own.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
