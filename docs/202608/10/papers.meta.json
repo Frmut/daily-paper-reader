@@ -1,0 +1,23 @@
+{
+  "label": "2026-08-10",
+  "date": "2026-08-10",
+  "generated_at": "2026-08-10T20:59:21",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202608/10/2608.07328v1-learning-fault-tolerant-locomotion-with-adaptive-gait-timing",
+      "section": "quick",
+      "title_en": "Learning Fault-Tolerant Locomotion with Adaptive Gait Timing",
+      "authors": "Giovanbattista Gravina, Luca Rossini, Carlo Rizzardo, Arturo Laurenzi, Nikos Tsagarakis",
+      "date": "2026-08-07",
+      "pdf": "https://arxiv.org/pdf/2608.07328v1",
+      "score": "6.0",
+      "evidence": "执行器功率损耗下的容错控制",
+      "tldr": "针对大型四足机器人在执行器失效时的稳定性挑战，本文提出一种基于深度强化学习的容错运动控制方法。该方法采用非对称Actor-Critic架构，通过特权信息训练和潜在表示对齐，使机器人能从本体感受中感知故障。通过在动作空间引入可学习的步态频率参数，实现了无需预设策略的自适应步态调整，并在68kg机器人上验证了其在复杂地形和硬件故障下的鲁棒性。",
+      "tags": "query:pmsm",
+      "abstract_en": "Hardware failures require legged robots to rapidly reorganize coordination and gait timing to maintain stability and mobility. This is particularly challenging for larger quadrupeds, where increased mass and tighter actuation limits reduce the feasibility of aggressive, high-frequency compensation strategies often observed on smaller platforms. In this work, we propose a deep reinforcement learning approach for fault-tolerant locomotion under actuator power loss. The method employs an asymmetric actor-critic architecture in which the critic has access to privileged information during training, while the actor learns to reconstruct a corresponding latent representation from proprioceptive observations. We introduce a latent-alignment loss that encourages consistency between actor and critic representations. Additionally, we augment the action space with a learnable gait frequency parameter, enabling adaptive gait timing in response to terrain variations and actuator degradation without predefined faulty-leg strategies. The approach is validated in high-fidelity simulation on uneven terrain and real-world experiments on flat ground using a 68 kg quadruped robot.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

@@ -1,6 +1,9 @@
 * <a class="dpr-sidebar-root-link" href="#/">首页</a>
 * <a class="dpr-sidebar-root-link dpr-sidebar-noactive-link" href="javascript:void(0)" data-dpr-hash="#/tutorial/README">使用教程</a>
 * Daily Papers
+  * 2026-08-10 <!--dpr-date:20260810-->
+    * 速读区
+      * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202608/10/2608.07328v1-learning-fault-tolerant-locomotion-with-adaptive-gait-timing" data-sidebar-item="{&quot;title&quot;: &quot;Learning Fault-Tolerant Locomotion with Adaptive Gait Timing&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2608.07328v1-learning-fault-tolerant-locomotion-with-adaptive-gait-timing&quot;, &quot;score&quot;: &quot;6.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;pmsm&quot;}], &quot;evidence&quot;: &quot;执行器功率损耗下的容错控制&quot;}">Learning Fault-Tolerant Locomotion with Adaptive Gait Timing</a>
   * 2026-08-09 <!--dpr-date:20260809-->
     * 速读区
       * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202608/09/2608.02270v1-ts-mamp-a-remanufactured-agricultural-robot-powered-by-second-life-ev-components-and-nms-free-on-device-weed-detection" data-sidebar-item="{&quot;title&quot;: &quot;TS-MAMP: A Remanufactured Agricultural Robot Powered by Second-Life EV Components and NMS-Free On-Device Weed Detection&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2608.02270v1-ts-mamp-a-remanufactured-agricultural-robot-powered-by-second-life-ev-components-and-nms-free-on-device-weed-detection&quot;, &quot;score&quot;: &quot;7.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;pmsm&quot;}], &quot;evidence&quot;: &quot;电动汽车动力总成中无刷直流轮毂电机的应用&quot;}">TS-MAMP: A Remanufactured Agricultural Robot Powered by Second-Life EV Components and NMS-Free On-Device Weed Detection</a>
