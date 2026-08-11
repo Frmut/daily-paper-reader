@@ -1,0 +1,92 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-08-11T20:49:04.111488+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 2,
+    "quick_skim_target": 11,
+    "quick_selected": 2
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2608.08785v1",
+      "title": "Robust Fault Detection and Classification in Power Systems via Physics-Informed and Data-Driven Learning",
+      "abstract": "Electrical faults in power transmission systems can severely affect grid stability, equipment safety, and operational reliability. Traditional protection schemes, particularly distance relays, depend on apparent impedance computation and may suffer from relay overreach, underreach, or maloperation due to CT/PT saturation and high-impedance conditions. This paper proposes an intelligent fault detection and classification framework based on supervised machine learning. The approach learns nonlinear relationships between three-phase voltage/current patterns and fault types without assuming fixed impedance paths. A derived feature set is used to represent six fault categories. Artificial Neural Networks, Support Vector Machines, Random Forests, XGBoost, Long Short-Term Memory networks, and Physics-Informed Neural Networks (PINNs) are developed using SMOTE-balanced datasets. Robustness is evaluated under different training sizes and Gaussian noise levels. The PINN achieved the highest fault detection accuracy of 99.86% and multiclass classification accuracy of 99.79% on the clean dataset, while maintaining high accuracy under 2-5% noise and 1-60% training data. By embedding power-system equations and providing millisecond-level inference, the proposed framework bridges traditional impedance-based protection and scalable data-driven grid analytics for real-time protection and wide-area monitoring and control.",
+      "authors": [
+        "Biswash Basnet",
+        "Varsha Sen"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY"
+      ],
+      "published": "2026-08-09T16:04:52+00:00",
+      "link": "https://arxiv.org/pdf/2608.08785v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "three-phase voltage/current patterns and fault classification",
+      "llm_evidence_cn": "三相电压/电流模式与故障分类",
+      "llm_evidence": "三相电压/电流模式与故障分类",
+      "canonical_evidence": "三相电压/电流模式与故障分类",
+      "llm_tldr_en": "Proposes a machine learning framework for robust fault detection and classification in three-phase power systems.",
+      "llm_tldr_cn": "提出了一种基于机器学习的框架，用于三相电力系统的鲁棒故障检测与分类。",
+      "llm_tldr": "提出了一种基于机器学习的框架，用于三相电力系统的鲁棒故障检测与分类。",
+      "llm_tags": [
+        "query:pmsm:composite"
+      ],
+      "matched_query_tag": "query:pmsm:composite",
+      "matched_query_text": "Papers central to 三相及双三相永磁同步电机相关研究检索, especially work that connects or combines: m; s; f; Permanent Magnet Synchronous Motor research; dual three-phase permanent magnet synchronous motor control and design; fault-tolerant control of multi-phase motors; recent advances in dual three phase permanent magnet synchronous motor control; fault tolerant strategies for multi phase permanent magnet synchronous motors.",
+      "matched_requirement_id": "req-composite-pmsm",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2608.08365v1",
+      "title": "Failure-Mechanism Transferability of Cumulative-Damage Features for Health State Estimation of SiC Power Modules",
+      "abstract": "Data-driven health-state estimators for SiC (Silica-Carbide) power modules typically report their performance on a single accelerated-aging campaign, and how that performance transfers to a different failure mechanism is rarely tested. We benchmark five reference methods from the prognostics and condition-monitoring literature against a physics-informed NODE (Neural Ordinary Differential Equation) on two SiC power-cycling campaigns driven by structurally different failure mechanisms, solder-layer fatigue and wire-bond lift-off, under a per-module $k$-fold protocol. The NODE is evaluated under two input regimes that share the rest of the pipeline: the baseline electrical precursors and a set of cumulative thermoelectric features. Every reference method degrades on the wire-bond campaign, with average errors growing and precision decreasing with respect to their performance on the soldered campaign. The NODE fed with the cumulative features keeps its soldered-campaign metrics on both mechanisms, with differences inside the fold-to-fold variance, while the same architecture fed with the baseline precursors falls back to the reference-method cluster. The input representation contributes at least as much as the architecture to failure-mechanism transferability of a health-state estimator.",
+      "authors": [
+        "Mattia Scarpa",
+        "Evgeny Kusmenko",
+        "Francesco Toso",
+        "Mattia Bruschetta",
+        "Ruggero Carli",
+        "Simon Achatz"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY",
+        "cs.LG"
+      ],
+      "published": "2026-08-08T23:28:57+00:00",
+      "link": "https://arxiv.org/pdf/2608.08365v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "health state estimation and failure mechanisms for power modules",
+      "llm_evidence_cn": "功率模块的健康状态评估与失效机制",
+      "llm_evidence": "功率模块的健康状态评估与失效机制",
+      "canonical_evidence": "功率模块的健康状态评估与失效机制",
+      "llm_tldr_en": "Benchmarks health-state estimators for SiC power modules across different failure mechanisms using physics-informed NODEs.",
+      "llm_tldr_cn": "利用物理信息神经常微分方程，针对不同失效机制对碳化硅功率模块的健康状态评估器进行基准测试。",
+      "llm_tldr": "利用物理信息神经常微分方程，针对不同失效机制对碳化硅功率模块的健康状态评估器进行基准测试。",
+      "llm_tags": [
+        "query:pmsm:composite"
+      ],
+      "matched_query_tag": "query:pmsm:composite",
+      "matched_query_text": "Papers central to 三相及双三相永磁同步电机相关研究检索, especially work that connects or combines: m; s; f; Permanent Magnet Synchronous Motor research; dual three-phase permanent magnet synchronous motor control and design; fault-tolerant control of multi-phase motors; recent advances in dual three phase permanent magnet synchronous motor control; fault tolerant strategies for multi phase permanent magnet synchronous motors.",
+      "matched_requirement_id": "req-composite-pmsm",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

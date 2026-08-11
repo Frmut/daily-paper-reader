@@ -6,26 +6,29 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-08-10
-- 运行时间：2026-08-10 20:59:12 UTC
+- 最新运行日期：2026-08-11
+- 运行时间：2026-08-11 20:49:27 UTC
 - 运行状态：成功
-- 本次总论文数：1
+- 本次总论文数：2
 - 精读区：0
-- 速读区：1
+- 速读区：2
 
 ### 今日简报（AI）
-今日聚焦机器人容错运动研究，探索如何通过自适应步态时序应对行走故障。
-核心结论展示了动态调整步态节奏能显著提升机器人在复杂或受损状态下的移动稳定性。
-建议关注强化学习在提升硬件鲁棒性方面的应用，了解机器人如何实现“带伤”灵活行走。
-- 详情：[/202608/10/README](/202608/10/README)
+1) 今日聚焦电力系统故障诊断与SiC功率模块健康评估，探索物理驱动与数据融合的新路径。
+2) 重点推荐物理信息增强的鲁棒故障检测技术，以及SiC模块失效机制特征的可迁移性研究。
+3) 建议关注如何利用混合建模提升复杂电力电子系统的运维可靠性。
+- 详情：[/202608/11/README](/202608/11/README)
 
 ### 精读区论文标签
 - 本次无精读推荐。
 
 ### 速读区论文标签
-1. [Learning Fault-Tolerant Locomotion with Adaptive Gait Timing](/202608/10/2608.07328v1-learning-fault-tolerant-locomotion-with-adaptive-gait-timing)  
+1. [Robust Fault Detection and Classification in Power Systems via Physics-Informed and Data-Driven Learning](/202608/11/2608.08785v1-robust-fault-detection-and-classification-in-power-systems-via-physics-informed-and-data-driven-learning)  
+   标签：评分：7.0/10、query:pmsm
+   evidence：三相电压/电流模式与故障分类
+2. [Failure-Mechanism Transferability of Cumulative-Damage Features for Health State Estimation of SiC Power Modules](/202608/11/2608.08365v1-failure-mechanism-transferability-of-cumulative-damage-features-for-health-state-estimation-of-sic-power-modules)  
    标签：评分：6.0/10、query:pmsm
-   evidence：执行器功率损耗下的容错控制
+   evidence：功率模块的健康状态评估与失效机制
 
 
 <div class="dpr-home-promo-card">
