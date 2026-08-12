@@ -6,29 +6,26 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-08-11
-- 运行时间：2026-08-11 20:49:27 UTC
+- 最新运行日期：2026-08-12
+- 运行时间：2026-08-12 20:52:09 UTC
 - 运行状态：成功
-- 本次总论文数：2
+- 本次总论文数：1
 - 精读区：0
-- 速读区：2
+- 速读区：1
 
 ### 今日简报（AI）
-1) 今日聚焦电力系统故障诊断与SiC功率模块健康评估，探索物理驱动与数据融合的新路径。
-2) 重点推荐物理信息增强的鲁棒故障检测技术，以及SiC模块失效机制特征的可迁移性研究。
-3) 建议关注如何利用混合建模提升复杂电力电子系统的运维可靠性。
-- 详情：[/202608/11/README](/202608/11/README)
+今日聚焦碳化硅功率模块，探索物理信息驱动的状态监测新技术。
+研究强调将物理规律融入监测算法，以提升 SiC 模块在复杂工况下的健康评估精度。
+建议关注电力电子可靠性的读者了解物理增强学习在硬件诊断中的前沿应用。
+- 详情：[/202608/12/README](/202608/12/README)
 
 ### 精读区论文标签
 - 本次无精读推荐。
 
 ### 速读区论文标签
-1. [Robust Fault Detection and Classification in Power Systems via Physics-Informed and Data-Driven Learning](/202608/11/2608.08785v1-robust-fault-detection-and-classification-in-power-systems-via-physics-informed-and-data-driven-learning)  
-   标签：评分：7.0/10、query:pmsm
-   evidence：三相电压/电流模式与故障分类
-2. [Failure-Mechanism Transferability of Cumulative-Damage Features for Health State Estimation of SiC Power Modules](/202608/11/2608.08365v1-failure-mechanism-transferability-of-cumulative-damage-features-for-health-state-estimation-of-sic-power-modules)  
+1. [Physics-Informed Condition Monitoring of SiC Power Modules](/202608/12/2608.08363v2-physics-informed-condition-monitoring-of-sic-power-modules)  
    标签：评分：6.0/10、query:pmsm
-   evidence：功率模块的健康状态评估与失效机制
+   evidence：牵引逆变器中碳化硅功率模块的状态监测
 
 
 <div class="dpr-home-promo-card">

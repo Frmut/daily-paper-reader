@@ -1,6 +1,9 @@
 * <a class="dpr-sidebar-root-link" href="#/">首页</a>
 * <a class="dpr-sidebar-root-link dpr-sidebar-noactive-link" href="javascript:void(0)" data-dpr-hash="#/tutorial/README">使用教程</a>
 * Daily Papers
+  * 2026-08-12 <!--dpr-date:20260812-->
+    * 速读区
+      * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202608/12/2608.08363v2-physics-informed-condition-monitoring-of-sic-power-modules" data-sidebar-item="{&quot;title&quot;: &quot;Physics-Informed Condition Monitoring of SiC Power Modules&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2608.08363v2-physics-informed-condition-monitoring-of-sic-power-modules&quot;, &quot;score&quot;: &quot;6.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;pmsm&quot;}], &quot;evidence&quot;: &quot;牵引逆变器中碳化硅功率模块的状态监测&quot;}">Physics-Informed Condition Monitoring of SiC Power Modules</a>
   * 2026-08-11 <!--dpr-date:20260811-->
     * 速读区
       * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202608/11/2608.08785v1-robust-fault-detection-and-classification-in-power-systems-via-physics-informed-and-data-driven-learning" data-sidebar-item="{&quot;title&quot;: &quot;Robust Fault Detection and Classification in Power Systems via Physics-Informed and Data-Driven Learning&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2608.08785v1-robust-fault-detection-and-classification-in-power-systems-via-physics-informed-and-data-driven-learning&quot;, &quot;score&quot;: &quot;7.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;pmsm&quot;}], &quot;evidence&quot;: &quot;三相电压/电流模式与故障分类&quot;}">Robust Fault Detection and Classification in Power Systems via Physics-Informed and Data-Driven Learning</a>

@@ -1,0 +1,23 @@
+{
+  "label": "2026-08-12",
+  "date": "2026-08-12",
+  "generated_at": "2026-08-12T20:52:16",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202608/12/2608.08363v2-physics-informed-condition-monitoring-of-sic-power-modules",
+      "section": "quick",
+      "title_en": "Physics-Informed Condition Monitoring of SiC Power Modules",
+      "authors": "Mattia Scarpa, Evgeny Kusmenko, Francesco Toso, Mattia Bruschetta, Ruggero Carli, Simon Achatz",
+      "date": "2026-08-08",
+      "pdf": "https://arxiv.org/pdf/2608.08363v2",
+      "score": "6.0",
+      "evidence": "牵引逆变器中碳化硅功率模块的状态监测",
+      "tldr": "本研究针对汽车牵引逆变器中的碳化硅（SiC）功率模块，提出了一种物理信息驱动的状态监测框架。针对烧结封装导致的非单调老化特性，该方法结合了基于结温累积损伤的物理特征、单调性约束正则化以及重尾输出分布。在英飞凌工业数据集上的实验表明，该框架在保持轻量化以适应嵌入式部署的同时，将预测误差降低了约70%，显著提升了健康状态估计的准确性和鲁棒性。",
+      "tags": "query:pmsm",
+      "abstract_en": "Silicon carbide (SiC) power modules are increasingly deployed in automotive traction inverters, where condition monitoring is essential to prevent in-service failures. Despite extensive qualification under AQG 324, no consolidated approach exists for in-field health state estimation: physics-of-failure lifetime models lack real-time applicability, purely data-driven architectures require large labeled datasets and generalize poorly, and physics-informed frameworks remain too demanding for embedded deployment.   We address SiC MOSFET modules assembled with sintered packaging, which suppresses solder degradation and produces aging behavior distinct from previously studied devices. Instead of the smooth quasi-exponential drift of solder-based modules, the forward voltage drop $V_{DS}$ exhibits multi-regime profiles, with wirebond liftoff events introducing abrupt, non-monotonic perturbations.   We propose a condition monitoring framework combining three elements. First, physics-informed features replace raw sensor signals with cumulative damage indicators derived from junction temperature swing, mean junction temperature and a Miner rule accumulator, encoding degradation history in an interpretable form. Second, a monotonicity constraint enforced by gradient penalty regularization embeds the expected degradation direction as a physics-guided prior. Third, a heavy-tailed output distribution replaces the point estimate, giving calibrated uncertainty robust to the out-of-distribution variance introduced by liftoff.   On an industrial power cycling dataset from Infineon Technologies, several neural architectures are compared under a strict cross-validation protocol. The full configuration reduces mean absolute error by approximately 70% over purely data-driven baselines and stays stable across all folds, while remaining lightweight enough for embedded deployment.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
