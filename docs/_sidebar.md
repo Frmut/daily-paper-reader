@@ -1,6 +1,9 @@
 * <a class="dpr-sidebar-root-link" href="#/">首页</a>
 * <a class="dpr-sidebar-root-link dpr-sidebar-noactive-link" href="javascript:void(0)" data-dpr-hash="#/tutorial/README">使用教程</a>
 * Daily Papers
+  * 2026-08-13 <!--dpr-date:20260813-->
+    * 速读区
+      * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202608/13/2608.11857v1-disturbance-observer-based-grid-forming-control-for-unbalanced-grids" data-sidebar-item="{&quot;title&quot;: &quot;Disturbance-Observer-Based Grid-Forming Control for Unbalanced Grids&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2608.11857v1-disturbance-observer-based-grid-forming-control-for-unbalanced-grids&quot;, &quot;score&quot;: &quot;6.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;pmsm&quot;}], &quot;evidence&quot;: &quot;不平衡电网故障下变流器的容错控制&quot;}">Disturbance-Observer-Based Grid-Forming Control for Unbalanced Grids</a>
   * 2026-08-12 <!--dpr-date:20260812-->
     * 速读区
       * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202608/12/2608.08363v2-physics-informed-condition-monitoring-of-sic-power-modules" data-sidebar-item="{&quot;title&quot;: &quot;Physics-Informed Condition Monitoring of SiC Power Modules&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2608.08363v2-physics-informed-condition-monitoring-of-sic-power-modules&quot;, &quot;score&quot;: &quot;6.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;pmsm&quot;}], &quot;evidence&quot;: &quot;牵引逆变器中碳化硅功率模块的状态监测&quot;}">Physics-Informed Condition Monitoring of SiC Power Modules</a>

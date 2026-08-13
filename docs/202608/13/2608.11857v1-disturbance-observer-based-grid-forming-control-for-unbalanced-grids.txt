@@ -1,0 +1,1390 @@
+Title: Disturbance-Observer-Based Grid-Forming Control for Unbalanced Grids
+
+URL Source: https://arxiv.org/pdf/2608.11857v1
+
+Published Time: Thu, 13 Aug 2026 00:43:18 GMT
+
+Number of Pages: 12
+
+Markdown Content:
+> 1
+
+# Disturbance-Observer-Based Grid-Forming Control for Unbalanced Grids 
+
+Juho M¨ a¨ att¨ a, Graduate Student Member, IEEE , Marko Hinkkanen, Fellow, IEEE , Tuure Nurminen, Orcun Karaca, Senior Member, IEEE , Rayane Mourouvin, Member, IEEE ,Jarno Kukkola, and Lennart Harnefors, Fellow, IEEE 
+
+Abstract —This article proposes a grid-forming control method for operation under unbalanced grid-voltage conditions. The method regulates the positive-sequence active power delivered to the grid and actively suppresses the negative-sequence converter voltage, controlling the voltage magnitude to be constant also during unbalanced faults when within the physical limits of the converter. Only the converter current is measured on the AC side, and a disturbance observer is used for synchronization as well as providing integral and resonant action. Estimates for the positive- and negative-sequence grid voltage are obtained from the disturbance observer. A current-limitation scheme for both balanced and unbalanced faults is integrated. Comprehensive sta-bility analysis and tuning guidelines are provided. Experimental results using a 12.5-kVA converter demonstrate that the proposed method can operate during severe balanced and unbalanced faults. 
+
+Index Terms —Current limitation, fault ride-through, grid-forming converter, observer, state feedback, unbalanced fault. 
+
+I. I NTRODUCTION 
+
+# THE INCREASE in the share of converter-interfaced gen-eration has pushed grid operators to publish specifications for grid-forming converters globally [1]–[3]. A common re-quirement for grid-forming converters is operation as a voltage source behind an impedance, and ideally the converter should support the grid by maintaining a purely positive-sequence voltage even during unbalanced grid-voltage conditions [4]– [6]. This entails that the grid-forming converter should allow negative-sequence current to flow [4], [6], [7]. Control methods that consider unbalanced grid-voltage con-ditions often require that measured quantities can be decom-posed into their positive- and negative-sequence components. 
+
+This work has been submitted to the IEEE for possible publication. Copyright may be transferred without notice, after which this version may no longer be accessible. This project was supported by ABB Oy. The authors acknowledge the use of the EPE infrastructure of Aalto University School of Electrical Engineering. Juho M¨ a¨ att¨ a and Marko Hinkkanen are with the Department of Elec-trical Engineering and Automation, Aalto University School of Electri-cal Engineering, 02150 Espoo, Finland (e-mail: juho.k.maatta@aalto.fi; marko.hinkkanen@aalto.fi). Tuure Nurminen and Jarno Kukkola are with ABB Oy Drives, 00380 Helsinki, Finland (e-mail: tuure.nurminen@fi.abb.com; jarno.kukkola1@fi.abb.com). Orcun Karaca is with ABB Corporate Research, 5405 Baden, Switzerland (e-mail: orcun.karaca@ch.abb.com). Rayane Mourouvin is with Aix Marseille Univ, CNRS, LIS, Marseille, France (email: rayane.mourouvin@univ-amu.fr). Lennart Harnefors is with ABB Corporate Research, 72226 V¨ aster˚ as, Sweden (e-mail: lennart.harnefors@se.abb.com). 
+
+This can be achieved with sequence extraction methods, which were originally introduced for grid-following control methods to extend the classical synchronous-reference-frame phase-locked loop. One example of such a method is the decoupled double-synchronous-reference-frame phase-locked loop [8], which uses separate reference frames to obtain the positive-and negative-sequence components. Sequence extraction can also be achieved using band-pass filters, and examples of such methods are the second-order generalized integrator [9] and the multiple complex-coefficient filter phase-locked loop [10]. A review of sequence-extraction methods can be found in [11] and a comparative study in [12]. Examples of grid-forming control methods utilizing such sequence extraction methods can be found in [13]–[20]. A requirement for these sequence extraction methods is that the voltage on the AC side of the converter needs to be measured. As the number of measured signals increases, so does the complexity of the control system since a minimum of two real-valued states (delays or integrators) is required to separate a complex-valued quantity into positive and negative sequences. An alternative approach to sequence extraction is to use a disturbance observer to estimate the positive- and negative-sequence components of an input-equivalent disturbance, e.g., grid voltage. The methods proposed in [21]–[23] are recent ex-amples of grid-forming control methods using such observer-based sequence-extraction methods. The method in [21] uses dual-loop cascade control with an outer voltage-control and inner current-control loop. The method in [22] uses single-loop voltage control, with the ability of switching to a current-control mode. Since [21] and [22] model the LC filter of the converter, the control systems are relatively high-order with ten and twenty (real-valued) state variables, respectively. These methods also measure the capacitor voltage in addition to the converter current. The method in [23] assumes a simpler L fil-ter and requires only the converter current measurement, but it lacks both dynamic sequence separation and a comprehensive stability analysis. Grid faults often cause large currents that should be limited in order to protect the converter hardware. Three common current-limitation methods for grid-forming converters are: uti-lizing a current-control mode [13], [14], [20], [22], [24], [25]; use of virtual impedance [16], [17], [26]–[28]; and limiting the references provided to the grid-forming control method [18], [19], [21], [29]–[32]. A review of current-limitation methods for grid-forming converters can be found in [33]. Limiting the arXiv:2608.11857v1 [eess.SY] 12 Aug 2026 2ic
+
+ejϑc
+
+e−jϑc
+
+uc,ref Feedback correction 
+
+ϑcˆv+c ˆv−
+
+> c
+
+Disturbance observer 
+
+ec
+
+vc,ref 
+
+ˆp+g
+
+pg,ref usc,ref 
+
+isc
+
+ˆvc
+
+L 
+
+> Fig. 1. Proposed control method in grid-forming control mode.
+
+references has the advantage of inherently improving transient stability by providing realizable references [34], [35]. This article proposes a grid-forming control method for un-balanced grid conditions. The method extends the approach of [36] from balanced to unbalanced grids. The control structure is shown in Fig. 1. The main contributions are as follows:  
+
+> •
+
+The proposed grid-forming control method uses, unlike [13]–[22], a disturbance observer to unify synchroniza-tion and estimation of both the positive and negative sequences of the grid voltage. Conventional phase-locked loops and AC-side voltage measurement are thereby avoided. In contrast to [22], the disturbance observer is shared between the grid-forming and current-control modes, thus, reducing the order of the control system so that it requires only seven (real-valued) state variables.  
+
+> •
+
+In contrast to [21], a single-loop controller is used to directly control positive-sequence voltage magnitude and active power. It actively suppresses the negative-sequence converter voltage, allowing the converter to maintain positive-sequence voltage-source characteristics under unbalanced grid conditions, within the physical limits of the converter.  
+
+> •
+
+The method includes a current-limitation strategy for both symmetrical and asymmetrical faults. Unlike [23], where the reference limitation was based on the peri-odic steady-state solution and only the total converter current was controlled, dynamic sequence separation is employed to directly control the positive- and negative-sequence current components in the current-control mode. Active-power reference limitation and sequence-separated current-reference scaling limit the phase currents while preserving the current trajectory.  
+
+> •
+
+Stability analysis and tuning guidelines are presented, yielding explicit stability conditions for the feasible op-erating region. Experimental results on a 12.5-kVA converter demonstrate the operation of the method. The results verify the performance under balanced and unbalanced faults in both strong and very weak grids. The remainder of this paper is organized as follows. Sec-tion II presents the system model and the dynamic sequence separation. Section III details the proposed disturbance-observer-based control method. Section IV provides the small-signal stability analysis. Implementation aspects, including the reference limitation strategy, are discussed in Section V. usc  
+
+> Lisc
+> udc usg
+> Fig. 2. System model in stationary coordinates, indicated by superscript s.
+
+Section VI presents the experimental results, and Section VII concludes the paper. II. S YSTEM MODEL 
+
+A. State and Output Equations 
+
+Complex space vectors are used and per-unit quantities are assumed. Fig. 2 shows the system model, consisting of a voltage-source converter connected to an inductive grid. The total inductance L consists of the filter and grid inductance. In the following, this system is modeled in general coordinates, whose angle is ϑc with respect to the stationary coordinates and which rotates at the angular speed ωc = d ϑc/dt.The dynamics of the converter current are governed by 
+
+L dic
+
+dt = uc − ug − jωcLic (1a) where ic is the converter current and uc is the converter voltage. The grid voltage ug is assumed to consist of both positive-sequence voltage u+g and negative-sequence voltage 
+
+u− 
+
+> g
+
+. Correspondingly, the grid-voltage dynamics are 
+
+du+g
+
+dt = j( ωg − ωc)u+g (1b) 
+
+du−
+
+> g
+
+dt = −j( ωg + ωc)u− 
+
+> g
+
+(1c) 
+
+ug = u+g + u− 
+
+> g
+
+(1d) where ωg is the grid angular frequency. With the adopted per-unit scaling, the instantaneous active power delivered to the grid is pg = Re {ugi∗ 
+
+> c
+
+}. In unbalanced conditions, pg may contain oscillating components. 
+
+B. Augmentation With Dynamic Sequence Separation 
+
+The instantaneous converter current ic depends on the model (1), and its input uc and disturbance ug. In the periodic steady state, omitting the switching harmonics, the converter current (and other space vectors) can be sepa-rated into sequence components, i.e., ic = i+c + i− 
+
+> c
+
+, where 
+
+i+c = i+c ej( ωg −ωc)t+j ϕ+ is the positive-sequence component, 
+
+i− 
+
+> c
+
+= i− 
+
+> c
+
+e−j( ωg +ωc)t+j ϕ− is the negative-sequence component, and the vector magnitudes are marked with non-bold symbols. For control synthesis, it is useful to define quasi-static sequence currents, which are available also during transients. Let us first define a complex low-pass filter for the converter current as 
+
+dif
+
+dt = −(ωg + j ωc)if + ωgic (2a) where if is the filtered current and the filter bandwidth equals the grid angular frequency ωg. Using this filtered current, the 3
+
+quasi-static positive-sequence and negative-sequence currents are defined as [37] 
+
+i+c = ic
+
+1 + j + j if (2b) 
+
+i− 
+
+> c
+
+= ic
+
+1 − j − jif . (2c) These are dynamic output quantities that in the periodic steady state converge to the actual positive- and negative-sequence currents. Note that ic = i+c + i− 
+
+> c
+
+holds also during transients. Using the dynamic sequence separation (2), other quasi-static quantities can be defined. From the grid-forming con-trol perspective, the quasi-static converter voltage vc and its sequence components v+c and v− 
+
+> c
+
+are of particular interest, 
+
+v+c = u+g + j ωgLi+c (2d) 
+
+v− 
+
+> c
+
+= u− 
+
+> g
+
+− jωgLi− 
+
+> c
+
+(2e) 
+
+vc = v+c + v− 
+
+> c
+
+= ug + j ωgL(i+c − i− 
+
+> c
+
+). (2f) Furthermore, the positive-sequence active power is 
+
+p+g = Re u+g (i+c )∗ . (2g) These quantities defined in (2b)–(2g) are used as controlled outputs of the augmented model consisting of (1) and (2). Furthermore, they have a clear physical interpretation in the periodic steady state. 
+
+C. Dynamics of Selected Outputs 
+
+For the purposes of control synthesis and analyses, the dynamics of the selected quasi-static outputs are derived using (1) and (2). The dynamics of the positive-sequence active power p+g and voltage magnitude v+c = |v+c | are 
+
+dp+g
+
+dt = 1
+
+L Re 
+
+ (u+g )∗
+
+1 + j (uc − vc)
+
+
+
+(3a) 
+
+dv+c
+
+dt = ωg
+
+v+c
+
+Re 
+
+ (v+c )∗
+
+1 − j (uc − vc)
+
+
+
+. (3b) Furthermore, the negative-sequence converter-voltage vector has the dynamics 
+
+dv−
+
+> c
+
+dt = ωg
+
+1 + j (uc − vc) − j( ωg + ωc)v− 
+
+> c
+
+. (3c) These equations are convenient when studying the closed-loop dynamics of the control system, as they explicitly show how the control input uc affects the selected outputs. If other outputs are of interest, their dynamics could be derived in a similar manner. III. P ROPOSED CONTROL METHOD 
+
+In this section, the proposed control system is presented. Two control modes are presented: a grid-forming mode, shown in Fig. 1, for regulating positive-sequence active power and converter-voltage magnitude, and a current-control mode for regulating the converter output current. The disturbance ob-server is shared between the control modes. 
+
+A. Disturbance Observer 
+
+A disturbance observer is used to estimate the positive-and negative-sequence components of the grid voltage, to synchronize with the grid, as well as to provide both integral and resonant action to the proposed control method. The disturbance observer can be formulated based on (1) as 
+
+dˆ u+g
+
+dt = j( ωg − ωc)ˆ u+g + ko1 eo (4a) 
+
+dˆ u−
+
+> g
+
+dt = −j( ωg + ωc)ˆ u− 
+
+> g
+
++ ko2 eo (4b) 
+
+eo = uc,ref − ˆug − ˆL dic
+
+dt − jωc ˆLic (4c) where ko1 and ko2 are the observer gains. Estimated quantities are marked with hats. Using (2), the quasi-static voltage estimates are 
+
+ˆv+c = ˆ u+g + j ωg ˆLi+c (4d) 
+
+ˆv− 
+
+> c
+
+= ˆ u− 
+
+> g
+
+− jωg ˆLi− 
+
+> c
+
+(4e) 
+
+ˆvc = ˆ v+c + ˆ v− 
+
+> c
+
+. (4f) The positive-sequence active-power estimate is 
+
+ˆp+g = Re ˆu+g (i+c )∗ (4g) and the positive-sequence voltage-magnitude estimate is ˆv+c =
+
+|ˆv+c |.In the implementation, the direct discrete-time variant of this observer given in the Appendix is used. This improves the performance at low sampling frequencies, as compared to the continuous-time variant used in [23]. 
+
+B. Grid-Forming Control 
+
+The control target in grid-forming mode is to regulate the positive-sequence active power and the positive-sequence converter-voltage magnitude. The grid-forming control law is 
+
+uc,ref = ˆ vc + e+c + e− 
+
+> c
+
+(5a) 
+
+e+c = kp(pg,ref − ˆp+g ) + kv(vc,ref − ˆv+c ) (5b) 
+
+e− 
+
+> c
+
+= −kn ˆv− 
+
+> c
+
+. (5c) where ec = e+c + e− 
+
+> c
+
+is the feedback correction, pg,ref is the active-power reference, vc,ref is the voltage-magnitude reference, and kn = j kn is the purely imaginary negative-sequence converter-voltage feedback gain with kn > 0.Based on the selected output dynamics (3), the term e+c
+
+is used to regulate the positive-sequence active power and converter-voltage magnitude. The additional term e− 
+
+> c
+
+provides feedback from the estimated negative-sequence converter volt-age ˆv− 
+
+> c
+
+, which is zero when the converter voltage contains no negative-sequence component. Thus, e− 
+
+> c
+
+can be interpreted as proportional feedback control of the negative-sequence converter voltage with zero reference. As shown in the following section, the positive-sequence active-power and voltage-magnitude channels can be fully decoupled with the complex gains 
+
+kp = kp
+
+(1 + j)ˆ v+c
+
+|ˆv+c | kv = kv
+
+(1 − j)ˆ u+g
+
+|ˆu+g | . (6) 4
+
+Alternatively, one-way decoupling can be used. The gain selection 
+
+kp = kp
+
+ˆv+c
+
+|ˆv+c | kv = kv
+
+(1 − j)ˆ u+g
+
+|ˆu+g | (7) decouples the active-power-control channel from the voltage-control channel. The opposite one-way decoupling is obtained with 
+
+kp = kp
+
+(1 + j)ˆ v+c
+
+|ˆv+c | kv = kv
+
+ˆv+c
+
+|ˆv+c | (8) which decouples the voltage-control channel from the active-power-control channel. The last gain alternative (8) is used in the experimental results of this paper. 
+
+C. Transparent Current Control 
+
+The current-control mode regulates the converter output cur-rent, and is mainly used for the purpose of current limitation. A transparent current controller can be defined as 
+
+uc,ref = ˆ vc + kc
+
+¯i+c,ref + ¯i− 
+
+> c,ref
+
+− ic
+
+
+
+(9a) where kc = αc ˆL is the current-control gain, αc is the current-control bandwidth, and ¯i+c,ref and ¯i− 
+
+> c,ref
+
+are the limited current references for the positive and negative sequences, respectively. The current-reference limitation is considered an implementation aspect and is thus detailed in Section V. The unlimited current references are 
+
+i+ref = i+c + 1
+
+kc
+
+e+c i− 
+
+> ref
+
+= i− 
+
+> c
+
++ 1
+
+kc
+
+e− 
+
+> c
+
+. (9b) If the converter current stays below its allowed steady-state maximum value, the current-reference limiter passes the ref-erences through unchanged, i.e. ¯i+c,ref = i+ref and ¯i− 
+
+> c,ref
+
+= i−
+
+> ref
+
+hold. Thus, the control law (5) is automatically restored and the converter operates in grid-forming mode. IV. S TABILITY ANALYSIS 
+
+For analysis purposes, a linearized model for the closed-loop system consisting of (1), (2), (4), and (5) is derived. The model is linearized around an operating point in the periodic steady state. Without loss of generality, coordinates are assumed to rotate at the grid angular frequency, ωc = ωg, in this section. Furthermore, accurate converter-voltage production, uc,ref =
+
+uc, and an accurate inductance estimate ˆL = L are assumed. A preceding ∆ marks small-signal deviation about the operating-point quantity, marked with a subscript 0. Estimation errors are marked with a tilde. 
+
+A. Estimation-Error Dynamics 
+
+Using the system model (1) and the disturbance ob-server (4), the estimation-error dynamics of the positive- and negative-sequence grid voltage become 
+
+d∆˜ u+g
+
+dt = −ko1 
+
+ ∆˜ u+g + ∆˜ u−
+
+> g
+
+ (10a) 
+
+d∆˜ u−
+
+> g
+
+dt = −ko2 ∆˜ u+g − (ko2 + 2j ωg) ∆˜ u− 
+
+> g
+
+(10b) where ∆˜ u+g = ∆ u+g − ∆ˆ u+g is the estimation error of the positive-sequence grid voltage and other estimation errors are defined similarly. It can be seen that there is no coupling from the control law to the observer estimation error. Consequently, the estimation error acts like an external disturbance from the viewpoint of the control system. The dynamics (10) result in the characteristic equation 
+
+s2 + ( ko1 + ko2 + 2j ωg) s + 2j ωgko1 = 0 . (11) It can be seen that the poles can be placed to desired pole locations through the observer gains. 
+
+B. Closed-Loop Control Dynamics 1) Linearized Model: Since the estimation errors act like external disturbances to the control system, they do not affect the pole locations and are omitted in the following analysis. The linearized closed-loop control dynamics are derived from the output dynamics (3) [which originate from (1) and (2)] and the control law (5): 
+
+d∆ p+g
+
+dt = αp
+
+ ∆pg,ref − ∆p+g
+
+ + βpv 
+
+ ∆vc,ref − ∆v+c
+
+
+
+− Re βpn ∆v− 
+
+> c
+
+(12a) 
+
+d∆ v+c
+
+dt = αv
+
+ ∆vc,ref − ∆v+c
+
+ + βvp 
+
+ ∆pg,ref − ∆p+g
+
+
+
+− Re βvn ∆v− 
+
+> c
+
+(12b) 
+
+d∆ v−
+
+> c
+
+dt = −αn∆v− 
+
+> c
+
++ βnp 
+
+ ∆pg,ref − ∆p+g
+
+
+
++ βnv 
+
+ ∆vc,ref − ∆v+c
+
+ . (12c) The coefficients of the positive-sequence active-power and voltage control dynamics are given by 
+
+αp = 1
+
+L Re 
+
+( (u+g0 )∗kp0 
+
+1 + j 
+
+)
+
+αv = ωg
+
+|v+c0 | Re 
+
+ (v+c0 )∗kv0 
+
+1 − j
+
+
+
+βpv = 1
+
+L Re 
+
+( (u+g0 )∗kv0 
+
+1 + j 
+
+)
+
+βvp = ωg
+
+|v+c0 | Re 
+
+ (v+c0 )∗kp0 
+
+1 − j
+
+
+
+βpn = 1
+
+L
+
+kn(u+g0 )∗
+
+1 + j βvn = ωg
+
+|v+c0 |
+
+kn(v+c0 )∗
+
+1 − j . (13a) The coefficients of the negative-sequence voltage dynamics are 
+
+αn = ωg
+
+kn + j(4 − kn)2
+
+βnp = ωgkp0 
+
+1 + j βnv = ωgkv0 
+
+1 + j . (13b) The coefficients αp and αv can be interpreted as the positive-sequence active-power and voltage control band-widths, respectively. The coefficients βpv and βvp represent the coupling between the positive-sequence active-power and voltage control channels, while the other coupling factors represent the coupling from the negative-sequence voltage to the positive-sequence active power and voltage, respectively, and to the negative-sequence voltage itself. With kn > 0,the negative-sequence voltage feedback enforces v− 
+
+> c0
+
+= 0 .Correspondingly, vc0 = v+c0 also holds. 5
+
+2) Maximum Power Transfer Boundary: Based on (2d) and (2g), the positive-sequence active power can be expressed as 
+
+p+g0 = 1
+
+ωgL Im v+c0 (u+g0 )∗ = |v+c0 || u+g0 |
+
+ωgL sin δ0 (14) where δ0 = ∠v+c0 − ∠u+g0 is the load angle. Below the maximum power-transfer boundary, the load angle is −90 ◦ <δ0 < 90 ◦, corresponding to the condition Re {v+c0 (u+g0 )∗} > 0.This maximum power-transfer condition is independent of the control law and holds for any steady-state operating point. 
+
+3) Decoupling Gains: Inserting the gain selection (6) into the coefficients in (13) shows that the positive-sequence con-trol channels are decoupled, i.e., βpv = 0 and βvp = 0 . The corresponding control bandwidths are 
+
+αp = kp Re v+c0 (u+g0 )∗
+
+L |v+c0 | αv = kvωg Re v+c0 (u+g0 )∗
+
+|u+g0 || v+c0 |
+
+(15) where Re {u+g0 v∗
+
+> c0
+
+} > 0 holds, as mentioned above. With the partial decoupling gains (8), the condition βvp =0 holds. The active-power-control bandwidth αp remains the same as in (15) while the voltage-control bandwidth becomes 
+
+αv = kvωg/2. The other coefficients are also obtained from (13). 
+
+4) Stability Conditions: Let us first consider the case with-out the negative-sequence feedback, kn = 0 . With the partial decoupling gains (8), for which βvp = 0 , the characteristic polynomial of the fourth-order linearized closed-loop system (12) can be factored as 
+
+(s + αp)( s + αv)( s2 + 4 ω2g ) = 0 . (16) The system has stable real poles at −αp and −αv, correspond-ing to the positive-sequence dynamics. However, the system also has conjugate poles on the imaginary axis at ±j2 ωg. These poles indicate that the system lacks damping for the negative-sequence dynamics, which would result in sustained oscilla-tions at twice the grid frequency in synchronous coordinates. To introduce the required damping, the negative-sequence feedback gain is chosen as a purely imaginary value kn = j kn,with kn > 0. The characteristic polynomial of the general fourth-order system can be written as 
+
+s4 + c3s3 + c2s2 + c1s + c0 = 0 . (17a) Based on (12), the coefficients are 
+
+c3 = αp + αv + knωg (17b) 
+
+c2 = αpαv + knωg
+
+2 (αp + σ) + 
+
+
+
+4 + 2 kn + k2n
+
+2
+
+
+
+ω2g (17c) 
+
+c1 = ω2g [4( αp + αv) + kn (αp + 2 αv − σ)] (17d) 
+
+c0 = 4 ω2g αpαv (17e) where the auxiliary parameter σ = kpωgp+g0 /|v+c0 | is propor-tional to the positive-sequence active power. The stability conditions are obtained by applying the Routh– Hurwitz criterion to the characteristic polynomial (17). First, all coefficients must be positive. An additional stability con-dition c3c2c1 > c 21 + c23c0 originates from the Routh array. A −2 −1 0                              
+
+> Real axis (p.u.)
+> 0123
+> Imaginary axis (p.u.)
+> L= 0 .1p.u.
+> L= 1 .0p.u.
+> (a) −2−10
+> Real axis (p.u.)
+> 0123
+> Imaginary axis (p.u.)
+> p+g0 =−2p.u.
+> p+g0 = 2 p.u. (b) Fig. 3. Poles of the closed-loop system: (a) inductance Lvaries between 0.1 and 1 p.u.; (b) active power p+g0 varies between −2 and 2 p.u. The grid voltage magnitude ug0 and grid frequency ωgare both 1p.u. In (a), the active power is p+g0 = 1 p.u., while in (b) the inductance is L= 0 .2p.u. The lower half-plane is only partly shown due to pole symmetry.
+
+necessary stability condition originates from c1 > 0. In the inverter mode with high active power ( σ > α p + 2 αv), the imaginary gain is upper-bounded by 
+
+kn < 4( αp + αv)
+
+σ − αp − 2αv
+
+. (18) This stability condition means that the gain kn has a strict upper limit only when operating in the inverter mode with a high active power. In the rectifier mode, or at a lower active power in the inverter mode ( σ < α p + 2 αv), the gain kn is not limited by this condition. Thus, the proposed imaginary gain allows a wide stable operating region. To illustrate the stability of the closed-loop system, the poles are numerically calculated. Fig. 3 shows the poles as the inductance and operating-point active power vary. The grid-voltage magnitude and frequency are ug0 = 1 p.u. and ωg = 1 p.u., respectively. The control parameters are 
+
+kp = 0 .2 p.u., kv = 1 , and kn = 2 , and the partial decoupling gains (8) are used. The selection of kp and kv is based on the tuning guidelines presented in [36]. The same tuning is used in the experimental results. Fig. 3(a) shows the poles while the inductance L varies between 0.1 and 1 p.u. The active power is p+g0 = 1 p.u. As the inductance increases, the system approaches the stability limit and becomes marginally stable exactly at L = 1 p.u. This coincides with the theoretical limit for the maximum power transfer. Fig. 3(b) shows the poles while the active power varies between −2 and 2 p.u., covering both the rectifier and inverter modes. The inductance is L = 0 .2 p.u. The operating point clearly affects the pole locations, but they safely remain in the left half-plane. These results confirm that the system maintains stability across a wide range of operating conditions. V. I MPLEMENTATION ASPECTS 
+
+A. Reference Limitation 
+
+Reference limitation is used together with transparent cur-rent control to limit the converter current to allowable limits. 6
+
+The aim is to maintain grid-forming operation, i.e. positive-sequence voltage-source behavior, and to permit the flow of negative-sequence current during unbalanced faults. This is achieved by limiting the active-power reference to a realizable level during faults, and by separately limiting the positive- and negative-sequence current references. 
+
+1) Active-Power Reference: To prioritize reactive power and negative-sequence current during faults, the maximum allowable active power pmax is first computed as 
+
+i+q = Im 
+
+( u+c,ref (i+c )∗
+
+|u+c,ref |
+
+)
+
+(19a) 
+
+i2d,lim =  id,max − | i− 
+
+> c
+
+|2 −  i+q
+
+2 (19b) 
+
+pmax = αl
+
+s + αl
+
+|u+c,ref |
+
+r
+
+min 
+
+h
+
+max  i2d,lim , 0, i 2d,max 
+
+i
+
+(19c) where i+q is the positive-sequence reactive current, id,max 
+
+is the maximum active current, and αl is the power-limiter bandwidth. The limited active-power reference is given by 
+
+¯pg,ref = sign( pg,ref ) min( |pg,ref |, p max ). (19d) 
+
+2) Current Reference: An elliptical current limiter [26], [38] is used to limit the steady-state converter phase currents to the maximum allowable value. First, the maximum phase current iph ,max is computed from the unlimited current refer-ences as 
+
+φ = max 
+
+> n∈{− 1,0,1}
+
+
+
+cos 
+
+h
+
+arg( i+ref ejϑc ) + arg( i− 
+
+> ref
+
+ejϑc )+ 2 nπ/ 3
+
+i
+
+(20a) 
+
+iph ,max =
+
+q
+
+|i+ref |2 + |i− 
+
+> ref
+
+|2 + 2 |i+ref || i− 
+
+> ref
+
+|φ (20b) where arg( ·) is the argument of a complex number. The positive- and negative-sequence current references are then separately limited as 
+
+"¯i+c,ref 
+
+¯i−
+
+> c,ref
+
+#
+
+= imax 
+
+max ( iph ,max , i max )
+
+i+ref 
+
+i−
+
+> ref
+
+
+
+(20c) where imax is the maximum allowable steady-state converter phase current. The elliptical trajectory of the current-reference vector is preserved by scaling both sequence components with the same dynamic factor. Consequently, no additional current harmonics are injected into the grid. 
+
+B. Experimental Setup 
+
+Fig. 4 shows the laboratory setup and Table I provides its pa-rameters. The experimental setup comprises two back-to-back 12.5-kVA three-phase converters and a 50-kVA four-quadrant programmable grid emulator (Regatron TopCon TC.ACS). The test converter can be equipped with either an L or LCL filter. An impedance cabinet contains additional inductors for emulating various grid strengths. A dSPACE MicroLabBox prototyping unit controls the converter and gathers measure-ment data. Test system 
+
+dSPACE control system 
+
+LCL Grid emulator Source 400 V 50 Hz 
+
+iabc c
+
+udc 
+
+Grid 
+
+L/LCL            
+
+> (a)
+> (b) Fig. 4. Experimental setup: (a) circuit diagram; (b) photograph. The impedance cabinet contains additional inductors for emulating weak grids. TABLE I EXPERIMENTAL SETUP DATA
+
+Parameter Actual value Per-unit value Rated voltage p2/3 · 400 V 1 p.u. Rated current √2 · 18 A 1 p.u. Rated power 12 .5 kVA 1 p.u. Rated frequency 50 Hz 1 p.u. DC-bus voltage 660 V 2 p.u. Switching frequency 4/8 kHz 80 /160 p.u. Sampling frequency 8/16 kHz 160 /320 p.u. L filter inductance 6.3 mH 0.15 p.u. LCL converter-side inductance 3.3 mH 0.08 p.u. LCL grid-side inductance 3.0 mH 0.07 p.u. LCL capacitance 8.8 μF 0.04 p.u. 
+
+The proposed control method comprises the control system (4)–(9) and the current limitation (20). The disturbance ob-server is implemented according to (23). The corresponding continuous-time observer poles are placed at −(1 + j) ωg and 
+
+−(0 .58 + j) ωg. Table II lists the control gains and other controller parameters. Experiments are conducted with both an L and an LCL filter, and the same inductance estimate is used for both filters. The same inductance estimate is also used in the strong and weak grids to study the effects of inductance estimation errors. In the experiments using the L filter, the value of L refers to the total inductance comprising the filter and grid inductances. With the LCL filter, the value of Lg
+
+refers to the sum of the grid-side filter inductance and grid inductance. Switching frequencies of 4 kHz and 8 kHz are used with the L and LCL filters, respectively. With the LCL filter, the 7                   
+
+> TABLE II CONTROLLER PARAMETERS
+> Parameter Symbol Value Maximum current imax 1.3 p.u. Maximum active current id,max 1.1 p.u. Power-control gain kp0.2 p.u. Voltage-control gain kv1Negative-sequence voltage gain kn2Inductance estimate ˆL0.2 p.u. Current-control bandwidth αc6 p.u. Power-limitation bandwidth αl1 p.u.
+
+higher switching frequency is chosen to increase the margin between the switching frequency and the resonance frequency of the LCL filter, which is around 1.3 kHz. In both cases, the sampling frequency is twice the switching frequency. VI. E XPERIMENTAL RESULTS 
+
+A. Balanced Fault 
+
+Figs. 5 and 6 show the converter operating during a balanced fault with the L and the LCL filter, respectively. The three-phase quantities are marked with the subscripts a, b, and c. The grid-voltage magnitude is lowered from 1 p.u. to 0.5 p.u. at t =0.1 s and raised back to 1 p.u. at t = 0 .3 s . Under a strong grid, a constant converter voltage cannot be maintained since this would imply very large currents. Thus, the converter remains in the current-control mode for the duration of the fault, after which grid-forming operation is resumed. The offset between the active-power reference and the positive-sequence active power is due to the converter being in current-control mode. Under a weak grid, the converter switches back to the grid-forming mode when the reference limiter provides a realizable active-power reference, thus supporting the system voltage while maintaining the current magnitude within permissible limits. The results obtained with the L and LCL filters appear to be nearly identical. 
+
+B. Unbalanced Fault 
+
+Figs. 7 and 8 show the converter operating during an unbalanced fault with the L and the LCL filter, respectively. A single-phase fault is generated by lowering the a-phase grid-voltage magnitude to ug,a = 0.5 p.u. at t = 0.1 s . The voltage magnitude is raised to ug,a = 0 .75 p.u. at t = 0 .2 s 
+
+and to ug,a = 1 p.u. at t = 0.3 s . During the deeper fault under a strong grid, current-control mode is activated and a purely positive-sequence converter voltage cannot be maintained because of the maximum phase current limits. This can be seen as an oscillation in the converter-voltage magnitude ¯uc,ref . When the phase-a voltage rises to 0.75 p.u., the converter-voltage magnitude remains constant. Under a weak grid, grid-forming operation is maintained after the initial transient at t = 0 .1 s and a constant converter-voltage magnitude is maintained in the periodic steady state. This demonstrates that a purely positive-sequence converter voltage can be maintained during unbalanced faults as well, provided that the current limit is not reached. Once again, there is no discernible difference between the results obtained with the L and LCL filters. 
+
+C. Active-Power Reference Tracking 
+
+Figs. 9 and 10 show the active-power-reference tracking with the L and the LCL filter, respectively. The active-power reference is changed in steps between 1 and −1 p.u. The limited active-power reference ¯pg,ref is also shown. There is slight overshoot in the active power under a strong grid with the L filter but not with the LCL filter. With the LCL filter, the offset between the positive-sequence active power ˆp+g and the active power pg measured from the grid voltage is slightly larger than in the L-filter case. Both can be attributed to the LCL filter having slightly higher resistance compared to the L filter. The proposed method achieves good active-power-reference tracking in both strong and weak grids while the inductance estimate remains the same in both cases, showing excellent robustness against inductance estimation error. VII. C ONCLUSIONS 
+
+A grid-forming control method for unbalanced grid-voltage conditions was proposed. The method uses a disturbance ob-server to unify synchronization and estimation of positive and negative sequences of the grid voltage, requiring no AC-side voltage measurement. Additionally, a current-control mode introduced to ensure safe operation during faults. A linearized small-signal model of the control system was derived to show the stability of the proposed method in a wide operating region. Experimental results demonstrate that the proposed method successfully maintains the desired positive-sequence converter voltage while allowed by the physical limits of the converter, while strictly respecting the current limits under both balanced and unbalanced faults. Furthermore, active-power reference tracking performs reliably in strong and weak grids, exhibit-ing excellent robustness against severe inductance estimation errors. Finally, the control method is shown to function ef-fectively with an LCL filter, despite the control design being based on a simpler L-filter model. APPENDIX 
+
+DIRECT DISCRETE -T IME DISTURBANCE OBSERVER 
+
+First, the exact zero-order hold-equivalent model is derived. Then, the discrete-time variant of the disturbance observer (4) is designed, using the approach in [39]. 
+
+A. Exact Hold-Equivalent Model 
+
+The hold-equivalent model of (1) is 
+
+ic(k+1) = ϕi c(k) + γcuc(k)+ γ+g u+g (k) + γ− 
+
+> g
+
+u− 
+
+> g
+
+(k) (21a) 
+
+u+g (k+1) = ϕ+g u+g (k) (21b) 
+
+u− 
+
+> g
+
+(k+1) = ϕ− 
+
+> g
+
+u− 
+
+> g
+
+(k) (21c) where ϕ = e −jωcTs , ϕ+g = ϕejωg Ts , and ϕ− 
+
+> g
+
+= ϕe−jωg Ts are the state transition coefficients, and Ts is the sampling period. 8−2
+
+−1012
+
+> Power (p.u.)
+
+p¯gref 
+
+pˆg+
+
+pg
+
+qg
+
+0.00.51.01.5
+
+> Voltage (p.u.)
+
+ug
+
+vˆc+
+
+u¯c,ref 
+
+v¯c,ref 
+
+0.0 0.1 0.2 0.3 0.4
+
+Time (s) 
+
+−2
+
+−1012
+
+> Current (p.u.)
+
+ic,a
+
+ic,b
+
+ic,c
+
+imax 
+
+(a) −2
+
+−1012
+
+> Power (p.u.)
+
+p¯gref 
+
+pˆg+
+
+pg
+
+qg
+
+0.00.51.01.5
+
+> Voltage (p.u.)
+
+ug
+
+vˆc+
+
+u¯c,ref 
+
+v¯c,ref 
+
+0.0 0.1 0.2 0.3 0.4
+
+Time (s) 
+
+−2
+
+−1012
+
+> Current (p.u.)
+
+ic,a
+
+ic,b
+
+ic,c
+
+imax 
+
+(b) Fig. 5. Experimental results with an L filter for a balanced fault in: (a) strong grid L = 0 .15 p.u.; (b) weak grid L = 0 .77 p.u. The grid-voltage magnitude is ug = 0 .5 p.u. during the fault. 
+
+In these expressions, ωc is assumed constant over the sampling period. The input coefficient for the converter voltage is 
+
+γc = 1
+
+L
+
+Z Ts
+
+0
+
+e−jωcτ e−jωc(Ts−τ )dτ = Tsϕ
+
+L (21d) where the converter voltage uc is assumed constant over the sampling period in stationary coordinates. The input coeffi-−2
+
+−1012
+
+> Power (p.u.)
+
+p¯gref 
+
+pˆg+
+
+pg
+
+qg
+
+0.00.51.01.5
+
+> Voltage (p.u.)
+
+ug
+
+vˆc+
+
+u¯c,ref 
+
+v¯c,ref 
+
+0.0 0.1 0.2 0.3 0.4
+
+Time (s) 
+
+−2
+
+−1012
+
+> Current (p.u.)
+
+ic,a
+
+ic,b
+
+ic,c
+
+imax 
+
+(a) −2
+
+−1012
+
+> Power (p.u.)
+
+p¯gref 
+
+pˆg+
+
+pg
+
+qg
+
+0.00.51.01.5
+
+> Voltage (p.u.)
+
+ug
+
+vˆc+
+
+u¯c,ref 
+
+v¯c,ref 
+
+0.0 0.1 0.2 0.3 0.4
+
+Time (s) 
+
+−2
+
+−1012
+
+> Current (p.u.)
+
+ic,a
+
+ic,b
+
+ic,c
+
+imax 
+
+(b) Fig. 6. Experimental results with an LCL filter for a balanced fault in: (a) strong grid Lg = 0 .07 p.u.; (b) weak grid Lg = 0 .7 p.u. The grid-voltage magnitude is ug = 0 .5 p.u. during the fault. 
+
+cient for the positive-sequence voltage is 
+
+γ+g = − 1
+
+L
+
+Z Ts
+
+0
+
+e−jωcτ ej( ωg −ωc)( Ts−τ )dτ = ϕ 1 − ejωg Ts
+
+jωgL
+
+(21e) where the voltage u+g is assumed to rotate at constant angular speed ωg with respect to stationary coordinates over the sam-pling period. The input coefficient for the negative-sequence 9−2
+
+−1012
+
+> Power (p.u.)
+
+p¯gref 
+
+pˆg+
+
+pg
+
+qg
+
+0.00.51.01.5
+
+> Voltage (p.u.)
+
+ug
+
+vˆc+
+
+u¯c,ref 
+
+v¯c,ref 
+
+0.0 0.1 0.2 0.3 0.4
+
+Time (s) 
+
+−2
+
+−1012
+
+> Current (p.u.)
+
+ic,a
+
+ic,b
+
+ic,c
+
+imax 
+
+(a) −2
+
+−1012
+
+> Power (p.u.)
+
+p¯gref 
+
+pˆg+
+
+pg
+
+qg
+
+0.00.51.01.5
+
+> Voltage (p.u.)
+
+ug
+
+vˆc+
+
+u¯c,ref 
+
+v¯c,ref 
+
+0.0 0.1 0.2 0.3 0.4
+
+Time (s) 
+
+−2
+
+−1012
+
+> Current (p.u.)
+
+ic,a
+
+ic,b
+
+ic,c
+
+imax 
+
+(b) Fig. 7. Experimental results with an L filter for an unbalanced fault in: (a) strong grid L = 0 .15 p.u.; (b) weak grid L = 0 .77 p.u. Two different fault levels with the a-phase grid-voltage magnitude at ug,a = 0 .5 p.u. and 
+
+ug,a = 0 .75 p.u. are shown. 
+
+voltage is 
+
+γ−
+
+g = − 1
+
+L
+
+Z Ts
+
+0
+
+e−jωcτ e−j( ωg +ωc)( Ts−τ )dτ = ϕ e−jωg Ts − 1jωgL
+
+(21f) where the voltage u−
+
+g is assumed to rotate at constant angular speed −ωg with respect to stationary coordinates over the sampling period. Finally, the model for the one-sampling-−2
+
+−1012
+
+> Power (p.u.)
+
+p¯gref 
+
+pˆg+
+
+pg
+
+qg
+
+0.00.51.01.5
+
+> Voltage (p.u.)
+
+ug
+
+vˆc+
+
+u¯c,ref 
+
+v¯c,ref 
+
+0.0 0.1 0.2 0.3 0.4
+
+Time (s) 
+
+−2
+
+−1012
+
+> Current (p.u.)
+
+ic,a
+
+ic,b
+
+ic,c
+
+imax 
+
+(a) −2
+
+−1012
+
+> Power (p.u.)
+
+p¯gref 
+
+pˆg+
+
+pg
+
+qg
+
+0.00.51.01.5
+
+> Voltage (p.u.)
+
+ug
+
+vˆc+
+
+u¯c,ref 
+
+v¯c,ref 
+
+0.0 0.1 0.2 0.3 0.4
+
+Time (s) 
+
+−2
+
+−1012
+
+> Current (p.u.)
+
+ic,a
+
+ic,b
+
+ic,c
+
+imax 
+
+(b) Fig. 8. Experimental results with an LCL filter for an unbalanced fault in: (a) strong grid Lg = 0 .07 p.u.; (b) weak grid Lg = 0 .7 p.u. Two different fault levels with the a-phase grid-voltage magnitude at ug,a = 0 .5 p.u. and 
+
+ug,a = 0 .75 p.u. are shown. 
+
+period computational delay is 
+
+uc(k) = ϕu c,ref (k − 1) . (22) If the angular speed ωc of the coordinate system is constant, e.g., ωc = ωg, this discrete model is very simple since all the coefficients are constant complex numbers. 10 −2        
+
+> −1012
+> Power (p.u.)
+> p¯gref
+> pˆg+
+> pg
+> qg
+> 0.00.51.01.5
+> Voltage (p.u.)
+> ug
+> vˆc+
+> u¯c,ref
+> v¯c,ref
+> 0.00.10.20.30.40.50.60.70.8
+> Time (s)
+> −2
+> −1012
+> Current (p.u.)
+> ic,a
+> ic,b
+> ic,c
+> imax
+
+(a) −2         
+
+> −1012
+> Power (p.u.)
+> p¯gref
+> pˆg+
+> pg
+> qg
+> 0.00.51.01.5
+> Voltage (p.u.)
+> ug
+> vˆc+
+> u¯c,ref
+> v¯c,ref
+> 0.00.10.20.30.40.50.60.70.8
+> Time (s)
+> −2
+> −1012
+> Current (p.u.)
+> ic,a
+> ic,b
+> ic,c
+> imax
+
+(b) Fig. 9. Experimental results with an L filter and active-power reference step changes in: (a) strong grid L = 0 .15 p.u.; (b) weak grid L = 0 .77 p.u. The active-power reference is changed stepwise: pg,ref = 1 p.u. at t = 0 .2 s ; pg,ref = 0 p.u. at t = 0 .35 s ; pg,ref = −1 p.u. at t = 0 .5 s ; pg,ref = 0 p.u. at 
+
+t = 0 .65 s . The limited active-power reference ¯pg,ref is shown. 
+
+B. Disturbance Observer 
+
+Based on the hold-equivalent model (21), the discrete-variant of the disturbance observer (4) is formulated as 
+
+ˆu+g (k + 1) = ϕ+g ˆu+g (k) + k+o eo(k) (23a) 
+
+ˆu− 
+
+> g
+
+(k + 1) = ϕ− 
+
+> g
+
+ˆu− 
+
+> g
+
+(k) + k− 
+
+> o
+
+eo(k) (23b) where k+o and k− 
+
+> o
+
+are the discrete-time observer gains. The correction term is 
+
+eo(k) = ic(k) − ϕi c(k − 1) − ˆγcuc(k − 1) 
+
+− ˆγ+g ˆu+g (k − 1) − ˆγ− 
+
+> g
+
+ˆu− 
+
+> g
+
+(k − 1) (23c) where the hat for the input coefficients indicates that they are computed based on the inductance estimate ˆL. The computa-tional delay is taken into account using (22). From (21) and (23), the second-order characteristic equation for the estimation dynamics can be derived. The observer gains 
+
+k+o and k− 
+
+> o
+
+can be solved from the characteristic equation such that the observer poles are located at desired locations inside the unit circle. The gains can be selected based on desired continuous-time pole locations and pole matching as 
+
+pz = e psTs , where pz is the discrete-time pole and ps is the corresponding continuous-time pole. REFERENCES [1] Australian Energy Market Operator Limited, “Volun-tary specification for grid-forming inverters,” 2023. [On-line]. Available: https://www.aemo.com.au/-/media/files/initiatives/ primary-frequency-response/2023/gfm-voluntary-spec.pdf [2] National Energy System Operator, “The grid code,” 2026. [Online]. Available: https://www.neso.energy/industry-information/ codes/grid-code-gc/grid-code-documents [3] Fingrid, “Grid code specifications for grid en-ergy storage systems,” Jan. 2025. [Online]. Avail-able: https://www.fingrid.fi/en/grid/grid-connection-agreement-phases/ grid-code-specifications/grid-energy-storage-systems/ [4] ——, “Specific study requirements for grid en-ergy storage systems,” 2023. [Online]. Avail-able: https://www.fingrid.fi/en/grid/grid-connection-agreement-phases/ grid-code-specifications/grid-energy-storage-systems/ [5] National Grid Electricity System Operator Limited, “Great Britain grid forming best practice guide,” 2023. [Online]. Available: https: //www.neso.energy/document/278491/download [6] UNIFI Consortium, “UNIFI specifications for grid-forming inverter-based resources–version 3,” UNIFI-2026-2-1, Tech. Rep., Jan. 2026. [Online]. Available: https://docs.nlr.gov/docs/fy26osti/98381.pdf [7] European Network of Transmission System Operators for Electricity, “Grid forming capability of power park modules,” Oct. 2025. [Online]. Available: https://eepublicdownloads.blob.core.windows.net/public-cdn-container/ clean-documents/Reports/2025/TG GFC Version 2.pdf [8] P. Rodriguez, J. Pou, J. Bergas, J. I. Candela, R. P. Burgos, and D. Boroyevich, “Decoupled double synchronous reference frame PLL for power converters control,” IEEE Trans. Power Electron. , vol. 22, no. 2, pp. 584–592, 2007. [9] P. Rodr´ ıguez, A. Luna, I. Candela, R. Mujal, R. Teodorescu, and F. Blaabjerg, “Multiresonant frequency-locked loop for grid synchroniza-tion of power converters under distorted grid conditions,” IEEE Trans. Ind. Electron. , vol. 58, no. 1, pp. 127–138, 2011. [10] X. Guo, W. Wu, and Z. Chen, “Multiple-complex coefficient-filter-based phase-locked loop and synchronization technique for three-phase grid-interfaced converters in distributed utility networks,” IEEE Trans. Ind. Electron. , vol. 58, no. 4, pp. 1194–1204, 2011. [11] Z. Xin, R. Zhao, P. Mattavelli, P. C. Loh, and F. Blaabjerg, “Re-investigation of generalized integrator based filters from a first-order-system perspective,” IEEE Access , vol. 4, pp. 7131–7144, 2016. [12] A. Meligy, T. Qoria, and I. Colak, “Assessment of sequence extraction methods applied to MMC-SDBC STATCOM under distorted grid con-ditions,” IEEE Trans. Power Del. , vol. 37, no. 6, pp. 4923–4932, 2022. [13] R. Rosso, S. Engelken, and M. Liserre, “On the implementation of an FRT strategy for grid-forming converters under symmetrical and asymmetrical grid faults,” IEEE Trans. Ind. Appl. , vol. 57, no. 5, pp. 4385–4397, 2021. 11 −2        
+
+> −1012
+> Power (p.u.)
+> p¯gref
+> pˆg+
+> pg
+> qg
+> 0.00.51.01.5
+> Voltage (p.u.)
+> ug
+> vˆc+
+> u¯c,ref
+> v¯c,ref
+> 0.00.10.20.30.40.50.60.70.8
+> Time (s)
+> −2
+> −1012
+> Current (p.u.)
+> ic,a
+> ic,b
+> ic,c
+> imax
+
+(a) −2         
+
+> −1012
+> Power (p.u.)
+> p¯gref
+> pˆg+
+> pg
+> qg
+> 0.00.51.01.5
+> Voltage (p.u.)
+> ug
+> vˆc+
+> u¯c,ref
+> v¯c,ref
+> 0.00.10.20.30.40.50.60.70.8
+> Time (s)
+> −2
+> −1012
+> Current (p.u.)
+> ic,a
+> ic,b
+> ic,c
+> imax
+
+(b) Fig. 10. Experimental results with an LCL filter and active-power reference step changes in: (a) strong grid Lg = 0 .07 p.u.; (b) weak grid Lg = 0 .7 p.u. The active-power reference is changed stepwise: pg,ref = 1 p.u. at t = 0 .2 s ; pg,ref = 0 p.u. at t = 0 .35 s ; pg,ref = −1 p.u. at t = 0 .5 s ; pg,ref = 0 p.u. at t = 0 .65 s . The limited active-power reference ¯pg,ref is shown. [14] T. Qoria, X. Wang, and R. Kadri, “Grid-forming control VSC-based including current limitation and re-synchronization functions to deal with symmetrical and asymmetrical faults,” Elect. Power Syst. Res. , vol. 223, p. 109647, 2023. [15] M. A. Awal, S. Cen, M. R. K. Rachi, H. Yu, S. Schr¨ oder, and I. Husain, “Modeling, analysis, and design for small-signal stability in sequence-decomposed grid-forming control,” IEEE Trans. Ind. Appl. , vol. 60, no. 1, pp. 865–875, 2024. [16] I. Khan and S. Doolla, “Improved fault ride-through response of grid forming inverters under symmetrical and asymmetrical faults,” IEEE Trans. Energy Convers. , vol. 40, no. 1, pp. 394–408, 2025. [17] H. Zhang, R. Liu, and Y. Li, “Voltage support capability analysis for grid-forming inverters with adaptive virtual impedance under asymmet-rical grid faults,” IEEE Trans. Ind. Appl. , vol. 73, no. 2, pp. 2288–2299, 2026. [18] Q. Liu, M. Wang, M. Nick, C. Chen, and X. Zhao, “Current-limiting control design for grid-forming capability enhancement of IBRs under asymmetric grid disturbances,” IEEE Trans. Power Electron. , vol. 41, no. 4, pp. 6430–6448, 2026. [19] G. Gao, S. He, L. Huang, Q. Zhang, F. Colas, X. Guillaud, and F. Blaab-jerg, “Voltage-source-sustaining grid-forming control for seamless fault ride-through and protection coordination,” IEEE J. Emerg. Sel. Topics Power Electron. , vol. 14, no. 3, pp. 2914–2924, 2026. [20] Y. Ojo, S. Nag, and T. O. Olowu, “Enabling grid-forming control with fault ride-through in unbalanced distribution networks,” IEEE Trans. Smart Grid , vol. 17, no. 4, pp. 2632–2645, 2026. [21] D. R´ ıos-Castro, D. P´ erez-Est´ evez, and J. Doval-Gandoy, “AC-voltage controller for grid-forming converters,” IEEE Trans. Power Electron. ,vol. 38, no. 4, pp. 4529–4543, 2023. [22] ——, “Grid-connected converter with grid-forming and grid-following modes presenting symmetrical and asymmetrical fault ride-through capability,” IEEE J. Emerg. Sel. Topics Power Electron. , vol. 12, no. 2, pp. 2082–2096, 2024. [23] T. Nurminen, R. Mourouvin, M. Hinkkanen, and J. Kukkola, “Grid-forming control using a disturbance observer for unbalanced conditions,” in Proc. ECCE Europe , Birmingham, 2025. [24] E. B. Avdiaj, S. D’Arco, L. Piegari, and J. A. Suul, “Negative sequence control for virtual synchronous machines under unbalanced conditions,” 
+
+IEEE J. Emerg. Sel. Topics Power Electron. , vol. 10, no. 5, pp. 5670– 5685, 2022. [25] O. Stanojev, O. Karaca, and M. Schweizer, “Grid-forming vector current control FRT modes under symmetrical and asymmetrical faults,” Sustain. Energy Grids Netw. , vol. 43, p. 101830, 2025. [Online]. Available: https://www.sciencedirect.com/science/article/pii/S2352467725002127 [26] S. F. Zarei, H. Mokhtari, M. A. Ghasemi, and F. Blaabjerg, “Reinforcing fault ride through capability of grid forming voltage source converters using an enhanced voltage control scheme,” IEEE Trans. Power Del. ,vol. 34, no. 5, pp. 1827–1842, 2019. [27] M. Zubiaga, C. Cardozo, T. Prevost, A. Sanchez-Ruiz, E. Olea, P. Izurza, S. H. Khan, and J. Arza, “Enhanced TVI for grid forming VSC under unbalanced faults,” Energies , vol. 14, no. 19, 2021. [28] A. Morales-Munoz, F. D. Freijedo, S. Pugliese, and M. Liserre, “Se-lective virtual impedance for overcurrent limitation in grid-forming inverters under asymmetrical faults,” in Proc. IEEE PEDG , Luxembourg, 2024. [29] J. Chen, F. Prystupczuk, and T. O’Donnell, “Use of voltage limits for current limitations in grid-forming converters,” CSEE J. Power Energy Syst. , vol. 6, no. 2, pp. 259–269, 2020. [30] M. G. Taul, X. Wang, P. Davari, and F. Blaabjerg, “Current limiting control with enhanced dynamics of grid-forming converters during fault conditions,” IEEE J. Emerg. Sel. Topics Power Electron. , vol. 8, no. 2, pp. 1062–1073, 2020. [31] A. Narula, P. Imgart, M. Bongiorno, M. Beza, J. R. Svensson, and J.-P. Hasler, “Voltage-based current limitation strategy to preserve grid-forming properties under severe grid disturbances,” IEEE Open J. Power Electron. , vol. 4, pp. 176–188, 2023. [32] X. He, M. A. Desai, L. Huang, and F. D¨ orfler, “Cross-forming control and fault current limiting for grid-forming inverters,” IEEE Trans. Power Electron. , vol. 40, no. 3, pp. 3980–4007, 2025. [33] N. Baeckeland, D. Chatterjee, M. Lu, B. Johnson, and G.-S. Seo, “Overcurrent limiting in grid-forming inverters: A comprehensive review and discussion,” IEEE Trans. Power Electron. , vol. 39, no. 11, pp. 14 493–14 517, 2024. [34] L. Huang, H. Xin, Z. Wang, L. Zhang, K. Wu, and J. Hu, “Transient stability analysis and control design of droop-controlled voltage source converters considering current limitation,” IEEE Trans. Smart Grid ,vol. 10, no. 1, pp. 578–591, 2019. [35] E. Rokrok, T. Qoria, A. Bruyere, B. Francois, and X. Guillaud, “Tran-sient stability assessment and enhancement of grid-forming converters embedding current reference saturation as current limiting strategy,” 
+
+IEEE Trans. Power Syst. , vol. 37, no. 2, pp. 1519–1531, 2022. [36] T. Nurminen, R. Mourouvin, M. Hinkkanen, and J. Kukkola, “Multifunc-12 
+
+tional grid-forming converter control based on a disturbance observer,” 
+
+IEEE Trans. Power Electron. , vol. 39, no. 10, pp. 13 023–13 032, 2024. [37] S. Golestan, J. M. Guerrero, J. C. Vasquez, A. M. Abusorrah, and Y. Al-Turki, “All-pass-filter-based PLL systems: Linear modeling, analysis, and comparative evaluation,” IEEE Trans. Power Electron. , vol. 35, no. 4, pp. 3558–3572, 2020. [38] M. A. Awal, M. R. K. Rachi, H. Yu, I. Husain, and S. Lukic, “Double synchronous unified virtual oscillator control for asymmetrical fault ride-through in grid-forming voltage source converters,” IEEE Trans. Power Electron. , vol. 38, no. 6, pp. 6759–6763, 2023. [39] G. F. Franklin, J. D. Powell, and L. M. Workman, Digital control of dynamic systems , 3rd ed. Menlo Park, CA: Addison-Wesley, 1997.

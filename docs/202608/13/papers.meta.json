@@ -1,0 +1,23 @@
+{
+  "label": "2026-08-13",
+  "date": "2026-08-13",
+  "generated_at": "2026-08-13T19:59:40",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202608/13/2608.11857v1-disturbance-observer-based-grid-forming-control-for-unbalanced-grids",
+      "section": "quick",
+      "title_en": "Disturbance-Observer-Based Grid-Forming Control for Unbalanced Grids",
+      "authors": "Juho Määttä, Marko Hinkkanen, Tuure Nurminen, Orcun Karaca, Rayane Mourouvin, Jarno Kukkola, Lennart Harnefors",
+      "date": "2026-08-12",
+      "pdf": "https://arxiv.org/pdf/2608.11857v1",
+      "score": "6.0",
+      "evidence": "不平衡电网故障下变流器的容错控制",
+      "tldr": "本文针对不平衡电网电压条件，提出了一种基于扰动观测器的构网型（GFM）控制方法。该方法通过调节正序有功功率并主动抑制负序电压，确保在物理极限内维持电压幅值恒定。系统仅需测量交流侧电流，利用扰动观测器实现同步、正负序电压估计及积分谐振控制，并集成了电流限制方案。实验验证表明，该方法在严重对称与不对称故障下均能保持稳定运行。",
+      "tags": "query:pmsm",
+      "abstract_en": "This article proposes a grid-forming control method for operation under unbalanced grid-voltage conditions. The method regulates the positive-sequence active power delivered to the grid and actively suppresses the negative-sequence converter voltage, controlling the voltage magnitude to be constant also during unbalanced faults when within the physical limits of the converter. Only the converter current is measured on the AC side, and a disturbance observer is used for synchronization as well as providing integral and resonant action. Estimates for the positive- and negative-sequence grid voltage are obtained from the disturbance observer. A current-limitation scheme for both balanced and unbalanced faults is integrated. Comprehensive stability analysis and tuning guidelines are provided. Experimental results using a 12.5-kVA converter demonstrate that the proposed method can operate during severe balanced and unbalanced faults.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
