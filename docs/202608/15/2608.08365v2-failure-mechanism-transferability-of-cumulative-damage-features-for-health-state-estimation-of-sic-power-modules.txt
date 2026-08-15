@@ -1,0 +1,1134 @@
+Failure-Mechanism Transferability of
+Cumulative-Damage Features for Health State
+Estimation of SiC Power Modules
+Mattia Scarpa
+Dept. of Information Engineering
+University of Padova
+Padova, Italy
+scarpamatt@dei.unipd.it
+Evgeny Kusmenko
+Infineon Technologies Dresden AG & Co. KG
+Dresden, Germany
+Evgeny.Kusmenko@infineon.com
+Francesco Toso
+Newtwen S.r.l.
+Padova, Italy
+francesco.toso@newtwen.com
+Mattia Bruschetta
+Dept. of Information Engineering
+University of Padova
+Padova, Italy
+bruschet@dei.unipd.it
+Ruggero Carli
+Dept. of Information Engineering
+University of Padova
+Padova, Italy
+carlirug@dei.unipd.it
+Simon Achatz
+Infineon Technologies AG
+Munich, Germany
+Simon.Achatz@infineon.com
+Abstract—Data-driven health-state estimators for silicon car-
+bide (SiC) power modules typically report their performance on
+a single accelerated-aging campaign, and how that performance
+transfers to a different failure mechanism is rarely tested.
+We benchmark five reference methods from the prognostics
+and condition-monitoring literature against a physics-informed
+neural ordinary differential equation (neural ODE) on two SiC
+power-cycling campaigns driven by structurally different failure
+mechanisms, solder-layer fatigue and wire-bond lift-off, under a
+per-module k-fold protocol. The neural ODE is evaluated under
+two input regimes that share the rest of the pipeline: the baseline
+electrical precursors and a set of cumulative thermoelectric
+features. Every reference method degrades on the wire-bond
+campaign, with average errors growing and precision decreasing
+with respect to their performance on the soldered campaign. The
+neural ODE fed with the cumulative features keeps its soldered-
+campaign metrics on both mechanisms, with differences inside
+the fold-to-fold variance, while the same architecture fed with the
+baseline precursors falls back to the reference-method cluster.
+The input representation contributes at least as much as the
+architecture to failure-mechanism transferability of a health-state
+estimator.
+Index
+Terms—SiC
+power
+modules,
+health
+state
+estima-
+tion, failure-mechanism transferability, physics-informed ma-
+In Germany this work of Infineon Technologies AG and Infineon Dresden
+AG & Co KG is funded in the frame of the Important Project of Common
+European Interest on Microelectronics and Communication Technologies
+(IPCEI ME/CT). The IPCEI ME/CT is funded by the German Federal Ministry
+for Economic Affairs and Energy, the Bavarian Ministry for Economic
+Affairs, Regional Development and Energy, the Ministry of Economic Affairs,
+Industry, Climate Action and Energy of the State of North Rhine-Westphalia,
+the Saxon State Ministry for Economic Affairs, Labour, Energy and Climate
+Action and the European Union within “NextGenerationEU”.
+© 2026 IEEE. This work has been accepted for presentation at the 52nd
+Annual Conference of the IEEE Industrial Electronics Society (IECON 2026).
+Personal use of this material is permitted. Permission from IEEE must
+be obtained for all other uses, in any current or future media, including
+reprinting/republishing this material for advertising or promotional purposes,
+creating new collective works, for resale or redistribution to servers or lists,
+or reuse of any copyrighted component of this work in other works.
+chine learning, neural ODE, condition monitoring, cumulative
+damage.
+I. INTRODUCTION
+The adoption of SiC technology in modern power convert-
+ers, and most notably in automotive traction inverters, exploits
+higher load levels and elevated junction temperatures that sub-
+ject the device package to substantial thermo-mechanical stress
+responsible for the dominant wear-out mechanisms, namely
+bond-wire lift-off and die-attach delamination [2]. Tracking
+the health state of each module from in-service sensor mea-
+surements is therefore crucial information for maintenance
+scheduling, warranty-grade lifetime estimation, and the opti-
+mal control and performance management of the electric vehi-
+cle. The quantity adopted as target in this work is a normalised
+health indicator on the interval [0, 1], where 0 corresponds to
+a pristine module and 1 to its end of life (EoL). Repeated
+active power-cycling tests are the established methodology for
+accelerated aging of these devices, and the ECPE Automotive
+Qualification Guideline 324 (AQG 324) [31] provides the
+standardised qualification procedure that frames such tests for
+quality and warranty assurance. Beyond their qualification pur-
+pose, these tests also yield datasets suitable for the analysis of
+degradation phenomena and for the development of condition-
+monitoring models.
+A. Related Work
+Lifetime modeling for power semiconductor modules has
+historically followed the physics of failure (PoF) tradition.
+Coffin–Manson estimates combined with Miner’s rule and
+Stress-Strain modeling for variable load profiles
+[1]–[4],
+[6], [7] provide closed-form lifetime predictions but rely on
+arXiv:2608.08365v2  [eess.SY]  11 Aug 2026
+
+
+assumed indicator shapes and on parameters that vary across
+batch, package and mission profile.
+Data-driven estimators attempt to learn a health value di-
+rectly from the available sensor data, with no explicit fatigue
+law. The reference architectures in literature, due to lack of
+publicly available dataset, principally refer to benchmarks such
+as the C-MAPSS turbofan engine simulation [8], but the same
+architectural lineage is also supported by the broader NASA
+Prognostics Center of Excellence (PCoE) dataset family, which
+includes IGBT accelerated aging, lithium-ion battery, FEMTO
+bearing and milling data sets [9]. However, these datasets
+remain limited in their coverage of power-electronics aging,
+specifically, with none reproducing the power-cycling regime
+and the wear-out mechanisms of SiC power modules.
+Several architectures have been benchmarked on these
+data, the most notable being a convolutional neural network
+(CNN) [11] and a long short-term memory (LSTM) regres-
+sor [12]; these architectures, however, inherit the limitations
+of the underlying datasets, which, while representative, remain
+far from a realistic and generalisable test, making difficult
+the validation of the resulting methods. Other studies have
+instead leveraged industrial datasets that are not publicly
+available [17], achieving a more concrete validation but still
+bound to a single dataset representing a single degradation
+mechanism, so any observed performance ranking is condi-
+tional on the specific campaign on which it was obtained.
+In parallel, considerable effort has been devoted to iden-
+tifying which physical quantities are the most informative
+degradation precursors and which combinations of them con-
+stitute reliable health indicators. Several reviews [18]–[20]
+cover hundreds of contributions on this question for power
+electronic devices; for SiC MOSFETs, the on-state voltage
+drop VDS,on, the on-state resistance RDS,on and the junction
+temperature Tj have emerged as the most consistently reported
+indicators [21], [22]. In the PoF tradition, per-cycle thermal
+stress is aggregated via Miner’s rule into a scalar cumulative
+damage value used as the lifetime indicator itself. This quantity
+has not, to our knowledge, been adopted as an input feature
+by data-driven health-state estimators, which still rely on raw
+or filtered electrical waveforms.
+A small number of recent contributions has begun to address
+the input-representation question explicitly. Parametric fits
+using VDS,on, Tj and their multivariate combination have
+been compared on a SiC campaign [23], with feature-set-
+dependent variations in fit quality of comparable magnitude to
+the differences between architectures. The influence of window
+length and downsampling on snapshot multilayer perceptron
+(MLP) regressors has been examined in [24], with the same
+observation that performance is more sensitive to the chosen
+feature configuration than to network depth or width. The
+broader use of physics-informed in condition monitoring and
+power electronics domains is reviewed in [25], [27]. Despite
+these advances, the comparisons remain confined to a single
+dataset each, and the transferability of any feature configu-
+ration across datasets with different load profiles, packaging
+variability and acquisition conditions is still an open question.
+B. Contribution
+In this work we investigate the role of the input representa-
+tion in health-state estimation for SiC power modules across
+two power-cycling campaigns that share the AQG 324 quali-
+fication framework [31] but exercise two structurally different
+modules and, consequently, two distinct dominant wear-out
+mechanisms. The first dataset originates from the campaign
+of [17], performed on modules with conventional solder die-
+attach, where lifetime is governed by progressive solder-
+layer fatigue that translates into a smooth, quasi-exponential
+drift of the on-state voltage. The second dataset, introduced
+in our earlier work [28], exercises modules realised with a
+sintered packaging die-attach: the suppression of the solder
+layer removes the dominant fatigue channel of the first dataset,
+and lifetime becomes governed instead by wire-bond lift-off,
+a mechanism that produces non-monotonic perturbations and
+multi-regime degradation traces on the same electrical observ-
+ables. The two datasets therefore probe the same estimation
+problem on the same kind of device but under qualitatively
+different physics, so a fair comparison across them is also a
+stress test of how much of a method’s published performance
+is mechanism-specific and how much transfers across failure
+modes.
+On this basis we benchmark, under a per-module k-fold
+cross-validation protocol with a common set of metrics, two
+complementary lineages of data-driven estimators. The first
+comprises established architectures of the prognostics liter-
+ature, so far validated on public benchmarks of adjacent
+domains: a CNN [11] and an LSTM regressor [12], whose
+transferability to SiC power-cycling data is itself an open
+question. The second comprises methods recently proposed
+for SiC condition monitoring and validated on a single
+proprietary campaign each: the parametric fit of [23], the
+snapshot MLP of [24] and the patch-based Transformer used
+in [17], whose dataset-specific performance has not been
+cross-checked against a second campaign. Alongside these we
+evaluate a physics-informed neural ODE [26] drawn from our
+earlier work [28]. The physics-informed model is evaluated
+under two input regimes, the baseline electrical signal precur-
+sors VDS,on and Iload, and a set of cumulative thermoelectric
+features that encode the accumulated thermal and electrical
+stress experienced by the component, so that the contribution
+of the representation is separated from that of the architecture.
+The drop in accuracy across the two failure mechanisms varies
+considerably with architecture and input representation. The
+neural ODE evaluated on the cumulative features achieves both
+the highest accuracy on each campaign and the smallest such
+drop.
+The remainder of the paper is organised as follows. Sec-
+tion II introduces the two power modules, the corresponding
+datasets, the dominant degradation phenomena and the EoL
+criterion adopted as health-state target. Section III describes
+the methodologies compared in the study, including the cu-
+mulative feature set fed to the physics-informed model. Sec-
+tion IV reports the comparative evaluation under the unified
+
+
+TABLE I
+OPERATING CONDITIONS OF THE SOLDER-BASED CAMPAIGN [17], [23],
+[24].
+ID
+Regime
+theat [s]
+tcool [s]
+Iload [A]
+∆Tj [K]
+C1
+PCmin
+60
+60
+267
+120
+C2
+PCmin
+60
+60
+254
+100
+C3
+PCmin
+60
+60
+229
+80
+C4
+PCsec
+1.5
+3.5
+283
+120
+C5
+PCsec
+1.5
+3.5
+261
+100
+C6
+PCsec
+1.5
+3.5
+232
+80
+protocol. By unified protocol we mean that the two campaigns
+are brought onto a common evaluation basis, rather than
+compared through the figures published by their respective
+sources: both datasets are acquired on the same class of power-
+cycling test bench and with the same measurement chain for
+the electrical and thermal quantities, they are reduced to the
+same feature set, and every method is trained, validated and
+scored with the same code, the same health-state target and
+the same four metrics, with module-level disjointness between
+training and evaluation enforced throughout. Section V closes
+with the discussion of the results and the open questions.
+II. MODULES, DEGRADATION, AND DATASETS
+We consider two accelerated power-cycling campaigns per-
+formed at Infineon Technologies on automotive SiC half-
+bridge inverter modules with different die-attach technologies,
+which define two qualitatively distinct dominant wear-out
+mechanisms. Both campaigns are run within the AQG 324
+qualification framework [31]; Fig. 1 reports the normalised
+on-state voltage drop ∆VDS,norm of every device against its
+cycle counter for the two campaigns.
+A. Solder-Based Campaign
+The first dataset, originally used in [23] and subsequently
+in [17], [24], comprises power-cycling runs on conventional
+solder die-attach modules across the six stress conditions re-
+ported in Table I. The conditions combine two heating regimes,
+PCmin (theat = 60 s) and PCsec (theat = 1.5 s), with three
+junction-temperature swing levels ∆Tj ∈{80, 100, 120} K.
+Each condition collects eight to twelve transistors, for a total
+of 60 degradation paths that reach the 5% on-state voltage EoL
+criterion. After median filtering of the per-cycle measurements,
+the trajectories reported in Fig. 1(a) follow predominantly
+smooth quasi-exponential profiles characteristic of progressive
+die-attach fatigue [2].
+B. Sintered Campaign
+The second dataset, introduced in our earlier work [28],
+comprises power-cycling runs on automotive SiC half-bridge
+modules whose sintered packaging suppresses solder fatigue
+at the chip–substrate interface and leaves wire-bond fatigue
+at the chip-side bond pads as the dominant package-level
+mechanism. Twenty-four modules are distributed across the
+four operating-condition groups reported in Table II (six
+modules per group), spanning two heating-pulse durations
+TABLE II
+OPERATING CONDITIONS OF THE SINTERED CAMPAIGN [28]; EACH GROUP
+CONTAINS N = 6 MODULES AND THE JUNCTION-TEMPERATURE PEAK IS
+KEPT CLOSE TO Tvj,max ≈175 ◦C ACROSS GROUPS.
+ID
+theat [s]
+tcool [s]
+Iload [A]
+Tinlet [◦C]
+G1
+1.5
+3.5
+695
+75
+G2
+1.5
+3.5
+750
+55
+G3
+30
+30
+670
+75
+G4
+30
+30
+775
+35
+(theat ∈{1.5, 30} s) and four load-current levels (Iload ∈
+[670, 775] A); the inlet coolant temperature is adjusted per
+group to keep the junction-temperature peak close to 175 ◦C
+across conditions. The same 5% on-state voltage EoL criterion
+is adopted and is again the primary event observed. As shown
+in Fig. 1(b), most trajectories drift smoothly under continuous
+crack propagation in the bond-pad metallization, with rapid
+step-like rises corresponding to wire lift-off events visible on
+several of the modules.
+C. End-of-Life Criterion
+For both campaigns the EoL event is defined by the
+AQG 324 qualification threshold of a 5% relative increase in
+the on-state voltage drop [31]:
+∆VDS(n)
+VDS,nom
+≥5%,
+(1)
+where ∆VDS(n) is the per-cycle drift with respect to the
+value VDS,nom measured on the pristine module. The first
+cycle at which Eq. (1) is crossed defines the lifetime NEoL
+of each module and grounds the health-state target adopted
+in Section III.
+III. METHODOLOGIES
+We compare five reference methods proposed in the litera-
+ture against the physics-informed neural ODE drawn from our
+earlier work, evaluated on both datasets of Section II under
+a common target, protocol and set of metrics. The reference
+methods are grouped, for clarity, in three blocks of increasing
+modelling capacity: a parametric power-law fit specific to SiC
+modules, two established deep regressors from the prognostics
+literature, and two recent deep methods proposed specifically
+for SiC condition monitoring.
+The common health-state target adopted by all methods is
+the relative lifetime
+yn =
+n
+NEoL
+∈[0, 1],
+(2)
+where n is the cycle index and NEoL is the first cycle at
+which the on-state voltage rise reaches the AQG 324 threshold
+of 5% above the pristine value. Four metrics are reported on
+the evaluation cycles, all aggregated as mean and standard
+deviation across the splits: the mean absolute error (MAE)
+MAE = E|ˆy −y|, the coefficient of determination R2, the
+Saxena α-accuracy with α = 0.2 [14] that scores the fraction
+of predictions inside a lifetime-shrinking α-cone, and the
+
+
+cycle counter (a.u.)
+0%
+5%
+VDS/VDS, nom
+(a) solder-based campaign
+C1
+C2
+C3
+C4
+C5
+C6
+cycle counter (a.u.)
+EOL
+(b) sintered campaign
+G1
+G2
+G3
+G4
+Fig. 1. Normalised on-state voltage drop ∆VDS,norm of every device against its cycle counter for the two campaigns. (a) Solder-based dataset of [17], [23],
+[24]: predominantly smooth quasi-exponential trajectories driven by progressive solder fatigue. (b) Sintered dataset of [28]: continuous drift due to bond-pad
+crack propagation, with rapid step-like rises corresponding to individual wire lift-off events. The horizontal dashed line marks the 5% EoL threshold; cycle-
+counter values are anonymised to preserve dataset confidentiality.
+relative accuracy (RA) on the late part of the lifetime [14]. The
+two datasets are evaluated independently, each with the split
+protocol declared by its own source. On the first dataset we
+follow the stratified random split of [17], [24], with a 75/25
+partition inside each cycling batch repeated for five random
+seeds whose metrics are then averaged. On the second dataset
+we follow the per-module four-fold leave-one-condition-out
+split of [28], in which one of the four cycling batches is
+held out at each fold while the remaining three form the
+training pool. Both protocols enforce module-level disjointness
+between training and evaluation.
+A. Parametric Fit
+The parametric fit of [23] treats the two SiC degradation in-
+dicators reported as informative for solder fatigue, the on-state
+voltage rise ∆VDS,on and the maximum junction temperature
+rise ∆Tj,max, as power laws of the relative lifetime,
+f(y) = α0 + α1 yα2,
+(3)
+with the three coefficients estimated from the training trajec-
+tories by nonlinear least squares pooled per cycling batch.
+At inference time the lifetime is recovered by analytical
+inversion of Eq. (3) on the observed indicator; we reproduce
+the three input variants reported in the original paper, namely
+VDS,on-only, Tj,max-only, and the multivariate combination
+obtained as the average of the two single-indicator inversions.
+The method has no trainable architecture beyond the three
+coefficients per indicator and is included as a lightweight
+reference of the parametric tradition for SiC modules.
+B. Established Deep Baselines
+Two deep regressors that have become established refer-
+ences in the prognostics literature, originally validated on
+the C-MAPSS turbofan benchmark [8], are included as the
+convolutional and recurrent reference architectures of the
+comparison. We adopt the CNN regressor of [11], later re-
+fined in [15], which stacks two one-dimensional convolutional
+blocks with ReLU activations followed by a dense head whose
+final layer produces a scalar lifetime estimate; each block
+aggregates the temporal context inside the input window.
+The LSTM regressor of [12] replaces the convolutional stack
+with two recurrent layers feeding the same-style dense head;
+the recurrent state acts as an implicit memory of the input
+trajectory. Both networks operate on the same sliding window
+of multi-channel measurements, and in our experiments are
+fed with the VDS,on and Iload inputs used by the other deep
+models, so that the only design choice not shared with the rest
+of the comparison is the architecture itself.
+C. SiC-Specific Deep Methods
+Two recent methods proposed specifically for SiC condition
+monitoring complete the reference set. The snapshot MLP
+of [24] maps a recent input window directly to the lifetime
+target of Eq. (2) through a fully connected network of uniform
+hidden width and ReLU activations: the input window of
+length cycle-window length (CWL) is downsampled by a
+factor down-sampling factor (DSF), flattened, and passed to
+the network, with the number of layers and the layer width
+selected by an Optuna hyperparameter search on the training
+subset within the ranges declared in the original paper. We
+adopt the timeseries configuration CWL=600, DSF=10 and
+the multivariate input {∆VDS,on, ∆Rth, ∆ID} reported by the
+authors as the best operating point of the architecture.
+The Transformer of [17] approaches lifetime estimation
+indirectly: a PatchTST model [13], which tokenises the input
+series into overlapping patches and processes them through a
+
+
+TABLE III
+MODEL COMPLEXITY AND PER-CYCLE INFERENCE COST. FLOPS ARE
+REPORTED PER NEW CYCLE OBSERVATION UNDER STATEFUL
+DEPLOYMENT: WINDOW-BASED METHODS RUN ONE FORWARD PASS OVER
+THEIR INPUT WINDOW, THE NEURAL ODE VARIANTS ADVANCE THEIR
+LATENT STATE BY A SINGLE INTEGRATION STEP.
+Method
+Type
+Params
+FLOPs/cycle
+Input/cycle
+Parametric [23]
+Closed-form
+∼6
+∼10 (negl.)
+(1, )
+DeepCNN [11]
+CNN
+1.3 k
+6.1×104
+(30, 3)
+DeepLSTM [12]
+LSTM
+1.6 k
+7.4×104
+(30, 3)
+SnapshotMLP [24]
+MLP
+6.2 k
+1.2×104
+(180, )
+PatchTST [13]
+Transformer
+6.9 k
+5.4×104
+(90, 1)
+NODE-base
+Neural ODE
+1.2 k
+2.4×103
+(2, )
+NODE-cum
+Neural ODE
+1.3 k
+2.6×103
+(6, )
+transformer encoder, forecasts the next segment of ∆VDS,on
+from a window of past observations; the lifetime is recovered
+by iterating the forecast forward until the predicted indicator
+crosses the EoL threshold. We replicate the configuration
+declared as best in the original paper, namely CWL=1800,
+DSF=20, single-channel ∆VDS,on input and a 3:1 input-to-
+forecast length ratio, together with the patch size, the model
+dimension, the number of attention heads and the number
+of encoder layers reported by the authors, and apply the
+threshold-crossing inference at evaluation time.
+D. Physics-Informed Neural ODE
+The
+physics-informed
+model
+drawn
+from
+our
+earlier
+work [28] is a neural ODE [26] in which a continuous-time
+hidden state h(t) evolves under a learnable vector field gθ
+driven by the input,
+dh
+dt = gθ
+ h(t), x(t)
+
+,
+ˆy(t) = πθ
+ h(t)
+
+,
+(4)
+with πθ a small projection head mapping the hidden state to
+the scalar lifetime estimate; the integration is carried out on
+the cycle grid by an explicit Runge–Kutta (RK) step. The
+same architecture is evaluated under two input regimes that
+share the rest of the pipeline. The first uses the baseline
+electrical precursors VDS,on and Iload that are also fed to
+the convolutional and recurrent baselines of Section III-B;
+the second uses the cumulative thermoelectric feature set
+{STj, S∆Tj, SI, DMiner} introduced in [28], in which each
+feature is the running integral of one electrothermal quantity
+from the start of life up to the current cycle n,
+STj(n) =
+X
+i≤n
+Tj,i,
+S∆Tj(n) =
+X
+i≤n
+∆Tj,i,
+SI(n) =
+X
+i≤n
+Ii,
+DMiner(n) =
+X
+i≤n
+ni
+Nf,i
+,
+(5)
+where DMiner implements the rule of cumulative damage
+of [4] on the cycle-by-cycle Norris–Landzberg stress pro-
+file [5], so that the feature set encodes the history of thermal,
+electrical and damage accumulation observed by the module
+up to cycle n. The contrast between the two input regimes
+isolates the contribution of the representation under a fixed
+architecture and provides the feature ablation reported in
+Section IV.
+The seven methods of this section also differ in their
+inference budget. Table III reports, for each one, the trainable
+parameter count and the FLOPs required to process a single
+new cycle observation in stateful deployment: window-based
+methods run one forward pass over their input window, while
+the neural ODE variants advance their latent state by a single
+integration step. All neural methods sit within a single order
+of magnitude in parameter count (∼1–7 k), while per-cycle
+FLOPs span two orders of magnitude across the comparison.
+IV. RESULTS
+The aggregated metrics of Table IV, the error-versus-
+lifetime profile of Fig. 2 and the feature-set ablation of Fig. 3
+expose three complementary views of the cross-campaign
+behaviour of the seven methods of Section III; all numerical
+entries are expressed in percent of the unit lifetime range.
+Differences smaller than one fold-to-fold standard deviation
+are not claimed as significant; the central object of comparison
+is the cross-campaign drop of each method between the
+soldered and sintered metrics.
+On the soldered campaign the parametric fit, the Snap-
+shotMLP and the PatchTST forecaster match the metrics re-
+ported in their original papers [17], [23], [24]. The DeepCNN
+and the DeepLSTM stay just below 10% MAE and around
+78% R2, in line with the normalised RMSE these models
+report on C-MAPSS in [8], [11], [12]. However, their α-
+accuracy drops to around 50%, against the 65–74% of the
+SnapshotMLP, the PatchTST and the two neural ODE config-
+urations. The average error matches the C-MAPSS validation,
+but the prediction band widens close to EoL, where the Saxena
+α-cone gets tighter [14] and the lifetime estimate matters most
+for maintenance scheduling and for performance and usage
+control. NODE-cum has the lowest MAE and the highest
+R2 and α-accuracy, and stays within one standard deviation
+of the SnapshotMLP on RA. Overall, the SnapshotMLP, the
+PatchTST and the two neural ODE configurations sit in the
+upper half of the table on R2, α-accuracy and RA. The
+DeepCNN, the DeepLSTM and the parametric fit stay in the
+lower half, with about half of their late-life predictions outside
+the α-cone. Fig. 2(a) shows the per-lifetime error profile of
+each method: NODE-cum stays flat around 4%, the parametric
+fit has the mid-life hump typical of a power-law fit, and
+the four deep regressors trace overlapping curves within one
+standard deviation of each other. Close to EoL the DeepCNN
+and the DeepLSTM stay above the rest, consistent with their
+lower α-accuracy.
+Moving to the sintered campaign every method deteriorates.
+The parametric fit drops to about 17% MAE and 41% R2, a
+clear worsening from an already weak baseline on the soldered
+side. The DeepCNN, the DeepLSTM and the SnapshotMLP
+settle in a similar region with MAE between 13% and 16%,
+R2 between 43% and 65%, and α-accuracy between 34%
+and 38%; R2 and α-accuracy take the largest hits, in some
+cases close to halving the soldered values, and RA degrades
+
+
+TABLE IV
+VALIDATION METRICS ACROSS THE TWO CAMPAIGNS. VALUES ARE MEAN ± STD ACROSS FOLDS, REPORTED IN PERCENT OF THE UNIT LIFETIME RANGE
+(×100); BEST PER COLUMN IN BOLD.
+Soldered campaign
+Sintered campaign
+Method
+MAE ↓
+R2 ↑
+α-acc ↑
+RA ↑
+MAE ↓
+R2 ↑
+α-acc ↑
+RA ↑
+Parametric
+12.1 ± 1.9
+70.3 ± 10.9
+38.4 ± 5.3
+61.9 ± 3.9
+16.9 ± 7.2
+40.6 ± 38.5
+40.6 ± 16.6
+62.1 ± 14.5
+DeepCNN
+9.9 ± 2.5
+77.7 ± 13.9
+47.1 ± 5.6
+74.7 ± 4.1
+16.0 ± 2.0
+43.4 ± 19.6
+38.0 ± 1.6
+65.8 ± 3.4
+DeepLSTM
+9.4 ± 2.6
+78.9 ± 13.7
+52.1 ± 4.5
+75.5 ± 4.9
+13.5 ± 2.2
+64.7 ± 10.1
+34.4 ± 3.2
+68.5 ± 3.8
+SnapshotMLP
+4.8 ± 0.6
+94.2 ± 1.7
+68.8 ± 5.7
+86.2 ± 1.3
+15.3 ± 2.8
+56.0 ± 15.1
+34.5 ± 5.3
+63.1 ± 7.0
+PatchTST
+4.6 ± 0.3
+90.4 ± 4.1
+65.7 ± 7.4
+81.0 ± 4.0
+34.3 ± 1.1
+−94.3 ± 9.7
+5.3 ± 0.8
+−12.2 ± 3.2
+NODE-base
+7.3 ± 0.8
+88.3 ± 2.2
+65.4 ± 8.0
+76.0 ± 2.9
+7.7 ± 1.0
+85.0 ± 2.6
+49.3 ± 8.1
+71.7 ± 1.8
+NODE-cum
+4.1 ± 0.9
+95.7 ± 1.8
+73.9 ± 5.0
+85.9 ± 3.0
+4.9 ± 1.9
+94.7 ± 2.9
+79.2 ± 12.6
+85.9 ± 4.5
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0
+real lifetime y
+0.00
+0.05
+0.10
+0.15
+0.20
+0.25
+0.30
+mean abs. error |y
+y|
+(a) soldered campaign
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0
+real lifetime y
+(b) sintered campaign
+Parametric
+DeepCNN
+DeepLSTM
+SnapshotMLP
+PatchTST
+NODE-base
+NODE-cum
+Fig. 2. Mean absolute prediction error |ˆy −y| as a function of the real lifetime y on (a) the soldered campaign and (b) the sintered campaign, averaged over
+all validation modules of every fold and binned with 30 bins of width ≈0.033 smoothed by a three-bin rolling mean. NODE-cum is the only method that
+retains a comparable error-versus-lifetime profile across the two campaigns; PatchTST on the sintered campaign diverges past y ≈0.6, consistent with the
+failure of the forecast-then-threshold paradigm on multi-regime trajectories.
+along the same line. The fold-to-fold variance grows on
+every metric, pointing to a difficulty both in capturing the
+degradation phenomenon and in generalising the little structure
+these architectures manage to learn from it. The worst case
+is the PatchTST forecaster, with MAE around 34% and R2
+well below zero. Fig. 2(b) shows the collapse concentrating
+past y ≈0.6, where the iterative ∆VDS,on extrapolation must
+cover the longest horizon: the wire-bond lift-off events that
+drive the sintered degradation produce step-like rises in the
+trajectory whose timing and amplitude are stochastic and
+cannot be anticipated from the past window, breaking the
+predictable-shape assumption that the forecast-then-threshold
+paradigm of Section III-C relies on and making this approach
+intrinsically fragile on this type of trajectory. The two neural
+ODE configurations behave differently. NODE-base degrades
+only marginally and stays close to its own soldered metrics
+across folds, although without reaching the level of the best
+methods on the soldered side. NODE-cum holds the same level
+of performance as the best entries of the soldered campaign,
+with only a slight variance increase that is most visible on
+α-accuracy and that is consistent with the higher stochasticity
+of the sintered phenomenon.
+It is also worth noting that the DeepLSTM holds R2
+noticeably better than the DeepCNN and the SnapshotMLP on
+the sintered campaign. Together with the relative stability of
+the two neural ODE configurations, this suggests an advantage
+of architectures that carry an intrinsic memory of the input
+history.
+The feature ablation reported in Fig. 3 isolates the contribu-
+tion of the input representation under a fixed architecture, since
+NODE-base and NODE-cum share identical layers, optimisa-
+tion schedule and split protocol of Section III-D, and differ
+only in the input set. Under the baseline electrical precursors
+the neural ODE stays within the band of the SnapshotMLP
+and the PatchTST forecaster on the soldered campaign and
+noticeably ahead of every other reference method on the
+sintered campaign, an effect attributable to the continuous-
+time inductive bias of the architecture in Eq. (4). Switching the
+
+
+0.00
+0.02
+0.04
+0.06
+0.08
+MAE 
+0.00
+0.25
+0.50
+0.75
+1.00
+R2 
+Soldered
+Sintered
+0.00
+0.25
+0.50
+0.75
+1.00
+-acc 
+Soldered
+Sintered
+0.0
+0.2
+0.4
+0.6
+0.8
+RA 
+NODE-base
+NODE-cum
+Fig. 3.
+Feature-set ablation on the neural ODE architecture: same model
+trained under the baseline electrical inputs (NODE-base) and under the
+cumulative thermoelectric inputs (NODE-cum) of Section III-D. The four
+panels report MAE, R2, α-accuracy and RA on the two campaigns.
+input to the cumulative thermoelectric set of Eq. (5) produces
+a further reduction in MAE of approximately 40% relative
+on both campaigns and lifts R2 above 94% in either case.
+NODE-cum gives nearly the same metrics on both campaigns,
+with the differences between soldered and sintered values
+falling inside the fold-to-fold variance, and the cross-campaign
+drop in performance observed on every other method of
+Table IV does not occur for this configuration. The same
+neural ODE architecture moves from sitting at the same level
+as the SnapshotMLP on the soldered campaign to clearly
+ahead of every other entry on the sintered campaign once
+the cumulative features are introduced, supporting the claim
+that the representation contributes at least as much as the
+architecture to failure-mechanism transferability.
+V. DISCUSSION AND CONCLUSION
+The two campaigns considered in this work are representa-
+tive of two distinct degradation phenomena. On the soldered
+modules the wear-out is dominated by the fatigue of the
+chip-substrate solder layer, and the resulting on-state voltage
+drift is essentially monotone and regular cycle after cycle.
+On the sintered modules that layer is suppressed and the
+dominant mechanism becomes the wire-bond lift-off at the
+chip-side bond pads, which proceeds through stochastic step-
+like rises rather than a smooth drift. The two regimes are
+clearly distinguishable in the raw trajectories of Fig. 1 and in
+the per-lifetime error profiles of Fig. 2(a),(b), and the results
+of Section IV indicate that on the second regime even the
+reference methods proposed and validated on SiC modules
+struggle to keep their soldered-campaign performance without
+some form of prior information about the cumulative stress
+history.
+On this evidence, the input representation contributes at
+least as much as the architecture to failure-mechanism trans-
+ferability. The PatchTST forecaster of [17], which models
+the indicator trajectory, and the SnapshotMLP of [24], which
+regresses the lifetime ratio directly, are structurally different
+and differ by an order of magnitude in parameter count,
+yet they degrade by comparable margins between the two
+campaigns. The same neural ODE architecture, conversely,
+moves from sitting at the same level as the SnapshotMLP on
+the soldered campaign to clearly ahead of every other entry
+on the sintered campaign once its input is exchanged for the
+cumulative thermoelectric set of Eq. (5), while the underlying
+network, optimisation schedule and split protocol are kept
+identical. The transferability margin obtained by NODE-cum
+should be read against the choice of input set: the cumulative
+features build on a thermo-mechanical history prior, and the
+Norris–Landzberg model enters through the per-cycle damage
+contribution to DMiner. Their effectiveness on aging modalities
+that do not involve accumulated thermo-mechanical stress is
+an open question.
+It is also worth noting that the two campaigns originate from
+two distinct products, manufactured through different pro-
+cesses and driven by different degradation phenomena. Despite
+these substantial differences, the same approach carries over
+unchanged, with the same architecture, training procedure,
+protocol and input set. Methods that instead rely on careful,
+hand-crafted modelling incur an unnecessary burden, since
+a new engineering effort would be required for every new
+module and, potentially, for every manufacturing variation.
+We have benchmarked five reference methods from the
+prognostics and condition-monitoring literature against a
+physics-informed neural ODE on two SiC power-cycling
+campaigns that share the qualification threshold of Eq. (1)
+but exercise structurally different package technologies. The
+neural ODE fed with the cumulative thermoelectric features
+attains the lowest error on each campaign and the smallest
+cross-campaign degradation in the comparison, supporting the
+central claim that the input representation contributes at least
+as much as the architecture to failure-mechanism transfer-
+ability of a health-state estimator. This advantage comes at
+no significant deployment cost: as reported in Table III, the
+per-cycle inference budget of the neural ODE sits in the low
+kFLOPs range, below every window baseline of the compari-
+son. The combination of stateful update, O(kFLOPs) per-cycle
+cost and a hidden state of a few dozen floats is compatible with
+execution on automotive-grade microcontrollers.
+A remark is due on the thermal quantities that feed the
+cumulative features. The junction temperature is not mea-
+sured directly: it is reconstructed on the test bench through
+the thermo-sensitive electrical parameter methodology, with a
+calibration fitted per module, so that Tj and ∆Tj are virtual
+quantities derived from electrical measurements rather than
+sensor readings. On a qualification bench this reconstruction
+is accurate, but it rests on a calibration phase that a converter
+
+
+in the field does not have, so the online availability of
+the junction temperature is the enabling condition for the
+cumulative features. That condition is no longer out of reach.
+Digital-twin virtual thermal sensing now delivers the internal
+thermal state of power converters and electric drives in real
+time, from physics-based models identified once and then
+executed on board, with experimental validation on industrial
+hardware [29], [30]. The cumulative features are therefore not
+confined to the test bench: they become deployable as soon as
+such a twin runs alongside the estimator, on the same class of
+embedded platform the neural ODE already targets.
+A natural follow-up is to test the same methods under oper-
+ating regimes that depart from the constant-cycle accelerated
+protocol of AQG 324, in particular under variable mission
+profiles closer to in-service automotive use, where the ability
+of cumulative-stress features and continuous-time architectures
+to track non-stationary loads can be examined directly.
+REFERENCES
+[1] I. F. Kovacevic, U. Drofenik, and J. W. Kolar, “New physical model
+for lifetime estimation of power modules,” in Proc. Int. Power
+Electronics Conf. (IPEC), Sapporo, Japan, 2010, pp. 2106–2114,
+doi: 10.1109/IPEC.2010.5543755.
+[2] I. Kovacevic-Badstuebner, J. W. Kolar, and U. Schilling, “Modelling for
+the lifetime prediction of power semiconductor modules,” in Reliability
+of Power Electronic Converter Systems, H. S.-h. Chung, H. Wang,
+F. Blaabjerg, and M. Pecht, Eds. London, UK: IET, 2015, ch. 5, pp. 103–
+140, doi: 10.1049/PBPO080E ch5.
+[3] M. Ciappa, “Selected failure mechanisms of modern power mod-
+ules,” Microelectron. Rel., vol. 42, no. 4–5, pp. 653–667, 2002,
+doi: 10.1016/S0026-2714(02)00042-2.
+[4] M. A. Miner, “Cumulative damage in fatigue,” J. Applied Mechanics,
+vol. 12, no. 3, pp. A159–A164, 1945, doi: 10.1115/1.4009458.
+[5] K. C. Norris and A. H. Landzberg, “Reliability of controlled collapse
+interconnections,” IBM J. Research and Development, vol. 13, no. 3,
+pp. 266–271, 1969, doi: 10.1147/rd.133.0266.
+[6] L. Ceccarelli, R. M. Kotecha, A. S. Bahman, F. Iannuzzo, and
+H. A. Mantooth, “Mission-profile-based lifetime prediction for a SiC
+MOSFET power module using a multi-step condition-mapping simula-
+tion strategy,” IEEE Trans. Power Electron., vol. 34, no. 10, pp. 9698–
+9708, 2019, doi: 10.1109/TPEL.2019.2893636.
+[7] C. Barbagallo, S. A. Rizzo, G. Scelba, G. Scarcella, and M. Cacciato,
+“On the lifetime estimation of SiC power MOSFETs for motor drive
+applications,” Electronics, vol. 10, no. 3, p. 324, 2021, doi: 10.3390/elec-
+tronics10030324.
+[8] A. Saxena, K. Goebel, D. Simon, and N. Eklund, “Damage propagation
+modeling for aircraft engine run-to-failure simulation,” in Proc. IEEE
+Int. Conf. Prognostics and Health Management (PHM), Denver, CO,
+USA, 2008, pp. 1–9, doi: 10.1109/PHM.2008.4711414.
+[9] NASA Ames Research Center, Prognostics Center of Excellence
+Data
+Set
+Repository.
+[Online].
+Available:
+https://www.nasa.gov/
+intelligent-systems-division/discovery-and-systems-health/pcoe/
+pcoe-data-set-repository/
+[10] F.
+O.
+Heimes,
+“Recurrent
+neural
+networks
+for
+remaining
+use-
+ful life estimation,” in Proc. IEEE Int. Conf. Prognostics and
+Health Management (PHM), Denver, CO, USA, 2008, pp. 1–6,
+doi: 10.1109/PHM.2008.4711422.
+[11] G. S. Babu, P. Zhao, and X.-L. Li, “Deep convolutional neural network
+based regression approach for estimation of remaining useful life,” in
+Proc. Int. Conf. Database Systems for Advanced Applications (DASFAA),
+LNCS 9642, 2016, pp. 214–228, doi: 10.1007/978-3-319-32025-0 14.
+[12] S. Zheng, K. Ristovski, A. Farahat, and C. Gupta, “Long short-term
+memory network for remaining useful life estimation,” in Proc. IEEE
+Int. Conf. Prognostics Health Manage. (ICPHM), 2017, pp. 88–95,
+doi: 10.1109/ICPHM.2017.7998311.
+[13] Y. Nie, N. H. Nguyen, P. Sinthong, and J. Kalagnanam, “A time series
+is worth 64 words: long-term forecasting with Transformers,” in Proc.
+Int. Conf. Learning Representations (ICLR), 2023, arXiv: 2211.14730.
+[14] A.
+Saxena,
+J.
+Celaya,
+B.
+Saha,
+S.
+Saha,
+and
+K.
+Goebel,
+“Metrics
+for
+offline
+evaluation
+of
+prognostic
+performance,”
+Int.
+J.
+Prognostics
+Health
+Manage.,
+vol.
+1,
+no.
+1,
+p.
+001,
+2010,
+doi: 10.36001/ijphm.2010.v1i1.1336.
+[15] X. Li, Q. Ding, and J.-Q. Sun, “Remaining useful life estimation in
+prognostics using deep convolution neural networks,” Rel. Eng. Syst.
+Safety, vol. 172, pp. 1–11, 2018, doi: 10.1016/j.ress.2017.11.021.
+[16] Y. Lei, N. Li, L. Guo, N. Li, T. Yan, and J. Lin, “Machinery health
+prognostics: A systematic review from data acquisition to RUL pre-
+diction,” Mech. Syst. Signal Process., vol. 104, pp. 799–834, 2018,
+doi: 10.1016/j.ymssp.2017.11.016.
+[17] J. Olschewski, M. Hoppe, E. Kusmenko, K. Knobloch, M. T¨ullmann,
+A. Martin, and M. Pfost, “Machine learning-based condition mon-
+itoring from power cycling data for silicon carbide power in-
+verter modules,” in Proc. IEEE Int. Rel. Phys. Symp. (IRPS), 2025,
+doi: 10.1109/IRPS48204.2025.10983172.
+[18] A. Hanif, Y. Yu, D. DeVoto, and F. Khan, “A comprehensive review
+toward the state-of-the-art in failure and lifetime predictions of power
+electronic devices,” IEEE Trans. Power Electron., vol. 34, no. 5,
+pp. 4729–4746, 2019, doi: 10.1109/TPEL.2018.2860587.
+[19] Z. Ni, X. Lyu, O. P. Yadav, B. N. Singh, S. Zheng, and D. Cao,
+“Overview of real-time lifetime prediction and extension for SiC power
+converters,” IEEE Trans. Power Electron., vol. 35, no. 8, pp. 7765–7794,
+2020, doi: 10.1109/TPEL.2019.2962503.
+[20] S. Kumar, B. Allard, M. Hologne-Carpentier, G. Clerc, and F. Auger,
+“Review of prognosis approaches applied to power SiC MOSFETs for
+health state and remaining useful life prediction,” Entropy, vol. 28, no. 2,
+p. 234, 2026, doi: 10.3390/e28020234.
+[21] G. Di Nuzzo, M. T¨ullmann, T. Methfessel, and S. Rzepka, “Condition
+monitoring indicators for Si and SiC power modules,” Microelectron.
+Rel., vol. 138, p. 114614, 2022, doi: 10.1016/j.microrel.2022.114614.
+[22] A. Villalobos, I. Barrutia, R. Pe˜na-Alzola, T. Dragicevic, and J. I. Aizpu-
+rua, “Comparative analysis and evaluation of ageing forecasting methods
+for semiconductor devices in online health monitoring,” Eng. Appl. Artif.
+Intell., vol. 150, p. 110545, 2025, doi: 10.1016/j.engappai.2025.110545.
+[23] G. Di Nuzzo, H. Lewitschnig, M. T¨ullmann, S. Rzepka, and A. Otto,
+“A data-driven condition monitoring method to predict the remaining
+useful life of SiC power modules for traction inverters,” in Proc. IEEE
+Int. Conf. Prognostics Health Manage. (ICPHM), 2023, pp. 312–319,
+doi: 10.1109/ICPHM57936.2023.10194131.
+[24] S. Achatz, M. Hoppe, K. Knobloch, E. Kusmenko, J. Olschewski,
+M. T¨ullmann, and M. Pfost, “End-to-end snapshot models for RUL
+prediction of silicon carbide power modules,” in Proc. Int. Conf. Integr.
+Power Electron. Syst. (CIPS), Dresden, Germany, Mar. 2026.
+[25] Y. Fassi, V. Heiries, J. Boutet, and S. Boisseau, “Toward physics-
+informed machine-learning-based predictive maintenance for power
+converters: A review,” IEEE Trans. Power Electron., vol. 39, no. 2,
+pp. 2692–2723, 2024, doi: 10.1109/TPEL.2023.3328438.
+[26] R. T. Q. Chen, Y. Rubanova, J. Bettencourt, and D. Duvenaud, “Neural
+ordinary differential equations,” in Adv. Neural Inf. Process. Syst.
+(NeurIPS), 2018, pp. 6572–6583, doi: 10.5555/3327757.3327764.
+[27] M.
+Scarpa,
+F.
+Pase,
+R.
+Carli,
+M.
+Bruschetta,
+and
+F.
+Toso,
+“Data-driven
+power
+loss
+identification
+through
+physics-based
+thermal model backpropagation,” in Proc. 23rd European Control
+Conf.
+(ECC),
+Thessaloniki,
+Greece,
+2025,
+pp.
+2758–2763,
+doi: 10.23919/ECC65951.2025.11186906.
+[28] M. Scarpa, E. Kusmenko, F. Toso, M. Bruschetta, R. Carli, and
+S. Achatz, “Physics-informed condition monitoring of SiC power mod-
+ules with cumulative damage features and monotonicity priors,” Proc.
+Annual Conf. PHM Society, 2026, accepted. arXiv:2608.08363.
+[29] R. Torchio et al., “Digital twins in power electronics: A com-
+prehensive
+approach
+to
+enhance
+virtual
+thermal
+sensing,”
+IEEE
+Trans. Power Electron., vol. 40, no. 5, pp. 6977–6987, May 2025,
+doi: 10.1109/TPEL.2025.3531695.
+[30] R. Torchio et al., “Design and experimental validation of a mul-
+tiphysics twin of a high-voltage EV motor,” IEEE Trans. Trans-
+port.
+Electrific.,
+vol.
+11,
+no.
+1,
+pp.
+3287–3297,
+Feb.
+2025,
+doi: 10.1109/TTE.2024.3437475.
+[31] ECPE, Qualification of Power Modules for Use in Power Electronics
+Converter Units in Motor Vehicles, AQG 324, Release 04.1/2025.

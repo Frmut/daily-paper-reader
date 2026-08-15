@@ -1,0 +1,97 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-08-15T19:48:33.627068+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 2,
+    "quick_skim_target": 11,
+    "quick_selected": 2
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2608.08363v1",
+      "title": "Physics-Informed Condition Monitoring of SiC Power Modules",
+      "abstract": "Silicon carbide (SiC) power modules are increasingly deployed in automotive traction inverters, where condition monitoring is essential to prevent in-service failures. Despite extensive qualification under AQG 324, no consolidated approach exists for in-field health state estimation: physics-of-failure lifetime models lack real-time applicability, purely data-driven architectures require large labeled datasets and generalize poorly, and physics-informed frameworks remain too demanding for embedded deployment.   We address SiC MOSFET modules assembled with sintered packaging, which suppresses solder degradation and produces aging behavior distinct from previously studied devices. Instead of the smooth quasi-exponential drift of solder-based modules, the forward voltage drop $V_{DS}$ exhibits multi-regime profiles, with wirebond liftoff events introducing abrupt, non-monotonic perturbations.   We propose a condition monitoring framework combining three elements. First, physics-informed features replace raw sensor signals with cumulative damage indicators derived from junction temperature swing, mean junction temperature and a Miner rule accumulator, encoding degradation history in an interpretable form. Second, a monotonicity constraint enforced by gradient penalty regularization embeds the expected degradation direction as a physics-guided prior. Third, a heavy-tailed output distribution replaces the point estimate, giving calibrated uncertainty robust to the out-of-distribution variance introduced by liftoff.   On an industrial power cycling dataset from Infineon Technologies, several neural architectures are compared under a strict cross-validation protocol. The full configuration reduces mean absolute error by approximately 70% over purely data-driven baselines and stays stable across all folds, while remaining lightweight enough for embedded deployment.",
+      "authors": [
+        "Mattia Scarpa",
+        "Evgeny Kusmenko",
+        "Francesco Toso",
+        "Mattia Bruschetta",
+        "Ruggero Carli",
+        "Simon Achatz"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY",
+        "cs.LG"
+      ],
+      "published": "2026-08-08T23:20:52+00:00",
+      "link": "https://arxiv.org/pdf/2608.08363v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "condition monitoring for automotive traction inverters",
+      "llm_evidence_cn": "汽车牵引逆变器的状态监测",
+      "llm_evidence": "汽车牵引逆变器的状态监测",
+      "canonical_evidence": "汽车牵引逆变器的状态监测",
+      "llm_tldr_en": "Develops physics-informed condition monitoring for SiC power modules in traction inverters.",
+      "llm_tldr_cn": "为牵引逆变器中的碳化硅功率模块开发了物理信息驱动的状态监测方法。",
+      "llm_tldr": "为牵引逆变器中的碳化硅功率模块开发了物理信息驱动的状态监测方法。",
+      "llm_tags": [
+        "query:pmsm:composite"
+      ],
+      "matched_query_tag": "query:pmsm:composite",
+      "matched_query_text": "Papers central to 三相及双三相永磁同步电机相关研究检索, especially work that connects or combines: m; s; f; Permanent Magnet Synchronous Motor research; dual three-phase permanent magnet synchronous motor control and design; fault-tolerant control of multi-phase motors; recent advances in dual three phase permanent magnet synchronous motor control; fault tolerant strategies for multi phase permanent magnet synchronous motors.",
+      "matched_requirement_id": "req-composite-pmsm",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2608.08365v2",
+      "title": "Failure-Mechanism Transferability of Cumulative-Damage Features for Health State Estimation of SiC Power Modules",
+      "abstract": "Data-driven health-state estimators for SiC (Silica-Carbide) power modules typically report their performance on a single accelerated-aging campaign, and how that performance transfers to a different failure mechanism is rarely tested. We benchmark five reference methods from the prognostics and condition-monitoring literature against a physics-informed NODE (Neural Ordinary Differential Equation) on two SiC power-cycling campaigns driven by structurally different failure mechanisms, solder-layer fatigue and wire-bond lift-off, under a per-module $k$-fold protocol. The NODE is evaluated under two input regimes that share the rest of the pipeline: the baseline electrical precursors and a set of cumulative thermoelectric features. Every reference method degrades on the wire-bond campaign, with average errors growing and precision decreasing with respect to their performance on the soldered campaign. The NODE fed with the cumulative features keeps its soldered-campaign metrics on both mechanisms, with differences inside the fold-to-fold variance, while the same architecture fed with the baseline precursors falls back to the reference-method cluster. The input representation contributes at least as much as the architecture to failure-mechanism transferability of a health-state estimator.",
+      "authors": [
+        "Mattia Scarpa",
+        "Evgeny Kusmenko",
+        "Francesco Toso",
+        "Mattia Bruschetta",
+        "Ruggero Carli",
+        "Simon Achatz"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY",
+        "cs.LG"
+      ],
+      "published": "2026-08-08T23:28:57+00:00",
+      "link": "https://arxiv.org/pdf/2608.08365v2",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "health state estimation and failure mechanism analysis for SiC power modules",
+      "llm_evidence_cn": "碳化硅功率模块的健康状态估计与失效机制分析",
+      "llm_evidence": "碳化硅功率模块的健康状态估计与失效机制分析",
+      "canonical_evidence": "碳化硅功率模块的健康状态估计与失效机制分析",
+      "llm_tldr_en": "Evaluates the transferability of health state estimation methods across different failure mechanisms in SiC modules.",
+      "llm_tldr_cn": "评估了碳化硅模块健康状态估计方法在不同失效机制下的迁移能力。",
+      "llm_tldr": "评估了碳化硅模块健康状态估计方法在不同失效机制下的迁移能力。",
+      "llm_tags": [
+        "query:pmsm:composite"
+      ],
+      "matched_query_tag": "query:pmsm:composite",
+      "matched_query_text": "Papers central to 三相及双三相永磁同步电机相关研究检索, especially work that connects or combines: m; s; f; Permanent Magnet Synchronous Motor research; dual three-phase permanent magnet synchronous motor control and design; fault-tolerant control of multi-phase motors; recent advances in dual three phase permanent magnet synchronous motor control; fault tolerant strategies for multi phase permanent magnet synchronous motors.",
+      "matched_requirement_id": "req-composite-pmsm",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

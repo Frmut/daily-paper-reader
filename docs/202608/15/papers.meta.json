@@ -1,0 +1,37 @@
+{
+  "label": "2026-08-15",
+  "date": "2026-08-15",
+  "generated_at": "2026-08-15T19:49:08",
+  "count": 2,
+  "papers": [
+    {
+      "paper_id": "202608/15/2608.08363v1-physics-informed-condition-monitoring-of-sic-power-modules",
+      "section": "quick",
+      "title_en": "Physics-Informed Condition Monitoring of SiC Power Modules",
+      "authors": "Mattia Scarpa, Evgeny Kusmenko, Francesco Toso, Mattia Bruschetta, Ruggero Carli, Simon Achatz",
+      "date": "2026-08-08",
+      "pdf": "https://arxiv.org/pdf/2608.08363v1",
+      "score": "6.0",
+      "evidence": "汽车牵引逆变器的状态监测",
+      "tldr": "本研究针对汽车牵引逆变器中的碳化硅（SiC）功率模块，提出了一种物理启发的健康监测框架。针对烧结封装模块特有的非单调老化特性，该方法结合了基于物理损伤指标的特征工程、单调性约束正则化以及重尾输出分布，有效解决了传统数据驱动模型泛化性差和物理模型实时性不足的问题。在工业数据集上的实验表明，该方法显著提升了寿命预测精度，且计算轻量，适用于嵌入式部署。",
+      "tags": "query:pmsm",
+      "abstract_en": "Silicon carbide (SiC) power modules are increasingly deployed in automotive traction inverters, where condition monitoring is essential to prevent in-service failures. Despite extensive qualification under AQG 324, no consolidated approach exists for in-field health state estimation: physics-of-failure lifetime models lack real-time applicability, purely data-driven architectures require large labeled datasets and generalize poorly, and physics-informed frameworks remain too demanding for embedded deployment.   We address SiC MOSFET modules assembled with sintered packaging, which suppresses solder degradation and produces aging behavior distinct from previously studied devices. Instead of the smooth quasi-exponential drift of solder-based modules, the forward voltage drop $V_{DS}$ exhibits multi-regime profiles, with wirebond liftoff events introducing abrupt, non-monotonic perturbations.   We propose a condition monitoring framework combining three elements. First, physics-informed features replace raw sensor signals with cumulative damage indicators derived from junction temperature swing, mean junction temperature and a Miner rule accumulator, encoding degradation history in an interpretable form. Second, a monotonicity constraint enforced by gradient penalty regularization embeds the expected degradation direction as a physics-guided prior. Third, a heavy-tailed output distribution replaces the point estimate, giving calibrated uncertainty robust to the out-of-distribution variance introduced by liftoff.   On an industrial power cycling dataset from Infineon Technologies, several neural architectures are compared under a strict cross-validation protocol. The full configuration reduces mean absolute error by approximately 70% over purely data-driven baselines and stays stable across all folds, while remaining lightweight enough for embedded deployment.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202608/15/2608.08365v2-failure-mechanism-transferability-of-cumulative-damage-features-for-health-state-estimation-of-sic-power-modules",
+      "section": "quick",
+      "title_en": "Failure-Mechanism Transferability of Cumulative-Damage Features for Health State Estimation of SiC Power Modules",
+      "authors": "Mattia Scarpa, Evgeny Kusmenko, Francesco Toso, Mattia Bruschetta, Ruggero Carli, Simon Achatz",
+      "date": "2026-08-08",
+      "pdf": "https://arxiv.org/pdf/2608.08365v2",
+      "score": "6.0",
+      "evidence": "碳化硅功率模块的健康状态估计与失效机制分析",
+      "tldr": "本研究探讨了SiC功率模块健康状态评估模型在不同失效机制（焊层疲劳与键合线脱落）间的迁移性。通过对比五种传统方法与物理启发的神经常微分方程（NODE）模型，发现传统方法在跨机制应用时精度大幅下降。研究证明，结合累积热电特征的NODE模型能有效克服这一问题，在不同失效模式下均保持稳定性能，强调了输入特征表示在提升模型迁移性中的关键作用。",
+      "tags": "query:pmsm",
+      "abstract_en": "Data-driven health-state estimators for SiC (Silica-Carbide) power modules typically report their performance on a single accelerated-aging campaign, and how that performance transfers to a different failure mechanism is rarely tested. We benchmark five reference methods from the prognostics and condition-monitoring literature against a physics-informed NODE (Neural Ordinary Differential Equation) on two SiC power-cycling campaigns driven by structurally different failure mechanisms, solder-layer fatigue and wire-bond lift-off, under a per-module $k$-fold protocol. The NODE is evaluated under two input regimes that share the rest of the pipeline: the baseline electrical precursors and a set of cumulative thermoelectric features. Every reference method degrades on the wire-bond campaign, with average errors growing and precision decreasing with respect to their performance on the soldered campaign. The NODE fed with the cumulative features keeps its soldered-campaign metrics on both mechanisms, with differences inside the fold-to-fold variance, while the same architecture fed with the baseline precursors falls back to the reference-method cluster. The input representation contributes at least as much as the architecture to failure-mechanism transferability of a health-state estimator.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

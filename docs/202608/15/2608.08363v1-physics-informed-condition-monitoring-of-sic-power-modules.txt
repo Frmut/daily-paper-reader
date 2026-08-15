@@ -1,0 +1,1406 @@
+Physics-Informed Condition Monitoring of SiC Power Modules
+Mattia Scarpa1,2,4, Evgeny Kusmenko2, Francesco Toso4, Mattia Bruschetta1, Ruggero Carli1, and Simon Achatz3
+1 Department of Information Engineering, University of Padova, Padova, Italy
+scarpamatt@dei.unipd.it
+carlirug@dei.unipd.it
+bruschet@dei.unipd.it
+2 Infineon Technologies Dresden GmbH & Co. KG, Dresden, Germany
+Evgeny.Kusmenko@infineon.com
+3 Infineon Technologies AG, Munich, Germany
+Simon.Achatz@infineon.com
+4 Newtwen S.r.l., Padova, Italy
+francesco.toso@newtwen.com
+ABSTRACT
+Silicon carbide (SiC) power modules are increasingly de-
+ployed in automotive traction inverters, where reliable con-
+dition monitoring is essential to prevent in-service failures
+and reduce maintenance costs. Despite extensive qualifica-
+tion procedures standardized under AQG 324, no consol-
+idated approach exists for in-field health state estimation
+of SiC devices.
+Existing methods range from physics-of-
+failure lifetime models, which lack real-time applicability,
+to purely data-driven architectures that require large labeled
+datasets and offer limited generalization, to physics-informed
+machine learning frameworks that, while promising, remain
+computationally demanding for embedded deployment.
+This work addresses condition monitoring of SiC MOSFET
+power modules assembled with sintered packaging technol-
+ogy, which prevents solder degradation and thereby produces
+aging behavior qualitatively distinct from previously studied
+devices. In solder-based modules, the forward voltage drop
+VDS follows smooth quasi-exponential trajectories driven
+by progressive solder delamination. With sintered packag-
+ing this mechanism is suppressed, and VDS instead exhibits
+multi-regime degradation profiles; modules are additionally
+subject to wirebond liftoff events that introduce abrupt, non-
+Mattia Scarpa et al. This is an open-access article distributed under the terms
+of the Creative Commons Attribution 3.0 United States License, which per-
+mits unrestricted use, distribution, and reproduction in any medium, provided
+the original author and source are credited.
+Preprint. This work has been accepted for presentation at the Annual Confer-
+ence of the Prognostics and Health Management Society 2026 (PHM 2026).
+This document is the authors’ extended version of the accepted paper and
+includes additional material not present in the conference version.
+monotonic perturbations directly onto VDS, posing new chal-
+lenges for condition monitoring approaches.
+To address these challenges, we propose a condition moni-
+toring framework integrating three complementary elements.
+First, physics-informed feature engineering replaces raw sen-
+sor signals with physically grounded inputs, including cu-
+mulative damage indicators derived from junction tempera-
+ture swing and mean junction temperature, combined with a
+Miner rule accumulator, which encode degradation history in
+a form directly interpretable by the model. Second, a mono-
+tonicity constraint enforced via gradient penalty regulariza-
+tion embeds the expected degradation direction as a physics-
+guided prior, improving generalization and cross-validation
+stability. Third, the model output is parameterized as a heavy-
+tailed distribution rather than a point estimate, providing cali-
+brated uncertainty quantification inherently robust to the out-
+of-distribution variance introduced by liftoff events.
+The framework is evaluated on an industrial power cycling
+dataset provided by Infineon Technologies, acquired under
+multiple operating conditions. Multiple neural network ar-
+chitectures of varying complexity and sequential context are
+compared within a rigorous cross-validation protocol. The
+full physics-informed feature set combined with gradient
+penalty regularization consistently outperforms purely data-
+driven baselines, reducing mean absolute error by approxi-
+mately 70% and maintaining stable performance across all
+cross-validation folds, including conditions where baseline
+models degrade significantly. These results confirm that in-
+tegrating physical prior knowledge at the feature, constraint,
+and output distribution levels is both necessary and sufficient
+1
+arXiv:2608.08363v1  [eess.SY]  8 Aug 2026
+
+
+ANNUAL CONFERENCE OF THE PROGNOSTICS AND HEALTH MANAGEMENT SOCIETY 2026
+to handle the complexity of SiC power module degradation,
+while remaining lightweight enough for practical embedded
+deployment.
+1. INTRODUCTION
+Silicon carbide (SiC) power metal-oxide-semiconductor
+field-effect transistors (MOSFETs) are now widely deployed
+in the high-voltage stage of automotive traction invert-
+ers, where their higher switching frequency and elevated
+junction-temperature limits allow for smaller passive com-
+ponents and higher converter efficiency. Reliability of the
+power-semiconductor stage has long been identified by in-
+dustry as one of the most pressing reliability concerns among
+the components that make up a power converter (Yang et
+al., 2011), and accelerated power-cycling tests under the
+European Center for Power Electronics (ECPE) Automotive
+Qualification Guideline (AQG) 324 qualification (ECPE Eu-
+ropean Center for Power Electronics e.V., 2025) provide the
+bridge between bench characterization and field deployment.
+The in-service condition monitoring (CM) problem is distinct
+from the qualification one: rather than counting cycles to a
+fixed threshold under a known stress profile, on-board elec-
+tronics must keep an updated health estimate from electrical
+measurements taken while the module is operating under
+variable load.
+Reviews of SiC reliability converge on the
+dominant failure modes, but the electrical signals proposed
+for tracking those modes online are still treated as candidates
+rather than as a consolidated indicator set, and their com-
+bination into a per-cycle health estimate consistent with the
+lifetime models obtained from accelerated tests is identified
+as a central open methodological problem (Ni et al., 2020).
+The chip-solder degradation mechanism has long been rec-
+ognized as the leading source of package-level failure in
+conventional power modules under thermo-mechanical cy-
+cling (Clech, 1997; Kovacevic et al., 2010; Kovacevic-
+Badstuebner et al., 2015), with a physical signature on the
+on-state voltage drop that is well described as a smooth quasi-
+exponential rise driven by progressive crack growth in the
+die-attach.
+This profile contrasts sharply with the abrupt
+step-like behavior of wirebond fatigue, where each individ-
+ual bond-wire lift-off has been observed to produce a step-
+wise increase in the on-state voltage drop (Kumar et al.,
+2026).
+For this reason, data-driven SiC CM has predom-
+inantly grown on modules where solder degradation is the
+dominant failure mode, and has gradually drifted away from
+the closed-form parametric route that fits an electro-thermal
+indicator to a regression law and inverts it to recover a life-
+time fraction (Di Nuzzo et al., 2022, 2023). The analyti-
+cal transparency of that route comes at the cost of a tight
+coupling to the assumed indicator shape, and more flexi-
+ble machine-learning formulations have also been explored
+in parallel, including sequence models that forecast the rela-
+tive on-state voltage drop forward to the qualification thresh-
+old (Olschewski et al., 2025; Villalobos et al., 2025) and end-
+to-end snapshot models that map the current measurement di-
+rectly to an expected lifetime fraction (Achatz et al., 2026).
+The physics of failure (PoF) tradition that underpins lifetime
+modeling in this domain combines Coffin–Manson estimates
+with Miner’s rule to handle variable stress profiles (Ceccarelli
+et al., 2019; Barbagallo et al., 2021), and physics-informed
+machine learning (PIML) frameworks have started to bridge
+it with data-driven approaches (Fassi et al., 2024). From a
+broader prognostics and health management (PHM) stand-
+point, three persistent issues have been repeatedly flagged in
+the literature: data-driven prognostics are typically evaluated
+on training-distribution-matched test sets, the domain shift
+between accelerated tests and field operation is seldom as-
+sessed, and predictive uncertainty is rarely reported alongside
+the point estimate (Zio, 2022; Fink et al., 2020), and these
+gaps are confirmed to remain open in our SiC domain (Kumar
+et al., 2026).
+In this work we examine an accelerated dataset whose degra-
+dation pattern departs from those most frequently analyzed in
+the literature. The modules under test are 1.2 kV automotive
+SiC half-bridges assembled with a sintered silver die-attach
+technology, which suppresses solder degradation as a fail-
+ure mode and leaves wirebond fatigue as the dominant aging
+mechanism. On the on-state voltage drop, this manifests as
+a continuous drift driven by progressive crack propagation in
+the bond-pad metallization, with rapid rises that occurs sto-
+castically whenever a wire lifts off. Four stress conditions,
+obtained by combining heating durations of 1.5 s and 30 s
+with different load-current levels, all exhibit this profile, to
+get module-to-module variability within each condition.
+To handle this setting, we explore three complementary ad-
+ditions to a standard data-driven baseline, one acting on
+the input, one on the training loss, and one on the output.
+On the input side, the raw indicator vector is augmented
+with physics-informed features that summarize cumulative
+thermo-mechanical stress along the module lifetime: the per-
+cycle junction-temperature swing and mean junction temper-
+ature, their integrals over time, and a Miner-rule damage
+term obtained from a per-cycle Coffin–Manson estimate. The
+Miner-rule construction is the canonical physics-of-failure
+aggregator for SiC under realistic mission profiles (Ceccarelli
+et al., 2019; Barbagallo et al., 2021); here it enters the net-
+work as a learned input rather than as the prediction itself.
+On the loss side, a monotonicity prior is added as a gradient-
+penalty regularizer on the features that are physically ex-
+pected to grow with degradation in line with the loss-based
+formulation used in our earlier work (Scarpa et al., 2025).
+Compared with approaches that enforce monotonicity by con-
+struction, through custom activation functions inside the net-
+work (Zhao & Fink, 2025), this soft formulation introduces
+no inference overhead, remains compatible with simple feed-
+forward networks, and matches the constraints of embedded
+2
+
+
+ANNUAL CONFERENCE OF THE PROGNOSTICS AND HEALTH MANAGEMENT SOCIETY 2026
+deployment. On the output side, the network produces the pa-
+rameters of a Student-t distribution rather than a single point
+estimate, so that location, scale, and degrees-of-freedom are
+learned jointly and the heavy tails accommodate the larger
+residuals that lift-off events produce in the regression target.
+The framework is evaluated under a four-fold cross-validation
+stratified at the module level.
+Three neural architectures
+(MultiLayer Perceptron (MLP), Contextual MLP (CMLP),
+Neural ODE (NODE)) are trained with different input-feature
+configurations: a baseline using only the line current and the
+relative on-state voltage drop, and the same set augmented
+with the cumulative features and the monotonicity penalty.
+The combination of cumulative features and monotonicity
+penalty reduces the mean absolute error (MAE) on the life-
+time estimate by up to 60% relative to the baseline, at a
+cross-fold standard deviation of 0.019 on the health index that
+holds also on the folds whose validation modules exhibit lift-
+off. Section 2 describes the failure physics and the indicator
+dataset. Section 3 introduces the feature pipeline, the loss
+formulation, and the output head. Section 4 details the exper-
+imental protocol. Section 5 reports the comparative evalua-
+tion. Sections 6 and 7 close with the discussion and the open
+questions.
+2. BACKGROUND AND PROBLEM FORMULATION
+2.1. Module and Power-Cycling Dataset
+The dataset analyzed in this work consists of accelerated
+power-cycling tests performed at Infineon Technologies on a
+1.2 kV automotive SiC half-bridge module. Its sintered sil-
+ver die-attach removes solder fatigue at the chip–substrate
+interface as a failure mode, leaving wirebond fatigue at the
+chip-side bond pads as the dominant package-level mecha-
+nism. As thermal cycles accumulate, mechanical stress drives
+crack propagation in the bond-pad metallization, and individ-
+ual wire lift-offs translate into the rapid rises of the on-state
+voltage drop described in Section 1.
+Each device under test (DUT) is repeatedly heated by a load
+current Iload flowing for a heating duration theat, then cooled
+to the inlet coolant temperature over a duration tcool. Dur-
+ing each cycle, the per-cycle on-state voltage drop VDS,
+the thermal resistance Rth, the junction-temperature swing
+∆Tvj = Tvj,max −Tvj,min, together with the load current and
+the heating/cooling durations, are recorded. Following the
+AQG 324 qualification standard (ECPE European Center for
+Power Electronics e.V., 2025), a module is considered failed
+when at least one of
+∆VDS
+VDS,nom
+≥5%,
+∆Rth
+Rth,nom
+≥20%
+(1)
+is reached, where VDS,nom and Rth,nom are the reference val-
+ues measured on the pristine module. In the present dataset,
+crossing of the VDS threshold is the primary end-of-life
+# of Cycles
+V rel, ratio
+ds
+ normalized
++5% EOL threshold 
+G.01
+G.02
+G.03
+G.04
+outside transient
+lift-off transient
+Figure 1. Relative on-state voltage drop of each DUT along
+its cycle counter. The light curves show the underlying drift;
+the solid-colour overlays mark the cycle ranges annotated as
+wire lift-off transients during data preprocessing. Numeric
+tick labels are suppressed; the dashed line marks the +5%
+EOL threshold.
+(EOL) event observed, while the thermal-resistance excursion
+remains bounded throughout the test.
+Twenty-four DUTs are distributed across four operating-
+condition groups, summarized in Table 1. The groups span
+two heating-pulse durations (short, theat = 1.5 s, and long,
+theat = 30 s) and four load-current levels, with the inlet
+coolant temperature trimmed condition-by-condition to keep
+the junction-temperature peak close to Tvj,max ≈175 ◦C
+across conditions. The short-pulse groups compress the same
+heating energy into a shorter cycle, inducing larger ∆Tvj ex-
+cursions than the long-pulse groups. The same power-cycling
+protocol on a related solder-based SiC module has been pre-
+viously analyzed (Olschewski et al., 2025); the experimental
+framework is therefore consistent across studies, and only the
+packaging technology differs.
+Figure 1 reports the relative on-state voltage drop of each
+DUT along its cycle counter, with numeric tick labels in-
+tentionally suppressed and only the +5% EOL threshold
+marked. Most trajectories drift smoothly under the contin-
+uous crack propagation in the bond-pad metallization; on top
+of this drift, the cycle ranges in which wire lift-off transients
+have been manually identified during data preprocessing are
+overlaid in solid colour. Out of the 24 DUTs, 19 exhibit at
+least one such transient (27 events in total across the four
+groups).
+2.2. Lifetime Modeling and Damage Aggregation
+The PoF framework that traditionally underpins lifetime
+estimation for power modules combines a Coffin–Manson-
+type estimate of cycles to failure under constant stress
+with Miner’s rule for aggregating variable stress histo-
+ries (Ceccarelli et al., 2019; Barbagallo et al., 2021). For
+wirebond-driven fatigue, we adopt the Norris–Landzberg
+(NL) parameterization, which expresses the cycles to failure
+3
+
+
+ANNUAL CONFERENCE OF THE PROGNOSTICS AND HEALTH MANAGEMENT SOCIETY 2026
+Table 1.
+Operating conditions of the four power-cycling
+groups. Current and temperatures are reported as mean ±
+standard deviation over all recorded cycles of the six DUTs
+of the group, both switches pooled for Tvj,max; each group
+contains N = 6 DUTs.
+Group theat tcool
+Iload
+Tvj,max
+Tinlet
+[s]
+[s]
+[A]
+[◦C]
+[◦C]
+G.01
+1.5
+3.5 694.5 ± 0.05 177.2 ± 1.2 73.3 ± 0.09
+G.02
+1.5
+3.5 752.6 ± 0.05 178.2 ± 2.0 53.6 ± 0.02
+G.03
+30
+30
+669.5 ± 0.07 176.6 ± 1.6 74.1 ± 0.17
+G.04
+30
+30
+776.7 ± 0.07 176.1 ± 3.0 33.1 ± 0.06
+G.01
+G.02
+G.03
+G.04
+Operating-condition group
+Nf observed [cycles]
+(a) EOL distribution per group
+G.01
+G.02
+G.03
+G.04
+NNL
+f predicted
+Nf observed
+Nref = 5.36e + 05
+α = 2.96, γ = 0.50
+(b) Norris-Landzberg parity
+Figure 2.
+(a) Empirical EOL distribution per operating-
+condition group as per Table 2 on the dataset (six DUTs per
+group). (b) Parity plot of observed and NL-predicted cycles
+to failure for the same DUTs; the dashed line marks ideal
+agreement.
+under a constant operating point as
+N NL
+f (∆Tvj, theat) = Nref
+∆Tvj
+100
+−α
+t−γ
+heat,
+(2)
+where the three coefficients Nref, α, γ are fitted to the EOL
+data of the four groups in Table 1. Log-linear least-squares
+fitting on the 24 DUTs yields
+Nref = 5.32 × 105,
+α = 2.94,
+γ = 0.50,
+(3)
+with ∆Tvj averaged over the early-stable cycle window
+[100, 600] to remove degradation-induced drift from the
+operating-point estimate. Figure 2(a) reports the empirical
+EOL distribution per group as a boxplot, and Figure 2(b)
+compares the observed cycles to failure of each DUT with
+the NL prediction evaluated at Eq. (3).
+To aggregate variable stress histories at the DUT level,
+Miner’s rule is applied cycle-by-cycle.
+For a mod-
+ule that has completed n cycles under stress profile
+{(∆Tvj,k, theat,k)}n
+k=1, the accumulated damage is
+D(n) =
+n
+X
+k=1
+1
+N NL
+f (∆Tvj,k, theat,k),
+(4)
+Table 2. Miner-rule damage Eq. (4) evaluated at the recorded
+EOL of each DUT, reported per group and aggregated.
+Experiment
+n
+D
+σD
+CV
+G.01
+6
+1.323
+0.419
+32%
+G.02
+6
+0.855
+0.324
+38%
+G.03
+6
+0.898
+0.116
+13%
+G.04
+6
+1.132
+0.146
+13%
+Global
+24
+1.052
+0.338
+32%
+with D = 1 corresponding to the predicted end of life. Eval-
+uated at the recorded EOL of each DUT, the Miner-damage
+distribution is summarized in Table 2.
+The global aggregate D = 1.052 confirms that the NL fit
+is on average well-centred on the dataset.
+The per-group
+coefficient of variation (CV), however, ranges from 13% in
+the long-pulse groups (G.03, G.04) to 38% in the short-
+pulse group G.02, signalling that a substantial fraction of
+the module-to-module variability remains unexplained at the
+operating-condition level.
+2.3. Problem Formulation
+The NL/Miner framework provides a bulk estimate of the cy-
+cles to failure at the population level and a scalar damage
+index D at the DUT level, both convenient for accelerated-
+test characterisation. It does not provide a per-cycle estimate
+of the current health state, nor a quantification of predictive
+uncertainty around that estimate, nor a mechanism to track
+module-specific deviations from the empirical fit. These three
+quantities are the natural targets of an in-service CM tool.
+We therefore introduce a dimensionless health index
+r(n) =
+n
+N EOL
+f
+,
+r ∈[0, 1 + ε],
+(5)
+where n is the current cycle count and N EOL
+f
+is the cycle in-
+dex at which the EOL criterion Eq. (1) is first satisfied. By
+construction, r = 0 corresponds to a pristine module, r = 1
+to the EOL event, and a small overshoot ε > 0 is allowed
+to absorb the discretisation of EOL detection. The CM task
+addressed in the next section is to estimate r(n) from the
+per-cycle measurements available at cycle n, together with
+a predictive distribution that captures both module-to-module
+residual variability and the larger residuals produced by indi-
+vidual lift-off events.
+3. PROPOSED FRAMEWORK
+3.1. Network Architectures
+We compare three different neural architectures that differ in
+how the cycle history is exposed to the input: a snapshot
+MLP, which uses only the current measurement; a contex-
+tual MLP (CMLP), which appends a short window of past
+4
+
+
+ANNUAL CONFERENCE OF THE PROGNOSTICS AND HEALTH MANAGEMENT SOCIETY 2026
+on-state voltage values; and a NODE, which carries a hidden
+state across cycles. All three map a per-cycle input vector
+xn ∈Rd to the parameters of the predictive distribution in-
+troduced in Section 3.2.
+The MLP is the simplest of the three. It treats every cycle
+independently, mapping a single snapshot xn through L fully-
+connected layers with non-linear activation (Rumelhart et al.,
+1986),
+h1 = ϕ(W1xn + b1),
+hℓ= ϕ(Wℓhℓ−1 + bℓ),
+(6)
+with the output read from the last layer provided as
+[µn, ˜σn, ˜νn] = Wout hL + bout.
+The stateless formulation
+is straightforward to train and fits comfortably within the
+parameter budget of an embedded target, but it is blind to the
+cycle history: any signal that requires comparing the current
+snapshot with the past must already be encoded in xn.
+The contextual MLP extends the input vector with a size lim-
+ited rolling window of past on-state voltage measurements,
+˜xn =
+
+xn, VDS,n−K+1, . . . , VDS,n
+
+∈Rd+K,
+(7)
+and feeds ˜xn through an MLP with the same forward form
+as Eq. (6). This restores access to a finite local context with-
+out introducing a recurrent state. The trade-off is in the choice
+of K, which is fixed by hand and cannot be learned: anything
+outside the window is invisible to the model.
+The NODE replaces the discrete stacking of layers with a
+continuous-time vector field on a hidden state (Chen et al.,
+2018),
+dh(t)
+dt
+= fθ
+ h(t), x(t)
+
+,
+(8)
+which is integrated forward in time by an explicit Euler step,
+hn+1 = hn + ∆tn · fθ(hn, xn),
+(9)
+and produces the output by reading the hidden state,
+[µn, ˜σn, ˜νn] = Wout hn + bout.
+The step size ∆tn is set
+proportional to the per-cycle heating duration theat,n, so that
+the dynamics learned by fθ are decoupled from the operating-
+point-dependent cycle duration; the details of this scaling are
+deferred to Section 4. Compared with the previous two ar-
+chitectures, the NODE carries unbounded temporal memory
+in its hidden state and is the only one whose recurrence is
+conditioned explicitly on theat, at the cost of harder hyper-
+parameter tuning.
+Training is performed on subsequences
+rather than on the full trajectory, so the hidden state at each
+subsequence start is set to zero; at inference, however, the
+state at any cycle results from the integration of the dynamics
+from cycle zero onward, and the zero-initialised training
+state is therefore inconsistent with the state actually reached
+during inference. To reduce this mismatch, we periodically
+run a full-trajectory simulation on the training set and use the
+resulting hidden state at each subsequence boundary as the
+new initialisation, in a manner analogous to (Scarpa et al.,
+2025). The refresh frequency and the subsequence spacing
+are reported in Section 4.
+3.2. Probabilistic Output Head
+In place of a Gaussian point-estimate trained against the
+mean squared error, the network produces the parameters of
+a Student-t distribution over the health index r,
+p(r | xn) = T
+ µn, σn, νn
+
+,
+(10)
+where the location µn, the scale σn > 0 and the degrees-of-
+freedom νn > 0 are all produced by the network for each
+cycle. Written out, the density is
+p(r | xn) =
+Γ
+  νn+1
+2
+
+Γ
+  νn
+2
+√πνn σn
+"
+1 + 1
+νn
+r −µn
+σn
+2#−νn+1
+2
+,
+(11)
+which recovers the Gaussian in the limit νn →∞and
+grows heavier tails as νn decreases. The three parameters
+are learned end-to-end through the negative log-likelihood
+of Eq. (10),
+LNLL = −1
+N
+N
+X
+n=1
+log p(rn | xn).
+(12)
+A Gaussian likelihood, equivalent to the mean squared error
+up to constants, penalises large residuals quadratically. In our
+setting the cycles in which an individual wire lift-off occurs
+are exactly the cycles where the residual on r is largest, so a
+quadratic loss amplifies the corresponding gradient contribu-
+tions and tends to destabilise training. The Student-t replaces
+the quadratic tail with a log
+ 1 + (r −µ)2/(νσ2)
+
+tail whose
+curvature decreases as ν shrinks. The learned νn then acts
+as a per-cycle reliability measure rather than a fixed hyper-
+parameter, and the high-residual cycles contribute proportion-
+ally less to the gradient than they would under a Gaussian
+assumption.
+3.3. Monotonicity Prior as a Soft Constraint
+The health index r(n) = n/N EOL
+f
+is by construction non-
+decreasing in n, and the cumulative features introduced in
+Section 2.3 are non-decreasing in the relevant inputs as well.
+We encode this physical prior as a gradient-penalty regu-
+lariser added to the training objective. For the stateless archi-
+tectures (MLP and CMLP), the constraint is imposed point-
+wise as a non-negativity penalty on the partial derivative of
+the central estimate with respect to each cumulative input,
+Lpw
+mono = 1
+N
+N
+X
+n=1
+X
+i∈Icum
+h
+−∂µn
+∂xn,i
+i2
++,
+(13)
+5
+
+
+ANNUAL CONFERENCE OF THE PROGNOSTICS AND HEALTH MANAGEMENT SOCIETY 2026
+where [·]+ denotes the positive part and Icum collects the in-
+dices of the physically monotone features. For the recurrent
+architecture (NODE), the same prior can also be imposed
+temporally on the predicted trajectory,
+Lt
+mono =
+1
+N −1
+N−1
+X
+n=1
+h
+−(µn+1 −µn)
+i2
++.
+(14)
+In both cases the training objective combines the two terms
+with a non-negative weight λ,
+L = LNLL + λ Lmono,
+(15)
+and the prior acts on the loss only at training time, so the
+inference graph is left unchanged and no overhead is added at
+deployment.
+4. EXPERIMENTAL SETUP
+4.1. Input Features
+Each architecture is fed a per-cycle vector xn built from two
+groups of features. The base group contains the line current
+and the relative on-state voltage drop,
+xbase
+n
+=
+
+Iload,n, V rel
+DS,n
+
+∈R2,
+(16)
+which are the two quantities measured at every cycle in
+the power-cycling test. The cumulative group collects four
+physics-informed quantities that summarise the stress history
+up to cycle n,
+STj(n) = Pn
+k=1
+R
+tk Tvj,ss(τ) dτ,
+S∆Tj(n) = Pn
+k=1 ∆Tvj,k,
+SI(n) = Pn
+k=1
+R
+tk Iload(τ) dτ,
+D(n) = Miner damage of Eq. (4),
+(17)
+all of which are by construction non-decreasing in n and form
+the set Icum on which the pointwise monotonicity penalty of
+Eq. (13) acts. The baseline configuration uses only xbase
+n ; the
+full configuration appends Eq. (17), so that xn ∈R6.
+4.2. Network Sizes and Training
+The MLP and CMLP share a three-layer feed-forward net-
+work with ReLU activation and a hidden width of about 15
+units per layer; the last layer outputs the three Student-t pa-
+rameters (µn, ˜σn, ˜νn). The CMLP appends K = 10 past
+values of V rel
+DS to the per-cycle input as in Eq. (7). The NODE
+uses a hidden state of comparable dimension and a two-layer
+MLP as the vector field fθ. The hidden widths of all three
+networks are chosen so that, on the full feature set, the total
+parameter count remains below 103 trainable weights, keep-
+ing the three models within the same order of magnitude so
+that the comparison isolates the effect of the temporal con-
+text exposed to the input from the effect of model size. The
+integration step in Eq. (9) is
+∆tn = theat,n
+DTscale
+,
+(18)
+which is the explicit mechanism that decouples the dynamics
+learned by fθ from the per-group cycle duration: under the
+power-cycling protocol of Table 1 the heating duration varies
+by a factor of 20 between the short and the long groups, so
+that a constant integration step would force the network to
+absorb this variability into the weights rather than into the
+recurrence. We set DTscale = 1000, the same value across
+all groups, so that ∆tn remains in the [10−3, 10−2] range
+throughout the dataset.
+The Student-t scale and degrees-of-freedom are passed
+through a softplus to keep them strictly positive, σn
+=
+softplus(˜σn) + σfloor and νn = softplus(˜νn) + νmin, with
+σfloor = 0.02 to prevent vanishing scale and νmin = 2 to
+keep the second moment of the heavy-tail likelihood finite.
+Optimisation uses Adam with a learning rate of 10−3 sched-
+uled piecewise with a 0.1 decay, gradient norm clipped at
+1.0, and a monotonicity weight of λ = 10 when the penalty
+is active. All three architectures are trained for 500 epochs
+with a batch size of 2,048 samples; for the NODE the batch
+is composed of subsequences of 5,000 cycles drawn from
+the training DUTs with a stride of 500 cycles, while the
+MLP and CMLP are fed batches of independent per-cycle
+snapshots. The full-trajectory simulation that refreshes the
+hidden-state cache at each subsequence boundary is re-run
+every 30 epochs. All networks are fed a 10× subsampled
+version of the cycle counter to keep the per-epoch compute
+budget manageable on embedded-class hardware.
+4.3. Cross-Validation Protocol and Baseline
+The 24 DUTs are split with a four-fold cross-validation strati-
+fied at the operating-condition group level: each fold reserves
+one DUT per group for validation and uses the remaining 20
+DUTs for training. The folds are mutually exclusive at the
+DUT level, so every DUT is used exactly once as validation
+across the four folds. Performance is reported as mean and
+standard deviation across folds.
+The reference against which the proposed configurations are
+compared is the parameter-free estimator
+ˆr base
+n
+= 20 V rel
+DS,n,
+(19)
+obtained by inverting the 5% AQG 324 criterion of Eq. (1)
+into a linear map from V rel
+DS ∈[0, 0.05] to r ∈[0, 1]. This esti-
+mator requires no training and uses only the indicator that the
+qualification standard already monitors. Any improvement of
+the proposed networks over Eq. (19) therefore quantifies the
+information contributed by the cumulative features and the
+monotonicity prior on top of the raw VDS trace.
+6
+
+
+ANNUAL CONFERENCE OF THE PROGNOSTICS AND HEALTH MANAGEMENT SOCIETY 2026
+4.4. Evaluation Metrics
+Four metrics are reported per fold, each computed over all
+validation cycles. The first two assess the central estimate
+ˆrn = µn against the true health index rn,
+MAE = 1
+N
+N
+X
+n=1
+|ˆrn −rn|,
+(20)
+R2 = 1 −
+P
+n(rn −ˆrn)2
+P
+n(rn −¯r)2
+(21)
+where ¯r is the mean of r on the validation set. The remaining
+two are standard prognostic metrics that weigh the estimate
+against the residual life (Saxena et al., 2010),
+α-acc = 1
+N
+N
+X
+n=1
+⊮
+
+|ˆrn −rn| ≤α (1 −rn)
+
+,
+(22)
+which measures the fraction of cycles inside an α-cone that
+narrows toward the EOL (we use α = 0.2), and the relative
+accuracy
+RA = 1 −|ˆrn −rn|
+rn
+,
+(23)
+averaged over the cycles in which rn ≥0.1 to keep the de-
+nominator away from zero in the pristine region.
+5. RESULTS
+5.1. Aggregate Cross-Validation Performance
+The four metrics of Eqs. (20) to (23), aggregated as mean and
+standard deviation across the four cross-validation folds, are
+reported in Table 3. The trivial baseline of Eq. (19) sets a
+non-trivial floor that any learned estimator must clear. Train-
+ing on the base features alone — the telemetric signals avail-
+able from the inverter without any explicit history encoding
+— yields only a modest MAE improvement and keeps α-
+accuracy essentially at the level of the trivial reference. Ap-
+pending the cumulative features of Eq. (17), which encode
+the stress history experienced by the module up to cycle n,
+translates the input into a sharper estimate: the gap closes on
+every metric and the recurrent NODE becomes consistently
+best. The monotonicity penalty of Eq. (13) adds a smaller
+increment — a few percentage points on α-accuracy and a
+fraction of a percent on MAE — consistent with the hypoth-
+esis that the cumulative features themselves already encode
+a substantial degree of physical monotonicity, partly carrying
+out the role of the explicit regularizer.
+Beyond the best mean performance, the NODE also exhibits
+the lowest fold-to-fold variance on every metric, as shown by
+the standard deviation columns of Table 3. This stability is
+consistent with the recurrent hidden state acting as an implicit
+memory of the trajectory, which absorbs the cumulative-
+damage signal across regular cycles as well as across anoma-
+lous events such as the wirebond lift-off transients that disrupt
+V rel
+DS,n on individual DUTs.
+5.2. Health Index and Relative Accuracy Across Life
+The aggregate behaviour of the four series along the life frac-
+tion τ = n/N EOL
+f
+is reported in Figure 3, with one column
+per architecture and one row per metric. The top row overlays
+the ideal ˆr = τ diagonal and the α = 20% cone of Eq. (22);
+the bottom row marks the RA = 1 ideal.
+The trivial baseline, drawn in gray in all six panels, captures
+the slow VDS drift correctly in mid-life but lags below the
+diagonal for the first three quarters of the trajectory and only
+catches up close to the EOL threshold. As a direct conse-
+quence its RA dives below zero for τ ∈[0.05, 0.15]: in this
+regime V rel
+DS,n ≈0 on most modules, so ˆr is comparable in
+magnitude to the absolute error itself and the denominator of
+Eq. (23) is too small to absorb it. This regime is precisely
+where a learned estimator has the most to add: from τ = 0.2
+onward all three architectures stay above RA = 0.8 on the
+median curve, while the baseline only recovers to RA ≈0.7
+around τ = 0.5.
+The base configuration (blue curve) is the one in which the
+choice of architecture matters most. On the MLP panel the
+base median strays visibly outside the cone for τ ≲0.2 and
+shows the widest 10-90 band of the three columns, consis-
+tent with the largest cross-fold variance reported in Table 3.
+The CMLP corrects part of this through the past-VDS context
+window; the NODE closes most of the gap through the recur-
+rent state alone, with the base median already inside the cone
+almost everywhere.
+The cumulative variants (orange and green) compress these
+differences across architectures: once STj, S∆Tj, SI and D
+are available, the three median curves essentially overlap.
+The monotonicity penalty (green vs. orange) brings a slight
+visible tightening of the band on the CMLP and NODE pan-
+els for τ > 0.3 but is barely distinguishable on the MLP.
+The bands of the NODE cumulative variants are the narrow-
+est among the nine network configurations, consistent with
+the lowest cross-fold variance of Table 3: the recurrent archi-
+tecture pairs the best central tendency with the most consis-
+tent inter-DUT response.
+5.3. Predictive Uncertainty Calibration
+We check whether the Student-t output of Eq. (10) deliv-
+ers calibrated uncertainty.
+For each validation cycle we
+form the Student-t central interval at nominal coverage p ∈
+{68.27%, 95.45%} from the predicted (σn, νn) and count the
+fraction of cycles in which the true rn falls inside that inter-
+val. Table 4 reports the result. The base NODE is under-
+covered at both levels: with only the raw electrical inputs
+the network reports tighter bands than the residuals justify.
+7
+
+
+ANNUAL CONFERENCE OF THE PROGNOSTICS AND HEALTH MANAGEMENT SOCIETY 2026
+Table 3. Cross-validation metrics on the dataset: mean ± standard deviation across the four DUT-stratified folds described in
+Section 4.3. Arrows indicate the direction of improvement; the smaller line below each value reports the relative improvement
+over the trivial baseline (positive = better, irrespective of the metric’s direction). The best-performing configuration is high-
+lighted in bold.
+Architecture
+Features
+MAE ↓
+R2 ↑
+α-acc ↑
+RA ↑
+20 V rel
+DS (baseline)
+—
+0.120±0.013
+0.738±0.078
+0.444±0.037
+0.716±0.017
+—
+—
+—
+—
+MLP
+base
+0.093±0.020
+0.816±0.049
+0.489±0.039
+0.695±0.015
+(+23%)
+(+11%)
+(+10%)
+(-3%)
+cum (no penalty)
+0.073±0.047
+0.846±0.171
+0.667±0.211
+0.836±0.083
+(+40%)
+(+15%)
+(+50%)
+(+17%)
+cum + monotonicity
+0.072±0.048
+0.850±0.173
+0.673±0.219
+0.839±0.085
+(+40%)
+(+15%)
+(+51%)
+(+17%)
+CMLP
+base
+0.097±0.030
+0.723±0.193
+0.413±0.174
+0.653±0.071
+(+19%)
+(-2%)
+(-7%)
+(-9%)
+cum (no penalty)
+0.068±0.035
+0.893±0.072
+0.629±0.183
+0.817±0.065
+(+43%)
+(+21%)
+(+42%)
+(+14%)
+cum + monotonicity
+0.063±0.028
+0.911±0.049
+0.662±0.166
+0.819±0.061
+(+48%)
+(+23%)
+(+49%)
+(+14%)
+NODE
+base
+0.077±0.010
+0.850±0.026
+0.493±0.081
+0.717±0.018
+(+36%)
+(+15%)
+(+11%)
+(+0%)
+cum (no penalty)
+0.050±0.019
+0.944±0.028
+0.768±0.111
+0.860±0.043
+(+58%)
+(+28%)
+(+73%)
+(+20%)
+cum + monotonicity
+0.049±0.019
+0.947±0.029
+0.792±0.126
+0.859±0.045
+(+59%)
+(+28%)
+(+78%)
+(+20%)
+0.0
+0.5
+1.0̂
+r(τ)
+MLP
+0.0
+0.5
+1.0
+CMLP
+0.0
+0.5
+1.0
+NODE
+0.00 0.25 0.50 0.75 1.00
+τ = cycle / N EOL
+f
+0.0
+0.5
+1.0
+RA(τ)
+0.00 0.25 0.50 0.75 1.00
+τ = cycle / N EOL
+f
+0.0
+0.5
+1.0
+0.00 0.25 0.50 0.75 1.00
+τ = cycle / N EOL
+f
+0.0
+0.5
+1.0
+ideal ̂r = τ
+α = 20% cone
+20 V rel
+DS baseline
+base
+cumulative
+cumulative + mono
+Figure 3. Aggregate validation behaviour along the normalised life τ = n/N EOL
+f
+. Top: predicted health index ˆr(τ) with the
+ideal ˆr = τ diagonal and the α = 20% cone of Eq. (22). Bottom: relative accuracy RA(τ) of Eq. (23). Curves are the cross-
+DUT median at each τ bin; dashed envelopes mark the 10th and 90th percentiles over the validation DUTs pooled across the
+four folds of Section 4.3. The parameter-free baseline of Eq. (19) is drawn in gray as reference in every panel.
+Adding the cumulative features of Eq. (17) brings coverage
+within two percentage points of nominal and shrinks the me-
+dian predictive scale ˜σ by roughly 37%. The monotonicity
+penalty leaves the calibration essentially unchanged, in line
+with the small effect it already had on the point-estimate met-
+rics of Table 3. The median νn sits around six in all three
+8
+
+
+ANNUAL CONFERENCE OF THE PROGNOSTICS AND HEALTH MANAGEMENT SOCIETY 2026
+Table 4. Predictive uncertainty calibration of the NODE on
+the validation cycles of the four-fold cross-validation. “Cov.
+p%” is the empirical fraction of cycles inside the Student-t
+central interval at nominal coverage p%, computed per-cycle
+using the predicted (σn, νn); the matching nominal values are
+68.27% and 95.45%. Median ν and the fraction of cycles
+with νn < 10 summarise the use of the heavy-tail regime; ˜σ
+is the median predictive scale in percent of the unit lifetime
+range.
+NODE variant
+68% cov.
+95% cov.
+eν
+ν<10
+eσ
+[%]
+[%]
+[%]
+[%]
+base
+66.1
+88.3
+5.0
+100.0
+7.28
+cumulative
+70.7
+96.6
+6.5
+100.0
+4.61
+cumulative + mono
+70.9
+97.4
+6.6
+100.0
+4.58
+variants and νn < 10 on every validation cycle: the heavy
+tails are always active and never collapse to a Gaussian limit.
+Figure 4 resolves the same comparison locally along the life
+fraction τ. The deviation-size statistic adopted at each τ is the
+median absolute deviation (MAD), measured from the data as
+the cross-DUT median of the residual,
+MADemp
+n
+= med
+ rn −µn
+,
+(24)
+and predicted by the model as the analytic MAD of the
+Student-t distribution at cycle n,
+MADpred
+n
+= σn · t−1
+0.75, νn,
+(25)
+where t−1
+0.75,ν is the standardised Student-t median quantile
+that rescales the scale parameter σn into a deviation and
+brings the two quantities onto the same axis. For the base
+configuration the predicted MAD sits visibly below its em-
+pirical counterpart over most of the trajectory: the network
+is not only larger in absolute residual than the cumulative
+variants but also overconfident on that residual, declaring a
+tighter spread than the data actually exhibit. The cumulative
+variant brings the residual MAE from 7.7% to 5.0% of the
+unit lifetime range (Table 3), a 35% relative reduction, and
+at the same time aligns its predicted MAD with the empiri-
+cal one, so the gain on accuracy and the gain on calibrated
+uncertainty come together. The cumulative with monotonic-
+ity variant tightens this picture a step further, with the pre-
+dicted MAD slightly below the cumulative variant for most
+of τ without losing the calibration alignment, consistent with
+the marginal accuracy gain already observed in Table 3. The
+Student-t output is then a usable per-cycle uncertainty signal
+in its own right, and might be an input for the probabilistic
+prognostic metrics flagged as missing in Section 6.
+6. DISCUSSION
+The cross-validation results support an observation that cuts
+across the three architectures: appending the cumulative fea-
+tures of Eq. (17) provides a net positive contribution on every
+metric of Table 3, and the choice of architecture then modu-
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0
+τ = n/NEOL
+f
+0.000
+0.025
+0.050
+0.075
+0.100
+median absolute deviation
+base
+cumulative
+cumulative + mono
+predicted MAD
+empirical MAD
+Figure 4. Predicted versus empirical median absolute devia-
+tion along the life fraction τ = n/N EOL
+f
+for the three NODE
+variants. The predicted curves (solid) are σn · t−1
+0.75, νn, i.e.
+each σn rescaled by the standardised Student-t median quan-
+tile so that it can be compared directly to a deviation mea-
+sure; the empirical curves (dashed) are the cross-DUT median
+of |r −µ| binned at the same resolution and pooled across
+the four folds. The cumulative variants track their empirical
+counterparts within one bin width over the central τ range;
+the base variant sits below its empirical counterpart, consis-
+tent with the under-coverage reported in Table 4.
+lates how much each network makes of this enrichment. The
+monotonicity penalty adds a smaller, architecture-dependent
+bump, primarily on MAE and α-accuracy. The broader read-
+ing is that, when degradation is dominated by a slow accumu-
+lation of stress, encoding that history at the feature level is a
+robust way to anchor the predictor to the physics; how much
+benefit each architecture extracts from this anchor is then a
+function of how well it combines the instantaneous history
+estimate with the temporal context it provides on its own.
+A few aspects of the experimental setting frame the scope
+of these results.
+The protocol of Table 1 exercises the
+heating-pulse duration theat at the two levels prescribed by
+the AQG 324 recipe, on disjoint groups of DUTs and without
+mixing them within a single trajectory. The integration step
+of Eq. (18) is designed precisely to absorb such a mixing, and
+the consistent behaviour of the NODE across the two oper-
+ating groups suggests that the mechanism does carry useful
+information. Verifying this directly would require dedicated
+campaigns with theat varying within a single DUT, in profiles
+closer to the realistic mission of a traction inverter.
+The metrics of Section 4.4 are point-estimate metrics; they
+do not use the predictive distribution of the Student-t head.
+We rely on them because they are consolidated in the prog-
+nostics literature (Fink et al., 2020) and informative on dif-
+ferent stages of the SiC health-state estimate: MAE and R2
+summarise the global residual, while α-accuracy and RA em-
+phasise the late-life region where the tolerance shrinks and
+the denominator of the relative error is small. A separate
+calibration analysis is reported in Section 5.3. The general
+recommendation to report uncertainty alongside a point esti-
+9
+
+
+ANNUAL CONFERENCE OF THE PROGNOSTICS AND HEALTH MANAGEMENT SOCIETY 2026
+mate is also raised in the same review; the (σn, νn) of Table 4
+and Figure 4 is the form adopted here.
+The predictive scale σn aggregates aleatoric and epistemic
+contributions; the present training setup does not separate
+them. With twenty-four DUTs the data budget for an explicit
+epistemic spread is limited, and the σn reported in Section 5.3
+is dominated by the aleatoric component conditional on the
+input. A future development could refine the decomposition
+of these two contributions by training an ensemble of NODE
+variants from different seeds.
+7. CONCLUSION
+We have presented a condition-monitoring framework for
+SiC power modules that combines physics-informed cumu-
+lative features, a Student-t output head, and an optional
+monotonicity prior on top of three compact neural archi-
+tectures of increasing temporal context.
+Evaluated un-
+der AQG 324-compliant power cycling on four operating-
+condition groups, the framework reduces the mean absolute
+error on the lifetime-fraction estimate by up to 60% rela-
+tive to a parameter-free baseline derived from the qualifica-
+tion threshold, with the recurrent variant offering both the
+best central tendency and the lowest cross-fold variance. The
+dominant lever in the comparison is the feature engineering
+step: encoding the cumulative thermo-mechanical history of
+the module is what closes the gap between the raw per-cycle
+measurement and a usable health estimate, and we read the
+result of this study as a quantitative argument in favour of
+placing physical priors at the input level rather than absorb-
+ing them entirely into architectural complexity. A companion
+study (Scarpa et al., 2026) benchmarks the same cumulative
+NODE against five reference estimators from the prognos-
+tics literature: a parametric fit, a convolutional neural network
+(CNN), a long short-term memory network (LSTM), a snap-
+shot MLP and a transformer forecaster. The five are tested on
+two campaigns with different failure mechanisms, the wire
+lift-off studied here and solder degradation. The cumulative
+NODE is the only method whose accuracy transfers across
+both mechanisms, while the reference estimators degrade as
+soon as the mechanism changes. This confirms the weight of
+the input representation, and of the junction-temperature his-
+tory in particular, in making a health estimate portable across
+failure modes. Broader operating envelopes that mix mission
+profiles within a single trajectory, probabilistic metrics that
+complement the point-estimate ones, and an online adapta-
+tion phase that refreshes the network during normal converter
+operation are the natural next steps to consolidate the frame-
+work toward in-service deployment.
+ACKNOWLEDGMENT
+In Germany this work of Infineon Technologies AG and Infi-
+neon Dresden AG & Co KG is funded in the frame of the Im-
+portant Project of Common European Interest on Microelec-
+tronics and Communication Technologies (IPCEI ME/CT).
+The IPCEI ME/CT is funded by the German Federal Min-
+istry for Economic Affairs and Energy, the Bavarian Ministry
+for Economic Affairs, Regional Development and Energy, the
+Ministry of Economic Affairs, Industry, Climate Action and
+Energy of the State of North Rhine-Westphalia, the Saxon
+State Ministry for Economic Affairs, Labour, Energy and Cli-
+mate Action and the European Union within “NextGenera-
+tionEU”.
+REFERENCES
+Achatz, S., Hoppe, M., Knobloch, K., Kusmenko, E.,
+Olschewski, J., T¨ullmann, M., & Pfost, M.
+(2026,
+March). End-to-end snapshot models for RUL predic-
+tion of silicon carbide power modules. In Proceedings
+of the international conference on integrated power
+electronics systems (CIPS). Dresden, Germany. (Avail-
+able via VDE-Verlag; forthcoming on IEEE Xplore)
+Barbagallo, C., Rizzo, S. A., Scelba, G., Scarcella, G., & Cac-
+ciato, M. (2021). On the lifetime estimation of SiC
+power MOSFETs for motor drive applications. Elec-
+tronics, 10(3), 324. doi: 10.3390/electronics10030324
+Ceccarelli, L., Kotecha, R. M., Bahman, A. S., Iannuzzo,
+F., & Mantooth, H. A. (2019). Mission-profile-based
+lifetime prediction for a SiC MOSFET power module
+using a multi-step condition-mapping simulation strat-
+egy. IEEE Transactions on Power Electronics, 34(10),
+9698–9708. doi: 10.1109/TPEL.2019.2893636
+Chen, R. T. Q., Rubanova, Y., Bettencourt, J., & Duvenaud,
+D.
+(2018).
+Neural ordinary differential equations.
+In Advances in neural information processing systems
+(NeurIPS).
+Clech, J.-P.
+(1997).
+Solder reliability solutions: A PC-
+based design-for-reliability tool.
+Soldering & Sur-
+face Mount Technology, 9(2), 45–54.
+doi: 10.1108/
+09540919710800719
+Di Nuzzo, G., Lewitschnig, H., Tuellmann, M., Rzepka, S.,
+& Otto, A.
+(2023).
+A data-driven condition moni-
+toring method to predict the remaining useful life of
+SiC power modules for traction inverters. In Proceed-
+ings of the ieee international conference on prognostics
+and health management (icphm) (pp. 312–319). doi:
+10.1109/ICPHM57936.2023.10194131
+Di Nuzzo, G., Tuellmann, M., Methfessel, T., & Rzepka,
+S. (2022). Condition monitoring indicators for Si and
+SiC power modules. Microelectronics Reliability, 138,
+114614. doi: 10.1016/j.microrel.2022.114614
+ECPE European Center for Power Electronics e.V. (2025).
+Qualification of power modules for use in power elec-
+tronics converter units in motor vehicles (Tech. Rep.
+Nos. AQG 324, Release 04.1/2025). ECPE. (Avail-
+able: https://www.ecpe.org)
+10
+
+
+ANNUAL CONFERENCE OF THE PROGNOSTICS AND HEALTH MANAGEMENT SOCIETY 2026
+Fassi, Y., Heiries, V., Boutet, J., & Boisseau, S.
+(2024).
+Toward physics-informed machine-learning-based pre-
+dictive maintenance for power converters—a review.
+IEEE Transactions on Power Electronics, 39(2), 2692–
+2723. doi: 10.1109/TPEL.2023.3328438
+Fink, O., Wang, Q., Svens´en, M., Dersin, P., Lee, W.-J., &
+Ducoffe, M. (2020). Potential, challenges and future
+directions for deep learning in prognostics and health
+management applications.
+Engineering Applications
+of Artificial Intelligence, 92, 103678.
+doi: 10.1016/
+j.engappai.2020.103678
+Frusque, G., Nejjar, I., Nabavi, M., & Fink, O.
+(2024).
+Semisupervised health index monitoring with feature
+generation and fusion. IEEE Transactions on Reliabil-
+ity, 1–15. doi: 10.1109/TR.2024.3496076
+Hanif, A., Yu, Y., DeVoto, D., & Khan, F. (2019). A compre-
+hensive review toward the state-of-the-art in failure and
+lifetime predictions of power electronic devices. IEEE
+Transactions on Power Electronics, 34(5), 4729–4746.
+doi: 10.1109/TPEL.2018.2860587
+Kovacevic, I. F., Drofenik, U., & Kolar, J. W. (2010). New
+physical model for lifetime estimation of power mod-
+ules. In Proceedings of the international power elec-
+tronics conference (ipec) (pp. 2106–2114). Sapporo,
+Japan. doi: 10.1109/IPEC.2010.5542019
+Kovacevic-Badstuebner, I., Kolar, J. W., & Schilling, U.
+(2015). Modelling for the lifetime prediction of power
+semiconductor modules. In H. S.-h. Chung, H. Wang,
+F. Blaabjerg, & M. Pecht (Eds.), Reliability of power
+electronic converter systems (pp. 103–140). London,
+UK: Institution of Engineering and Technology (IET).
+doi: 10.1049/PBPO080E\ ch5
+Kumar, S., Allard, B., Hologne-Carpentier, M., Clerc, G., &
+Auger, F.
+(2026).
+Review of prognosis approaches
+applied to power SiC MOSFETs for health state and
+remaining useful life prediction. Entropy, 28(2), 234.
+doi: 10.3390/e28020234
+Ni, Z., Lyu, X., Yadav, O. P., Singh, B. N., Zheng, S., & Cao,
+D. (2020). Overview of real-time lifetime prediction
+and extension for SiC power converters. IEEE Trans-
+actions on Power Electronics, 35(8), 7765–7794. doi:
+10.1109/TPEL.2019.2962503
+Olschewski, J., Hoppe, M., Kusmenko, E., Knobloch, K.,
+T¨ullmann, M., Martin, A., & Pfost, M. (2025). Ma-
+chine learning-based condition monitoring from power
+cycling data for silicon carbide power inverter mod-
+ules. In Proceedings of the ieee international reliabil-
+ity physics symposium (irps). doi: 10.1109/IRPS48204
+.2025.10983172
+Rumelhart, D. E., Hinton, G. E., & Williams, R. J. (1986).
+Learning representations by back-propagating errors.
+Nature, 323(6088), 533–536. doi: 10.1038/323533a0
+Saxena, A., Celaya, J., Saha, B., Saha, S., & Goebel, K.
+(2010).
+Metrics for offline evaluation of prognostic
+performance. International Journal of Prognostics and
+Health Management, 1(1). doi: 10.36001/ijphm.2010
+.v1i1.1336
+Scarpa, M., Kusmenko, E., Toso, F., Bruschetta, M., Carli,
+R., & Achatz, S. (2026). Failure-mechanism transfer-
+ability of cumulative-damage features for health state
+estimation of SiC power modules. In Proceedings of
+the 52nd annual conference of the ieee industrial elec-
+tronics society (iecon). (Accepted)
+Scarpa, M., Pase, F., Carli, R., Bruschetta, M., & Toso, F.
+(2025). Data-driven power loss identification through
+physics-based thermal model backpropagation. In Pro-
+ceedings of the 23rd european control conference (ecc)
+(pp. 2758–2763). Thessaloniki, Greece. doi: 10.23919/
+ECC65951.2025.11186906
+Villalobos, A., Barrutia, I., Pe˜na-Alzola, R., Dragicevic, T., &
+Aizpurua, J. I. (2025). Comparative analysis and evalu-
+ation of ageing forecasting methods for semiconductor
+devices in online health monitoring. Engineering Ap-
+plications of Artificial Intelligence, 150, 110545. doi:
+10.1016/j.engappai.2025.110545
+Yang, S., Bryant, A., Mawby, P., Xiang, D., Ran, L., &
+Tavner, P. (2011). An industry-based survey of reli-
+ability in power electronic converters. IEEE Transac-
+tions on Industry Applications, 47(3), 1441–1451. doi:
+10.1109/TIA.2011.2124436
+Zhao, M., & Fink, O.
+(2025).
+Disentangling slow and
+fast temporal dynamics in degradation inference with
+hierarchical differential models.
+(Preprint, revised
+March 2026. Available:
+https://arxiv.org/
+abs/2509.00639)
+Zio, E. (2022). Prognostics and health management (PHM):
+Where are we and where do we (need to) go in theory
+and practice. Reliability Engineering & System Safety,
+218, 108119. doi: 10.1016/j.ress.2021.108119
+11
