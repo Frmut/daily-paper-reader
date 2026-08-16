@@ -6,29 +6,22 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-08-15
-- 运行时间：2026-08-15 19:49:01 UTC
+- 最新运行日期：2026-08-16
+- 运行时间：2026-08-16 20:15:04 UTC
 - 运行状态：成功
-- 本次总论文数：2
+- 本次总论文数：0
 - 精读区：0
-- 速读区：2
+- 速读区：0
 
 ### 今日简报（AI）
-1) 今日聚焦碳化硅（SiC）功率模块的健康监测，深入探讨物理信息驱动与失效机制迁移技术。
-2) 重点关注物理模型在状态监控中的应用，以及累积损伤特征在不同失效模式下的可迁移性。
-3) 建议读者关注如何利用物理-数据双驱动方法提升功率半导体寿命预测的可靠性。
-- 详情：[/202608/15/README](/202608/15/README)
+> 今日无新推荐，系统未产出可展示论文。
+- 详情：[/202608/16/README](/202608/16/README)
 
 ### 精读区论文标签
 - 本次无精读推荐。
 
 ### 速读区论文标签
-1. [Physics-Informed Condition Monitoring of SiC Power Modules](/202608/15/2608.08363v1-physics-informed-condition-monitoring-of-sic-power-modules)  
-   标签：评分：6.0/10、query:pmsm
-   evidence：汽车牵引逆变器的状态监测
-2. [Failure-Mechanism Transferability of Cumulative-Damage Features for Health State Estimation of SiC Power Modules](/202608/15/2608.08365v2-failure-mechanism-transferability-of-cumulative-damage-features-for-health-state-estimation-of-sic-power-modules)  
-   标签：评分：6.0/10、query:pmsm
-   evidence：碳化硅功率模块的健康状态估计与失效机制分析
+- 本次无速读推荐。
 
 
 <div class="dpr-home-promo-card">
