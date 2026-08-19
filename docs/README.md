@@ -6,22 +6,30 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-08-17
-- 运行时间：2026-08-17 19:16:12 UTC
+- 最新运行日期：2026-08-19
+- 运行时间：2026-08-19 20:32:13 UTC
 - 运行状态：成功
-- 本次总论文数：0
-- 精读区：0
-- 速读区：0
+- 本次总论文数：3
+- 精读区：1
+- 速读区：2
 
 ### 今日简报（AI）
-> 今日无新推荐，系统未产出可展示论文。
-- 详情：[/202608/17/README](/202608/17/README)
+今日聚焦电力电子驱动与仿真前沿，重点攻克了永磁同步电机（PMSM）的高带宽控制难题。
+满
+- 详情：[/202608/19/README](/202608/19/README)
 
 ### 精读区论文标签
-- 本次无精读推荐。
+1. [From Continuous Design to Delay-Aware Discrete Synthesis: Guaranteed High-Bandwidth Joint Control for PMSM Drives](/202608/19/2608.14937v1-from-continuous-design-to-delay-aware-discrete-synthesis-guaranteed-high-bandwidth-joint-control-for-pmsm-drives)  
+   标签：评分：10.0/10、query:pmsm
+   evidence：永磁同步电机驱动的高带宽关节控制
 
 ### 速读区论文标签
-- 本次无速读推荐。
+1. [A Unified Mamba--MoE Surrogate for Closed-Loop Simulation and Measurement-Window Forecasting of Inverter Transients](/202608/19/2608.15051v1-a-unified-mamba--moe-surrogate-for-closed-loop-simulation-and-measurement-window-forecasting-of-inverter-transients)  
+   标签：评分：7.0/10、query:pmsm
+   evidence：逆变器资源的暂态动力学
+2. [Fault detection on manifolds of nonlinear dynamical systems with dual autoencoders](/202608/19/2608.17698v1-fault-detection-on-manifolds-of-nonlinear-dynamical-systems-with-dual-autoencoders)  
+   标签：评分：6.0/10、query:pmsm
+   evidence：非线性动力系统的故障检测
 
 
 <div class="dpr-home-promo-card">

@@ -1,0 +1,51 @@
+{
+  "label": "2026-08-19",
+  "date": "2026-08-19",
+  "generated_at": "2026-08-19T20:32:45",
+  "count": 3,
+  "papers": [
+    {
+      "paper_id": "202608/19/2608.14937v1-from-continuous-design-to-delay-aware-discrete-synthesis-guaranteed-high-bandwidth-joint-control-for-pmsm-drives",
+      "section": "deep",
+      "title_en": "From Continuous Design to Delay-Aware Discrete Synthesis: Guaranteed High-Bandwidth Joint Control for PMSM Drives",
+      "authors": "Edmundo Pozo Fortunić, Mehmet C. Yildirim, Sami Haddadin",
+      "date": "2026-08-14",
+      "pdf": "https://arxiv.org/pdf/2608.14937v1",
+      "score": "10.0",
+      "evidence": "永磁同步电机驱动的高带宽关节控制",
+      "tldr": "针对现代机器人关节对高带宽电流控制的需求，本文提出了一种考虑延迟的离散时间合成方法。传统方法通常先进行连续设计再离散化，忽略了通信和计算延迟。本研究通过建立包含物理延迟的离散模型，直接合成离散PI控制器，并解析确定了满足性能所需的最小采样频率和电压。实验证明该方法在降低硬件要求的同时保证了高带宽性能。",
+      "tags": "query:pmsm",
+      "abstract_en": "The increasing dynamic demands of modern robotic joints require current controllers to achieve high bandwidth over wide operating ranges of speed, acceleration, and torque, where communication, computation, and discrete-time effects can no longer be neglected. Conventional PMSM current controllers are typically designed in continuous time and subsequently discretized, leaving the sampling frequency and the impact of implementation delays largely to heuristic selection and iterative validation. This paper introduces a task-aware, delay-extended discrete-time joint model that explicitly accounts for physical communication and computation delays and enables direct synthesis of a discrete PI current controller with prescribed bandwidth and delay guarantees throughout the operating envelope. The framework analytically determines the minimum required sampling frequency, controller gains, and DC-link voltage needed to satisfy the specified motor and joint performance. Simulations across a range of dynamic requirements validate the methodology and demonstrate substantially reduced sampling-frequency and DC-link-voltage requirements compared with conventional continuous-time-based design. Experiments on a newly developed custom robotic joint further validate the proposed framework under real embedded implementation conditions.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202608/19/2608.15051v1-a-unified-mamba--moe-surrogate-for-closed-loop-simulation-and-measurement-window-forecasting-of-inverter-transients",
+      "section": "quick",
+      "title_en": "A Unified Mamba--MoE Surrogate for Closed-Loop Simulation and Measurement-Window Forecasting of Inverter Transients",
+      "authors": "Haoguang Wang, Huy Hoang Le, Akhila Kandivalasa, Christian Moya, Marcos Netto, Guang Lin",
+      "date": "2026-08-15",
+      "pdf": "https://arxiv.org/pdf/2608.15051v1",
+      "score": "7.0",
+      "evidence": "逆变器资源的暂态动力学",
+      "tldr": "本研究提出了一种基于 Mamba 架构和混合专家（MoE）路由的统一代理模型，用于逆变器暂态动力学的闭环仿真和测量窗口预测。该模型通过单一骨干网络结合任务调节和专家路由，取代了两个独立的专用模型，在减少 13% 参数量的同时保持了极低的预测误差。此外，引入自适应共形层提供预测区间，并通过硬件在环仿真验证了其在处理非平衡点附近复杂暂态过程中的优越性。",
+      "tags": "query:pmsm",
+      "abstract_en": "This paper proposes a Mamba surrogate model with mixture-of-experts (MoE) routing to represent the transient dynamics of inverter-based resources. A Mamba surrogate model is a predictive machine learning model built on the Mamba architecture. MoE routing uses a router network to assign data-dependent weights to specialized subnetworks (experts). The resulting Mamba--MoE surrogate can perform two tasks: (i) closed-loop simulation and (ii) measurement-window forecasting of inverter transients. A single Mamba backbone with task conditioning and expert routing serves both tasks, replacing two separate specialists. Task-matched objectives fit each prediction form, and an adaptive conformal layer provides prediction intervals for both tasks. For the considered grid-following inverter, the unified surrogate model remains in the same low-error regime as a Mamba specialist pair while using 13% fewer parameters. The prediction intervals achieve 94--96% empirical mean marginal coverage across the two tasks. For transient dynamics---that is, beyond the vicinity of an equilibrium point---our surrogate model with MoE routing yields lower errors across all outputs in both tasks compared to a shared Mamba backbone without expert routing. A controller hardware-in-the-loop simulation validates our results and shows that adapting only the shared output head with limited measured data reduces held-out forecasting error.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202608/19/2608.17698v1-fault-detection-on-manifolds-of-nonlinear-dynamical-systems-with-dual-autoencoders",
+      "section": "quick",
+      "title_en": "Fault detection on manifolds of nonlinear dynamical systems with dual autoencoders",
+      "authors": "Bulut Kuşkonmaz, Szymon Greś, Rafał Wiśniewski",
+      "date": "2026-08-18",
+      "pdf": "https://arxiv.org/pdf/2608.17698v1",
+      "score": "6.0",
+      "evidence": "非线性动力系统的故障检测",
+      "tldr": "针对非线性动力系统故障检测中自编码器缺乏可解释性的问题，本文提出一种基于双自编码器的流形学习策略。利用Koopman算子理论将输出数据嵌入流形，并通过两阶段自编码器进行逼近。在假设检验框架下，通过测试新数据与标称流形的一致性来实现参数故障检测。该方法在仿真和真实基准测试中表现优于标准自编码器，提升了故障诊断的物理可解释性。",
+      "tags": "query:pmsm",
+      "abstract_en": "Autoencoders are commonly used for unsupervised data-driven fault detection in nonlinear dynamical systems. Despite their widespread success and often favorable performance compared with traditional approaches, most applications rely on heuristic reconstruction of measured data using features learned from nominal training data, without explicit insight into the underlying nonlinear dynamics. This lack of interpretability limits the extension of autoencoder-based fault detection methods to higher levels of fault diagnosis, e.g., fault localization and quantification, and confines their use largely to application-oriented studies. To address this limitation, we propose a strategy for detecting parametric faults in nonlinear stochastic mechanical systems. A mathematical representation of the output data is developed using Koopman operator theory, which motivates their embedding on a manifold and its subsequent approximation with a two-stage autoencoder. Fault detection is formulated within a hypothesis-testing framework, in which new data are tested for consistency with a neighborhood of the manifold identified from nominal observations. The proposed method is validated through Monte Carlo simulations of a toy mechanical system with two types of nonlinearity and applied to two well-known real benchmarks, where it provides favorable fault-detection performance compared with standard autoencoders.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
