@@ -1,0 +1,179 @@
+Title: Efficient computation of eddy-currents for nonlinear magnetic field problems
+
+URL Source: https://arxiv.org/pdf/2608.17860v1
+
+Published Time: Wed, 19 Aug 2026 01:04:50 GMT
+
+Number of Pages: 8
+
+Markdown Content:
+# Efficient computation of eddy-currents for nonlinear magnetic field problems 
+
+Herbert Egger, Nepomuk Krenn, and Andreas Schafelner 
+
+Abstract Estimation of eddy-current losses in conducting non-laminated components of electrical devices requires expensive three-dimensional simulations. Various approx-imations are therefore used in practice to reduce the computational cost in the early design phase. We review some approaches and discuss their modelling assumptions and resulting approximations. In particular, we identify eddy-current reaction fields as a significant contribution that should be accounted for globally. These reaction fields can be approximately reconstructed from two-dimensional magnetostatic simulations by solving a single linearized time-periodic problem. We further discuss different strate-gies for solving this post-processing problem. Numerical results demonstrate improved loss prediction compared to standard post-processing at moderate additional cost. 
+
+Keywords eddy-currents · magneto-quasi-static modelling · nonlinear magnetostatics 
+
+· finite element method · electrical machine losses · post-processing 
+
+## 1 Introduction 
+
+The analysis of eddy-currents by finite element methods is well established [1]. Related losses in windings and other electrical conductors are frequently represented by equiva-lent circuit models, which can be coupled efficiently to field formulations [2, 3]. Losses in laminated iron cores can be treated by appropriate lamination models [5]. 
+
+Herbert Egger Institute for Numerical Mathematics, Johannes Kepler University, Altenbergerstr. 69, 4040 Linz, Austria e-mail: herbert.egger@jku.at Nepomuk Krenn Johann Radon Institute for Computational and Applied Mathematics, Austrian Academy of Sciences, Altenbergerstr. 69, 4040 Linz, Austria, e-mail: nepomuk.krenn@ricam.oeaw.ac.at Andreas Schafelner Institute for Numerical Mathematics, Johannes Kepler University, Altenbergerstr. 69, 4040 Linz, Austria e-mail: andreas.schafelner@jku.at 1arXiv:2608.17860v1 [math.NA] 18 Aug 2026 2 Herbert Egger, Nepomuk Krenn, and Andreas Schafelner 
+
+A particular challenge arises in the prediction of eddy-current losses in conducting non-laminated components, such as machine housings, shielding elements, or perma-nent magnets in electrical motors. For these parts, the current paths are inherently three-dimensional and accurate loss prediction formally requires the solution of three-dimensional nonlinear time-dependent eddy-current problems [6, 7]. To avoid the cost of such computations, various methods have been proposed to approximate these effects while enabling efficient simulation. A common strategy is to compute a sequence of two-dimensional nonlinear magnetostatic or quasi-static field solutions and to estimate the associated eddy-current losses by suitable post-processing [8, 9]. More sophisticated ap-proaches combine two-dimensional field simulations with auxiliary three-dimensional eddy-current computations [10, 11]. A related approach that avoids three-dimensional computations was presented in [12]. While computationally efficient, the validity and simplifying assumptions of these models are not completely clear. We therefore focus on eddy-current computations in two-dimensional models in this paper. 
+
+Outline and main results. We start by revisiting some commonly used approaches for the computation of eddy-current losses in conducting non-laminated components. We recall the two-dimensional time-dependent formulation of [2, 9] and interpret it as a consistent reduction of a class of three-dimensional eddy-current problems under specific symmetry assumptions on the problem data. This viewpoint highlights the role of the global reaction field, which is not fully captured in standard magnetostatic ap-proximations. Based on this interpretation, we derive a linearized eddy-current problem that estimates the missing reaction field from a sequence of nonlinear magnetostatic solutions. This correction may be interpreted as one Newton update step for the un-derlying system. We thus replace the solution of the original nonlinear time-periodic eddy-current problem in [2, 9] by the solution of (i) a sequence of nonlinear magnetostatic problems; (ii) one linearized time-periodic eddy-current problem. The system arising in step (ii) can be solved efficiently using parallel-in-time techniques and provides a consistent way to incorporate eddy-current feedback into standard post-processing workflows. The general approach (i)–(ii) is applicable in two and three space dimensions, but we here focus on the two-dimensional setting usually employed in elec-tric machine design. In numerical experiments for a permanent-magnet synchronous machine, we illustrate that direct estimation of eddy-current losses from the magneto-static field solution in step (i) may lead to a significant overestimation of total losses (more than 100%). Correcting for the reaction fields via step (ii) leads to loss predic-tions with excellent agreement (errors below 1%) with the nonlinear two-dimensional time-dependent reference model [2, 9]. While providing substantial improvement in accuracy, the additional computational cost of step (ii) is very moderate (about 30-60% compared to the magnetostatic solutions in step (i)). The proposed strategy thus yields similar accuracy to the nonlinear time-periodic reference model, but at reduced com-putational cost (about 30-50% for our test case). Before concluding, we also briefly comment on three-dimensional post-processing approaches and highlight some of their current limitations which provide research topics for future work. Efficient computation of eddy-currents for nonlinear magnetic field problems 3
+
+## 2 Eddy-current models 
+
+We start with recalling the eddy-current problems in two and three space dimensions, discuss their relations, and present some approximations considered in literature. This section introduces the general problem setting which is used in the rest of the paper. 
+
+2.1 Three-dimensional eddy-current problem 
+
+Let Ω3𝐷 ⊂ R3 be a bounded domain and Σ3𝐷 ⊂ Ω3𝐷 describe the conducting region, which we assume to be connected fr ease of notation. We consider the 𝐴 -𝜙 formulation, which is widely used in practice [1]. The governing equations are given by 
+
+𝜎 (𝜕 𝑡 A + ∇ 𝜙 ) + curl (𝜕 𝐵 𝑤 (curl A)) = J𝑠 in Ω3𝐷 (1) div A = 0 in Ω3𝐷 . (2) Here A is the magnetic vector potential and 𝜙 the electric scalar potential, whose support is restricted to Σ3𝐷 . Further B = curl A is the magnetic flux density and H = 𝜕 𝐵 𝑤 (B) the magnetic field intensity. The function 𝑤 (B) is the magnetic energy density. In isotropic materials, we have 𝜕 𝐵 𝑤 (B) = 𝜈 (| B|) B, with 𝜈 denoting the field-dependent reluctivity. The electric conductivity 𝜎 is non-zero only on Σ3𝐷 , and the source current density 
+
+J𝑠 is assumed solenoidal and to vanish in a neighborhood of the conductor Σ3𝐷 . The eddy-current density in this model is J𝑒𝑐 = −𝜎 (𝜕 𝑡 A + ∇ 𝜙 ), and the loss density reads 
+
+𝑝 3𝐷 𝑒𝑐 = 1 
+
+> 𝜎
+
+|J𝑒𝑐 |2 = 𝜎 |𝜕 𝑡 A + ∇ 𝜙 |2. (3) Total losses are computed by integration over the conductor Σ3𝐷 . From (1) and ap-propriate boundary conditions for 𝜙 , we further conclude that div J𝑒𝑐 = 0 on Σ3𝐷 and 
+
+n · J𝑒𝑐 = 0 on 𝜕 Σ3𝐷 . These physical conditions are used in the following discussion. 
+
+2.2 Two-dimensional eddy-current problem 
+
+If the domain and problem data are independent of the 𝑧 -coordinate, following two-dimensional model is appropriate [13]. We denote by Ω ⊂ R2 the cross-section of the three-dimensional geometry and by Σ ⊂ Ω the corresponding cross-section of the conductor. Following [2, 9], the magnetic fields are described by 
+
+𝜎  𝜕 𝑡 a + g + curl  𝜕 𝐵 𝑤 (Curl a) = j𝑠 in Ω (4) 
+
+∫
+
+> Σ
+
+𝜎  𝜕 𝑡 a + g d𝑥 = 0. (5) Here a and j𝑠 are the axial components of the magnetic vector potential and the source current density, and g represents the gradient of the electric scalar potential which is 4 Herbert Egger, Nepomuk Krenn, and Andreas Schafelner 
+
+assumed constant on Σ. Further, b = Curl (a) = (𝜕 𝑦 a, −𝜕 𝑥 a) represents the in-plane components of the magnetic induction, h = 𝜕 𝐵 𝑤 (b) the corresponding magnetic field components, and curl h = 𝜕 𝑥 h𝑦 − 𝜕 𝑦 h𝑥 the vector-to-scalar curl in two dimensions. The eddy-currents here are j𝑒𝑐 = −𝜎 (𝜕 𝑡 a + g) and the corresponding loss density reads 
+
+𝑝 𝑒𝑐 = 1 
+
+> 𝜎
+
+|j𝑒𝑐 |2 = 𝜎 |𝜕 𝑡 a + g|2. (6) Together with appropriate initial and boundary conditions, existence of a unique solution to (4)–(5) can be established for the transient and time-periodic case; see [14]. For later reference, let us clarify the relations between the two- and the three-dimensional eddy-current problems. 
+
+Theorem 1 Let the functions (a, g) denote a solution of the two-dimensional eddy-current problem (4) –(5) . Then A = (0, 0, a) and 𝜙 = g 𝑧 defines a solution of the three-dimensional eddy-current problem (1) –(2) with current density J𝑠 = (0, 0, j𝑠 ) on the cylindrical domain Ω3𝐷 = Ω × ( 0, 𝐿 ) and Σ3𝐷 = Σ × ( 0, 𝐿 ).
+
+The claim follows immediately from the construction of the fields A and ∇𝜙 . In particular, the gauge condition div A = 0 is satisfied automatically. 
+
+Remark 1 The construction of the three-dimensional solution implies that the eddy-currents are related by J𝑒𝑐 = (0, 0, j𝑒𝑐 ) and charge conservation div (J𝑒𝑐 ) = 0 holds true. However, the conductor Σ3𝐷 touches the boundary of Ω3𝐷 in axial direction and therefore n · J𝑒𝑐 ≠ 0 on the axial boundaries of Σ3𝐷 . From (5), one can only conclude that the total current across these boundaries vanishes, which is the best approximation achievable within the two-dimensional model. In practice, this would mean that the axial ends of the conductor are short-circuited, which is not satisfied in relevant applications and hence generates a consistency error; see [9, 12] for further discussion. 
+
+2.3 Simplified eddy-current model 
+
+While feasible in principle, the computation of eddy-current losses via (4)–(5) is still computationally expensive and usually avoided during design optimization. The stan-dard computational practice is to consider instead a sequence of static field problems curl (𝜕 𝐵 𝑤 (Curl ˆ a)) = j𝑠 in Ω (7) and to estimate the losses by post-processing. A first guess would be to define eddy-currents by ˆ j′ 
+
+> 𝑒𝑐
+
+= 𝜎𝜕 𝑡 ˆa, which would however violate the two-dimensional charge conservation condition ∫ 
+
+> Σ
+
+ˆj′
+
+> 𝑒𝑐
+
+d𝑥 = 0, see (5). Following [8, 9], a better choice is to define ˆ j𝑒𝑐 = −𝜎 (𝜕 𝑡 ˆa + ˆg) with ˆ g chosen such that ∫ 
+
+> Σ
+
+𝜎 (𝜕 𝑡 ˆa + ˆg)d𝑥 = 0, and to set ˆ𝑝 𝑒𝑐 = 1 
+
+> 𝜎
+
+|ˆj𝑒𝑐 |2 = 𝜎 |𝜕 𝑡 ˆa + ˆg|2. (8) This approach can be integrated easily as a post-processing step in a standard compu-tational workflow based on two-dimensional magnetostatic simulations. Efficient computation of eddy-currents for nonlinear magnetic field problems 5
+
+## 3 Eddy-current post-processing 
+
+We now present our eddy-current post-processing scheme that takes into account global reaction fields and charge conservation, but avoids the solution of the full nonlinear time-dependent eddy-current problem (4)–(5). We start from the magnetostatic field ˆ a
+
+determined by (7) and make the ansatz ˜a = ˆa + ˜z (9) to obtain an improved estimate ˜ a of the two-dimensional vector potential a. The correc-tion field ˜ z is determined by the linearized eddy-current problem 
+
+𝜎  𝜕 𝑡 ˜z + ˜g + curl   ˜𝜈 Curl ˜ z = −𝜎𝜕 𝑡 ˆa in Ω, (10) 
+
+∫
+
+> Σ
+
+𝜎  𝜕 𝑡 ˜z + ˜g d𝑥 = −
+
+∫
+
+> Σ
+
+𝜎𝜕 𝑡 ˆa d𝑥. (11) Specific choices for the linearized reluctivity ˜ 𝜈 will be discussed below. The eddy-currents for this model are given by ˜ j𝑒𝑐 = −𝜎 (𝜕 𝑡 ˜a + ˜g) and the resulting losses are ˜𝑝 𝑒𝑐 = 1 
+
+> 𝜎
+
+|˜j𝑒𝑐 |2 = 𝜎 |𝜕 𝑡 ˜a + ˜g|2. (12) The model (9)–(12) involves the solution of a sequence of nonlinear magnetostatic field problems (7) and the solution of one linearized time-periodic eddy-current cor-rection problem (10)–(11), which has a similar structure to the nonlinear eddy-current model (4)–(5), but significantly cheaper to solve numerically. Together with appropriate boundary and initial conditions, the existence of a unique solution to the linearized problem again follows from the results in [14]. 
+
+3.1 Theoretical justification 
+
+We consider a time-periodic setting with homogeneous boundary conditions and as-sume that unique solvability of the problems (4)–(5), (7), and (10)–(11) is guaranteed. The corresponding solutions are denoted by (a, g), ˆ a, and (˜z, ˜g), respectively. By the superposition principle for linear problems, we immediately obtain the following result. 
+
+Theorem 2 Let 𝑤 (b) be a quadratic function. Then for the choice ˜𝜈 = 𝜕 𝐵𝐵 𝑤 (Curl ˆ a)
+
+for the reluctivity, we have a = ˜a and ¯g = ˜g with ˜a = ˆa + ˜z according to (9) .
+
+The proposed post-processing strategy thus is exact for problems with linear mate-rials. The second result clarifies the situation for the nonlinear magnetic regime. 
+
+Theorem 3 Let ˜𝜈 = 𝜕 𝐵𝐵 𝑤 (Curl ˆ a) and ˜a = ˆa + ˜z as before. Then ( ˜a, ˜g) amounts to the first iterate of Newton’s method applied to (4) –(5) with initial iterate chosen as ( ˆa, 0).Proof. To verify the claim, we note that (4)–(5) can be phrased as an abstract nonlinear system 𝐹 (𝑥 ) = 𝑦 with 𝑥 = (a, g) and 𝑦 = (j𝑠 , 0). For 𝑥 0 = ( ˆa, 0), the two components of the residual 𝑟 = 𝑦 − 𝐹 (𝑥 0) are given by 6 Herbert Egger, Nepomuk Krenn, and Andreas Schafelner 
+
+𝑟 1 = j𝑠 − 𝜎𝜕 𝑡 ˆa − curl (𝜕 𝐵 𝑤 (Curl ˆ a)) = −𝜎𝜕 𝑡 ˆa
+
+𝑟 2 = −
+
+∫
+
+> Σ
+
+𝜎𝜕 𝑡 ˆa.
+
+In the first equation, we used the static problem (7). Newton’s method defines 𝑥 1 = 𝑥 0 +𝑣 
+
+where 𝑣 is the solution of the linearized problem 𝐷𝐹 (𝑥 0)𝑣 = 𝑟 , which exactly amounts to the system (10)–(11) with ˜ 𝜈 = 𝜕 𝐵𝐵 𝑤 (Curl ˆ a) and 𝑣 = (˜z, ˜g). ⊓⊔
+
+Remark 2 The proposed correction is exact for linear models and corresponds to the first Newton iterate in the nonlinear case. Our numerical results demonstrate that the re-action field can already be recovered by solving a single linearized problem. Similar ap-proaches, computing a linearized correction for the reaction field on a three-dimensional sub-domain representing or surrounding the conductor have been considered in [10, 11]. A clear mathematical justification of these approaches would be highly valuable. 
+
+3.2 Efficient computation of the correction field 
+
+The proposed post-processing strategy requires the solution of the linearized time-periodic eddy-current problem (10)–(11). We briefly discuss some standard approaches to solve this problem and note that only a rather moderate accuracy is required to obtain a reasonable estimate of the correction field and the resulting eddy-currents. A simple but widely used solution strategy is classical time stepping combined with a cycling procedure to enforce periodicity. In our numerical tests, reasonable approximations of the correction field (˜z, ˜g) and the resulting eddy-current losses could be obtained after two or three cycles. The resulting algorithm is straightforward to implement, it requires only the repeated solution of generalized magnetostatic field problems, but it is inherently sequential. Alternatively, one may employ more modern parallel-in-time techniques such as Parareal or multigrid-in-time methods [15]. We adopt the latter strategy here which, similar to the time-stepping approach, reduces the solution of the time-periodic problem to the repeated solution of generalized magnetostatic problems. These problems can be treated concurrently, leading to efficient parallel algorithms with excellent convergence and parallel scaling properties [14]. 
+
+## 4 Numerical validation 
+
+We illustrate the proposed approach by computing eddy-current losses for a permanent-magnet synchronous motor (PMSM). A detailed description of the motor geometry and the material properties can be found in [16]. To evaluate the robustness of the methods with respect to problem data, we consider in our simulations a high-frequency, high-current operating point (16000 RPM and current density 23 .7 A/mm 2). Qualitatively similar results were obtained for less challenging regimes. Using symmetry, only one Efficient computation of eddy-currents for nonlinear magnetic field problems 7      
+
+> Fig. 1 Benchmark model of a PMSM from [16]. Left: Geometric model. Right: Magnetic vector potential aand corresponding isolines representing magnetic fluxes b=Curl (a).
+
+quarter of the motor is simulated; see the left plot of Fig. 1. The magnetic vector potential is discretized by lowest-order finite elements, combined with implicit Euler time integration using 240 time steps per mechanical quarter revolution. Rotor motion is treated by the harmonic mortar method [17]. The right plot of Fig. 1 shows one snapshot of a typical solution. In our numerical tests, we compare four different approaches for eddy-current sim-ulation discussed in the previous sections, namely: (M1) the full nonlinear time-periodic eddy-current model (4)–(5); (M2) the magnetostatic post-processing approach (7)–(8); (M3) a local linear correction restricted to the conducting regions only [10, 12]; and (M4) the proposed global linear correction scheme (9)–(12). In Table 1 we summarize the main results and computation times. The computed losses of method (M1) serve as reference values. The standard post-processing approach (M2) significantly overestimates the losses, which is to be expected [9]. The local correction                  
+
+> Model M1 M2 M3 M4 Loss [W] 926.44 2218.34 803.53 926.92 Time (1 proc.) [s] 250.72 92.30 93.61 118.08 Time (30 proc.) [s] 10.62 4.67 5.89 7.73
+> Table 1 Computed losses and execution times for different eddy-current loss models. To evaluate the parallel scaling behaviour, computations times are presented for different number of processors.
+
+method (M3) slightly underestimates the eddy-current losses since it neglects the global nature of the reaction field. The proposed method (M4) reproduces the eddy-current losses with an error below 1%, requiring only about 30–60% additional computation time compared to the magnetostatic approximation (M2). 8 Herbert Egger, Nepomuk Krenn, and Andreas Schafelner 
+
+## 5 Discussion 
+
+As mentioned in the introduction, the proposed splitting strategy (i)–(ii) is generally applicable in two and three space dimensions. Recovering genuinely three-dimensional effects from two-dimensional simulations, however, remains an open challenge. Existing hybrid approaches [10, 11, 12] require substantial additional modelling and computa-tional effort, while their benefits have not yet been demonstrated conclusively. A rig-orous justification of such reconstruction strategies by error estimation and asymptotic analysis therefore remains an important topic for future research. 
+
+Acknowledgements This work was supported by the joint DFG/FWF Collaborative Research Centre CREATOR (DFG: Project-ID 492661287/TRR 361; FWF: 10.55776/F90). 
+
+## References 
+
+1. A. Kameari. Calculation of transient 3-D eddy current using edge- elements. IEEE Trans. Magn. ,26 (1990), 466–469. 2. I. A. Tsukerman, A. Konrad, and J. D. Lavers. A method for circuit connections in time-dependent eddy current problems. IEEE Trans. Magn. , 28 (1992), 1299–1302. 3. A. Demenko and K. Hameyer. Field and field-circuit models of electrical machines. COMPEL 
+
+29 (2010), 8–22. 4. E. Dlala, A. Belahcen, and A. Arkkio. On the Importance of Incorporating Iron Losses in the Magnetic Field Solution of Electrical Machines. IEEE Trans. Magn. 46 (2010), 3101–3104. 5. J. Gyselinck, R. V. Sabariego, and P. Dular. A nonlinear time-domain homogenization technique for laminated iron cores in three-dimensional FE models. IEEE Trans. Magn. , 42 (2006), 763–766. 6. O. Biro and K. Preis. An efficient time domain method for nonlinear periodic eddy current problems. IEEE Trans. Magn. , 42 (2006), 695–698. 7. Y. Takahashi, T. Iwashita, H. Nakashima, T. Tokumasu, M. Fujita, S. Wakao, K. Fujiwara, and Y. Ishihara. Parallel time-periodic finite-element method for steady- state analysis of rotating machines. IEEE Trans. Magn. , 48 (2012), 1019–1022. 8. C. Deak, L. Petrovic, A. Binder, M. Mirzaei, D. Irimie, and B. Funieru. Calculation of eddy current losses in permanent magnets of synchronous machines. In: Proc. SPEEDAM, Jun. 2008. 9. A. Belahcen and A. Arkkio. Permanent magnets models and losses in 2D FEM simulation of electrical machines. In: Proc. of 19th ICEM Conference, Rome , (2010), pp. 1-6. 10. K. Yamazaki and Y. Kanou. Rotor loss analysis of interior permanent magnet motors using combination of 2-D and 3-D finite element method. IEEE Trans. Magn. , 45 (2009), 1772–1775. 11. T. Okitsu, D. Matsuhashi, Y. Gao, and K. Muramatsu. Coupled 2-D and 3-D eddy current analyses for evaluating eddy current loss of a permanent magnet in surface PM motors. IEEE Trans. Magn. ,48 (2012), 3100–3103. 12. S. Steentjes, S. Boehmer, and K. Hameyer. Permanent magnet eddy-current losses in 2-D FEM simulations of electrical machines. IEEE Trans. Magn. , 51 (2015), Art no. 6300404. 13. S. J. Salon. Finite Element Analysis of Electrical Machines . Springer, New York, NY, 1995. 14. H. Egger and A. Schafelner. A parallel-in-time solver for nonlinear degenerate time-periodic parabolic problems. arXiv:2502.21013, to appear in: Proc. of LSSC 2025 .15. M. J. Gander. 50 years of time parallel time integration. In: Multiple Shooting and Time Domain Decomposition Methods . Springer, 2015. pp. 69–113. (2015) 16. P. Gangl, H. De Gersem and N. Krenn. Multi-material topology optimization of electric machines under maximum temperature and stress constraints. Appl. Math. Model. , 150 (2025), 116347. 17. H. Egger, M. Harutyunyan, M. Merkel, and S. Sch¨ ops. On the stability of harmonic coupling methods with application to electric machines. In: Proc. of SCEE 2020 , Springer, Cham, 2021.

@@ -1,0 +1,128 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-08-20T20:49:38.411327+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 3,
+    "quick_skim_target": 11,
+    "quick_selected": 3
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2608.17860v1",
+      "title": "Efficient computation of eddy-currents for nonlinear magnetic field problems",
+      "abstract": "Estimation of eddy-current losses in conducting non-laminated components of electrical devices requires expensive three-dimensional simulations. Various approximations are therefore used in practice to reduce the computational cost in the early design phase. We review some approaches and discuss their modelling assumptions and resulting approximations. In particular, we identify eddy-current reaction fields as a significant contribution that should be accounted for globally. These reaction fields can be approximately reconstructed from two-dimensional magnetostatic simulations by solving a single linearized time-periodic problem. We further discuss different strategies for solving this post-processing problem. Numerical results demonstrate improved loss prediction compared to standard post-processing at moderate additional cost.",
+      "authors": [
+        "Herbert Egger",
+        "Nepomuk Krenn",
+        "Andreas Schafelner"
+      ],
+      "primary_category": "math.NA",
+      "categories": [
+        "math.NA"
+      ],
+      "published": "2026-08-18T14:53:04+00:00",
+      "link": "https://arxiv.org/pdf/2608.17860v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "eddy-current losses in electrical devices and magnetostatic simulations",
+      "llm_evidence_cn": "电机设备中的涡流损耗与静磁模拟",
+      "llm_evidence": "电机设备中的涡流损耗与静磁模拟",
+      "canonical_evidence": "电机设备中的涡流损耗与静磁模拟",
+      "llm_tldr_en": "Proposes efficient eddy-current loss estimation for electrical devices using 2D magnetostatic simulations.",
+      "llm_tldr_cn": "提出了一种利用二维静磁模拟高效估算电机设备涡流损耗的方法。",
+      "llm_tldr": "提出了一种利用二维静磁模拟高效估算电机设备涡流损耗的方法。",
+      "llm_tags": [
+        "query:pmsm"
+      ],
+      "matched_query_tag": "query:pmsm",
+      "matched_query_text": "Permanent Magnet Synchronous Motor research",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2608.16335v1",
+      "title": "Readiness Barrier Functions: Forward-Invariant Control Authority for Overactuated Multirotor Allocation",
+      "abstract": "Allocation schemes that greedily maximize a readiness metric over the actuator fiber bundle of an overactuated multirotor produce commands that jump between disconnected optimal strata, demanding actuator rates no motor can deliver; effort-minimizing schemes are continuous but cannot guarantee that wrench-rate authority stays above any certified level. We reconcile the two by treating authority as a forward-invariant quantity: a control barrier function on the log-determinant of the drag-aware actuator-authority co-metric, enforced at torque level by a quadratic program in the allocation null space. A single design inequality renders the certified set compact and strictly interior to the actuator box, with the readiness cost of any rotor deactivation given in closed form as $\\ln(n/(n{-}m))$ for symmetric designs. Tracking is sacrificed only through an explicit alignment ratio, with wrench error bounded by $\\mathcal{O}(ρ^{-1/2})$ and a robust variant handles motor-parameter uncertainty with a closed-form floor shift independent of the airframe matrix. On a hexarotor and a fully-actuated octorotor the closed-form gap matches simulation to machine precision; in the authority-scarce regime greedy maximization violates the certified floor and commits wrench errors up to eighty times larger than the proposed filter, which holds invariance of the certified set at negligible tracking cost.",
+      "authors": [
+        "Giuseppe Silano"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "eess.SY",
+        "math.OC"
+      ],
+      "published": "2026-08-17T09:43:42+00:00",
+      "link": "https://arxiv.org/pdf/2608.16335v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "control authority and allocation for overactuated multirotor motors",
+      "llm_evidence_cn": "冗余驱动多旋翼电机的控制权威与分配",
+      "llm_evidence": "冗余驱动多旋翼电机的控制权威与分配",
+      "canonical_evidence": "冗余驱动多旋翼电机的控制权威与分配",
+      "llm_tldr_en": "Uses barrier functions to ensure control authority in overactuated multirotor motor allocation.",
+      "llm_tldr_cn": "使用阻碍函数确保冗余驱动多旋翼电机分配中的控制权威。",
+      "llm_tldr": "使用阻碍函数确保冗余驱动多旋翼电机分配中的控制权威。",
+      "llm_tags": [
+        "query:pmsm"
+      ],
+      "matched_query_tag": "query:pmsm",
+      "matched_query_text": "fault-tolerant control of multi-phase motors",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2608.18716v1",
+      "title": "Multi-Class Electrical and Mechanical Fault Classification Using Random Convolutional Kernels",
+      "abstract": "Diagnosing faults in rotating machinery is essential for ensuring the reliability of industrial processes. Random convolutional kernel-based Time Series Classification (TSC) methods, such as ROCKET and its variants, provide an attractive trade-off between predictive performance and computational efficiency. In this work, we evaluate SelF-Rocket for the multi-class diagnosis of both mechanical and electrical faults and introduce, as a new contribution, a multivariate extension of the original method. The proposed approach is compared with leading ROCKET-based methods on two public benchmark datasets, MaFaulDa (mechanical faults) and ITSC-UDG (stator inter-turn short circuits), under both univariate and multivariate settings. Experimental results show that SelF-Rocket achieves the best overall accuracy-latency trade-off among the evaluated methods, obtaining the highest classification performance on MaFaulDa while remaining highly competitive on the more challenging ITSC-UDG dataset.",
+      "authors": [
+        "Mouhamadou Mansour Lo",
+        "Mouad Talbaoui",
+        "Gildas Morvan",
+        "Mathieu Rossi",
+        "Fabrice Morganti",
+        "David Mercier"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-08-19T09:18:32+00:00",
+      "link": "https://arxiv.org/pdf/2608.18716v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "diagnosing electrical faults in rotating machinery including stator short circuits",
+      "llm_evidence_cn": "诊断旋转机械中的电气故障，包括定子匝间短路",
+      "llm_evidence": "诊断旋转机械中的电气故障，包括定子匝间短路",
+      "canonical_evidence": "诊断旋转机械中的电气故障，包括定子匝间短路",
+      "llm_tldr_en": "Evaluates random convolutional kernels for multi-class fault diagnosis in rotating machinery.",
+      "llm_tldr_cn": "评估了用于旋转机械多类故障诊断的随机卷积核方法。",
+      "llm_tldr": "评估了用于旋转机械多类故障诊断的随机卷积核方法。",
+      "llm_tags": [
+        "query:pmsm"
+      ],
+      "matched_query_tag": "query:pmsm",
+      "matched_query_text": "fault-tolerant control of multi-phase motors",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}

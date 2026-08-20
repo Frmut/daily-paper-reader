@@ -1,0 +1,51 @@
+{
+  "label": "2026-08-20",
+  "date": "2026-08-20",
+  "generated_at": "2026-08-20T20:50:55",
+  "count": 3,
+  "papers": [
+    {
+      "paper_id": "202608/20/2608.17860v1-efficient-computation-of-eddy-currents-for-nonlinear-magnetic-field-problems",
+      "section": "quick",
+      "title_en": "Efficient computation of eddy-currents for nonlinear magnetic field problems",
+      "authors": "Herbert Egger, Nepomuk Krenn, Andreas Schafelner",
+      "date": "2026-08-18",
+      "pdf": "https://arxiv.org/pdf/2608.17860v1",
+      "score": "7.0",
+      "evidence": "电机设备中的涡流损耗与静磁模拟",
+      "tldr": "针对电气设备非叠片组件中涡流损耗计算成本高的问题，本文研究了非线性磁场下的高效计算方法。研究指出涡流反应场对损耗预测至关重要，并提出一种基于二维静磁模拟结果，通过求解单个线性化时变周期问题来重构反应场的方法。该方法在保持较低计算成本的同时，显著提升了损耗预测的准确性，为早期设计阶段提供了有效的仿真手段。",
+      "tags": "query:pmsm",
+      "abstract_en": "Estimation of eddy-current losses in conducting non-laminated components of electrical devices requires expensive three-dimensional simulations. Various approximations are therefore used in practice to reduce the computational cost in the early design phase. We review some approaches and discuss their modelling assumptions and resulting approximations. In particular, we identify eddy-current reaction fields as a significant contribution that should be accounted for globally. These reaction fields can be approximately reconstructed from two-dimensional magnetostatic simulations by solving a single linearized time-periodic problem. We further discuss different strategies for solving this post-processing problem. Numerical results demonstrate improved loss prediction compared to standard post-processing at moderate additional cost.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202608/20/2608.18716v1-multi-class-electrical-and-mechanical-fault-classification-using-random-convolutional-kernels",
+      "section": "quick",
+      "title_en": "Multi-Class Electrical and Mechanical Fault Classification Using Random Convolutional Kernels",
+      "authors": "Mouhamadou Mansour Lo, Mouad Talbaoui, Gildas Morvan, Mathieu Rossi, Fabrice Morganti, David Mercier",
+      "date": "2026-08-19",
+      "pdf": "https://arxiv.org/pdf/2608.18716v1",
+      "score": "7.0",
+      "evidence": "诊断旋转机械中的电气故障，包括定子匝间短路",
+      "tldr": "针对旋转机械故障诊断中可靠性与计算效率的平衡问题，本文评估了基于随机卷积核的时间序列分类方法 SelF-Rocket 在机械与电气多类故障诊断中的表现。研究提出了一种多元扩展方法，并在 MaFaulDa 和 ITSC-UDG 两个公开数据集上进行了验证。结果表明，该方法在保持高分类准确率的同时具有极低的延迟，实现了性能与效率的最佳权衡。",
+      "tags": "query:pmsm",
+      "abstract_en": "Diagnosing faults in rotating machinery is essential for ensuring the reliability of industrial processes. Random convolutional kernel-based Time Series Classification (TSC) methods, such as ROCKET and its variants, provide an attractive trade-off between predictive performance and computational efficiency. In this work, we evaluate SelF-Rocket for the multi-class diagnosis of both mechanical and electrical faults and introduce, as a new contribution, a multivariate extension of the original method. The proposed approach is compared with leading ROCKET-based methods on two public benchmark datasets, MaFaulDa (mechanical faults) and ITSC-UDG (stator inter-turn short circuits), under both univariate and multivariate settings. Experimental results show that SelF-Rocket achieves the best overall accuracy-latency trade-off among the evaluated methods, obtaining the highest classification performance on MaFaulDa while remaining highly competitive on the more challenging ITSC-UDG dataset.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202608/20/2608.16335v1-readiness-barrier-functions-forward-invariant-control-authority-for-overactuated-multirotor-allocation",
+      "section": "quick",
+      "title_en": "Readiness Barrier Functions: Forward-Invariant Control Authority for Overactuated Multirotor Allocation",
+      "authors": "Giuseppe Silano",
+      "date": "2026-08-17",
+      "pdf": "https://arxiv.org/pdf/2608.16335v1",
+      "score": "6.0",
+      "evidence": "冗余驱动多旋翼电机的控制权威与分配",
+      "tldr": "针对超定多旋翼无人机在控制分配中存在的执行器速率限制与控制权威保证之间的矛盾，本文提出了一种基于就绪屏障函数（RBF）的方法。该方法将控制权威视为前向不变特征，通过在分配零空间内利用二次规划强制执行控制屏障函数，确保控制权威始终处于认证水平之上。实验证明，该方法在保证控制连续性的同时，能有效维持控制能力，且跟踪误差远低于传统的贪婪最大化方案。",
+      "tags": "query:pmsm",
+      "abstract_en": "Allocation schemes that greedily maximize a readiness metric over the actuator fiber bundle of an overactuated multirotor produce commands that jump between disconnected optimal strata, demanding actuator rates no motor can deliver; effort-minimizing schemes are continuous but cannot guarantee that wrench-rate authority stays above any certified level. We reconcile the two by treating authority as a forward-invariant quantity: a control barrier function on the log-determinant of the drag-aware actuator-authority co-metric, enforced at torque level by a quadratic program in the allocation null space. A single design inequality renders the certified set compact and strictly interior to the actuator box, with the readiness cost of any rotor deactivation given in closed form as $\\ln(n/(n{-}m))$ for symmetric designs. Tracking is sacrificed only through an explicit alignment ratio, with wrench error bounded by $\\mathcal{O}(ρ^{-1/2})$ and a robust variant handles motor-parameter uncertainty with a closed-form floor shift independent of the airframe matrix. On a hexarotor and a fully-actuated octorotor the closed-form gap matches simulation to machine precision; in the authority-scarce regime greedy maximization violates the certified floor and commits wrench errors up to eighty times larger than the proposed filter, which holds invariance of the certified set at negligible tracking cost.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
