@@ -1,0 +1,53 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-08-21T19:22:09.061344+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 1,
+    "quick_skim_target": 11,
+    "quick_selected": 1
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2608.18318v1",
+      "title": "A Benchmark Graph Dataset for Transient Stability Assessment of the IEEE 9-Bus System: 20,000 Scenarios with Full Generator Trajectories",
+      "abstract": "Transient stability assessment determines whether a power system retains synchronism after a large disturbance. Machine-learning surrogates can accelerate it, but progress is limited by the lack of open datasets that combine dynamic ground truth, network graph structure, and machine parameters. We release a benchmark of 20,000 three-phase-to-ground fault scenarios on the IEEE 9-bus system. Each scenario couples an AC power-flow operating point with a detailed electromagnetic-transient simulation of the post-fault response. Every record provides the network as an attributed graph (nine buses, eighteen directed branches, ten node and twelve edge features), the full rotor-angle and speed trajectories of the three generators, the static machine constants, the fault description, and a center-of-inertia binary stability label. Wide load and generation scalings across eighteen fault locations yield a near-balanced distribution (48.96\\% stable, 51.04\\% unstable). Generation is deterministic and fully reproducible through fixed seeds and public code. The dataset is distributed on IEEE DataPort under a persistent DOI and supports stability classification, trajectory prediction, margin and critical-clearing-time estimation, and the comparison of topology-aware, physics-based, and hybrid learning methods.",
+      "authors": [
+        "Hussein Suprême",
+        "Martin de Montigny",
+        "Arnaud Zinflou"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY"
+      ],
+      "published": "2026-08-18T21:06:45+00:00",
+      "link": "https://arxiv.org/pdf/2608.18318v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "three-phase fault scenarios and machine parameters in power systems",
+      "llm_evidence_cn": "电力系统中的三相故障场景与电机参数",
+      "llm_evidence": "电力系统中的三相故障场景与电机参数",
+      "canonical_evidence": "电力系统中的三相故障场景与电机参数",
+      "llm_tldr_en": "Provides a benchmark dataset of 20,000 three-phase fault scenarios for power system stability assessment.",
+      "llm_tldr_cn": "提供了一个包含2万个三相故障场景的电力系统暂态稳定评估基准数据集。",
+      "llm_tldr": "提供了一个包含2万个三相故障场景的电力系统暂态稳定评估基准数据集。",
+      "llm_tags": [
+        "query:pmsm:composite"
+      ],
+      "matched_query_tag": "query:pmsm:composite",
+      "matched_query_text": "Papers central to 三相及双三相永磁同步电机相关研究检索, especially work that connects or combines: m; s; f; Permanent Magnet Synchronous Motor research; dual three-phase permanent magnet synchronous motor control and design; fault-tolerant control of multi-phase motors; recent advances in dual three phase permanent magnet synchronous motor control; fault tolerant strategies for multi phase permanent magnet synchronous motors.",
+      "matched_requirement_id": "req-composite-pmsm",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

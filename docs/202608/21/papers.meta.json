@@ -1,0 +1,23 @@
+{
+  "label": "2026-08-21",
+  "date": "2026-08-21",
+  "generated_at": "2026-08-21T19:22:55",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202608/21/2608.18318v1-a-benchmark-graph-dataset-for-transient-stability-assessment-of-the-ieee-9-bus-system-20000-scenarios-with-full-generator-trajectories",
+      "section": "quick",
+      "title_en": "A Benchmark Graph Dataset for Transient Stability Assessment of the IEEE 9-Bus System: 20,000 Scenarios with Full Generator Trajectories",
+      "authors": "Hussein Suprême, Martin de Montigny, Arnaud Zinflou",
+      "date": "2026-08-18",
+      "pdf": "https://arxiv.org/pdf/2608.18318v1",
+      "score": "6.0",
+      "evidence": "电力系统中的三相故障场景与电机参数",
+      "tldr": "针对电力系统暂态稳定性评估（TSA）中缺乏结合动态真值、网络拓扑和机器参数的开源数据集问题，本文发布了一个基于IEEE 9节点系统的基准图数据集。该数据集包含2万个三相短路故障场景，涵盖了详细的电磁暂态仿真轨迹、属性图结构及稳定性标签。其样本分布均衡且完全可复现，旨在支持机器学习代理模型的开发，促进拓扑感知及物理启发式学习方法在电力系统稳定性分析中的应用。",
+      "tags": "query:pmsm",
+      "abstract_en": "Transient stability assessment determines whether a power system retains synchronism after a large disturbance. Machine-learning surrogates can accelerate it, but progress is limited by the lack of open datasets that combine dynamic ground truth, network graph structure, and machine parameters. We release a benchmark of 20,000 three-phase-to-ground fault scenarios on the IEEE 9-bus system. Each scenario couples an AC power-flow operating point with a detailed electromagnetic-transient simulation of the post-fault response. Every record provides the network as an attributed graph (nine buses, eighteen directed branches, ten node and twelve edge features), the full rotor-angle and speed trajectories of the three generators, the static machine constants, the fault description, and a center-of-inertia binary stability label. Wide load and generation scalings across eighteen fault locations yield a near-balanced distribution (48.96\\% stable, 51.04\\% unstable). Generation is deterministic and fully reproducible through fixed seeds and public code. The dataset is distributed on IEEE DataPort under a persistent DOI and supports stability classification, trajectory prediction, margin and critical-clearing-time estimation, and the comparison of topology-aware, physics-based, and hybrid learning methods.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

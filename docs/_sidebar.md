@@ -1,6 +1,9 @@
 * <a class="dpr-sidebar-root-link" href="#/">首页</a>
 * <a class="dpr-sidebar-root-link dpr-sidebar-noactive-link" href="javascript:void(0)" data-dpr-hash="#/tutorial/README">使用教程</a>
 * Daily Papers
+  * 2026-08-21 <!--dpr-date:20260821-->
+    * 速读区
+      * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202608/21/2608.18318v1-a-benchmark-graph-dataset-for-transient-stability-assessment-of-the-ieee-9-bus-system-20000-scenarios-with-full-generator-trajectories" data-sidebar-item="{&quot;title&quot;: &quot;A Benchmark Graph Dataset for Transient Stability Assessment of the IEEE 9-Bus System: 20,000 Scenarios with Full Generator Trajectories&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2608.18318v1-a-benchmark-graph-dataset-for-transient-stability-assessment-of-the-ieee-9-bus-system-20000-scenarios-with-full-generator-trajectories&quot;, &quot;score&quot;: &quot;6.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;pmsm&quot;}], &quot;evidence&quot;: &quot;电力系统中的三相故障场景与电机参数&quot;}">A Benchmark Graph Dataset for Transient Stability Assessment of the IEEE 9-Bus System: 20,000 Scenarios with Full Generator Trajectories</a>
   * 2026-08-20 <!--dpr-date:20260820-->
     * 速读区
       * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202608/20/2608.17860v1-efficient-computation-of-eddy-currents-for-nonlinear-magnetic-field-problems" data-sidebar-item="{&quot;title&quot;: &quot;Efficient computation of eddy-currents for nonlinear magnetic field problems&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2608.17860v1-efficient-computation-of-eddy-currents-for-nonlinear-magnetic-field-problems&quot;, &quot;score&quot;: &quot;7.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;pmsm&quot;}], &quot;evidence&quot;: &quot;电机设备中的涡流损耗与静磁模拟&quot;}">Efficient computation of eddy-currents for nonlinear magnetic field problems</a>
