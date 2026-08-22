@@ -1,0 +1,37 @@
+{
+  "label": "2026-08-22",
+  "date": "2026-08-22",
+  "generated_at": "2026-08-22T19:43:53",
+  "count": 2,
+  "papers": [
+    {
+      "paper_id": "202608/22/2608.15322v1-iterative-state--and-control-dependent-model-predictive-control-a-jacobian-free-formulation-for-constrained-nonlinear-systems",
+      "section": "quick",
+      "title_en": "Iterative State- and Control-Dependent Model Predictive Control: A Jacobian-Free Formulation for Constrained Nonlinear Systems",
+      "authors": "Mohammadreza Kamaldar",
+      "date": "2026-08-15",
+      "pdf": "https://arxiv.org/pdf/2608.15322v1",
+      "score": "6.0",
+      "evidence": "约束非线性系统的模型预测控制",
+      "tldr": "本文提出一种针对受限非线性系统的迭代模型预测控制（MPC）算法，无需计算系统导数。通过将非线性动力学分解为状态和控制依赖系数（SCDC）的伪线性形式，将非凸优化转化为一系列受限线性二次规划问题。该方法在原点附近具有收敛性保证，计算复杂度随预测时域线性增长（O(l)），并能确保递归可行性和渐近稳定性，适用于实时性要求高的复杂控制任务。",
+      "tags": "query:pmsm",
+      "abstract_en": "This paper presents an iterative model predictive control algorithm that stabilizes constrained nonlinear systems without evaluating a single plant derivative. By factoring the exact nonlinear dynamics into a pseudo-linear form using state- and control-dependent coefficients (SCDCs), we replace the standard nonconvex optimization with a sequence of constrained linear-quadratic programs. Refreezing the coefficient matrices along the previously predicted trajectory drives the iteration. Near the origin, we prove this sequence contracts to a unique fixed point. We explicitly bound the number of iterations required to reach any stopping tolerance, and we quantify the distance from the fixed point to a true Karush-Kuhn-Tucker point, showing this optimality gap vanishes quadratically as the state approaches the origin. Inflating the discrete algebraic Riccati equation generates terminal ingredients that guarantee recursive feasibility and asymptotic stability, even when the solver terminates early. We adapt the terminal penalty online, proving it remains uniformly bounded, and we secure output feedback through the block-observable canonical form, which extracts the exact system state directly from past inputs and outputs. Retaining the block-banded structure of the subproblem forces the computational cost to scale linearly with the horizon length $\\ell$. This $O(\\ell)$ complexity matches the iterative linear quadratic regulator (iLQR) but sharply undercuts the $O(\\ell^3)$ scaling of dense sequential quadratic programming (SQP). Numerical studies on a saturated quadrotor, a nonholonomic integrator, and a nonminimum-phase plant illustrate the theoretical bounds and map how the algorithm compares with iLQR, SQP, and linear-parameter-varying MPC.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202608/22/2608.18903v1-a-fem-based-surrogate-modelling-and-optimization-framework-for-physics-constrained-electromagnetic-coil-design",
+      "section": "quick",
+      "title_en": "A FEM-Based Surrogate Modelling and Optimization Framework for Physics-Constrained Electromagnetic Coil Design",
+      "authors": "Yucheng Liu",
+      "date": "2026-08-19",
+      "pdf": "https://arxiv.org/pdf/2608.18903v1",
+      "score": "6.0",
+      "evidence": "电磁线圈设计与基于有限元法的优化",
+      "tldr": "本研究针对受物理、几何及制造约束的电磁线圈设计，提出了一种基于有限元法（FEM）的代理模型优化框架。通过Python-MPh-COMSOL工作流，将二维轴对称FEM模型与高斯过程代理模型结合，对比了贝叶斯优化（BO）与COBYLA、BOBYQA等算法在不同计算预算下的表现。研究发现，优化器的排名高度依赖于可用的评估预算，为仿真驱动的电磁设计提供了算法选择参考。",
+      "tags": "query:pmsm",
+      "abstract_en": "This work evaluates surrogate-assisted optimization of a seven-parameter current-excited coil--core benchmark subject to geometric, manufacturing, and separate core and copper mass constraints. A Python--MPh--COMSOL workflow couples a two-dimensional axisymmetric finite-element method (FEM) model to a Matern 5/2 Gaussian-process (GP) probabilistic surrogate. Here, physics-constrained denotes a design problem evaluated by a governing-equation FEM model and restricted by explicit physical, geometric, manufacturing, and material-allocation constraints; it does not denote a physics-informed GP architecture. Sequential Bayesian optimization (BO) ranks candidates using expected improvement (EI), and every reported incumbent is verified by FEM. Five paired runs show that optimizer ranking depends on the available FEM-evaluation budget: EI--BO improves rapidly at small continuation budgets, COBYLA is stronger at the earliest checkpoint, and BOBYQA attains the highest mean terminal response. A retrospective finite-pool study further finds no robust endpoint advantage of EI over posterior-mean ranking on this smooth response surface. The broader result is that early progress, terminal response, information use, and wall-clock cost can favor different methods in simulation-driven design. A selected-design check at a common total current preserves the observed BOBYQA--COBYLA--EI-BO ordering. The conclusions nevertheless remain conditional on this axisymmetric benchmark and do not establish a fixed-current optimum, fixed-power performance, or electrical-efficiency superiority.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
