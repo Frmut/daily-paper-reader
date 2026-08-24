@@ -1,0 +1,23 @@
+{
+  "label": "2026-08-24",
+  "date": "2026-08-24",
+  "generated_at": "2026-08-24T20:31:25",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202608/24/2608.21302v1-fault-diagnosis-of-dynamic-systems-under-unknown-operating-conditions-a-condition-guided-selective-adaptation-approach",
+      "section": "quick",
+      "title_en": "Fault Diagnosis of Dynamic Systems Under Unknown Operating Conditions: A Condition-Guided Selective Adaptation Approach",
+      "authors": "Jiaming Liu, Zeyi Liu, Hongshuo Zhao, Pengyu Han, Xiao He",
+      "date": "2026-08-21",
+      "pdf": "https://arxiv.org/pdf/2608.21302v1",
+      "score": "6.0",
+      "evidence": "未知工况下动态工业系统的故障诊断",
+      "tldr": "针对动态工业系统在未知工况下的故障诊断难题，本文提出了一种工况引导的选择性自适应方法。该方法在离线阶段通过连续工况对抗学习和渐进式训练增强模型的泛化能力，在线部署时利用残差工况响应从流数据中识别可靠样本并更新模型。实验证明，该框架在保持较低测试耗时的同时，显著提升了诊断准确率，具有较强的工业应用潜力。",
+      "tags": "query:pmsm",
+      "abstract_en": "Fault diagnosis under unknown operating conditions remains challenging for dynamic industrial systems, as the distribution shift caused by changing operating conditions can significantly degrade the performance of diagnostic models in real-world applications. To address the problem, a condition-guided selective adaptation approach is proposed. Specifically, a novel continuous operating-condition adversarial learning strategy with progressive training is developed in the offline stage to enhance the generalization ability of the diagnostic model. During online deployment, residual operating-condition responses are exploited to identify reliable unlabeled samples from streaming data, which are then used to update the diagnostic model. Extensive experiments on real-world gearbox and motor datasets have demonstrated that the proposed framework outperforms state-of-the-art methods in diagnostic accuracy while maintaining relatively low test-time, showing its potential for practical industrial applications.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
