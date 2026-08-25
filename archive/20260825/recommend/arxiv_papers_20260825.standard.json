@@ -1,0 +1,124 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-08-25T19:30:03.045698+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 1,
+    "deep_cap": 6,
+    "deep_selected": 1,
+    "quick_candidates": 2,
+    "quick_skim_target": 11,
+    "quick_selected": 2
+  },
+  "deep_dive": [
+    {
+      "id": "2608.21886v1",
+      "title": "Real-Time Transient Response Optimization",
+      "abstract": "Use of artificial intelligence in motor control applications that can be deployed within the microcontrollers need to comply with real-time demands of motor control systems. A supplementary controller approach that can be integrated within existing microcontrollers is presented. The proposed approach is implemented on a weeteq motor control integrated circuit and tested in the lab. A complete unsupervised motor control deployment solution was developed, and the real-time system response correction demonstrated under dynamic loads measured with and without the supplementary controller. The solution provides 100% coverage of real-time data at control loop sample rate and model inference period between 100usec and 1msec. The importance of latency for reduction of dynamic regulation margin during transient response is demonstrated with up to 68% reduction of the system response error. A novel key performance indicator based on principal components transform is introduced that provides a quantitative figure of merit for improvement of the transient response, in terms of the dynamic regulation margin, stability considerations and iterative improvements of consecutive regression model outputs. The significant events related to dynamic changes in the equipment and external operating conditions are detected at milliseconds resolution and recorded as highly compressed vectors representing deviation of the system response from linear steady state conditions. The resolution in time and accuracy of this vector data will enable a new level of system level optimisation that has not been possible using the time series data from IoT sensors in current equipment health monitoring solutions.",
+      "authors": [
+        "Anahida Kanade",
+        "Djan Tanova",
+        "Steve Conner",
+        "Taner Dosluoglu"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY"
+      ],
+      "published": "2026-08-22T09:56:44+00:00",
+      "link": "https://arxiv.org/pdf/2608.21886v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "AI in motor control applications",
+      "llm_evidence_cn": "电机控制应用中的人工智能",
+      "llm_evidence": "电机控制应用中的人工智能",
+      "canonical_evidence": "电机控制应用中的人工智能",
+      "llm_tldr_en": "Presents an AI-based supplementary controller for real-time motor control optimization.",
+      "llm_tldr_cn": "提出了一种基于人工智能的辅助控制器，用于实时电机控制优化。",
+      "llm_tldr": "提出了一种基于人工智能的辅助控制器，用于实时电机控制优化。",
+      "llm_tags": [
+        "query:pmsm"
+      ],
+      "matched_query_tag": "query:pmsm",
+      "matched_query_text": "Permanent Magnet Synchronous Motor research",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2608.22416v1",
+      "title": "A Simple and Extremely Efficient Predictive Control for Power Converters",
+      "abstract": "Classical finite control set based model predictive control (FCS-MPC) reduces the optimal problems to an enumerated searching algorithm, which is very simple and effective to control power converters. However, it requires a large amount of enumeration operations, increasing its computational load and hardware costs. In this work, we propose a new and simple predictive control technique with extreme efficiency. The proposal directly selects the optimal vector via determined visual maps, abstained solely requiring a rearrangement of the cost function and a simple fitting law, without any enumeration. It has been validated under a lab-constructed power converter and a set of commercialized low-cost digital controllers. Experimental data confirm that the proposal achieves the same control performance as classical MPC, with significant computational burden reduction (up to 88\\% for one-step prediction of two-level converters)",
+      "authors": [
+        "Guangze Chen",
+        "Zhenbin Zhang"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY"
+      ],
+      "published": "2026-08-23T13:40:04+00:00",
+      "link": "https://arxiv.org/pdf/2608.22416v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "predictive control for power converters",
+      "llm_evidence_cn": "功率变换器的预测控制",
+      "llm_evidence": "功率变换器的预测控制",
+      "canonical_evidence": "功率变换器的预测控制",
+      "llm_tldr_en": "Proposes an efficient predictive control for power converters, applicable to motor drives.",
+      "llm_tldr_cn": "提出了一种高效的功率变换器预测控制技术，可应用于电机驱动。",
+      "llm_tldr": "提出了一种高效的功率变换器预测控制技术，可应用于电机驱动。",
+      "llm_tags": [
+        "query:pmsm"
+      ],
+      "matched_query_tag": "query:pmsm",
+      "matched_query_text": "dual three-phase permanent magnet synchronous motor control and design",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2608.22976v1",
+      "title": "Privileged Critic Training Enables Sensor-Free Thruster Fault Adaptation in End-to-End RL",
+      "abstract": "Fault-tolerant navigation for thruster-actuated robots requires online adaptation to failures that are neither binary nor fully observable: thrusters may degrade continuously, fail dead, or jam stuck-open. Classical fault detection pipelines require dedicated sensors unavailable at deployment; oracle controllers that observe the true failure state are equally impractical. We show that privileged critic training is sufficient for sensor-free fault adaptation: giving the PPO value function access to the true degradation state dgt during training, while the actor receives only standard task observations, shapes a policy that compensates for failures at deployment without any dedicated fault sensing. We propose RAFT (Recurrent Asymmetric Fault Tolerant), a policy with recurrent memory trained with a privileged asymmetric critic. Evaluated on a floating-platform robot (8 thrusters, 1 reaction wheel) under up to four simultaneous thruster failures, RAFT achieves 70.2% success at four concurrent failures, closing 84% of the gap from a failure-naive baseline (4.8%) to an oracle policy that sees the full degradation state at deployment (82.4%). All code, checkpoints, and data are open-source.",
+      "authors": [
+        "Ricard Marsal I Castan",
+        "Miguel A. Olivares-Méndez"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-08-24T08:36:34+00:00",
+      "link": "https://arxiv.org/pdf/2608.22976v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Fault-tolerant adaptation for thruster-actuated robots",
+      "llm_evidence_cn": "推进器驱动机器人的容错自适应",
+      "llm_evidence": "推进器驱动机器人的容错自适应",
+      "canonical_evidence": "推进器驱动机器人的容错自适应",
+      "llm_tldr_en": "Uses privileged critic training for sensor-free fault adaptation in thruster systems.",
+      "llm_tldr_cn": "利用特权评论家训练实现推进器系统的无传感器故障自适应。",
+      "llm_tldr": "利用特权评论家训练实现推进器系统的无传感器故障自适应。",
+      "llm_tags": [
+        "query:pmsm"
+      ],
+      "matched_query_tag": "query:pmsm",
+      "matched_query_text": "fault-tolerant control of multi-phase motors",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
