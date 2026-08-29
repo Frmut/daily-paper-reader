@@ -7,31 +7,34 @@
 
 ## 每次日报
 - 最新运行日期：2026-08-29
-- 运行时间：2026-08-29 03:23:09 UTC
+- 运行时间：2026-08-29 22:08:17 UTC
 - 运行状态：成功
-- 本次总论文数：3
+- 本次总论文数：4
 - 精读区：0
-- 速读区：3
+- 速读区：4
 
 ### 今日简报（AI）
-今日聚焦电力电子与控制优化，涵盖网格约束粒子群算法及数据中心变压器保护方案。
-重点关注离散状态自适应粒子群算法在精确谐波规划中的高效应用，以及 LLC 固态变压器在数据中心故障穿越中的限流控制。
-建议深入了解启发式算法在复杂电网约束下的求解效率，以及自适应控制在有限激励条件下的鲁棒性表现。
+今日深度复盘电力系统演进，涵盖三相交流电的历史成因、电网谐波优化及鲁棒自适应控制。
+核心看点在于对三相电工程标准的重新评估，以及针对复杂电网约束开发的高效离散粒子群求解器。
+建议对电力系统基础架构或启发式算法感兴趣的读者，重点研读三相电标准的历史逻辑与现代优化工具。
 - 详情：[/202608/29/README](/202608/29/README)
 
 ### 精读区论文标签
 - 本次无精读推荐。
 
 ### 速读区论文标签
-1. [Grid-Constrained State-Adaptive Particle Swarm Optimization: A Discrete and Efficient Heuristic Solver for Precise Harmonic Programming](/202608/29/2608.22391v1-grid-constrained-state-adaptive-particle-swarm-optimization-a-discrete-and-efficient-heuristic-solver-for-precise-harmonic-programming)  
+1. [Why Three Phases? A Historical and Engineering Reassessment of Phase Order in AC Power Transmission](/202608/29/2608.27325v1-why-three-phases-a-historical-and-engineering-reassessment-of-phase-order-in-ac-power-transmission)  
    标签：评分：7.0/10、query:pmsm
+   evidence：m相公式与旋转磁场分析
+2. [Grid-Constrained State-Adaptive Particle Swarm Optimization: A Discrete and Efficient Heuristic Solver for Precise Harmonic Programming](/202608/29/2608.22391v1-grid-constrained-state-adaptive-particle-swarm-optimization-a-discrete-and-efficient-heuristic-solver-for-precise-harmonic-programming)  
+   标签：评分：6.0/10、query:pmsm
    evidence：用于大功率能量转换系统的谐波编程PWM技术
-2. [Robust Model Reference Adaptive Control with Combined Adaptation under Finite Excitation Condition](/202608/29/2608.22562v1-robust-model-reference-adaptive-control-with-combined-adaptation-under-finite-excitation-condition)  
+3. [Robust Model Reference Adaptive Control with Combined Adaptation under Finite Excitation Condition](/202608/29/2608.22562v1-robust-model-reference-adaptive-control-with-combined-adaptation-under-finite-excitation-condition)  
    标签：评分：6.0/10、query:pmsm
    evidence：多输入多输出非线性系统的自适应控制
-3. [Current-Limiting Control for Fault Ride-Through of LLC-based Solid-State Transformer in Data Centers](/202608/29/2608.26595v1-current-limiting-control-for-fault-ride-through-of-llc-based-solid-state-transformer-in-data-centers)  
+4. [Mitigating Forced Oscillations in Power Systems via Data-Enabled Predictive Control](/202608/29/2608.26975v1-mitigating-forced-oscillations-in-power-systems-via-data-enabled-predictive-control)  
    标签：评分：6.0/10、query:pmsm
-   evidence：容错限流策略
+   evidence：电力系统的数据驱动预测控制
 
 
 <div class="dpr-home-promo-card">

@@ -1,0 +1,306 @@
+Title: Mitigating Forced Oscillations in Power Systems via Data-Enabled Predictive Control
+
+URL Source: https://arxiv.org/pdf/2608.26975v1
+
+Published Time: Fri, 28 Aug 2026 00:55:00 GMT
+
+Number of Pages: 5
+
+Markdown Content:
+# Mitigating Forced Oscillations in Power Systems via Data-Enabled Predictive Control 
+
+Soraya Daabak, Verena H¨ aberle, Gabriela Hug, and Gustavo Valverde 
+
+Power Systems Laboratory (PSL) ETH Zurich 
+
+Zurich, Switzerland 
+
+{sdaabak,verenhae,ghug,gustavov }@ethz.ch 
+
+Abstract —Sustained forced oscillations in power systems, driven by large cyclic loads such as data centers, pose a challenge to conventional power system stabilizers (PSSs), which rely on fixed tuned parameters and limited adaptability. This paper investigates the use of Data-Enabled Predictive Control (DeePC) as a data-driven alternative for damping such oscillations. DeePC constructs control actions directly from measured trajectories without requiring an explicit system model, enabling adaptation to changing operating conditions. We evaluate the performance of DeePC on a multi-machine two-area system subject to forced oscillations and compare it against a conventional PSS. The study examines the impact of different input–output configurations and the role of representative historical data in the Hankel matrix construction. Results show that DeePC can achieve superior damping. However, its effectiveness depends critically on the quality and representativeness of the underlying dataset. These findings highlight the potential of data-driven predictive control to complement or outperform conventional stabilizers in modern power systems with evolving and uncertain dynamics. 
+
+Index Terms —Data-Driven Control, Forced Oscillations, Power Systems, Power System Stabilizer. 
+
+I. I NTRODUCTION 
+
+Power system stabilizers (PSSs) are widely deployed to damp electromechanical oscillations in power systems. How-ever, these controllers are typically not self-adaptive and are seldom retuned, as their parameter settings are often deter-mined through offline studies and manual engineering adjust-ments [1]–[3]. At the same time, emerging grid dynamics, such as sustained forced oscillations induced by large data centers running artificial intelligence (AI) workloads [4], [5], pose new challenges. Such oscillations can be difficult to mitigate using PSSs alone, particularly when they are poorly tuned or when operating conditions change and require extensive retuning. Data-Enabled Predictive Control (DeePC) [6] offers a fun-damentally different, data-driven approach. By constructing predictions directly from measured trajectories organized in Hankel matrices, DeePC bypasses explicit model identification and inherently adapts to the current operating condition. This makes it particularly well suited for systems with unmodeled or time-varying dynamics, such as persistent forced oscilla-tions whose signatures are captured in historical data. In this paper, we investigate whether DeePC can damp forced oscillations more effectively than a conventional PSS. Specifically, we analyze the impact of different control input configurations (single versus multiple inputs) and quantify the resulting performance gains and limitations relative to a PSS. Our objectives are threefold: (i) to assess the ability of DeePC to reduce forced-oscillation amplitudes, (ii) to compare alternative output selections, and (iii) to evaluate the feasi-bility of operating DeePC alongside the PSS in the voltage-regulation loop of synchronous machines. The results provide insight into when and how a data-driven predictive controller can complement or outperform a PSS, while emphasizing the critical importance of informative data for closed-loop performance. Existing studies have demonstrated the effectiveness of DeePC across a range of power system applications, including wind generator stabilization, grid synchronization, DC voltage regulation, and frequency control in wind farms [7]. DeePC has also been applied to grid-connected power converters [8] and voltage source converters in HVDC systems [9], where it has shown promising results in damping naturally occurring, weakly damped oscillations. However, these prior works primarily focus on intrinsic system oscillations arising from poorly damped dynamics, and do not address the distinct challenge of forced oscillations driven by persistent external disturbances. In particular, there is limited evidence on the ability of data-driven predictive control to mitigate oscillations induced by cyclic loads, such as those originating from large data centers running AI workloads [4], [5]. These AI-driven loads introduce sustained and structured disturbances that can propagate through the grid and are often difficult to suppress using conventional control strategies. This paper addresses this gap by explicitly investigating the use of DeePC to damp forced oscillations induced by AI workloads. In doing so, we extend the scope of DeePC from stabilizing endogenous system dynamics to actively counteracting externally driven oscillatory behavior, thereby tackling an emerging and practi-cally relevant challenge in modern power systems. The remainder of this paper is organized as follows. Section II introduces the DeePC algorithm, including the construction of the Hankel matrix from offline data and the formula-tion of the online optimization-based control law. Section III presents numerical results for a multi-machine two-area system, demonstrating the superior performance of DeePC in damping forced oscillations compared to conventional PSS, along with a comparison of different input–output configura-tions. Finally, Section IV concludes the paper. arXiv:2608.26975v1 [eess.SY] 27 Aug 2026 II. D EE PC The DeePC algorithm [6] builds on Willems’ Fundamental Lemma [10], which establishes that any trajectory of a linear time-invariant system can be expressed as a linear combi-nation of subsequences from a single persistently exciting input–output trajectory. 
+
+A. Offline Construction of the Hankel Matrix 
+
+Historical input udata and output ydata trajectories col-lected during excitation are arranged in Hankel matrices 
+
+HTini +N (udata ) and HTini +N (ydata ) that capture the system’s admissible behaviors under persistency of excitation. These matrices are partitioned into past and future segments as follows [6]: 
+
+
+
+Up
+
+Yp
+
+Uf
+
+Yf
+
+ =
+
+
+
+HTini (udata,past )
+
+HTini (ydata,past )
+
+HN (udata,fut )
+
+HN (ydata,fut )
+
+ (1) The dimensions of the matrices are: 
+
+Up ∈ RTini m×(T −L+1) , Uf ∈ RN m ×(T −L+1) ,Yp ∈ RTini p×(T −L+1) , Yf ∈ RN p ×(T −L+1) .
+
+where m ∈ Z>0 is the number of inputs, p ∈ Z>0 is the number of outputs, Tini ∈ Z>0 must be greater than the lag 
+
+l of the system, N ∈ Z>0 is the selected time horizon, L =
+
+Tini +N is the Hankel depth, and T is the total number of data points in the Hankel matrix. According to Definition 4.4 of [6], if the Hankel matrix HL(u) is of full row rank and T ≥ L,the signal u ∈ RT m of order L is persistently exciting the system. This implies that the input signal will be sufficiently rich to excite the system, yielding an output sequence that is representative of the system’s behavior. The Hankel matrix is constructed offline and remains fixed during operation. It is computed once prior to the initial con-troller call and is not updated thereafter, under the assumption that the system dynamics do not change over the course of the online control application described next. 
+
+B. Online Optimization-based Controller 
+
+Rather than identifying a parametric model, DeePC in-fers system behavior directly from previously measured in-put–output data and computes optimal control actions accord-ingly [6]. This formulation naturally allows the inclusion of input and output constraints to ensure safe operation. Based on the Hankel matrices constructed from past trajectories in (1), DeePC solves a regularized optimization problem online at each sampling instant, where the regularization terms mitigate the impact of noise in both historical and real-time measurements [11]–[15], i.e., 
+
+min  
+
+> g, u, y, σ y
+> N−1
+
+X
+
+> k=0
+
+ ∥uk∥2 
+
+> R
+
++ ∥yk − rt+k∥2
+
+> Q
+
+ + λg ∥g∥22 + λσ ∥σy ∥22
+
+s.t. 
+
+
+
+Up
+
+Yp
+
+Uf
+
+Yf
+
+ g =
+
+
+
+uini 
+
+yini + σy
+
+uy
+
+ ,uk ∈ U , yk ∈ Y , ∀k ∈ { 0, . . . , N − 1}.
+
+(2) The norm ∥uk∥2 
+
+> R
+
+denotes the quadratic form u⊤ 
+
+> k
+
+Ru k, (simi-larly for ∥ · ∥ 2
+
+> Q
+
+), where R ∈ Rm×m is the control cost matrix, and Q ∈ Rp×p is the output cost matrix that penalizes the deviations of yk from the desired reference rt+k ∈ Rp at time 
+
+t + k [6]. The vector g ∈ RT −L+1 is a decision variable that forms a linear combination of the columns of the Hankel matrices constructed from previously recorded input–output trajectories [6]. This combination yields predicted future in-puts u = u⊤ 
+
+> 0
+
+. . . u⊤ 
+
+> N−1
+
+⊤ ∈ RN m and outputs y =
+
+y⊤ 
+
+> 0
+
+. . . y⊤ 
+
+> N−1
+
+⊤ ∈ RN p which are consistent with the behavioral data and the past measurements uini ∈ RTini m and 
+
+yini ∈ RTini p. In this way, DeePC implements predictive control without requiring an identified state-space model; instead, it relies directly on the recorded data. The penalty on g through parameter λg is included to prevent overfitting to limited and noisy historical data [6], [12], encouraging small weights for each column of the Hankel matrix. The slack variable σy is used to counteract the effect of measurement noise in the output, which can render the problem infeasible [6], [16]. The parameter λσ penalizes the magnitude of the slack variable in the objective function, discouraging large deviations from the measured output yini .At each time step, the optimization problem in (2) is solved using the most recent past input/output measurements 
+
+(uini , y ini ), which then yields the optimal decision variable 
+
+g⋆ and the corresponding predicted future input sequence 
+
+u⋆ = Uf g⋆. In closed-loop operation, typically only the first input u⋆ 
+
+> 0
+
+is applied to the plant. The plant then generates the next output measurement y(t), which together with the applied input is appended to the past data vectors ( uini , y ini ), and the oldest entries are removed to update (uini , y ini ) [17]. By continuously updating past trajectories and optimizing, DeePC implements a receding-horizon control strategy analogous to model predictive control, while leveraging only measured data without requiring an explicit system model. III. R ESULTS 
+
+In this section, we assess the use of DeePC in the voltage-regulation loop of a synchronous machine. 
+
+A. Simulation Setup 
+
+DeePC is tested on the two-area system shown in Fig. 1 during a forced oscillation induced by a cyclic load at bus 9. 1 5 62 47 8 910 11 3G1 G3    
+
+> G2G4
+> L7L9C7C9Fig. 1. Multi-machine two-area test system +++-Selector Grid
+
+G1
+
+ω1
+
+P1
+
+Q1
+
+V1 VP SS 
+
+V1
+
+Vref 
+
+VDeePC 
+
+DeePC AVR  
+
+> Fig. 2. DeePC controller integrated into the system
+
+The parameters of the lines, transformers, loads, synchronous machines, exciters, and Automatic Voltage Regulators (AVRs) are taken from [1]. The synchronous generators are driven by steam turbines with high-, medium-, and low-pressure sections, including a reheater. Each turbine section is modeled as a first-order system. The AVRs are equipped with a PSS represented by the classical STAB1 model, which consists of the gain KP SS , a washout filter, and two lead-lag blocks. The PSS input is the rotor speed measurement, and the output 
+
+VP SS goes to the summing point of the AVR. The stabilizers were tuned using the P-Vref method [18] The loads at buses 7 and 9 are voltage-dependent, totaling 2734 MW and 200 MVAr at the initial operating point [1]. The cyclic load accounts for 5% of the active power demand at bus 9. It operates at unity power factor and has demand fluctuations of ± 50 MW around a mean power demand of 88.35 MW. The fluctuations follow a square-wave pattern at 0.55 Hz, close to the system’s inter-area mode frequency. All time-domain simulations were run using a Python interface [19] to the RAMSES simulation engine [20]; the optimizations were solved by Gurobi [21]. 
+
+B. Application of DeePC 
+
+In this paper, we apply DeePC at generator G1 to mitigate the forced oscillations induced by the cyclic load at bus 9. The controller receives the system outputs y (e.g., rotor speed, active and reactive power output, or terminal voltage) and computes the system input u (i.e., VDeePC ) added at the AVR’s summing point, as depicted in Fig. 2. The Hankel matrices in (1) were constructed by adding zero-mean white noise to the AVR’s reference voltage Vref 
+
+while tracking the system outputs. To satisfy the persistent excitation condition, we selected a standard deviation of 0.005 
+
+pu and introduced noise samples into the system every 0.01 s. Moreover, we selected T = 4490 , Tini = 40 , and N = 100 ,yielding a dataset representative of the system’s behavior. The matrices were constructed during the cyclic load operation. When DeePC is active, plant measurements are collected every 0.01 s to solve the optimization problem (2), with R =10 −4, λg = 0 .005 , and λc = 100 .Due to space limitations, we only report the results for two choices of y: (a) the active power output P1 of G1
+
+alone, and (b) P1 together with the voltage magnitude V1
+
+at bus 1. However, we also tested the reactive power Q1,voltage magnitude V1, and the rotor speed ω1 as single outputs. The best controller performance was achieved with P1 alone. Among output combinations, the best results were achieved with P1 and V1.All simulations start with the power system in steady-state conditions. The load fluctuation of 0.55 Hz starts at t = 5 
+
+s, inducing a forced oscillation. For comparison purposes, the same Hankel matrix values were used in all scenarios; only the structure changed with the number of outputs y.DeePC minimizes the deviations of y with respect to the reference values r, namely the output values before the cyclic load operation. The values of the diagonal cost matrix Q were chosen as 5000 for P1 and 5 for V1, i.e., an output-weight ratio QP1 /Q V1 of 1000. 
+
+C. Simulation Results 
+
+In the following subsections, we analyze the system re-sponse for the two choices of y using DeePC alone and DeePC in combination with the PSS at G1. The PSSs at generators 
+
+G2, G3, and G4 remain active in all scenarios, regardless of whether the PSS at G1 is enabled. 
+
+1) DeePC Alone: In this scenario, there is no PSS at G1.The damping ratio of the inter-area mode is 24.7%, with all other modes exhibiting higher damping ratios. Fig. 3 shows the forced oscillation observed at the active power output of G1 before and after DeePC is activated at t = 40 s. In the base case, without DeePC and the PSS at G1, the cyclic load induces oscillations in P1 with an amplitude of 20.19 MW. Once DeePC is active, the oscillations are reduced to 0.55 MW when P1 is the only system output and to 2.12 MW when P1 and V1 are the system outputs. In the latter case, the controller simultaneously accounts for two objectives: damping oscillations in the active power output and regulating the terminal voltage. This trade-off reduces its responsiveness to oscillations in P1 relative to the single-output configuration. The effect on the terminal-voltage magnitude of G1 is illustrated in Fig. 4. Prior to DeePC activation ( t < 40 s), the oscillation amplitude is 2.6 × 10 −3 pu. Upon activation, a transient peak in the voltage magnitude of bus 1 appears, which is better mitigated when V1 is included in the system outputs. In steady state, the oscillation amplitudes increase to 7.5 × 10 −3 pu and 7.0 × 10 −3 pu with P1 alone and 
+
+P1 and V1 as system outputs, respectively. From Figs. 3 and 4, it is observed that DeePC effectively modifies the machine’s electrical torque to improve damping. However, this is inherently counterproductive for terminal-voltage regulation, 0 10 20 30 40 50 60 70 Time [s] 680 690 700 710 720 Active Power Output G1 [MW]  P1  
+
+> P1and V1
+
+Fig. 3. Active power output of generator G1 before and after the DeePC (no PSS) controller. 0 10 20 30 40 50 60 70   
+
+> Time [s]
+> 1.02 1.03 1.04 1.05 1.06
+> Voltage Magnitude at Bus 1 [pu]  P1
+> P1and V1
+
+Fig. 4. Voltage magnitude at Bus 1 before and after the DeePC (no PSS) controller. 
+
+as the DeePC signal VDeePC is injected into the machine’s terminal-voltage control loop. A sensitivity analysis was conducted to examine the trade-offs between active-power oscillation mitigation and voltage regulation, by varying the output-weight ratio in the cost matrix Q of (2) and observing the steady-state oscillation amplitudes of P1 and V1. Table I summarizes the results. Reducing the weight ratio, namely increasing the penalty on 
+
+V1 deviations, substantially degrades active-power oscillation mitigation while having only a minor effect on the amplitude of terminal-voltage oscillations. However, it reduces the tran-sient peak upon DeePC activation. 
+
+2) DeePC and PSS: In this scenario, there is a PSS at 
+
+G1 with KP SS = 100 pu/pu. The damping ratio of the inter-area mode is 68.3%; all other modes exhibit higher damping ratios. Figs. 5 and 6 show the active power output and terminal voltage of G1, respectively. Thanks to the PSS, the initial oscillation amplitudes are smaller than in the base case. 
+
+TABLE I STEADY -STATE OSCILLATION AMPLITUDES FOR DIFFERENT OUTPUT -WEIGHT RATIOS QP1 /Q V1 IN COST MATRIX Q (NO PSS) 
+
+QP1 /Q V1 1000 100 10 1
+
+P1 [MW] 2.12 6.25 11.46 13.66 
+
+V1 [pu] 0.0070 0.0065 0.0067 0.0067 0 10 20 30 40 50 60 70   
+
+> Time [s]
+> 697 698 699 700 701 702 703 704
+> Active Power Output G1 [MW]  P1
+> P1and V1
+
+Fig. 5. Active power output of generator G1 before (only PSS) and after the DeePC (+ PSS) controller. 
+
+However, DeePC can further reduce the oscillation amplitude in the active power output to only 0.27 MW when P1 is the only output and to 1.03 MW when P1 and V1 are the system outputs. Hence, DeePC, together with a well-tuned PSS, mitigates forced oscillations better compared to DeePC alone. When the PSS is present in G1, DeePC has a negligible adverse effect on terminal voltage. 
+
+3) Impact Assessment on Other Generators: We now in-vestigate the impact of DeePC operating at G1 on the power 0 10 20 30 40 50 60 70   
+
+> Time [s]
+> 1.0225 1.0250 1.0275 1.0300 1.0325 1.0350 1.0375 1.0400 Voltage Magnitude at Bus 1 [pu]  P1
+> P1and V1
+
+Fig. 6. Voltage magnitude at Bus 1 before (only PSS) and after the DeePC (+ PSS) controller. outputs (in MW and MVAr), rotor speeds (in pu), and terminal voltages (in pu) of all machines. Tables II and III give the steady-state oscillation amplitudes when P1 and P1 together with V1 are used as system outputs, respectively. For active-power oscillation amplitudes, DeePC at G1 only outperforms the PSS at G1 for P1 and P4 damping. For the remaining machines, the PSS alone at G1 is more effective than either DeePC alone or the combination of DeePC and PSS at G1. For rotor-speed oscillations, DeePC alone reduces the amplitudes in G1, but not in the other machines. In contrast, all voltage-magnitude oscillation amplitudes are always slightly larger when DeePC is present. Finally, regarding reactive-power oscillations, DeePC is in some cases more effective than the PSS alone. 
+
+TABLE II STEADY -STATE OSCILLATION AMPLITUDES WITH P1 AS SYSTEM OUTPUT 
+
+Base Only Only PSS + Case PSS DeePC DeePC 
+
+P1/Q 1 20.19/19.57 2.65/18.26 0.55/20.17 0.27/20.30 
+
+P2/Q 2 7.11/42.28 4.29/21.53 4.77/20.12 4.83/20.09 
+
+P3/Q 3 16.93/21.38 20.63/24.16 20.97/24.69 21.01/24.71 
+
+P4/Q 4 16.24/14.97 18.08/16.02 16.93/15.72 16.96/15.73 
+
+ω1/V 1 5.3e-4/2.6e-3 7.7e-5/6.7e-3 1.7e-5/7.5e-3 8e-6/7.5e-3 
+
+ω2/V 2 1.7e-4/5.7e-3 1.45e-4/7.6e-3 1.6e-4/8.4e-3 1.55e-4/8.4e-3 
+
+ω3/V 3 2.4e-4/12.7e-3 3.0e-4/16.0e-3 3.0e-4/16.2e-3 3.0e-4/16.3e-3 
+
+ω4/V 4 1.5e-4/15.8e-3 1.94e-4/19.6e-3 2.0e-4/20.1e-3 2.0e-4/20.2e-3 TABLE III STEADY -STATE OSCILLATION AMPLITUDES WITH P1 AND V1 AS SYSTEM OUTPUTS 
+
+Base Only Only PSS + Case PSS DeePC DeePC 
+
+P1/Q 1 20.19/19.57 2.65/18.26 2.12/19.09 1.03/19.65 
+
+P2/Q 2 7.11/42.28 4.29/21.53 4.41/21.44 4.64/20.67 
+
+P3/Q 3 16.93/21.38 20.63/24.16 20.76/24.39 20.90/24.56 
+
+P4/Q 4 16.24/14.97 18.08/16.02 16.91/15.53 16.93/15.62 
+
+ω1/V 1 5.3e-4/2.6e-3 7.7e-5/6.7e-3 5.9e-5/7.0e-3 3.0e-5/7.3e-3 
+
+ω2/V 2 1.7e-4/5.7e-3 1.45e-4/7.6e-3 1.49e-4/7.9e-3 1.52e-4/8.2e-3 
+
+ω3/V 3 2.4e-4/12.7e-3 3.0e-4/16.0e-3 3.0e-4/16.1e-3 3.0e-4/16.2e-3 
+
+ω4/V 4 1.5e-4/15.8e-3 1.9e-4/19.6e-3 1.9e-4/19.8e-3 2.0e-4/20.0e-3 
+
+IV. C ONCLUSIONS 
+
+This paper investigated the use of DeePC in the AVR of a synchronous machine to mitigate the effect of forced oscillations induced by a cyclic load. We found that DeePC can effectively reduce local active-power oscillation amplitudes more effectively than a PSS. However, it increases the oscilla-tion in the machine’s terminal voltage. Including the machine’s terminal voltage as a system output reduces the transient peak when DeePC is activated. However, it can interfere with the controller’s ability to reduce the amplitude of active-power oscillations. The combination of DeePC and PSS yields the best results. Future work will study the feasibility of multiple agents, i.e., conventional machines or inverter-based resources, for increasing system damping with DeePC. REFERENCES [1] P. S. Kundur and O. P. Malik, Power System Stability and Control ,2nd ed. New York: McGraw Hill, 2022. [Online]. Available: https: //www.accessengineeringlibrary.com/content/book/9781260473544 [2] E. Farahani, P. Mayer, J. Tan, F. Spescha, and M. Gordon, “Oscillatory interaction between large scale ibr and synchronous generators in the nem,” CIGRE Science & Engineering , vol. 28, pp. 170–183, 2023. [3] R. Musca, F. Gonzalez-Longatt, and C. A. Gallego Sanchez, “Power system oscillations with different prevalence of grid-following and grid-forming converters,” Energies , vol. 15, no. 12, p. 4273, 2022. [4] G. Valverde, G. Pierrou, J. Krajacic, and G. Hug, “Forced oscillations in power systems induced by ai workloads in data centers,” TechRxiv ,Oct. 2025. [Online]. Available: http://dx.doi.org/10.36227/techrxiv. 176127304.46362185/v1 [5] M.-S. Ko and H. Zhu, “Wide-area power system oscillations from large-scale AI workloads,” arXiv preprint arXiv:2508.16457 , 2025. [6] J. Coulson, J. Lygeros, and F. D¨ orfler, “Data-enabled predictive control: In the shallows of the DeePC,” 2019. [Online]. Available: https://arxiv.org/abs/1811.05890 [7] I. Markovsky, L. Huang, and F. D¨ orfler, “Data-driven control based on the behavioral approach: From theory to applications in power systems,” 
+
+IEEE Control Systems Magazine , vol. 43, no. 5, pp. 28–68, Oct. 2023. [8] L. Huang, J. Coulson, J. Lygeros, and F. D¨ orfler, “Data-enabled predic-tive control for grid-connected power converters,” in Proceedings of the 58th IEEE Conference on Decision and Control (CDC) , Dec. 2019, pp. 8130–8135. [9] ——, “Decentralized data-enabled predictive control for power system oscillation damping,” 2021. [Online]. Available: https://arxiv.org/abs/ 1911.12151 [10] J. C. Willems, P. Rapisarda, I. Markovsky, and B. L. De Moor, “A note on persistency of excitation,” Systems & Control Letters , vol. 54, no. 4, pp. 325–329, 2005. [11] P. Mattsson and T. B. Sch¨ on, “On the regularization in deepc,” IFAC-PapersOnLine , vol. 56, no. 2, pp. 625–631, 2023. [12] J. Coulson, J. Lygeros, and F. D¨ orfler, “Regularized and distributionally robust data-enabled predictive control,” in 2019 IEEE 58th Conference on Decision and Control (CDC) . IEEE, 2019, pp. 2696–2701. [13] L. Huang, J. Zhen, J. Lygeros, and F. D¨ orfler, “Quadratic regularization of data-enabled predictive control: Theory and application to power converter experiments,” IFAC-PapersOnLine , vol. 54, no. 7, pp. 192– 197, 2021. [14] F. D¨ orfler, J. Coulson, and I. Markovsky, “Bridging direct and indirect data-driven control formulations via regularizations and relaxations,” 
+
+IEEE Transactions on Automatic Control , vol. 68, no. 2, pp. 883–897, 2022. [15] J. Coulson, J. Lygeros, and F. D¨ orfler, “Distributionally robust chance constrained data-enabled predictive control,” IEEE Transactions on Automatic Control , vol. 67, no. 7, pp. 3289–3304, 2021. [16] I. Markovsky and F. D¨ orfler, “Behavioral systems theory in data-driven analysis, signal processing, and control,” Annual Reviews in Control ,vol. 52, pp. 42–64, 2021. [17] J. Shi, Y. Lian, and C. N. Jones, “Efficient recursive data-enabled predictive control (extended version),” 2024. [Online]. Available: https://arxiv.org/abs/2309.13755 [18] J. Krajacic, K. Moffat, and G. Valverde, “Revisiting power system stabilizers with increased inverter-based generation: A case study,” in 
+
+2025 IEEE PES Innovative Smart Grid Technologies Conference Europe (ISGT Europe) , 2025, pp. 1–5. [19] P. Aristidou, STEPSS Documentation , SPS Lab, 2026. [Online]. Available: https://stepss.sps-lab.org/ [20] P. Aristidou, S. Lebeau, and T. Van Cutsem, “Power system dynamic simulations using a parallel two-level schur-complement decomposi-tion,” IEEE Transactions on Power Systems , vol. 31, no. 5, pp. 3984– 3995, 2016. [21] Gurobi Optimization, LLC, “Gurobi Optimizer Reference Manual,” 2026. [Online]. Available: https://www.gurobi.com
