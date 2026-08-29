@@ -1,0 +1,126 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-08-29T03:21:45.049050+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 3,
+    "quick_skim_target": 11,
+    "quick_selected": 3
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2608.22391v1",
+      "title": "Grid-Constrained State-Adaptive Particle Swarm Optimization: A Discrete and Efficient Heuristic Solver for Precise Harmonic Programming",
+      "abstract": "Harmonic programmed pulse width modulation (HPPWM), offering flexible harmonic regulation, is a promising solution for high-power energy conversion systems. However, most existing methods solve HPPWM in a continuous space while ignoring the finite timer resolution of practical digital controllers. This leads to a potential optimality deviation during deployment. Motivated by this, this paper proposes a Grid-Constrained State-Adaptive Particle Swarm Optimization (GCSA-PSO) strategy. By matching the solution space with practical timer constraints, GCSA-PSO directly searches for implementable pulse sequences in the discrete solution space, thereby improving deployment consistency while reducing the search burden. Moreover, a state-adaptive evaluation strategy is developed to assign different cost evaluations according to particle states, avoiding unnecessary evaluations and improving computational efficiency. Experimental data confirm that, compared with the classical method, the proposed method reduces the computational time while achieving higher control accuracy under practical digital-controller deployment.",
+      "authors": [
+        "Guangze Chen",
+        "Zhenbin Zhang",
+        "Yafei Yin"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY"
+      ],
+      "published": "2026-08-23T12:38:15+00:00",
+      "link": "https://arxiv.org/pdf/2608.22391v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Harmonic programmed PWM for high-power energy conversion systems",
+      "llm_evidence_cn": "用于大功率能量转换系统的谐波编程PWM技术",
+      "llm_evidence": "用于大功率能量转换系统的谐波编程PWM技术",
+      "canonical_evidence": "用于大功率能量转换系统的谐波编程PWM技术",
+      "llm_tldr_en": "Proposes a PSO strategy for discrete harmonic programmed PWM in digital motor and power controllers.",
+      "llm_tldr_cn": "提出一种针对数字控制器定时器限制的离散谐波编程PWM优化策略。",
+      "llm_tldr": "提出一种针对数字控制器定时器限制的离散谐波编程PWM优化策略。",
+      "llm_tags": [
+        "query:pmsm:composite"
+      ],
+      "matched_query_tag": "query:pmsm:composite",
+      "matched_query_text": "Papers central to 三相及双三相永磁同步电机相关研究检索, especially work that connects or combines: m; s; f; Permanent Magnet Synchronous Motor research; dual three-phase permanent magnet synchronous motor control and design; fault-tolerant control of multi-phase motors; recent advances in dual three phase permanent magnet synchronous motor control; fault tolerant strategies for multi phase permanent magnet synchronous motors.",
+      "matched_requirement_id": "req-composite-pmsm",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2608.22562v1",
+      "title": "Robust Model Reference Adaptive Control with Combined Adaptation under Finite Excitation Condition",
+      "abstract": "In adaptive control, parametric uncertainties in linear-in-parameter form consist of unknown parameters and known regressor signals. Convergence of the unknown parameters to their ideal values requires the regressor to satisfy a persistent excitation (PE) condition, which depends on future data and is therefore infeasible to guarantee online. Memory-based parameter update laws address this by enabling ideal parameter convergence under the online-verifiable finite excitation (FE) condition. In this paper, a new algorithm is proposed to construct a memory term via the Modified Gram-Schmidt orthogonalization procedure for a class of multi-input multi-output nonlinear systems with an unknown diagonal control effectiveness matrix and bounded nonparametric uncertainties. Under the finite excitation condition, the constructed memory term yields an identity coefficient matrix in the parameter estimation error dynamics. The identity coefficient matrix eliminates the need for time-varying adaptation gains, enables an explicit ultimate bound on the parameter estimation error, and preserves the structure of the nonparametric uncertainty bound under the memory term. Building on this, a combined adaptation law is developed for controller gain estimation under FE. The closed-loop tracking and estimation errors are shown to decay exponentially to a neighborhood of the origin, characterized by an explicit ultimate bound, with a decay rate that depends solely on user-defined gains and system constants, independent of the level of regressor excitation. This removes the dependence of the convergence rate on the level of regressor excitation, a key limitation of existing approaches such as concurrent learning, memory regressor extension, and DREM.",
+      "authors": [
+        "Manish Patel",
+        "Arnab Maity"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY"
+      ],
+      "published": "2026-08-23T19:23:40+00:00",
+      "link": "https://arxiv.org/pdf/2608.22562v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Adaptive control for multi-input multi-output nonlinear systems",
+      "llm_evidence_cn": "多输入多输出非线性系统的自适应控制",
+      "llm_evidence": "多输入多输出非线性系统的自适应控制",
+      "canonical_evidence": "多输入多输出非线性系统的自适应控制",
+      "llm_tldr_en": "Presents a robust model reference adaptive control algorithm for MIMO systems under finite excitation conditions.",
+      "llm_tldr_cn": "提出一种有限激励条件下多输入多输出系统的鲁棒模型参考自适应控制算法。",
+      "llm_tldr": "提出一种有限激励条件下多输入多输出系统的鲁棒模型参考自适应控制算法。",
+      "llm_tags": [
+        "query:pmsm"
+      ],
+      "matched_query_tag": "query:pmsm",
+      "matched_query_text": "dual three-phase permanent magnet synchronous motor control and design",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2608.26595v1",
+      "title": "Current-Limiting Control for Fault Ride-Through of LLC-based Solid-State Transformer in Data Centers",
+      "abstract": "Solid-State Transformers (SSTs) are increasingly proposed as the interface between distribution grids and data centers due to flexible power flows and fast dynamic response. However, when a short-circuit fault occurs in a load branch, the SST with a voltage-source-type DC-DC stage is forced to shut down due to fault currents. Therefore, current-limiting strategies are strongly needed to prevent catastrophic equipment damage and cascading blackouts by instantly restricting massive current spikes and offering sufficient currents for protection devices to act at the faulted branch. This paper proposes a coordinated DC load fault-tolerant current-limiting and recovery strategy embedded directly in the control of the SST DC-DC stage, avoiding additional hardware cost. Specifically, the fault mechanism of an example LLC resonant converter is studied. Accordingly, a fault detection framework is implemented, a closed-loop current controller is proposed to limit the DC current to a designated value within microseconds by surging the switching frequency and adjusting the duty cycle, and a ramped recovery stage will then restore the DC bus after the fault isolation without inrush currents. Experiments on an LLC converter prototype have verified the feasibility of the proposed current-limiting strategy, enabling faster and lower-cost fault response suitable for resilient data center power architectures.",
+      "authors": [
+        "Haoyu Wang",
+        "Chi Zhang",
+        "Mafu Zhang",
+        "Rudy Wang",
+        "Peter Barbosa"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY"
+      ],
+      "published": "2026-08-27T04:21:58+00:00",
+      "link": "https://arxiv.org/pdf/2608.26595v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Fault-tolerant current-limiting strategy",
+      "llm_evidence_cn": "容错限流策略",
+      "llm_evidence": "容错限流策略",
+      "canonical_evidence": "容错限流策略",
+      "llm_tldr_en": "Proposes a fault-tolerant current-limiting strategy for solid-state transformers during short-circuits.",
+      "llm_tldr_cn": "提出了一种用于固态变压器短路故障时的容错限流与恢复策略。",
+      "llm_tldr": "提出了一种用于固态变压器短路故障时的容错限流与恢复策略。",
+      "llm_tags": [
+        "query:pmsm"
+      ],
+      "matched_query_tag": "query:pmsm",
+      "matched_query_text": "fault-tolerant control of multi-phase motors",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

@@ -1,0 +1,51 @@
+{
+  "label": "2026-08-29",
+  "date": "2026-08-29",
+  "generated_at": "2026-08-29T03:23:17",
+  "count": 3,
+  "papers": [
+    {
+      "paper_id": "202608/29/2608.22391v1-grid-constrained-state-adaptive-particle-swarm-optimization-a-discrete-and-efficient-heuristic-solver-for-precise-harmonic-programming",
+      "section": "quick",
+      "title_en": "Grid-Constrained State-Adaptive Particle Swarm Optimization: A Discrete and Efficient Heuristic Solver for Precise Harmonic Programming",
+      "authors": "Guangze Chen, Zhenbin Zhang, Yafei Yin",
+      "date": "2026-08-23",
+      "pdf": "https://arxiv.org/pdf/2608.22391v1",
+      "score": "7.0",
+      "evidence": "用于大功率能量转换系统的谐波编程PWM技术",
+      "tldr": "针对高功率能量转换系统中谐波编程脉宽调制（HPPWM）在实际数字控制器部署时因定时器分辨率限制导致的性能偏差，本文提出了一种网格约束状态自适应粒子群优化算法（GCSA-PSO）。该方法直接在离散解空间中搜索可实现的脉冲序列，并结合状态自适应评估策略减少计算开销，在保证部署一致性的同时显著提升了计算效率和控制精度。",
+      "tags": "query:pmsm",
+      "abstract_en": "Harmonic programmed pulse width modulation (HPPWM), offering flexible harmonic regulation, is a promising solution for high-power energy conversion systems. However, most existing methods solve HPPWM in a continuous space while ignoring the finite timer resolution of practical digital controllers. This leads to a potential optimality deviation during deployment. Motivated by this, this paper proposes a Grid-Constrained State-Adaptive Particle Swarm Optimization (GCSA-PSO) strategy. By matching the solution space with practical timer constraints, GCSA-PSO directly searches for implementable pulse sequences in the discrete solution space, thereby improving deployment consistency while reducing the search burden. Moreover, a state-adaptive evaluation strategy is developed to assign different cost evaluations according to particle states, avoiding unnecessary evaluations and improving computational efficiency. Experimental data confirm that, compared with the classical method, the proposed method reduces the computational time while achieving higher control accuracy under practical digital-controller deployment.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202608/29/2608.22562v1-robust-model-reference-adaptive-control-with-combined-adaptation-under-finite-excitation-condition",
+      "section": "quick",
+      "title_en": "Robust Model Reference Adaptive Control with Combined Adaptation under Finite Excitation Condition",
+      "authors": "Manish Patel, Arnab Maity",
+      "date": "2026-08-23",
+      "pdf": "https://arxiv.org/pdf/2608.22562v1",
+      "score": "6.0",
+      "evidence": "多输入多输出非线性系统的自适应控制",
+      "tldr": "针对自适应控制中持续激励条件难以在线验证的问题，本文提出一种基于有限激励条件的鲁棒模型参考自适应控制方法。通过改进的Gram-Schmidt正交化构建记忆项，消除了收敛速率对激励水平的依赖，实现了多输入多输出非线性系统参数估计误差的指数级收敛，并提供了明确的误差最终界限。",
+      "tags": "query:pmsm",
+      "abstract_en": "In adaptive control, parametric uncertainties in linear-in-parameter form consist of unknown parameters and known regressor signals. Convergence of the unknown parameters to their ideal values requires the regressor to satisfy a persistent excitation (PE) condition, which depends on future data and is therefore infeasible to guarantee online. Memory-based parameter update laws address this by enabling ideal parameter convergence under the online-verifiable finite excitation (FE) condition. In this paper, a new algorithm is proposed to construct a memory term via the Modified Gram-Schmidt orthogonalization procedure for a class of multi-input multi-output nonlinear systems with an unknown diagonal control effectiveness matrix and bounded nonparametric uncertainties. Under the finite excitation condition, the constructed memory term yields an identity coefficient matrix in the parameter estimation error dynamics. The identity coefficient matrix eliminates the need for time-varying adaptation gains, enables an explicit ultimate bound on the parameter estimation error, and preserves the structure of the nonparametric uncertainty bound under the memory term. Building on this, a combined adaptation law is developed for controller gain estimation under FE. The closed-loop tracking and estimation errors are shown to decay exponentially to a neighborhood of the origin, characterized by an explicit ultimate bound, with a decay rate that depends solely on user-defined gains and system constants, independent of the level of regressor excitation. This removes the dependence of the convergence rate on the level of regressor excitation, a key limitation of existing approaches such as concurrent learning, memory regressor extension, and DREM.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202608/29/2608.26595v1-current-limiting-control-for-fault-ride-through-of-llc-based-solid-state-transformer-in-data-centers",
+      "section": "quick",
+      "title_en": "Current-Limiting Control for Fault Ride-Through of LLC-based Solid-State Transformer in Data Centers",
+      "authors": "Haoyu Wang, Chi Zhang, Mafu Zhang, Rudy Wang, Peter Barbosa",
+      "date": "2026-08-27",
+      "pdf": "https://arxiv.org/pdf/2608.26595v1",
+      "score": "6.0",
+      "evidence": "容错限流策略",
+      "tldr": "针对数据中心中基于LLC的固态变压器（SST）在负载短路时易受损的问题，本文提出一种无需额外硬件的限流与恢复策略。该方法通过故障检测、闭环电流控制（调节频率和占空比）以及斜坡恢复机制，在微秒级内限制故障电流并实现无冲击电流的系统恢复，增强了数据中心供电架构的韧性。",
+      "tags": "query:pmsm",
+      "abstract_en": "Solid-State Transformers (SSTs) are increasingly proposed as the interface between distribution grids and data centers due to flexible power flows and fast dynamic response. However, when a short-circuit fault occurs in a load branch, the SST with a voltage-source-type DC-DC stage is forced to shut down due to fault currents. Therefore, current-limiting strategies are strongly needed to prevent catastrophic equipment damage and cascading blackouts by instantly restricting massive current spikes and offering sufficient currents for protection devices to act at the faulted branch. This paper proposes a coordinated DC load fault-tolerant current-limiting and recovery strategy embedded directly in the control of the SST DC-DC stage, avoiding additional hardware cost. Specifically, the fault mechanism of an example LLC resonant converter is studied. Accordingly, a fault detection framework is implemented, a closed-loop current controller is proposed to limit the DC current to a designated value within microseconds by surging the switching frequency and adjusting the duty cycle, and a ramped recovery stage will then restore the DC bus after the fault isolation without inrush currents. Experiments on an LLC converter prototype have verified the feasibility of the proposed current-limiting strategy, enabling faster and lower-cost fault response suitable for resilient data center power architectures.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
