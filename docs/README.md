@@ -6,26 +6,29 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-08-31
-- 运行时间：2026-09-01 00:22:24 UTC
+- 最新运行日期：2026-09-01
+- 运行时间：2026-09-01 21:41:10 UTC
 - 运行状态：成功
-- 本次总论文数：1
-- 精读区：1
-- 速读区：0
+- 本次总论文数：2
+- 精读区：0
+- 速读区：2
 
 ### 今日简报（AI）
-今日深度研读小型水平轴风力发电机故障诊断技术，探索提升风能设备可靠性的关键路径。
-重点解析了结合实验验证与信号处理的诊断方案，为小型风机的高效运维提供了高分技术参考。
-推荐关注如何利用信号特征提取技术，实现对分布式发电设备的早期预警与精准维护。
-- 详情：[/202608/31/README](/202608/31/README)
+今日聚焦工业自动化核心技术，深入探讨了感应电机声学监测与伺服系统实时控制方案。
+重点展示了非稳态下利用声音分析估算电机转速的新思路，以及提升伺服系统响应精度的参考整形技术。
+建议关注低成本声学传感在电机运维中的潜力，以及高性能运动控制算法的工程落地。
+- 详情：[/202609/01/README](/202609/01/README)
 
 ### 精读区论文标签
-1. [Experimental and Signal Processing Techniques for Fault Diagnosis on a Small Horizontal-Axis Wind Turbine Generator](/202608/31/2608.28105v1-experimental-and-signal-processing-techniques-for-fault-diagnosis-on-a-small-horizontal-axis-wind-turbine-generator)  
-   标签：评分：9.0/10、query:pmsm
-   evidence：永磁发电机的故障诊断
+- 本次无精读推荐。
 
 ### 速读区论文标签
-- 本次无速读推荐。
+1. [Sound Analysis for Speed Estimation of Induction Motors Under Non-Stationary Conditions](/202609/01/2608.29214v1-sound-analysis-for-speed-estimation-of-induction-motors-under-non-stationary-conditions)  
+   标签：评分：6.0/10、query:pmsm
+   evidence：基于声音分析的感应电机转速估计
+2. [Real-Time Reference Shaping for Servo Systems](/202609/01/2608.30825v1-real-time-reference-shaping-for-servo-systems)  
+   标签：评分：6.0/10、query:pmsm
+   evidence：具有执行器约束的伺服系统实时运动规划
 
 
 <div class="dpr-home-promo-card">

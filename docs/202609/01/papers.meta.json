@@ -1,0 +1,37 @@
+{
+  "label": "2026-09-01",
+  "date": "2026-09-01",
+  "generated_at": "2026-09-01T21:41:40",
+  "count": 2,
+  "papers": [
+    {
+      "paper_id": "202609/01/2608.29214v1-sound-analysis-for-speed-estimation-of-induction-motors-under-non-stationary-conditions",
+      "section": "quick",
+      "title_en": "Sound Analysis for Speed Estimation of Induction Motors Under Non-Stationary Conditions",
+      "authors": "Tomas A. Garcia-Calva, Daniel Morinigo-Sotelo, Konstantinos N. Gyftakis",
+      "date": "2026-08-29",
+      "pdf": "https://arxiv.org/pdf/2608.29214v1",
+      "score": "6.0",
+      "evidence": "基于声音分析的感应电机转速估计",
+      "tldr": "本研究提出一种利用低成本麦克风采集声学信号，在非平稳工况下估计感应电机转速的新方法。该方法整合了多速率数字信号处理与先进的时频分析技术，能有效提取转速相关谐波并抑制电磁噪声。通过仿真和实验验证，该技术在稳态及快速转速变化（如负载扰动）下均表现出极高的跟踪精度，为电机监测提供了一种非侵入式且经济高效的替代方案。",
+      "tags": "query:pmsm",
+      "abstract_en": "This paper presents a novel methodology for the estimation of the rotational speed of induction motors operating under non stationary conditions, using acoustic signals acquired by a low cost microphone. The proposed approach integrates multi rate digital signal processing with advanced time frequency analysis to extract speed dependent harmonic components from motor acoustic emissions, while effectively suppressing electrical interference and electromagnetic noise. Numerical simulations and experimental validations are conducted under both steady state and transient operating conditions, considering a wide variety of speed profiles, including slow ramps and abrupt speed variations. The experimental results demonstrate that the proposed method is capable of accurately tracking rapid and dynamic speed changes caused by load disturbances and mechanical irregularities. The estimated instantaneous speed exhibits a high degree of agreement with reference measurements obtained from a conventional speed sensor. The results confirm that the proposed acoustic based technique provides a reliable, noninvasive, and cost effective solution suitable for speed monitoring of induction motors.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202609/01/2608.30825v1-real-time-reference-shaping-for-servo-systems",
+      "section": "quick",
+      "title_en": "Real-Time Reference Shaping for Servo Systems",
+      "authors": "Zehui Lu, Yebin Wang, Go Sato, Fujita Tomoya",
+      "date": "2026-08-31",
+      "pdf": "https://arxiv.org/pdf/2608.30825v1",
+      "score": "6.0",
+      "evidence": "具有执行器约束的伺服系统实时运动规划",
+      "tldr": "本文针对具有非线性、状态相关执行器约束的伺服系统，提出了一种高效的实时参考重塑方法。该方法通过KKT条件将优化问题转化为有限候选点集的搜索，利用解析表达式和小型特征值求解获得精确最优解，避免了复杂的迭代优化。同时，引入实时轨迹补偿器以修正运动学失配。实验表明，该算法计算速度极快，能够支持高达100 kHz的实时控制频率。",
+      "tags": "query:pmsm",
+      "abstract_en": "This paper addresses real-time motion planning for servo systems subject to nonlinear, state-dependent actuator constraints. A reference reshaping method is proposed that combines analytical optimality with high computational efficiency. Using Karush-Kuhn-Tucker conditions, the problem structure is explicitly characterized, and it is shown that the optimal solution lies within a finite set of candidate points. The complete solution set is constructed via closed-form expressions and a small-scale eigenvalue problem, yielding a deterministic algorithm that recovers the exact optimal solution without iterative optimization or root-finding. To address kinematic mismatch induced by aggressive commands, a real-time trajectory compensator is introduced to correct accumulated position error while preserving feasibility. Simulation results demonstrate significant computational speed improvements over existing methods, enabling real-time implementation at frequencies approaching 100 kHz.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

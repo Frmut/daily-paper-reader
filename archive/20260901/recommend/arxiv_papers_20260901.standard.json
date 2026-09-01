@@ -1,0 +1,90 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-09-01T21:40:22.046807+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 2,
+    "quick_skim_target": 11,
+    "quick_selected": 2
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2608.29214v1",
+      "title": "Sound Analysis for Speed Estimation of Induction Motors Under Non-Stationary Conditions",
+      "abstract": "This paper presents a novel methodology for the estimation of the rotational speed of induction motors operating under non stationary conditions, using acoustic signals acquired by a low cost microphone. The proposed approach integrates multi rate digital signal processing with advanced time frequency analysis to extract speed dependent harmonic components from motor acoustic emissions, while effectively suppressing electrical interference and electromagnetic noise. Numerical simulations and experimental validations are conducted under both steady state and transient operating conditions, considering a wide variety of speed profiles, including slow ramps and abrupt speed variations. The experimental results demonstrate that the proposed method is capable of accurately tracking rapid and dynamic speed changes caused by load disturbances and mechanical irregularities. The estimated instantaneous speed exhibits a high degree of agreement with reference measurements obtained from a conventional speed sensor. The results confirm that the proposed acoustic based technique provides a reliable, noninvasive, and cost effective solution suitable for speed monitoring of induction motors.",
+      "authors": [
+        "Tomas A. Garcia-Calva",
+        "Daniel Morinigo-Sotelo",
+        "Konstantinos N. Gyftakis"
+      ],
+      "primary_category": "eess.SP",
+      "categories": [
+        "eess.SP"
+      ],
+      "published": "2026-08-29T11:54:40+00:00",
+      "link": "https://arxiv.org/pdf/2608.29214v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "speed estimation of induction motors using sound analysis",
+      "llm_evidence_cn": "基于声音分析的感应电机转速估计",
+      "llm_evidence": "基于声音分析的感应电机转速估计",
+      "canonical_evidence": "基于声音分析的感应电机转速估计",
+      "llm_tldr_en": "Estimates induction motor speed using acoustic signals and time-frequency analysis under non-stationary conditions.",
+      "llm_tldr_cn": "利用声学信号和时频分析在非稳态条件下估计感应电机的转速。",
+      "llm_tldr": "利用声学信号和时频分析在非稳态条件下估计感应电机的转速。",
+      "llm_tags": [
+        "query:pmsm"
+      ],
+      "matched_query_tag": "query:pmsm",
+      "matched_query_text": "Permanent Magnet Synchronous Motor research",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2608.30825v1",
+      "title": "Real-Time Reference Shaping for Servo Systems",
+      "abstract": "This paper addresses real-time motion planning for servo systems subject to nonlinear, state-dependent actuator constraints. A reference reshaping method is proposed that combines analytical optimality with high computational efficiency. Using Karush-Kuhn-Tucker conditions, the problem structure is explicitly characterized, and it is shown that the optimal solution lies within a finite set of candidate points. The complete solution set is constructed via closed-form expressions and a small-scale eigenvalue problem, yielding a deterministic algorithm that recovers the exact optimal solution without iterative optimization or root-finding. To address kinematic mismatch induced by aggressive commands, a real-time trajectory compensator is introduced to correct accumulated position error while preserving feasibility. Simulation results demonstrate significant computational speed improvements over existing methods, enabling real-time implementation at frequencies approaching 100 kHz.",
+      "authors": [
+        "Zehui Lu",
+        "Yebin Wang",
+        "Go Sato",
+        "Fujita Tomoya"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY"
+      ],
+      "published": "2026-08-31T14:05:04+00:00",
+      "link": "https://arxiv.org/pdf/2608.30825v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "real-time motion planning for servo systems with actuator constraints",
+      "llm_evidence_cn": "具有执行器约束的伺服系统实时运动规划",
+      "llm_evidence": "具有执行器约束的伺服系统实时运动规划",
+      "canonical_evidence": "具有执行器约束的伺服系统实时运动规划",
+      "llm_tldr_en": "Develops a reference shaping method for servo systems to handle nonlinear actuator constraints efficiently.",
+      "llm_tldr_cn": "为伺服系统开发了一种参考修形方法，以高效处理非线性执行器约束。",
+      "llm_tldr": "为伺服系统开发了一种参考修形方法，以高效处理非线性执行器约束。",
+      "llm_tags": [
+        "query:pmsm"
+      ],
+      "matched_query_tag": "query:pmsm",
+      "matched_query_text": "Permanent Magnet Synchronous Motor research",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
