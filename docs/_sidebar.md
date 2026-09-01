@@ -1,6 +1,9 @@
 * <a class="dpr-sidebar-root-link" href="#/">首页</a>
 * <a class="dpr-sidebar-root-link dpr-sidebar-noactive-link" href="javascript:void(0)" data-dpr-hash="#/tutorial/README">使用教程</a>
 * Daily Papers
+  * 2026-08-31 <!--dpr-date:20260831-->
+    * 精读区
+      * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202608/31/2608.28105v1-experimental-and-signal-processing-techniques-for-fault-diagnosis-on-a-small-horizontal-axis-wind-turbine-generator" data-sidebar-item="{&quot;title&quot;: &quot;Experimental and Signal Processing Techniques for Fault Diagnosis on a Small Horizontal-Axis Wind Turbine Generator&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2608.28105v1-experimental-and-signal-processing-techniques-for-fault-diagnosis-on-a-small-horizontal-axis-wind-turbine-generator&quot;, &quot;score&quot;: &quot;9.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;pmsm&quot;}], &quot;evidence&quot;: &quot;永磁发电机的故障诊断&quot;}">Experimental and Signal Processing Techniques for Fault Diagnosis on a Small Horizontal-Axis Wind Turbine Generator</a>
   * 2026-08-29 <!--dpr-date:20260829-->
     * 速读区
       * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202608/29/2608.27325v1-why-three-phases-a-historical-and-engineering-reassessment-of-phase-order-in-ac-power-transmission" data-sidebar-item="{&quot;title&quot;: &quot;Why Three Phases? A Historical and Engineering Reassessment of Phase Order in AC Power Transmission&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2608.27325v1-why-three-phases-a-historical-and-engineering-reassessment-of-phase-order-in-ac-power-transmission&quot;, &quot;score&quot;: &quot;7.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;pmsm&quot;}], &quot;evidence&quot;: &quot;m相公式与旋转磁场分析&quot;}">Why Three Phases? A Historical and Engineering Reassessment of Phase Order in AC Power Transmission</a>
