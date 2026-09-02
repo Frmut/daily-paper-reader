@@ -1,6 +1,9 @@
 * <a class="dpr-sidebar-root-link" href="#/">首页</a>
 * <a class="dpr-sidebar-root-link dpr-sidebar-noactive-link" href="javascript:void(0)" data-dpr-hash="#/tutorial/README">使用教程</a>
 * Daily Papers
+  * 2026-09-02 <!--dpr-date:20260902-->
+    * 速读区
+      * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202609/02/2609.01396v1-equivalent-dq-sequence-domain-model-of-unbalanced-three-phase-passive-elements-for-power-converter-controllers" data-sidebar-item="{&quot;title&quot;: &quot;Equivalent DQ Sequence-Domain Model of Unbalanced Three-Phase Passive Elements for Power Converter Controllers&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2609.01396v1-equivalent-dq-sequence-domain-model-of-unbalanced-three-phase-passive-elements-for-power-converter-controllers&quot;, &quot;score&quot;: &quot;7.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;pmsm&quot;}], &quot;evidence&quot;: &quot;三相变流器的dq序域模型&quot;}">Equivalent DQ Sequence-Domain Model of Unbalanced Three-Phase Passive Elements for Power Converter Controllers</a>
   * 2026-09-01 <!--dpr-date:20260901-->
     * 速读区
       * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202609/01/2608.29214v1-sound-analysis-for-speed-estimation-of-induction-motors-under-non-stationary-conditions" data-sidebar-item="{&quot;title&quot;: &quot;Sound Analysis for Speed Estimation of Induction Motors Under Non-Stationary Conditions&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2608.29214v1-sound-analysis-for-speed-estimation-of-induction-motors-under-non-stationary-conditions&quot;, &quot;score&quot;: &quot;6.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;pmsm&quot;}], &quot;evidence&quot;: &quot;基于声音分析的感应电机转速估计&quot;}">Sound Analysis for Speed Estimation of Induction Motors Under Non-Stationary Conditions</a>

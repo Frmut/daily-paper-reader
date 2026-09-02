@@ -1,0 +1,23 @@
+{
+  "label": "2026-09-02",
+  "date": "2026-09-02",
+  "generated_at": "2026-09-02T22:30:14",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202609/02/2609.01396v1-equivalent-dq-sequence-domain-model-of-unbalanced-three-phase-passive-elements-for-power-converter-controllers",
+      "section": "quick",
+      "title_en": "Equivalent DQ Sequence-Domain Model of Unbalanced Three-Phase Passive Elements for Power Converter Controllers",
+      "authors": "Air\\án Franc\\és, Luis Saz, Rafael Castillo, Dionisio Ramirez, Javier Uceda",
+      "date": "2026-09-01",
+      "pdf": "https://arxiv.org/pdf/2609.01396v1",
+      "score": "7.0",
+      "evidence": "三相变流器的dq序域模型",
+      "tldr": "针对三相逆变器和整流器控制器设计中，传统dq0模型无法处理三相不平衡阻抗导致二次谐波的问题，本文提出了一种等效的dq序域模型。该模型利用对称分量法，首次考虑了零序与正负序之间的相互作用，通过解析推导和直观图形法建立了不平衡三相无源元件的模型，并通过实验验证了其有效性，为电力电子变换器的精确控制提供了新工具。",
+      "tags": "query:pmsm",
+      "abstract_en": "Equivalent dq0 models of three-phase passive impedances are widely used for the design of three-phase inverter and rectifier controllers in the synchronous frame. However, these equivalent models assume that the impedance in each phase are the same, which is not always applicable. The fact that the impedance in each phase is different, generates second order harmonic content in the dq0 components, which hinders the advantages of the dq0 transformation. To avoid the second harmonic in these scenarios, it is possible to use the Fortescue's theorem to represent any asymmetrical set of three-phase signals as a linear combination of three symmetrical sequences. In the literature, only a few works have attempted to derive the equivalent model of unbalanced three-phase passive elements in the sequence domain, and none is able to account for the interaction between the zero sequence and the positive and negative sequences. This work presents the derivation of the equivalent dq sequence-domain model of unbalanced three-phase passive elements both analytically and with an intuitive graphical approach. Experimental results are shown to validate the proposed models.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

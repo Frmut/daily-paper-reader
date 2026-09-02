@@ -1,0 +1,55 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-09-02T22:29:44.151376+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 1,
+    "quick_skim_target": 11,
+    "quick_selected": 1
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2609.01396v1",
+      "title": "Equivalent DQ Sequence-Domain Model of Unbalanced Three-Phase Passive Elements for Power Converter Controllers",
+      "abstract": "Equivalent dq0 models of three-phase passive impedances are widely used for the design of three-phase inverter and rectifier controllers in the synchronous frame. However, these equivalent models assume that the impedance in each phase are the same, which is not always applicable. The fact that the impedance in each phase is different, generates second order harmonic content in the dq0 components, which hinders the advantages of the dq0 transformation. To avoid the second harmonic in these scenarios, it is possible to use the Fortescue's theorem to represent any asymmetrical set of three-phase signals as a linear combination of three symmetrical sequences. In the literature, only a few works have attempted to derive the equivalent model of unbalanced three-phase passive elements in the sequence domain, and none is able to account for the interaction between the zero sequence and the positive and negative sequences. This work presents the derivation of the equivalent dq sequence-domain model of unbalanced three-phase passive elements both analytically and with an intuitive graphical approach. Experimental results are shown to validate the proposed models.",
+      "authors": [
+        "Air\\án Franc\\és",
+        "Luis Saz",
+        "Rafael Castillo",
+        "Dionisio Ramirez",
+        "Javier Uceda"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY"
+      ],
+      "published": "2026-09-01T15:21:58+00:00",
+      "link": "https://arxiv.org/pdf/2609.01396v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "dq sequence-domain model for three-phase converters",
+      "llm_evidence_cn": "三相变流器的dq序域模型",
+      "llm_evidence": "三相变流器的dq序域模型",
+      "canonical_evidence": "三相变流器的dq序域模型",
+      "llm_tldr_en": "Derives an equivalent dq sequence-domain model for unbalanced three-phase elements in power converters.",
+      "llm_tldr_cn": "推导了电力变流器中不平衡三相元件的等效dq序域模型。",
+      "llm_tldr": "推导了电力变流器中不平衡三相元件的等效dq序域模型。",
+      "llm_tags": [
+        "query:pmsm:composite"
+      ],
+      "matched_query_tag": "query:pmsm:composite",
+      "matched_query_text": "Papers central to 三相及双三相永磁同步电机相关研究检索, especially work that connects or combines: m; s; f; Permanent Magnet Synchronous Motor research; dual three-phase permanent magnet synchronous motor control and design; fault-tolerant control of multi-phase motors; recent advances in dual three phase permanent magnet synchronous motor control; fault tolerant strategies for multi phase permanent magnet synchronous motors.",
+      "matched_requirement_id": "req-composite-pmsm",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}

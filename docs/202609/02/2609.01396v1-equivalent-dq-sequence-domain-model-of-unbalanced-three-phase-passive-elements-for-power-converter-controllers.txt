@@ -1,0 +1,1041 @@
+Title: Equivalent DQ Sequence-Domain Model of Unbalanced Three-Phase Passive Elements for Power Converter Controllers
+
+URL Source: https://arxiv.org/pdf/2609.01396v1
+
+Published Time: Wed, 02 Sep 2026 01:48:50 GMT
+
+Number of Pages: 8
+
+Markdown Content:
+# Equivalent DQ Sequence-Domain Model of Unbalanced Three-Phase Passive Elements for Power Converter Controllers 
+
+Air´ an Franc´ es 
+
+Centro de Electr´ onica Industrial Universidad Polit´ ecnica de Madrid 
+
+Madrid, Spain airan.frances@upm.es 
+
+Luis Saz 
+
+Centro de Electr´ onica Industrial Universidad Polit´ ecnica de Madrid 
+
+Madrid, Spain la.saz@alumnos.upm.es 
+
+Rafael Castillo 
+
+WEMPEC Research Group University of Wisconsin 
+
+Madison, United States castillosier@wisc.edu 
+
+Dionisio Ramirez 
+
+Centro de Electr´ onica Industrial Universidad Polit´ ecnica de Madrid 
+
+Madrid, Spain dionisio.ramirez@upm.es 
+
+Javier Uceda 
+
+Centro de Electr´ onica Industrial Universidad Polit´ ecnica de Madrid 
+
+Madrid, Spain javier.uceda@upm.es 
+
+Abstract —Equivalent dq 0 models of three-phase passive impedances are widely used for the design of three-phase inverter and rectifier controllers in the synchronous frame. However, these equivalent models assume that the impedance in each phase are the same, which is not always applicable. The fact that the impedance in each phase is different, generates second order harmonic content in the dq 0 components, which hinders the advantages of the dq 0 transformation. To avoid the second harmonic in these scenarios, it is possible to use the Fortescue’s theorem to represent any asymmetrical set of three-phase signals as a linear combination of three symmetrical sequences. In the literature, only a few works have attempted to derive the equivalent model of unbalanced three-phase passive elements in the sequence domain, and none is able to account for the interaction between the zero sequence and the positive and negative sequences. This work presents the derivation of the equivalent dq sequence-domain model of unbalanced three-phase passive elements both analytically and with an intuitive graphical approach. Experimental results are shown to validate the proposed models. 
+
+Index Terms —Modeling, Three-phase systems, Unbalanced systems, Symmetric components. 
+
+I. I NTRODUCTION 
+
+Many works related to the design of controllers for three-phase inverters and rectifiers can be found in the literature. These controllers can be implemented in the alpha-beta plane [1]–[3], the dq synchronous frame [4]–[6], or the sequence-domain framework [7]–[9]. Most of them consider the passive impedances to be balanced in the analysis. 
+
+© 2023 IEEE. Personal use of this material is permitted. Permission from IEEE must be obtained for all other uses, in any current or future media, including reprinting/republishing this material for advertising or promotional purposes, creating new collective works, for resale or redistribution to servers or lists, or reuse of any copyrighted component of this work in other works. DOI: 10.1109/APEC43580.2023.10131365 
+
+However, in some cases, it is not true due to tolerances in components, especially magnetics, and in others, it is not true by design. In those cases, the errors in the model will become perturbations in the feedback loop, which will affect the regulator’s performance. Only a few works have attempted to derive a dq sequence-domain equivalent model of three-phase unbalanced passive impedances [10], [11], however, they have not taken into account the zero sequence properly. According to that models, a set of voltages without zero sequence applied to an unbalanced impedance cannot generate current with zero sequence and vice versa, which is not correct. This work derives the dq sequence-domain equivalent model of any unbalanced impedance considering the interaction be-tween positive, negative, and zero sequences. II. E QUIVALENT MODEL INFERENCE 
+
+The sequence model is based on the Fortescue’s theorem which states that an asymmetrical three-phase signal can be broken down into three symmetrical sequences, namely the positive ( v+
+
+> abc
+
+), negative ( v−
+
+> abc
+
+), and zero ( v0
+
+> abc
+
+) sequences. Furthermore, these sequences can be derived from the asym-metrical time-domain signals using the Lyon transformation [12]: 
+
+
+
+v+
+
+> a
+
+v−
+
+> a
+
+v0
+
+> a
+
+ = [ T ]vabc = 13
+
+
+
+1 a a2
+
+1 a2 a
+
+1 1 1
+
+
+
+va
+
+vb
+
+vc
+
+ (1) where a represents a 120º phase-shift. It is then possible to utilize the Clarke, [Tc] and Park transformations, [Tp(ω)] on each of the sequences (positive, negative, and zero) to obtain their equivalent sequences in the dq rotating reference frame. arXiv:2609.01396v1 [eess.SY] 1 Sep 2026 vdq =
+
+ vd
+
+vq
+
+
+
+= [ Tp(ω)] · [Tc] · vabc (2) where 
+
+[Tc] = 23
+
+
+
+1 − 12 − 120
+
+√32 −√32
+
+ (3) 
+
+[Tp(ω)] = 
+
+ cos (ωt ) sin (ωt )
+
+−sin (ωt ) cos (ωt )
+
+
+
+(4) An important advantage of the dq components of these sequences is that, even if the signal is asymmetrical and unbalanced, they are constant in the steady state. In the follow-ing sections, the derivation of a sequence-domain equivalent circuit for any given impedance is detailed. 
+
+A. Derivation of the Resistive Equivalent Impedance 
+
+A purely resistive impedance is the least complex scenario and is therefore a good starting point for the construction of the equivalent impedance model. The three-phase equation of a resistive impedance can be expressed by the following expression: 
+
+ va
+
+vb
+
+vc
+
+ =
+
+ Ra 0 00 Rb 00 0 Rc
+
+ ia
+
+ib
+
+ic
+
+ = [ Rabc ] · iabc (5) In the case of a balanced impedance, the matrix [Rabc ] will be diagonal and Ra = Rb = Rc = R. In that case, it is possible to operate using the Clarke transform, [Tc], to obtain the equivalent impedance matrix, [Rαβ ], in the αβ reference frame: 
+
+vαβ = [ Tc] [ Rabc ] T −1
+
+> c
+
+ · iαβ = [ Rαβ ] · iαβ (6) The αβ components can be expressed in the dq framework by means of a rotation of value θ = ωt , which can be represented as: 
+
+vαβ = vdq · ejωt (7) Substituting (7) in (6), the impedance equivalent matrix, 
+
+Rdq can be expressed in the dq framework: 
+
+vdq · ejωt = [ Rdq ] · idq · ejωt (8) Then, the phasor equation of the equivalent circuit in the 
+
+dq reference frame is: 
+
+vdq = [ Rdq ] · idq (9) being 
+
+[Rdq ] = [ Rαβ ] = R · I (10) where I is the identity matrix. The case of an unbalanced impedance is of higher complex-ity since in that case, it will be necessary to utilize the positive, negative, and zero sequences of the three-phase system. The goal is to find a 6x6 equivalent impedance matrix [R+−0 
+
+> dq
+
+] to model the interaction between voltage and current across all sequences of the equivalent circuit. 
+
+
+
+v+
+
+> d
+
+v+
+
+> q
+
+v−
+
+> d
+
+v−
+
+> q
+
+v0
+
+> d
+
+v0
+
+> q
+
+
+
+= v+−0 
+
+> dq
+
+= [ R+−0 
+
+> dq
+
+]i+−0 
+
+> dq
+
+= [ R+−0 
+
+> dq
+
+]
+
+
+
+i+
+
+> d
+
+i+
+
+> q
+
+i−
+
+> d
+
+i−
+
+> q
+
+i0
+
+> d
+
+i0
+
+> q
+
+
+
+(11) In this case, the Lyon transformation can be used to express the unbalanced system as the sum of the three balanced sequences. First, the impedance expression is extended to include the different sequences as follows: 
+
+v+−0 
+
+> abc
+
+=
+
+
+
+v+
+
+> abc
+
+v−
+
+> abc
+
+v0
+
+> abc
+
+ = [ R+−0 
+
+> abc
+
+] ·
+
+
+
+i+
+
+> abc
+
+i−
+
+> abc
+
+i0
+
+> abc
+
+ = [ R+−0 
+
+> abc
+
+] · i+−0
+
+> abc
+
+(12) where v+, v−, and v0 are the vectors of the abc signals of the positive, negative, and zero sequences, respectively, and [R+−0 
+
+> abc
+
+] is the extended impedance, which takes into account how the different voltages sequences are affected by each current sequence. Notice that, in this analysis, the zero sequence is also represented with d and q components, even though it is a common mode signal. The approach is equivalent to a single-phase signal, it is possible to create an artificial signal in quadrature, using a Quadrature Signal Generator (QSG), and use it as the beta component to create the dq 
+
+components. The reason to do that is to be able to account for the phase of the zero sequence, compared with the positive sequence. Then the Clark transformation is applied, resulting in: 
+
+v+−0 
+
+> αβ
+
+= [ R+−0 
+
+> αβ
+
+] · i+−0 
+
+> αβ
+
+(13) Finally, using the Park transformation, the following expres-sion is obtained: 
+
+v+−0 
+
+> dq
+
+· ejωt = [ R+−0 
+
+> dq
+
+]i+−0 
+
+> dq
+
+· ejωt (14) The phasor equation of the equivalent circuit in the sequence domain is (11). In the following, a graphical interpretation of these steps is detailed. The method used to construct the matrix [R+−0 
+
+> dq
+
+]
+
+is based on the superposition principle. A unit-value d and 
+
+q component of each sequence of the current is applied to calculate its contribution to each sequence of the voltages. These unit currents were calculated as symmetrical three-phase currents for the positive and negative sequences, and as a common mode current for the zero sequence. These unit-value currents were used to calculate the result-ing voltages when applied to a generic unbalanced resistive impedance. The relationships among each of the currents injected by the superposition principle and the corresponding voltages involved are used to fill in each of the columns in matrix [R+−0 
+
+> dq
+
+].In order to illustrate the process, the calculation using the sequence i+ 
+
+> d
+
+will be used. This case is the easiest to visualize, since injecting current in the i+ 
+
+> d
+
+sequence means injecting a perfectly balanced symmetrical current with a positive rotation sign. Figure II-A shows the phasor representations of the cur-rents and voltages of the three-phase system on the orthogonal stationary α and β axes. The sign of rotation of the three-phase system is also represented. It can be observed that the current phasors have the same magnitude, but the voltage phasors have different magnitudes, due to the different impedance values. 
+
+> Fig. 1. Phasor diagram of the three-phase signals for the calculation of the first column of the sequence-domain equivalent impedance. (a) Phasor diagram of a unit-value three-phase current with only d component of the positive sequence, (b) Phasor diagram of the resulting unbalanced three-phase voltage.
+
+Next, the Lyon transformation (1) must be used to translate the system into positive, v+ 
+
+> a
+
+, and negative sequence, v− 
+
+> a
+
+. It is not necessary to calculate the projections of phases b and 
+
+c, since they can be obtained directly by offsetting 120º from phase a of each sequence, taking into account that the positive and negative sequences are symmetrical by definition. To obtain the zero sequence, it is only needed to calculate the vector sum of the phases a, b, and c of the original sequence. Notice that the zero sequence is contained in a vector, γ, that is perpendicular to the αβ plane and an artificial vector in quadrature, qγ , must be generated to be able to represent the zero sequence in a plane and derive its d and q components. Defining a dq framework that initially coincides with the 
+
+αβ axes, the representation of the different sequences in the 
+
+dq reference frame will be defined by finding the projection of the phase a of each sequence onto the stationary α and β
+
+axes. In Fig. 2 it is illustrated how the projections of the se-quences in the synchronous reference frame were calculated graphically. In (a) the original unbalanced voltage phasors are represented. In (b) the result of applying the Lyon transfor-mation and obtaining the positive sequence is shown, whereas in (c) and (d) the negative and the zero transformation and sequences are represented, respectively. In these representa-tions, the vectors shown with solid lines represent the situation of the vectors after applying the rotations determined by the corresponding row of the matrix [T ] (1). A dashed line is used to depict the original position of the voltage phasor, in order to facilitate the visualization of the rotation applied.                
+
+> Fig. 2. Derivation of the dand qcomponents of the sequences of the voltage. (a) Phasor diagram of the unbalanced three-phase voltage when a unit-value current with only d component of the positive sequence is applied to the unbalanced resistive impedance, (b) Derivation of the dand qcomponents of the positive sequence of the voltage, (c) Derivation of the dand qcomponents of the negative sequence of the voltage, (d) Derivation of the dand q
+> components of the zero sequence of the voltage.
+
+After the rotation, the sum vector must be performed. In those figures in which the vectorial sum of the rotated phasors is not immediate, this sum is represented graphically, with the resulting sum vector being represented in purple. To calculate the projections in the reference system dq , the projection of the resulting vector (purple color) on the axes is taken. For example, v+ 
+
+> d
+
+and v+ 
+
+> q
+
+would be the projections on the d+ and q+ axes, respectively. The location of the axes of the reference frame dq in each sequence is indicated on the axis that corresponds in each case. It is worth noting that in the case of the q− axis, this is on the negative side of the β-axis, being highlighted in red in (c). This is due to the negative sense of rotation of the negative sequence, opposite to that of the positive sequence ωt. The process of representation and graphical calculation stays the same for the rest of the cases. As it can be seen, it is possible to show that a three-phase current that is balanced, and therefore without a zero sequence component, can be applied to an unbalanced resistive impedance to generate an unbalanced three-phase voltage that has a zero sequence component. Applying these calculations for all the sequences, the equa-tions for the equivalent circuit in the dq reference frame can be obtained. For a purely resistive unbalanced three-phase impedance, with values Ra, Rb, and Rc, this circuit can be modeled by a single impedance matrix [R+−0 
+
+> dq
+
+]:
+
+[R+−0 
+
+> dq
+
+] = 
+
+
+
+R+ 0 R− 
+
+> d
+
+−R− 
+
+> q
+
+R− 
+
+> d
+
+−R−
+
+> q
+
+0 R+ −R− 
+
+> q
+
+−R− 
+
+> d
+
+R− 
+
+> q
+
+R−
+
+> d
+
+R− 
+
+> d
+
+−R− 
+
+> q
+
+R+ 0 R− 
+
+> d
+
+R−
+
+> q
+
+−R− 
+
+> q
+
+−R− 
+
+> d
+
+0 R+ R− 
+
+> q
+
+−R−
+
+> d
+
+R− 
+
+> d
+
+R− 
+
+> q
+
+R− 
+
+> d
+
+R− 
+
+> q
+
+R+ 0
+
+−R− 
+
+> q
+
+R− 
+
+> d
+
+R− 
+
+> q
+
+−R− 
+
+> d
+
+0 R+
+
+
+
+(15) where 
+
+R+ = 13 (Ra + Rb + Rc) (16) 
+
+R− 
+
+> d
+
+= 13
+
+
+
+Ra − Rb + Rc
+
+2
+
+
+
+(17) 
+
+R− 
+
+> q
+
+=
+
+√36 (Rb − Rc) (18) In Fig.3 the sequence-domain equivalent circuit of an un-balanced three-phase resistive impedance is depicted. 
+
+B. Derivation of the Inductive Equivalent Impedance 
+
+In the case of an inductive three-phase impedance, the circuit equation in the abc reference frame can be expressed by: 
+
+
+
+va
+
+vb
+
+vc
+
+ =
+
+
+
+La 0 00 Lb 00 0 Lc
+
+
+
+di a
+
+dt di b
+
+dt di c
+
+dt 
+
+
+
+= [ Labc ] · di abc 
+
+dt 
+
+(19) In the case of a balanced impedance, the matrix [Labc ]
+
+will be diagonal and La = Lb = Lc = L. When applying the Clarke transformation to the inductive impedance, the following equation is obtained: 
+
+vαβ = [ Tc] [ Labc ] T −1
+
+> c
+
+ · ddt (iαβ ) = [ Lαβ ] · ddt (iαβ ) (20) Then, applying the Park transformation leads to: 
+
+vdq · ejωt = [ Ldq ] · ddt · (idq · ejωt ) (21) When operating the derivative term, the following is ob-tained: 
+
+vdq · ejωt = [ Ldq ] · di dq 
+
+dt · ejωt + [ Ldq ] · (jω ) · idq · ejωt (22) where jω can be represented in matrix form as: 
+
+jω =
+
+ 0 ω
+
+−ω 0
+
+
+
+(23) Finally, the phasor expression is: 
+
+vdq = [ Ldq ] · di dq 
+
+dt + [ Ldq ] ·
+
+ 0 ω
+
+−ω 0
+
+
+
+· idq (24) being: 
+
+[Ldq ] = [ Lαβ ] = L · I (25) For an unbalanced impedance, the symmetrical components must be obtained, extending the impedance matrix to account for its contribution to each sequence: 
+
+[v+−0 
+
+> abc
+
+] = [ L+−0 
+
+> abc
+
+] · di +−0
+
+> abc
+
+dt (26) Then applying the Clarke transformation: 
+
+[v+−0 
+
+> αβ
+
+] = 
+
+h
+
+L+−0
+
+> αβ
+
+i
+
+· di +−0
+
+> αβ
+
+dt (27) Finally, the Park transformation is applied. Note that for the positive and zero sequences, Tp(ω) is used (see (4)), while in the negative sequence Tp(−ω) is used since the negative reference frame can be considered as rotating in the opposite direction. The phasor equation for the equivalent circuit in the se-quence domain is given by: 
+
+v+−0 
+
+> dq
+
+= [ L+−0 
+
+> dq
+
+] · di +−0
+
+> dq
+
+dt + [ L+−0 
+
+> dq
+
+] · [Ω] · i+−0 
+
+> dq
+
+(28) where 
+
+[L+−0 
+
+> dq
+
+] = 
+
+
+
+L+ 0 L− 
+
+> d
+
+−L− 
+
+> q
+
+L− 
+
+> d
+
+−L−
+
+> q
+
+0 L+ −L− 
+
+> q
+
+−L− 
+
+> d
+
+L− 
+
+> q
+
+L−
+
+> d
+
+L− 
+
+> d
+
+−L− 
+
+> q
+
+L+ 0 L− 
+
+> d
+
+L−
+
+> q
+
+−L− 
+
+> q
+
+−L− 
+
+> d
+
+0 L+ L− 
+
+> q
+
+−L−
+
+> d
+
+L− 
+
+> d
+
+L− 
+
+> q
+
+L− 
+
+> d
+
+L− 
+
+> q
+
+L+ 0
+
+−L− 
+
+> q
+
+L− 
+
+> d
+
+L− 
+
+> q
+
+−L− 
+
+> d
+
+0 L+
+
+
+
+(29) 
+
+L+ = 13 (La + Lb + Lc) (30) 
+
+L− 
+
+> d
+
+= 13
+
+
+
+La − Lb + Lc
+
+2
+
+
+
+(31) 
+
+L− 
+
+> q
+
+=
+
+√36 (Lb − Lc) (32) and 
+
+[Ω] = 
+
+
+
+0 ω 0 0 0 0
+
+−ω 0 0 0 0 00 0 0 −ω 0 00 0 ω 0 0 00 0 0 0 0 ω
+
+0 0 0 0 −ω 0
+
+
+
+(33) Fig. 3. Sequence-domain equivalent circuit of an unbalanced three-phase resistive impedance. 
+
+Fig. 4. Sequence-domain equivalent circuit of an unbalanced three-phase inductive impedance. The extended inductance matrix [L+−0 
+
+> dq
+
+] is calculated using the same process from the resistive impedance scenario. There-fore, its terms are completely analogous to those in [R+−0 
+
+> dq
+
+].The sequence-domain equivalent circuit of an unbalanced three-phase inductive impedance is depicted in Fig. 4. 
+
+C. Derivation of the Capacitive Equivalent Impedance 
+
+The case of a capacitive three-phase impedance is analogous to the inductive impedance. In this case, the relationship must be established between the current and the voltage derivative as given by the equation of the capacitive impedance: 
+
+ ia
+
+ib
+
+ic
+
+ =
+
+
+
+Ca 0 00 Cb 00 0 Cc
+
+
+
+dv a
+
+dt dv b
+
+dt dv c
+
+dt 
+
+
+
+= [ Cabc ] · dv abc 
+
+dt 
+
+(34) Following the established derivation method, the phasor equation for the equivalent circuit in the sequence domain can be obtained: 
+
+i+−0 
+
+> dq
+
+= [ C+−0 
+
+> dq
+
+] · dv +−0
+
+> dq
+
+dt + [ C+−0 
+
+> dq
+
+] · [Ω] · v+−0 
+
+> dq
+
+(35) where 
+
+[C+−0 
+
+> dq
+
+] = 
+
+
+
+C+ 0 C− 
+
+> d
+
+−C− 
+
+> q
+
+C− 
+
+> d
+
+−C−
+
+> q
+
+0 C+ −C− 
+
+> q
+
+−C− 
+
+> d
+
+C− 
+
+> q
+
+C−
+
+> d
+
+C− 
+
+> d
+
+−C− 
+
+> q
+
+C+ 0 C− 
+
+> d
+
+C−
+
+> q
+
+−C− 
+
+> q
+
+−C− 
+
+> d
+
+0 C+ C− 
+
+> q
+
+−C−
+
+> d
+
+C− 
+
+> d
+
+C− 
+
+> q
+
+C− 
+
+> d
+
+C− 
+
+> q
+
+C+ 0
+
+−C− 
+
+> q
+
+C− 
+
+> d
+
+C− 
+
+> q
+
+−C− 
+
+> d
+
+0 C+
+
+
+
+(36) 
+
+C+ = 13 (Ca + Cb + Cc) (37) 
+
+C− 
+
+> d
+
+= 13
+
+
+
+Ca − Cb + Cc
+
+2
+
+
+
+(38) 
+
+C− 
+
+> q
+
+=
+
+√36 (Cb − Cc) (39) The rotation matrix [Ω] is as expressed in (33). In Fig. 5 the sequence-domain equivalent circuit of an unbalanced three-phase capacitive impedance is depicted. III. E XPERIMENTAL VALIDATION 
+
+The proposed equivalent model has been validated by comparing simulations with theoretical parameters along with experimental results. The tests were carried out by generating an asymmetric three-phase voltage, by means of a four-quadrant grid simulator (REGATRON TC.ACS), and applying it to a three-phase unbalanced RL impedance (see Fig. 6). The impedance values used in this particular test are Ra = 50 Ω ,
+
+Rb = 270 Ω , Rc = 270 Ω , La = 32 mH , Lb = 32 mH , and 
+
+Lc = 16 mH .Fig. 7 shows the applied voltages and the comparison between the measured current against the calculated current using the proposed equivalent circuit model. On the left side of the figure, the applied voltage is represented, the first figure shows the three-phase voltage, the second the d and 
+
+q components of the positive sequence, the third the d and q
+
+components of the negative sequence, and the fourth the d and 
+
+q components of the zero sequence. Notice that the applied voltage is balanced, but the zero sequence is the voltage that appears between neutral points due to the unbalanced impedance, which can be predicted by the proposed model. On the right side of the figure, the measured current is compared with the predicted current of the proposed model, the first figure shows the three-phase currents, the second the d
+
+and q components of the positive sequence, the third the d and 
+
+q components of the negative sequence, and the fourth the d
+
+and q components of the zero sequence. It can be seen that the equivalent model is able to reproduce the dq sequence-domain components of the resulting current seamlessly. Notice that to obtain the symmetric components from the 
+
+abc signals, a Second Order Generalized Intergrator Quadra-ture Signal Generator (SOGI-QSG) has been implemented [12]. This element has a filter effect in the derivation of the sequences and that is the reason for the transient responses and the initial mismatch in the current prediction. IV. C ONCLUSIONS 
+
+This paper proposes an equivalent dq sequence-domain model of unbalanced three-phase passive impedances to im-prove the design of controllers for three-phase power con-verters. The main advantage of this framework, from the control point of view, is that all the components are constant in the steady state, even if both the three-phase impedance and voltage or current are asymmetrical and unbalanced. Furthermore, the proposed equivalent model explicitly shows the interaction among the different sequences, including the zero sequence, due to the fact that the three-phase impedance is unbalanced, which was not properly considered in previous studies. The proposed equivalent model has been validated with experimental results. REFERENCES [1] S. Wodyk and G. Iwanski, “Control of three-phase power electronic converter with power controllers in stationary frame,” IEEE Transactions on Industry Applications , vol. 56, no. 5, pp. 5257–5268, 2020. [2] V. R. Chowdhury, “Internal model based grid voltage estimation and control of a three-phase grid connected inverter for pv application,”     
+
+> IEEE Transactions on Energy Conversion , vol. 36, no. 4, pp. 3568– 3577, 2021. [3] M. Hu, W. Hua, G. Ma, S. Xu, and W. Zeng, “Improved current dynamics of proportional-integral-resonant controller for a dual three-phase fspm machine,” IEEE Transactions on Industrial Electronics ,vol. 68, no. 12, pp. 11 719–11 730, 2021. [4] Q. N. Trinh, P. Wang, and F. H. Choo, “An improved control strategy of three-phase pwm rectifiers under input voltage distortions and dc-offset measurement errors,” IEEE Journal of Emerging and Selected Topics in Power Electronics , vol. 5, no. 3, pp. 1164–1176, 2017.
+
+Fig. 5. Sequence-domain equivalent circuit of an unbalanced three-phase capacitive impedance. 
+
+Fig. 6. Experimental setup. Left: picture of the setup, right: electrical circuit diagram. Fig. 7. Comparison between measured and simulated signals. The abc and dq sequence components of the signals are shown. Left: imposed voltages, right: measured and simulated resulting currents. [5] O. Kukrer, S. Bayhan, and H. Komurcugil, “Model-based current control strategy with virtual time constant for improved dynamic response of three-phase grid-connected vsi,” IEEE Transactions on Industrial Electronics , vol. 66, no. 6, pp. 4156–4165, 2019. [6] S. Ghosh, S. Chattopadhyay, and S. Samanta, “A synchronous reference frame based decentralized control architecture for inverters connected to an autonomous microgrid,” in 2019 IEEE Applied Power Electronics Conference and Exposition (APEC) , 2019, pp. 540–547. [7] M. Cespedes and J. Sun, “Impedance modeling and analysis of grid-connected voltage-source converters,” IEEE Transactions on Power Electronics , vol. 29, no. 3, pp. 1254–1261, 2014. [8] X. Li, C. Zhang, A. Chen, X. Xing, and G. Zhang, “Model predictive direct current control strategy for three-level t-type rectifier under unbal-anced grid voltage conditions,” in 2018 IEEE Applied Power Electronics Conference and Exposition (APEC) , 2018, pp. 1514–1519. [9] M. A. Azzouz and A. Hooshyar, “Dual current control of inverter-interfaced renewable energy sources for precise phase selection,” IEEE Transactions on Smart Grid , vol. 10, no. 5, pp. 5092–5102, 2019. [10] Z. Li, S.-C. Wong, C. K. Tse, and X. Liu, “Modeling of unbalanced three-phase driving-point impedance with application to control of grid-connected power converters,” International Journal of Circuit Theory and Applications , vol. 44, no. 4, pp. 851–873, 2016. [Online]. Available: https://onlinelibrary.wiley.com/doi/abs/10.1002/cta.2110 [11] Z. Lu, W. Li, Z. Li, X. Chen, H. H. C. Lu, N. Dong, and X. Liu, “Adaptive droop control with self-adjusted virtual impedance for three-phase inverter under unbalanced conditions,” in 2017 IEEE International Symposium on Circuits and Systems (ISCAS) , 2017, pp. 1–4. [12] R. Teodorescu, M. Liserre, and P. Rodr´ ıguez, Grid Converters for Photovoltaic and Wind Power Systems . John Wiley and Sons, 2010.
