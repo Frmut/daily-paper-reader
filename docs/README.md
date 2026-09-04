@@ -6,22 +6,30 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-09-03
-- 运行时间：2026-09-03 22:41:30 UTC
+- 最新运行日期：2026-09-04
+- 运行时间：2026-09-04 22:00:36 UTC
 - 运行状态：成功
-- 本次总论文数：0
+- 本次总论文数：2
 - 精读区：0
-- 速读区：0
+- 速读区：2
 
 ### 今日简报（AI）
-> 今日无新推荐，系统未产出可展示论文。
-- 详情：[/202609/03/README](/202609/03/README)
+组件设计的技术参考。
+        *   *Check:* Actionable, realistic advice for general/technical readers based on the topics.
+
+3.
+- 详情：[/202609/04/README](/202609/04/README)
 
 ### 精读区论文标签
 - 本次无精读推荐。
 
 ### 速读区论文标签
-- 本次无速读推荐。
+1. [Blackbox Small-Signal Modeling of Grid-Connected Inverters in Asymmetrical Power Grids](/202609/04/2609.01411v1-blackbox-small-signal-modeling-of-grid-connected-inverters-in-asymmetrical-power-grids)  
+   标签：评分：6.0/10、query:pmsm
+   evidence：不对称电网中三相逆变器的建模
+2. [CAHR-Net: Condition-Adaptive Hysteresis Reconstruction for Compact and Interpretable Magnetic Core Loss Modeling](/202609/04/2609.01991v1-cahr-net-condition-adaptive-hysteresis-reconstruction-for-compact-and-interpretable-magnetic-core-loss-modeling)  
+   标签：评分：6.0/10、query:pmsm
+   evidence：电机磁芯损耗建模
 
 
 <div class="dpr-home-promo-card">

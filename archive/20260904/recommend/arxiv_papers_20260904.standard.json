@@ -1,0 +1,88 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-09-04T22:00:25.507636+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 2,
+    "quick_skim_target": 11,
+    "quick_selected": 2
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2609.01411v1",
+      "title": "Blackbox Small-Signal Modeling of Grid-Connected Inverters in Asymmetrical Power Grids",
+      "abstract": "Power electronic converters are envisaged to be key enablers of modern electric power distribution systems. Grid-connected three-phase inverters are widely used in Smart Grids and microgrids, but also in standard grids. They provide controllability and dynamic decoupling capabilities, which are fundamental in the integration of renewable sources and storage systems and in specialized applications such as FACTS. Nevertheless, power electronics-based systems can exhibit dynamic interactions, which may lead to power quality issues. Although the electrical model of each element of these systems is important for their system-level analysis, they are rarely available. Blackbox modeling strategies are useful for obtaining behavioral models of commercial electronic converters. Most blackbox modeling strategies are focused on dc-dc electronic converters; however, some works have extended these concepts to three-phase converters by means of the dq framework, under the assumption of symmetrical and balanced conditions. This work proposes a new structure in the sequence domain to represent the dynamic behavior of grid-connected commercial converters in asymmetrical conditions. Experimental tests have been performed on a three-phase inverter to identify its blackbox model and its performance has been validated during an asymmetric voltage sag.",
+      "authors": [
+        "Airan Frances",
+        "Dionisio Ramirez",
+        "Javier Uceda"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY"
+      ],
+      "published": "2026-09-01T15:30:35+00:00",
+      "link": "https://arxiv.org/pdf/2609.01411v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "modeling of three-phase inverters in asymmetrical grids",
+      "llm_evidence_cn": "不对称电网中三相逆变器的建模",
+      "llm_evidence": "不对称电网中三相逆变器的建模",
+      "canonical_evidence": "不对称电网中三相逆变器的建模",
+      "llm_tldr_en": "Proposes blackbox small-signal modeling for grid-connected three-phase inverters in asymmetrical conditions.",
+      "llm_tldr_cn": "提出了不对称电网条件下并网三相逆变器的黑盒小信号建模方法。",
+      "llm_tldr": "提出了不对称电网条件下并网三相逆变器的黑盒小信号建模方法。",
+      "llm_tags": [
+        "query:pmsm:composite"
+      ],
+      "matched_query_tag": "query:pmsm:composite",
+      "matched_query_text": "Papers central to 三相及双三相永磁同步电机相关研究检索, especially work that connects or combines: m; s; f; Permanent Magnet Synchronous Motor research; dual three-phase permanent magnet synchronous motor control and design; fault-tolerant control of multi-phase motors; recent advances in dual three phase permanent magnet synchronous motor control; fault tolerant strategies for multi phase permanent magnet synchronous motors.",
+      "matched_requirement_id": "req-composite-pmsm",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.01991v1",
+      "title": "CAHR-Net: Condition-Adaptive Hysteresis Reconstruction for Compact and Interpretable Magnetic Core Loss Modeling",
+      "abstract": "Magnetic core loss originates in the hysteresis loop: the energy dissipated per excitation cycle equals the loop area, and frequency, temperature, and waveform shape set the loss by reshaping the loop geometry. Most existing models let these conditions act only on a terminal scalar - empirical equations fold them into fitted exponents, and data-driven predictors append them to encoded features - so no intermediate hysteresis representation remains for the conditions to reshape. This paper proposes CAHR-Net, a condition-adaptive hysteresis reconstruction network that injects the operating conditions where they physically act. It preserves the interpretable chain from flux density waveform to magnetic field reconstruction, loop-area integration, and power loss estimation, and uses feature-wise linear modulation to inject frequency, temperature, and waveform statistics into the intermediate reconstruction representation. A matched large-batch training protocol based on AdamW, cosine scheduling, and a staged reconstruction-to-power-loss objective is also reported, because the modulation pathway takes effect only within it. On the MagNet final A-E material protocol, CAHR-Net attains an average p95 relative error of 6.89% with only 1874 parameters, the lowest among all compared methods, together with a lower worst-material p95 than the strongest black-box solution at about 48x fewer parameters; it reduces the average p95 of the physical reconstruction backbone from 7.47% to 6.89% and the p95 of material D, the most difficult material, from 16.40% to 14.87%. Ablation and condition-slice analyses attribute the improvement to the coupling of physical loop reconstruction, structured condition modulation, and the matched optimization trajectory.",
+      "authors": [
+        "Chunye Gong",
+        "Cong Yao"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-09-02T01:54:49+00:00",
+      "link": "https://arxiv.org/pdf/2609.01991v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "magnetic core loss modeling for electrical machines",
+      "llm_evidence_cn": "电机磁芯损耗建模",
+      "llm_evidence": "电机磁芯损耗建模",
+      "canonical_evidence": "电机磁芯损耗建模",
+      "llm_tldr_en": "Proposes a condition-adaptive network for interpretable magnetic core loss modeling in electrical devices.",
+      "llm_tldr_cn": "提出了一种用于电机设备可解释磁芯损耗建模的工况自适应网络。",
+      "llm_tldr": "提出了一种用于电机设备可解释磁芯损耗建模的工况自适应网络。",
+      "llm_tags": [
+        "query:pmsm:composite"
+      ],
+      "matched_query_tag": "query:pmsm:composite",
+      "matched_query_text": "Papers central to 三相及双三相永磁同步电机相关研究检索, especially work that connects or combines: m; s; f; Permanent Magnet Synchronous Motor research; dual three-phase permanent magnet synchronous motor control and design; fault-tolerant control of multi-phase motors; recent advances in dual three phase permanent magnet synchronous motor control; fault tolerant strategies for multi phase permanent magnet synchronous motors.",
+      "matched_requirement_id": "req-composite-pmsm",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

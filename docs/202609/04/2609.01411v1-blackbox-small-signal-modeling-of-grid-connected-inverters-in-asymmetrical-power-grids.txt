@@ -1,0 +1,499 @@
+Title: Blackbox Small-Signal Modeling of Grid-Connected Inverters in Asymmetrical Power Grids
+
+URL Source: https://arxiv.org/pdf/2609.01411v1
+
+Published Time: Wed, 02 Sep 2026 01:35:41 GMT
+
+Number of Pages: 11
+
+Markdown Content:
+> IEEE TRANSACTIONS ON POWER ELECTRONICS, VOL. 38, NO. 10, OCTOBER 2023 1
+
+# Blackbox Small-Signal Modeling of Grid-Connected Inverters in Asymmetrical Power Grids 
+
+Airan Frances, Member, IEEE, Dionisio Ramirez, Senior Member, IEEE, and Javier Uceda, Life Fellow, IEEE 
+
+Abstract —Power electronic converters are envisaged to be key enablers of modern electric power distribution systems. Grid-connected three-phase inverters are widely used in Smart Grids and microgrids, but also in standard grids. They provide controllability and dynamic decoupling capabilities, which are fundamental in the integration of renewable sources and storage systems and in specialized applications such as FACTS. Nev-ertheless, power electronics-based systems can exhibit dynamic interactions, which may lead to power quality issues. Although the electrical model of each element of these systems is important for their system-level analysis, they are rarely available. Blackbox modeling strategies are useful for obtaining behavioral models of commercial electronic converters. Most blackbox modeling strate-gies are focused on dc-dc electronic converters; however, some works have extended these concepts to three-phase converters by means of the dq framework, under the assumption of symmetrical and balanced conditions. This work proposes a new structure in the sequence domain to represent the dynamic behavior of grid-connected commercial converters in asymmetrical conditions. Experimental tests have been performed on a three-phase inverter to identify its blackbox model and its performance has been validated during an asymmetric voltage sag. 
+
+Index Terms —Asymmetrical conditions, blackbox, grid-side converter, modeling, system identification, three-phase inverter, unbalanced grid. 
+
+I. I NTRODUCTION 
+
+# POWER Electronic Converters (PECs) are expected to become ubiquitous in power distribution systems [1]. PECs play a very important role in various strategic sectors such as the energy sector, enabling a high integration of renewable sources and storage elements and supporting the smart grid concept [2, 3]; or the transportation sector, replacing mechanical, hydraulic, or pneumatic systems in more electric aircrafts [4], all-electric ships [5] or electric vehicles [6, 7]. System identification techniques have been widely used to represent the dynamic behavior of PECs for different purposes [8], such as control design, stability analyzes, system-level integration, filter and protection system designs, among others. 
+
+© 2023 IEEE. Personal use of this material is permitted. Permission from IEEE must be obtained for all other uses, in any current or future media, including reprinting/republishing this material for advertising or promotional purposes, creating new collective works, for resale or redistribution to servers or lists, or reuse of any copyrighted component of this work in other works. DOI: 10.1109/TPEL.2023.3296786 The authors are with the Centro de Electr´ onica Industrial (CEI), Universidad Polit´ ecnica de Madrid, 28006, Madrid, Spain, e-mail: (see http://www.cei.upm.es/). This manuscript is an extended version of the conference paper: A. Franc´ es, D. Ram´ ırez and J. Uceda, ”Blackbox Small-signal Modeling of Grid-Connected Inverters under Unbalanced Conditions,” 2022 IEEE 13th International Symposium on Power Electronics for Distributed Generation Systems (PEDG), Kiel, Germany, 2022, pp. 1-6. 
+
+When applied to PECs, blackbox models refer to the use of system identification techniques to obtain electrical models able to represent the dynamic behavior of devices about which the available information is scarce. Most of the blackbox model structures are focused on dc-dc PECs, as the powerful tools related with the linear theory can be easily applied to this kind of systems. These structures can be classified according to the kind of response they are able to reproduce. Linear structures [9, 10, 11] are useful, due to their simplicity, and are very suitable for linear systems or nonlinear systems under small-signal conditions. Static nonlinear structures [12, 13, 14] have been proposed to capture nonlinearities in the steady-state response, while the dynamic response is considered linear, which are very useful to include the effect of protection systems or linear systems with nonlinear control references. Dynamic nonlinear structures [15, 16, 17] have been proposed for systems with nonlinear responses working in variable environments such as dc microgrids [18] or electric ships [19]. A comparison among the different blackbox models structures for dc-dc PECs can be found in [20]. Some of these structures have been extended to ac systems, either in single-phase or three-phase systems. The idea is to use the rotating d-q coordinates to transform ac variables in dc variables, which is necessary to represent the dynamic response of these systems by means of transfer functions. In [21, 22] the linear structure is proposed for three-phase systems, whereas in [23] the different structures are studied for the case of a voltage source inverter. In [24], the nonlinear structure is implemented for a Grid-Connected Inverter (GCI) and in [25] for battery chargers for electric vehicles. Recently, a number of studies have been presented related to the online identification of three-phase PEC and grid impedances in the 
+
+dq -frame [26, 27]. Some of the challenges are to use a single perturbation signal to identify the impedances to avoid shifts in the operating point during the identification process, or the coupling effect between converter and grid impedances. These models are very interesting for designing adaptive controllers and for performing online impedance-based stability analysis [28]. These extensions are valid under the assumption of sym-metric and balanced conditions. From an analytical approach, the effect of asymmetrical grids on the dynamic behavior of the converters and its stability has been studied [29], and the importance of accounting for the coupling effects between positive and negative sequences has been demonstrated in [30]. However, from a blackbox perspective, this problem has not been considered. This paper proposes a blackbox small-arXiv:2609.01411v1 [eess.SY] 1 Sep 2026 IEEE TRANSACTIONS ON POWER ELECTRONICS, VOL. 38, NO. 10, OCTOBER 2023 2
+
+signal structure able to represent GCIs under asymmetrical conditions. The idea is based on the Fortescue’s theorem to represent the unbalanced phasor as the sum of symmetrical balanced phasors that can be represented as dc signals using the Park transformation. This work is an extended version of the conference paper [31]. The resulting model can be used to analyze the dynamic performance of commercial-off-the-shelf inverters when connected in series or parallel with other PECs or when interfaced with any grid impedance. As part of its small-signal model is the output admittance of the inverter, this information could be used to perform impedance-based stability analysis considering asymmetrical grid impedances, which can also be represented in the dq sequence domain [32], using the generalized Nyquist criterion [33]. The paper is organized as follows. In Section II the small-signal structure able to represent three-phase inverters under asymmetrical conditions is described. In Section III the pro-posed blackbox modeling strategy is identified and validated. Finally, in Section IV the conclusions are exposed. II. S MALL -S IGNAL STRUCTURE OF THREE -P HASE 
+
+INVERTERS UNDER ASYMMETRICAL CONDITIONS 
+
+The first step in the definition of the small-signal model of a PEC is to identify and sort the variables as inputs or outputs. In general, the system variables are the electrical signals of the input and output ports, where the externally imposed variables (voltage or current) will be set as input and the remaining variable (current or voltage) will be set as output of the model. In the case of controlled PEC, the control references can be considered as additional inputs. Finally, in ac systems, the frequency can also be included as an input in case it is variable and it influences the dynamic behavior of the PEC. In this paper, the small-signal structure is particularized for a GCI working as a grid-feeding PEC [34] connected to an asymmetrical power grid, as depicted in Fig. 1. Consequently, the input variables are the imposed input and output voltages, whereas the input and output currents are the outputs of the model. Besides, the active and reactive power references of the control can be set as inputs of the model. In this case, the grid frequency does not have a relevant influence on the dynamic response of the d and q components of the current, hence it has not been included as an input. However, in cases where droop control is implemented, the frequency has a strong impact on the output current and it should be considered as input of the model. In Fig. 2 the interface between the model and the dc and ac ports is depicted. First, the three-phase ac signals are divided into their positive and negative sequences. Notice that as the system has three wires, the zero sequence has been neglected in this analysis. Second, the positive sequence is used for synchronization. Third, the positive and negative sequences are represented in their respective synchronous frames, i.e. the positive sequence is synchronized using ωt 
+
+(counterclockwise rotation), whereas the negative sequence uses −ωt (clockwise rotation); see Fig. 3. Notice that if only the counterclockwise rotating framework is used for both the positive and negative sequences, the negative sequence would      
+
+> Fig. 1. Three-phase grid-feeding inverter scheme.
+> Fig. 2. Blackbox model interface between the dc and the three-phase ac ports using the dand qsymmetrical components.
+
+appear as a second harmonic. Using the clockwise rotating framework, the negative sequence can also be represented with constant d and q components. The different parts of the model structure are described in the following sections. 
+
+A. Sequence detector 
+
+According to the Fortescue’s theorem, a three-wire three-phase unbalanced signal ( vabc ) can be expressed as the sum of two balanced sequences, the positive ( v+
+
+> abc
+
+) and negative components ( v−
+
+> abc
+
+): 
+
+vabc = v+ 
+
+> abc
+
++ v−
+
+> abc
+
+, (1) where the positive and negative sequences can be obtained by means of the Lyon transformation [35]: IEEE TRANSACTIONS ON POWER ELECTRONICS, VOL. 38, NO. 10, OCTOBER 2023 3
+
+> Fig. 3. D-Q framework representation of the positive and negative sequences.
+
+v+ 
+
+> abc
+
+= [ T +]vabc = 13
+
+
+
+1 a a2
+
+a2 1 aa a2 1
+
+
+
+va
+
+vb
+
+vc
+
+ (2) 
+
+v− 
+
+> abc
+
+= [ T −]vabc = 13
+
+
+
+1 a2 aa 1 a2
+
+a2 a 1
+
+
+
+va
+
+vb
+
+vc
+
+ , (3) and a is a 120 ◦ phase-shift operator, which can be defined as follows: 
+
+a = e 2π 
+
+> 3i
+
+, (4) where i is the imaginary unit. In the αβ plane, (2) and (3) can be expressed as: 
+
+v+ 
+
+> αβ
+
+= [ Tαβ ][ T +][ Tαβ ]−1vαβ (5) 
+
+v− 
+
+> αβ
+
+= [ Tαβ ][ T −][ Tαβ ]−1vαβ , (6) where [Tαβ ] is the Clarke transformation given by: 
+
+[Tαβ ] = 23
+
+
+
+1 − 12 − 120
+
+√32 −√32
+
+ . (7) The result of these transformations is the following relation-ship: 
+
+v+ 
+
+> αβ
+
+= 12
+
+ 1 −qq 1
+
+
+
+vαβ (8) 
+
+v− 
+
+> αβ
+
+= 12
+
+ 1 q
+
+−q 1
+
+
+
+vαβ , (9) where q is a -90 ◦ phase shift (in-quadrature) operator, which can be defined as: 
+
+q = e− π 
+
+> 2i
+
+. (10) There are several ways to implement a -90 ◦ phase shift to a sinusoidal signal. The most straightforward method is to   
+
+> Fig. 4. SOGI-QSG block diagram.
+> Fig. 5. Sequence detector block diagram.
+
+use a transport delay of a quarter of a cycle. However, for system identification purposes, this strategy has the drawback of providing discontinuous and erroneous results during more than 2 cycles. A more sophisticated approach is the Second Order Generalized Integrator in-Quadrature Signal Generator (SOGI-QSG), which is able to produce a continuous response and to provide the correct result in about 1 cycle [35]. In Fig. 4 the block diagram of the SOGI-QSG is depicted, where ω∗ is the fundamental frequency of the sinusoidal input signal v and the transfer functions from the input ( v) to the outputs ( v′ and 
+
+qv ′) are: 
+
+v′
+
+v (s) = kω ∗ss2 + kω ∗s + ω∗2 (11) 
+
+qv ′
+
+v (s) = kω ∗2
+
+s2 + kω ∗s + ω∗2 . (12) Finally, the sequence detector consists of a Clarke transfor-mation (7) and the implementation of (8) and (9) by means of the SOGI-QSG depicted in Fig. 4. The block diagram of the sequence detector is represented in Fig. 5. It is important to notice that the inputs of the blackbox model will be affected by the dynamic of the SOGI-QSG, presented in (11) and (12). Practically, this fact imposes a limitation on the maximum frequency at which the model can be estimated, which is related to the minimum time in which the sequence detector provides the correct result after a perturbation. Using a faster sequence detector or taking into account the dynamic imposed by the SOGI-QSG would be some key points to improve the capabilities of the proposed model. In cases where the frequency is considered as an input of the model, a DSOGI-FLL [35] can be implemented to obtain the grid frequency and used as an input to the SOGI-QSG. Similarly, the dynamic response of the DSOGI-FLL will influence the range of frequencies at which the dynamic response of the PEC can be estimated. IEEE TRANSACTIONS ON POWER ELECTRONICS, VOL. 38, NO. 10, OCTOBER 2023 4
+
+B. Synchronization 
+
+A synchronization system is needed in the model structure in order to obtain the d and q components of the positive and negative sequences of the signals. Assuming that the signals are not distorted or that the harmonic content has been properly filtered, the arc-tangent function is the best option for this application due to its instantaneous response, where the phase angle is defined as: 
+
+θ = arctan v+
+
+> β
+
+v+
+
+> α
+
+!
+
+. (13) Notice that, since the synchronization is performed using the positive sequence component of the voltage (see Fig. 2), the SOGI-QSG block has filtered most of the harmonic content of the signals, according to (11) and (12), which mitigate the drawbacks of using the arc-tangent function as synchronization system. 
+
+C. Small-signal model 
+
+The small-signal model comprises a collection of transfer functions that describe the dynamic response of every output when each of the inputs is perturbed. Consequently, the number of transfer functions is equal to the number of input variables by the number of outputs. As synchronization systems usually make the q component of the positive sequence of the voltage, vq+ , equal to zero, this input is not considered. For the sake of simplicity and without loss of generality, Vin and Qref will also be considered constant and not included as inputs of the model. Finally, splitting the ac signals into the d and q components of their positive and negative sequences, the small-signal model can be described as (14), where ” ∧” represents small-signal variables and “+” and “-” refer to the positive and negative sequences, respectively. The names of the transfer functions have a two-character sub index, where the first character refers to the input and the second to the output. For instance, Yd−q− refers to the transfer function between the d component of the negative sequence of the three-phase voltage and the q component of the negative sequence of the three-phase current. In Fig. 6 the block diagram of the small-signal model is represented according to (14), where “*” refers to the operating point where the model is identified. Each of the transfer functions of the model is identified from the response of each of the outputs when each input is perturbed, holding all other inputs constant.  
+
+> Fig. 6. Block diagram of the blackbox small-signal model.
+
+
+
+ˆiin 
+
+ˆi+
+
+> d
+
+ˆi+
+
+> q
+
+ˆi−
+
+> d
+
+ˆi−
+
+> q
+
+ =
+
+
+
+GP I in (s) Yd+Iin (s)
+
+GP d + (s) Yd+d+ (s)
+
+GP q + (s) Yd+q+ (s)
+
+GP d − (s) Yd+d− (s)
+
+GP q − (s) Yd+q− (s)
+
+Yd−Iin (s) Yq−Iin (s)
+
+Yd−d+ (s) Yq−d+ (s)
+
+Yd−q+ (s) Yq−q+ (s)
+
+Yd−d− (s) Yq−d− (s)
+
+Yd−q− (s) Yq−q− (s)
+
+
+
+ˆPref 
+
+ˆv+
+
+> d
+
+ˆv−
+
+> d
+
+ˆv−
+
+> q
+
+ . (14) 
+
+1) DC operating point: The DC operating point of all the variables involved in the small-signal model is constant and corresponds to the operating point in which the transfer functions were identified. However, the input current is a special case as, in spite of being a dc variable, it can show oscillations in the steady state, due to the presence of negative sequence in the three-phase port. To include this effect in the small-signal model, the input current reference, I∗
+
+> in
+
+, will be defined using a power balance between the input power and the active power of the three-phase port: IEEE TRANSACTIONS ON POWER ELECTRONICS, VOL. 38, NO. 10, OCTOBER 2023 5 
+
+> Fig. 7. Blackbox small-signal electrical equivalent model.
+
+I∗ 
+
+> in
+
+= PVin · η , (15) where Vin is the input voltage, η is the efficiency of the converters, and P is the active power of the three-phase port. The active power can be expressed as a function of the d and 
+
+q components of the three-phase voltages and currents: 
+
+P = 32 (vd · id + vq · iq ) , (16) and the d and q components of the three-phase voltages can be split into its positive and negative components (the current components are analogous): 
+
+vd = vpdp + vpdn (17) 
+
+vq = vpqp + vpqn , (18) where the super index p refers to the positive framework, and the sub-index has two characters: the first refers to the component ( d or q) and the second indicates the sequence ( p
+
+for positive and n for negative). Furthermore, to use only dc variables, the d and q components of the negative sequence in the positive reference can be expressed as a function of the d and q components of the negative sequence in the negative reference (which are constant). This relationship can be obtained using the trigonometric projections of the d and 
+
+q axes of the negative sequence on the d and q axes of the positive sequence (see Fig. 3): 
+
+vpdn = vndn · cos (2 ωt ) + vnqn · sin (2 ωt ) (19) 
+
+vpqn = −vndn · sin (2 ωt ) + vnqn · cos (2 ωt ). (20) Finally, using (17), (18), (19) and (20), in (21), the active power an be expressed as a function of the d and q components of the symmetrical components in their respective frameworks: 
+
+P = Pa + Pc · cos (2 ωt ) + Ps · sin (2 ωt ), (21) where Pa is the average value of the active power, and Pc
+
+and Ps are second-harmonic oscillations of the active power. These terms are defined as follows: 
+
+Pa = 32
+
+
+
+vpdp · ipdp + vpqp · ipqp + vndn · indn + vnqn · inqn 
+
+
+
+(22) 
+
+Pc = 32
+
+
+
+vpdp · indn + vpqp · inqn + vndn · ipdp + vnqn · ipqp 
+
+
+
+(23) 
+
+Ps = 32
+
+
+
+vpdp · inqn − vpqp · indn − vndn · ipqp + vnqn · ipdp 
+
+
+
+. (24) III. E XPERIMENTAL TESTS 
+
+A Semikron Semiteach VSC controlled by a dual-core F28M35H52C Concerto microcontroller has been used for the experimental tests, Fig. 8. The control structure consists of a decoupled current control, in which the reference is set as a function of the active and reactive power reference to be injected into the grid. The control includes a sequence detector in which the in-quadrature signals are obtained by means of a quarter of a cycle delay. Then, the positive sequence of the current is the one compared with the current reference, and the positive sequence of the voltage is the one fed forward to the control. The synchronization is made by applying the arc-tangent function to the αβ components of the positive sequence of the voltage. Notice that the focus of this work is not on the design of the converter and its control loop, but on the validation of the proposed blackbox model architecture to describe the small-signal dynamic behavior of the system under asymmetric conditions. It is also worth noticing that different control decisions, such as the use or not of a sequence detector, the use of the positive sequence of the current and/or the voltage, the synchronization method, the design of the PI regulators, the decoupling terms using nominal values or measured values, among other details, would impact the system behavior in asymmetric conditions. A four-quadrant REGATRON TC.ACS has been employed to create the specific perturbations in the d and q components of the positive and negative sequences of the grid voltage nec-essary to identify the transfer functions of the proposed model. In general, the output impedance of the source converter can interact with the output impedance of the converter under test and influence the measurements. However, in this case, as the bandwidth of the REGATRON TC.ACS is much higher than the bandwidth of the converter, this effect can be neglected in the range of frequencies of interest. To validate the identified model, an asymmetric voltage sag was imposed to generate an asymmetrical and unbalanced scenario. IEEE TRANSACTIONS ON POWER ELECTRONICS, VOL. 38, NO. 10, OCTOBER 2023 6 
+
+> Fig. 8. Experimental setup used to perform the identification and validation tests.
+
+A. Model identification 
+
+The identification process consists of applying the appro-priate tests to obtain each of the transfer functions described in (14). The number of tests is equal to the number of inputs of the model, in this case, four. Applying superposition, in each test only one of the inputs is perturbed while keeping the rest of the inputs constant (its small-signal contribution equal to zero), and the corresponding column of transfer functions of (14) is identified from the dynamic response of each of the outputs. Practically, the three-phase currents are measured and introduced into a sequence detector and an 
+
+αβ/dq transformation to extract the d and q components of its positive and negative sequences (see Fig. 2). The first test consists of perturbing the reference of the active power while keeping the d and q components of the positive and negative sequences of the three-phase voltage constant. A step was introduced in the reference of the active power of the controller. The second test involves the perturbation of the d com-ponent of the positive sequence of the three-phase voltage, holding all other inputs constant. A balanced step was imposed in the amplitude of the three-phase voltage. The third test implies the perturbation of the d component of the negative sequence (represented in the negative reference frame) of the three-phase voltage, holding all other inputs constant. A negative sequence in phase with the positive sequence was injected. The mathematical expression of the three-phase voltage used for this test was: 
+
+va(t) = Ap · cos (ωt ) + An · cos (ωt )
+
+vb(t) = Ap · cos (ωt − 2π
+
+3 ) + An · cos (ωt + 2π
+
+3 )
+
+vc(t) = Ap · cos (ωt + 2π
+
+3 ) + An · cos (ωt − 2π
+
+3 ),
+
+(25) where Ap and An are the amplitudes of the positive and negative sequence, respectively. Finally, the fourth test comprises the perturbation of the q
+
+component of the negative sequence of the three-phase voltage, holding all other inputs constant. A negative sequence with a 90 degrees phase shift with respect to the positive sequence was injected. The mathematical expression of the three-phase voltage used for this test was: 
+
+va(t) = Ap · cos (ωt ) + An · cos (ωt − π
+
+2 )
+
+vb(t) = Ap · cos (ωt − 2π
+
+3 ) + An · cos (ωt + 2π
+
+3 − π
+
+2 )
+
+vc(t) = Ap · cos (ωt + 2π
+
+3 ) + An · cos (ωt − 2π
+
+3 − π
+
+2 ).
+
+(26) To illustrate the identification process, the measured signals obtained during the third test are depicted in Fig. 9, where the plots on the left side show the measured voltages and the plots on the right side include the measured currents. Horizontally, the top plots depict the three-phase measured signals, the plots in the middle represent the components of the positive sequence, and the plots at the bottom show the components of the negative sequence. At time 0.15 s, a step in Vd− is injected, according to (25), and at time 0.35 the perturbation is eliminated. Regarding the components of the sequences of the voltage, which are the inputs of the model, it can be seen that only Vd− is perturbed, while the rest are kept constant. Concerning the current, the three-phase currents become unbalanced due to the injection of negative sequence in the voltage. Regarding the components of the sequences of the current, which are the outputs of the model, it can be seen how the effect of the injection of Vd− has a negligible effect on Id+ and Iq+ . However, this test has a relevant effect on both Id− and Iq− . The transfer functions related to these last two outputs are Yd−d− (s) and Yd−q− (s) respectively. Using the Matlab System Identification Toolbox, introducing Vd− as input signal and Id− and Iq− as output signals, these transfer functions were identified, as presented in Fig. 10. The identification of the transfer functions from the time-domain measured responses is described as follows. First, the initial average value is subtracted from all signals, such that they all start from zero. The subtracted average values of each signal define the operating point at which the identification has been performed, as detailed in Table I. Then, the MATLAB function tfest is implemented to identify the parameters of a transfer function of a specific number of poles a zeros that fits the measured data with better accuracy. In this work, the identification has been partially automated using the flowchart depicted in Fig. 11. The 14 possible combinations of poles and zeros from 1 pole and 0 zeros to 4 poles and 4 zeros are tested and a tradeoff between complexity and accuracy is implemented in the selection of the best transfer function. To favor low-order transfer functions, a term ε is inserted in the fitness comparison to ensure that the selected higher-order transfer functions have an improvement in accuracy of at least this amount (in this work 5% has been chosen). 
+
+B. Model validation 
+
+This test aims to validate the identified model by imposing an asymmetrical and unbalanced grid condition and comparing the response of the actual converter with the estimation of the blackbox model. The injected perturbation was a voltage sag in one of the phases, while the others remained unaffected. The amplitude of the perturbed phase changes from 190 V IEEE TRANSACTIONS ON POWER ELECTRONICS, VOL. 38, NO. 10, OCTOBER 2023 7-200 -100 0100 200             
+
+> 02468
+> -200 -100 0100 200
+> 0.1 0.15 0.2 0.25 0.3 0.35 0.4 0510 15 20
+> -10 -5 0510
+> 0.1 0.15 0.2 0.25 0.3 0.35 0.4 -2 -1 01
+
+Fig. 9. Third experimental test performed in the model identification process. A step in the d component of the negative sequence of the three-phase voltage is injected, holding all other inputs constant. The plots on the left side show the measured voltages and the components of the positive and negative sequences. The plots on the right side present the measured currents and the components of the positive and negative sequences. -2 -1 0-1 010.1 0.15 0.2 0.25 0.3 0.35 0.4 
+
+Fig. 10. Comparison between the measured dynamic response and the output of the identified transfer functions for the components of the negative sequence of the current during the third test. The expressions of the identified transfer functions are displayed in their respective plots. 
+
+to 150 V, approximately, during the test, which roughly corresponds to 0.2 pu. This scenario generates changes in different components of the sequences of the voltage, which impact several components of the sequences of the current. In Fig. 12 the estimation of the model is compared with the 
+
+TABLE I DC O PERATING POINT .Symbol Description Value 
+
+P ∗ 
+
+> ref
+
+Active power reference 2.1 kW 
+
+v∗
+
+> d+
+
+d component of the positive sequence of the three-phase voltage 191 V 
+
+v∗
+
+> d−
+
+d component of the negative sequence of the three-phase voltage 1.8 V 
+
+v∗
+
+> q−
+
+q component of the negative sequence of the three-phase voltage 1.1 V 
+
+i∗
+
+> d+
+
+d component of the positive sequence of the three-phase current 7.4 A 
+
+i∗
+
+> q+
+
+q component of the positive sequence of the three-phase current 0 A 
+
+i∗
+
+> d−
+
+d component of the negative sequence of the three-phase current 0 A 
+
+i∗
+
+> q−
+
+q component of the negative sequence of the three-phase current 0 A 
+
+I∗ 
+
+> in
+
+input current 5.7 A 
+
+measured signals from the experimental setup. At time 0.15 s
+
+the voltage sag is injected, whereas at time 0.33 s the voltage is restored. The organization of the signals is the same as in Fig. 9, the plots on the left side represent voltages, whereas plots on the right side present the currents. From top to bottom, the first row shows three-phase signals and the second and the third display the components of the positive and negative sequences, respectively. Regarding the components of the voltage, it is observed IEEE TRANSACTIONS ON POWER ELECTRONICS, VOL. 38, NO. 10, OCTOBER 2023 8       
+
+> Start Bestfit = 0 BestTF = 0 Np = 1 Np >4? Nz = 0 Nz >Np? Estimate a transfer function TF with Np poles and Nz zeros TF fitness >
+> Bestfit + ε?BestTF=TF Nz=Nz+1 Np=Np+1 BestTF no no yes no yes yes
+> Fig. 11. Flowchart of transfer function identification from experimental data.
+
+that the injected perturbation has a remarkable effect on the 
+
+d components of both the positive and negative sequences, whereas the impact on the q component of the negative sequence is negligible. Concerning the current, it is noted that the effect of the perturbation is mainly reflected in the negative sequence, where both the d and q components are disturbed; however, there is also a small effect in the d component of the positive sequence. The comparison between the measured current from the experimental setup and the estimation of the model demon-strates that the proposed blackbox modeling structure is able to accurately predict the static and dynamic behavior of three-phase inverters under asymmetrical and unbalanced conditions. Regarding the input port, Fig. 13 shows the comparison of the measured signal and the estimation of the input current using the proposed model for the same case of a voltage sag in one of the three phases. The input current measurement (gray color) has high-frequency components which cannot be accounted for in the model, which is an averaged model. The averaged value of the input current (blue color) is also represented and it can be seen that during the voltage sag in the three-phase side, a second harmonic oscillation appears in the input current due to the effect of the negative sequence in the three-phase signals. This effect is accurately reproduced by the model (red color) by means of a power balance using (15) and (21), where the active power of the three-phase port can be computed as a function of the rest of the dc inputs and outputs of the model, as described in (22), (23), and (24). Finally, Fig. 14 shows the comparison between the es-timation of the model and the measured signals from the experimental setup with a 0.7 pu voltage sag in one of the phases. The result shows that the proposed model provides a good representation of the three-phase inverter even in highly asymmetrical conditions. IV. C ONCLUSIONS 
+
+In the literature, blackbox models of three-phase systems assume symmetrical and balanced conditions to transform the ac signals into constant d and q components in the synchronous frame. This work extends the applicability of blackbox models to asymmetrical conditions considering the d and q com-ponents of the positive and negative sequences, each in its corresponding synchronous frame, where they remain constant even in asymmetrical scenarios. This framework is used to create a small-signal structure able to consider the dynamic relationship among the different variables of the system. The model structure is detailed, where the main elements are the sequence detector and the synchronization system. Using the arc-tangent function the synchronization is instantaneous; however, the SOGI-QSG used in the sequence detector adds some dynamic to the sequence detection, which limits the model capabilities. The specific tests necessary to identify each of the transfer functions that comprise the model have been detailed. Furthermore, a method is proposed to account for the second harmonic component that appears in the averaged response of the input current due to the presence of negative sequence in the three-phase port. Finally, the identification and validation processes are illustrated by means of experimental results. REFERENCES 
+
+[1] D. Boroyevich, I. Cvetkovi´ c, D. Dong, R. Burgos, F. Wang, and F. Lee, “Future electronic power distri-bution systems a contemplative view,” in 2010 12th International Conference on Optimization of Electrical and Electronic Equipment , 2010, pp. 1369–1380. [2] M. G. Molina, “Energy storage and power electronics technologies: A strong combination to empower the transformation to the smart grid,” Proceedings of the IEEE , vol. 105, no. 11, pp. 2191–2219, 2017. [3] J. Popovi´ c-Gerber, J. A. Oliver, N. Cordero, T. Harder, J. A. Cobos, M. Hayes, S. C. O’Mathuna, and E. Prem, “Power electronics enabling efficient energy usage: En-ergy savings potential and technological challenges,” IEEE TRANSACTIONS ON POWER ELECTRONICS, VOL. 38, NO. 10, OCTOBER 2023 90.1 0.15 0.2 0.25 0.3 0.35 0.4 -2 024              
+
+> 0510
+> 0.1 0.15 0.2 0.25 0.3 0.35 0.4 -20 -10 010 20
+> -200 -100 0100 200
+> 160 170 180 190 200
+> -10 -5 0510
+> Fig. 12. Experimental validation of the proposed model using a 0.2 pu voltage sag in one of the phases. The plots on the left side represent the voltage measurements. The plots on the right side present the comparison between the measured currents from the experimental setup and the blackbox model estimation. 0.1 0.15 0.2 0.25 0.3 0.35 0.4 -5 0510 15 20
+> Fig. 13. Comparison during a voltage sag in one of the phases among the measured input current, the averaged value of the measured input current, and the estimation of the model for the input current.
+
+IEEE Transactions on Power Electronics , vol. 27, no. 5, pp. 2338–2353, 2012. [4] B. Sarlioglu and C. T. Morris, “More electric aircraft: Review, challenges, and opportunities for commercial transport aircraft,” IEEE Transactions on Transportation Electrification , vol. 1, no. 1, pp. 54–64, 2015. [5] G. Sulligoi, A. Vicenzutti, and R. Menis, “All-electric ship design: From electrical propulsion to integrated elec-trical and electronic power systems,” IEEE Transactions on Transportation Electrification , vol. 2, no. 4, pp. 507– 521, 2016. [6] A. Emadi, Y. J. Lee, and K. Rajashekara, “Power elec-tronics and motor drives in electric, hybrid electric, and plug-in hybrid electric vehicles,” IEEE Transactions on Industrial Electronics , vol. 55, no. 6, pp. 2237–2245, 2008. [7] C. Liu, K. T. Chau, D. Wu, and S. Gao, “Opportunities and challenges of vehicle-to-home, vehicle-to-vehicle, and vehicle-to-grid technologies,” Proceedings of the IEEE , vol. 101, no. 11, pp. 2409–2427, 2013. [8] L. Ljung, System Identification: Theory for the User ,2nd ed. Upper Saddle River, NJ, USA: Prentice Hall PTR, 1999. [9] L. Arnedo, D. Boroyevich, R. Burgos, and F. Wang, “Un-terminated frequency response measurements and model order reduction for black-box terminal characterization models,” in Proc. Appl. Power Electron. Conf. Expo. , Feb 2008, pp. 1054–1060. [10] V. Valdivia, A. Barrado, A. Roldan, C. Fernandez, and P. Zumel, “Black-box modeling of dc-dc converters based on transient response analysis and parametric identifi-cation methods,” in Proc. Appl. Power Electron. Conf. Expo. , Feb 2010, pp. 1131–1138. [11] I. Cvetkovic, D. Boroyevich, P. Mattavelli, F. C. Lee, and D. Dong, “Unterminated small-signal behavioral model of dc-dc converters,” IEEE Trans. Power Electron. ,vol. 28, no. 4, pp. 1870–1879, April 2013. [12] F. Alonge, F. D’Ippolito, F. M. Raimondi, and S. Tum-minaro, “Nonlinear modeling of dc/dc converters using the hammerstein’s approach,” IEEE Trans. on Power Electron. , vol. 22, no. 4, pp. 1210–1221, July 2007. [13] J. Oliver, R. Prieto, J. Cobos, O. Garcia, and P. Alou, “Hybrid wiener-hammerstein structure for grey-box mod-eling of dc-dc converters,” in Proc. Appl. Power Electron. Conf. Expo. , Feb 2009, pp. 280–285. [14] I. Cvetkovic, D. Boroyevich, P. Mattavelli, F. Lee, and D. Dong, “Non-linear, hybrid terminal behavioral model-ing of a dc-based nanogrid system,” in Proc. Appl. Power Electron. Conf. Expo. , March 2011, pp. 1251–1258. [15] L. Arnedo, D. Boroyevich, R. Burgos, and F. Wang, “Polytopic black-box modeling of dc-dc converters,” in IEEE TRANSACTIONS ON POWER ELECTRONICS, VOL. 38, NO. 10, OCTOBER 2023 10 0.1 0.15 0.2 0.25 0.3 0.35 0.4 -60 -40 -20 020 40        
+
+> 0510
+> 0.1 0.15 0.2 0.25 0.3 0.35 0.4 0510
+> 120 140 160 180 200
+> -200 -100 0100 200
+> -10 010 20
+> Fig. 14. Experimental validation of the proposed model using a 0.7 pu voltage sag in one of the phases. The plots on the left side represent the voltage measurements. The plots on the right side present the comparison between the measured currents from the experimental setup and the blackbox model estimation.
+
+Proc. IEEE Annu. Power Electron. Spec. Conf. , June 2008, pp. 1015–1021. [16] A. Franc´ es, R. Asensi, and J. Uceda, “Blackbox parame-ter varying transfer functions model for highly nonlinear electronic power converters in dc microgrids,” in Proc. Appl. Power Electron. Conf. Expo. , March 2019, pp. 71– 76. [17] ——, “Blackbox polytopic model with dynamic weight-ing functions for dc-dc converters,” IEEE Access , vol. 7, pp. 160 263–160 273, 2019. [18] A. Franc´ es, R. Asensi, O. Garc´ ıa, R. Prieto, and J. Uceda, “A Black-box Modeling Approach for DC Nanogrids,” in Proc. Appl. Power Electron. Conf. Expo. , 2016, pp. 1624–1631. [19] A. Franc´ es-Roger, A. Anvari-Moghaddam, E. Rodr´ ıguez-D´ ıaz, J. C. Vasquez, J. M. Guerrero, and J. Uceda, “Dy-namic assessment of cots converters-based dc integrated power systems in electric ships,” IEEE Transactions on Industrial Informatics , vol. 14, no. 12, pp. 5518–5529, 2018. [20] A. Frances, R. Asensi, O. Garcia, R. Prieto, and J. Uceda, “Modeling electronic power converters in smart dc mi-crogrids - an overview,” IEEE Transactions on Smart Grid , vol. 9, no. 6, pp. 6274–6287, 2018. [21] I. Cvetkovic, M. Jaksic, D. Boroyevich, P. Mattavelli, F. C. Lee, Z. Shen, S. Ahmed, and D. Dong, “Un-terminated, low-frequency terminal-behavioral d-q model of three-phase converters,” in 2011 IEEE Energy Conver-sion Congress and Exposition , 2011, pp. 791–798. [22] A. Naziris, A. Frances, R. Asensi, and J. Uceda, “Black-box small-signal structure for single-phase and three-phase electric vehicle battery chargers,” IEEE Access ,vol. 8, pp. 170 496–170 506, 2020. [23] V. Valdivia, A. L´ azaro, A. Barrado, P. Zumel, C. Fern´ andez, and M. Sanz, “Black-box modeling of three phase voltage source inverters based on transient response analysis,” in 2010 Twenty-Fifth Annual IEEE Applied Power Electronics Conference and Exposition (APEC) , 2010, pp. 1279–1286. [24] G. Guarderas, A. Frances, D. Ramirez, R. Asensi, and J. Uceda, “Blackbox large-signal modeling of grid-connected dc-ac electronic power converters,” Energies ,vol. 12, no. 6, p. 989, Mar 2019. [Online]. Available: http://dx.doi.org/10.3390/en12060989 [25] A. Naziris, G. Guarderas, A. Franc´ es, R. Asensi, and J. Uceda, “Large-signal black-box modelling of bidirec-tional battery charger for electric vehicles,” in 2019 IEEE Applied Power Electronics Conference and Exposition (APEC) , 2019, pp. 3195–3198. [26] H. Gong, X. Wang, and D. Yang, “Dq-frame impedance measurement of three-phase converters using time-domain mimo parametric identification,” IEEE Transac-tions on Power Electronics , vol. 36, no. 2, pp. 2131– 2142, 2021. [27] M. Berg, H. Alenius, and T. Roinila, “Rapid multivariable identification of grid impedance in dq domain consider-ing impedance coupling,” IEEE Journal of Emerging and Selected Topics in Power Electronics , vol. 10, no. 3, pp. 2710–2721, 2022. [28] T. Roinila, T. Messo, and E. Santi, “Mimo-identification techniques for rapid impedance-based stability assess-ment of three-phase systems in dq domain,” IEEE Trans-actions on Power Electronics , vol. 33, no. 5, pp. 4015– 4022, 2018. [29] A. Akhavan, S. Golestan, J. C. Vasquez, and J. M. Guer-rero, “Control and stability analysis of current-controlled IEEE TRANSACTIONS ON POWER ELECTRONICS, VOL. 38, NO. 10, OCTOBER 2023 11 
+
+grid-connected inverters in asymmetrical grids,” IEEE Transactions on Power Electronics , vol. 37, no. 12, pp. 14 252–14 264, 2022. [30] M. Kazem Bakhshizadeh, X. Wang, F. Blaabjerg, J. Hjer-rild, Ł. Kocewiak, C. L. Bak, and B. Hesselbæk, “Cou-plings in phase domain impedance modeling of grid-connected converters,” IEEE Transactions on Power Electronics , vol. 31, no. 10, pp. 6792–6796, 2016. [31] A. Franc´ es, D. Ram´ ırez, and J. Uceda, “Blackbox small-signal modeling of grid-connected inverters under unbal-anced conditions,” in 2022 IEEE 13th International Sym-posium on Power Electronics for Distributed Generation Systems (PEDG) , 2022, pp. 1–6. [32] A. Franc´ es, L. Saz, R. Castillo, D. Ram´ ırez, and J. Uceda, “Equivalent dq sequence-domain model of unbalanced three-phase passive elements for power converter con-trollers,” in 2023 IEEE Applied Power Electronics Con-ference and Exposition (APEC) , 2023, pp. 1331–1338. [33] A. G. J. MAcFarlane and I. Postlethwaite, “The gener-alized nyquist stability criterion and multivariable root loci,” Int. J. Control , vol. 25, no. 1, pp. 81–127, 1977. [34] J. Rocabert, A. Luna, F. Blaabjerg, and P. Rodr´ ıguez, “Control of power converters in ac microgrids,” IEEE Transactions on Power Electronics , vol. 27, no. 11, pp. 4734–4749, 2012. [35] R. Teodorescu, M. Liserre, and P. Rodr´ ıguez, Grid Con-verters for Photovoltaic and Wind Power Systems . John Wiley and Sons, 2010. 
+
+Airan Frances (GS’16–M’18) received the M.Sc. and Ph.D. degrees in electrical engineering from the Universidad Polit´ ecnica de Madrid (UPM), Spain, in 2012 and 2018, respectively. He is currently an Assistant Professor with the Department of Electrical Engineering, UPM. He participated for two years in the European Project XFEL, where he collaborated on the design and development of dc–dc power supplies for super-conducting magnets. His current research interests include modeling, control, and stability assessment of electronic power distribution systems and smart grids. 
+
+Dionisio Ramirez (M’07–SM’15) received the M.S. degree in industrial engineering and the Ph.D. degree in electrical engineering from the Universidad Po-litecnica de Madrid (UPM), Madrid, Spain, in 1997 and 2003, respectively. He is with the Department of Electrical Engi-neering, UPM. His research interests include electric control of renewable energy and DSP-based control systems. 
+
+Javier Uceda (M’83–SM’91–F’05) received the M.Sc. and Ph.D. degrees in electrical engineering from the Universidad Polit´ ecnica de Madrid (UPM), Spain, in 1976 and 1979, respectively. He is currently a Full Professor in electronics with the Electrical and Electronic Engineering De-partment, UPM. His research activity has been de-veloped in the field of power electronics, where he has participated in numerous national and in-ternational research projects. His research interests include switched-mode power supplies and dc–dc power converters for telecom and aerospace applications. As a result of this activity, he has published more than three hundred articles in international journals and conferences. He holds several national and international patents. Prof. Uceda has received several individual and collective awards, such as the IEEE Third Millennium Medal, the Puig Ad´ an Medal. He is also an Honorary Doctor by the Universidad Ricardo Palma in Per´ u and the Colegio de Posgraduados in Mexico.

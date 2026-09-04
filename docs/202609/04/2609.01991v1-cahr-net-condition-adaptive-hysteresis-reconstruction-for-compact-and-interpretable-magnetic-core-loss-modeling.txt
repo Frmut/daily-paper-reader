@@ -1,0 +1,378 @@
+Title: CAHR-Net: Condition-Adaptive Hysteresis Reconstruction for Compact and Interpretable Magnetic Core Loss Modeling
+
+URL Source: https://arxiv.org/pdf/2609.01991v1
+
+Published Time: Thu, 03 Sep 2026 00:30:43 GMT
+
+Number of Pages: 10
+
+Markdown Content:
+> IEEE OPEN JOURNAL OF POWER ELECTRONICS, VOL. XX, 2026 1
+
+# CAHR-Net: Condition-Adaptive Hysteresis Reconstruction for Compact and Interpretable Magnetic Core Loss Modeling 
+
+Chunye Gong † and Cong Yao †
+
+Abstract —Magnetic core loss originates in the hysteresis loop: the energy dissipated per excitation cycle equals the loop area, and frequency, temperature, and waveform shape set the loss by reshaping the loop geometry. Most existing models, however, let these operating conditions act only on a terminal scalar— empirical equations fold them into fitted exponents, while data-driven predictors append them to encoded features—so no inter-mediate hysteresis representation remains for the conditions to reshape. This paper proposes a condition-adaptive hysteresis re-construction network (CAHR-Net) that injects the operating con-ditions where they physically act. The proposed method preserves the physically interpretable chain from flux density waveform to magnetic field reconstruction, hysteresis-loop area integration, and power loss estimation. Different from scalar concatenation or terminal correction, CAHR-Net uses feature-wise linear mod-ulation to inject frequency, temperature, and waveform statistics into the intermediate reconstruction representation. A matched large-batch training protocol based on AdamW, cosine learning-rate scheduling, and a staged reconstruction-loss-to-power-loss objective is further reported, because the modulation pathway takes effect only within it. Experiments on the MagNet final A– E material protocol show that CAHR-Net attains an average 
+
+p95 relative error of 6.89% with only 1874 parameters—the lowest average p95 among all compared methods, together with a lower worst-material p95 than the strongest black-box solution at about 48 × fewer parameters—and reduces the average p95 
+
+of the physical reconstruction backbone from 7.47% to 6.89% 
+
+and the p95 of material D, the most difficult material, from 
+
+16 .40% to 14 .87% . Ablation and condition-slice analyses indicate that the improvement comes from the coupling of physical loop reconstruction, structured condition modulation, and the matched optimization trajectory. 
+
+Index Terms —Condition modulation, core loss, feature-wise linear modulation, hysteresis reconstruction, MagNet, power magnetics. 
+
+I. I NTRODUCTION 
+
+# MAGNETIC core loss is not an abstract scalar response: in each excitation cycle, the energy dissipated in the core equals the area of the B–H hysteresis loop, and this loss largely dictates the thermal design, power density, and efficiency of high-frequency converters. Operating conditions govern the loss through the geometry of this loop—frequency broadens it, temperature rescales its amplitude and local slope,          
+
+> Manuscript received Month xx, 2026; revised Month xx, 2026. This work was supported in part by the National Key Research and Development Program of China under Grant 2025YFB3003605 and in part by the National Natural Science Foundation of China under Grant U2530207. († Chunye Gong and Cong Yao contributed equally to this work.) (Corresponding author: Cong Yao.)
+> Chunye Gong and Cong Yao are with the College of Computing, National University of Defense Technology, Changsha 410073, China, also with the National Supercomputer Center in Tianjin, Tianjin 300457, China, and also with the Laboratory of Digitizing Software for Frontier Equipment, National University of Defense Technology, Changsha 410073, China (e-mail: gongchunye@nudt.edu.cn; ycong744@gmail.com).
+
+and the flux-density waveform sets the trajectory along which it is traversed. Every core loss model is therefore, implicitly, an answer to the question of where the operating conditions should enter. The classical Steinmetz equation [1] answers it by collapsing the loop into a compact power law whose fitted exponents absorb the conditions, and successive refinements have extended this answer to nonsinusoidal excitation by adding parameters to the same scalar law [2]–[6]. The collapse, however, is lossy: fixed functional forms cannot track how arbitrary waveforms, wide temperature ranges, and material-specific nonlinearities jointly deform the loop. This difficulty is fundamental rather than parametric. Maxwell’s equations and finite-element field solvers already describe the linear behavior of conductors and the geometric and thermal aspects of a component with high fidelity; what resists compact modeling is the strongly nonlinear, history-dependent magnetization that generates the loop itself, com-pounded by the dispersion that material composition and manufacturing introduce at the component level. Hysteresis formalisms such as the Preisach model [7] and the Jiles– Atherton model [8] keep the loop as the modeling object, but their semi-empirical parameters are difficult to identify consistently across wide frequency, temperature, and wave-form ranges. Core loss modeling has therefore long faced a dilemma: preserve the loop and struggle to fit it, or collapse the loop and lose the very geometry through which the operating conditions act. Public datasets and modeling challenges [9]–[12] have re-cently made a third route practical: learning the waveform-to-loss map directly from large-scale measurements. Neu-ral predictors built on waveform encoding, multimodal fu-sion, and physics-inspired structures [13]–[16], together with knowledge-aware networks [17], history-dependent hysteresis operators [18], adversarial generation [19], and cross-material transfer [20], have pushed accuracy well beyond the empir-ical family. Yet most of these models achieve accuracy by abandoning the loop altogether, and they inherit a subtler form of the same misplacement: frequency, temperature, and flux-density statistics are appended to a feature vector or concatenated at the regression head, so the model can observe which condition produced a sample, while no intermediate hysteresis representation remains for the conditions to reshape. Gray-box reconstruction restores the missing object. The HARDCORE framework [21] first reconstructs the magnetic field waveform and then integrates the BH loop area, show-ing that keeping the loop inside the model yields a favor-able accuracy–complexity tradeoff under arbitrary waveforms. Even here, however, the operating conditions still enter as appended scalars: the object is right, but the conditioning arXiv:2609.01991v1 [cs.LG] 2 Sep 2026 IEEE OPEN JOURNAL OF POWER ELECTRONICS, VOL. XX, 2026 2
+
+pathway is not. We observe that the leading effects of fre-quency and temperature on the loop—broadening, tilting, and amplitude scaling—are naturally expressed as a scaling and shifting of the representation from which the loop is generated. This suggests encoding the operating conditions into feature-wise scale and shift parameters that act directly on the interme-diate reconstruction representation. CAHR-Net, the condition-adaptive hysteresis reconstruction network proposed in this paper, realizes this principle: a dilated temporal-convolutional encoder [22] extracts the waveform skeleton, feature-wise linear modulation (FiLM) [23] lets the conditions reshape the hidden representation before the magnetic field waveform is reconstructed, and a staged reconstruction-to-loss objective with matched large-batch optimization allows the modulation branch to leave the near-identity regime and become effective. The contributions of this paper follow from this single design question—where should the operating conditions enter the model—and are summarized as follows.  
+
+> •
+
+The object: a physically interpretable reconstruction backbone. A lightweight architecture keeps the hysteresis loop as the modeling object for arbitrary-waveform core loss estimation, following the interpretable path B(t) →
+
+ˆH(t) → BH → ˆPv rather than direct terminal regression.  
+
+> •
+
+The pathway: condition-adaptive FiLM modulation. Fre-quency, temperature, and waveform statistics are encoded into feature-wise scaling and shifting parameters that act directly on the intermediate hysteresis reconstruction representation. This pathway admits an electromagnetic reading—scaling matches loop broadening and amplitude rescaling, shifting matches bias and remanence drift— that scalar concatenation and terminal correction do not provide.  
+
+> •
+
+The evidence: a favorable accuracy–parameter– interpretability tradeoff. Under the unified MagNet final A–E protocol, CAHR-Net attains an average p95 relative error of 6.89% with only 1874 parameters, the lowest average p95 among all compared methods—and a lower worst-material p95 than the strongest black-box entry at about 48 × fewer parameters—and it reduces the average 
+
+p95 of the physical reconstruction backbone from 7.47% 
+
+to 6.89% and the p95 of material D, the most difficult material, from 16 .40% to 14 .87% .The rest of this paper is organized as follows. Section II develops CAHR-Net, from the problem formulation to the loop reconstruction chain, the condition modulation pathway, and the deployment-oriented inference optimization. Section III describes the experimental setup, including the network con-figuration and training protocol, Section IV presents the results and analyses, and Section V concludes the paper. II. M ETHODOLOGY 
+
+A. Problem Formulation and Method Overview 
+
+Given a single-period flux density waveform 
+
+B = {Bt}Nt=1 , N = 1024 , (1) and a scalar operating vector s containing frequency, temper-ature, and waveform-level statistics, the goal is to predict the volumetric core loss Pv. A direct map 
+
+ˆPv = fθ (B, s) (2) treats the loss as an isolated scalar output and leaves no intermediate representation for the operating conditions to act on. CAHR-Net instead uses a physically structured interme-diate target that keeps such a pathway open: it reconstructs the magnetic field waveform ˆH(t), computes a loop-area-based initial estimate, and then applies a lightweight residual correction in the logarithmic loss domain. Fig. 1 shows the resulting architecture. CAHR-Net contains a temporal convolutional branch for waveform encoding, a scalar multilayer perceptron for condition encoding, a FiLM block [23] that couples the two, a magnetic-field reconstruction head with BH area integration, and a residual power-loss correction head. 
+
+B. Physical Loop Reconstruction Chain 
+
+The temporal encoder first extracts a waveform skeleton from the normalized 1024-point flux density sequence, 
+
+F0 = EB (B(t)) , (3) where EB (·) denotes a stack of dilated temporal convolution blocks [22]. The scalar branch maps the operating vector to modulation parameters. After modulation, the reconstruction head generates 
+
+ˆH(t) = G(B(t), s; γ, β ) . (4) The reconstructed field waveform is converted to an initial power-loss estimate through discrete loop-area integration, 
+
+ˆPBH = f b lim hlim trapz 
+
+ ˆH, B 
+
+
+
+, (5) where f is the excitation frequency, blim and hlim are the scale factors used to restore physical magnitudes, and trapz( ·)
+
+denotes trapezoidal integration. The final prediction is obtained in the logarithmic domain: 
+
+ˆyP = log 
+
+ ˆPBH 
+
+
+
++ ∆ 
+
+
+
+[s, log( ˆPBH )] 
+
+
+
+, (6) 
+
+ˆPv = exp(ˆ yP ). (7) In implementation, the residual head uses a standardized form of log( ˆPBH ) for numerical stability. ( 5 to 7 keep the prediction chain anchored to the physical relation between the hysteresis loop and core loss while allowing a small learned correction for scale and integration bias. Both the reconstruction target and the scale factors in ( 5 are anchored in measured data. For every record, the MagNet database provides the measured magnetic field waveform 
+
+H(t), obtained from the sensed excitation current through Amp` ere’s law, alongside the flux density waveform obtained from the induced voltage [9]. The reconstruction loss defined in Section III-D therefore supervises ˆH(t) with measured waveforms rather than with model-generated references, fol-lowing the same protocol as HARDCORE [21]. The factor IEEE OPEN JOURNAL OF POWER ELECTRONICS, VOL. XX, 2026 3          
+
+> Fig. 1. Overall architecture of CAHR-Net. The operating vector sis encoded into the FiLM pair [γ, β ], which rescales ( ⊙, by 1 + αγ ) and then shifts ( +,by β) eleven of the twelve encoder channels before the magnetic-field reconstruction head; one raw channel bypasses modulation. The reconstructed field
+> ˆH(t)drives the BH -area integration, and a residual multilayer perceptron corrects the loop-area estimate in the logarithmic loss domain to produce ˆPv.
+
+blim is the maximum absolute flux density over the training records of the material, and hlim is the corresponding field normalization bound, capped at 150 A /m and rescaled per record by the record’s relative flux amplitude, so that ( 5 restores physical magnitudes from normalized waveforms. 
+
+C. Condition-Adaptive FiLM Modulation 
+
+The key difference between CAHR-Net and scalar-concatenation models is the location and form of condition injection. Let Es(·) be the scalar encoder. The modulation parameters are generated by 
+
+[γ, β ] = Ψ( Es(s)) , (8) where Ψ( ·) projects the condition embedding into the fea-ture modulation space. For an intermediate representation F,CAHR-Net applies 
+
+eF = (1 + αγ ) ⊙ F + β, (9) where ⊙ is channel-wise multiplication and α controls mod-ulation strength. The default setting uses α = 0 .1.The form of ( 9 mirrors the two dominant ways in which operating conditions deform the measured hysteresis loop. As frequency rises, eddy-current and excess contributions widen the loop and rescale its local slope, which is a multiplicative deformation of the trajectory amplitude; temperature shifts the permeability and coercivity operating point, which acts closer to a translation of the loop. The FiLM pair reproduces these two degrees of freedom on the hidden representation: 
+
+γ applies channel-wise rescaling, matching loop broadening and amplitude scaling, while β applies channel-wise shifting, matching bias and remanence drift. The same waveform pat-tern can therefore be amplified, suppressed, or translated under different operating conditions before ˆH(t) is reconstructed. Additive bias injection, as used in the backbone, covers only the translational degree of freedom, and input-level concatena-tion provides neither in a structured form. We do not claim a one-to-one identification between individual FiLM parameters and specific loop features; the correspondence holds at the level of transformation families, and it is consistent with the ablation in Fig. 6(a), where replacing FiLM with bias-only injection removes most of the gain under the matched IEEE OPEN JOURNAL OF POWER ELECTRONICS, VOL. XX, 2026 4
+
+optimization protocol. 
+
+D. Deployment-Oriented Inference Optimization 
+
+The 1874-parameter budget suggests that CAHR-Net is inexpensive to deploy, but parameter count alone does not determine the latency realized in practice. In the intended de-ployment scenarios—loss evaluation inside iterative converter design loops, large design-space sweeps, and online estimation on general-purpose processors without an accelerator—the model is queried one operating point at a time on a CPU, and for a network of this size the per-query cost is dominated by framework dispatch rather than by arithmetic. CAHR-Net therefore admits an accuracy-neutral inference optimization that lowers this per-query cost by changing only the execution backend, without modifying weights, architecture, or numeri-cal precision. The optimization exports the trained model to the ONNX format and serves it with ONNX Runtime 1.18.1 [24]. The export is not a push-button step: the loop-area integration of ( 5 relies on a trapezoidal-integration operator that has no ONNX equivalent. A thin export wrapper therefore rewrites the integration as an explicit trapezoidal sum built from elementary slicing, addition, multiplication, and reduction op-erations, and bakes the per-material normalization constants into the graph, so that the exported graph is self-contained. Two numerical gates guard the export. First, the wrapper is verified to be bit-identical to the original TorchScript model, with a maximum absolute output difference of exactly zero. Second, the exported model under ONNX Runtime is compared against the original over all 7651 material-A test samples: the maximum deviation is |∆ log ˆPv| < 8 × 10 −6,and the test-set p95 relative error remains 5.86% , unchanged to two decimals. The optimization is thus accuracy-neutral both by construction and by measurement; its latency benefit is quantified in Section IV-F. III. E XPERIMENTAL SETUP 
+
+A. Dataset, Protocol, and Metrics 
+
+Experiments use the MagNet final-stage A–E material pro-tocol [9], [12]. Each material is trained and tested indepen-dently on its corresponding final split. The input waveform contains 1024 samples per period, and the scalar vector contains frequency, temperature, and waveform statistics as specified in Section III-C. Prediction quality is measured by the relative error 
+
+Rel . Err . = ˆPv − Pv
+
+Pv
+
+× 100% , (10) and reported as the average relative error, the average p95 
+
+and p99 percentiles across the five materials, and the worst-material p95 [25]. In all experiments reported below, the worst-material p95 occurs on material D, so “worst p95 ”and “material-D p95 ” denote the same quantity. The p95 -oriented view is adopted because thermal design is usually more sensitive to high-risk tail errors than to mean behavior; an average p95 relative error below 10% is generally regarded as strong under the MagNet evaluation protocol [12]. All reported results follow the single-model reporting convention of the MagNet Challenge and HARDCORE [12], [21], using one trained model per method under the released protocol. 
+
+B. Compared Methods 
+
+Three groups of baselines are considered. First, empirical models, including SE, MSE, GSE, and iGSE, are re-fitted under the same A–E protocol. SE is fitted by logarithmic least squares, whereas MSE, GSE, and iGSE use bounded nonlinear least squares with five multi-start restarts. Second, representative public challenge methods are summarized from the MagNet Challenge report [12]. Third, internal models are evaluated under the same experimental chain, including the HARDCORE physical reconstruction backbone [21], the same backbone trained with AdamW and cosine scheduling (HARDCORE + AWC), SE-TCN, FiLM-TCN, CAHR-Net, and width or combination variants. 
+
+C. Network Configuration 
+
+Table I lists the complete layer-by-layer configuration of CAHR-Net; the parameter subtotals add up to the 1874 param-eters reported throughout the paper. The waveform encoder receives five input channels—the globally normalized flux density waveform, a per-record normalized copy, its first and second time derivatives, and a saturation-emphasizing tangent transform [21]. The operating vector s ∈ R11 collects the logarithmic frequency, the temperature, four waveform-shape indicator variables, the peak-to-peak flux density and the mean absolute flux slew rate together with their logarithms, and the fundamental period. All convolutions use circular padding, consistent with the periodic single-period input, and the three temporal blocks use kernel size 9 with dilation rates 4, 8, and 16. FiLM acts at the interface between the waveform encoder and the reconstruction head: eleven of the twelve encoder channels are modulated by γ, β ∈ R11 , while the first channel passes through unmodulated so that a raw waveform pathway is always preserved. CAHR-Net is fully specified by Table I and the training protocol below; HARDCORE is included in Table III only as a reconstruction baseline under the same A–E evaluation protocol.                                       
+
+> TABLE I LAYER -BY -L AYER CONFIGURATION OF CAHR-N ET
+> Stage Configuration Params Waveform encoder EBConv1d 5→12 ,k=9 ,d=4 , tanh 552 Condition encoder Es,ΨLinear 11 →22 , tanh, [γ, β ]264 FiLM modulation ( 9, 11 of 12 channels 0Reconstruction head GConv1d 12 →8,k=9 ,d=8 , tanh 872 Conv1d 8→1,k=9 ,d=16 73
+> BH integration Trapezoidal, ( 5 0Residual head ∆Linear 12 →8, tanh; Linear 8→1113 Total 1874 IEEE OPEN JOURNAL OF POWER ELECTRONICS, VOL. XX, 2026 5
+
+D. Training Protocol 
+
+Introducing FiLM alone does not guarantee a stable gain un-der large-batch training. CAHR-Net therefore uses a matched optimization protocol. The magnetic-field reconstruction loss and logarithmic power-loss loss are 
+
+LH = MSE 
+
+ ˆH, H 
+
+
+
+, LP = MSE(ˆ yP , log Pv) . (11) At epoch e of E total epochs, the total loss is 
+
+L(e) = 
+
+
+
+1 − eE
+
+
+
+LH + eE LP . (12) This schedule prioritizes stable loop reconstruction at the beginning and gradually shifts the emphasis toward loss pre-diction. The ordering matters for interpretability: if the power-loss objective dominated from the start, the residual head could compensate for a physically meaningless loop, and the reconstruction chain would lose its electromagnetic reading. The optimizer is AdamW [26] with cosine learning-rate scheduling [27], learning rate 2 × 10 −3, weight decay 10 −4,batch size 512, and 10000 epochs; the modulation strength 
+
+α = 0 .1 in ( 9 keeps the FiLM branch close to identity at initialization. These settings are stated in full because of an empirical finding documented in Fig. 6(a): under the original NAdam optimizer with step decay, FiLM behaves close to bias injection, whereas AdamW with cosine scheduling and the enlarged learning rate allows the modulation branch to leave the near-identity regime and take effect. We regard this coupling between the conditioning structure and the optimization trajectory as an empirical finding rather than a standalone contribution. Fig. 2 summarizes the resulting training-to-inference protocol. IV. R ESULTS AND DISCUSSION 
+
+A. Comparison: Empirical Equations, Challenge Entries, and the Accuracy–Parameter Frontier 
+
+Table II consolidates the external comparison into three views. Empirical equations. Even when SE, MSE, GSE, and iGSE are fitted independently for each material, they remain in the 56 .84% –78 .30% average-p95 band; their limitation is therefore structural rather than a matter of parameter fitting, because a terminal scalar law cannot represent arbitrary-waveform, wide-condition effects. MagNet Challenge entries. 
+
+The public field spans a wide range, from the strongest black-box solution, Bristol, at 7.78% average p95 with 90 ,653 
+
+parameters, to gray-box entries that stay above 13% ; these numbers were obtained under different implementations and possibly different evaluation protocols, so they serve as an external reference rather than a controlled ranking. Accuracy– parameter frontier. Isolating the four most competitive oper-ating points shows where the proposed method leads: Bristol, which reports the best accuracy yet placed third officially; Fuzhou, the official runner-up; HARDCORE, the method of the official winner Paderborn, evaluated here as the recon-struction backbone; and CAHR-Net. Note that the official final ranking weighted model size jointly with accuracy [12], which is why the 8914-parameter Fuzhou entry outranked Bristol despite Bristol’s lower error. CAHR-Net attains the lowest average p95 in the whole table, 6.89% against Bristol’s 7.78% 
+
+and Fuzhou’s 7.94% , together with the lowest worst-material 
+
+p95 , 14 .87% against Bristol’s 15 .90% , yet reaches this with only 1874 parameters—about 1/48 of the Bristol budget and 
+
+1/4.8 of Fuzhou—while the gray-box models near its size stay above 13% average p95 . CAHR-Net thus occupies a region of the accuracy–parameter plane that neither the black-box nor the existing gray-box group covers, while keeping the prediction chain physically readable. Fig. 3 visualizes this relationship. 
+
+B. Ablation Study 
+
+Table III isolates the contribution of each design choice under a shared data pipeline and evaluation script, with rows marked AWC further sharing the optimization protocol of Section III-D, moving from the HARDCORE backbone toward CAHR-Net one axis at a time. Three axes are examined. 
+
+Optimization protocol. Applying the matched large-batch pro-tocol (AWC) to the unchanged backbone lowers the average 
+
+p95 from 7.47% to 7.27% and the worst-material p95 from 
+
+16 .40% to 15 .64% , so a better-conditioned training region already helps before any architectural change. Condition-injection module. Compared under the same protocol, replac-ing the injection with SE or a plain FiLM branch reaches 
+
+7.14% and 7.85% average p95 , whereas the condition-adaptive injection of CAHR-Net attains 6.89% together with the lowest average p99 of 11 .82% and the lowest worst-material p95 of 
+
+14 .87% ; the gap to FiLM-TCN trained at the original learning rate is consistent with the finding of Section III-D that the modulation pathway requires the matched optimization region to become fully effective. Capacity. Widening the network through CAHR-W12, SE+CAHR-W12, and SE+CAHR-W16 raises the parameter count from 1874 to as many as 3057 
+
+yet degrades the average p95 to the 7.69% –8.47% range and pushes the worst-material p95 above 20% , indicating that the improvement stems from how condition information is injected and trained rather than from added capacity. CAHR-Net therefore gives the best accuracy of the chain at a near-minimal parameter budget. 
+
+C. Material-Level Tail Error 
+
+Fig. 4(a) shows that the main gain is concentrated on material D, the most difficult material. CAHR-Net lowers the material-D p95 from 16 .40% to 14 .87% , while materials A, B, C, and E do not show obvious degradation. This behavior is desirable because it improves the high-risk tail without transferring error to easier materials. Fig. 4(b) further verifies that the error distribution on material D shifts left and contracts in the high-error region. Therefore, the proposed method does not merely reduce the mean error; it directly compresses samples that would other-wise dominate design risk. 
+
+D. Condition-Slice Analysis 
+
+To locate where the improvement appears, sample errors are pooled across the five materials and stratified by temperature, IEEE OPEN JOURNAL OF POWER ELECTRONICS, VOL. XX, 2026 6
+
+Per-material train set 
+
+> A–E, independent
+
+CAHR-Net forward pass       
+
+> B, s→ˆH→ˆPv(Fig. 1)
+
+Staged loss 
+
+L(e)
+
+AdamW 
+
++ cosine     
+
+> ˆH, ˆPv∇θL
+> update θ
+
+Training phase 
+
+Test input B(t), s
+
+> held-out, per material
+
+CAHR-Net (trained) 
+
+ˆH(t), ˆPv
+
+> loop & core loss
+
+Relative error     
+
+> Avg / p95 /p99
+> deploy θ⋆
+
+Inference & evaluation phase 
+
+Fig. 2. Training-to-inference protocol of CAHR-Net. Each material A–E is trained independently. During training, the forward pass of Fig. 1 produces ˆH
+
+and ˆPv, which are scored by the staged loss L(e) of ( 12 and optimized with AdamW and cosine scheduling; the curriculum schedule shifts the emphasis from the magnetic-field reconstruction loss LH early in training to the logarithmic core-loss objective LP late in training. The trained parameters θ⋆ are then deployed on held-out inputs, and the average, p95 , and p99 relative-error metrics are computed per material. TABLE II UNIFIED COMPARISON : E MPIRICAL EQUATIONS , M AG NET CHALLENGE ENTRIES , AND THE ACCURACY –P ARAMETER FRONTIER 
+
+Method Core Expression / Category Params Avg p95 (%) Worst p95 (%) 
+
+(a) Empirical equations (per-material fit, unified A–E protocol) 
+
+SE kf αBβ 
+
+> pk
+
+— 78.30 85.84 MSE kf αBβ
+
+> pk
+
+f α−1eq — 56.84 62.31 GSE kf α∆Bβ−α R | ˙B|α — 57.66 64.52 iGSE kf α P 
+
+> i
+
+∆Bβi ∆t1−αi — 61.23 72.42 
+
+(b) MagNet Challenge entries (as reported [12]) 
+
+Bristol Black-box 90653 7.78 15.90 
+
+Fuzhou Black-box 8914 7.94 20.70 Tsinghua Black-box 116061 16.88 29.90 XJTU Black-box 17342 14.20 30.00 MMINN [15] Gray-box 1084 13.86 30.70 PI-MFF-CN [13] Gray-box 139938 30.56 79.10 
+
+(c) Accuracy–parameter frontier 
+
+Bristol (best reported accu-racy) Black-box 90653 ( 48 ×) 7.78 (+12.9%) 15.90 (+6.9%) Fuzhou (official 2nd place) Black-box 8914 ( 4.8×) 7.94 (+15.2%) 20.70 (+39.2%) HARDCORE (official 1st place; backbone) Gray-box 1742 ( 0.93 ×) 7.47 (+8.4%) 16.40 (+10.3%) 
+
+CAHR-Net Gray-box 1874 6.89 14.87 
+
+Blocks (a) and (c, backbone/CAHR-Net rows) are evaluated under the unified protocol of this work (Section III); block (b) and the Bristol/Fuzhou rows of (c) are as reported in the original sources [12], so the cross-group comparison is an external reference rather than a controlled ranking. Official placements refer to the challenge’s final ranking, which jointly weighted accuracy and model size. Parenthesized values in block (c) are relative to CAHR-Net: the parameter count as a multiple of 1874, and the two p95 columns as the relative increase over 6.89% and 14 .87% , respectively. The Bristol entry used 90653-parameter models for materials A–C and 16449-parameter transfer-learned models for D–E, so its worst-material p95 (15.90, material D) was obtained with the 16449-parameter model. Empirical models are analytic per-material fits, whose coefficient count is not comparable to a network parameter budget (“—”). 
+
+frequency, peak flux density, and true loss magnitude under shared quartile boundaries. Fig. 5 summarizes these four condition-slice views. The gains are broad but modest: CAHR-Net lowers the p95 in most slices by a few tenths to about two percentage points, and holds the temperature-slice p95 within 
+
+7.7% –10 .7% versus 8.5% –10 .8% for the backbone. The clear-est improvements fall on the lowest peak-flux-density quartile, from 10 .91% to 8.53% , and on the highest-error, lowest-loss-magnitude quartile, from 12 .62% to 11 .00% , where relative error is intrinsically harder to control; a small number of IEEE OPEN JOURNAL OF POWER ELECTRONICS, VOL. XX, 2026 7     
+
+> TABLE III ABLATION STUDY UNDER THE UNIFIED EXPERIMENTAL CHAIN .
+
+Method Parameters Avg. Rel. Err. (%) Avg. p95 (%) Avg. p99 (%) Worst p95 (%) Rel. ∆p95 vs. CAHR-Net (%) HARDCORE 1742 2.63 7.47 12.53 16.40 +8 .4
+
+HARDCORE + AWC 1742 2.62 7.27 11.95 15.64 +5 .5
+
+SE-TCN + AWC + 2 ×
+
+10 −3
+
+1875 2.48 7.14 11.83 16.23 +3 .6
+
+FiLM-TCN + AWC +
+
+10 −3
+
+1874 2.70 7.85 13.19 17.61 +13 .9
+
+CAHR-Net 1874 2.42 6.89 11.82 14.87 0.0 
+
+CAHR-W12 2346 2.50 7.74 13.24 20.68 +12 .3
+
+SE + CAHR-W12 2524 2.46 7.69 12.94 20.04 +11 .6
+
+SE + CAHR-W16 3057 2.70 8.47 15.86 24.41 +22 .9  
+
+> Fig. 3. Parameter-count and average-p95 relation between public represen-tative methods and CAHR-Net.
+
+slices, such as the second flux-density quartile, are essentially unchanged. 
+
+E. Injection–Optimization Interaction and Parameter Effi-ciency 
+
+Fig. 6(a) presents a two-dimensional sweep over condition injection and optimization strategy. Under NAdam with step decay, bias, SE, and FiLM injection are close. After switching to AdamW with cosine scheduling, FiLM starts to show a stable advantage. Increasing the learning rate to 2 × 10 −3
+
+moves FiLM into the best region, corresponding to the CAHR-Net configuration reported in Table III. Fig. 6(b) shows that widening the model or adding SE-style recalibration does not reliably outperform CAHR-Net under a similar parameter budget. The dominant improvement therefore comes from how condition information enters the reconstruction process and how this structure is trained, rather than from a simple increase in capacity. 
+
+F. Inference Latency Optimization 
+
+We now quantify the latency benefit of the accuracy-neutral deployment optimization of Section II-D. Table IV reports the per-sample latency of four execution backends on a single        
+
+> Fig. 4. Material-level tail analysis. (a) Material-level p95 comparison between HARDCORE and CAHR-Net. (b) Empirical cumulative distribution of relative error on material D; the inset magnifies the tail region around the 95th percentile, where CAHR-Net shifts the p95 from 16 .40% to 14 .87% .
+
+thread of a server-class Xeon Platinum 8360Y CPU, using the material-A test set and the trained checkpoint; each entry is the median over repeated timed runs, with 300 repetitions at batch size 1. Three observations follow. First, at batch size 1—the regime that matters for per-operating-point queries—switching from TorchScript to ONNX Runtime reduces the latency from IEEE OPEN JOURNAL OF POWER ELECTRONICS, VOL. XX, 2026 8    
+
+> Fig. 5. Condition-slice analysis of p95 relative error, shown from top to bottom for temperature, frequency, peak flux density Bpk , and true loss magnitude quartiles.
+
+0.82 ms to 0.19 ms per sample, a 4.4× speedup, and 5.6× over eager execution, at zero accuracy cost. Second, the table itself diagnoses where the gain comes from: at batch size 256 all four backends converge to approximately 150 μs per sample, which is the arithmetic floor of the model on this core; consequently, about 82% of the batch-1 TorchScript time is per-invocation framework overhead rather than computation, and the runtime switch removes precisely this overhead instead of approximating the model. Third, at batch size 2048 the PyTorch-based backends degrade to roughly 370 μs per sample         
+
+> Fig. 6. Injection–optimization interaction and parameter efficiency. (a) Interaction between condition injection strategy and optimization protocol. (b) Parameter-count and average-p95 Pareto distribution of internal model variants.
+
+whereas ONNX Runtime remains at 174 μs, indicating better operator fusion and memory locality at large batches. To assess whether these gains are tied to the proposed architecture, the identical export-and-verification procedure is applied to the bias-injection backbone HARDCORE, and Table V contrasts the two models before and after the backend switch. The backbone exhibits the same 4.4× reduction in single-sample latency, from 798 to 182 μs, which indicates that the optimization exploits a property shared by this class of compact loop-reconstruction models—their inference time is dominated by framework dispatch rather than by computation—and hence generalizes beyond CAHR-Net itself. Table V also shows that the latency of the two models remains within 5% of each other at every batch size under the optimized backend— 186 versus 182 μs at batch size 1— an absolute difference of a few microseconds per sample. Condition-adaptive modulation thus incurs no practically rel-evant serving cost: the accuracy improvements of Table III are obtained at essentially the latency of the unmodulated backbone. From a deployment perspective, 0.19 ms per sample on one CPU thread corresponds to more than 5000 loss evaluations per second per core, which is sufficient to embed the model directly in interactive design iteration or in the inner loop of IEEE OPEN JOURNAL OF POWER ELECTRONICS, VOL. XX, 2026 9
+
+TABLE IV SINGLE -T HREAD CPU I NFERENCE LATENCY OF CAHR-N ET ACROSS 
+
+EXECUTION BACKENDS (μS PER SAMPLE , M ATERIAL -A T EST SET )
+
+Batch Size PyTorch Eager TorchScript TorchScript (Opt.) ONNX Runtime 1 1051 822 788 186 
+
+16 200 185 169 149 
+
+256 161 154 152 152 
+
+2048 366 372 372 174 
+
+TABLE V MODEL -L EVEL LATENCY BEFORE AND AFTER BACKEND OPTIMIZATION 
+
+(μS PER SAMPLE , S INGLE CPU T HREAD )               
+
+> Batch Size HARDCORE (TorchScript) CAHR-Net Before Opt. (TorchScript) CAHR-Net After Opt. (ONNX Runtime) 1798 822 186 16 167 185 149 256 147 154 152 2048 354 372 174
+
+a circuit-level optimization sweep over thousands of operating points, with no GPU in the serving path. The exported ONNX graph, together with the roughly 7.5 KB of FP32 weights, is also the standard entry format for embedded inference toolchains, so it constitutes a ready artifact for microcontroller-class deployment. Two caveats bound this result: the reported latencies are measured on a server-class CPU core rather than on a microcontroller, and further reductions through integer quantization or sequence downsampling are left as future work. V. C ONCLUSION 
+
+This paper returns to a fundamental question: where, in a magnetic core loss model, should operating conditions enter? CAHR-Net answers by placing them in the hysteresis-loop reconstruction process rather than at the model output. The network predicts along the physical B(t) → ˆH(t) → BH →
+
+ˆPv chain, keeping the hysteresis loop as an explicit modeling object throughout. On this basis, FiLM converts frequency, temperature, and waveform statistics into channel-wise scales and shifts that act directly on the intermediate representation from which the magnetic-field waveform is reconstructed— the point at which these conditions physically act—instead of merely correcting a scalar output at the end of the model. The training protocol is presented together with the network architecture because the two are inseparable: under the orig-inal NAdam and step-decay configuration, the modulation pathway remains in a near-identity regime; only under the matched protocol combining AdamW, cosine scheduling, and a larger learning rate does it leave that regime and become effective. CAHR-Net therefore derives its value not from any single dimension, but from the coupling of physical loop reconstruction, structured condition modulation, and matched optimization: within a model budget on the order of 10 3
+
+parameters, it retains intermediate quantities that engineers can compare directly with measured hysteresis loops while achieving the tail accuracy attainable by black-box models. Under the MagNet A–E final protocol, CAHR-Net attains the lowest average p95 among the compared methods— 6.89% 
+
+with 1874 parameters, versus 7.78% for the strongest black-box entry at about 48 × the parameter count, which it also sur-passes on worst-material p95 —and offers an operating point that neither black-box nor existing gray-box models cover: a material-D p95 compressed from 16 .40% to 14 .87% relative to the reconstruction backbone, and a prediction chain whose in-termediate quantities remain electromagnetically readable. Ab-lations attribute this gain to the synergy of loop reconstruction, structured condition modulation, and matched optimization. The accuracy–interpretability combination is also cheap to serve: after an accuracy-neutral export to a dedicated inference runtime, single-sample CPU latency drops from 0.82 ms to 
+
+0.19 ms on one thread, so the model can run inside design loops without an accelerator. This study remains limited to per-material training on the five MagNet ferrites and single-period steady-state excitation without DC bias. Future work will address these issues to-gether with material recommendation, uncertainty-aware de-sign margins, and deployment-oriented model compression. REFERENCES [1] C. P. Steinmetz, “On the law of hysteresis,” Transactions of the American Institute of Electrical Engineers , vol. 9, pp. 1–64, 1892. [2] J. Reinert, A. Brockmeyer, and R. W. A. A. De Doncker, “Calculation of losses in ferro- and ferrimagnetic materials based on the modified Stein-metz equation,” IEEE Transactions on Industry Applications , vol. 37, no. 4, pp. 1055–1061, 2001. [3] K. Venkatachalam, C. R. Sullivan, T. Abdallah, and H. Tacca, “Accurate prediction of ferrite core loss with nonsinusoidal waveforms using only Steinmetz parameters,” in 2002 IEEE Workshop on Computers in Power Electronics , 2002, pp. 36–41. [4] J. M¨ uhlethaler, J. Biela, J. W. Kolar, and A. Ecklebe, “Improved core-loss calculation for magnetic components employed in power electronic systems,” IEEE Transactions on Power Electronics , vol. 27, no. 2, pp. 964–973, 2012. [5] T. Guillod, J. S. Lee, H. Li, S. Wang, M. Chen, and C. R. Sullivan, “Calculation of ferrite core losses with arbitrary waveforms using the composite waveform hypothesis,” in 2023 IEEE Applied Power Electronics Conference and Exposition , 2023, pp. 1586–1593. [6] A. Arruti, J. Anzola, F. J. Perez-Cebolla, I. Aizpuru, and M. Mazuela, “The composite improved generalized Steinmetz equation (ciGSE): An accurate model combining the composite waveform hypothesis with classical approaches,” IEEE Transactions on Power Electronics , vol. 39, no. 1, pp. 1162–1173, 2024. [7] F. Preisach, “ ¨ Uber die magnetische nachwirkung,” Zeitschrift f¨ ur Physik ,vol. 94, no. 5–6, pp. 277–302, 1935. [8] D. C. Jiles and D. L. Atherton, “Theory of ferromagnetic hysteresis,” 
+
+Journal of Magnetism and Magnetic Materials , vol. 61, no. 1–2, pp. 48–60, 1986. [9] H. Li, D. Serrano, T. Guillod, S. Wang, E. Dogariu, A. Nadler, M. Luo, V. Bansal, N. K. Jha, Y. Chen, C. R. Sullivan, and M. Chen, “How MagNet: Machine learning framework for modeling power magnetic ma-terial characteristics,” IEEE Transactions on Power Electronics , vol. 38, no. 12, pp. 15 829–15 853, 2023. [10] H. Li, D. Serrano, S. Wang, and M. Chen, “MagNet-AI: Neural network as datasheet for magnetics modeling and material recommendation,” 
+
+IEEE Transactions on Power Electronics , vol. 38, no. 12, pp. 15 854– 15 869, 2023. [11] D. Serrano, H. Li, S. Wang, T. Guillod, M. Luo, V. Bansal, N. K. Jha, Y. Chen, C. R. Sullivan, and M. Chen, “Why MagNet: Quantifying the complexity of modeling power magnetic material characteristics,” IEEE Transactions on Power Electronics , vol. 38, no. 11, pp. 14 292–14 316, 2023. [12] M. Chen, H. Li, S. Wang, T. Guillod, D. Serrano, N. Forster, W. Kirch-gassner, T. Piepenbrock, O. Schweins, O. Wallscheid, Q. Huang, Y. Li, X. Shen, H. Wouters, W. Martinez et al. , “MagNet challenge for data-driven power magnetics modeling,” IEEE Open Journal of Power Electronics , vol. 6, pp. 883–898, 2025. IEEE OPEN JOURNAL OF POWER ELECTRONICS, VOL. XX, 2026 10 
+
+[13] Y. Hu, J. Xu, J. Wang, and W. Xu, “Physics-inspired multimodal feature fusion cascaded networks for data-driven magnetic core loss modeling,” 
+
+IEEE Transactions on Power Electronics , vol. 39, no. 9, pp. 11 356– 11 367, 2024. [14] N. Rajput, H. B. Sandhibigraha, N. Agrawal, and V. M. Iyer, “An empirical model informed neural network core loss predictor for soft magnetic materials,” IEEE Transactions on Power Electronics , vol. 40, no. 8, pp. 11 257–11 267, 2025. [15] Q. Huang, Y. Li, J. Zhu, and S. Li, “Magnetization mechanism-inspired neural networks for core loss estimation,” IEEE Transactions on Power Electronics , vol. 39, no. 12, pp. 16 382–16 390, 2024. [16] Y. Xiao, C. Li, and Z. Zheng, “A magnetic core loss model based on physics-informed neural network with cross-attention,” IEEE Transac-tions on Power Electronics , vol. 41, no. 1, pp. 92–96, 2026. [17] J. Deng, W. Wang, Z. Ning, P. Venugopal, J. Popovic, and G. Rietveld, “High-frequency core loss modeling based on knowledge-aware artificial neural network,” IEEE Transactions on Power Electronics , vol. 39, no. 2, pp. 1968–1973, 2024. [18] Q. Huang, Y. Li, Y. Dou, Y. Li, J. Zhu, and S. Li, “History-dependent Prandtl-Ishlinskii neural network for quasi-static core loss prediction under arbitrary excitation waveforms,” IEEE Transactions on Power Electronics , 2025, early access. [19] X. Shen, Y. Zuo, and W. Martinez, “Conditional generative adversarial network aided iron loss prediction for high-frequency magnetic com-ponents,” IEEE Transactions on Power Electronics , vol. 39, no. 8, pp. 9953–9964, 2024. [20] J. Chen, Y. Liang, X. Li, X. Liu, H. Jiang, X. Miao, and L. Zhang, “A magnetic core loss modeling method based on domain adaptation using multiple kernel maximum mean discrepancy,” IEEE Transactions on Power Electronics , 2025, early access. [21] W. Kirchgassner, N. Forster, T. Piepenbrock, O. Schweins, and O. Wallscheid, “HARDCORE: H-field and power loss estimation for arbitrary waveforms with residual, dilated convolutional neural networks in ferrite cores,” IEEE Transactions on Power Electronics , vol. 40, no. 2, pp. 3326–3335, 2025. [22] S. Bai, J. Z. Kolter, and V. Koltun, “An empirical evaluation of generic convolutional and recurrent networks for sequence modeling,” arXiv preprint arXiv:1803.01271 , 2018. [23] E. Perez, F. Strub, H. de Vries, V. Dumoulin, and A. Courville, “FiLM: Visual reasoning with a general conditioning layer,” in Proceedings of the AAAI Conference on Artificial Intelligence , vol. 32, no. 1, 2018. [24] ONNX Runtime developers, “ONNX Runtime,” https://onnxruntime.ai, 2021, version 1.18.1. [25] C. Tofallis, “A better measure of relative prediction accuracy for model selection and model estimation,” Journal of the Operational Research Society , vol. 66, no. 8, pp. 1352–1362, 2015. [26] I. Loshchilov and F. Hutter, “Decoupled weight decay regularization,” in International Conference on Learning Representations , 2019. [27] ——, “SGDR: Stochastic gradient descent with warm restarts,” in 
+
+International Conference on Learning Representations , 2017.

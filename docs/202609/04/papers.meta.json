@@ -1,0 +1,37 @@
+{
+  "label": "2026-09-04",
+  "date": "2026-09-04",
+  "generated_at": "2026-09-04T22:00:40",
+  "count": 2,
+  "papers": [
+    {
+      "paper_id": "202609/04/2609.01411v1-blackbox-small-signal-modeling-of-grid-connected-inverters-in-asymmetrical-power-grids",
+      "section": "quick",
+      "title_en": "Blackbox Small-Signal Modeling of Grid-Connected Inverters in Asymmetrical Power Grids",
+      "authors": "Airan Frances, Dionisio Ramirez, Javier Uceda",
+      "date": "2026-09-01",
+      "pdf": "https://arxiv.org/pdf/2609.01411v1",
+      "score": "6.0",
+      "evidence": "不对称电网中三相逆变器的建模",
+      "tldr": "针对商业并网逆变器详细模型难以获取且现有黑盒建模大多基于对称平衡假设的问题，本文提出了一种适用于不对称电网条件的序域黑盒小信号建模方法。该方法无需逆变器内部参数即可表征其动态行为，并通过三相逆变器实验及不对称电压骤降场景验证了模型的有效性，为不对称电网的系统级电能质量分析提供了重要工具。",
+      "tags": "query:pmsm",
+      "abstract_en": "Power electronic converters are envisaged to be key enablers of modern electric power distribution systems. Grid-connected three-phase inverters are widely used in Smart Grids and microgrids, but also in standard grids. They provide controllability and dynamic decoupling capabilities, which are fundamental in the integration of renewable sources and storage systems and in specialized applications such as FACTS. Nevertheless, power electronics-based systems can exhibit dynamic interactions, which may lead to power quality issues. Although the electrical model of each element of these systems is important for their system-level analysis, they are rarely available. Blackbox modeling strategies are useful for obtaining behavioral models of commercial electronic converters. Most blackbox modeling strategies are focused on dc-dc electronic converters; however, some works have extended these concepts to three-phase converters by means of the dq framework, under the assumption of symmetrical and balanced conditions. This work proposes a new structure in the sequence domain to represent the dynamic behavior of grid-connected commercial converters in asymmetrical conditions. Experimental tests have been performed on a three-phase inverter to identify its blackbox model and its performance has been validated during an asymmetric voltage sag.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202609/04/2609.01991v1-cahr-net-condition-adaptive-hysteresis-reconstruction-for-compact-and-interpretable-magnetic-core-loss-modeling",
+      "section": "quick",
+      "title_en": "CAHR-Net: Condition-Adaptive Hysteresis Reconstruction for Compact and Interpretable Magnetic Core Loss Modeling",
+      "authors": "Chunye Gong, Cong Yao",
+      "date": "2026-09-02",
+      "pdf": "https://arxiv.org/pdf/2609.01991v1",
+      "score": "6.0",
+      "evidence": "电机磁芯损耗建模",
+      "tldr": "针对传统磁芯损耗模型缺乏物理可解释中间表示的问题，本文提出CAHR-Net网络。该方法利用特征级线性调制将工作条件直接注入磁滞回线重建链中，保留了从波形重建到损耗估计的物理链条。仅需1874个参数便在MagNet数据集上实现了6.89%的最低平均p95误差，兼具轻量、高精度与强可解释性。",
+      "tags": "query:pmsm",
+      "abstract_en": "Magnetic core loss originates in the hysteresis loop: the energy dissipated per excitation cycle equals the loop area, and frequency, temperature, and waveform shape set the loss by reshaping the loop geometry. Most existing models let these conditions act only on a terminal scalar - empirical equations fold them into fitted exponents, and data-driven predictors append them to encoded features - so no intermediate hysteresis representation remains for the conditions to reshape. This paper proposes CAHR-Net, a condition-adaptive hysteresis reconstruction network that injects the operating conditions where they physically act. It preserves the interpretable chain from flux density waveform to magnetic field reconstruction, loop-area integration, and power loss estimation, and uses feature-wise linear modulation to inject frequency, temperature, and waveform statistics into the intermediate reconstruction representation. A matched large-batch training protocol based on AdamW, cosine scheduling, and a staged reconstruction-to-power-loss objective is also reported, because the modulation pathway takes effect only within it. On the MagNet final A-E material protocol, CAHR-Net attains an average p95 relative error of 6.89% with only 1874 parameters, the lowest among all compared methods, together with a lower worst-material p95 than the strongest black-box solution at about 48x fewer parameters; it reduces the average p95 of the physical reconstruction backbone from 7.47% to 6.89% and the p95 of material D, the most difficult material, from 16.40% to 14.87%. Ablation and condition-slice analyses attribute the improvement to the coupling of physical loop reconstruction, structured condition modulation, and the matched optimization trajectory.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
