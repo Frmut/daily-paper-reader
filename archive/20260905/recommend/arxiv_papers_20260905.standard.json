@@ -1,0 +1,52 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-09-05T22:03:19.338335+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 1,
+    "quick_skim_target": 11,
+    "quick_selected": 1
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2608.30977v1",
+      "title": "Adaptive Observer of Nonlinear One-Sided Lipschitz Systems Using Estimated State Regressors With Finite Excitation",
+      "abstract": "For systems with unknown parameters, finite excitation and concurrent learning can potentially yield parameter convergence without persistent excitation but the regressor may still depend on inaccessible states, leading to regressor mismatch. In this paper, this problem is addressed for a class of nonlinear systems with one-sided Lipschitz properties and quadratically inner-bounded nonlinearities with bounded disturbances and linearly parametrized uncertainties. To this aim, an output-integral regression is utilized by using measured outputs and estimated states, and history-stack residual is explicitly bounded in terms of state-estimation error and disturbance. Furthermore, a perturbation bound between the estimated-state and true-state information matrices is derived. Additionally, an OSL-QIB LMI condition is applied for the observer design and a projected adaptive law is designed without needing exact output matching. Stability analysis's results indicate the proposed observer and parameter estimation outperform observers without history-stack learning term.",
+      "authors": [
+        "Hamid Taghavifar",
+        "Brian Delgado Aguilar"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY"
+      ],
+      "published": "2026-08-31T15:36:49+00:00",
+      "link": "https://arxiv.org/pdf/2608.30977v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Adaptive observers for nonlinear systems are used for sensorless PMSM control and parameter estimation",
+      "llm_evidence_cn": "非线性系统的自适应观测器用于永磁同步电机的无感控制和参数估计",
+      "llm_evidence": "非线性系统的自适应观测器用于永磁同步电机的无感控制和参数估计",
+      "canonical_evidence": "非线性系统的自适应观测器用于永磁同步电机的无感控制和参数估计",
+      "llm_tldr_en": "Presents an adaptive observer for nonlinear systems with unknown parameters, useful for motor state estimation.",
+      "llm_tldr_cn": "提出了一种具有未知参数的非线性系统自适应观测器，可用于电机状态估计。",
+      "llm_tldr": "提出了一种具有未知参数的非线性系统自适应观测器，可用于电机状态估计。",
+      "llm_tags": [
+        "query:pmsm"
+      ],
+      "matched_query_tag": "query:pmsm",
+      "matched_query_text": "Permanent Magnet Synchronous Motor research",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

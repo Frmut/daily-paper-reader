@@ -1,6 +1,9 @@
 * <a class="dpr-sidebar-root-link" href="#/">首页</a>
 * <a class="dpr-sidebar-root-link dpr-sidebar-noactive-link" href="javascript:void(0)" data-dpr-hash="#/tutorial/README">使用教程</a>
 * Daily Papers
+  * 2026-09-05 <!--dpr-date:20260905-->
+    * 速读区
+      * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202609/05/2608.30977v1-adaptive-observer-of-nonlinear-one-sided-lipschitz-systems-using-estimated-state-regressors-with-finite-excitation" data-sidebar-item="{&quot;title&quot;: &quot;Adaptive Observer of Nonlinear One-Sided Lipschitz Systems Using Estimated State Regressors With Finite Excitation&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2608.30977v1-adaptive-observer-of-nonlinear-one-sided-lipschitz-systems-using-estimated-state-regressors-with-finite-excitation&quot;, &quot;score&quot;: &quot;6.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;pmsm&quot;}], &quot;evidence&quot;: &quot;非线性系统的自适应观测器用于永磁同步电机的无感控制和参数估计&quot;}">Adaptive Observer of Nonlinear One-Sided Lipschitz Systems Using Estimated State Regressors With Finite Excitation</a>
   * 2026-09-04 <!--dpr-date:20260904-->
     * 速读区
       * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202609/04/2609.01411v1-blackbox-small-signal-modeling-of-grid-connected-inverters-in-asymmetrical-power-grids" data-sidebar-item="{&quot;title&quot;: &quot;Blackbox Small-Signal Modeling of Grid-Connected Inverters in Asymmetrical Power Grids&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2609.01411v1-blackbox-small-signal-modeling-of-grid-connected-inverters-in-asymmetrical-power-grids&quot;, &quot;score&quot;: &quot;6.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;pmsm&quot;}], &quot;evidence&quot;: &quot;不对称电网中三相逆变器的建模&quot;}">Blackbox Small-Signal Modeling of Grid-Connected Inverters in Asymmetrical Power Grids</a>

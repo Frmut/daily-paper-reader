@@ -1,0 +1,23 @@
+{
+  "label": "2026-09-05",
+  "date": "2026-09-05",
+  "generated_at": "2026-09-05T22:03:32",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202609/05/2608.30977v1-adaptive-observer-of-nonlinear-one-sided-lipschitz-systems-using-estimated-state-regressors-with-finite-excitation",
+      "section": "quick",
+      "title_en": "Adaptive Observer of Nonlinear One-Sided Lipschitz Systems Using Estimated State Regressors With Finite Excitation",
+      "authors": "Hamid Taghavifar, Brian Delgado Aguilar",
+      "date": "2026-08-31",
+      "pdf": "https://arxiv.org/pdf/2608.30977v1",
+      "score": "6.0",
+      "evidence": "非线性系统的自适应观测器用于永磁同步电机的无感控制和参数估计",
+      "tldr": "本文针对一类含单边Lipschitz和二次内部有界非线性特征的系统，解决了有限激励下因状态不可测导致的回归器失配问题。通过基于估计状态的输出积分回归与历史数据栈学习机制，结合LMI条件设计了投影自适应观测器，实现了性能更优的状态与参数估计。",
+      "tags": "query:pmsm",
+      "abstract_en": "For systems with unknown parameters, finite excitation and concurrent learning can potentially yield parameter convergence without persistent excitation but the regressor may still depend on inaccessible states, leading to regressor mismatch. In this paper, this problem is addressed for a class of nonlinear systems with one-sided Lipschitz properties and quadratically inner-bounded nonlinearities with bounded disturbances and linearly parametrized uncertainties. To this aim, an output-integral regression is utilized by using measured outputs and estimated states, and history-stack residual is explicitly bounded in terms of state-estimation error and disturbance. Furthermore, a perturbation bound between the estimated-state and true-state information matrices is derived. Additionally, an OSL-QIB LMI condition is applied for the observer design and a projected adaptive law is designed without needing exact output matching. Stability analysis's results indicate the proposed observer and parameter estimation outperform observers without history-stack learning term.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

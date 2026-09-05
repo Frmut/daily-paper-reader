@@ -6,30 +6,25 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-09-04
-- 运行时间：2026-09-04 22:00:36 UTC
+- 最新运行日期：2026-09-05
+- 运行时间：2026-09-05 22:03:27 UTC
 - 运行状态：成功
-- 本次总论文数：2
+- 本次总论文数：1
 - 精读区：0
-- 速读区：2
+- 速读区：1
 
 ### 今日简报（AI）
-组件设计的技术参考。
-        *   *Check:* Actionable, realistic advice for general/technical readers based on the topics.
-
-3.
-- 详情：[/202609/04/README](/202609/04/README)
+, score 6.0, fast read 1).
+    *   Format: 3 plain lines, no markdown titles, no JSON.
+- 详情：[/202609/05/README](/202609/05/README)
 
 ### 精读区论文标签
 - 本次无精读推荐。
 
 ### 速读区论文标签
-1. [Blackbox Small-Signal Modeling of Grid-Connected Inverters in Asymmetrical Power Grids](/202609/04/2609.01411v1-blackbox-small-signal-modeling-of-grid-connected-inverters-in-asymmetrical-power-grids)  
+1. [Adaptive Observer of Nonlinear One-Sided Lipschitz Systems Using Estimated State Regressors With Finite Excitation](/202609/05/2608.30977v1-adaptive-observer-of-nonlinear-one-sided-lipschitz-systems-using-estimated-state-regressors-with-finite-excitation)  
    标签：评分：6.0/10、query:pmsm
-   evidence：不对称电网中三相逆变器的建模
-2. [CAHR-Net: Condition-Adaptive Hysteresis Reconstruction for Compact and Interpretable Magnetic Core Loss Modeling](/202609/04/2609.01991v1-cahr-net-condition-adaptive-hysteresis-reconstruction-for-compact-and-interpretable-magnetic-core-loss-modeling)  
-   标签：评分：6.0/10、query:pmsm
-   evidence：电机磁芯损耗建模
+   evidence：非线性系统的自适应观测器用于永磁同步电机的无感控制和参数估计
 
 
 <div class="dpr-home-promo-card">

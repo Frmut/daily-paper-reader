@@ -1,0 +1,770 @@
+Title: Adaptive Observer of Nonlinear One-Sided Lipschitz Systems Using Estimated State Regressors With Finite Excitation
+
+URL Source: https://arxiv.org/pdf/2608.30977v1
+
+Published Time: Tue, 01 Sep 2026 02:59:12 GMT
+
+Number of Pages: 7
+
+Markdown Content:
+# Adaptive Observer of Nonlinear One-Sided Lipschitz Systems Using Estimated State Regressors With Finite Excitation 
+
+Hamid Taghavifar and Brian Delgado Aguilar 
+
+Abstract — For systems with unknown parameters, finite excitation and concurrent learning can potentially yield parameter convergence without persistent excitation but the regressor may still depend on inaccessible states, leading to regressor mismatch. In this paper, this prob-lem is addressed for a class of nonlinear systems with one-sided Lipschitz properties and quadratically inner-bounded nonlinearities with bounded disturbances and linearly parametrized uncertainties. To this aim, an output-integral regression is utilized by using measured out-puts and estimated states, and history-stack residual is explicitly bounded in terms of state-estimation error and disturbance. Furthermore, a perturbation bound between the estimated-state and true-state information matrices is derived. Additionally, an OSL-QIB LMI condition is applied for the observer design and a projected adaptive law is designed without needing exact output matching. Stability analysis’s results indicate the proposed observer and parameter estimation outperform observers without history-stack learning term. 
+
+I. Introduction 
+
+In linearly parametrized dynamical systems, parame-ter convergence in observers is carried out by applying the persistence of excitation (PE) condition [1]. How-ever, PE condition can limit the class of systems due to a need for regressors to stay sufficiently rich during every moving time window [2]. When disturbances and weak excitation are present, robust modifications such as leakage and projection can prevent parameter drift, but they do not yield the informative data essential for parameter convergence [3]. Finite-excitation methods tackle this limitation by gathering informative data during finite time inter-val. Concurrent learning (CL) instills stored data in parameter update process [4] and integral concurrent learning (ICL) forms integral regressions without state-derivative estimation [5]. In adaptive observer design, finite- and initial-excitation methods have been devel-oped for disturbed MIMO LTI systems [6], [7]. Fur-thermore, nonlinear observers without PE and filtered-regression structures have been studied in [8], [9]. According to the state-of-the-art literature, an output-feedback concurrent-learning observer was developed for second-order nonlinear systems by using estimated                        
+
+> H. Tagha vifar and B. Delgado Aguilar are with the De-partment of Mechanical, Industrial and Aerospace Engineering, Concordia University, Montreal, QC H3G 1M8, Canada (e-mail:
+> hamid.taghavifar@concordia.ca ;brian27ada@gmail.com ). This work has been submitted to the IEEE for possible publication. Copyright may be transferred without notice, after which this version may no longer be accessible.
+
+state trajectories [10]. Moreover, in [11], an incremental-multiplier/LMI observer was added to concurrent learning for affine nonlinear systems. Such related studies indicate that estimated states can be used for concurrent learning. That said, the above studies have not considered the OSL-QIB systems in which the explicit relation between the estimated-state and true-state finite-excitation matrices, disturbance-dependent stored-data residuals, and a combined state-parameter stability condition exists. The use of Lyapunov and LMI conditions for design-ing observers for one-sided Lipschitz (OSL), quadrat-ically inner-bounded (QIB), and related non-globally Lipschitz systems was reported by [12], [13] where mainly state estimation for known nonlinear mod-els was considered without finite-excitation estima-tion of unknown parameters. On the other hand, the estimated-state concurrent-learning observers dis-cussed above have not considered observer and data-quality conditions based on OSL-QIB incremental in-equalities. Combining these two settings introduces an observer-error-dependent residual into the stored output-integral regression. Moreover, the information matrix constructed using estimated states can differ from the unavailable true-state information matrix. Hence, the effects of both differences, together with bounded disturbances, need to be considered in the parameter estimation and stability analyses. A finite-excitation adaptive observer design for the class of OSL-QIB nonlinear system based on estimated state regres-sor is proposed in this paper. The major contributions of this paper include: (i) formulating an output integral regression without output differentiation but including the residual due to state estimation error and distur-bance in it and obtaining a perturbation inequality for estimated state and true state finite-excitation matrices, (ii) formulating a projected adaptive law by employing the computable estimated state finite-excitation condi-tion along with OSL-QIB LMI with no exact output matching, and (iii) ensuring the regional uniformly ulti-mately boundedness of state and parameter errors with exponential stability for disturbance-free and residual-free stored data. 
+
+II. Problem F ormulation 
+
+The following nonlinear system is considered: arXiv:2608.30977v1 [eess.SY] 31 Aug 2026 ¤𝑥 = 𝐴𝑥 + 𝐵𝑢 + 𝜙 (𝑥, 𝑢 ) + Φ(𝑥, 𝑢 )𝜃 + 𝐷𝑑 (𝑡 )
+
+𝑦 = 𝐶𝑥 (1) where 𝑥 ∈ R𝑛 , 𝑢 ∈ R𝑚 , and 𝑦 ∈ R𝑝 denote the system state, known input, and measured output, respectively. Moreover, 𝜃 ∈ R𝑞 is the unknown constant parameter vector and 𝑑 ∈ R𝑛 𝑑 stands for an unknown disturbance. The matrices 𝐴 , 𝐵 , 𝐶 , and 𝐷 and functions 𝜙 : R𝑛 ×
+
+R𝑚 → R𝑛 and Φ : R𝑛 × R𝑚 → R𝑛 ×𝑞 are known and the functions are locally Lipschitz with respect to the state. 
+
+Assumption 1: The input 𝑢 is locally bounded and belongs to the compact set 𝒰 ⊂ R𝑚 . The disturbance 
+
+𝑑 is also locally bounded and satisfies ‖𝑑 (𝑡 )‖ ≤ ¯𝑑 . The solution exists for each 𝑡 and stays within the known operating region of 𝒳 ⊂ R𝑛 . Additionally, the unknown parameters are within the known compact convex set below: 
+
+Ω𝜃 ¬ {𝜗 ∈ R𝑞 : ‖𝜗 ‖ ≤ ¯ 𝜃 } (2) For the analysis, we consider 𝑟 𝑒 > 0 and a compact set 
+
+ˆ𝒳 such that 𝑥 − 𝑒 ∈ ˆ𝒳 for all 𝑥 ∈ 𝒳 and ‖𝑒 ‖ ≤ 𝑟 𝑒 . The following incremental inequalities are needed on: 
+
+𝒟 𝑒 ¬ {( 𝑥, ˆ𝑥, 𝑢 ) : 𝑥 ∈ 𝒳 , ˆ𝑥 ∈ ˆ𝒳 𝑢 ∈ 𝒰 , ‖𝑥 − ˆ 𝑥 ‖ ≤ 𝑟 𝑒 }
+
+(3) If the inequalities hold globally, 𝑟 𝑒 = ∞ and ˆ𝒳 = R𝑛 can be considered. For the estimation error 𝑒 ¬ 𝑥 − ˆ 𝑥 , we define 
+
+Δ𝜙 ¬ 𝜙 (𝑥, 𝑢 ) − 𝜙 ( ˆ 𝑥, 𝑢 ), ΔΦ ¬ Φ(𝑥, 𝑢 ) − Φ( ˆ 𝑥, 𝑢 ) (4) 
+
+Assumption 2: The following conditions are satisfied by the nonlinear increments below for or all (𝑥, ˆ𝑥, 𝑢 ) ∈ 𝒟 𝑒 :
+
+𝑒 ⊤Δ𝜙 ≤ 𝜌 ‖𝑒 ‖2 (5) 
+
+‖Δ𝜙 ‖2 ≤ 𝛼 ‖𝑒 ‖2 + 𝛽 𝑒 ⊤Δ𝜙 (6) 
+
+‖Δ𝜙 ‖ ≤ ℓ𝜙 ‖𝑒 ‖ (7) where 𝜌 , 𝛼 , 𝛽 ∈ R and ℓ𝜙 are known constants. Fur-thermore, the first two conditions are considered in observer design and last inequality condition is merely utilized for obtaining the bound for the finite-window data residual. 
+
+Assumption 3: There are known positive constants ¯Φ
+
+and ℓΦ such that for all (𝑥, ˆ𝑥, 𝑢 ) ∈ 𝒟 𝑒 we have: 
+
+‖Φ( ˆ 𝑥, 𝑢 )‖ ≤ ¯ Φ (8) 
+
+‖Φ(𝑥, 𝑢 ) − Φ( ˆ 𝑥, 𝑢 )‖ ≤ ℓΦ‖𝑥 − ˆ 𝑥 ‖ (9) The following condition yields convex observer design condition. Let 𝑣 ∈ R𝑛 standing for Δ𝜙 and 𝑤 ∈ R𝑛 
+
+denoting ΔΦ𝜃 . First, we define 𝜅 Φ ¬ ℓΦ ¯𝜃 . Subsequently, lets consider augmented vector 𝜉 ¬ col (𝑒, 𝑣, 𝑤, 𝑑 ) as well as symmetric matrices below: 
+
+ℳ1 ¬
+
+
+
+2𝜌 𝐼 −𝐼 0 0
+
+−𝐼 0 0 00 0 0 00 0 0 0
+
+
+
+(10) 
+
+ℳ2 ¬
+
+
+
+𝛼 𝐼 𝛽  
+
+> 2
+
+𝐼 0 0 
+
+> 𝛽
+> 2
+
+𝐼 −𝐼 0 00 0 0 00 0 0 0
+
+
+
+(11) 
+
+ℳ3 ¬
+
+
+
+𝜅 2 
+
+> Φ
+
+𝐼 0 0 00 0 0 00 0 −𝐼 00 0 0 0
+
+
+
+(12) where zero and identity blocks have 𝜉 induced dimen-sions. 
+
+Assumption 4: There are 𝑃 = 𝑃 ⊤, 𝑌 ∈ R𝑛 ×𝑝 , 𝑎 𝑒 , 𝑎 𝑑 , and 
+
+𝜏 𝑗 for 𝑗 ∈ { 1, 2, 3} such that we can have the following: 
+
+𝒬( 𝑃, 𝑌, 𝑎 𝑒 , 𝑎 𝑑 ) + 
+
+> 3
+
+Õ
+
+> 𝑗 =1
+
+𝜏 𝑗 ℳ𝑗  0 (13) where 
+
+Ξ ¬ 𝑃𝐴 + 𝐴 ⊤𝑃 − 𝑌𝐶 − 𝐶 ⊤𝑌 ⊤ + 𝑎 𝑒 𝐼 (14) and 
+
+𝒬 ¬
+
+
+
+Ξ 𝑃 𝑃 𝑃𝐷 𝑃 0 0 0
+
+𝑃 0 0 0
+
+𝐷 ⊤𝑃 0 0 −𝑎 𝑑 𝐼 
+
+
+
+(15) Then, the observer gain is obtained as 𝐿 = 𝑃 −1𝑌 . In comparison with the Young’s inequality formulation which involves 𝑃 2, (13) is affine in all decision variables and conceivably is an actual LMI. 
+
+Lemma 1: With assumptions 1-4, we can define 𝜂 0 ¬
+
+(𝐴 − 𝐿𝐶 )𝑒 + Δ𝜙 + ΔΦ𝜃 + 𝐷𝑑 . Then the observer gain 
+
+𝐿 = 𝑃 −1𝑌 satisfies in 𝒟 𝑒 the following: 2𝑒 ⊤𝑃 𝜂 0 ≤ − 𝑎 𝑒 ‖𝑒 ‖2 + 𝑎 𝑑 ‖𝑑 ‖2 (16) 
+
+Proof: From the OSL and QIB conditions, we have positive definite 𝜉 ⊤ℳ1𝜉 and 𝜉 ⊤ℳ2𝜉 . Also, ‖ΔΦ𝜃 ‖ ≤ 
+
+ℓΦ ¯𝜃 ‖𝑒 ‖ = 𝜅 Φ‖𝑒 ‖, which yields 𝜉 ⊤ℳ3𝜉 ≥ 0. By multiply-ing (13) from both sides by 𝜉 ⊤ and 𝜉 , respectively, it gives 
+
+𝜉 ⊤𝒬 𝜉 ≤ − 
+
+> 3
+
+Õ
+
+> 𝑗 =1
+
+𝜏 𝑗 𝜉 ⊤ℳ𝑗 𝜉 ≤ 0.
+
+By using 𝑌 = 𝑃𝐿 , 𝑣 = Δ 𝜙 , and 𝑤 = Δ Φ𝜃 , the left hand side can be written as follows, (16) is obtained to yield: 
+
+𝜉 ⊤𝒬 𝜉 = 2𝑒 ⊤𝑃 [(𝐴 − 𝐿𝐶 )𝑒 + Δ𝜙 + ΔΦ𝜃 + 𝐷𝑑 ]
+
++ 𝑎 𝑒 ‖𝑒 ‖2 − 𝑎 𝑑 ‖𝑑 ‖2III. Observer and Estimated-State Learning Identity 
+
+The observer is considered as follows: 
+
+¤ˆ𝑥 = 𝐴 ˆ𝑥 + 𝐵𝑢 + 𝜙 ( ˆ 𝑥, 𝑢 ) + Φ( ˆ 𝑥, 𝑢 ) ˆ 𝜃 + 𝐿 (𝑦 − 𝐶 ˆ𝑥 ) (17) The observer’s error dynamics is derived as following by defining ˜𝜃 ¬ 𝜃 − ˆ 𝜃 :
+
+¤𝑒 = (𝐴 − 𝐿𝐶 )𝑒 + Δ𝜙 + Φ( ˆ 𝑥, 𝑢 ) ˜ 𝜃 + ΔΦ𝜃 + 𝐷𝑑 (18) The known bounded design map Ψ : ˆ𝒳 × 𝒰 → R𝑝 ×𝑞 
+
+can be selected to derive the implementable parameter update. Accordingly, the following terms are defined: 
+
+ℳΨ( ˆ 𝑥, 𝑢 ) ¬ 𝑃 Φ( ˆ 𝑥, 𝑢 ) − 𝐶 ⊤Ψ( ˆ 𝑥, 𝑢 ) (19) 
+
+¯𝑚 Ψ ¬ sup 
+
+> ( ˆ 𝑥,𝑢 )∈ ˆ𝒳×𝒰
+
+‖ℳ Ψ( ˆ 𝑥, 𝑢 )‖ (20) 
+
+Remark 1: Let Π𝐶 ¬ 𝐶 ⊤(𝐶 ⊤)†. Since 𝐼 − Π𝐶 is an or-thogonal projector, for every Ψ, ‖( 𝐼 −Π𝐶 )( 𝑃 Φ− 𝐶 ⊤Ψ)‖ ≤ ‖𝑃 Φ − 𝐶 ⊤Ψ‖ which means ‖( 𝐼 − Π𝐶 )𝑃 Φ‖ ≤ ‖ 𝑃 Φ − 𝐶 ⊤Ψ‖.The choice Ψ★ = (𝐶 ⊤)†𝑃 Φ brings this bound pointwise and thus minimizes ¯𝑚 Ψ. The exact matching is possible if and only if (𝐼 − Π𝐶 )𝑃 Φ = 0 in the designing domain. Thus, Ψ★ gives the least restrictive condition with respect to Ψ (43); under exact matching, this condition holds for every 𝑘 𝑐 .For the sake of brevity, the known nominal vector field is defined by 𝑓 0(𝜁 , 𝑢 ) ¬ 𝐴 𝜁 + 𝐵𝑢 + 𝜙 (𝜁 , 𝑢 ).
+
+Definition 1: The following data pair is defined for a window length Δ and a sampling instant 𝑡 𝑖 ≥ Δ:
+
+𝒴 𝑖 ¬ 𝑦 (𝑡 𝑖 ) − 𝑦 (𝑡 𝑖 − Δ) − 
+
+¹ 𝑡 𝑖  
+
+> 𝑡 𝑖 −Δ
+
+𝐶 𝑓 0( ˆ 𝑥 (𝜏 ), 𝑢 (𝜏 )) 𝑑 𝜏 (21) 
+
+𝒢 𝑖 ¬
+
+¹ 𝑡 𝑖  
+
+> 𝑡 𝑖 −Δ
+
+𝐶 Φ( ˆ 𝑥 (𝜏 ), 𝑢 (𝜏 )) 𝑑 𝜏 (22) Therefore, 𝒴 𝑖 ∈ R𝑝 and 𝒢 𝑖 ∈ R𝑝 ×𝑞 can be derived by utilizing 𝑢 , 𝑦 , and ˆ𝑥 .
+
+Lemma 2: When the corresponding data window lies in the design domain, we can have: 
+
+𝒴 𝑖 = 𝒢 𝑖 𝜃 + 𝑟 𝑖 (23) where 
+
+𝑟 𝑖 =
+
+¹ 𝑡 𝑖  
+
+> 𝑡 𝑖 −Δ
+
+𝐶 [𝐴𝑒 (𝜏 ) + Δ𝜙 (𝜏 ) + ΔΦ(𝜏 )𝜃 + 𝐷𝑑 (𝜏 )]𝑑 𝜏 (24) Furthermore 
+
+‖𝑟 𝑖 ‖ ≤ 𝑐 𝑒 
+
+¹ 𝑡 𝑖  
+
+> 𝑡 𝑖 −Δ
+
+‖𝑒 (𝜏 )‖ 𝑑 𝜏 + 𝑐 𝑑 
+
+¹ 𝑡 𝑖  
+
+> 𝑡 𝑖 −Δ
+
+‖𝑑 (𝜏 )‖ 𝑑 𝜏 (25) where 𝑐 𝑒 ¬ ‖𝐶 ‖(‖𝐴 ‖ + ℓ𝜙 + ℓΦ ¯𝜃 ), 𝑐 𝑑 ¬ ‖𝐶𝐷 ‖.
+
+Proof: Due to absolute continuity of 𝑥 , one can write: 
+
+𝑦 (𝑡 𝑖 ) − 𝑦 (𝑡 𝑖 − Δ) =
+
+¹ 𝑡 𝑖  
+
+> 𝑡 𝑖 −Δ
+
+𝐶 ¤𝑥 (𝜏 )𝑑 𝜏 =
+
+¹ 𝑡 𝑖  
+
+> 𝑡 𝑖 −Δ
+
+𝐶 𝑓 0(𝑥, 𝑢 )𝑑 𝜏 
+
++
+
+¹ 𝑡 𝑖  
+
+> 𝑡 𝑖 −Δ
+
+𝐶 [Φ(𝑥, 𝑢 )𝜃 + 𝐷𝑑 ]𝑑 𝜏 
+
+By subtracting the integral term in (21), by using 𝑥 =
+
+ˆ𝑥 + 𝑒 , and also adding and subtracting 𝐶 Φ( ˆ 𝑥, 𝑢 )𝜃 , equa-tions (23)-(24) are derived. Subsequently, by leveraging the triangle inequality together with Assumptions 2-3 gives us: 
+
+‖𝑟 𝑖 ‖ ≤ 𝑐 𝑒 
+
+¹ 𝑡 𝑖  
+
+> 𝑡 𝑖 −Δ
+
+‖𝑒 (𝜏 )‖ 𝑑 𝜏 + 𝑐 𝑑 
+
+¹ 𝑡 𝑖  
+
+> 𝑡 𝑖 −Δ
+
+‖𝑑 (𝜏 )‖ 𝑑 𝜏 
+
+which is (25) and completes the proof. 
+
+IV. Finite-Excitation Adaptive Law 
+
+Consider the history stack ℐ𝑁 = {𝑡 1, . . . , 𝑡 𝑁 } and the following matrix being defined as follows: 
+
+ˆ𝑆 𝑁 ¬
+
+> 𝑁
+
+Õ
+
+> 𝑖 =1
+
+𝒢 ⊤ 
+
+> 𝑖
+
+𝒢 𝑖 (26) 
+
+Definition 2: The integral-regression stack is called finitely exciting if for some 𝑁 ∈ N and a known constant 𝜎 𝑁 > 0, it satisfies following condition: 
+
+𝜎 𝑁 𝐼 𝑞  ˆ 𝑆 𝑁 (27) The above condition implies the finite-data informa-tivity of the stored integral regressions which can be assessed by using the recorded 𝒢 𝑖 directly. 
+
+Lemma 3: Defining 
+
+𝒢 𝑥 𝑖 ¬
+
+¹ 𝑡 𝑖  
+
+> 𝑡 𝑖 −Δ
+
+𝐶 Φ(𝑥 (𝜏 ), 𝑢 (𝜏 )) 𝑑 𝜏 , 𝑆 𝑥 𝑁 ¬
+
+> 𝑁
+
+Õ
+
+> 𝑖 =1
+
+(𝒢 𝑥 𝑖 )⊤𝒢 𝑥 𝑖 (28) Let 
+
+𝛿 𝑖 ¬ ‖𝐶 ‖ℓΦ
+
+¹ 𝑡 𝑖  
+
+> 𝑡 𝑖 −Δ
+
+‖𝑒 (𝜏 )‖ 𝑑 𝜏 ; 𝜌 𝐺 ¬
+
+> 𝑁
+
+Õ
+
+> 𝑖 =1
+
+(2‖𝒢 𝑖 ‖𝛿 𝑖 + 𝛿 2
+
+> 𝑖
+
+) (29) Then 
+
+‖𝑆 𝑥 𝑁 − ˆ 𝑆 𝑁 ‖ ≤ 𝜌 𝐺 , 𝜆 min ( ˆ 𝑆 𝑁 ) − 𝜌 𝐺 ≤ 𝜆 min (𝑆 𝑥 𝑁 ) (30) Hence, for any preferable positive 𝜎 𝑥 :
+
+𝜌 𝐺 + 𝜎 𝑥 ≤ 𝜆 min ( ˆ 𝑆 𝑁 ) =⇒ 𝜎 𝑥 𝐼 𝑞  𝑆 𝑥 𝑁 (31) 
+
+Proof: Let 𝐸 𝑖 ¬ 𝒢 𝑥 𝑖 − 𝒢 𝑖 . From (9), ‖𝐸 𝑖 ‖ ≤
+
+∫ 𝑡 𝑖   
+
+> 𝑡 𝑖 −Δ
+
+‖𝐶 ‖‖ ΔΦ(𝜏 )‖ 𝑑 𝜏 ≤ 𝛿 𝑖 . As 𝒢 𝑥 𝑖 = 𝒢 𝑖 + 𝐸 𝑖 , the difference between the two stack matrices can be written as 
+
+𝒢 𝑥 𝑖 = 𝒢 𝑖 + 𝐸 𝑖 , then 𝑆 𝑥 𝑁 − ˆ 𝑆 𝑁 = Í𝑁 𝑖 =1
+
+(𝒢 ⊤ 
+
+> 𝑖
+
+𝐸 𝑖 + 𝐸 ⊤ 
+
+> 𝑖
+
+𝒢 𝑖 +
+
+𝐸 ⊤ 
+
+> 𝑖
+
+𝐸 𝑖 
+
+). We can obtain the following by utilizing the submultiplicativity and the triangle inequality ‖𝑆 𝑥 𝑁 −ˆ𝑆 𝑁 ‖ ≤ Í𝑁 𝑖 =1
+
+(2‖𝒢 𝑖 ‖‖ 𝐸 𝑖 ‖ + ‖ 𝐸 𝑖 ‖2) ≤ 𝜌 𝐺 . Since the second inequality in (30) is derived from Weyl’s eigenvalue perturbation inequality, and consequently, (31) holds. 
+
+Remark 2: The stored pairs (𝒴 𝑖 , 𝒢 𝑖 ) and estimated-state finite-excitation condition (27) are computable online. In contrast, 𝑆 𝑥 𝑁 , 𝜌 𝐺 , 𝑅 𝑁 , and real state error terms all leverage of unavailable true state data and are utilized only for analysis and offline verifications. Points will be added to candidates when doing so will add to the rank of the information matrix be-cause its minimum eigenvalue is zero until it achieves full column rank. Thereafter, points will be added or replaced by existing points only when the minimum eigenvalue increases. The stack is frozen when (27) is first satisfied. Denoting its number of stored points by 
+
+𝑁 , the activation time is 
+
+𝑇 𝐹 ¬ max  
+
+> 1≤𝑖 ≤𝑁
+
+𝑡 𝑖 (32) Thus, the stored 𝒴 𝑖 , 𝒢 𝑖 , and aggregate residual remain constant for 𝑡 ≥ 𝑇 𝐹 . Since ˜𝑦 ¬ 𝑦 − 𝐶 ˆ𝑥 = 𝐶𝑒 is available from measurement, the error for each stored regression is defined by 𝜀 𝑖 ( ˆ 𝜃 ) ¬ 𝒴 𝑖 − 𝒢 𝑖 ˆ𝜃 . The projected parameter update used in this work is then 
+
+𝜈 (𝑡 ) ¬ ΓΨ ( ˆ 𝑥, 𝑢 )⊤ ˜𝑦 + 𝜒 𝐹 (𝑡 )𝑘 𝑐 Γ
+
+> 𝑁
+
+Õ
+
+> 𝑖 =1
+
+𝒢 ⊤ 
+
+> 𝑖
+
+𝜀 𝑖 ( ˆ 𝜃 ) (33) 
+
+¤ˆ𝜃 = Proj Ω𝜃 ( ˆ 𝜃 , 𝜈 (𝑡 )) (34) In the above equations, Γ = Γ ⊤ ≻ 0 and 𝑘 𝑐 > 0. Also, 
+
+𝜒 𝐹 (𝑡 ) = 0 before 𝑇 𝐹 , while 𝜒 𝐹 (𝑡 ) = 1 for 𝑡 ≥ 𝑇 𝐹 . We use the standard projection operator in [3] and start the update with ˆ𝜃 (0) ∈ Ω𝜃 . Therefore, ˆ𝜃 (𝑡 ) remains inside 
+
+Ω𝜃 , and for every 𝜃 ∈ Ω𝜃 , the following property holds: 0 ≤ ˜ 𝜃 ⊤Γ−1 [ Proj Ω𝜃 ( ˆ 𝜃 , 𝜈 ) − 𝜈 ] (35) 
+
+Lemma 4: After activation of the history stack, i.e., for every 𝑡 ≥ 𝑇 𝐹 , the update in (34) leads to 2 ˜𝜃 ⊤Γ−1 ¤˜𝜃 ≤ − 2 ˜𝜃 ⊤Ψ( ˆ 𝑥, 𝑢 )⊤𝐶𝑒 − 𝑘 𝑐 𝜎 𝑁 ‖ ˜ 𝜃 ‖2 + 𝑘 𝑐 
+
+𝜎 𝑁 
+
+‖𝑅 𝑁 ‖2
+
+(36) where the effects of all stored residuals are collected in 
+
+𝑅 𝑁 ¬
+
+> 𝑁
+
+Õ
+
+> 𝑖 =1
+
+𝒢 ⊤ 
+
+> 𝑖
+
+𝑟 𝑖 (37) 
+
+Proof: From (23), the error for each stored point can be written as 𝒴 𝑖 − 𝒢 𝑖 ˆ𝜃 = 𝒢 𝑖 ˜𝜃 + 𝑟 𝑖 Moreover, ¤˜𝜃 = − ¤ˆ𝜃 .Therefore, using the projection property together with 
+
+ˆ𝑆 𝑁  𝜎 𝑁 𝐼 𝑞 gives, for 𝑡 ≥ 𝑇 𝐹 ,2 ˜𝜃 ⊤Γ−1 ¤˜𝜃 ≤ − 2 ˜𝜃 ⊤Ψ⊤ 𝐶𝑒 − 2𝑘 𝑐 ˜𝜃 ⊤ ˆ𝑆 𝑁 ˜𝜃 − 2𝑘 𝑐 ˜𝜃 ⊤𝑅 𝑁 
+
+≤ − 2 ˜𝜃 ⊤Ψ⊤ 𝐶𝑒 − 2𝑘 𝑐 𝜎 𝑁 ‖ ˜ 𝜃 ‖2 + 2𝑘 𝑐 ‖ ˜ 𝜃 ‖‖ 𝑅 𝑁 ‖
+
+For the last term, Young’s inequality can be applied as 2𝑘 𝑐 ‖ ˜ 𝜃 ‖‖ 𝑅 𝑁 ‖ ≤ 𝑘 𝑐 𝜎 𝑁 ‖ ˜ 𝜃 ‖2 + 𝑘 𝑐  
+
+> 𝜎 𝑁
+
+‖𝑅 𝑁 ‖2. By replacing the last term by this bound gives (36). 
+
+Lemma 5: To cover all time intervals,lets define 
+
+𝒲 𝑁 ¬ Ð𝑁 𝑖 =1[𝑡 𝑖 − Δ, 𝑡 𝑖 ]. Then, the aggregate residual satisfies: 
+
+‖𝑅 𝑁 ‖2 ≤ 𝜒 𝑒 sup 
+
+> 𝜏 ∈𝒲 𝑁
+
+‖𝑒 (𝜏 )‖ 2 + 𝜒 𝑑 sup 
+
+> 𝜏 ∈𝒲 𝑁
+
+‖𝑑 (𝜏 )‖ 2 (38) where one explicit choice of the constants is 
+
+¯𝑔 ¬ Δ‖𝐶 ‖ ¯ Φ, 𝜒 𝑒 ¬ 2𝑁 2 ¯𝑔 2𝑐 2 
+
+> 𝑒
+
+Δ2 , 𝜒 𝑑 ¬ 2𝑁 2 ¯𝑔 2𝑐 2 
+
+> 𝑑
+
+Δ2 (39) 
+
+Proof: Let 𝐸 𝑁 ¬ sup 𝜏 ∈𝒲 𝑁 ‖𝑒 (𝜏 )‖ and 𝐷 𝑁 ¬
+
+sup 𝜏 ∈𝒲 𝑁 ‖𝑑 (𝜏 )‖ . Equations (8) and (25) give ‖𝒢 𝑖 ‖ ≤ ¯𝑔 
+
+and ‖𝑟 𝑖 ‖ ≤ Δ(𝑐 𝑒 𝐸 𝑁 + 𝑐 𝑑 𝐷 𝑁 ). Therefore, 
+
+‖𝑅 𝑁 ‖ ≤ 
+
+> 𝑁
+
+Õ
+
+> 𝑖 =1
+
+‖𝒢 𝑖 ‖‖ 𝑟 𝑖 ‖ ≤ 𝑁 ¯𝑔 Δ(𝑐 𝑒 𝐸 𝑁 + 𝑐 𝑑 𝐷 𝑁 )
+
+By squaring this inequality and applying (𝑎 +𝑏 )2 ≤ 2𝑎 2+
+
+2𝑏 2 yields (38). 
+
+V. Stability Analysis 
+
+Here, the stability analyses is performed by consid-ering the following Lyapunov candidate function: 
+
+𝑉 = 𝑒 ⊤𝑃𝑒 + ˜ 𝜃 ⊤Γ−1 ˜𝜃 (40) For 𝑧 ¬ col (𝑒, ˜𝜃 ), the bounds hold as follows: 
+
+𝜆 ‖𝑧 ‖2 ≤ 𝑉 ≤ ¯ 𝜆 ‖𝑧 ‖2
+
+𝜆 ¬ min {𝜆 min (𝑃 ), 𝜆 min (Γ−1)} ¯𝜆 ¬ max {𝜆 max (𝑃 ), 𝜆 max (Γ−1)} 
+
+(41) The imperfect cancellation of the state-error cross term by the measurable output-error update is repre-sented by: 
+
+𝑄 𝑁 ¬
+
+[ 𝑎 𝑒 − ¯ 𝑚 Ψ
+
+− ¯ 𝑚 Ψ 𝑘 𝑐 𝜎 𝑁 
+
+]
+
+(42) The condition: 0 ≺ 𝑄 𝑁 ⇐⇒ ¯𝑚 2 
+
+> Ψ
+
+< 𝑎 𝑒 𝑘 𝑐 𝜎 𝑁 (43) can be dictated by selecting 𝑘 𝑐 after the stack is verified. 
+
+Theorem 1: Suppose assumptions 1-4 are held. Then, fixed stack satisfies (27), also condition (43) is held. Consider known constants ¯𝑒 𝑠 , ¯𝑑 𝑠 ≥ 0 so: sup 
+
+> 𝜏 ∈𝒲 𝑁
+
+‖𝑒 (𝜏 )‖ ≤ ¯ 𝑒 𝑠 , sup 
+
+> 𝜏 ∈𝒲 𝑁
+
+‖𝑑 (𝜏 )‖ ≤ ¯𝑑 𝑠 (44) On the stated data domain, ¯𝑒 𝑠 = 𝑟 𝑒 and ¯𝑑 𝑠 = ¯𝑑 can be always used as conservative choice. Also, by defining 
+
+𝜆 𝑄 ¬ 𝜆 min (𝑄 𝑁 ); 𝜇 ¬ 𝜆 𝑄 
+
+¯𝜆 ; 𝑐 𝑠 ¬ 𝑎 𝑑 ¯𝑑 2 + 𝑘 𝑐 
+
+𝜎 𝑁 
+
+(𝜒 𝑒 ¯𝑒 2 
+
+> 𝑠
+
++ 𝜒 𝑑 ¯𝑑 2 
+
+> 𝑠
+
+)
+
+(45) For the regional design domain, the below condition is: max 
+
+{
+
+𝑉 (𝑇 𝐹 ), 𝑐 𝑠 
+
+𝜇 
+
+}
+
+< 𝜆 min (𝑃 )𝑟 2 
+
+> 𝑒
+
+(46) Then the observer error stays in 𝒟 𝑒 for all 𝑡 ≥ 𝑇 𝐹 and: 
+
+𝑉 (𝑡 ) ≤ 𝑒 −𝜇 (𝑡 −𝑇 𝐹 )𝑉 (𝑇 𝐹 ) + 𝑐 𝑠 
+
+𝜇 
+
+(1 − 𝑒 −𝜇 (𝑡 −𝑇 𝐹 )) , 𝑡 ≥ 𝑇 𝐹 
+
+(47) Fig. 1. Left: decaying input. Center: minimum eigenvalue of the 5s sliding window Gramian. Right: estimated-state finite-excitation certificate. 
+
+Method 𝐽 𝑒,𝐹 𝐽 𝜃 
+
+No stack 1.7525 ×10 −4 1.3891 ×10 −1
+
+Proposed 2.1322 ×10 −5 3.3858 ×10 −4
+
+Factor 8.22 410 .28 
+
+Fig. 2. Estimation comparison: state error (left), parameter error (center), and post-activation/terminal metrics (right).                              
+
+> Time t(s)
+> 0510 15 20 25 30 35
+> d2(t)
+> -0.03 -0.02 -0.01 00.01 0.02 0.03
+> −¯d
+> Td
+> d2(t)
+> ¯d
+> −¯dTd
+> 0510 15 20 25 30 35
+> Time t(s)
+> 10 −6
+> 10 −4
+> 10 −2
+> 10 0
+> ‖x − ˆx‖
+> TF
+> Td
+> No-stack output-error ablation Proposed
+> TF
+> Td
+> 0510 15 20 25 30 35
+> Time t(s)
+> 10 −4
+> 10 −3
+> 10 −2
+> 10 −1
+> ‖θ − ˆθ‖
+> TF
+> Td
+> No-stack output-error ablation Proposed
+> TF
+> Td
+
+Fig. 3. Disturbed-case validation with ¯𝑑 = 0.03 and 𝑇 𝑑 = 8s. Left: applied bounded disturbance. Middle: state-estimation errors. Right: parameter-estimation errors. The history stack is frozen at 𝑇 𝐹 = 6𝑠 before the disturbance is introduced. 
+
+Hence, 
+
+‖𝑧 (𝑡 )‖ 2 ≤ ¯𝜆 𝜆 𝑒 −𝜇 (𝑡 −𝑇 𝐹 )‖𝑧 (𝑇 𝐹 )‖ 2 + 𝑐 𝑠 
+
+𝜆𝜇 
+
+(1 − 𝑒 −𝜇 (𝑡 −𝑇 𝐹 )) (48) lim sup 
+
+𝑡 →∞ 
+
+‖𝑧 (𝑡 )‖ ≤ 
+
+√ 𝑐 𝑠 
+
+𝜆𝜇 (49) Thus, errors are ultimately uniformly bounded. If Assumptions 2-3, the LMI implication, and (20) are globally, the condition (46) is no more needed and the result gets global. 
+
+Proof: Along the projected dynamics, 𝑉 is locally absolutely continuous and its derivative exists almost everywhere. By defining 𝜂 𝑒 ¬ (𝐴 − 𝐿𝐶 )𝑒 + Δ𝜙 +
+
+ΔΦ𝜃 + 𝐷𝑑, the error dynamics gives us ¤𝑉 = 2𝑒 ⊤𝑃 𝜂 𝑒 +
+
+2𝑒 ⊤𝑃 Φ( ˆ 𝑥, 𝑢 ) ˜ 𝜃 + 2 ˜𝜃 ⊤Γ−1 ¤˜𝜃 . By invoking Lemmas 1 and 4 results in 
+
+¤𝑉 ≤ − 𝑎 𝑒 ‖𝑒 ‖2 + 𝑎 𝑑 ‖𝑑 ‖2 + 2𝑒 ⊤ℳΨ( ˆ 𝑥, 𝑢 ) ˜ 𝜃 
+
+− 𝑘 𝑐 𝜎 𝑁 ‖ ˜ 𝜃 ‖2 + 𝑘 𝑐 
+
+𝜎 𝑁 
+
+‖𝑅 𝑁 ‖2 ≤ − 𝑎 𝑒 ‖𝑒 ‖2 − 𝑘 𝑐 𝜎 𝑁 ‖ ˜ 𝜃 ‖2
+
++ 2 ¯𝑚 Ψ‖𝑒 ‖‖ ˜ 𝜃 ‖ + 𝑎 𝑑 ‖𝑑 ‖2 + 𝑘 𝑐 
+
+𝜎 𝑁 
+
+‖𝑅 𝑁 ‖2
+
+Based on (42), let 𝜁 𝑧 ¬ col (‖ 𝑒 ‖, ‖ ˜ 𝜃 ‖) . Then we have: 
+
+𝑎 𝑒 ‖𝑒 ‖2 + 𝑘 𝑐 𝜎 𝑁 ‖ ˜ 𝜃 ‖2 − 2 ¯𝑚 Ψ‖𝑒 ‖‖ ˜ 𝜃 ‖ = 𝜁 ⊤
+
+𝑧 𝑄 𝑁 𝜁 𝑧 ≥ 𝜆 𝑄 ‖𝑧 ‖2
+
+Lemma 5, (44), and ‖𝑑 (𝑡 )‖ ≤ ¯𝑑 resulting in 
+
+¤𝑉 ≤ − 𝜆 𝑄 ‖𝑧 ‖2 + 𝑐 𝑠 ≤ − 𝜇 𝑉 + 𝑐 𝑠 (50) for almost every 𝑡 ≥ 𝑇 𝐹 as long as the solution stays inside the designing domain. By applying the comparison lemma, (47) is obtained. For the regional case, (47) together with (46) yields 𝑉 (𝑡 ) < 𝜆 min (𝑃 )𝑟 2
+
+𝑒 .Because 𝑒 ⊤𝑃𝑒 ≤ 𝑉 , the error cannot get to ‖𝑒 ‖ = 𝑟 𝑒 .Therefore, a standard continuation argument implies forward invariance for 𝑡 ≥ 𝑇 𝐹 . Finally, by combining (47) and (41) it yields (48) and (49). 
+
+Corollary 1: On the conditions of Theorem 1, con-sider 𝑑 (𝑡 ) ≡ 0. Then ¯𝑑 = ¯𝑑 𝑠 = 0 and lim sup 
+
+> 𝑡 →∞
+
+‖𝑧 (𝑡 )‖ ≤ 
+
+√
+
+𝑘 𝑐 𝜒 𝑒 
+
+𝜆𝜇𝜎 𝑁 
+
+¯𝑒 𝑠 (51) If fixed stack has zero aggregate residual 𝑅 𝑁 = 0: 
+
+‖𝑧 (𝑡 )‖ ≤ 
+
+√ ¯𝜆 𝜆 ‖𝑧 (𝑇 𝐹 )‖ 𝑒 −𝜇 (𝑡 −𝑇 𝐹 )/ 2, 𝑡 ≥ 𝑇 𝐹 (52) 
+
+Proof: The first result stems from (49) by putting 
+
+𝑑 = 0. For the second one, consider the derivative inequality before applying Lemma 5. In absence of disturbance and aggregate residual, proof of Theorem 1 yields ¤𝑉 ≤ − 𝜆 𝑄 ‖𝑧 ‖2 ≤ − 𝜇 𝑉 , thus 𝑉 (𝑡 ) ≤ 𝑉 (𝑇 𝐹 )𝑒 −𝜇 (𝑡 −𝑇 𝐹 ),and (52) follows from (41). 
+
+Remark 3: The excitation test (27) is directly achiev-able even when ¯𝑒 𝑠 is unknown. But, a small output residual ‖𝑦 − 𝐶 ˆ𝑥 ‖ = ‖𝐶𝑒 ‖ does not limit ‖𝑒 ‖ if 𝐶 has nullspace of nontrivial. Thus, an output-residual thresh-old confirms (44) by utilizing a state-error certificate alone. 
+
+VI. Numerical Results and Discussion 
+
+In this section, the proposed observer’s results are synthesized numerically. The observer’s results are compared with and without the history-stack term but both with the observer gain and adaptation gains, projection and initial conditions. For simulation, the system matrices have been selected as: 
+
+𝐴 =
+
+[ 0 1
+
+−1.2 −5
+
+]
+
+, 𝐵 =
+
+[01
+
+]
+
+, 𝐶 = [1 0] , 𝐷 = 𝐼 2,
+
+(53) and therefore only the first state is measured. The nonlinear functions and true parameter vector are con-sidered as follows: 
+
+𝜙 (𝑥 ) = −0.25 [𝑥 31 𝑥 32
+
+]⊤ , 𝜃 = [0.85 −1.10 ]⊤ (54) 
+
+Φ(𝑥, 𝑢 ) =
+
+[𝑢 + 0.2 sin (𝑥 1) sin (2𝑢 ) + 0.2 sin (𝑥 2)
+
+0.005 𝑥 1 0.005 𝑥 2
+
+]
+
+(55) The initial conditions are 𝑥 (0) = [1.20 , −0.75 ]⊤, ˆ𝑥 (0) =
+
+[− 0.60 , 0.20 ]⊤, and ˆ𝜃 (0) = [0.75 , −1.00 ]⊤, with ¯𝜃 = 1.5. For the cubic nonlinearity, 𝑒 ⊤Δ𝜙 ≤ 0. The admissible constants and simulation settings are summarized in Table I. For this example, ( 𝐼 − Π𝐶 = diag (0, 1)), and therefore 
+
+¯𝑚 Ψ★ = 0.0025 sup | ˆ 𝑥 𝑗 |≤ 5.2
+
+√
+
+ˆ𝑥 21 + ˆ 𝑥 22 = 1.83 × 10 −2, confirm-ing the value reported in Table I. Negative maximum eigenvalue indicates strict LMI feasibility. The absence of disturbances results in finite excitation learning. For the excitation diagnostic, the sliding-window Gramian                                                                  
+
+> TABLE I
+> Observer design and simulation parameters.
+> Parameters Values Parameters Values Design region |𝑥 𝑗 |,| ˆ 𝑥 𝑗 | ≤ 5.2(𝜌 ,𝛽 )(0,0)(ℓ𝜙 ,𝛼 )(20 .28 ,411 .27 ) ( ¯ Φ, ℓ Φ)(1.69 ,0.20 )
+> 𝑃 0.5𝐼 2𝐿 [100 ,−0.2]⊤
+> (𝑎 𝑒 , 𝑎 𝑑 )(1,20 )(𝜏 1,𝜏 2,𝜏 3)(0.5,0.001 ,0.43 )
+> 𝑌 𝑃𝐿 LMI max. eigenvalue −1.0×10 −3
+> Ψ(𝐶 ⊤)†𝑃 Φ¯𝑚 Ψ1.83 ×10 −2
+> Γ5𝐼 2(𝑘 𝑐 ,Δ,𝜎 𝑁 )(2,1 s ,0.05 )
+> Candidate start/interval 4 s /0.5 s Residual threshold 5×10 −3
+> (𝑁 , 𝑇 𝑤 , 𝑇 sim )(5,5,35 )s𝑑 (𝑡 )0
+> 𝑢 (𝑡 )=𝑒 −0.075 𝑡 sin (1.25 𝑡 )
+
+of the no-stack adaptation regressor is defined for 𝑡 ≥
+
+𝑇 𝑤 as: 
+
+𝑊 Ψ(𝑡 ) ¬
+
+¹ 𝑡 𝑡 −𝑇 𝑤 
+
+Ψ( ˆ 𝑥 ns (𝜏 ), 𝑢 (𝜏 )) ⊤Ψ( ˆ 𝑥 ns (𝜏 ), 𝑢 (𝜏 )) 𝑑 𝜏 . (56) where ˆ𝑥 ns is the no-stack state estimate. As shown in Fig. 1, the Gramian’s minimum eigenvalue decreases from 2 .7376 × 10 −2 to 5 .1913 × 10 −4, which is indicative of loss of excitation. It is observed from Fig. 1that the stack is finite excitation at 𝑇 𝐹 of 6s with five stored points. This is with 𝜆 min ( ˆ 𝑆 𝑁 ) equal to 0.05 which is more than 𝜎 𝑁 .Moreover, the coupled gain margin is ( 𝑎 𝑒 𝑘 𝑐 𝜎 𝑁 − ¯ 𝑚 2
+
+> Ψ
+
+), which itself equals 9 .9662 × 10 −2.Offline validation provides the information in the true state scenario where 𝜆 min (𝑆 𝑥 𝑁 ) = 0.0503 wheras 
+
+𝜌 𝐺 = 6.0992 ×10 −4 matches with the estimated to true in-formation bound. The obtained values are ¯𝑒 𝑠 = 5.2388 ×
+
+10 −4 and ‖𝑅 𝑁 ‖ = 2.8138 × 10 −4. The regional invariance condition is satisfied also because its left-hand side is 5.2891 when compared with 𝜆 min (𝑃 )𝑟 2 
+
+> 𝑒
+
+which equals 8 for when 𝑟 𝑒 is 4. Additionally, max 𝑡 ‖𝑒 (𝑡 )‖ equals 2.03 which becomes smaller than 𝑟 𝑒 and both the plant and observer trajectories stay in selected design domain. Figure 2 indicates that stack activation minimizes parameter error while the no-stack observer loses its learning due to decay of excitation. The right-hand side presents the post-activation state error and terminal parameter error given by: 
+
+𝐽 𝑒 ,𝐹 ¬
+
+√
+
+1
+
+𝑇 sim − 𝑇 𝐹 
+
+¹ 𝑇 sim 
+
+> 𝑇 𝐹
+
+‖𝑒 (𝑡 )‖ 2𝑑𝑡, 𝐽 𝜃 ¬ ‖ ˜ 𝜃 (𝑇 sim )‖ 
+
+(57) To examine disturbed case covered by Theorem 1, bounded disturbance 𝑑 (𝑡 ) = [0, 0.03 sin (1.1(𝑡 − 𝑇 𝑑 ))] ⊤
+
+is applied for 𝑡 greater than or equal to 𝑇 𝑑 which is itself 8s, while 𝑑 (𝑡 ) is zero before 𝑇 𝑑 . Because 𝑇 𝐹 = 6which is smaller that 𝑇 𝑑 , history stack is frozen prior to the disturbance input. From Fig. 3, the error in the estimation of state and parameters is bounded following the disturbance input. VII. Conclusion 
+
+For OSL-QIB nonlinear systems with estimated-state regressors a finite-excitation adaptive observer was designed. By considering the resulting regressor mis-match in the output-integral data, the stability was derived with bounded disturbances and with exponen-tial convergence recovered when disturbance-free and residual-free stored data. 
+
+References 
+
+[1] K. S. Narendra and A. M. Annaswamy, Stable Adaptive Systems .Englewood Cliffs, NJ, USA: Prentice-Hall, 1989. [2] G. Kreisselmeier and G. Rietze-Augst, "Richness and excitation on an interval-with application to continuous-time adaptive control," IEEE Trans. Autom. Control , vol. 35, no. 2, pp. 165–171, 1990. [3] Z. Cai, M. S. de Queiroz, and D. M. Dawson, " A sufficiently smooth projection operator," IEEE Trans. Autom. Control , vol. 51, no. 1, pp. 135–139, 2006. [4] R. Kamalapurkar, B. Reish, et al., "Concurrent learning for pa-rameter estimation using dynamic state-derivative estimators," 
+
+IEEE Trans. Autom. Control , vol. 62, no. 7, pp. 3594–3601, 2017. [5] A. Parikh, R. Kamalapurkar, and W. E. Dixon, "Integral con-current learning: Adaptive control with parameter convergence using finite excitation," Int. J. Adapt. Control Signal Process. , vol. 33, no. 12, pp. 1775–1787, 2019. [6] A. Katiyar, S. Basu Roy, and S. Bhasin, "Finite excitation based robust adaptive observer for MIMO LTI systems," Int. J. Adapt. Control Signal Process. , vol. 36, no. 2, pp. 180–197, 2022. [7] A. Katiyar, S. Basu Roy, and S. Bhasin, "Initial-excitation-based robust adaptive observer for MIMO LTI systems," IEEE Trans. Autom. Control , vol. 68, no. 4, pp. 2536–2543, 2023. [8] P. Tomei and R. Marino, "An enhanced feedback adaptive observer for nonlinear systems with lack of persistency of excitation," IEEE Trans. Autom. Control , vol. 68, no. 8, pp. 5067– 5072, 2023. [9] A. Pyrkin, A. Bobtsov, R. Ortega, A. Vedyakov, and S. Ara-novskiy, "Adaptive state observers using dynamic regressor extension and mixing," Syst. Control Lett. , vol. 133, Art. no. 104519, 2019. [10] R. Kamalapurkar, "Simultaneous state and parameter estimation for second-order nonlinear systems," in Proc. IEEE 56th Annu. Conf. Decis. Control (CDC) , Melbourne, VIC, Australia, 2017, pp. 2164–2169, doi: 10.1109/CDC.2017.8263965. [11] T. E. Ogri, Z. I. Bell, and R. Kamalapurkar, "State and parameter estimation for affine nonlinear systems," in Proc. 62nd IEEE Conf. Decis. Control (CDC) , Singapore, 2023, pp. 1517–1522, doi: 10.1109/CDC49753.2023.10383293. [12] M. Abbaszadeh and H. J. Marquez, "Nonlinear observer design for one-sided Lipschitz systems," in Proc. Amer. Control Conf. (ACC) , 2010, pp. 5284–5289. [13] A. Zemouche and R. Rajamani, "Observer design for non-globally Lipschitz nonlinear systems using Hilbert projection theorem," IEEE Control Syst. Lett. , vol. 6, pp. 2581–2586, 2022.
