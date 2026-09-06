@@ -1,0 +1,158 @@
+Title: Embedding Single-Phase Grid-Forming Inverters in Three-Phase Unbalanced Power Flow
+
+URL Source: https://arxiv.org/pdf/2609.03154v1
+
+Published Time: Fri, 04 Sep 2026 00:18:21 GMT
+
+Number of Pages: 3
+
+Markdown Content:
+# Embedding Single-Phase Grid-Forming Inverters in Three-Phase Unbalanced Power Flow 
+
+Kamini Shahare, Fei Feng, and Peng Zhang 
+
+Abstract —This letter introduces Grid-Forming Three-Phase Power Flow (GFM-3PF), an augmented Newton power flow framework for modeling single-phase grid-forming inverters (GFMs) in three-phase unbalanced networks. The contribu-tions of this work are threefold: 1) developing a two-stage solution strategy based on positive-sequence initialization fol-lowed by three-phase phase-domain lifting for robust large-scale computation; 2) incorporating phase-domain unbalanced network modeling with controlled mutual coupling together with phase-dependent, frequency-sensitive load representation; and 3) embedding a single-phase GFM bus model directly into the three-phase unbalanced Newton power flow equations through a common droop-governed frequency state. GFM-3PF is validated on 3-bus, 33-bus, and 118-bus test systems, demonstrating its accuracy, robustness, and scalability. 
+
+Index Terms —Grid-forming inverter, three-phase unbalanced power flow, augmented Newton method, frequency-sensitive load. 
+
+I. I NTRODUCTION 
+
+Conventional power flow formulations are increasingly chal-lenged by inverter-based resources, three-phase unbalance, and reduced synchronous generation [1]. Grid-forming inverters (GFMs) in low-inertia systems are crucial because their steady-state operating point is governed by droop control and cannot be correctly represented by standard slack or PV buses [2]. Although existing three-phase power flow methods capture asymmetric loading and phase coupling [3], a unified formula-tion that embeds droop-controlled single-phase GFM behavior into three-phase network equations remains needed [4]. This letter presents Grid-Forming Three-Phase Power Flow (GFM-3PF), an augmented Newton framework that enforces the single-phase GFMs droop equations directly in the Newton residual. Unlike conventional three-phase power flow with fixed frequency, GFM-3PF solves the phase-domain voltage profile and droop-governed frequency simultaneously, cap-turing the coupling among unbalanced loading, single-phase GFM injection, and frequency-sensitive demand. II. GFM-3PF M ODELING 
+
+The proposed GFM-3PF formulation solves the three-phase unbalanced steady-state operating point of a network intercon-nected with single-phase GFMs. Unlike a conventional slack-
+
+This work relates to the Department of Navy award N000142512374 issued by the Office of Naval Research. Corresponding Author: Peng Zhang. 
+
+K. Shahare and P. Zhang are with the Department of Electrical and Computer Engineering, Stony Brook University, Stony Brook, NY, 11794-2350, USA (e-mail: kamini.shahare, P.Zhang@stonybrook.edu). F. Feng is with the State University of New York Maritime College, Bronx, NY 10465, USA (e-mail: ffeng@sunymaritime.edu). 
+
+bus formulation, the common system frequency is treated as an additional unknown and determined by the active-power/frequency droop relation of the participating single-phase GFMs. One GFM phase angle is selected only as the mathematical angular reference, while the phase voltages and common frequency are solved simultaneously within an augmented Newton framework. 
+
+A. Single-Phase GFM Bus Formulation 
+
+Consider a set of single-phase GFMs denoted by G =
+
+{(bi, ϕ i, γ i, P ⋆i , V ⋆i )}ng
+
+> i=1
+
+, where bi is the bus index, ϕi ∈{A, B, C } is the connected phase, γi is the participation factor, P ⋆i is the scheduled active-power setpoint, and V ⋆i
+
+is the voltage-magnitude setpoint of the ith GFM. Unlike a conventional slack bus, the GFM does not prescribe both sys-tem frequency and active-power injection. Instead, its steady-state operating point is determined by the network equations together with an active-power/frequency droop relation. For a single-phase GFM connected to phase ϕi of bus bi,the droop power is defined using 
+
+Pdroop ,i = Pbi,ϕ i . (1) To avoid tying frequency deviation to absolute injected power, a scheduled or nominal active-power setpoint P ⋆i is included. The aggregate droop power is therefore defined as 
+
+Pagg =
+
+> ng
+
+X
+
+> i=1
+
+γi (Pbi,ϕ i − P ⋆i ) . (2) The common per-unit frequency is then governed by 
+
+ω = ω0 − mpPagg , (3) where ω0 = 1 pu is the nominal per-unit frequency and mp is the per-unit active-power/frequency droop coefficient. In the augmented Newton formulation, this droop relation is enforced through the frequency residual 
+
+∆W = ω0 − mpng
+
+X
+
+> i=1
+
+γi (Pbi,ϕ i − P ⋆i ) − ω. (4) For a single GFM, this expression reduces directly to the droop relation of the connected phase. For multiple single-phase GFMs, the same equation captures their aggregate contribution through the participation factors γi.In addition to active-power/frequency droop, the GFM-connected phase is modeled as a voltage-regulating phase with a specified voltage-magnitude setpoint, 
+
+|Vbi,ϕ i | = V ⋆i . (5) arXiv:2609.03154v1 [cs.ET] 2 Sep 2026 Thus, the GFM phase regulates its voltage magnitude, while its phase angle is solved as part of the network equations, except for one selected GFM phase angle used as the mathematical reference. The reactive-power injection Qbi,ϕ i is not specified a priori; it is obtained from the phase-domain network solution required to satisfy the voltage-magnitude constraint and power balance. In this letter, the focus is on the steady-state impact of active-power/frequency droop; explicit reactive-power/voltage droop and inverter current or power limits are not included and are left for future extensions. 
+
+B. Three-Phase Unbalanced Network Modeling 
+
+A positive-sequence power flow is first solved to provide an initial operating point. The positive-sequence voltage V (+) is then expanded to phase quantities as 
+
+Va = V (+) , Vb = a2V (+) , Vc = aV (+) (6) where a = ej2π/ 3 is the standard three-phase rotation operator. In this letter, the phase-domain admittance matrix is con-structed using self terms and a controlled mutual-coupling fac-tor μ for the synthetic test systems. This provides a consistent way to evaluate the proposed augmented Newton formulation under unbalanced and coupled phase conditions. For practical feeder studies, the same formulation can directly use measured or benchmark phase-domain line impedance matrices. 
+
+C. Unbalanced Load Modeling 
+
+To represent phase unbalance, the total demand at each bus is distributed using phase participation coefficients α =[αA, α B , α C ]. The active and reactive loads are modeled using general scaling functions sP (ω) and sQ(ω) as 
+
+PD,ϕ = sP (ω)αϕPD , QD,ϕ = sQ(ω)αϕQD , (7) where ϕ ∈ { A, B, C }. This formulation is not restricted to a particular load-frequency model; linear, exponential, or other nonlinear load-frequency characteristics can be incorporated by selecting the corresponding sP (ω) and sQ(ω) and including their derivatives in the augmented Jacobian. In the case studies, a linear approximation around ω0 = 1 pu is used as an illustrative example: 
+
+sP (ω) = 1+ kpf (ω−ω0), sQ(ω) = 1+ kqf (ω−ω0). (8) III. A UGMENTED NEWTON SOLUTION 
+
+The proposed method solves the phase-domain network equations together with the GFM droop equation in a single augmented Newton system. To clarify the closure of the for-mulation, Table I summarizes the known quantities, unknown variables, and residual equations used for each bus/phase type. Let Nnr denote the set of non-reference phase nodes whose voltages are solved in the Newton iteration. The unknown vector is defined as 
+
+x =
+
+
+
+ℜ(VNnr )
+
+ℑ(VNnr )
+
+ω
+
+ . (9)                                      
+
+> TABLE I BUS /PHASE MODELING STRUCTURE IN THE PROPOSED FORMULATION
+> Bus/phase type Known quantities Unknowns Residual equations
+> PQ phase PD,QDVr,Vi∆P,∆Q
+> Reference phase ∠Vref Compatible source injection Reference-angle con-straint Single-phase GFM phase
+> V⋆i,mp,P⋆i,γiPhase voltage state,
+> Qbi,ϕ i, common ω
+> ∆P,voltage-magnitude constraint, ∆W
+> Non-GFM phase at GFM bus Assigned load or network injection
+> Vr,Vi∆P,∆Q
+
+Here, VNnr contains the complex phase-domain voltages of all solved non-reference phase nodes, including PQ phases, non-GFM phases at GFM buses, and GFM-connected phases whose voltage magnitude is constrained by V ⋆i . The angle of one selected GFM phase is removed from the unknown vector and used only as the mathematical reference. The residual vector combines the phase-domain active-power mismatch, the reactive-power or voltage-magnitude constraints, and the GFM droop-frequency residual: 
+
+r =
+
+
+
+∆P
+
+∆g
+
+∆W
+
+ . (10) Here, ∆g denotes ∆Q for PQ phases and the voltage-magnitude residual |Vbi,ϕ i | − V ⋆i for GFM-connected phases. The corresponding reactive-power injection of the GFM phase is obtained from the network solution. The scalar residual 
+
+∆W enforces the aggregate single-phase GFM droop relation. After selecting one angular reference, the number of residual equations equals the number of unknowns in the augmented Newton system. The nonlinear equations are solved iteratively using 
+
+Jaug ∆x = −r(x), (11a) 
+
+xk+1 = xk + ∆ x, (11b) where Jaug = ∂r/∂ x is the augmented Jacobian. Com-pared with a conventional three-phase power-flow Jacobian, 
+
+Jaug includes additional derivatives associated with frequency-sensitive load scaling, the GFM voltage-magnitude constraint, and the droop-frequency residual. Therefore, the phase volt-ages and common-frequency state are updated simultaneously within one Newton iteration. IV. T EST CASE SCENARIOS 
+
+To demonstrate the performance and scalability of GFM-3PF, three systems of different scales are thoroughly tested. 
+
+A. IEEE 3-bus Test Feeder 
+
+A 3-bus system with a source at Bus 1, a PQ load bus at Bus 2, and a single-phase GFM at Bus 3 is used to verify the proposed framework. Fig. 1(a) shows the bus voltage magnitudes, with VUF below 3% at all buses, while Fig. 1(b) shows the comparison of GFM-3PF with PSCAD under events at 5 s, 10 s, and 15 s. PSCAD captures sharper EMT transients, whereas GFM-3PF reproduces the associated operating-point Fig. 1. Three-phase voltage magnitude profile under different disturbance events at (a) Bus 2 all phases (b) Bus 3 phase A comparison between GFM-3PF and PSCAD . 
+
+Fig. 2. Three-phase Voltage magnitude profile for IEEE 33-bus radial distribution System. 
+
+transitions and closely matches the pre-event and post-event voltage levels. 
+
+B. IEEE 33-bus System 
+
+The IEEE 33-bus case is used to assess the proposed method on a medium-scale radial feeder. In this case, the single-phase GFM is placed at bus 4 on phase A, consistent with the phase-selective GFM configuration summarized in Table II. The solved common frequency is ω = 0 .999807 pu after applying the phase-specific droop model with the active-power setpoint P ⋆i . The final mismatch is 4.24 × 10 −8, confirming convergence of the proposed augmented Newton formulation. Fig. 2 shows the three-phase voltage magnitude profile of the unbalanced 33-bus feeder. The phase-dependent separation among the voltage trajectories reflects the imposed unbalanced loading, while the nodal voltage attenuation along the feeder is consistent with radial distribution-system behavior. 
+
+C. IEEE 118-bus Meshed System 
+
+The IEEE 118-bus case is used to demonstrate the scal-ability of GFM-3PF in a large-scale meshed network. Two single-phase GFMs are placed on different phases to provide phase-selective support: one at Bus 69 on phase A and another at Bus 1 on phase B. The corresponding single-phase GFM ratings are 1.00 pu and 1.02 pu, respectively, on the adopted system base. The three-phase network includes phase mutual coupling, and the loads are distributed unevenly across phases with frequency-sensitive scaling. The solved common 
+
+Fig. 3. Three-phase voltage magnitude profile for IEEE 118-bus meshed System. TABLE II PERFORMANCE SUMMARY OF GFM-3PF.                             
+
+> Item 3-Bus 33-Bus 118-Bus
+> GFM location Bus 3-A Bus 4-A Bus 1-B, Bus 69-A
+> ω(pu) 0.99902 0.999807 0.99861 Iterations 419 20 Final mismatch 9.14 ×10 −13 4.240 ×10 −84.854 ×10 −7
+> Tolerance 10 −610 −610 −6
+> Key point Verification Medium-scale radial Multi-GFM scalable
+
+frequency is ω = 0.99861 pu, and the final mismatch is 
+
+4.854 × 10 −7, satisfying the prescribed tolerance of 10 −6.These results confirm that GFM-3PF maintains stable con-vergence for the large-scale meshed case with phase-selective single-phase GFMs. Fig. 3 shows the three-phase voltage magnitude profile of the IEEE 118-bus meshed system. V. C ONCLUSION 
+
+This letter presented GFM-3PF, a Newton-based framework for embedding single-phase GFM behavior within a three-phase unbalanced power flow solver. GFM-3PF integrates positive-sequence initialization, three-phase unbalanced network modeling, frequency-sensitive load representation, and a droop-governed common per-unit frequency state within a unified steady-state framework. Results on 3-bus, IEEE 33-bus, and IEEE 118-bus systems demonstrate the accuracy, robustness, and scalability of the method, showing its potential as a practical tool for steady-state analysis of inverter-dominated unbalanced power systems. REFERENCES [1] P. A. N. Garcia, J. L. R. Pereira, S. Carneiro, Jr., V. M. da Costa, and N. Martins, “Three-Phase Power Flow Calculations Using the Current Injection Method,” IEEE Transactions on Power Systems , vol. 15, no. 2, pp. 508–514, May 2000. [2] F. Feng and P. Zhang, ”Enhanced Microgrid Power Flow Incorporating Hierarchical Control,” IEEE Transactions on Power Systems , vol. 35, no. 3, pp. 2463-2466, May 2020. [3] D. Li, Y. Su, F. Wang, M. Olama, B. Ollis and M. Ferrari, ”Power Flow Models of Grid-Forming Inverters in Unbalanced Distribution Grids,” 
+
+IEEE Transactions on Power Systems , vol. 39, no. 2, pp. 4311-4322, March 2024. [4] E. Fayad, A. Bruyere, F. Colas and F. Gruson, ”Single Phase Grid-Forming Control Implementation on Embedded Electric Vehicle Charger for V2X Applications,” 2025 IEEE Kiel PowerTech, Kiel, Germany, 2025. [5] S. Mossing, O. Amestegui, M. Jonas, f. Feng, L. Wang, Q. Shen, S. Zarrabian, Z. Liu, and P. Zhang, ”Generalized shipboard microgrid power flow incorporating hierarchical control,” iEnergy , vol. 4, no. 3, pp. 165-173, September 2025.

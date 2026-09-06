@@ -1,0 +1,126 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-09-06T21:02:42.022537+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 3,
+    "quick_skim_target": 11,
+    "quick_selected": 3
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2609.03154v1",
+      "title": "Embedding Single-Phase Grid-Forming Inverters in Three-Phase Unbalanced Power Flow",
+      "abstract": "This letter introduces Grid-Forming Three-Phase Power Flow (GFM-3PF), an augmented Newton power flow framework for modeling single-phase grid-forming inverters (GFMs) in three-phase unbalanced networks. The contributions of this work are threefold: 1) developing a two-stage solution strategy based on positive-sequence initialization followed by three-phase phase-domain lifting for robust large-scale computation; 2) incorporating phase-domain unbalanced network modeling with controlled mutual coupling together with phase-dependent, frequency-sensitive load representation; and 3) embedding a single-phase GFM bus model directly into the three-phase unbalanced Newton power flow equations through a common droop-governed frequency state. GFM-3PF is validated on 3-bus, 33-bus, and 118-bus test systems, demonstrating its accuracy, robustness, and scalability.",
+      "authors": [
+        "Kamini Shahare",
+        "Fei Feng",
+        "Peng Zhang"
+      ],
+      "primary_category": "cs.ET",
+      "categories": [
+        "cs.ET"
+      ],
+      "published": "2026-09-02T20:37:26+00:00",
+      "link": "https://arxiv.org/pdf/2609.03154v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "three-phase unbalanced power flow modeling for inverters",
+      "llm_evidence_cn": "逆变器的三相不平衡潮流建模",
+      "llm_evidence": "逆变器的三相不平衡潮流建模",
+      "canonical_evidence": "逆变器的三相不平衡潮流建模",
+      "llm_tldr_en": "Develops a Newton power flow framework for modeling single-phase grid-forming inverters in three-phase networks.",
+      "llm_tldr_cn": "开发了一个牛顿潮流框架，用于在三相网络中对单相构网型逆变器建模。",
+      "llm_tldr": "开发了一个牛顿潮流框架，用于在三相网络中对单相构网型逆变器建模。",
+      "llm_tags": [
+        "query:pmsm:composite"
+      ],
+      "matched_query_tag": "query:pmsm:composite",
+      "matched_query_text": "Papers central to 三相及双三相永磁同步电机相关研究检索, especially work that connects or combines: m; s; f; Permanent Magnet Synchronous Motor research; dual three-phase permanent magnet synchronous motor control and design; fault-tolerant control of multi-phase motors; recent advances in dual three phase permanent magnet synchronous motor control; fault tolerant strategies for multi phase permanent magnet synchronous motors.",
+      "matched_requirement_id": "req-composite-pmsm",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2608.30915v1",
+      "title": "Parameter Estimation of Power Electronic Converters with Differentiable Physics Simulation",
+      "abstract": "This article proposes a differentiable physics simulation (DP simulation)-based parameter estimation method for the condition monitoring of power electronic converters. In the proposed method, the time-domain simulation of converter dynamics is embedded into a differentiable computational graph, directly linking device parameters to observed voltage and current trajectories. By formulating differentiable time-stepping operators, the nonlinear dynamics of the converter across different circuit topologies are simulated in a unified, differentiable manner. A dc-dc buck converter is used as a representative case study. Using sparse transient samples from existing sensing channels, the method enables noninvasive parameter estimation without additional sensing hardware. Comprehensive simulation studies are conducted to evaluate the impacts of time-stepping schemes, regularization constraints, and various uncertainty sources on estimation accuracy and robustness. Subsequently, 30 distinct hardware configurations are experimentally tested for validation. The results show that the proposed method can effectively track the relative variations of health-related parameters across the critical components. This DP simulation framework provides a novel perspective for physics-informed machine learning in power electronic applications.",
+      "authors": [
+        "Pingjunjin Tan",
+        "Chunlin Lv",
+        "Jinjun Liu",
+        "Yang Li"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY"
+      ],
+      "published": "2026-08-31T14:57:50+00:00",
+      "link": "https://arxiv.org/pdf/2608.30915v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "parameter estimation for power electronic converters using differentiable simulation",
+      "llm_evidence_cn": "基于可微仿真的电力电子变换器参数估计",
+      "llm_evidence": "基于可微仿真的电力电子变换器参数估计",
+      "canonical_evidence": "基于可微仿真的电力电子变换器参数估计",
+      "llm_tldr_en": "Proposes a differentiable physics simulation for noninvasive parameter estimation in power converters.",
+      "llm_tldr_cn": "提出一种用于电力电子变换器非侵入式参数估计的可微物理仿真方法。",
+      "llm_tldr": "提出一种用于电力电子变换器非侵入式参数估计的可微物理仿真方法。",
+      "llm_tags": [
+        "query:pmsm:composite"
+      ],
+      "matched_query_tag": "query:pmsm:composite",
+      "matched_query_text": "Papers central to 三相及双三相永磁同步电机相关研究检索, especially work that connects or combines: m; s; f; Permanent Magnet Synchronous Motor research; dual three-phase permanent magnet synchronous motor control and design; fault-tolerant control of multi-phase motors; recent advances in dual three phase permanent magnet synchronous motor control; fault tolerant strategies for multi phase permanent magnet synchronous motors.",
+      "matched_requirement_id": "req-composite-pmsm",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.00218v1",
+      "title": "Uncertainty-Aware Parameter Estimation for Condition Monitoring of Power Converters",
+      "abstract": "Parameter estimation is widely used for condition monitoring of power converters, but most existing methods provide only point estimates and therefore cannot quantify whether an observed parameter change is statistically significant. This paper proposes an uncertainty-aware parameter estimation framework based on Bayesian maximum a posteriori optimization and a differentiable converter model. A Laplace approximation is used to obtain a local Gaussian posterior, enabling uncertainty quantification, consistency testing, estimator-resolution analysis, and precision-weighted pooling across data windows. The method is validated on synthetic and hardware Buck converter. It demonstrates accurate estimation of well-identified parameters and reveal the weak practical identifiability of parameters such as MOSFET on-resistance under the available sensing configuration.",
+      "authors": [
+        "Tomas Monopoli",
+        "Jiahong Liu",
+        "Shuai Zhao"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY"
+      ],
+      "published": "2026-08-31T18:29:45+00:00",
+      "link": "https://arxiv.org/pdf/2609.00218v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "uncertainty-aware parameter estimation for power converter condition monitoring",
+      "llm_evidence_cn": "用于电力变换器状态监测的不确定性感知参数估计",
+      "llm_evidence": "用于电力变换器状态监测的不确定性感知参数估计",
+      "canonical_evidence": "用于电力变换器状态监测的不确定性感知参数估计",
+      "llm_tldr_en": "Presents a Bayesian framework for parameter estimation and uncertainty quantification in power converters.",
+      "llm_tldr_cn": "提出了一种用于电力变换器参数估计和不确定性量化的贝叶斯框架。",
+      "llm_tldr": "提出了一种用于电力变换器参数估计和不确定性量化的贝叶斯框架。",
+      "llm_tags": [
+        "query:pmsm:composite"
+      ],
+      "matched_query_tag": "query:pmsm:composite",
+      "matched_query_text": "Papers central to 三相及双三相永磁同步电机相关研究检索, especially work that connects or combines: m; s; f; Permanent Magnet Synchronous Motor research; dual three-phase permanent magnet synchronous motor control and design; fault-tolerant control of multi-phase motors; recent advances in dual three phase permanent magnet synchronous motor control; fault tolerant strategies for multi phase permanent magnet synchronous motors.",
+      "matched_requirement_id": "req-composite-pmsm",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

@@ -1,0 +1,51 @@
+{
+  "label": "2026-09-06",
+  "date": "2026-09-06",
+  "generated_at": "2026-09-06T21:03:08",
+  "count": 3,
+  "papers": [
+    {
+      "paper_id": "202609/06/2609.03154v1-embedding-single-phase-grid-forming-inverters-in-three-phase-unbalanced-power-flow",
+      "section": "quick",
+      "title_en": "Embedding Single-Phase Grid-Forming Inverters in Three-Phase Unbalanced Power Flow",
+      "authors": "Kamini Shahare, Fei Feng, Peng Zhang",
+      "date": "2026-09-02",
+      "pdf": "https://arxiv.org/pdf/2609.03154v1",
+      "score": "7.0",
+      "evidence": "逆变器的三相不平衡潮流建模",
+      "tldr": "本文针对含单相构网型逆变器（GFM）的三相不平衡电力系统，提出了扩展牛顿潮流框架GFM-3PF。该方法通过统一的下垂频率状态将单相GFM直接嵌入相域三相方程，并引入正序初始化至三相升维的两阶段求解策略，实现了大规模不平衡网络的高效、精确且鲁棒的潮流计算。",
+      "tags": "query:pmsm",
+      "abstract_en": "This letter introduces Grid-Forming Three-Phase Power Flow (GFM-3PF), an augmented Newton power flow framework for modeling single-phase grid-forming inverters (GFMs) in three-phase unbalanced networks. The contributions of this work are threefold: 1) developing a two-stage solution strategy based on positive-sequence initialization followed by three-phase phase-domain lifting for robust large-scale computation; 2) incorporating phase-domain unbalanced network modeling with controlled mutual coupling together with phase-dependent, frequency-sensitive load representation; and 3) embedding a single-phase GFM bus model directly into the three-phase unbalanced Newton power flow equations through a common droop-governed frequency state. GFM-3PF is validated on 3-bus, 33-bus, and 118-bus test systems, demonstrating its accuracy, robustness, and scalability.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202609/06/2608.30915v1-parameter-estimation-of-power-electronic-converters-with-differentiable-physics-simulation",
+      "section": "quick",
+      "title_en": "Parameter Estimation of Power Electronic Converters with Differentiable Physics Simulation",
+      "authors": "Pingjunjin Tan, Chunlin Lv, Jinjun Liu, Yang Li",
+      "date": "2026-08-31",
+      "pdf": "https://arxiv.org/pdf/2608.30915v1",
+      "score": "6.0",
+      "evidence": "基于可微仿真的电力电子变换器参数估计",
+      "tldr": "本文提出了一种基于可微物理仿真的电力电子变换器参数估计方法。该方法将电路动力学嵌入可微计算图，仅利用已有通道的稀疏瞬态数据实现非侵入式估计。在Buck变换器上的仿真与30组硬件实验表明，该方法能准确追踪关键部件健康参数的变化，为电力电子状态监测提供了新视角。",
+      "tags": "query:pmsm",
+      "abstract_en": "This article proposes a differentiable physics simulation (DP simulation)-based parameter estimation method for the condition monitoring of power electronic converters. In the proposed method, the time-domain simulation of converter dynamics is embedded into a differentiable computational graph, directly linking device parameters to observed voltage and current trajectories. By formulating differentiable time-stepping operators, the nonlinear dynamics of the converter across different circuit topologies are simulated in a unified, differentiable manner. A dc-dc buck converter is used as a representative case study. Using sparse transient samples from existing sensing channels, the method enables noninvasive parameter estimation without additional sensing hardware. Comprehensive simulation studies are conducted to evaluate the impacts of time-stepping schemes, regularization constraints, and various uncertainty sources on estimation accuracy and robustness. Subsequently, 30 distinct hardware configurations are experimentally tested for validation. The results show that the proposed method can effectively track the relative variations of health-related parameters across the critical components. This DP simulation framework provides a novel perspective for physics-informed machine learning in power electronic applications.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202609/06/2609.00218v1-uncertainty-aware-parameter-estimation-for-condition-monitoring-of-power-converters",
+      "section": "quick",
+      "title_en": "Uncertainty-Aware Parameter Estimation for Condition Monitoring of Power Converters",
+      "authors": "Tomas Monopoli, Jiahong Liu, Shuai Zhao",
+      "date": "2026-08-31",
+      "pdf": "https://arxiv.org/pdf/2609.00218v1",
+      "score": "6.0",
+      "evidence": "用于电力变换器状态监测的不确定性感知参数估计",
+      "tldr": "针对传统电力电子变换器状态监测仅能提供点估计、无法量化统计显著性的问题，本文提出了一种基于贝叶斯最大后验优化与可微变换器模型的不确定性感知估计框架。该方法通过拉普拉斯近似获取局部高斯后验，实现了不确定性量化与估算分辨率分析。在Buck变换器上的验证结果表明，该框架能精准估计高可识别参数，并揭示了部分关键参数的弱实际可识别性。",
+      "tags": "query:pmsm",
+      "abstract_en": "Parameter estimation is widely used for condition monitoring of power converters, but most existing methods provide only point estimates and therefore cannot quantify whether an observed parameter change is statistically significant. This paper proposes an uncertainty-aware parameter estimation framework based on Bayesian maximum a posteriori optimization and a differentiable converter model. A Laplace approximation is used to obtain a local Gaussian posterior, enabling uncertainty quantification, consistency testing, estimator-resolution analysis, and precision-weighted pooling across data windows. The method is validated on synthetic and hardware Buck converter. It demonstrates accurate estimation of well-identified parameters and reveal the weak practical identifiability of parameters such as MOSFET on-resistance under the available sensing configuration.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
