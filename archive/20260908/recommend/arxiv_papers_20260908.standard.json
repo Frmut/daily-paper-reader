@@ -1,0 +1,56 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-09-08T21:27:09.834243+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 1,
+    "quick_skim_target": 11,
+    "quick_selected": 1
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2609.02431v1",
+      "title": "Multivariable Geometric Laplace Transform and Fault Detection in Distributed-Converter Lines",
+      "abstract": "Monitoring a DC line with many distributed power converters is a genuinely spatio-temporal problem: the information about a localized fault travels along the whole conductor and reaches a few measurement points mixed with the dynamics of the line itself. This paper develops a two-dimensional geometric Laplace transform (t,x) -> (s_t,s_x) over a commutative subalgebra of the geometric algebra Cl(4,0), isomorphic to Segre's bicomplex numbers, in which two bivectors B_t and B_x act as independent imaginary units for the temporal and the spatial phase. Because the two phases live in algebraically distinguishable planes, a fault at position x_f leaves a transformed residual that factorizes as F_f(s_t) e^{-s_x x_f}: its temporal nature stays in the first factor and its location can be read as a geometric argument of the second. On this representation we build a transmission-line model of the converter line and its space-time dispersion relation, a distributed control by admittance shaping, including an exact treatment of discrete converter sites (spatial sampling, aliasing, and a per-converter droop realization that is exact on the sub-Nyquist band), and a fault diagnosis chain that detects, localizes and classifies injection-loss, shunt, sensor and local-controller faults, extends to multiple simultaneous faults with automatic order selection, and distinguishes the outage of a plant from a cable defect. As an integral object the transform is known in bicomplex analysis, and with a single independent variable it reduces to the complex Laplace transform; the contribution lies in its geometric embedding and in its operational use for fault diagnosis in distributed-converter networks. All results are reproduced by an accompanying open implementation.",
+      "authors": [
+        "Francisco Manuel Arrabal-Campos",
+        "Francisco G. Montoya",
+        "Santiago Sánchez-Acevedo",
+        "Raymundo E. Torres-Olguin",
+        "Alfredo Alcayde"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY",
+        "eess.SP"
+      ],
+      "published": "2026-09-02T10:50:31+00:00",
+      "link": "https://arxiv.org/pdf/2609.02431v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "fault detection in distributed-converter lines",
+      "llm_evidence_cn": "分布式变流器线路的故障检测",
+      "llm_evidence": "分布式变流器线路的故障检测",
+      "canonical_evidence": "分布式变流器线路的故障检测",
+      "llm_tldr_en": "Develops a geometric Laplace transform for fault detection in lines with distributed power converters.",
+      "llm_tldr_cn": "开发了一种几何拉普拉斯变换，用于具有分布式功率变换器的线路故障检测。",
+      "llm_tldr": "开发了一种几何拉普拉斯变换，用于具有分布式功率变换器的线路故障检测。",
+      "llm_tags": [
+        "query:pmsm"
+      ],
+      "matched_query_tag": "query:pmsm",
+      "matched_query_text": "fault-tolerant control of multi-phase motors",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

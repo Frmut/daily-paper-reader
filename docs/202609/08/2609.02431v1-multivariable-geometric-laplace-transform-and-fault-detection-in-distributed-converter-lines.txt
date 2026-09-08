@@ -1,0 +1,2423 @@
+Title: Multivariable Geometric Laplace Transform and Fault Detection in Distributed-Converter Lines
+
+URL Source: https://arxiv.org/pdf/2609.02431v1
+
+Published Time: Thu, 03 Sep 2026 00:56:49 GMT
+
+Number of Pages: 56
+
+Markdown Content:
+# Multivariable Geometric Laplace Transform and Fault Detection in Distributed-Converter Lines 
+
+Francisco Manuel Arrabal-Campos 1,∗, Francisco G. Montoya 1, Santiago Sánchez-Acevedo 2,Raymundo E. Torres-Olguin 2 and Alfredo Alcayde 1 
+
+> 1
+
+Department of Engineering, University of Almeria, La Cañada de San Urbano, 04120 Almeria, Spain 
+
+fmarrabal@ual.es , pagilm@ual.es , aalcayde@ual.es  
+
+> 2
+
+SINTEF, Norway 
+
+santiago.sanchez@sintef.no , raymundo.torres-olguin@sintef.no  
+
+> ∗
+
+Corresponding author: fmarrabal@ual.es 
+
+September 3, 2026 
+
+Abstract 
+
+Monitoring a DC line with many distributed power converters is a genuinely spatio-temporal problem: the information about a localized fault travels along the whole conductor and reaches a few measurement points mixed with the dynamics of the line itself. This paper develops a two-dimensional geometric Laplace transform (t, x ) 7 → (st, s x) over a commutative subalgebra of Cl(4 , 0), isomorphic to Segre’s bicomplex numbers, in which two bivectors Bt and Bx act as independent imaginary units for the temporal and the spatial phase. Because the two phases live in algebraically distinguishable planes, a fault at position xf leaves a transformed residual that factorizes as Ff (st) e−sxxf : its temporal nature stays in the first factor and its location can be read as a geometric argument of the second. On this representation we build a transmission-line model of the converter line and its space–time dispersion relation, a distributed control by admittance shaping —with an exact treatment of discrete converter sites: spatial sampling, aliasing, and a per-converter droop realization that is exact on the sub-Nyquist band—, and a fault diagnosis chain that detects, localizes and classifies injection-loss, shunt, sensor and local-controller faults, extends to multiple simultaneous faults with automatic order selection, and distinguishes the outage of a plant from a cable defect. As an integral object the transform is known in bicomplex analysis, and with a single independent variable it reduces to the complex Laplace transform; the contribution lies in its geometric embedding and in its operational use for fault diagnosis in distributed-converter networks. All results are reproduced by an accompanying open implementation. 
+
+# Contents 
+
+1 Introduction and motivation 3
+
+1.1 Applied context: DC lines with distributed converters . . . . . . . . . . . . . . 31.2 Mathematical motivation: why a single complex variable does not suffice . . . . 31.3 Related work and delimitation of the novelty . . . . . . . . . . . . . . . . . . . 41.4 Contributions . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 51.5 Document structure . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 6
+
+2 Minimal geometric algebra 6
+
+2.1 Definition of the subalgebra . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 62.2 Product and commutativity . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 71arXiv:2609.02431v1 [eess.SY] 2 Sep 2026 2.3 Idempotent decomposition and diagonalization . . . . . . . . . . . . . . . . . . 82.4 Inverse and zero divisors . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 82.5 Exponential and elementary functions . . . . . . . . . . . . . . . . . . . . . . . 92.6 Geometric arguments and auxiliary norm . . . . . . . . . . . . . . . . . . . . . 10 2.7 Relation to the implementation . . . . . . . . . . . . . . . . . . . . . . . . . . . 10 
+
+3 Two-dimensional geometric Laplace transform and operational properties 11 
+
+3.1 Definition and factorized kernel . . . . . . . . . . . . . . . . . . . . . . . . . . . 11 3.2 Region of convergence . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 11 3.3 Linearity . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 13 3.4 Transform of the partial derivatives . . . . . . . . . . . . . . . . . . . . . . . . . 13 3.5 Transform of a separable mode . . . . . . . . . . . . . . . . . . . . . . . . . . . 14 3.6 Comparison with the ordinary complex Laplace transform . . . . . . . . . . . . 15 3.7 Correspondence with the implementation . . . . . . . . . . . . . . . . . . . . . 15 
+
+4 Distributed converter-line model and dispersion relation 15 
+
+4.1 Modeling assumptions . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 16 4.2 Line equations . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 16 4.3 Transformation and distributed transfer function . . . . . . . . . . . . . . . . . 17 4.4 Dispersion relation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 17 4.5 Finite line: modes and modal denominator . . . . . . . . . . . . . . . . . . . . 19 4.6 Discrete converters: point injection and spatial sampling . . . . . . . . . . . . . 20 
+
+5 Distributed control via admittance shaping 23 
+
+5.1 Distributed virtual conductance . . . . . . . . . . . . . . . . . . . . . . . . . . . 24 5.2 Space-time dynamic controller . . . . . . . . . . . . . . . . . . . . . . . . . . . . 25 5.3 Design by target denominator . . . . . . . . . . . . . . . . . . . . . . . . . . . . 26 5.4 Modal control on a finite line . . . . . . . . . . . . . . . . . . . . . . . . . . . . 27 
+
+6 Localized faults: detection, localization, and classification 29 
+
+6.1 Distributed residual and the signature of a localized fault . . . . . . . . . . . . 29 6.2 From the residual to the measured signals . . . . . . . . . . . . . . . . . . . . . 31 6.3 Localization by geometric spatial phase . . . . . . . . . . . . . . . . . . . . . . 32 6.4 Modal localization in a finite line . . . . . . . . . . . . . . . . . . . . . . . . . . 33 6.5 Extension: multiple faults . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 34 6.6 Fault classification . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 37 
+
+7 Numerical results 39 
+
+7.1 Base case and distributed parameters . . . . . . . . . . . . . . . . . . . . . . . . 39 7.2 Modal analysis: first mode . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 39 7.3 Open-loop and closed-loop modal poles . . . . . . . . . . . . . . . . . . . . . . 40 7.4 Localization of a fault . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 41 7.5 Fault classification . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 42 7.6 Monte Carlo validation of the classification . . . . . . . . . . . . . . . . . . . . 44 7.7 Recovery of multiple faults . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 45 7.8 Discrete converters: exactness, aliasing, and localization . . . . . . . . . . . . . 46 
+
+8 Conclusions, limitations and future work 49 
+
+8.1 Conclusions . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 50 8.2 Limitations . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 52 8.3 Future work . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 53 21 Introduction and motivation 
+
+1.1 Applied context: DC lines with distributed converters 
+
+DC microgrids and DC distribution buses have taken on a central role in the integration of renewable generation, storage, and electronic loads. In these architectures, numerous power converters are connected along a distribution line, occupying distinct physical positions, and they interact through the electromagnetic dynamics of the conductor itself. The ensemble therefore behaves as a spatio-temporal system: the relevant electrical quantities (line voltage and current) depend simultaneously on time t and on the spatial coordinate x along the line [8, 28]. In this setting, a fundamental operational objective is monitoring: detecting the onset of a fault, locating it (identifying the position xf of the affected converter or segment), and 
+
+classifying it (distinguishing, for example, an injection loss from a shunt short circuit or a sensor fault). The difficulty lies in the fact that the information about a localized fault propagates along the entire line and is observed, intermingled, at a limited number of measurement points. Throughout this work we adopt a set of modeling assumptions that precisely delimit the scope of the analysis. 
+
+Assumption 1.1 (Incremental linearization) . Around an admissible steady-state operating point, the voltage and current deviations from that point are small enough for the dynamics of the line and of the converters to admit an incremental linear description. All quantities that follow are understood as deviations from the steady-state regime. 
+
+Assumption 1.2 (Spatial continuity) . The distribution line is modeled as a spatially continu-ous medium in the coordinate x, described by distributed parameters (resistance, inductance, conductance, and capacitance per unit length). The localized distributions associated with the converters are interpreted in the sense of densities over that continuum. 
+
+Assumption 1.3 (Converters as distributed injection) . Each converter located at a position xf
+
+is approximated, in the incremental regime, by its contribution to a distributed injection u(t, x )that acts on the line. A converter concentrated at xf corresponds to the limiting case in which 
+
+u(t, x ) is concentrated around xf , whereas a density of nearby converters is represented by a smooth injection in x. The exact discrete case — P point injections at known sites— and its continuum limit are treated in subsection 4.6. Theorems 1.1 to 1.3 set the regime of validity of the model: small signal, continuous medium, and distributed actuation. We do not aim to describe large-signal transients or the internal switching of the converters, but rather the incremental line dynamics on which the monitoring is built. 
+
+1.2 Mathematical motivation: why a single complex variable does not suffice 
+
+The classical Laplace transform associates with a time signal f (t) the function 
+
+F (s) =  
+
+> ∫∞
+> 0
+
+f (t) e−st dt, s = σ + j ω, j2 = −1, (1) where the imaginary unit j encodes the phase of the oscillatory components. The choice of j,however, is not essential: it can be replaced by any element B of an algebra satisfying B2 = −1. If B is a bivector of a geometric algebra, the resulting calculus is algebraically equivalent to that of equation (1), since the entire structure rests on the single relation B2 = −1 [17]. With a single independent variable, therefore, replacing j by a bivector provides a geometric interpretation of the phase, but no new modeling capability. 3The situation changes qualitatively when there are two independent variables, time t and space x. In a spatio-temporal system a temporal phase (associated with the frequency ω)and a spatial phase (associated with the wavenumber k) coexist. To be precise about the scope: a complex Laplace transform with two independent variables ( st, s x) ∈ C2 already distinguishes the two phases, since each variable retains its own coordinate. What we pursue is not that distinction, but rather representing both phases in algebraically distinguishable planes within a single structure , which makes it easier to read arguments, mixed products, and spatial signatures on a single object. To this end we introduce two independent geometric imaginary units, the bivectors Bt and Bx, with 
+
+B2 
+
+> t
+
+= −1, B2 
+
+> x
+
+= −1, BtBx = BxBt = Btx , B2 
+
+> tx
+
+= +1 , (2) so that the algebra generated is commutative and isomorphic to the algebra of Segre’s bicomplex numbers [22]. A general element is written z = a + b Bt + c Bx + d Btx with a, b, c, d ∈ R. Over this structure we define the two-dimensional geometric Laplace transform 
+
+LG{f } = F (st, s x) =   
+
+> ∫∞
+> 0
+> ∫∞
+> 0
+
+f (t, x ) e−stt e−sxx dx dt, (3) with geometric variables 
+
+st = ρt + Bt ω, sx = ρx + Bx k. (4) The factor e−stt carries the temporal attenuation and phase in the plane generated by Bt, while 
+
+e−sxx carries the spatial attenuation and phase in the plane generated by Bx. Since Bt and 
+
+Bx are distinct imaginary units, the two phases are not conflated: the temporal information is labeled by Bt and the spatial information by Bx.It is this separation that gives the proposal its applied meaning. The position of a fault along the line manifests itself as a well-defined spatial phase shift, which can be read as an argument in the Bx plane through the operator Arg Bx , in a manner analogous to how the temporal phase is read with Arg Bt . The spatial location of a fault thus becomes the reading of a geometric argument, separable from the temporal dynamics of the fault itself. 
+
+1.3 Related work and delimitation of the novelty 
+
+Three strands of literature intersect this work. We review them briefly, to acknowledge what is already known and to make clear where our contribution lies. 
+
+Bicomplex and double Laplace transforms. The integral object equation (3) is not, in itself, new. The Laplace transform with a bicomplex variable is established in the bicomplex analysis literature: [21] studies its existence and its region of convergence via the idempotent projections, and [1] develops its convolution theorem and applications; the foundations of the underlying algebra are collected in [29, 22]. The double Laplace transform in two complex variables, for its part, is classical and possesses a complete body of operational properties [5]. Consequently, in this work no novelty is claimed for the transform as a mathematical object :the properties in section 3 should be understood as a self-contained reworking, in the language of geometric algebra, of results that are for the most part known within those frameworks. 
+
+Hypercomplex transforms in signal processing. In signal and image processing there is a well-established tradition of transforms over hypercomplex algebras: the quaternion Fourier transform, introduced precisely to analyze two-dimensional linear time-invariant systems de-scribed by partial differential equations [10] and later developed for color imaging [11]; the hypercomplex analytic signal [3]; and the Clifford Fourier transforms [18]. These frameworks are, in general, noncommutative (quaternions, full Clifford algebras) and their dominant mo-tivation is image analysis. On the Laplace side, a quaternion transform of two real variables 4appears already in Ell’s thesis [9] and, very recently, a geometric Laplace transform has been introduced for multivector-valued functions of a single real variable over geometric algebras Cl( q, r ) with q + r ≤ 5 and a multivector Laplace variable [33]; there the noncommutativity forces left and right transforms, one-sided operational rules, and an exponential transform that departs from the classical one. Despite the shared name, that object and the one developed here differ in both directions: ours is genuinely two-variable in ( t, x ), and its codomain is a commutative subalgebra chosen precisely so that the classical operational calculus survives. The present work thus uses the commutative (bicomplex) variant embedded as a subalgebra of Cl(4 , 0), in which the Bt and Bx planes are algebraically distinguishable and the Laplace-type operational properties are preserved without the ordering complications of noncommutative products, and directs it at a concrete spatio-temporal physical system ( t, x ). 
+
+Fault location in DC lines and networks. Protection and fault location in DC lines and microgrids rely on well-established techniques, most of them conceived for the large-signal tran-sient of a short circuit: traveling-wave methods [24], fast differential protection [12], location through test power injection in ring buses [26], and active impedance estimation [4]; see also the surveys of DC microgrid control [8, 23]. These techniques typically require pronounced transients or dedicated injection infrastructure. The niche addressed by this work is different and complementary: the incremental small-signal monitoring (theorem 1.1) of a network of generators connected through converters distributed along the line, with detection, location, and classification integrated within a single model-based framework [6, 20], oriented toward incipient faults (injection loss, admittance drifts, sensor faults, or local-control faults) that do not go so far as to trip the large-signal protections. 
+
+Delimitation of the novelty. In light of the above, the contribution of this work is not the bicomplex transform, but rather its operational exploitation for fault diagnosis in a dis-tributed network of generators with converters : (i) the geometric embedding of the transform in Cl(4 , 0), which endows the two phases with distinguishable bivector planes and allows the spatial argument operator Arg Bx to be defined; (ii) the representation of a localized fault as a spatial singularity of the distributed residual, factorizable as Ff (st) e−sxxf , whose position is read as a geometric argument on the same transformed object that encodes the temporal dynamics; and (iii) the resulting integrated framework of detection, location, and classification, with reproducible numerical validation on a model of a DC line with distributed converters. To the best of our knowledge, this combination had not been formulated or exploited for fault diagnosis in networks of distributed converters. 
+
+1.4 Contributions 
+
+In summary, and with the boundaries drawn in subsection 1.3, this work contributes the fol-lowing. 1. An integrated framework for fault detection, location, and classification in a network of generators with distributed converters on a DC line, in which localized faults are repre-sented as spatial singularities of the distributed residual, factorizable as Ff (st) e−sxxf in the transformed domain, and the position of the fault is read as a geometric argument in the Bx plane (operator Arg Bx ) or through modal weights. This is the main contribution of the work. 2. A geometric formulation of the two-dimensional bicomplex Laplace transform, equation (3), over the commutative subalgebra of Cl(4 , 0) generated by Bt and Bx, with a self-contained exposition of its operational properties and its idempotent decomposition. The transform 5as an integral object is known [21, 1, 5]; the contribution is its geometric embedding and the operational reading of the spatial phase that this enables. 3. A spatio-temporal model of a DC line with distributed converters and its dispersion relation ∆( st, s x) = 0 in the geometric domain, which separates the temporal and spatial dynamics, together with the exact spatial-sampling theory of discrete converter sites (orthogonality, aliasing, controllability). 4. A distributed control design by admittance shaping formulated in the geometric variables (st, s x). 5. A reproducible implementation and a numerical validation of the preceding methods. 
+
+1.5 Document structure 
+
+The remainder of the document is organized as follows. Section 2 introduces the commutative geometric algebra generated by Bt and Bx and its isomorphism with the bicomplex numbers. Section 3 defines the geometric Laplace transform equation (3) and establishes its properties. Section 4 develops the model of a DC line with distributed converters and its spatio-temporal dispersion relation. Section 5 addresses the distributed control design by admittance shaping. Section 6 formulates fault detection, location, and classification from the distributed residual. Section 7 presents the numerical validation and, finally, section 8 gathers the conclusions and the lines of future work, among them the extension to the case of noncommutative bivectors. 
+
+Remark 1.4 (Scope and limitations) . The geometric separation of phases facilitates the reading of the position of a fault, but it does not eliminate the intrinsic limitations of any spatial monitoring problem. The effective capability for detection, location, and classification depends on the spatial observability of the system, on the number and placement of the sensors, on the measurement noise level, on the boundary conditions imposed on the line, and on the quality of the incremental model adopted in theorems 1.1 to 1.3. Consequently, the results that follow should not be understood as a universal guarantee of diagnosis, but rather as a framework whose performance remains conditioned by those factors, in line with the usual practice in model-based diagnosis [6]. 
+
+# 2 Minimal geometric algebra 
+
+The development of the space–time transform in the sections that follow rests on a four-real-dimensional commutative subalgebra, generated by two commuting bivectors within the even part of a Clifford algebra (it is a proper subalgebra of the even subalgebra, which has higher dimension). This section defines it precisely, establishes its calculation rules (product, inverse, and exponential), and fixes the notation used throughout the document. The exposition follows the style of geometric calculus [17, 7], but is deliberately restricted to what is strictly necessary: two commuting bivectors and their product. As will be made explicit, the resulting structure is isomorphic to the algebra of Segre’s bicomplex numbers [29, 22], which allows the classical results on diagonalization and bicomplex analysis to be carried over to our geometric framework. 
+
+2.1 Definition of the subalgebra 
+
+Definition 2.1 (Commutative bivector subalgebra) . Let Cl(4 , 0) be the geometric algebra of the Euclidean space R4 with orthonormal basis {e1, e 2, e 3, e 4} and geometric product deter-mined by eiej + ej ei = 2 δij . Denote the bivectors 
+
+Bt := σ12 = e1e2, Bx := σ34 = e3e4, Btx := Bt Bx = σ1234 = e1e2e3e4. (5) 6We define A as the real subalgebra of Cl(4 , 0) generated by {1, Bt, Bx, Btx }. Its elements are written uniquely as 
+
+z = a + b Bt + c Bx + d Btx , (a, b, c, d ) ∈ R4, (6) and we shall identify z with the real coordinate vector [ a, b, c, d ]. The generators satisfy 
+
+B2 
+
+> t
+
+= B2 
+
+> x
+
+= −1, BtBx = BxBt = Btx , B2 
+
+> tx
+
+= +1 . (7) The relations (7) are not postulated but follow directly from (5) and from the anticom-mutativity of orthogonal vectors. Indeed, for distinct orthonormal vectors eiej = −ej ei and 
+
+e2 
+
+> i
+
+= 1, so that B2 
+
+> t
+
+= e1e2e1e2 = −e1e1e2e2 = −1, and identically B2 
+
+> x
+
+= −1. Since {e1, e 2} and 
+
+{e3, e 4} are disjoint blocks, each factor of Bt commutes with each factor of Bx after an even number of transpositions, hence BtBx = BxBt. Finally, B2 
+
+> tx
+
+= ( BtBx)( BtBx) = B2 
+
+> t
+
+B2 
+
+> x
+
+=(−1)( −1) = +1. The choice of disjoint orthogonal blocks {1, 2} and {3, 4} is precisely what guarantees commutativity and, with it, all of the symbolic calculus that follows. 
+
+Remark 2.2 . The set {1, Bt, Bx, Btx } is closed under the geometric product up to sign (see theorem 2.3); therefore A is indeed a real 4-dimensional subalgebra, associative and unital. Moreover, since all of its generators commute pairwise, A is commutative , in contrast with the ambient geometric algebra Cl(4 , 0), which is not. 
+
+2.2 Product and commutativity 
+
+Proposition 2.3 (Product formula) . Let z = a + b Bt + c Bx + d Btx and w = p + q Bt + r Bx +
+
+s Btx be elements of A. Then their product zw ∈ A has components 
+
+(zw )1 = ap − bq − cr + ds, (8) (zw )Bt = aq + bp − cs − dr, (9) (zw )Bx = ar − bs + cp − dq, (10) (zw )Btx = as + br + cq + dp. (11) 
+
+In particular zw = wz : the algebra A is commutative. Proof. By theorem 2.2 it suffices to know the multiplication table of the generators. From (7) one obtains · 1 Bt Bx Btx 
+
+1 1 Bt Bx Btx 
+
+Bt Bt −1 Btx −Bx
+
+Bx Bx Btx −1 −Bt
+
+Btx Btx −Bx −Bt 1where, for example, Bt Btx = Bt(BtBx) = B2 
+
+> t
+
+Bx = −Bx and Btx Btx = +1. The table is symmetric, which already shows that the generators commute. Expanding the product zw by bilinearity, 
+
+zw = ∑
+
+> u,v ∈{ 1,Bt,Bx,Btx }
+
+(coef. of u in z) (coef. of v in w) ( uv ),
+
+and grouping the sixteen terms according to the resulting generator by means of the table above yields exactly the identities (8)–(11). The symmetry of each expression under the interchange (a, b, c, d ) ↔ (p, q, r, s ) is manifest: (8) and (11) are symmetric term by term, and the pair (9)–(10) is mapped into itself. Hence zw = wz .
+
+Remark 2.4 (Bicomplex isomorphism) . The map sending Bt 7 → i, Bx 7 → j, Btx 7 → ij , with i2 =
+
+j2 = −1, ij = ji , is an R-algebra isomorphism between A and the algebra of Segre’s bicomplex numbers [29, 22]. This correspondence is useful because it allows the bicomplex theory of diagonalization and of holomorphic functions to be imported into our geometric framework, without giving up the geometric reading of Bt, Bx, and Btx as bivectors of orthogonal planes. 72.3 Idempotent decomposition and diagonalization 
+
+Commutativity and the presence of an element Btx whose square is +1 make it possible to diagonalize A by means of two orthogonal idempotents. 
+
+Proposition 2.5 (Idempotent diagonalization) . We define 
+
+e1 = 12
+
+(1 + Btx 
+
+), e2 = 12
+
+(1 − Btx 
+
+). (12) 
+
+Then 
+
+e21 = e1, e22 = e2, e1e2 = e2e1 = 0 , e1 + e2 = 1 . (13) 
+
+Moreover, every z = a + b Bt + c Bx + d Btx ∈ A decomposes uniquely as 
+
+z = ζ1 e1 + ζ2 e2, ζ1 = ( a + d) + ( b − c) Bt, ζ2 = ( a − d) + ( b + c) Bt, (14) 
+
+where ζ1, ζ 2 are ordinary complex numbers in the field CBt := R ⊕ R Bt ∼= C generated by the imaginary unit Bt. In this representation the product, the inverse, and the exponential act componentwise: 
+
+zw = ( ζ1η1)e1 + ( ζ2η2)e2, w = η1e1 + η2e2. (15) 
+
+Proof. For (13), using B2 
+
+> tx
+
+= +1 from (7), 
+
+e21 = 14 (1 + Btx )2 = 14 (1 + 2 Btx + B2
+
+> tx
+
+) = 14 (2 + 2 Btx ) = 12 (1 + Btx ) = e1,
+
+and analogously e22 = e2. The cross product is 
+
+e1e2 = 14 (1 + Btx )(1 − Btx ) = 14 (1 − B2
+
+> tx
+
+) = 14 (1 − 1) = 0 ,
+
+with e2e1 = e1e2 by commutativity (theorem 2.3); and e1 + e2 = 1 is immediate. For the decomposition, we write z = ζ1e1 + ζ2e2 with ζ1, ζ 2 ∈ CBt undetermined, ζk =
+
+αk + βkBt. Substituting (12) and grouping by the basis {1, Bt, Bx, Btx } (recall BtBtx = −Bx,from the table in the proof of theorem 2.3): 
+
+ζ1e1 + ζ2e2 = α1+α2 
+
+> 2
+
++ β1+β2 
+
+> 2
+
+Bt − β1−β2 
+
+> 2
+
+Bx + α1−α2 
+
+> 2
+
+Btx .
+
+Equating coefficients with (6) yields the linear system 12 (α1 + α2) = a, 12 (β1 + β2) = b, − 12 (β1 −
+
+β2) = c, 12 (α1 − α2) = d, whose unique solution is α1 = a + d, β1 = b − c, α2 = a − d, β2 = b + c,that is, (14). Uniqueness follows from the fact that the system has nonzero determinant. Finally, rule (15) is a consequence of (13): for z = ζ1e1 + ζ2e2 and w = η1e1 + η2e2,
+
+zw = ζ1η1 e21 + ζ2η2 e22 + ( ζ1η2 + ζ2η1) e1e2 = ζ1η1 e1 + ζ2η2 e2,
+
+where we have used that ζk, η k ∈ CBt commute with the idempotents (both live in the com-mutative subalgebra A). This identifies A ∼= CBt × CBt as a product algebra, whence every rational or analytic operation is carried out componentwise. 
+
+2.4 Inverse and zero divisors 
+
+Proposition 2.6 (Characterization of the inverse) . Let z = ζ1e1 + ζ2e2 ∈ A with ζ1, ζ 2 given by (14) . Then z is invertible in A if and only if ζ1̸ = 0 and ζ2̸ = 0 , and in that case 
+
+z−1 = ζ−11 e1 + ζ−12 e2, (16) 
+
+where ζ−1 
+
+> k
+
+is the ordinary complex inverse in CBt .
+
+8Proof. If ζ1̸ = 0 and ζ2̸ = 0, the element y = ζ−11 e1 + ζ−12 e2 is well defined and, by (15), 
+
+zy = ( ζ1ζ−11 )e1 +( ζ2ζ−12 )e2 = e1 +e2 = 1, hence y = z−1. Conversely, if either of the components vanishes, say ζ1 = 0, then z = ζ2e2 and for any w = η1e1 + η2e2 one has zw = ζ2η2 e2, whose component along e1 is always zero; therefore zw ̸ = 1 for every w and z is not invertible. 
+
+Remark 2.7 (Zero divisors) . Unlike C, the algebra A is not a field: it contains zero divisors. The idempotents themselves are examples, since e1e2 = 0 with e1, e2̸ = 0. Geometrically, the noninvertible elements are exactly those lying on the two “isotropic cones” ζ1 = 0 or ζ2 = 0. This circumstance conditions the later analytic discussion (poles and residues of the transform) and forces a distinction between genuine zeros and degenerate singularities. In practice it is convenient to have a way of computing the inverse that does not go through diagonalization, especially for a direct numerical implementation in real coordinates. Left multiplication by z is an R-linear map w 7 → zw from R4 to R4.
+
+Proposition 2.8 (Multiplication matrix) . For z = a + b Bt + c Bx + d Btx , the matrix of left multiplication in the basis [ 1 , Bt, Bx, Btx ] is 
+
+M (z) = 
+
+> 
+
+a −b −c db a −d −cc −d a −bd c b a 
+
+> 
+
+. (17) 
+
+Consequently, z is invertible if and only if det M (z)̸ = 0 , and the coordinates of z−1 are obtained by solving the linear system M (z) w = [ 1 , 0, 0, 0 ] ⊤ by standard matrix algebra [16]. Moreover M is an algebra homomorphism: M (zw ) = M (z)M (w) and M (z)⊤ = M (¯ z) with 
+
+¯z = a − b Bt − c Bx + d Btx .Proof. The k-th column of M (z) contains the coordinates of z · uk, where uk ranges over the basis {1, Bt, Bx, Btx }. Taking w = u1 = 1 in (8)–(11) (that is, p = 1, q = r = s = 0) gives the first column [ a, b, c, d ]⊤; with w = u2 = Bt (q = 1, the rest zero) the second column [−b, a, −d, c ]⊤; with w = u3 = Bx the third [ −c, −d, a, b ]⊤; and with w = u4 = Btx the fourth [d, −c, −b, a ]⊤. Arranging them as columns yields exactly (17). That M is a homomorphism follows from the associativity of the product: M (zw )v = ( zw )v = z(wv ) = M (z)M (w)v for every v. The identity M (z)⊤ = M (¯ z) is checked by direct inspection of the entries. Since M is injective (the regular representation of a unital algebra is), det M (z)̸ = 0 is equivalent to the invertibility of z, and M (z−1) = M (z)−1.
+
+Remark 2.9 . The two routes are consistent: a direct computation gives det M (z) = |ζ1|2 |ζ2|2,where |·| is the complex modulus in CBt . Therefore det M (z) = 0 is equivalent to ζ1 = 0 or 
+
+ζ2 = 0, in full agreement with theorem 2.6 and theorem 2.7. 
+
+2.5 Exponential and elementary functions 
+
+Proposition 2.10 (Exponentials of the generators) . For every θ ∈ R and δ ∈ R, in terms of the exponential series exp( z) = ∑ 
+
+> n≥0
+
+zn/n !, the identities 
+
+exp( Bt θ) = cos θ + Bt sin θ, (18) exp( Bx θ) = cos θ + Bx sin θ, (19) exp( Btx δ) = cosh δ + Btx sinh δ. (20) 
+
+hold. More generally, for every z = ζ1e1 + ζ2e2 ∈ A ,
+
+exp( z) = eζ1 e1 + eζ2 e2, (21) 
+
+where eζk is the ordinary complex exponential in CBt .
+
+9Proof. Since B2 
+
+> t
+
+= −1 (rule (7)), the powers repeat with period four, exactly like the imaginary unit: B2mt = ( −1) m, B2m+1  
+
+> t
+
+= ( −1) mBt. Splitting the series into even and odd terms, exp( Btθ) = ∑
+
+> m≥0
+
+(−1) mθ2m
+
+(2 m)! + Bt
+
+> ∑
+> m≥0
+
+(−1) mθ2m+1 
+
+(2 m + 1)! = cos θ + Bt sin θ, 
+
+which proves (18); identity (19) is identical with B2 
+
+> x
+
+= −1. For (20), now B2 
+
+> tx
+
+= +1, so that 
+
+B2mtx = 1 and B2m+1  
+
+> tx
+
+= Btx , and the same splitting gives the series for cosh and sinh. The general formula (21) follows from theorem 2.5: by (15), the powers are computed componentwise, zn = ζn 
+
+> 1
+
+e1 + ζn 
+
+> 2
+
+e2 (using enk = ek and e1e2 = 0), and the exponential series is absolutely convergent in the norm of theorem 2.11, which allows the sum and the idempotents to be interchanged: exp( z) = ∑
+
+> n≥0
+
+zn
+
+n! =
+
+> (∑
+> n≥0
+
+ζn
+
+> 1
+
+n!
+
+> )
+
+e1 +
+
+> (∑
+> n≥0
+
+ζn
+
+> 2
+
+n!
+
+> )
+
+e2 = eζ1 e1 + eζ2 e2.
+
+The identities (18)–(20) are special cases of (21) after decomposing Btθ, Bxθ, and Btx δ ac-cording to (14). These exponentials are the basis of the transform of section 3: the kernel e−stte−sxx ap-pearing in the definition of LG{·} factorizes, thanks to the commutativity of Bt and Bx, into a product of a temporal factor and a spatial factor whose phases rotate in independent bivector planes. 
+
+2.6 Geometric arguments and auxiliary norm 
+
+To locate phases (in particular, the spatial phase associated with the position of a fault in later sections) it is convenient to define arguments referred to each bivector plane. 
+
+Definition 2.11 (Arguments and norm) . For z = a + b Bt + c Bx + d Btx ∈ A the temporal and spatial arguments are defined as Arg Bt (z) = atan2( b, a ), Arg Bx (z) = atan2( c, a ), (22) together with the auxiliary Euclidean norm 
+
+∥z∥ = √
+
+a2 + b2 + c2 + d2. (23) 
+
+Remark 2.12 (Reading a rotor) . For a pure spatial rotor of the form z = r(cos φ + Bx sin φ)
+
+with r > 0, the coordinates are a = r cos φ, c = r sin φ, and b = d = 0, so that Arg Bx (z) = atan2( r sin φ, r cos φ) = φ recovers exactly the angle φ (modulo 2 π), and ∥z∥ = r. This property is what will allow a spatial position to be read as a phase angle. 
+
+Remark 2.13 (The norm is not multiplicative) . It should be emphasized that (23) is a vector-space norm but is not multiplicative: in general ∥zw ∦ = ∥z∥ ∥ w∥. This is unavoidable, since 
+
+A has zero divisors (theorem 2.7): taking z = e1̸ = 0 and w = e2̸ = 0 one has zw = 0 and therefore ∥zw ∥ = 0 ̸ = ∥e1∥ ∥ e2∥. The norm (23) is thus used solely as an auxiliary instrument for controlling convergence and magnitude, not as an algebraic absolute value. 
+
+2.7 Relation to the implementation 
+
+Remark 2.14 (Correspondence with the code) . The operations above correspond directly to the module geolaplace.algebra of the reproducible implementation. The class Geo stores each element z as the real vector [ a, b, c, d ] of (6); the product implements (8)–(11); the inverse resorts to the diagonalization of theorem 2.6 or, equivalently, to solving the system M (z) w =10 [ 1 , 0, 0, 0 ] ⊤ with the matrix (17) [15]; the exponential uses (21); and the argument and norm methods carry out (22)–(23). The inversion routine flags as degenerate the cases ζ1 = 0 or 
+
+ζ2 = 0 (theorems 2.7 and 2.9), which in the application sections identifies singular configurations of the distributed system. 
+
+# 3 Two-dimensional geometric Laplace transform and operational properties 
+
+In this section we rigorously define the two-dimensional geometric Laplace transform on the commutative subalgebra generated by the bivectors Bt and Bx, we discuss its region of con-vergence through the idempotent decomposition, and we establish the operational properties that underpin the distributed model of the following sections. The treatment follows the spirit of the classical theory of the Laplace transform [25], and it exploits the structure of Segre’s bicomplex numbers [22] to keep the temporal and spatial phases separate. 
+
+3.1 Definition and factorized kernel 
+
+We recall the rules of the algebra in use: B2 
+
+> t
+
+= −1, B2 
+
+> x
+
+= −1, BtBx = BxBt = Btx and 
+
+B2 
+
+> tx
+
+= +1. The algebra is commutative (bicomplex), so that a generic element is written 
+
+z = a + bBt + cBx + dBtx with a, b, c, d ∈ R.
+
+Definition 3.1 (Two-dimensional geometric Laplace transform) . Let f : R≥0 × R≥0 → A be a function taking values in the commutative subalgebra A = span {1, Bt, Bx, Btx } of section 2 (the restriction to A, rather than to the whole Cl(4 , 0), is what guarantees that the spectral factors commute with f in the operational proofs). Its geometric Laplace transform is 
+
+LG{f } = F (st, s x) = 
+
+∫ ∞
+
+> 0
+
+∫ ∞
+
+> 0
+
+f (t, x ) e−stt e−sxx dx dt, (24) with the geometric Laplace variables 
+
+st = ρt + Bt ω, sx = ρx + Bx k, (25) where ρt, ω, ρ x, k ∈ R. Since Bt and Bx commute, the kernels factor into a single exponential, 
+
+e−stt e−sxx = e−(stt+sxx), (26) and the integral is understood componentwise in the basis {1, Bt, Bx, Btx } whenever it exists. The factorization (26) is a direct consequence of commutativity: stt and sxx belong to dis-tinct planes ( {1, Bt} and {1, Bx}), but because they commute one has e−stte−sxx = e−stt−sxx
+
+with no Baker–Campbell–Hausdorff correction term. Each kernel is a rotor of decreasing mag-nitude, 
+
+e−stt = e−ρtt(cos ωt − Bt sin ωt ), e−sxx = e−ρxx(cos kx − Bx sin kx ), (27) so that ρt and ρx control the attenuation, while ω and k introduce temporal and spatial oscillation in independent geometric planes. 
+
+3.2 Region of convergence 
+
+The existence of the integral (24) is analyzed most conveniently in the idempotent representation 
+
+of the algebra. With the idempotents 
+
+e1 = 12 (1 + Btx ), e2 = 12 (1 − Btx ), e21 = e1, e22 = e2, e1e2 = 0 , (28) 11 every element diagonalizes as z = ζ1e1 + ζ2e2, where ζ1, ζ 2 are ordinary complex numbers in the plane {1, Bt} (with Bt playing the role of the imaginary unit). In particular, the Laplace variables decompose as 
+
+stt + sxx = [(ρtt + ρxx) + Bt(ωt − kx )]e1 + [(ρtt + ρxx) + Bt(ωt + kx )]e2, (29) so that the kernel separates into two ordinary complex exponentials, one for each idempotent component. This reduces the study of convergence to that of two classical complex Laplace transforms [25]. A word of caution about norms is in order. The Euclidean norm of the components, 
+
+∥a + bBt + cBx + dBtx ∥2 = a2 + b2 + c2 + d2, is not submultiplicative on A: the idempotent 
+
+e1 satisfies e21 = e1 and yet ∥e21∥ = 1 /√2 > ∥e1∥2 = 1 /2, so the naive bound ∥zw ∥ ≤ ∥ z∥ ∥ w∥
+
+is not available. The following elementary lemma provides the exact substitute used in the convergence arguments below. 
+
+Lemma 3.2 (Norm of a product in the idempotent basis) . Let z = ζ1e1 + ζ2e2 and w =
+
+η1e1 + η2e2 be elements of A in the idempotent representation (28) , with ζ1, ζ 2, η 1, η 2 complex numbers in the plane {1, Bt}. Then 
+
+∥z∥2 = 12
+
+(|ζ1|2 + |ζ2|2) and ∥zw ∥2 = 12
+
+(|ζ1|2|η1|2 + |ζ2|2|η2|2). (30) 
+
+In particular ∥zw ∥ ≤ max (|η1|, |η2|) ∥z∥, and if both idempotent components of w share the same modulus |η1| = |η2| = μ then the product scales the norm exactly : ∥zw ∥ = μ ∥z∥.Proof. Write ζi = pi + Btqi with pi, q i ∈ R. From e1,2 = 12 (1 ± Btx ) and BtBtx = −Bx
+
+one gets Bte1 = 12 (Bt − Bx) and Bte2 = 12 (Bt + Bx), so the components of z in the basis 
+
+{1, Bt, Bx, Btx } are a = 12 (p1 + p2), b = 12 (q1 + q2), c = 12 (q2 − q1) and d = 12 (p1 − p2). Expanding, a2 + b2 + c2 + d2 = 12
+
+(p21 + q21 + p22 + q22
+
+), which is the first identity of (30). Since e1e2 = 0 and e2 
+
+> i
+
+= ei, the product diagonalizes componentwise, zw = ζ1η1e1 + ζ2η2e2,and the second identity follows from the first applied to zw together with the multiplicativity of the complex modulus, |ζiηi| = |ζi| | ηi|. The bound and the equality case are immediate consequences of (30). 
+
+Proposition 3.3 (Region of convergence) . Suppose that f is of exponential order, that is, that there exist constants M > 0, σt, σ x ∈ R such that ∥f (t, x )∥ ≤ M e σtt eσxx for all t, x ≥ 0, where 
+
+∥·∥ is the Euclidean norm of the components. Then the integral (24) converges absolutely if 
+
+Re( st) = ρt > σ t and Re( sx) = ρx > σ x. (31) 
+
+Moreover, the transform is invariant per idempotent component: on each half-plane (31) the two components ζ1, ζ 2 of the integrand have identical attenuation factors e−ρtte−ρxx, so that convergence is equivalent to that of two ordinary complex Laplace transforms. Proof. By (29), the two idempotent components of the kernel e−stte−sxx are the ordinary complex exponentials η1 = e−(ρtt+ρxx)−Bt(ωt −kx ) and η2 = e−(ρtt+ρxx)−Bt(ωt +kx ), whose moduli coincide: |η1| = |η2| = e−ρtte−ρxx (the oscillatory parts are unit rotors). The equality case of theorem 3.2 then gives, for every t, x ≥ 0, 
+
+∥∥f (t, x ) e−stte−sxx∥∥ = e−ρtte−ρxx ∥f (t, x )∥ ≤ M e −(ρt−σt)t e−(ρx−σx)x,
+
+where the last step uses the exponential-order hypothesis. Note that theorem 3.2 is genuinely needed here: the norm is not submultiplicative, so one cannot simply bound ∥f e −stte−sxx∥ by the product of the norms. Hence 
+
+∫ ∞
+
+> 0
+
+∫ ∞
+
+> 0
+
+∥∥f (t, x ) e−stte−sxx∥∥ dx dt ≤ M
+
+∫ ∞
+
+> 0
+
+e−(ρt−σt)t dt
+
+∫ ∞
+
+> 0
+
+e−(ρx−σx)x dx, 
+
+12 a product of two integrals that are finite precisely when (31) holds; in that case they equal 1/(ρt − σt) and 1 /(ρx − σx). The absolute convergence of the vector-valued integral follows componentwise. Finally, writing the integrand in the idempotent basis (29), the common attenuation factor e−ρtt−ρxx is that of each of the two complex exponentials ζ1, ζ 2, which proves the stated equivalence. 
+
+3.3 Linearity 
+
+Proposition 3.4 (Linearity) . Let f, g be functions whose geometric transforms exist in a common region, and let λ, μ ∈ A be constants. Then 
+
+LG{λf + μg } = λ LG{f } + μ LG{g} (32) 
+
+on the intersection of the regions of convergence. Proof. The integral (24) is linear by construction, and since the algebra is commutative the constants λ, μ can be pulled out of the integral on the left without altering the order of the factors. The identity then follows from the additivity of the componentwise integral. 
+
+3.4 Transform of the partial derivatives 
+
+The operational usefulness of the transform (24) lies in turning the partial derivatives into alge-braic multiplications, as in the classical case [25]. We denote by Ft=0 (sx) = ∫ ∞ 
+
+> 0
+
+f (0 , x ) e−sxx dx
+
+the one-dimensional spatial transform of the initial condition f (0 , x ), and by Fx=0 (st) = ∫ ∞ 
+
+> 0
+
+f (t, 0) e−stt dt the one-dimensional temporal transform of the boundary condition f (t, 0). 
+
+Proposition 3.5 (Transform of the partial derivatives) . Let f (t, x ) be continuously differen-tiable on R≥0 ×R≥0, and suppose that f , ∂tf and ∂xf are all of exponential order with common constants M > 0 and σt, σ x ∈ R in the sense of theorem 3.3. Then, for every (st, s x) in the region (31) , the transforms F (st, s x), LG{∂tf } and LG{∂xf }, as well as the one-dimensional transforms Ft=0 (sx) and Fx=0 (st), converge absolutely, and 
+
+LG{∂tf } = F s t − Ft=0 (sx), (33) 
+
+LG{∂xf } = F s x − Fx=0 (st). (34) 
+
+In particular, with zero initial and boundary conditions ( f (0 , x ) ≡ 0 and f (t, 0) ≡ 0) one obtains 
+
+LG{∂tf } = F s t, LG{∂xf } = F s x. (35) 
+
+Proof. We prove (33); (34) is analogous by symmetry in the variables. The absolute-convergence claims follow from theorem 3.3 applied to f , ∂tf and ∂xf ; for the one-dimensional trans-forms, the exponential-order bound at t = 0 gives ∥f (0 , x )∥ ≤ M e σxx, so Ft=0 (sx) converges absolutely whenever ρx > σ x (and symmetrically for Fx=0 ). In particular, the integrand 
+
+∂tf (t, x ) e−stte−sxx is absolutely integrable on [0 , ∞)2 throughout the region (31), so by the Fubini–Tonelli theorem [13] the double integral can be evaluated as an iterated integral in ei-ther order; we integrate first in t, with the spatial integral as a parameter. Since f takes values in the commutative subalgebra A, the spectral factor st commutes with f (t, x ) and e−stt is differentiated as a scalar: ∂t
+
+> (
+
+e−stt) = −st e−stt. Integration by parts then yields 
+
+LG{∂tf } =  
+
+> ∫∞
+> 0
+> ∫∞
+> 0
+
+∂tf (t, x ) e−stte−sxx dx dt
+
+= 
+
+> ∫∞
+> 0
+> [ (
+
+f (t, x ) e−stt)t→∞  
+
+> t=0
+
++ st 
+
+> ∫∞
+> 0
+
+f (t, x ) e−stt dt
+
+> ]
+
+e−sxx dx. 
+
+13 The boundary term vanishes as t → ∞ because, by the equality case of theorem 3.2 (the two idempotent components of e−stt share the modulus e−ρtt), ∥f (t, x ) e−stt∥ = e−ρtt∥f (t, x )∥ ≤ 
+
+M e −(ρt−σt)teσxx → 0 for each fixed x; at t = 0 it contributes −f (0 , x ). Substituting, 
+
+LG{∂tf } = st
+
+∫ ∞
+
+> 0
+
+∫ ∞
+
+> 0
+
+f (t, x ) e−stte−sxx dx dt −
+
+∫ ∞
+
+> 0
+
+f (0 , x ) e−sxx dx = F s t − Ft=0 (sx),
+
+where the first integral is F s t (the constant st commutes and factors out) and the second is, by definition, Ft=0 (sx). The case (35) is obtained by cancelling the condition terms. The identity (34) is proved by integrating by parts in x with ∂x(e−sxx) = −sx e−sxx.
+
+3.5 Transform of a separable mode 
+
+Proposition 3.6 (Transform of a separable mode) . Let the separable space–time mode be 
+
+f (t, x ) = A e (−αt+Btω0)t e(−αx+Bxk0)x, (36) 
+
+with A ∈ A constant and αt, ω 0, α x, k 0 ∈ R. If ρt > −αt and ρx > −αx, its geometric transform is 
+
+F (st, s x) = A (st + αt − Btω0)−1 (sx + αx − Bxk0)−1. (37) 
+
+Proof. Since the integrand (36) factors into a product of a function of t and a function of x and the algebra is commutative, the double integral splits into a product of two single integrals, 
+
+F (st, s x) = A
+
+(∫ ∞
+
+> 0
+
+e−(st+αt−Btω0)t dt
+
+) (∫ ∞
+
+> 0
+
+e−(sx+αx−Bxk0)x dx
+
+)
+
+.
+
+For the temporal integral, let zt = st + αt − Btω0. In the idempotent representation (28), 
+
+zt = ζ1e1 + ζ2e2 with Re( ζ1) = Re( ζ2) = ρt + αt > 0, so that zt is invertible (both idempotent components have positive real part, in particular nonzero) and 
+
+∫ ∞
+
+> 0
+
+e−ztt dt =
+
+[
+
+−z−1 
+
+> t
+
+e−ztt]∞ 
+
+> 0
+
+= z−1 
+
+> t
+
+= ( st + αt − Btω0)−1,
+
+where the term at t → ∞ vanishes because the common attenuation factor of both idempotent components is e−(ρt+αt)t → 0. In exactly the same way, with zx = sx + αx − Bxk0 and 
+
+ρx + αx > 0, ∫ ∞
+
+> 0
+
+e−zxx dx = ( sx + αx − Bxk0)−1.
+
+Substituting yields (37); the order of the factors is irrelevant by commutativity. 
+
+Remark 3.7 (Geometric poles) . The transform (37) is singular when either of the two factors ceases to be invertible. The value 
+
+st = −αt + Btω0 (38) is a geometric temporal pole : its scalar part −αt sets the decay rate and its Bt component, ω0,the frequency of temporal oscillation. Analogously, 
+
+sx = −αx + Bxk0 (39) is a geometric spatial pole , with −αx the spatial attenuation rate and k0 the wavenumber. The separation of the two poles into distinct planes ( Bt and Bx) is the property that is ex-ploited in the sections on modeling and fault detection: the temporal dynamics and the spatial propagation are encoded in independent algebraic components. 14 3.6 Comparison with the ordinary complex Laplace transform 
+
+The scope of the construction should be clear from the outset: with a single independent variable, the geometric transform contributes no new mathematical content beyond the classical complex Laplace transform. 
+
+Remark 3.8 (One-dimensional equivalence) . Let g(t) be a signal taking values in the temporal plane {1, Bt} and consider only the variable st = ρt + Btω. The plane {1, Bt} is isomorphic as a field to C via Bt 7 → j, so that  
+
+> ∫∞
+> 0
+
+g(t) e−stt dt Bt7 →j
+
+−−−−−→ G(s) =  
+
+> ∫∞
+> 0
+
+g(t) e−st dt, s = ρt + jω, (40) which is exactly the ordinary Laplace transform [25]. Replacing the imaginary unit j by a bivector Bt is a mere renaming of the imaginary symbol and adds no structure. The contribution of the transform (24) is multivariable in nature, and it should be stated precisely. A complex Laplace transform with two independent variables ( st, s x) ∈ C2 already keeps the temporal and spatial phases separate, without ambiguity: each variable retains its own coordinate. The multivariable complex theory can certainly distinguish them. The contri-bution of the geometric formulation is to represent both phases in algebraically distinguishable planes —the temporal {1, Bt} and the spatial {1, Bx}— within one and the same bicomplex structure [22]: a single element z = a + bBt + cBx + dBtx packages the magnitude ( a), the temporal phase ( Bt component), the spatial phase ( Bx component) and their coupling ( Btx ), each legible separately through Arg Bt and Arg Bx . This unified representation makes it easier to operate with mixed products, to read arguments and to manipulate spatial signatures (such as the rotor e−Bxkx f of a localized fault) within a single algebraic object, and it is the basis for the interpretation of the poles (38)–(39) and for the geometric spatial-phase localization methods of the later sections. 
+
+Remark 3.9 (Commutative case and future extension) . The preceding development assumes 
+
+BtBx = BxBt, that is, commutative generators (bicomplex algebra). This is the case actually implemented and the only one that guarantees the factorization (26) without corrections. A 
+
+non-commutative version, in which BtBx = −BxBt, would require handling Baker–Campbell– Hausdorff terms in (26) and is left as a line of future work, beyond the scope of this article. 
+
+3.7 Correspondence with the implementation 
+
+Remark 3.10 (Relation to the code) . The constructions of this section correspond directly to the module geolaplace.transform of the reproducible implementation. The geometric variables (25) are obtained with st(rho, omega) and sx(rho, k) , which return ρt + Btω and 
+
+ρx + Bxk, respectively. The kernels (27) are computed via kernel_t(t, rho, omega) = e−stt
+
+and kernel_x(x, rho, k) = e−sxx, evaluated exactly through the idempotent decomposition (28). Finally, separable_transform(alpha_t, omega0, alpha_x, k0, amplitude) returns the closed-form function F (st, s x) of (37), building the invertible factors from the geometric poles (38)–(39); the invertibility required in the proof of theorem 3.6 translates into the region-of-convergence condition ρt > −αt and ρx > −αx.
+
+# 4 Distributed converter-line model and dispersion relation 
+
+In this section we apply the two-dimensional Geometric Laplace Transform to a continuous model of a DC line of distributed converters. The goal is twofold: on the one hand, to obtain a space–time transfer function between the converter injection and the line voltage; on the other, to derive the associated dispersion relation, which governs the propagation of disturbances along the line. It is precisely in this setting, with two independent variables (time t and 15 position x), that the transform contributes a geometric structure that does not reduce to the scalar complex Laplace transform. 
+
+4.1 Modeling assumptions 
+
+We work with an incremental model obtained by linearization about a nominal operating point of the line (steady-state currents and voltages). Under this approach, the relevant signals are deviations with respect to that point. 
+
+Assumption 4.1 (Incremental linearization and regularity) . We assume the following: (H1) Linearization. The line dynamics are described by its incremental model about an op-erating point; v(t, x ) denotes the incremental voltage, i(t, x ) the incremental longitudinal current, and u(t, x ) the incremental current injected by the converters per unit length. All quantities are small deviations, so that the nonlinear terms are negligible. (H2) Spatial continuity. Although the converters are discrete devices located at specific po-sitions, their aggregate effect is approximated by a distributed injection u(t, x ) continuous in x. The discrete case is treated exactly in subsection 4.6, which quantifies when the continuous description is a limit of the discrete one (the injection, with rate O(P −2) in the number of converters P ) and when it is exact (the uniform droop feedback on the sub-Nyquist band, section 5). (H3) Constant per-unit-length parameters. The parameters r, ℓ, c, and g (defined below) are uniform along the line. (H4) Zero initial and boundary conditions. For the analysis of the operational properties by means of the transform we assume v(0 , x ) = i(0 , x ) = 0 and, where applicable, zero boundary conditions. This isolates the response forced by the injection u and removes boundary terms. The regularity conditions (sufficient decay in t and x, and exponential-type integrability) that guarantee the existence of the transform are assumed to hold in the corresponding region of convergence and are not repeated here. 
+
+4.2 Line equations 
+
+We adopt a transmission-line model with distributed parameters per unit length [28]: resistance 
+
+r, inductance ℓ, capacitance c, and incremental conductance g. The latter is interpreted as the incremental slope of the converter characteristic about the operating point and, unlike the classical passive case, may be negative (converters with constant-power control exhibit, incrementally, a negative conductance that affects stability). The line equations are 
+
+∂xv + ℓ ∂ ti + r i = 0 , (41a) 
+
+∂xi + c ∂ tv + g v = u. (41b) Equation (41a) expresses the longitudinal voltage drop across the series impedance of the line; equation (41b) expresses the current balance: the spatial variation of the longitudinal current is distributed among the capacitive current, the incremental conductance, and the injection u
+
+of the converters. 16 4.3 Transformation and distributed transfer function 
+
+We apply the Geometric Laplace Transform in the two variables, with st = ρt + Btω and 
+
+sx = ρx + Bxk. We write V (st, s x) = LG{v}, I(st, s x) = LG{i}, and U (st, s x) = LG{u}. Under the zero conditions of theorem 4.1, the transform of a partial derivative substitutes ∂t 7 → st
+
+and ∂x 7 → sx with no boundary terms. Introducing the distributed impedance and admittance 
+
+Z(st) = r + ℓ s t, Y (st) = g + c s t, (42) equations (41) transform into the algebraic system 
+
+V s x + Z I = 0 , (43a) 
+
+I s x + Y V = U. (43b) Note that, since the bicomplex algebra is commutative , all the products in (42)–(43) are manip-ulated with the usual rules of algebra, taking into account only the relations B2 
+
+> t
+
+= B2 
+
+> x
+
+= −1, 
+
+BtBx = BxBt = Btx , B2 
+
+> tx
+
+= +1. 
+
+Proposition 4.2 (Determinant and distributed transfer function) . Under theorem 4.1, let 
+
+∆( st, s x) = s2 
+
+> x
+
+− Z(st) Y (st). (44) 
+
+At every point (st, s x) of the bicomplex domain where ∆( st, s x) is invertible, the transformed voltage is determined by the injection through the distributed transfer function 
+
+V (st, s x) = − Z(st)∆( st, s x) U (st, s x). (45) 
+
+Proof. We write the system (43) in matrix form over the commutative subalgebra, with un-knowns ( V, I ): (
+
+sx ZY sx
+
+> ) (
+
+VI
+
+> )
+
+=
+
+> (
+
+0
+
+U
+
+> )
+
+, (46) whose determinant is, by definition (44), sx sx − Z Y = s2 
+
+> x
+
+− ZY = ∆( st, s x). Since the algebra is commutative, Cramer’s rule (via the adjugate matrix) is valid whenever ∆ is invertible. Replacing the first column by the right-hand side, 
+
+V = ∆ −1 det 
+
+> (
+
+0 ZU sx
+
+> )
+
+= ∆ −1 (0 · sx − Z U ) = − Z(st)∆( st, s x) U (st, s x), (47) which is (45). The derivation requires only the invertibility of ∆ (not that of Z): the adjugate of the matrix is well defined throughout the subalgebra, and commutativity guarantees that the order of the factors is irrelevant. The quantity ∆( st, s x) plays the role of a characteristic determinant of the distributed model: its zeros define the space–time eigenmodes of the line and, therefore, its dispersive behavior. 
+
+4.4 Dispersion relation 
+
+The condition ∆( st, s x) = 0 links the temporal variable st with the spatial variable sx and constitutes the dispersion relation of the line: ∆( st, s x) = s2 
+
+> x
+
+− Z(st) Y (st) = 0 ⇐⇒ s2 
+
+> x
+
+= (r + ℓ s t
+
+> )(
+
+g + c s t
+
+> )
+
+. (48) We consider the ideal lossless case, which admits a transparent physical interpretation. 17 Proposition 4.3 (Ideal lossless dispersion) . Suppose r = g = 0 . Then the dispersion relation 
+
+(48) reduces to 
+
+s2 
+
+> x
+
+− ℓc s 2 
+
+> t
+
+= 0 . (49) 
+
+Evaluating on the geometric axes st = Bt ω and sx = Bx k, with ω, k ∈ R, one obtains the real relation 
+
+k2 = ℓc ω 2, (50) 
+
+from which a constant phase velocity, independent of frequency, follows: 
+
+vp = ωk = 1
+
+√ℓc . (51) 
+
+Proof. With r = g = 0, definitions (42) give Z(st) = ℓ s t and Y (st) = c s t, so that Z(st) Y (st) = 
+
+ℓc s 2 
+
+> t
+
+and (48) becomes (49). We now evaluate on the geometric axes. Using B2 
+
+> t
+
+= −1 and 
+
+B2 
+
+> x
+
+= −1, 
+
+s2 
+
+> t
+
+= ( Bt ω)2 = B2 
+
+> t
+
+ω2 = − ω2, s2 
+
+> x
+
+= ( Bx k)2 = B2 
+
+> x
+
+k2 = − k2. (52) Substituting into (49), 
+
+− k2 − ℓc (− ω2) = 0 ⇐⇒ − k2 + ℓc ω 2 = 0 ⇐⇒ k2 = ℓc ω 2, (53) which is (50). Taking the positive root k = √ℓc ω for ω > 0, the phase velocity is 
+
+vp = ωk = ω
+
+√ℓc ω = 1
+
+√ℓc , (54) constant, which proves (51). The relation k = √ℓc ω is linear: the ideal line is nondispersive ,all components propagate at the same velocity, and there is no phase distortion. 
+
+Remark 4.4 (Lossy case: exact locus rc + ℓg = 0 and classical projection) . The exact scope of the evaluation st = Btω, sx = Bxk needs to be stated with care. On the one hand, 
+
+Z(Btω)Y (Btω) = ( r + ℓBtω)( g + cBtω) has, in general, a component in the {1, Bt} plane, 
+
+Z(Btω)Y (Btω) = ( rg − ℓc ω 2) + Bt ω (rc + ℓg ), (55) whereas s2 
+
+> x
+
+= ( ρx + Bxk)2 = ( ρ2 
+
+> x
+
+− k2) + 2 ρxk Bx only contributes components in {1, Bx}; on the pure spatial plane sx = Bxk, in particular, s2 
+
+> x
+
+= −k2 is real. Hence the restricted equation ∆( Btω, Bxk) = 0 admits a real branch k(ω) for all ω exactly if and only if the Bt term of (55) vanishes identically, that is, on the Heaviside-type locus 
+
+rc + ℓg = 0 , (56) in which case k2 = ℓc ω 2 − rg . The locus (56) contains the ideal case r = g = 0, but not only 
+
+the ideal case: for r > 0 it is met at g = −rc/ℓ < 0, a lossy configuration with active (negative) shunt conductance. This sign is not exotic here —the base case of section 7 already uses g < 0, and the virtual-conductance feedback of section 5 shifts the effective conductance to g + kv—although the locus itself lies outside the dissipative regime g + kv > 0 required there. Off the locus (56), the equality s2 
+
+> x
+
+= ZY cannot be satisfied by restricting sx to the pure spatial plane, and the lossy curve must be understood as a classical projection of the propagation constant 
+
+γ(ω) = √Z(Btω)Y (Btω) (its oscillatory part k(ω) = |Im γ(ω)|), not as an exact root of ∆ = 0 restricted to sx = Bxk. The exact treatment with generic losses requires allowing a general bicomplex spatial variable sx = ρx + Bxk (with ρx̸ = 0, spatial attenuation) or working in the idempotent decomposition, where each component is an ordinary complex root. The linear relation between k and ω in the ideal case, and its curvature under generic losses (rc +ℓg ̸ = 0) in the sense of theorem 4.4, are illustrated in figure 1. The fact that the evaluation on distinct geometric axes ( Bt for time, Bx for space) preserves both phases separately is precisely what distinguishes the geometric transform from a scalar complex Laplace transform. 18 Figure 1: Dispersion relation of the distributed line. The ideal lossless straight line ( r = g = 0) is exact : ∆( Btω, Bxk) = 0 gives k = √ℓc ω (nondispersive line, constant phase velocity vp =1/√ℓc ). The lossy curve (dashed) is the classical projection of the lossy propagation constant ,
+
+k(ω) = |Im √Z(Btω)Y (Btω)|; it is shown for reference and does not represent an exact root of ∆( Btω, Bxk) = 0 restricted to sx = Bxk, except on the locus rc + ℓg = 0 of theorem 4.4 (the values used here give rc + ℓg = 1 .5 · 10 −6 s/m2̸ = 0). 
+
+4.5 Finite line: modes and modal denominator 
+
+We now consider a finite-length line 0 ≤ x ≤ L with zero voltage at both ends, v(t, 0) = 
+
+v(t, L ) = 0. These boundary conditions select a basis of sinusoidal spatial modes 
+
+ϕn(x) = sin( knx), kn = nπ L , n = 1 , 2, 3, . . . (57) Rather than formally substituting s2 
+
+> x
+
+7 → − k2
+
+> n
+
+, we derive the modal denominator directly from the transformed PDE. Applying the temporal transform to the system (41) (with zero initial conditions) one obtains a system in x,
+
+∂xV + Z(st) I = 0 , ∂xI + Y (st) V = U, (58) with Z = r + ℓs t, Y = g + cs t. Differentiating the first equation with respect to x and substituting ∂xI = U − Y V from the second, 
+
+∂2
+
+> x
+
+V + Z (U − Y V ) = 0 ⇐⇒ ∂2
+
+> x
+
+V − ZY V = − Z U, (59) a space–time Helmholtz equation. We project onto the modes ϕn(x) = sin( knx), which sat-isfy the boundary conditions v(t, 0) = v(t, L ) = 0 and ∂2
+
+> x
+
+ϕn = −k2
+
+> n
+
+ϕn. With V (st, x ) =  
+
+> ∑
+> n
+
+Vn(st)ϕn(x) and U (st, x ) = ∑ 
+
+> n
+
+Un(st)ϕn(x), the n-th component of (59) is −k2
+
+> n
+
+Vn −
+
+ZY V n = −ZU n, that is,  
+
+> [
+
+k2 
+
+> n
+
++ Z(st)Y (st) ] Vn(st) = Z(st) Un(st). (60) The bracketed factor is the open-loop modal denominator 
+
+Dn(st) = k2 
+
+> n
+
++ Z(st) Y (st)= k2 
+
+> n
+
++ ( r + ℓ s t)( g + c s t)= ℓc s 2 
+
+> t
+
++ ( rc + ℓg ) st + ( rg + k2
+
+> n
+
+), (61) 19 and from (60) the modal transfer function from source to voltage is 
+
+Gn(st) = Vn(st)
+
+Un(st) = Z(st)
+
+Dn(st) . (62) Note the numerator Z(st): the modal transfer function is not 1 /D n, but Z/D n. This is the transfer function that connects with the modal amplitude of the residual of a fault (section 6, 
+
+An = Vn/G n = Ff ψn(xf )). The modal denominator (61) is a second-degree polynomial in st
+
+for each mode n; its roots are the modal poles of the open-loop line and determine the stability and damping of each spatial mode. The shape of the modes ϕn(x) is shown in figure 2. 
+
+Figure 2: Mode shapes ϕn(x) = sin( knx), with kn = nπ/L , of the finite line 0 ≤ x ≤ L with zero voltage at the ends. Each spatial mode n possesses its own modal denominator Dn(st)given by (61), whose roots are the modal poles that govern its temporal dynamics. 
+
+4.6 Discrete converters: point injection and spatial sampling 
+
+Hypothesis (H2) of theorem 4.1 replaces the physical converters, located at P discrete sites 0 < x 1 < · · · < x P < L , by a continuous injection density. We now treat the discrete case exactly. If plant p injects the incremental current Ip(t) (in amperes, not per unit length) at its site, the source term of (41b) becomes 
+
+u(t, x ) = 
+
+> P∑
+> p=1
+
+Ip(t) δ(x − xp), (63) where δ(·) is the spatial Dirac delta. This model has the same mathematical form as the localized fault of section 6 (theorem 6.2), so the transform machinery is shared between the two problems. Indeed, transforming (63) in both variables, each delta contributes a spatial rotor, by the same computation as the fault signature (108): 
+
+U (st, s x) = 
+
+> P∑
+> p=1
+
+Ip(st) e−sxxp , (64) a finite sum of spatial rotors, entire in sx.20 On the finite line, the sine-series coefficients of (63) in the convention of (60) —that is, 
+
+U (st, x ) = ∑ 
+
+> n
+
+Un(st)ϕn(x) with Un = (2 /L ) ∫ L 
+
+> 0
+
+U ϕ n dx— are 
+
+Un(st) = 2
+
+L
+
+> P
+
+∑
+
+> p=1
+
+Ip(st) sin( knxp) = 2
+
+L
+
+[S I (st)]
+
+> n
+
+, Snp = sin( knxp), (65) where S ∈ RN ×P is the sampling matrix of the converter sites on the first N modes. How faithfully the discrete injection can reproduce, or actuate, the modal content of the line is entirely encoded in S. For the uniform grid of practical interest the sampling is exact in the following sense. 
+
+Proposition 4.5 (Exact sampling on the uniform midpoint grid) . Let the P converters be placed on the midpoint grid xp = ( p − 12 )L/P , p = 1 , . . . , P , and write θp = k1xp = ( p − 12 )π/P ,so that knxp = nθ p. Then: (i) Discrete orthogonality. For 1 ≤ n, m ≤ P ,
+
+> P
+
+∑
+
+> p=1
+
+sin( knxp) sin( kmxp) = 
+
+
+
+P
+
+2 δnm , n, m ≤ P − 1,P, n = m = P, 
+
+0, n̸ = m, 
+
+(66) 
+
+that is, the sampled mode shapes of orders 1, . . . , P remain orthogonal, with mode P
+
+carrying twice the weight of the others. (ii) Spatial aliasing. For every p, every n ≥ 1, and every integer j ≥ 1,
+
+sin( k2P −nxp) = sin( knxp), sin( k2P +nxp) = − sin( knxp), sin( k2P j xp) = 0 . (67) 
+
+The sampled shapes are therefore 4P -periodic in n, the modes n = 2 P j are invisible to the converter set ( dead modes), and every mode n > P not of the form 2P j coincides at the sites, up to sign, with a canonical alias in {1, . . . , P }.Proof. The key computation is the Dirichlet-kernel sum Σ q := ∑Pp=1 cos( qθ p) for integer q ≥ 0. Let w = eiqπ/ (2 P ) (an ordinary complex exponential: the geometric algebra plays no role in this scalar lemma). Since qθ p = q(2 p − 1) π/ (2 P ), we have cos( qθ p) = Re w2p−1 and the sum is geometric in w2. If q = 2 P j , then w2p−1 = eij (2 p−1) π = ( −1) j for every p, so Σ 2P j = P (−1) j
+
+and, taking imaginary parts, ∑ 
+
+> p
+
+sin(2 P j θ p) = 0. If q̸ ≡ 0 (mod 2 P ), then w2̸ = 1 and 
+
+> P
+
+∑
+
+> p=1
+
+w2p−1 = w w2P − 1
+
+w2 − 1 , w2P = eiqπ = ( −1) q. (68) For q even, w2P = 1 and the sum vanishes identically. For q odd, w2P = −1 and (68) equals 
+
+−2w/ (w2 − 1) = −2/(w − w−1) = i/ sin (qπ/ (2 P )), which is purely imaginary; hence Σ q = 0 and, as a byproduct, ∑ 
+
+> p
+
+sin( qθ p) = 1 / sin (qπ/ (2 P )) for q odd. In summary, Σ q = 0 unless 
+
+q = 2 P j , in which case Σ q = P (−1) j .(i) By the product-to-sum identity, sin( nθ p) sin( mθ p) = 12
+
+[cos(( n − m)θp) − cos(( n + m)θp)],so the left-hand side of (66) equals 12 (Σ n−m − Σn+m) (with Σ −q = Σ q). For 1 ≤ n, m ≤ P
+
+one has |n − m| ≤ P − 1 < 2P , so Σ n−m contributes P δ nm (the multiple q = 0, j = 0), and 2 ≤ n + m ≤ 2P , so the only multiple of 2 P is n + m = 2 P , attained within the range only at n = m = P , where Σ 2P = −P . Combining: 12 (P − 0) = P/ 2 for n = m ≤ P − 1;  
+
+> 12
+
+(P − (−P )) = P for n = m = P ; and 0 otherwise. 21 (ii) On the midpoint grid, 2 P θ p = (2 p − 1) π, so sin(2 P θ p) = 0 and cos(2 P θ p) = −1. The angle-addition formulas then give sin ((2 P ∓ n)θp 
+
+> )
+
+= ∓ cos(2 P θ p) sin( nθ p) = ± sin( nθ p), which are the first two identities of (67), and sin(2 P j θ p) = sin (j(2 p − 1) π) = 0 is the third. Applying the reflection n 7 → 2P − n and the shift n 7 → n + 2 P repeatedly shows that the sampled shapes are 4 P -periodic in n and that every mode n > P folds onto a canonical alias in {1, . . . , P } up to sign. 
+
+Corollary 4.6 (Continuum limit) . Let ¯u(t, ·) ∈ C2[0 , L ] be a target injection density and let each converter on the midpoint grid carry its cell share, Ip(t) = ¯ u(t, x p) L/P . Then, for every fixed n,
+
+U disc  
+
+> n
+
+(t) = 2
+
+P
+
+> P∑
+> p=1
+
+¯u(t, x p) sin( knxp) −−−−→  
+
+> P→∞
+
+U cont  
+
+> n
+
+(t) = 2
+
+L 
+
+> ∫L
+> 0
+
+¯u(t, x ) sin( knx) d x, (69) 
+
+with error O(P −2). For a constant density ¯u ≡ u0 the comparison is exact in closed form: for 
+
+n odd, 
+
+U disc  
+
+> n
+
+= 2u0/P 
+
+sin (nπ/ (2 P )) , U cont  
+
+> n
+
+= 4u0
+
+nπ , U disc 
+
+> n
+
+U cont 
+
+> n
+
+= nπ/ (2 P )sin (nπ/ (2 P )) ≥ 1, (70) 
+
+and both coefficients vanish for n even. Hypothesis (H2) of theorem 4.1 thereby acquires a quantitative convergence rate and an exact special case. Proof. The sum U disc  
+
+> n
+
+is the composite midpoint rule applied to the integral U cont  
+
+> n
+
+on P equal cells of width L/P ; the classical midpoint-rule error bound for C2 integrands gives the O(P −2)rate. For ¯ u ≡ u0, U disc  
+
+> n
+
+= (2 u0/P ) ∑ 
+
+> p
+
+sin( nθ p), and the row sums computed in the proof of theorem 4.5 give ∑ 
+
+> p
+
+sin( nθ p) = 1 / sin (nπ/ (2 P )) for n odd and 0 for n even. On the continuous side, U cont  
+
+> n
+
+= (2 u0/L ) ∫ L 
+
+> 0
+
+sin( knx) d x = 2 u0
+
+> (
+
+1 − (−1) n)/(nπ ), which is 4 u0/(nπ ) for n odd and 0 for n even. The ratio in (70) follows, and the bound sin ξ ≤ ξ for ξ ∈ [0 , π/ 2] shows it is ≥ 1, with limit 1 as n/P → 0. Whether a given mode can be actuated at all from the converter sites is quantified by the 
+
+modal controllability score 
+
+γn = 
+
+> (
+
+1
+
+P
+
+> P∑
+> p=1
+
+sin 2(knxp)
+
+> )1/2
+
+∈ [0 , 1] , (71) which vanishes if and only if every converter sits on a node of mode n; in that case mode 
+
+n is uncontrollable from the converter set, whatever the control law. The situation is not pathological: on the uniform node grid xp = pL/ (P + 1) one has sin( kP +1 xp) = sin( pπ ) = 0 for all p, so mode n = P + 1 (and its multiples) is exactly uncontrollable. Together with theorem 4.5(ii), this expresses a spatial Nyquist limit of actuation: from P converter sites at most the P lowest modes can be actuated independently, and any injected content in modes 
+
+n > P folds back onto the sub-Nyquist band n ≤ P . The score (71) is the actuation dual of the modal observability metric of theorem 6.13 in section 6, which plays the same role on the sensor side. 
+
+Remark 4.7 (Correspondence with the implementation) . The expressions in this section cor-respond directly to the module geolaplace.line_model of the reference implementation. In particular, Z(st) and Y (st) from (42) are computed in the routines Z and Y; the deter-minant ∆( st, s x) from (44) in Delta ; the distributed transfer function (45) in G_voltage ;the modal denominator Dn(st) from (61) in modal_denominator ; the modal transfer func-tion Gn(st) = Z(st)/D n(st) from (62) in modal_transfer (with numerator Z, not 1 /D n); 22 its roots in modal_poles ; and the ideal dispersion relation (50) in dispersion_ideal . The discrete-converter results of subsection 4.6 (and theorem 5.3 of section 5) are implemented by the routines converter_positions , sampling_matrix , modal_injection , modal_coupling_ matrix , modal_controllability_score , alias_mode , and discrete_droop_poles of the module geolaplace.converters . This correspondence makes it possible to reproduce and verify numerically each analytical result. 
+
+# 5 Distributed control via admittance shaping 
+
+Starting from the space-time dispersion relation of the line of distributed converters obtained in section 4, we address the design of a control law that acts on the shunt injection of each node. The idea, inspired by the virtual impedance/admittance control common in DC microgrids [8, 23], is to shape the effective shunt admittance of the line in order to modify its dispersion relation and, with it, its closed-loop dynamic behavior. The geometric Laplace transform is particularly convenient here because it keeps the temporal and spatial phases separate, so that a single controller can be expressed compactly as a rational function K(st, s x) of the two geometric variables. Let us recall the incremental line model of section 4, 
+
+∂xv + ℓ ∂ ti + r i = 0 , ∂xi + c ∂ tv + g v = u, (72) whose geometric transform, with the longitudinal impedance Z(st) = r + ℓs t and the shunt admittance Y (st) = g + cs t, leads to the algebraic system V s x + ZI = 0, Is x + Y V = U and to the dispersion relation ∆( st, s x) = s2 
+
+> x
+
+− Z(st) Y (st). (73) The injection u is now the actuation variable of the converters. 
+
+Control law and closed-loop admittance 
+
+We consider a feedback law on the local voltage of the form 
+
+u = ru − K[v], (74) where ru is a reference (setpoint or scheduled injection) and K[·] is a linear space-time operator that is causal in time. In the transformed domain, equation (74) reads 
+
+U = Ru − K(st, s x) V, (75) with Ru = LG{ru} (the transform of the reference; the subscript u distinguishes it from the fault residual R of section 6). Substituting equation (75) into the second algebraic equation of the model, Is x + Y V = U , we obtain Is x + [ Y (st) + K(st, s x)] V = Ru, so that the controller acts additively on the shunt admittance. We define the closed-loop admittance 
+
+Yc(st, s x) = g + cs t + K(st, s x) = Y (st) + K(st, s x). (76) Eliminating the current with V s x + ZI = 0, the closed-loop determinant inherits the same structure as equation (73), with Y simply replaced by Yc:∆c(st, s x) = s2 
+
+> x
+
+− Z(st) [Y (st) + K(st, s x)]. (77) The entire closed-loop space-time dynamics is encoded in the zeros of ∆ c; the design therefore amounts to choosing K so as to place those zeros conveniently. 23 5.1 Distributed virtual conductance 
+
+The simplest case is a pure proportional voltage feedback, K = kv constant, which in the physical domain corresponds to the local law u = ru − kv v. Physically, each converter injects a current proportional to its local voltage, behaving like an additional conductance distributed along the line. 
+
+Proposition 5.1 (Virtual conductance) . Let K(st, s x) = kv with kv ∈ R. Then the closed-loop shunt admittance is 
+
+Yc(st, s x) = ( g + kv) + cs t, (78) 
+
+that is, it is equivalent to the admittance of an identical line in which the distributed conductance changes from g to g + kv, and the closed-loop determinant is 
+
+∆c(st, s x) = s2 
+
+> x
+
+− Z(st) [(g + kv) + cs t
+
+> ]
+
+. (79) 
+
+If kv > 0, the incremental shunt conductance increases by kv (from g to g + kv) and, with it, the modal damping. If in addition g + kv > 0, the effective shunt branch is strictly dissipative (incrementally passive). Proof. Substituting K = kv into equation (76) immediately yields equation (78), since Y (st) + 
+
+kv = ( g + cs t) + kv = ( g + kv) + cs t, which is the admittance of a line with conductance g + kv
+
+and the same capacitance c. Expression equation (79) follows from carrying equation (78) into equation (77). As for the effect on damping, the incremental conductive term of the shunt branch in equation (72) under the law u = ru − kvv changes from g v 2 to ( g + kv) v2, whose coefficient is strictly larger when kv > 0. This increase in the conductive coefficient raises the st-term of the modal denominator (by ℓk v, see equation (90)), which increases the modal damping and shifts the poles toward more negative real parts (see subsection 5.4). That the conductive coefficient increases does not, by itself, imply net passivity of the branch: this additionally requires g + kv > 0. 
+
+Remark 5.2 . The virtual conductance increases the conductance by kv (g 7 → g + kv) and shifts the poles toward greater damping; it is implemented with a single local voltage measurement per node, without additional dynamics or spatial couplings. The “dissipative” character needs one qualification: the effective shunt branch is strictly passive only when the resulting conductance is positive, g + kv > 0. In the base case ( g = −0.05 S /m, kv = 0 .04 S /m) one has g + kv =
+
+−0.01 S /m < 0: the branch remains incrementally active, although the control suffices to stabilize the modes considered (see section 7). Its limitation is that it only shifts the constant term g, without acting on the capacitive inertia c or on the spatial structure of the line. The virtual conductance admits an exact discrete realization: when the injection is produced by P converters at discrete sites, as in subsection 4.6 of section 4, the natural per-converter droop law reproduces the continuous closed loop without any homogenization error on the sub-Nyquist band. 
+
+Proposition 5.3 (Exact discrete realization of the virtual conductance) . Let the injection be produced by P converters at the sites xp = ( p − 12 )L/P of the uniform midpoint grid, each implementing the local droop law 
+
+Ip(t) = − κp v(t, x p), κp = kv
+
+LP , (80) 
+
+that is, the virtual conductance kv (in S/m) aggregated over the cell of length L/P served by converter p. Expanding v in the modes ϕn(x) = sin( knx) and retaining N modes, the feedback contributes U fb  
+
+> n
+
+= − ∑Nm=1 Cnm Vm to the modal series coefficients (65) , with the coupling matrix 
+
+C = 2
+
+L S diag( κ1, . . . , κ P ) ST ∈ RN ×N , Snp = sin( knxp), (81) 24 so that the closed-loop modal system is Dn(st)Vn + Z(st) ∑ 
+
+> m
+
+Cnm Vm = Z(st)Ru,n . On the midpoint grid with the gains (80) :(i) if N ≤ P , the matrix C is exactly diagonal, C = kv diag(1 , . . . , 1) for N ≤ P − 1 and 
+
+C = kv diag(1 , . . . , 1, 2) for N = P ; in particular, for every mode n ≤ P − 1 the closed-loop modal denominator is exactly Dn(st) + kv Z(st), identical to the continuous virtual conductance of theorem 5.1, while mode P sees the doubled gain 2kv;(ii) if N > P , the rows of S repeat up to sign and the feedback couples each mode with its alias partner with full diagonal strength; for example, Cn, 2P −n = kv for 1 ≤ n ≤ P − 1
+
+whenever 2P − n ≤ N .Proof. Expand the voltage in the modes, so that at each site v(t, x p) = ∑ 
+
+> m
+
+Vm(t) sin( kmxp), and let the droop law (80) set Ip = −κp v(t, x p). Substituting the resulting currents into the series coefficients (65), 
+
+U fb  
+
+> n
+
+= 2
+
+L
+
+> P∑
+> p=1
+
+Ip sin( knxp) = −
+
+> N∑
+> m=1
+
+2
+
+L
+
+> P∑
+> p=1
+
+κp sin( knxp) sin( kmxp)  
+
+> ︸︷︷ ︸
+> Cnm
+
+Vm, (82) which is (81). Carrying Un = Ru,n + U fb  
+
+> n
+
+into the modal equation (60), DnVn = Z (Ru,n − 
+
+> ∑
+> m
+
+Cnm Vm), gives the stated closed-loop system. With constant gains κp = kvL/P , Cnm =(2 kv/P ) ∑ 
+
+> p
+
+sin( knxp) sin( kmxp), and the discrete orthogonality (66) of theorem 4.5(i) evaluates the sum exactly: Cnm = kvδnm for n, m ≤ P − 1, CP P = 2 kv, and zero cross terms, which proves (i); for diagonal C the n-th equation decouples as [ Dn(st) + kvZ(st)] Vn = Z(st)Ru,n ,the modal denominator of theorem 5.1 (equivalently, (88) with Kn = kv). For (ii), the alias identities (67) of theorem 4.5(ii) give sin( k2P −nxp) = sin( knxp) for all p, hence Cn, 2P −n =(2 kv/P ) ∑ 
+
+> p
+
+sin 2(knxp) = kv for 1 ≤ n ≤ P − 1 by (66). 
+
+Remark 5.4 . Three consequences follow. (a) theorem 5.3 upgrades the homogenization hypoth-esis from an approximation to an exact statement: for uniformly placed converters with the droop law (80), the continuous closed-loop analysis of this section is exact on the sub-Nyquist band n ≤ P − 1, not merely a limit. (b) The validity of that reading requires the modal con-tent of interest to be confined to n < P : modes beyond the spatial actuation Nyquist limit are aliased and coupled by the feedback, the actuation counterpart of the sensor-side observability restriction (theorem 6.13 in section 6). (c) For non-uniform placements, the natural choice 
+
+κp = kvwp, with wp the widths of the Voronoi cells of the sites, preserves the convergence to the continuous loop as P grows, in the quadrature sense of theorem 4.6, but the exactness is lost: C in (81) is no longer diagonal. The numerical behavior of both situations is examined in subsection 7.8. 
+
+5.2 Space-time dynamic controller 
+
+To shape the admittance more fully, it is convenient to allow a controller that depends on both geometric variables affinely in each and in their product: 
+
+K(st, s x) = k0 + ktst + kxsx + ktx stsx. (83) Since the algebra is commutative (bicomplex), the product stsx is well defined and commutes, so that K is an ordinary multivariate polynomial. Recalling that st ↔ ∂t and sx ↔ ∂x under the geometric transform with zero initial and boundary conditions for the operational properties (see section 3), the law equation (83) corresponds in the physical domain to the operator 
+
+K[v] = k0 v + kt ∂tv + kx ∂xv + ktx ∂t∂xv. (84) Each term admits a direct physical interpretation: 25 • k0 v (k0 term): constant virtual conductance , as in subsection 5.1; it modifies g.• kt ∂tv (ktst term): temporal damping , an injection proportional to the temporal rate of change of the local voltage; it acts on the effective capacitance c, modifying the inertia of the node. • kx ∂xv (kxsx term): first-order spatial coupling , proportional to the spatial gradient of the voltage; it is equivalent to an injection that compares the voltage with that of the neighboring nodes and contributes to a controlled transport or diffusion along the line. • ktx ∂t∂xv (ktx stsx term): mixed space-time term, simultaneously sensitive to the temporal variation and to the spatial gradient; it allows selective damping of the propagating components (traveling waves) without penalizing the quasi-static modes. 
+
+Remark 5.5 . The presence of the sx and stsx terms is precisely what distinguishes this design from a purely temporal controller: they require spatial information (gradients), so they are realizable only if the nodes can estimate neighbor-related quantities. With a single independent variable ( kx = ktx = 0) the controller reduces to K = k0 +ktst, equivalent to a classical Laplace compensator with a geometric interpretation; the space-time contribution appears only when the sx terms are activated. 
+
+5.3 Design by target denominator 
+
+The full shaping is formulated inversely: a desired closed-loop determinant ∆ d(st, s x) is speci-fied and the controller that realizes it is solved for. Setting ∆ c = ∆ d in equation (77) and using equation (73), 
+
+s2 
+
+> x
+
+− Z(st)[Y (st) + K(st, s x)] = ∆ d(st, s x), (85) and since ∆( st, s x) = s2
+
+> x
+
+−Z(st)Y (st), subtracting yields Z(st) K(st, s x) = ∆( st, s x)−∆d(st, s x), whence 
+
+Proposition 5.6 (Controller by target denominator) . Let ∆d(st, s x) be a target determinant and assume Z(st) = r+ℓs t invertible in the region of interest (which holds except at st = −r/ℓ ). Then the unique controller of the form equation (75) that imposes ∆c = ∆ d is 
+
+K(st, s x) = ∆( st, s x) − ∆d(st, s x)
+
+Z(st) . (86) 
+
+Proof. The equality ∆ c = ∆ d is equivalent, as shown above, to Z(st)K = ∆ − ∆d. Since Z(st)is invertible in the bicomplex subalgebra except at its zeros, K is solved for by multiplying by Z(st)−1, which gives equation (86). Uniqueness is immediate: any K′ satisfying ∆ c = ∆ d
+
+satisfies Z(st)( K − K′) = 0, and since Z(st) is invertible we conclude K = K′.
+
+Remark 5.7 (Implementability) . Formula equation (86) is exact, but its physical realization is subject to constraints that must be checked case by case: • Temporal causality. The quotient [∆ − ∆d]/Z (st) must correspond, as a function of 
+
+st, to a causal and proper operator; otherwise it contains time derivatives of order higher than what is implementable and must be approximated by a causal filter (for example, derivatives with a low-pass filter). • Local or neighbor-based spatial measurements. The dependence on sx translates into spatial derivatives ∂x, which each converter can reconstruct only from its own mea-surements and those of its immediate neighbors. High spatial orders demand a wide neighborhood and degrade the locality of the control. 26 • Realization by discrete converters. The real line is a discrete set of nodes, but the impact depends on the term. The static droop ( kv, no spatial derivative) is realized exactly 
+
+by per-converter gains on the uniform midpoint grid (theorem 5.3); the discretization error concerns the dynamic space-time terms (the sx-dependent part of K), whose operators 
+
+∂x and ∂t∂x are approximated by finite differences between adjacent nodes, introducing an error that limits the effective spatial bandwidth. • Saturation and communication delays. The injections are bounded by the capability of the converters, and the exchange of neighbor-based measurements incurs communica-tion delays; both effects limit the aggressiveness of the achievable ∆ d and may compromise stability if they are not accounted for in the design. For these reasons, in practice one prefers to restrict ∆ d to low-order forms (those of subsec-tion 5.2) and to verify a posteriori the robustness against discretization, saturation, and delay. 
+
+5.4 Modal control on a finite line 
+
+For the finite line 0 ≤ x ≤ L with zero voltage at the ends, the decomposition into the modes 
+
+ϕn(x) = sin( knx), kn = nπ/L , of section 4 reduces the space-time problem to a family of independent temporal problems. Each mode n is controlled with a modal feedback law 
+
+Un = Ru,n − Kn(st) Vn, (87) where Kn(st) is the projection of the controller onto mode n and depends only on the temporal variable st. Recalling that the open-loop modal denominator is Dn(st) = k2 
+
+> n
+
++ Z(st)Y (st), the effect of equation (87) on the denominator is obtained, as in equation (77), by adding Kn to the admittance and keeping the impedance factor Z(st) = r + ℓs t:
+
+Dc,n (st) = Dn(st) + ( r + ℓs t) Kn(st). (88) We specialize to a modal controller that is affine in time, Kn(st) = k0n + ktn st, which combines virtual conductance ( k0n) and temporal damping ( ktn ). We expand equation (88). With Z(st)Y (st) = ( r + ℓs t)( g + cs t) = ℓc s 2 
+
+> t
+
++ ( rc + ℓg )st + rg , the open-loop denominator is 
+
+Dn(st) = ℓc s 2 
+
+> t
+
++ ( rc + ℓg )st + ( k2 
+
+> n
+
++ rg ). The feedback term equals (r + ℓs t) Kn(st) = ( r + ℓs t)( k0n + ktn st)= ℓk tn s2 
+
+> t
+
++ ( rk tn + ℓk 0n) st + rk 0n. (89) Adding equation (89) to Dn(st) and grouping by powers of st,
+
+Dc,n (st) = ℓ(c + ktn ) s2 
+
+> t
+
++ [r(c + ktn ) + ℓ(g + k0n)] st + [k2 
+
+> n
+
++ r(g + k0n)]. (90) One observes that ktn shifts the effective capacitance c 7 → c + ktn (inertia/damping) and k0n
+
+shifts the effective conductance g 7 → g + k0n, exactly as anticipated by the interpretations of subsection 5.2, now at the level of each mode. 
+
+Assignment of temporal geometric poles 
+
+The natural modal design objective is to place the two temporal poles of mode n at a prescribed geometric conjugate pair 
+
+st± 
+
+> ,n
+
+= −αn ± Btβn, αn > 0, β n ≥ 0, (91) 27 where αn sets the damping and βn the temporal geometric frequency. The monic second-degree polynomial with those roots, using B2 
+
+> t
+
+= −1, is (st − st+
+
+> ,n
+
+)( st − st−
+
+> ,n
+
+) = s2 
+
+> t
+
++ 2 αnst + ( α2 
+
+> n
+
++ β2
+
+> n
+
+). (92) We require that Dc,n of equation (90), once normalized by its leading coefficient ℓ(c + ktn ), coincide with equation (92). 
+
+Proposition 5.8 (Gains for modal pole assignment) . Assume ℓ > 0 and a target (αn, β n) such that 
+
+Λ( αn, β n) := ( α2 
+
+> n
+
++ β2
+
+> n
+
+)ℓ2 − 2αnrℓ + r2̸ = 0 (93) 
+
+(a scalar condition, not to be confused with the modal denominator Dn). Let us define the effective closed-loop quantities ct := c + ktn and gk := g + k0n. Then the modal controller 
+
+Kn(st) = k0n + ktn st that places the poles of mode n at equation (91) is given by 
+
+ct = k2 
+
+> n
+
+ℓ
+
+(α2 
+
+> n
+
++ β2
+
+> n
+
+)ℓ2 − 2αnrℓ + r2 , gk = ct (2 αnℓ − r)
+
+ℓ , (94) 
+
+whence ktn = ct −c and k0n = gk −g. The solution is physical, that is, implementable as positive effective capacitance and conductance, only if ct > 0 and gk > 0; otherwise equation (94) is still the algebraic solution, but its realizability must be checked separately. Proof. Normalizing equation (90) by ℓc t = ℓ(c + ktn ), the closed-loop monic polynomial is 
+
+s2 
+
+> t
+
++ rc t + ℓg k
+
+ℓc t
+
+st + k2 
+
+> n
+
++ rg k
+
+ℓc t
+
+. (95) Matching coefficient by coefficient with equation (92) yields the system 
+
+rc t + ℓg k
+
+ℓc t
+
+= 2 αn, (96) 
+
+k2 
+
+> n
+
++ rg k
+
+ℓc t
+
+= α2 
+
+> n
+
++ β2
+
+> n
+
+. (97) From equation (96), rc t + ℓg k = 2 αnℓc t, that is 
+
+ℓg k = (2 αnℓ − r) ct, equivalently gk = ct(2 αnℓ − r)
+
+ℓ , (98) which is the second equality of equation (94). Substituting rg k = r(2 αnℓ − r)ct/ℓ into equa-tion (97) and multiplying by ℓc t,
+
+k2 
+
+> n
+
++ r(2 αnℓ − r)
+
+ℓ ct = ( α2 
+
+> n
+
++ β2
+
+> n
+
+) ℓc t. (99) Grouping the terms in ct,
+
+k2 
+
+> n
+
+=
+
+[
+
+(α2 
+
+> n
+
++ β2
+
+> n
+
+)ℓ − r(2 αnℓ − r)
+
+ℓ
+
+]
+
+ct = (α2 
+
+> n
+
++ β2
+
+> n
+
+)ℓ2 − 2αnrℓ + r2
+
+ℓ ct, (100) and under hypothesis equation (93) we solve for ct = k2
+
+> n
+
+ℓ/ [( α2 
+
+> n
+
++ β2
+
+> n
+
+)ℓ2 − 2αnrℓ + r2], the first equality of equation (94). Finally ktn = ct − c and k0n = gk − g by the definitions of ct and 
+
+gk. The physical realizability condition ct > 0, g k > 0 follows from requiring that the effective closed-loop capacitance and conductance be positive. 28 Remark 5.9 . Formula equation (94) is remarkably compact thanks to the geometric structure: the desired pole −αn ± Btβn is interpreted directly as a root in the temporal plane generated by Bt, and the conjugate pair appears automatically because B2 
+
+> t
+
+= −1. Note further that the denominator equation (93) is exactly |(r + ℓs t+
+
+> ,n
+
+)|2 
+
+> Bt
+
+= ( r − αnℓ)2 + ( βnℓ)2 evaluated at the target pole, which connects the non-degeneracy condition with Z(st) not vanishing at st±
+
+> ,n
+
+,consistently with the invertibility required in theorem 5.6. 
+
+Remark 5.10 (Relation to the implementation) . The results of this section correspond directly to the geolaplace.control module of the reproducible implementation. The virtual conduc-tance of theorem 5.1 is virtual_conductance ; the closed-loop determinant equation (77) is 
+
+closed_delta ; the design by target denominator equation (86) is design_K_from_delta ; the closed-loop modal denominator equation (90) is modal_closed_denominator ; and the pole assignment equation (94) is modal_gain_for_target_poles . The exact discrete droop of the-orem 5.3 is covered by the module geolaplace.converters : modal_coupling_matrix builds the coupling matrix equation (81) and discrete_droop_poles computes the closed-loop poles of the coupled modal system. This one-to-one correspondence makes it possible to validate each formula numerically (see section 7). 
+
+# 6 Localized faults: detection, localization, and classification 
+
+This section addresses the problem of detecting, localizing, and classifying faults that appear at specific positions along the distributed line of converters. The guiding idea is that a localized fault manifests itself as a space-time singularity of the model residual, and that its Geometric Laplace Transform possesses a distinctive algebraic structure: the dependence on the fault position is encoded in a spatial rotor. The approach falls within model-based fault diagnosis and residual generation [6, 20]. Two different objects must be distinguished from the outset: • the balance residual R(t, x ), which represents the equivalent anomalous source introduced by the fault; • the observed response , for example vres (t, x ), which is the propagated effect of that residual through the line. This distinction matters in fault detection: the geometric signature Ff (st)e−sxxf belongs to the balance residual. If only voltages are measured, the line transfer function must first be removed (a prewhitening or modal deconvolution operation) in order to recover the residual signature. If this separation is not carried out, a sensor anomaly can be mistaken for a localized physical fault. 
+
+6.1 Distributed residual and the signature of a localized fault 
+
+We start from the nominal closed-loop distributed model. The plant satisfies 
+
+∂xv + ℓ ∂ ti + r i = 0 , ∂xi + c ∂ tv + g v = u, (101) and the nominal controller applies 
+
+u = ru − K[v]. (102) In healthy operation, therefore, 
+
+∂xi + c ∂ tv + g v + K[v] − ru = 0 . (103) 29 Definition 6.1 (Distributed balance residual) . Let K[ · ] be the linear distributed control operator and ru the known excitation. We define the balance residual as 
+
+R(t, x ) = ∂xi + c ∂ tv + g v + K[v] − ru. (104) Under ideal healthy operation, R(t, x ) = 0. In the presence of noise or model errors, a statistical threshold on a norm of R is used to decide on detection. If the physical fault introduces an anomalous injection uf (t, x ), the actual equation becomes 
+
+∂xi + c ∂ tv + g v = ru − K[v] + uf (t, x ), (105) and, by the previous definition, 
+
+R(t, x ) = uf (t, x ). (106) Thus, the balance residual is the equivalent source of the fault. It is this identity that justifies localizing faults from R.
+
+Definition 6.2 (Additive localized fault) . A fault localized at xf ∈ (0 , L ) with temporal signature ff (t) is modeled as 
+
+R(t, x ) = uf (t, x ) = ff (t) δ(x − xf ), (107) where δ(·) is the spatial Dirac delta. The function ff (t) has units of incremental current and is called the temporal signature of the fault. 
+
+Remark 6.3 (Additive versus multiplicative faults) . Form (107) is exact for faults that behave as an anomalous current injection. A local short circuit or shunt, in contrast, is not an in-dependent source: it introduces a relation of the type ff (t) = −Yf [v(t, x f )]. It is therefore a multiplicative, or local-admittance, disturbance. It can be handled with the same notation if 
+
+ff (t) is interpreted as the resulting fault current and if, after localizing xf , one estimates Yf by dividing by the local voltage. For strong shunt faults, the local voltage v(t, x f ) is itself modified by the fault; in that case the classification must be understood as an estimation within the already-faulted system, not as an independent external source. 
+
+Proposition 6.4 (Transformed signature of a localized fault) . Let Ff (st) = LG{ff }(st) be the temporal transform of the signature. If the line is treated as a spatial half-axis, or if the residual is extended by zero outside [0 , L ], the Geometric Laplace Transform of residual (107) 
+
+is 
+
+R(st, s x) = Ff (st) e−sxxf . (108) 
+
+In particular, evaluating on the purely oscillatory spatial axis sx = Bxk,
+
+R(st, Bxk) = Ff (st)e−Bxkx f = Ff (st)[cos( kx f ) − Bx sin( kx f )]. (109) 
+
+Proof. Applying the definition of the transform to (107), 
+
+R(st, s x) =   
+
+> ∫∞
+> 0
+> ∫∞
+> 0
+
+ff (t) δ(x − xf )e−stte−sxx dx dt (110) = 
+
+> (∫ ∞
+> 0
+
+ff (t)e−stt dt 
+
+> ) (∫ ∞
+> 0
+
+δ(x − xf )e−sxx dx
+
+> )
+
+. (111) The first factor is Ff (st) and the second is e−sxxf for xf > 0. If sx = Bxk, then B2 
+
+> x
+
+= −1 and one obtains the geometric Euler identity 
+
+e−Bxkx f = cos( kx f ) − Bx sin( kx f ). (112) theorem 6.4 is the basic localization result: the temporal part of the fault appears in 
+
+Ff (st), whereas the position appears in the spatial rotor e−Bxkx f . This separation should not be confused with the measured voltage response, which includes line propagation. 30 6.2 From the residual to the measured signals 
+
+In many systems, R(t, x ) is not measured directly over the entire continuum. The usual case is to measure voltage, and perhaps current, at a finite set of converters/sensors. It is therefore convenient to write out explicitly how the physical residual propagates to the voltage. In the transformed domain, the closed-loop model with effective admittance Yc(st, s x) = 
+
+Y (st) + K(st, s x) leads to ∆c(st, s x) = s2 
+
+> x
+
+− Z(st)Yc(st, s x). (113) If the balance residual is R(st, s x), the residual voltage satisfies 
+
+Vres (st, s x) = − Z(st)∆c(st, s x) R(st, s x), (114) provided the factors are invertible in the region of interest. For a point fault, 
+
+Vres (st, s x) = − Z(st)∆c(st, s x) Ff (st)e−sxxf . (115) Hence, if one intends to localize using voltage data, the prewhitened signature must be used, 
+
+> ˜
+
+R(st, s x) := − ∆c(st, s x)
+
+Z(st) Vres (st, s x), (116) which, ideally, recovers Ff (st)e−sxxf . This operation is not harmless: it is sensitive to zeros of 
+
+Z, to zeros or near-zeros of ∆ c, to noise, and to parametric uncertainty. 
+
+Remark 6.5 (Finite line) . The continuous formula (115) corresponds to the ( st, s x)-domain treatment of a homogeneous line. In a finite line with boundary conditions, the response must be expressed through spatial modes or through the Green’s function that satisfies those boundary conditions. In that case, free-phase localization in k must be replaced by the modal localization of subsection 6.4, unless one works with a long-line approximation or with local windows where reflections are negligible. 
+
+Regularized prewhitening 
+
+The ideal inversion (116) is an exact deconvolution and, for that reason, sensitive to noise when the propagation operator is small or ill-conditioned. Writing Vres = H R with 
+
+H(st, s x) = − Z(st)∆c(st, s x) , (117) the direct inversion R = H−1Vres amplifies noise near the zeros of H (or, equivalently, near the zero divisors of the algebra). We propose instead the regularized (Tikhonov-type [31]) deconvolution ̂
+
+Rλ = H
+
+|H|2 + λ Vres , λ > 0, (118) where the conjugation H and the modulus |H|2 must be understood in a representation that is compatible with the algebra structure. To avoid a problematic notion of modulus in the presence of zero divisors, the real matrix representation is used: if M = M (H) is the 4 × 4matrix of multiplication by H (theorem 2.8) and v is the coordinate vector of Vres , then ̂
+
+Rλ ↔ (M⊤M + λI )−1M⊤v. (119) 31 With λ = 0 and H invertible, the exact inversion is recovered; with λ > 0 the solution remains bounded even if H is ill-conditioned. In a finite line, the modal version is cleaner: with 
+
+Gn(st) = Z(st)/D n(st) (equation (62)) and Vn = GnAn,̂
+
+An = Gn
+
+|Gn|2 + λ Vn ↔ (M (Gn)⊤M (Gn) + λI )−1M (Gn)⊤vn. (120) The routines regularized_prewhiten_voltage and regularized_modal_amplitude imple-ment (119) and (120). 
+
+6.3 Localization by geometric spatial phase 
+
+The factorization (109) suggests recovering xf by reading the geometric spatial phase. This strategy must be applied to the residual R or to the prewhitened signal ˜R of (116), not directly to an uncompensated voltage response. 
+
+Proposition 6.6 (Phase localization with two wavenumbers) . Let k1̸ = k2 and 
+
+Rm := R(st, Bxkm) = Ff (st)e−Bxkmxf , m = 1 , 2. (121) 
+
+Assume that Ff (st) is invertible in the bicomplex subalgebra and that R1 is not close to a zero divisor. Then 
+
+R2R−11 = e−Bx(k2−k1)xf , (122) 
+
+and 
+
+xf = − Arg Bx (R2R−11 )
+
+k2 − k1
+
+(mod 2πk2 − k1
+
+). (123) 
+
+Proof. By commutativity, 
+
+R2R−11 = Ff e−Bxk2xf F −1 
+
+> f
+
+eBxk1xf = e−Bx(k2−k1)xf . (124) The right-hand side is a pure spatial rotor. If φ = ( k2 − k1)xf , then e−Bxφ = cos φ − Bx sin φ
+
+and Arg Bx (e−Bxφ) = −φ modulo 2 π.
+
+Remark 6.7 (Domain of validity of phase localization) . theorem 6.6 and the robust estimator (126) presuppose that the observed signature is a pure spatial rotor Ff (st)e−Bxkx f . This is appropriate for: an infinite line or half-axis; the local long-line approximation; space-time windows where reflections are negligible; and the prewhitened balance residual (116) or one measured directly. It should not be applied directly to data from a finite line dominated by reflections and global boundary conditions: in that regime, the response superposes standing modes sin( knx) and the free spatial phase in k ceases to be a pure rotor. For the global problem on 0 ≤ x ≤ L, the estimator consistent with the boundary conditions is the modal one of subsection 6.4; the phase estimator is valid there only as a local or long-line approximation. 
+
+Remark 6.8 (Use of Arg Bx with noise) . In the exact case, R2R−11 lies in the plane {1, Bx}. With noise, imperfect prewhitening, or model errors, components along Bt and Btx may appear. In that case one should not blindly apply Arg Bx (z) = atan2( ⟨z⟩Bx , ⟨z⟩0) to the full element. A robust option is to first project onto the spatial plane, Πxz := ⟨z⟩0 + ⟨z⟩Bx Bx, (125) and to use Arg Bx (Π xz) only if ∥Πxz∥ exceeds a threshold. The preferable alternative, when several wavenumbers are available, is the least-squares fit of theorem 6.9. 32 Proposition 6.9 (Robust least-squares estimator) . Given, for m = 1 , . . . , M , the prewhitened signatures Rm ≈ F e −Bxkmxf , consider 
+
+min  
+
+> x∈I , F ∈A
+> M∑
+> m=1
+
+wm ∥Rm − F e −Bxkmx∥2, (126) 
+
+where A = span {1, Bt, Bx, Btx }, wm ≥ 0 are weights, and I is the physically admissible inter-val, for example [0 , L ]. For each fixed x, the problem is linear in the four real components of 
+
+F . Substituting the minimizer ˆF (x) yields a one-dimensional search in x; the minimizer ˆx and 
+
+ˆF = ˆF (ˆ x) give the estimated position and temporal signature. Proof. For fixed x, the factor Em(x) := e−Bxkmx is known. Since the algebra is commutative, the map F 7 → F E m(x) is linear in the coordinates of F . Denote by Mm(x) ∈ R4×4 the real matrix of multiplication by Em(x) and by rm the vector of components of Rm. Then 
+
+∥Rm − F E m(x)∥2 = ∥rm − Mm(x) vec( F )∥2. (127) Stacking the weighted blocks yields min   
+
+> vec( F)
+
+∥A(x) vec( F ) − b∥2, (128) whose least-squares solution is vec( ˆF (x)) = A(x)+b. The reduced cost is minimized over the interval I by sweeping, refinement, or a bounded one-dimensional method. 
+
+Remark 6.10 (Phase ambiguity) . Phase estimation carries an ambiguity modulo 2 π/ (k2 − k1). Therefore, for a line of length L it is advisable to choose the wavenumbers so that the ambiguity period covers the physical interval, or, alternatively, to solve the global problem (126) over [0 , L ]with several km.
+
+6.4 Modal localization in a finite line 
+
+When the line has finite length 0 ≤ x ≤ L, the boundary conditions select spatial modes. To avoid ambiguous normalization factors, we introduce an orthonormal basis 
+
+ψn(x) =  
+
+> √
+
+2
+
+L sin( knx), kn = nπ L . (129) If the unnormalized basis ϕn(x) = sin( knx) is used, all the following results remain valid pro-vided the factor 2 /L is introduced in the modal projection; that factor cancels in the localization ratios, but not in the severity estimation. A point residual has modal projection 
+
+Rn(st) = Ff (st)ψn(xf ). (130) If Gn(st) is the modal residual-to-voltage transfer, then 
+
+Vn(st) = Gn(st)Ff (st)ψn(xf ). (131) We define the normalized modal amplitude 
+
+An(st) := Vn(st)
+
+Gn(st) = Ff (st)ψn(xf ), (132) provided Gn(st) is neither zero nor ill-conditioned. The amplitudes An share the temporal signature and differ only in the spatial weight. The general modal estimator is min  
+
+> x∈[0 ,L ], F ∈A
+> ∑
+> n∈N
+
+wn ∥An − F ψ n(x)∥2. (133) 33 Proposition 6.11 (Modal localization with two modes) . Let A1 = Ff ψ1(xf ) and A2 =
+
+Ff ψ2(xf ), with k1 = π/L and k2 = 2 π/L . If A1̸ = 0 and the common signature can be canceled, then A2
+
+A1
+
+= 2 cos  
+
+> (
+
+πx f
+
+L
+
+> )
+
+, xf = Lπ arccos  
+
+> (
+
+A2
+
+2A1
+
+> )
+
+, (134) 
+
+for xf ∈ (0 , L ).Proof. The normalization factor √2/L is common to ψ1 and ψ2 and cancels. Since sin(2 πx f /L ) = 2 sin( πx f /L ) cos( πx f /L ), (135) one obtains A2
+
+A1
+
+= Ff sin(2 πx f /L )
+
+Ff sin( πx f /L ) = 2 cos( πx f /L ). (136) The arccosine is bijective on πx f /L ∈ (0 , π ). 
+
+Remark 6.12 (Limitations of the modal method) . The closed-form formula (134) is useful as a quick diagnostic, but it should not be the main method in the presence of noise. It fails near modal nodes, requires A1̸ = 0, and can suffer from ambiguity if few modes are used. The fit (133) allows several modes to be used and a confidence metric to be produced, for example Γ = 1 − 
+
+> ∑
+> n
+
+∥An − ˆF ψ n(ˆ x)∥2 
+
+> ∑
+> n
+
+∥An∥2 + ϵ . (137) If the signal energy ∑ 
+
+> n
+
+∥An∥2 is negligible (a fault at a modal node or at a line end), Γ is not informative and should be degraded to 0 rather than reporting a spurious maximal confidence. 
+
+Remark 6.13 (Modal observability of a localized fault) . Modal localization starts from An =
+
+Ff ψn(xf ) for n in an observed set N . If ψn(xf ) = 0 for all n ∈ N , the fault is invisible in those modes. More generally, if two positions xa and xb produce proportional modal vectors, 
+
+> (
+
+ψn(xa)) 
+
+> n∈N
+
+= μ (ψn(xb)) 
+
+> n∈N
+
+, μ ∈ R, (138) the position is not identifiable without additional information, because the amplitude Ff can absorb the factor μ. Localization therefore requires that the map 
+
+x 7 −→ [ψn(x)] 
+
+> n∈N
+
+(139) be injective up to scale on the admissible interval. A useful diagnostic metric is the energy of the modal pattern, obs( x) = (∑  
+
+> n∈N
+
+sin 2(knx))1/2, which vanishes at the ends x = 0 , L and at nodes common to all observed modes (routine modal_observability_score ); the normalized pattern ˆψ(x) ( modal_pattern ) makes it possible to detect the degeneracies (138). 
+
+6.5 Extension: multiple faults 
+
+The modeling of a single point fault extends naturally to J simultaneous faults by linearity of the residual. In the continuum, 
+
+R(st, s x) = 
+
+> J∑
+> j=1
+
+Fj (st) e−sxxj , (140) and in a finite line, projecting onto the modes, 
+
+An(st) = 
+
+> J∑
+> j=1
+
+Fj (st) ψn(xj ). (141) 34 The joint identification of {Fj , x j } is then a sparse recovery problem: min   
+
+> {Fj,x j}
+> ∥∥∥
+
+A − ∑
+
+> j
+
+Fj ψ(xj )
+
+> ∥∥∥2
+
++ λ ∑
+
+> j
+
+∥Fj ∥, (142) or, over a fixed spatial grid {xg} with modal dictionary Φ = [ ψn(xg)] n,g (routine modal_ dictionary ), min  
+
+> f
+
+∥A − Φf ∥2 + λ Ω( f ), (143) where fg collects the amplitude (the four algebra components) of the candidate fault at xg and Ω promotes sparsity. 
+
+Implemented recovery 
+
+This inversion is implemented (not merely formulated) through two complementary routes, both using numpy /scipy :• Simultaneous OMP [27, 32] ( recover_faults_omp ): a greedy algorithm that, at each iteration, selects the column of Φ most correlated with the residual jointly across the four algebra components (common support), refits the block of amplitudes by least squares, and updates the residual, until J faults or a threshold relative residual is reached. The positions are refined off-grid by separable least squares (VARPRO [14]). It requires no tuning of λ and is accurate for well-separated faults. • Group-LASSO [35] ( recover_faults_grid_lasso ): a convex relaxation of (143) with group norm Ω( f ) = ∑ 
+
+> g
+
+∥fg∥2 (ℓ2,1, which imposes common support on the four compo-nents), solved by FISTA [2] with group soft-thresholding; the peaks are extracted with 
+
+extract_fault_peaks .Representing each amplitude by its four real components, with a shared real dictionary Φ, is consistent with the matrix treatment used in regularized prewhitening and avoids a problematic notion of modulus in an algebra with zero divisors. Identifiability requires sufficient modal observability (theorem 6.13): faults that are too close relative to the spatial resolution of the observed modes produce nearly collinear columns of Φ and become difficult to separate. Anumerical example is presented in subsection 7.7. 
+
+Close faults: super-resolution 
+
+When two faults are closer than the spatial resolution of the grid, the previous methods lose accuracy. Two mechanisms address this regime. 
+
+Off-grid refinement (VARPRO). In recover_faults_omp , after selection over the grid, the positions are treated as continuous parameters and one minimizes min 
+
+> x1,...,x J
+> ∥∥∥
+
+A − Φ( x) F (x)
+
+> ∥∥∥2
+
+, F (x) = Φ( x)+A, (144) that is, a separable least-squares problem (VARPRO) in which the amplitudes F (x) are elimi-nated analytically. The fine grid only provides the initialization; the solution is not limited by its step. This refinement is the scheme’s practical super-resolution mechanism. 35 Grid-free spectral estimation (matrix pencil / ESPRIT). The modal measurement also admits a grid-free reading. Since kn = nπ/L , the sequence An in n is a sum of sinusoids 
+
+of frequency θj = πx j /L :
+
+An =
+
+> J∑
+> j=1
+
+Fj sin( n θ j ) = ∑
+
+> k
+
+ck z nk , zk = e±iθ j . (145) Localization is then a harmonic retrieval problem: the poles zk are estimated by the matrix-pencil method (matrix pencil [19] / ESPRIT [30]) from the signal subspace of a Hankel matrix formed with An (stacking the four algebra components as snapshots of common poles, with forward-backward averaging that exploits the conjugate symmetry of real sinusoids). From θj =arg zj one obtains xj = L θ j /π without any grid ( recover_faults_esprit ). This approach can resolve faults closer than the classical Rayleigh limit ∼ L/N .
+
+Estimating the number of faults (model order). The previous methods require the number of faults J. This can be estimated automatically from the same harmonic structure: in (145), An is a sum of J real sinusoids, so the Hankel matrix has signal rank 2J (one conjugate pair per sinusoid). Its singular values separate into 2 J “signal” ones (large) and the rest “noise” ones (small), and the number of components is selected by an information criterion —Wax–Kailath MDL [34] by default, or AIC—: ̂
+
+M = arg min  
+
+> k
+
+(p − k) Ns log ak
+
+gk
+
++ 12 k(2 p − k) log Ns,̂ J = 
+
+> [̂ M
+> 2
+> ]
+
+, (146) where ak and gk are the arithmetic and geometric means of the p−k smallest eigenvalues and Ns
+
+is the number of snapshots . MDL avoids setting a threshold on the singular values manually, but it is not an assumption-free decision: it requires choosing the pencil size, the effective number of snapshots , and a reasonable upper bound on the order ( max_faults ). Moreover, on nearly noise-free data or data confined to a single algebra component, it is advisable to apply a numerical rank guard before evaluating MDL, so as to avoid overestimations due to round-off singular values. The routine estimate_num_faults implements (146) with that guard; passing n_faults=None to the recoverers activates the estimation. Its accuracy is quantified in subsection 7.7. Concretely, before evaluating MDL the number of singular values above the threshold 
+
+τrg = max( τabs , τ rel smax ) —parameters abs_rank_tol and rel_rank_tol of the routine— is counted. If the remaining tail is at the round-off level (strict rank deficiency), that count is exactly 2 J and ̂ J is returned without invoking MDL; this prevents the criterion from trying to “explain” numerically null singular values and overestimating the order in the exact or nearly exact limit. This guard does not replace MDL in the noisy regime —where all singular values exceed the threshold and the count coincides with the subspace dimension—; it merely avoids a numerical pathology in the limiting case. In addition, the effective number of snapshots used in (146) is that of forward Hankel rows per component, Ns = N − Lp, and not the inflated count that would result from treating as independent the rows from forward-backward averag-ing and from stacking the four components (which would overweight the likelihood relative to the penalty and overestimate the order). 
+
+Remark 6.14 (Scope of automatic order selection) . Automatic order estimation does not con-stitute a universal guarantee. Its reliability depends on the number of modes N , the SNR, the spatial separation of the faults, the noise structure, the pencil size, and the bound max_faults .In the deeply sub-Rayleigh regime, or with orders close to the limit resolvable with N modes, order selection can become ambiguous and must be complemented with prior knowledge of the problem. 36 Resolution limit. Both methods have a limit governed by the number of observed modes N
+
+and the signal-to-noise ratio. subsection 7.7 characterizes this limit empirically: at a fixed noise level, recovery is reliable down to separations well below L/N , and it degrades in a controlled manner when the faults come even closer. VARPRO refinement proves somewhat more robust in the most demanding regime, whereas ESPRIT offers a grid-free alternative with lower cost and memory. The deeply sub-Rayleigh regime, where even order selection becomes ambiguous, remains an open question (subsection 8.3). 
+
+6.6 Fault classification 
+
+Once the fault has been localized, its nature is inferred from the estimated temporal signature 
+
+Ff (st) and, where appropriate, from the equivalent local admittance Yf (st). Classification should be carried out after checking the physical consistency of the spatial fit; otherwise, a sensor anomaly may look like a localized source. 
+
+(a) Open circuit or injection loss. If a converter stops injecting a constant current I0
+
+from an instant tf onward, then 
+
+ff (t) = −I0H(t − tf ), (147) and 
+
+Ff (st) = − I0
+
+st
+
+e−sttf . (148) If the time origin is relocated to the instant of detection, tf = 0 and one is left with Ff (st) = 
+
+−I0/s t. A direct test is to check that stFf (st)esttf is approximately constant. 
+
+(b) Local shunt or short circuit. A local leakage path introduces a current proportional to the local voltage: 
+
+ff (t) = −Yf [ v(t, x f ) ] . (149) In the transformed domain, 
+
+Ff (st) = −Yf (st)Vf (st), (150) where Vf (st) is the transformed local voltage at the fault point. Therefore, ̂
+
+Yf (st) = −̂ Ff (st)̂
+
+Vf (st) . (151) This estimation is reliable only if ̂ Vf is not small and if the spatial localization is consistent. Subclassification can be carried out according to 
+
+Yf (st) ≈ Gf > 0 resistive , (152) 
+
+Yf (st) ≈ Cf st capacitive , (153) 
+
+Yf (st) ≈ 1
+
+Lf st
+
+inductive . (154) Operationally, one evaluates which of the quantities Yf , Yf /s t, or Yf st exhibits the smallest relative dispersion over the set of st values used for the diagnosis. 37 (c) Sensor fault. A sensor fault does not introduce a physical source into the line. Instead, it alters the measured signals. If vm is the voltage measurement, a simple model is 
+
+vm(t, x ) = v(t, x ) + es(t)δs(x − xs), (155) where δs represents the location of the sensor or measurement node. A genuine physical fault must satisfy simultaneously: 
+
+R(st, s x) ≈ Ff (st)e−sxxf , (156) and 
+
+Vres (st, s x) ≈ − Z(st)∆c(st, s x) Ff (st)e−sxxf . (157) A sensor fault usually breaks this compatibility: it may produce an apparent residual, but not a response coherent with the line propagation operator. We define a physical consistency test through the robust relative error 
+
+η = ∥Vmed − Vpred ∥
+
+max {∥ Vmed ∥, ∥Vpred ∥, ϵ } , (158) where Vpred is computed with (157) using the estimated position and signature. If η exceeds a threshold, or if the modal confidence is low, the diagnosis must reject the localized physical fault hypothesis and label the anomaly as a sensor fault or model inconsistency. 
+
+(d) Local controller fault. If the nominal controller applies u = ru − K[v] and at node xf
+
+the gain changes K 7 → K + ∆ Kf , the actual injection contains the additional term 
+
+uf (t, x ) = −∆Kf [ v(t, x f ) ] δ(x − xf ). (159) Therefore, in the shunt-fault notation, 
+
+Ff (st) = −∆Kf (st)Vf (st), Yf (st) = ∆ Kf (st). (160) Formally, it is indistinguishable from an anomalous local admittance; telling a “controller fault” apart from a “physical shunt” requires additional information about the converter’s internal state, setpoint logs, switch currents, or local telemetry. 
+
+Remark 6.15 (Discrete converters: residual and site identification) . When the healthy injection is produced by P discrete converters, as in subsection 4.6, the nominal term subtracted by the residual (104) is the known rotor sum (64): writing U tot = ∑ 
+
+> p
+
+Ip(st)e−sxxp + Ff (st)e−sxxf for the faulty line, the subtraction of the healthy sum leaves R(st, s x) = Ff (st) e−sxxf , exactly the signature (108). The entire pipeline of this section —detection, phase and modal localization, classification— therefore carries over unchanged to the discrete-converter line. The discrete setting adds, moreover, a diagnostic that the continuous model cannot express: the estimated position ̂ xf can be matched against the known sites {xp} (routine nearest_converter ). An anomaly with the injection-loss signature —the discrete realization of (148), the loss of con-verter p’s contribution, Ff = −Ip— whose ̂ xf falls within a tolerance δ of a site xp is diagnosed as the outage of plant p, whereas a fault located farther than δ from every site points to the cable itself (e.g. a shunt defect). The decision threshold δ must be chosen between the lo-calization uncertainty and the half-spacing L/ (2 P ); by construction the rule is blind to cable faults within δ of a site (a fraction 2 δP/L of the line). Three caveats bound the reach of this diagnosis. The separation is only as sharp as the localization uncertainty of subsections 6.3 and 6.4 relative to the inter-site spacing L/P , and degrades for dense converter sets or noisy measurements. The subtraction presumes the dispatch Ip(st) and the sites xp to be known exactly, and a dispatch error ∆ Ip leaves the spurious residual − ∑ 
+
+> p
+
+∆Ip(st) e−sxxp competing 38 with the fault signature; subsection 7.8 quantifies the sensitivity to this error. And the ad-ditive model Ff = −Ip captures the loss of plant p’s feed-forward dispatch only: if the plant also participates in the droop feedback (80), its outage additionally removes the local feedback term −κpv(t, x p), a controller-fault perturbation of admittance type (paragraph (d), (160), with ∆ Kf = −κp) that the additive subtraction does not capture. 
+
+Remark 6.16 (Relation to the implementation) . The results of this section are implemented in the module geolaplace.faults . The routine point_fault_signature represents (108); the function prewhiten_voltage applies the prewhitening (116) ˜R = −(∆ c/Z )Vres , so that phase localization ( phase_two_point_location , estimate_location_phase ) operates on balance residuals, whether native or prewhitened; the robust phase estimator solves (126) on [0 , L ]. Modal localization ( estimate_location_modal , estimate_fault_severity_modal ) uses the 
+
+unnormalized basis ϕn = sin( knx), i.e. the direct measurement An = Ff ϕn(xf ) without the factor √2/L of (129). Since the same convention is used when synthesizing the measurement (inject_point_fault ) and when estimating the severity, the normalization factor cancels and the severity is recovered without bias; by contrast, the physical L2 projection ( project_ signal_to_modes ) does carry the 2 /L factor, and to go from its coefficients to the measurement 
+
+An one must divide by the modal transfer Gn, not rescale by 2 /L (mixing the two conventions would introduce a spurious L/ 2 factor in the severity; localization, being scale-invariant, is unaffected). The generator ff_injection_loss admits the temporal shift of (148). Finally, 
+
+classify_fault is applied after the physical consistency test (158) ( physical_consistency_ test ) and distinguishes between injection loss and the shunt subtypes (resistive, capacitive, and inductive). The controller fault is not labeled autonomously: being formally indistinguishable from a local shunt (equation (160)), it is subsumed into that class, and separating it requires additional telemetry. The site matching of theorem 6.15 is implemented by nearest_converter 
+
+in the module geolaplace.converters .
+
+# 7 Numerical results 
+
+This section presents the results obtained by applying the framework developed in the previous sections to a concrete case study of a distributed-converter line. All numerical values come from the direct execution of the simulation and analysis code; the scripts that generate them are indicated in theorem 7.3. The goal is to illustrate, in a verifiable way, the modal behavior, the fault localization, and its classification under controlled conditions, including scenarios with noise. 
+
+7.1 Base case and distributed parameters 
+
+We consider a line of length L = 100 m with the distributed parameters collected in table 1. The nominal distributed conductance is negative, g = −0.05 S /m, which models the active (energy-injecting) character of the converters and, as we will see, introduces the possibility of open-loop instability. The parameter kv is the virtual conductance provided by the distributed admittance-shaping control described in section 5. The product ℓc = 1 ×10 −8 sets the temporal scale of the propagation: through the dispersion relation of section 4, it is the coefficient of the second-order term in st of the modal polynomial. 
+
+7.2 Modal analysis: first mode 
+
+With homogeneous Dirichlet-type boundary conditions, the admissible wavenumbers are kn =
+
+nπ/L . For the first mode, 
+
+k1 = πL = 0 .031416 rad /m, k21 = 9 .8696 × 10 −4 rad 2/m2. (161) 39 Table 1: Parameters of the base case of the distributed-converter line. Quantity Symbol Value Line length L 100 m Distributed inductance ℓ 50 × 10 −6 H/mDistributed capacitance c 200 × 10 −6 F/mDistributed resistance r 0.02 Ω /mDistributed conductance g −0.05 S /mVirtual conductance (control) kv 0.04 S /mInductance–capacitance product ℓc 1 × 10 −8
+
+Substituting into the dispersion relation specialized to the mode n = 1 yields the characteristic polynomial in st
+
+D1(st) = 1 .0 × 10 −8 s2 
+
+> t
+
++ 1 .5 × 10 −6 st − 1.304 × 10 −5, (162) whose quadratic coefficient coincides with ℓc and whose constant term is negative: the latter is a direct consequence of the active conductance g < 0 and anticipates the presence of a positive real root, that is, an unstable pole. 
+
+7.3 Open-loop and closed-loop modal poles 
+
+Table 2 collects the poles of the first five modes in open loop (without control) and in closed loop, once the virtual conductance has been applied, which shifts the effective conductance from 
+
+g to g + kv = −0.01 S /m. In open loop, the first mode presents two real roots, −158 .240 and +8 .240; the second lies in the right half-plane (Re = +8 .240 > 0) and renders the line unstable. The higher modes appear as complex-conjugate pairs with common real part −75 .000, so they are stable, but the instability of the fundamental mode compromises the whole system. After control, all modes exhibit real part −175 .000 and, in particular, the first mode becomes a stable complex-conjugate pair −175 .000 ± 219 .251 Bt, eliminating the root in the right half-plane. Table 2: Modal poles (in s −1) of the first five modes in open loop and in closed loop with virtual conductance ( g → g + kv = −0.01). The imaginary part is expressed in the Bt direction. Mode Open loop Closed loop 1 −158 .240 , +8 .240 (real) −175 .000 ± 219 .251 Bt
+
+2 −75 .000 ± 537 .735 Bt −175 .000 ± 586 .651 Bt
+
+3 −75 .000 ± 884 .669 Bt −175 .000 ± 915 .226 Bt
+
+4 −75 .000 ± 1213 .883 Bt −175 .000 ± 1236 .330 Bt
+
+5 −75 .000 ± 1536 .807 Bt −175 .000 ± 1554 .598 Bt
+
+Remark 7.1 . The stabilization mechanism is transparent from the point of view of the dispersion relation. The active conductance g < 0 contributes a positive real part to the constant term of 
+
+D1 in equation (162), which places a root of the fundamental mode at Re = +8 .240 > 0. The admittance-shaping control (section 5) adds a virtual conductance kv = 0 .04 S /m that does not fully cancel the distributed conductance ( g + kv = −0.01 < 0 is still negative), but does uniformly shift the real part of all poles down to −175 .000, so that the first mode ceases to be a pair of real roots and becomes a stable complex-conjugate pair. The stabilization is therefore modal and simultaneous for all the modes considered. Figure 3 depicts the open- and closed-loop pole map in the plane generated by 1 and 
+
+Bt, illustrating the crossing of the imaginary axis by the fundamental mode before control. 40 Figure 4 shows the associated modal time response, where the divergence of mode 1 in open loop contrasts with the damped response in closed loop. Finally, figure 5 depicts the voltage surface v(t, x ) reconstructed in the presence of a localized fault, which serves as a link to the following subsection. 
+
+Figure 3: Modal poles of the first five modes in open loop (unstable: mode 1 presents a root with Re = +8 .240) and in closed loop with virtual conductance (all with Re = −175 .000). 
+
+Figure 4: Modal time response in open loop and in closed loop. The divergence of the funda-mental mode in open loop disappears after the action of the distributed control. 
+
+7.4 Localization of a fault 
+
+An injection-loss fault is introduced at position xf = 35 m, modeled by the signature Ff = −2evaluated at st = 1, in accordance with the localized-fault formulation of section 6. The two estimators described there are compared: the phase estimator, based on the phase ratio of the residual in the Bx direction, and the modal estimator, based on least squares over the modal decomposition. 41 Figure 5: Voltage surface v(t, x ) reconstructed with the first M = 12 spatial modes sin( knx)under an injection loss (ff (t) = −I0 H(t − t0), I0 = 2) localized at xf = 35 m and activated at t0 = 0 .1 s, with the line in closed loop under virtual-conductance control kv = 0 .04 S /m. The modal forcing incorporates the numerator Z(st) of the transfer function Gn = Z/D n
+
+(equation (62)), that is, Z(∂t) un = r u n + ℓ ∂ tun.In the absence of noise, both estimators recover the position exactly: ˆxmodal = 35 .00 m (error 0 .00 m , confidence 1 .000) , ˆxfase = 35 .00 m (error 0 .00 m) , (163) with true physical consistency. When measurement noise of standard deviation σ = 0 .05 (in the units of the residual) is added, the estimators degrade in a controlled manner: ˆxmodal = 34 .99 m (error 0 .008 m) , (164) ˆxfase = 35 .11 m (error 0 .11 m) . (165) In this particular realization (fixed seed) the modal estimator turns out to be more accurate than the phase one, with a notably smaller error, which is consistent with the fact that the former integrates the information of several modes in a least-squares fit. This figure corre-sponds, however, to a single noise realization and should not be read as a general advantage: over a sweep of seeds, the mean error of the modal estimator ( ∼ 0.02 m) and that of the phase estimator ( ∼ 0.05 m) differ only by a factor of order 2, and the modal one is more accurate in roughly two thirds of the cases, not systematically. It is therefore inadvisable to draw from a single experiment a general conclusion about the superiority of one estimator over the other; both recover the position with error below 0 .2 m over a 100 m line. Figures 6 and 7 show the one-dimensional cost functions of both estimators as a function of the candidate position, whose minimum localizes the fault. 
+
+7.5 Fault classification 
+
+Finally, we evaluate the fault classification based on the spectral signatures of section 6, for three cases with a fault at xf = 35 m and noise of standard deviation σ = 0 .02. It is im-portant to emphasize that the classification is performed from signatures estimated from the measurements : for a set of temporal frequencies s ∈ { 0.5, 1, 2, 5, 10 } the modal amplitudes 42 Figure 6: Cost function of the phase estimator versus the candidate position x. The minimum indicates the estimated position of the fault. 
+
+An(s) are measured (with noise), ̂ Ff (s) is estimated by modal severity, and the local voltage ̂
+
+Vf (s) is measured; the decision uses those estimates, not the true generating functions. The local voltage is modeled with a non-constant spectrum Vf (s) = V0/(1 + τ s ), which breaks the degeneracy between injection loss and inductive shunt (both ∝ 1/s ). The decision metric is the relative dispersion of the fit to each signature model (the smaller, the better) together with the cross-checked physical consistency test. The results are summarized in table 3. 
+
+A. Injection loss. 
+
+The classifier assigns the label injection_loss , with physical consistency. The relative dispersion of the injection_loss model (0 .025) is the smallest and is clearly separated from the alternatives ( shunt_inductive = 0.293, shunt_resistive = 0.802, shunt_ capacitive = 1 .384); the nonzero residual reflects that the fit is performed on noisy esti-mates, not on the ideal signature. 
+
+B. Resistive shunt. 
+
+The label shunt_resistive is assigned, again with physical consistency. The relative-dispersion scores of the four candidate models are shunt_resistive = 0 .098, injection_ loss = 0 .770, shunt_capacitive = 0 .918 and shunt_inductive = 1 .015, which clearly separates the correct hypothesis from the alternatives. This separation between signatures is robust against noise; it is worth noting, however, that the physical consistency test of this case operates with a narrow margin relative to the threshold ( ∼ 0.21 against the tolerance 0.25): unlike case A, whose margin is comfortable ( ∼ 0.02), in a fraction of the noise realizations (of the order of 12% over a sweep of seeds) a legitimate resistive shunt may be rejected by the consistency gate and relabeled as a sensor anomaly. The signature label is robust; the safety margin of the Physical consistency column of table 3, by contrast, is not the same in A and in B. 
+
+C. Sensor fault. 
+
+The label sensor_fault is assigned. In this case the cross-checked physical consistency is false : the relative error between the measured phase channel and that predicted by the modal fit is 1 .006, above the admissible threshold, the modal confidence is low (0 .184), and the estimated position is spurious (ˆ x = 82 .2 m). The diagnosis itself thus reveals that the fit does not correspond to a localized physical fault, but rather to a sensor anomaly. 43 Figure 7: Cost function of the modal estimator versus the candidate position x. The minimum indicates the estimated position of the fault. Table 3: Fault classification at xf = 35 m with noise σ = 0 .02. The relative dispersion is smaller the better the fit to the corresponding signature model. Case Assigned label Physical consistency Key indicator A. Injection loss injection_loss True dispersion 0 .025 B. Resistive shunt shunt_resistive True dispersion 0 .098 C. Sensor fault sensor_fault False rel. error 1 .006, conf. 0 .184 Figure 8 depicts the spectral signatures of the fault models considered, which constitute the basis of the classifier’s decision. 
+
+Remark 7.2 . Case C illustrates a desirable property of the scheme: the physical consistency test acts as a safeguard mechanism. Although the fitting procedure always returns a label and a position ˆ x, the combination of a high relative error (1 .006), a low modal confidence (0 .184), and a position incompatible with that of the actual fault (82 .2 m against 35 m) makes it possible to reject the localized-physical-fault hypothesis. In this way, an instrumentation anomaly is not confused with a fault of the line. In the synthetic model, the sensor anomaly corrupts both the modal channel and the phase channel (it does not respect the spatial propagation), so that no position estimator is reliable; the diagnosis relies on the consistency test and on the low modal confidence. The scope of this test should be clear: here only the maximally incoherent anomaly regime is evaluated (noise that does not respect propagation), where rejection is essentially guaranteed. A structured sensor bias, capable of partially imitating the spatial signature e−sxxf ,would constitute a borderline case not covered by this experiment and remains as future work on the robustness of the scheme. 
+
+7.6 Monte Carlo validation of the classification 
+
+To avoid conclusions based on a single noise realization, the classification is evaluated with a reproducible Monte Carlo experiment: NMC = 100 realizations per class ( σ = 0 .02, xf = 35 m, deterministic seeds), with true classes injection_loss , shunt_resistive , shunt_capacitive 
+
+and sensor_fault . The severities are chosen so that the magnitude of the signature is compa-rable across classes (homogeneous SNR): thus the confusion matrix reflects the discriminative 
+
+44 Figure 8: Spectral signatures of three of the fault models employed by the classifier (injection loss, resistive shunt, and capacitive shunt). The inductive shunt ( ∝ 1/s ) is omitted because it overlaps with the injection loss, also ∝ 1/s (the separation between the two requires Vf (st)non-constant, not the signature of Ff ). capability of the classifier and not a mere signal-to-noise effect (with Cf = 10 −3 the capacitive signature at s = 1 falls below the noise and would be systematically rejected; that result would measure SNR, not discrimination). The results (table 4 and figure 9) show an overall accuracy of 0 .920 over the 400 realizations. When a physical fault passes the consistency test, it is never confused with another physical type (precision 1 .000 for injection_loss , shunt_resistive and shunt_capacitive ). The dominant error effect is the fragility of the consistency gate under noise, already noted in subsection 7.5: a fraction of the legitimate shunts (15% of the resistive, 17% of the capacitive) is rejected as sensor_fault . By construction, the sensor anomaly is detected with recall 1.000, but its precision (0 .758) is reduced precisely by those rejections of genuine physical faults. Overall, the scheme is conservative : it prefers to reject a noisy physical fault rather than emit an erroneous physical label. 
+
+7.7 Recovery of multiple faults 
+
+To illustrate the sparse recovery of subsection 6.5 a modal measurement of two simultaneous faults is synthesized at x1 = 25 m and x2 = 70 m, with amplitudes ∥F1∥ = 1 .08 and ∥F2∥ = 0 .67, using N = 24 modes and measurement noise σ = 0 .02 (fixed seed). Simultaneous OMP, given the number of faults, recovers the positions with error of 0 .005 m and 0 .033 m respectively, and amplitudes ∥̂F1∥ = 1 .08, ∥̂ F2∥ = 0 .67 that are practically exact. The convex group-LASSO relaxation ( λ = 0 .6) recovers the peaks at 24 .98 m and 70 .04 m, with amplitudes slightly shrunk by the bias characteristic of the ℓ1 penalty. Figure 10 shows both results over the group-LASSO support profile. 
+
+Close faults: resolution study. To characterize the close-fault regime (subsection 6.5) a resolution study is carried out: two faults centered at x = 50 m with increasing separation ∆ x,
+
+N = 24 modes, noise σ = 0 .05 and 40 realizations per point. The success rate is measured (both positions recovered within ∆ x/ 2) for off-grid refinement (OMP+VARPRO) and for grid-45 Table 4: Confusion matrix of the fault classification over NMC = 100 noise realizations per class ( σ = 0 .02, xf = 35 m). Overall accuracy 0 .920. Column labels abbreviate the pre-dicted classes (IL = injection_loss , SR = shunt_resistive , SC = shunt_capacitive , SI = shunt_inductive , SF = sensor_fault ); column SF also collects genuine faults rejected by the physical-consistency test.                                           
+
+> true \predicted IL SR SC SI SF
+> injection_loss 100 0000
+> shunt_resistive 085 0015
+> shunt_capacitive 0083 017
+> sensor_fault 0000100 Class Recall Precision Rejection rate
+> injection_loss 1.000 1.000 0.000
+> shunt_resistive 0.850 1.000 0.150
+> shunt_capacitive 0.830 1.000 0.170
+> sensor_fault 1.000 0.758 1.000
+
+less spectral estimation (ESPRIT). The approximate Rayleigh resolution is L/N ≈ 4.2 m. Both methods attain 100% success down to ∆ x = 2 m —half the Rayleigh limit, which confirms 
+
+super-resolution capability—; below that, OMP+VARPRO remains somewhat more robust (100% at 1 .5 m, 78% at 1 m) than ESPRIT (82% and 20% respectively). Figure 11 summa-rizes the study. Honestly, both methods fail when the separation drops well below the modal resolution: the limit is intrinsic to the number of observed modes and to the noise, not to the algorithm. 
+
+Automatic estimation of the number of faults. The MDL order selection (equation (146)) is evaluated over J = 0 , 1, 2, 3 well-separated faults (∆ x ≥ 8 m, positions in [10 , 90] m), with 
+
+N = 24 modes, pencil size Lp = 12, max_faults = 4 and 100 realizations per cell, for two noise models: scalar (noise only in the scalar component of An) and four_components (independent noise in the four components of the algebra). Table 5 (and figure 12) collect the hit rate ̂ J = J;the complete metadata are stored in results/data/order_selection_metadata.json . Over both noise models and σ ∈ [0 .01 , 0.05], the hit rate is 97–100% for J = 0, 82–98% for J = 1 and 72–95% for J = 2; the case J = 3 is the most demanding (62–90%) because the signal rank 2J = 6 consumes a significant part of the observable subspace with N = 24 modes. In the full pipeline, passing n_faults=None to the recoverers activates this estimation transparently. The table must not be interpreted as a universal guarantee. In particular, when the spatial separation is reduced or the deeply sub-Rayleigh regime is entered, the order selection becomes ambiguous (theorem 6.14); the figures correspond to the well-separated-fault scenario described above. 
+
+7.8 Discrete converters: exactness, aliasing, and localization 
+
+The discrete-converter theory of subsection 4.6 and the exact droop realization of theorem 5.3 are validated on the base line of table 1 with P = 8 plants on the uniform midpoint grid, 
+
+xp = ( p − 12 )L/P ∈ { 6.25 , 18 .75 , 31 .25 , 43 .75 , 56 .25 , 68 .75 , 81 .25 , 93 .75 } m (inter-site spacing 
+
+L/P = 12 .5 m), virtual conductance kv = 0 .04 S /m, and N = 12 retained modes. Figure 13 summarizes the two quantitative statements. Panel (a) examines the continuum limit of theorem 4.6. For the smooth density ¯ u(x) = 1 + 0 .5 sin(2 πx/L ) + 0 .3 ( x/L )2 and cell-share currents Ip = ¯ u(xp) L/P , the coefficient error 
+
+|U disc  
+
+> n
+
+− U cont  
+
+> n
+
+| decreases with the expected midpoint-rule rate over P ∈ { 4, 8, 16 , 32 }: for mode 46 Figure 9: Confusion matrix of the fault classification ( NMC = 100 per class, σ = 0 .02, xf =35 m). The color indicates the fraction per row (recall); the cells, the absolute count. The off-diagonal mass concentrates in the sensor_fault column: legitimate shunts rejected by the consistency test under noise, not confusions between physical types. 
+
+n = 1 it falls from 3 .82 × 10 −2 to 5 .88 × 10 −4, with observed dyadic rates 2 .016, 2 .004, 2 .001; modes n = 3 and n = 5 start further from the asymptotic regime (rates 2 .19 and 2 .63 at the first step) but settle to 2 .011 and 2 .031 at the last one, consistent with the O(P −2) bound. Panel (b) examines the exactness of the discrete droop under two protocols. With the per-converter gains κp = kvL/P of (80), the continuous closed-loop poles of subsection 7.3 are compared, for each mode n, with the spectrum of the coupled discrete loop ( discrete_droop_ poles ) computed with the retained band 1 , . . . , n —the validity condition of theorem 5.3: modal content confined to the retained band. Under this protocol the maximum deviation for the sub-Nyquist modes n ≤ 7 is 7 .1 × 10 −13 s−1 on a pole scale of order 10 3 s−1, i.e. machine precision: the continuous closed-loop analysis is exact there, as theorem 5.3(i) asserts. Dropping the confinement condition has visible consequences. In the fixed fully coupled loop that retains all N = 12 modes at once (second marker set in the figure), the alias rows Cn, 2P −n = kv of theorem 5.3(ii) couple the sub-Nyquist modes 4 , . . . , 7 with their retained partners 12 , . . . , 9 and shift their poles by 2 .0 to 14 .4 s −1, while modes 1 , . . . , 3, whose partners 15 , . . . , 13 fall outside the retained band, remain at machine precision. Mode n = P = 8 sees the doubled gain: its discrete poles, −275 .000 ± 2510 .164 Bt, coincide with the continuous poles computed with 2 kv
+
+to 4 .7 × 10 −13 , while they differ from the single-kv prediction by 100 .2 s −1 (the factor-2 jump visible at the Nyquist wall n = P in the figure). Beyond the wall the aliased rows couple each mode with its partner and the deviations are O(1) on the pole scale (from 18 .4 s −1 at n = 9 to 6 .0 s −1 at n = 12). Placement matters as well: on the uniform node grid xp = pL/ (P + 1) with P = 8, the controllability score (71) of mode 9 evaluates to γ9 = 1 .3 × 10 −15 , numerically zero, i.e. mode P + 1 is exactly uncontrollable from that converter set, as predicted. Non-uniform placements behave as anticipated in the observation following theorem 5.3: with P
+
+sites drawn uniformly at random and the Voronoi-weighted gains κp = kvwp, the coupled poles of the low modes n ≤ 4 deviate from the continuous prediction by 32 .8 s −1 at P = 8 but only 3.7 × 10 −2 s−1 at P = 256 (one random draw per P , fixed seed): the exactness is lost, yet the 47 Figure 10: Sparse recovery of two simultaneous faults ( x1 = 25 m, x2 = 70 m; N = 24 modes, 
+
+σ = 0 .02). Markers: true amplitude ∥Fj ∥; stems: positions and amplitudes recovered by simul-taneous OMP; gray curve: support profile ∥Fg∥ of the group-LASSO. The estimates coincide with the true faults within the noise. Separability requires sufficient modal observability (the-orem 6.13): faults very close relative to the spatial resolution of the observed modes are not distinguishable. convergence to the continuous loop in the quadrature sense of theorem 4.6 is preserved. Finally, we exercise the fault diagnosis of theorem 6.15, subtracting the known healthy injection from the residual and matching the estimated position against the sites with the threshold δ = 1 m, a value between the observed localization uncertainty and the half-spacing 
+
+L/ (2 P ) = 6 .25 m. In the first scenario a cable fault occurs at xf = 35 m, strictly between the sites x3 = 31 .25 m and x4 = 43 .75 m. With measurement noise σ = 0 .02 and N = 12 modes, the modal estimator places it at 35 .003 m and the phase estimator at 34 .971 m, errors of 0 .003 and 0.029 m. Since the estimated position lies 3 .72 m from the nearest site, well beyond δ, the fault is correctly attributed to the cable and not to a plant. In the second scenario plant 3 suffers an outage, so the residual is −I3 at x3 = 31 .25 m. The same subtraction pipeline recovers the site position with an error of 8 .5 × 10 −9 m in the absence of noise; with σ = 0 .02 it returns ̂
+
+xf = 31 .220 m, only 0 .030 m from the site, and nearest_converter flags the outage of plant 3. As an additional end-to-end check we ran the single-fault experiment of subsection 6.6 with the pure injection-loss signature at x3 —by theorem 6.15, the distribution of the subtracted residual—, and the consistency gate and the classifier label the anomaly injection_loss with ̂
+
+xf = 31 .227 m. The decision is also stable under noise. Over 200 noisy realizations of each scenario, the site rule with δ = 1 m attributed the outage to plant 3 in every trial, and the mid-span cable fault at x = 37 .5 m to the cable in every trial. The rule remains blind, by construction, to cable faults within δ of a site —16% of the line in this configuration— and the separation would degrade for denser converter sets or noisier measurements. How much does this diagnosis depend on knowing the dispatch exactly? To find out, we perturbed the currents assumed by the subtraction with independent per-plant relative errors of standard deviation ε and repeated the localization of the cable fault at xf = 35 m (200 trials per level, phase channel, σ = 0 .02). The median localization error grows from 0 .018 m with exact dispatch to 0 .049 m at ε = 1% and 0 .250 m at ε = 5%; the corresponding 90th percentiles are 0 .041, 0 .121 and 0 .593 m. The degradation is graceful, and percent-level dispatch errors leave the localization error two orders of magnitude below the inter-site spacing. Still, this is 48 Figure 11: Resolution study of close faults: success rate of the recovery versus the separation ∆x between two faults ( N = 24 modes, σ = 0 .05, 40 realizations per point). Off-grid refinement (OMP+VARPRO) and gridless spectral estimation (ESPRIT) reliably resolve separations well below the Rayleigh limit L/N ≈ 4.2 m (dashed line); OMP+VARPRO is more robust in the most demanding regime. The drop at very small separations reflects the intrinsic resolution limit, not a defect of the method. the characteristic failure mode of the residual approach: larger, or correlated, dispatch errors would eventually erode the outage/cable separation (see the limitations in subsection 8.2). 
+
+Remark 7.3 . All numerical results, tables and figures of this section are reproducible; the implementation, the scripts and the data accompanying this paper are available at https: //github.com/fmarrabal/geo-laplace-distributed-converters . The modal analysis and the poles of table 2 are obtained with scripts/run_modal_analysis.py ; the fault localization of subsection 7.4 with scripts/run_fault_detection.py ; the classification of subsection 7.5 with scripts/run_fault_classification.py ; the Monte Carlo validation of subsection 7.6 (table 4 and figure 9) with scripts/run_fault_classification_monte_carlo.py , which re-generates table 4 in results/data/classification_mc_table.tex ; the recovery of multi-ple faults of subsection 7.7 with scripts/run_multiple_fault_recovery.py ; the resolution study of close faults (figure 11) with scripts/run_superresolution_study.py ; the order se-lection of table 5 and figure 12 with scripts/run_order_selection_study.py , which regen-erates table 5 in results/data/order_selection_table.tex and the metadata in order_ selection_metadata.json ; the discrete-converter study of subsection 7.8 (figure 13) with 
+
+scripts/run_discrete_converter_study.py , which stores the raw curves in results/data/ discrete_converter_study.npz and the metadata in discrete_converter_metadata.json ;and all of the figures with scripts/generate_all_figures.py .
+
+# 8 Conclusions, limitations and future work 
+
+We close by summarizing what the paper establishes, by stating the assumptions under which those results hold, and by pointing out the questions they leave open. One observation runs through the whole work and is worth keeping in sight here: the operational novelty of the geometric transform appears only when two or more independent variables are involved —in our case, time t and space x— since the planes {1, Bt} and {1, Bx} then keep their phases separate and the mixed bivector Btx encodes the space–time coupling. 49 Table 5: Exact-recovery rate of the automatic MDL selection of the number of faults ( ̂J = J)over 100 realizations per cell. N = 24 modes, max_faults = 4, pencil size Lp = 12, well-separated faults (∆ x ≥ 8 m). Two noise models: scalar (noise only in the scalar component) and four_components (independent noise in the four components of the algebra). Noise σ J = 0 J = 1 J = 2 J = 3 
+
+scalar 0.01 97% 92% 95% 75% 0.03 97% 92% 89% 70% 0.05 97% 89% 82% 65% 
+
+four_components 0.01 100% 98% 94% 90% 0.03 100% 92% 83% 78% 0.05 100% 82% 72% 62% 
+
+Figure 12: Hit rate of the automatic order selection ( ̂J = J) by number of faults J, averaged over σ ∈ { 0.01 , 0.03 , 0.05 }, for the two noise models. Reliability decreases with J because the signal rank 2 J consumes a growing fraction of the observable subspace with N = 24 modes. 
+
+8.1 Conclusions 
+
+The work builds a chain that links an algebraic object, an integral transform and an engineering application. Its main results, read together with the caveats of subsection 8.2, are the following. (C1) Minimal bicomplex algebra. We identify a commutative subalgebra generated by Bt
+
+and Bx with B2 
+
+> t
+
+= B2 
+
+> x
+
+= −1, BtBx = BxBt = Btx and B2 
+
+> tx
+
+= +1, which constitutes the minimal algebraic support for separating temporal and spatial phases on the elements 
+
+z = a + bBt + cBx + dBtx .(C2) Two-dimensional transform with operational properties. We define LG{f } =
+
+F (st, s x) = ∫ ∞  
+
+> 0
+> ∫∞
+> 0
+
+f (t, x ) e−stte−sxx dx dt and establish its operational rules (linearity, re-gion of convergence, behavior with respect to ∂t and ∂x, and the transform of separable modes), so that the partial differential equations of the problem become algebraic relations in ( st, s x). As an integral object, the transform is known in bicomplex analysis [21, 1] and in the classical theory of the double transform [5]; the contribution is its geometric reformulation (subsection 1.3). (C3) Line and dispersion model. We formulate the DC line of distributed converters as a 50 Figure 13: Discrete-converter study ( L = 100 m, midpoint grid). (a) Modal-injection error 
+
+|U disc  
+
+> n
+
+− U cont  
+
+> n
+
+| versus the number of plants P for modes n = 1 , 3, 5 and the smooth density ¯u(x) = 1 + 0 .5 sin(2 πx/L ) + 0 .3( x/L )2; the dashed guide line has slope P −2 (theorem 4.6). (b) Per-mode maximum pole deviation between the discrete droop loop ( P = 8, κp = kvL/P )and the continuous closed loop, under two protocols: retained band 1 , . . . , n per mode (circles; the validity condition of theorem 5.3) and fixed fully coupled loop with all N = 12 modes (open squares). Machine precision for n ≤ 7 under the first protocol (plot floor 10 −16 ); under the second, the alias rows shift modes 4 , . . . , 7 (partners 12 , . . . , 9) by 2 .0–14 .4 s −1 while modes 1, . . . , 3 remain exact. In both: factor-2 gain jump at the Nyquist wall n = P = 8 and O(1) alias coupling for n > 8. transmission-line-type system with parameters Z and Y , obtaining the space–time disper-sion relation ∆( st, s x) = 0 that organizes the response of the system. (C4) Admittance shaping control. We propose a distributed control design that shapes the effective admittance of the line, formulated in the transformed domain and therefore expressible as conditions on ( st, s x). (C5) Fault modeling as singularities. Localized faults are represented as spatial singularities of the distributed residual R(t, x ). In the transformed domain they produce a factorization 
+
+R(st, s x) = Ff (st) e−sxxf : the temporal nature of the fault remains in Ff (st), while its localization remains in the spatial rotor e−sxxf , which is entire in sx (it contributes no spatial poles). The poles of the measured response appear when this residual is filtered by the line dynamics, that is, by ∆ −1 
+
+> c
+
+, not in the pointwise residual itself. (C6) Localization by geometric and modal phase. We propose localization procedures based on the geometric spatial phase Arg Bx and on modal weights, which estimate the fault position from the transformed response. (C7) Fault classification. We distinguish fault categories (open circuit or injection loss, shunt or short circuit, sensor fault and local controller fault) according to their signature in the geometric domain. (C8) Reproducible numerical validation. The whole development is accompanied by an im-plementation and reproducible numerical experiments that illustrate, within the assump-tions of the model, the expected behavior. We claim no universal superiority over the established techniques of line analysis or fault detection. The main contribution is the chain (C5)–(C7): the integrated diagnosis —detection, 51 localization and classification— of faults in a distributed network of generators with converters, supported by the geometric reading of the spatial phase. What the two-dimensional geometric representation offers is a unified and operationally convenient description of the space–time coupling, and that description translates into interpretable fault signatures. Its distinctive value requires the effective presence of two independent variables and a reasonable fulfillment of the assumptions discussed next. 
+
+8.2 Limitations 
+
+The model, the control and the detection methods developed here rest on simplifying assump-tions whose violation degrades the guarantees obtained. We list them explicitly. (L1) Nonuniform lines. The dispersion relation ∆( st, s x) = 0 and the operator LG{·} have been built assuming distributed parameters Z and Y that are homogeneous along x. In lines whose cross section, materials or loads vary with position, the coefficients cease to be constant in x and the transform in sx no longer diagonalizes the problem: a piecewise treatment or one with variable coefficients is required, which is not addressed here. (L2) Converter internal dynamics. The spatial-continuity approximation of the injection is no longer an open limitation: the discrete converter sites are treated exactly in sub-section 4.6 and theorem 5.3, where the homogenization is quantified ( O(P −2) for smooth densities) and shown to be exact for the uniform droop feedback on the sub-Nyquist band 
+
+n < P . What remains outside the model is the converters’ internal dynamics: each plant is reduced to its incremental injected current Ip(t), abstracting away the current and voltage loops, the switching, and the output filters, whose bandwidths bound the validity of that reduction [23]. For the same reason, the diagnosis of theorem 6.15 treats a plant outage as the additive loss of its feed-forward dispatch; the simultaneous loss of its droop feedback term —a multiplicative admittance perturbation, (160)— and the closed-loop transient it triggers are not simulated in the time domain. (L3) Known dispatch in the discrete residual. The residual of theorem 6.15 subtracts the healthy rotor sum assuming the dispatch Ip(st) and the sites xp to be exactly known. A dispatch error ∆ Ip leaves the spurious residual − ∑ 
+
+> p
+
+∆Ip e−sxxp competing with the fault signature; the Monte Carlo sweep of subsection 7.8 shows a graceful degradation (percent-level errors leave the localization well below the inter-site spacing), but larger or correlated errors erode the separation between plant outages and cable faults. (L4) Communication delays. The admittance shaping control assumes immediate availability of the signals it requires. Communication delays between nodes introduce factors e−stτ not accounted for in the nominal design, which may reduce the space–time stability margins. (L5) Noise and sensor scarcity. Localization by geometric phase and by modal weights pre-supposes sufficient spatial observability. With sensors that are scarce relative to the number of relevant spatial modes, the reconstruction of the spatial phase Arg Bx becomes under-determined and measurement noise limits the resolution attainable in the estimation of the fault position. In the discrete-converter setting this asymmetry is explicit: the actuation side has an exact sampling theory (theorem 4.5), while the measurements are still taken as ideal modal/transform-domain quantities; the measurement dual —the reconstruction of the modal amplitudes An from voltage samples at discrete sensor sites— is not developed here. (L6) Converter saturation. Admittance shaping is a linear design. Current or voltage satu-ration of the converters introduces nonlinearities that locally invalidate the superposition 52 principle on which both the control and the interpretation of the distributed residual R
+
+rely. (L7) Multiple and simultaneous faults. The model extends by linearity to J faults, An = 
+
+> ∑
+> j
+
+Fj ψn(xj ), and its sparse recovery is implemented (simultaneous OMP and group-LASSO, subsections 6.5 and 7.7) for well-separated faults. The case of faults that are very close rela-tive to the spatial resolution of the observed modes produces nearly collinear columns in the dictionary and remains a hard identification problem, sensitive to noise and to observability [20]. (L8) Commutative treatment. For operational simplicity we have imposed BtBx = BxBt =
+
+Btx , that is, a commutative bicomplex algebra. This choice algebraically decouples the physical temporal and spatial planes and allows closed manipulations, but it does not cap-ture situations in which those planes are intrinsically coupled and would require generators that do not commute. The recent noncommutative geometric Laplace transform of [33] shows concretely what is at stake: without commutativity the transform must be defined in left and right versions and even the exponential ceases to obey the classical rule, whereas the factorized signature Ff (st) e−sxxf and the phase reading of this work rest precisely on the classical behavior of the rotors, which the commutative subalgebra preserves. The noncommutative case is outside the scope of the present work. (L9) Experimental validation pending. All the evidence provided is analytic and numeri-cal. We do not yet have experimental validation on a physical plant, so the quantitative conclusions must be interpreted as predictions of the model and not as facts verified in hardware. 
+
+Remark 8.1 (Reduction to the single-variable case) . One limitation of principle bears repeating. If f depends on a single independent variable, its geometric transform coincides, up to the rein-terpretation of the plane {1, Bt} ∼= C, with the classical Laplace transform. All the distinctive usefulness of the proposed framework lies in the simultaneous treatment of st = ρt + Btω and 
+
+sx = ρx + Bxk, that is, in the genuinely multivariable nature of the space–time problem. 
+
+8.3 Future work 
+
+Each of the limitations above points to a line of continuation; the ones we consider priorities are the following. (F1) Noncommutative algebras with coupled planes. Extend the framework to generators that do not commute, so that the physical temporal and spatial planes may be intrinsically coupled. This requires reformulating the operational properties of LG{·} and studying when the cost of losing commutativity is offset by greater physical fidelity. The left/right trans-form calculus recently developed for multivector-valued functions of a single real variable [33] provides a natural starting toolbox for that reformulation. (F2) Nonuniform and piecewise lines. Generalize the dispersion relation and the transform to variable parameters Z(x) and Y (x) and to sectioned structures, by means of variable-coefficient or piecewise-concatenation techniques. (F3) Converters with internal dynamics. Replace the ideal incremental injection Ip(t) with converter models including their internal loops (current and voltage control, switching, filters). The continuous-versus-discrete approximation error is now quantified (theorems 4.6 and 5.3); the open question is how the internal converter bandwidths interact with the spatial modes and with the exactness of the discrete droop [23]. 53 (F4) Multiple faults and order selection. The multifault recovery is implemented by on-grid and off-grid methods (OMP, group-LASSO, VARPRO and ESPRIT), and the automatic selection of the number of faults by MDL is validated in well-separated and moderately-separated scenarios (subsections 6.5 and 7.7). Its reliability, however, depends on the number of modes, the SNR, the separation between faults, the pencil size and the upper bound max_faults ; at the exact limit it further requires a numerical-rank guard. The 
+
+deeply sub-Rayleigh regime, as well as order selection with scarce or very noisy data —and the joint estimation of severity and position with guarantees against dictionary coherence— remain as future work [20]. (F5) Robustness to noise and delays. Quantify and improve the robustness of localization and classification against measurement noise, sensor scarcity and communication delays, incorporating the latter explicitly in the control design. (F6) Experimental validation. Contrast the predictions of the model on a laboratory DC mi-crogrid, closing the gap between the current numerical evidence and hardware verification. In short, this work is a first articulation, internally consistent and reproducible, of an idea whose full development still requires lifting the commutative and uniformity assumptions, and confronting them with experimental data. 
+
+# References 
+
+[1] Ritu Agarwal, Mahesh Puri Goswami, and Ravi P. Agarwal. Convolution theorem and applications of bicomplex Laplace transform. Advances in Mathematical Sciences and Applications , 24(1):113–127, 2014. [2] Amir Beck and Marc Teboulle. A fast iterative shrinkage-thresholding algorithm for linear inverse problems. SIAM Journal on Imaging Sciences , 2(1):183–202, 2009. [3] Thomas Bülow and Gerald Sommer. Hypercomplex signals—a novel extension of the analytic signal to the multidimensional case. IEEE Transactions on Signal Processing ,49(11):2844–2852, 2001. [4] E. Christopher, M. Sumner, D. W. P. Thomas, X. Wang, and F. de Wildt. Fault location in a zonal DC marine power system using active impedance estimation. IEEE Transactions on Industry Applications , 49(2):860–865, 2013. [5] Lokenath Debnath. The double Laplace transforms and their properties with applications to functional, integral and partial differential equations. International Journal of Applied and Computational Mathematics , 2:223–241, 2016. [6] Steven X. Ding. Model-Based Fault Diagnosis Techniques: Design Schemes, Algorithms, and Tools . Springer, 2008. [7] Chris Doran and Anthony Lasenby. Geometric Algebra for Physicists . Cambridge Univer-sity Press, 2003. [8] Tomislav Dragičević, Xiaonan Lu, Juan C. Vasquez, and Josep M. Guerrero. DC micro-grids—Part I: A review of control strategies and stabilization techniques. IEEE Transac-tions on Power Electronics , 31(7):4876–4891, 2016. [9] Todd A. Ell. Hypercomplex Spectral Transformations . PhD thesis, University of Minnesota, 1992. 54 [10] Todd A. Ell. Quaternion-Fourier transforms for analysis of two-dimensional linear time-invariant partial differential systems. In Proceedings of the 32nd IEEE Conference on Decision and Control , pages 1830–1841, 1993. [11] Todd A. Ell and Stephen J. Sangwine. Hypercomplex Fourier transforms of color images. 
+
+IEEE Transactions on Image Processing , 16(1):22–35, 2007. [12] S. D. A. Fletcher, P. J. Norman, K. Fong, S. J. Galloway, and G. M. Burt. High-speed differential protection for smart DC distribution systems. IEEE Transactions on Smart Grid , 5(5):2610–2617, 2014. [13] Gerald B. Folland. Real Analysis: Modern Techniques and Their Applications . Pure and Applied Mathematics. John Wiley & Sons, New York, 2 edition, 1999. [14] Gene H. Golub and Victor Pereyra. The differentiation of pseudo-inverses and nonlinear least squares problems whose variables separate. SIAM Journal on Numerical Analysis ,10(2):413–432, 1973. [15] Charles R. Harris, K. Jarrod Millman, Stéfan J. van der Walt, et al. Array programming with NumPy. Nature , 585:357–362, 2020. [16] David A. Harville. Matrix Algebra From a Statistician’s Perspective . Springer, 1997. [17] David Hestenes and Garret Sobczyk. Clifford Algebra to Geometric Calculus: A Unified Language for Mathematics and Physics . Reidel, Dordrecht, 1984. [18] Eckhard Hitzer and Stephen J. Sangwine, editors. Quaternion and Clifford Fourier Trans-forms and Wavelets . Trends in Mathematics. Birkhäuser, 2013. [19] Yingbo Hua and Tapan K. Sarkar. Matrix pencil method for estimating parameters of exponentially damped/undamped sinusoids in noise. IEEE Transactions on Acoustics, Speech, and Signal Processing , 38(5):814–824, 1990. [20] Rolf Isermann. Fault-Diagnosis Systems: An Introduction from Fault Detection to Fault Tolerance . Springer, 2006. [21] A. Kumar and P. Kumar. Bicomplex version of Laplace transform. International Journal of Engineering and Technology , 3(3):225–232, 2011. [22] M. E. Luna-Elizarrarás, M. Shapiro, D. C. Struppa, and A. Vajiac. Bicomplex Holomorphic Functions: The Algebra, Geometry and Analysis of Bicomplex Numbers . Frontiers in Mathematics. Birkhäuser, 2015. [23] Lexuan Meng, Qobad Shafiee, Giancarlo Ferrari Trecate, Houshang Karimi, Deepak Ful-wani, Xiaonan Lu, and Josep M. Guerrero. Review on control of DC microgrids and multiple microgrid clusters. IEEE Journal of Emerging and Selected Topics in Power Electronics , 5(3):928–948, 2017. [24] O. M. K. K. Nanayakkara, A. D. Rajapakse, and R. Wachal. Traveling-wave-based line fault location in star-connected multiterminal HVDC systems. IEEE Transactions on Power Delivery , 27(4):2286–2294, 2012. [25] Alan V. Oppenheim, Alan S. Willsky, and S. Hamid Nawab. Signals and Systems . Prentice Hall, 2 edition, 1997. [26] Jae-Do Park, Jared Candelaria, Liuyan Ma, and Kyle Dunn. DC ring-bus microgrid fault protection and identification of fault location. IEEE Transactions on Power Delivery ,28(4):2574–2584, 2013. 55 [27] Y. C. Pati, R. Rezaiifar, and P. S. Krishnaprasad. Orthogonal matching pursuit: Recursive function approximation with applications to wavelet decomposition. In Proceedings of the 27th Asilomar Conference on Signals, Systems and Computers , pages 40–44, 1993. [28] Clayton R. Paul. Analysis of Multiconductor Transmission Lines . Wiley-IEEE Press, 2 edition, 2007. [29] Griffith Baley Price. An Introduction to Multicomplex Spaces and Functions . Marcel Dekker, New York, 1991. [30] Richard Roy and Thomas Kailath. ESPRIT—estimation of signal parameters via rota-tional invariance techniques. IEEE Transactions on Acoustics, Speech, and Signal Pro-cessing , 37(7):984–995, 1989. [31] Andrey N. Tikhonov. Solution of incorrectly formulated problems and the regularization method. Soviet Mathematics Doklady , 4:1035–1038, 1963. [32] Joel A. Tropp and Anna C. Gilbert. Signal recovery from random measurements via orthogonal matching pursuit. IEEE Transactions on Information Theory , 53(12):4655– 4666, 2007. [33] Manel Velasco, Arnau Dòria-Cerezo, and Isiah Zaplana. The geometric Laplace trans-form: Definition, existence and properties of the Geometric Algebra Laplace transform. arXiv:2608.18043 [eess.SY], 2026. Preprint. [34] Mati Wax and Thomas Kailath. Detection of signals by information theoretic criteria. 
+
+IEEE Transactions on Acoustics, Speech, and Signal Processing , 33(2):387–392, 1985. [35] Ming Yuan and Yi Lin. Model selection and estimation in regression with grouped vari-ables. Journal of the Royal Statistical Society: Series B , 68(1):49–67, 2006. 56

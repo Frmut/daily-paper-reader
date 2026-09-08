@@ -1,6 +1,9 @@
 * <a class="dpr-sidebar-root-link" href="#/">首页</a>
 * <a class="dpr-sidebar-root-link dpr-sidebar-noactive-link" href="javascript:void(0)" data-dpr-hash="#/tutorial/README">使用教程</a>
 * Daily Papers
+  * 2026-09-08 <!--dpr-date:20260908-->
+    * 速读区
+      * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202609/08/2609.02431v1-multivariable-geometric-laplace-transform-and-fault-detection-in-distributed-converter-lines" data-sidebar-item="{&quot;title&quot;: &quot;Multivariable Geometric Laplace Transform and Fault Detection in Distributed-Converter Lines&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2609.02431v1-multivariable-geometric-laplace-transform-and-fault-detection-in-distributed-converter-lines&quot;, &quot;score&quot;: &quot;6.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;pmsm&quot;}], &quot;evidence&quot;: &quot;分布式变流器线路的故障检测&quot;}">Multivariable Geometric Laplace Transform and Fault Detection in Distributed-Converter Lines</a>
   * 2026-09-06 <!--dpr-date:20260906-->
     * 速读区
       * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202609/06/2609.03154v1-embedding-single-phase-grid-forming-inverters-in-three-phase-unbalanced-power-flow" data-sidebar-item="{&quot;title&quot;: &quot;Embedding Single-Phase Grid-Forming Inverters in Three-Phase Unbalanced Power Flow&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2609.03154v1-embedding-single-phase-grid-forming-inverters-in-three-phase-unbalanced-power-flow&quot;, &quot;score&quot;: &quot;7.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;pmsm&quot;}], &quot;evidence&quot;: &quot;逆变器的三相不平衡潮流建模&quot;}">Embedding Single-Phase Grid-Forming Inverters in Three-Phase Unbalanced Power Flow</a>

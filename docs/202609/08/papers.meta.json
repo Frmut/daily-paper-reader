@@ -1,0 +1,23 @@
+{
+  "label": "2026-09-08",
+  "date": "2026-09-08",
+  "generated_at": "2026-09-08T21:27:20",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202609/08/2609.02431v1-multivariable-geometric-laplace-transform-and-fault-detection-in-distributed-converter-lines",
+      "section": "quick",
+      "title_en": "Multivariable Geometric Laplace Transform and Fault Detection in Distributed-Converter Lines",
+      "authors": "Francisco Manuel Arrabal-Campos, Francisco G. Montoya, Santiago Sánchez-Acevedo, Raymundo E. Torres-Olguin, Alfredo Alcayde",
+      "date": "2026-09-02",
+      "pdf": "https://arxiv.org/pdf/2609.02431v1",
+      "score": "6.0",
+      "evidence": "分布式变流器线路的故障检测",
+      "tldr": "针对分布式直流变换器线路的故障监测难题，本文提出了一种基于几何代数Cl(4,0)的二维几何拉普拉斯变换方法。该方法将时空信息映射至双复数域，通过时空相位的代数分离，实现了对故障位置、类型及多重故障的精确诊断与分类，并提供了完整的分布式控制与故障诊断框架及开源实现。",
+      "tags": "query:pmsm",
+      "abstract_en": "Monitoring a DC line with many distributed power converters is a genuinely spatio-temporal problem: the information about a localized fault travels along the whole conductor and reaches a few measurement points mixed with the dynamics of the line itself. This paper develops a two-dimensional geometric Laplace transform (t,x) -> (s_t,s_x) over a commutative subalgebra of the geometric algebra Cl(4,0), isomorphic to Segre's bicomplex numbers, in which two bivectors B_t and B_x act as independent imaginary units for the temporal and the spatial phase. Because the two phases live in algebraically distinguishable planes, a fault at position x_f leaves a transformed residual that factorizes as F_f(s_t) e^{-s_x x_f}: its temporal nature stays in the first factor and its location can be read as a geometric argument of the second. On this representation we build a transmission-line model of the converter line and its space-time dispersion relation, a distributed control by admittance shaping, including an exact treatment of discrete converter sites (spatial sampling, aliasing, and a per-converter droop realization that is exact on the sub-Nyquist band), and a fault diagnosis chain that detects, localizes and classifies injection-loss, shunt, sensor and local-controller faults, extends to multiple simultaneous faults with automatic order selection, and distinguishes the outage of a plant from a cable defect. As an integral object the transform is known in bicomplex analysis, and with a single independent variable it reduces to the complex Laplace transform; the contribution lies in its geometric embedding and in its operational use for fault diagnosis in distributed-converter networks. All results are reproduced by an accompanying open implementation.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
