@@ -1,0 +1,636 @@
+Title: Noninvasive Anisotropic Identification of Magnetic Properties in Toroidal Shaped Magnetic Steel
+
+URL Source: https://arxiv.org/pdf/2609.07476v1
+
+Published Time: Wed, 09 Sep 2026 02:22:09 GMT
+
+Number of Pages: 6
+
+Markdown Content:
+# Noninvasive Anisotropic Identification of Magnetic Properties in Toroidal Shaped Magnetic Steel 
+
+Xusen Qin 
+
+Department of Electrical Engineering Eindhoven University of Technology 
+
+Eindhoven, The Netherlands x.qin@tue.nl 
+
+Reza Zeinali 
+
+R&D Department Kinetron - ASSAABLOY 
+
+Tilburg, The Netherlands reze.zeinali@assaabloy.com 
+
+Mitrofan Curti 
+
+Department of Electrical Engineering Eindhoven University of Technology 
+
+Eindhoven, The Netherlands M.Curti@tue.nl 
+
+Abstract —This research proposes a model-free inverse ap-proach for identifying the nonlinear anisotropic single-valued magnetic constitutive characteristics of soft magnetic materials from boundary measurements. Using the harmonic approxi-mation, the internal magnetic flux density B and magnetic field strength H are independently reconstructed from the measured boundary data, thus avoiding the limitation of using a predefined parametric B–H mapping function. Subsequently, the reconstructed fields are spatially averaged along selected collection lines to recover the B–H characteristics of the principal directions. Numerical results demonstrate high reconstruction accuracy for unperturbed data and good robustness against Gaussian perturbations of the boundary measurements, with the overall mean error remaining below 5% for a 10% noise level. These results indicate that under the harmonic-field assumptions, the field-based reconstruction provides a simple and compu-tationally efficient framework for non-invasive identification of nonlinear anisotropic magnetic constitutive characteristics. 
+
+Index Terms —magnetic identification; harmonic field recon-struction; anisotropic materials; inverse problem 
+
+I. I NTRODUCTION 
+
+Accurate magnetic material data are essential for the design and numerical analysis of systems based on magnetic materials with magnetic cores from plain iron, stacked or soft magnetic composite. These systems range from magnetic lenses, actua-tors, motors and specialized equipment, based on soft magnetic composites, to name only a few. In practice, the effective B–
+
+H characteristics of a manufactured component often deviate from the nominal material data due to mechanical stress, cutting, assembly, and other manufacturing effects [1]. This motivates non-invasive identification methods that estimate the magnetic constitutive law directly from electromagnetic measurements performed on the actual component. Inverse electromagnetic approaches have previously been employed to recover magnetic material characteristics from measured quantities in devices with non-uniform magnetic fields [2], [3]. Coupled experimental–numerical methods using global or local magnetic measurements have also demonstrated the feasibility of identifying the magnetic characteristics di-rectly on an assembled electromagnetic device [4]. However, uhese methods may be limited by the chosen constitutive parameterization. Specifically, they typically yield a homoge-nized, global representation of the material properties, thereby failing to capture local variations. Furthermore, their accuracy and flexibility are inherently constrained by the predefined analytical functions or parametric models used to fit the measurement data. In this work, we address the limitation of fitting mea-surements to specific predefined models through a model-free approach, pushing the characterization framework further to capture anisotropic behaviors. Specifically, we consider a toroidal soft magnetic core and aim to identify its unknown, single-valued magnetic constitutive characteristics directly from controlled current excitations and boundary magnetic measurements. The measured quantities are formulated as so-called Cauchy data on the core boundary, consisting of the normal component of the magnetic flux density, Bn, and the tangential component of the magnetic field strength, Ht. These boundary data are subsequently used as the input to the inverse problem for reconstructing the magnetic fields inside the core. Instead of introducing a predefined parameterized con-stitutive model, this method reconstructs the internal mag-netic fields B and H approximately independently under the harmonics-field assumption. The reconstructed magnetic field is then sampled along selected acquisition lines, and a sequence of current excitations is used to generate magnetic operating points over a wide magnetic field range. These oper-ating points are finally employed to reconstruct the nonlinear 
+
+B–H characteristics in the principal material directions. The robustness of the proposed identification procedure is further evaluated by introducing controlled Gaussian perturbations into the measured Cauchy data. II. P ROBLEM SETUP 
+
+A. Identification of the Anisotropic Single-Valued Magnetic Constitutive Law 
+
+In this study, the constitutive response is assumed to be sep-arable along the principal material axes, with cross-component coupling neglected. The anisotropic single-valued magnetic constitutive law is defined as a nonlinear vector mapping from the magnetic field strength H to the magnetic flux density B,
+
+B = B(H), B : Rd → Rd,
+
+where d denotes the spatial dimension. For laminated electri-cal steel, the rolling direction (RD) and transverse direction (TD) are considered as the principal material directions. The arXiv:2609.07476v1 [eess.SY] 7 Sep 2026 corresponding single-valued magnetization characteristics are described by the one-dimensional constitutive relations: 
+
+BRD 
+
+BT D 
+
+
+
+=
+
+BRD (HRD )
+
+BT D (HT D )
+
+
+
+.
+
+These two curves characterize the nonlinear magnetic re-sponses along the principal material axes and generally differ due to the material anisotropy [5]. In this work, a model-free identification approach is adopted to construct the anisotropic constitutive mapping directly from the available magnetic measurement data, without assuming a predefined analytical form of the constitutive law. The identified mapping is then used to evaluate the magnetic flux density corresponding to an arbitrary magnetic field vector within the material plane. 
+
+B. Toroidal Geometry and Measurement Setup 
+
+Here, the soft magnetic core is assumed to be in-plane (2D) toroidal. This can be obtained for instance by having a sufficiently long toroid to produce negligible end effects. We define the principal material axes along the x-axis and y-axis, which correspond to the transverse direction (TD) and rolling direction (RD), respectively, together with the toroidal axis. To preserve symmetry, the excitation coil is placed symmetrically with respect to the x-axis (TD). The toroidal geometry is shown in Figure 1. As described in Figure 1b, the computational domain Ω is decomposed as 
+
+Ω = Ω b ∪ Ωc ∪ Ωo, Ωi ∩ Ωj = ∅, i̸ = j, 
+
+where Ωc represents the ferromagnetic core. The inner and outer interfaces of the core are defined by 
+
+Γb = ∂Ωb ∩ ∂Ωc, Γo = ∂Ωc ∩ ∂Ωo,
+
+The superscripts − and + denote the radially inner and outer sides of each interface, respectively. The outer boundary of the entire computational domain is denoted by Γ.III. F ORWARD PROBLEM FORMULATION 
+
+A. Forward Problem: Magnetostatic Model 
+
+Under the magnetostatic assumption, the magnetic field in the two-dimensional domain is described by 
+
+H =
+
+Hx
+
+Hy
+
+
+
+, B =
+
+Bx
+
+By
+
+
+
+.
+
+In the ferromagnetic core Ωc, the nonlinear anisotropic mag-netic behavior is represented by the single-valued constitutive mapping 
+
+B = B(H) = 
+
+Bx(Hx)
+
+By (Hy )
+
+
+
+, in Ωc. (1) In the non-magnetic regions, the permeability is assumed to be equal to the vacuum permeability μ0. Hence, the constitutive relation over the entire computational domain can be written as 
+
+B =
+
+
+
+B(H), in Ωc,μ0H, in Ω \ Ωc.
+
+The magnetostatic problem is governed by 
+
+(∇ · B = 0 , in Ω,
+
+∇ × H = J, in Ω, (2) with 
+
+J =
+
+
+
+Jb, in Ωb,
+
+0, in Ωc,
+
+Jo, in Ωo.
+
+Z
+
+> Ωb
+
+JbdS +
+
+Z
+
+> Ωo
+
+JodS = 0 
+
+The problem is solved together with the above piecewise constitutive relation. Under the two-dimensional assumption, the magnetic vector potential A is written as, 
+
+A =
+
+
+
+00
+
+Az (x, y )
+
+ = Az (x, y )ez , ∂A z (x, y )
+
+∂z = 0 ,
+
+where ez denotes the unit vector in the z-direction, the magnetic flux density is expressed as 
+
+B = ∇ × A =
+
+
+
+∂A z
+
+∂y 
+
+− ∂A z
+
+∂x 
+
+0
+
+ .
+
+A homogeneous Dirichlet boundary condition is imposed on the external boundary, 
+
+Az = 0 , on Γ. (3) 
+
+B. Boundary Measurements and Cauchy Data 
+
+The required boundary quantities are the normal component of the magnetic flux density and the tangential component of the magnetic field strength on the interfaces. Assuming that no surface current is present at the material interfaces, the normal component of B and the tangential component of H
+
+are continuous across each interface. Hence, for i ∈ { b, o }
+
+ni·B+ = ni·B− = Bn,i , ti·H+ = ti·H− = Ht,i , on Γi.
+
+Here ni and ti denote the unit normal and tangential vectors to Γi, respectively. The available measurements form the Cauchy data on the two interfaces, denoted for i ∈ { b, o } as 
+
+C = {C b, Co} , Ci = {Bn,i , H t,i } , on Γi. (4) In a possible experimental realization, these data can be obtained from the air side using a calibrated three-axis Hall probe mounted on a non-magnetic rotary and radial positioning system. At each excitation level, the probe scans close to both interfaces and records the local vector Bair . The required components are then determined from 
+
+Bn,i = ni · Bair , Ht,i = ti · Bair 
+
+μ0
+
+.
+
+The latter relation follows from B = μ0H in air and the continuity of tangential H, allowing Ht,i to be inferred without placing a sensor inside the material. Soft magnetic core 
+
+## 𝒚(𝑹𝑫) 
+
+Excitation coil 
+
+## 𝒙(𝑻𝑫) (a) The 2D toroidal geometry. Ω!
+
+J"
+
+J#
+
+Ω#
+
+Ω"
+
+ΓΓ"$
+
+Γ"%
+
+Γ#%
+
+Γ#$ (b) Computational domain. 
+
+Fig. 1: Computational topology for the proposed identification problem. In this numerical study, synthetic Cauchy data are extracted from the forward solution. The predefined B–H curves are used for forward data generation and error evaluation, from which boundary traces Bn,i and Ht,i are extracted as syn-thetic Cauchy data. The inverse reconstruction uses only these boundary traces and does not use the predefined constitutive laws. IV. I NVERSE PROBLEM FORMULATIONS 
+
+A. Harmonic Approximation and Field Reconstruction 
+
+To reconstruct the magnetic fields inside the core without explicitly knowing the underlying nonlinear constitutive law, the magnetic field strength H and the magnetic flux density B
+
+are approximated independently by harmonic fields in Ωc. The reconstruction is driven by Cauchy data measured on the two interfaces Γb and Γo. The harmonic approximation is defined by requiring the reconstructed fields to be both divergence-free and curl-free in the current-free core domain: 
+
+(
+
+∇ · bH = 0 ,
+
+∇ × bH = 0 ,
+
+(
+
+∇ · bB = 0 ,
+
+∇ × bB = 0 , in Ωc. (5) These harmonic fields are represented through the scalar components of potentials and reconstructed from the corre-sponding Cauchy boundary data. For the reconstruction of the magnetic field strength, a vector potential ψ is introduced under the two-dimensional plane assumption as 
+
+ψ =
+
+ 00
+
+ψz (x, y )
+
+ , bH = ∇ × ψ =
+
+
+
+∂ψ z
+
+∂y 
+
+− ∂ψ z
+
+∂x 
+
+0
+
+ .
+
+This representation automatically satisfies 
+
+∇ · bH = 0 .
+
+Moreover, since no source current is present inside the mag-netic core, 
+
+∇ × H = 0 in Ωc.
+
+Therefore, the potential function satisfies the Laplace equation 
+
+∆ψz = 0 in Ωc.
+
+Let ni denote the outward unit normal to Ωc on Γi, and define the corresponding tangential vector as 
+
+ti =
+
+−ni,y 
+
+ni,x 
+
+
+
+, i ∈ { b, o }.
+
+Due to the rotational relation between bH and ∇ψz , the measured tangential magnetic field satisfies 
+
+Ht,i = ti · bH = − ∂ψ z
+
+∂n i
+
+.
+
+Hence, the tangential component Ht,i naturally provides a Neumann boundary condition for the potential function rather than a Dirichlet condition. The harmonic reconstruction of bH
+
+in (5) is therefore obtained from 
+
+
+
+∆ψz = 0 , in Ωc,∂ψ z
+
+∂n i
+
+= −Ht,i , on Γi, i ∈ { b, o },
+
+R 
+
+> Γb∪Γo
+
+ψz dl = 0 , (Gauge for Neumann problem) ,
+
+where the last condition fixes the additive constant of ψz .Similarly, the magnetic flux density is represented by the harmonic vector potential bA, which under the two-dimensional plane assumption is written as 
+
+bA =
+
+
+
+00
+
+bAz (x, y )
+
+ , bB = ∇ × bA =
+
+
+
+∂ bAz
+
+∂y 
+
+− ∂ bAz
+
+∂x 
+
+0
+
+ .This representation automatically satisfies the divergence-free condition: 
+
+∇ · bB = 0 .
+
+Under the local harmonic approximation, the reconstructed flux density is additionally assumed to satisfy 
+
+∇ × bB = 0 ,
+
+leading to 
+
+∆ bAz = 0 in Ωc.
+
+The measured normal flux density is related to the tangential derivative of the magnetic vector potential by 
+
+Bn,i = ni · bB = ∂ bAz
+
+∂t i
+
+, on Γi.
+
+Therefore, integrating the measured normal flux density along each interface determines the boundary trace of bAz up to an interface-dependent additive constant: 
+
+bAz,i (s) = Ci +
+
+Z ss0,i 
+
+Bn,i (l) d l, i ∈ { b, o },
+
+where s denotes the oriented arc-length coordinate, s0,i is a reference point on Γi, and Ci are integration constants. Then, the harmonic-field approximation of the magnetic flux density in (5) with Dirichlet boundary conditions is obtained from (∆ bAz = 0 , in Ωc,
+
+bAz = bAz,i , on Γi, i ∈ { b, o }.
+
+Consequently, the reconstructed fields satisfy the local har-monic systems described in (5) with the Cauchy data obtained from (4). The obtained harmonic fields bH and bB are subse-quently used for the field collection and reconstruction of the nonlinear magnetic constitutive characteristics. 
+
+B. Data Collection and B–H Curve Reconstruction 
+
+To reconstruct the nonlinear magnetic constitutive character-istics, three collection lines are introduced inside the magnetic core, as illustrated in Fig. 2. The collection lines, denoted by 
+
+ℓ0, ℓ90 , and ℓ180 , are located at 0◦, 90 ◦, and 180 ◦, respectively. Due to the geometry of the magnetic core, the magnetic field near these locations is considered to be approximately unidirectional. In particular, at the collection lines ℓ0 and 
+
+ℓ180 , the magnetic field is predominantly oriented along the y-direction, whereas at ℓ90 it is predominantly oriented along the 
+
+x-direction. Therefore, the field components are approximated as bHx ≈ 0, bBx ≈ 0, on ℓ0 ∪ ℓ180 ,
+
+bHy ≈ 0, bBy ≈ 0, on ℓ90 .
+
+Consequently, the data collected at ℓ0 and ℓ180 provide sam-ples of the y-direction magnetic characteristic, while the data at ℓ90 provide samples of the x-direction characteristic. To reduce the influence of local field variations, the recon-structed fields are spatially averaged along each collection line. x
+
+## 𝒚 
+
+> Collection line at 0 °
+> Collection line at 90 °
+> Collection line at 180 °
+
+Fig. 2: Schematic plot for the field collection at the collection lines. For a collection line ℓα, with α ∈ { 0, 90 , 180 }, the averaged field components for q ∈ { x, y } are defined as 
+
+Hq,α = 1
+
+|ℓα|
+
+Z
+
+> ℓα
+
+bHq dl, Bq,α = 1
+
+|ℓα|
+
+Z
+
+> ℓα
+
+bBq dl, (6) where |ℓα| denotes the length of the corresponding collection line. Accordingly, the effective magnetic data used for the recon-struction are 
+
+ Hy, 0, B y, 0
+
+ ,  Hx, 90 , B x, 90 
+
+ ,  Hy, 180 , B y, 180 
+
+ .
+
+By applying a sequence of different source-current exci-tations J(k), k = 1, . . . , N J , different magnetic operating points are generated. The corresponding averaged field pairs are collected as 
+
+Dx =
+
+n 
+
+H(k)
+
+> x, 90
+
+, B (k)
+
+> x, 90
+
+o NJ
+
+> k=1
+
+,
+
+Dy =
+
+n 
+
+H(k)
+
+> y, 0
+
+, B (k)
+
+> y, 0
+
+
+
+,
+
+
+
+H(k)
+
+> y, 180
+
+, B (k)
+
+> y, 180
+
+o NJ
+
+> k=1
+
+.
+
+These data sets provide discrete samples of the nonlinear magnetic characteristics in the two principal directions and are subsequently used to reconstruct 
+
+bBx = Bx( bHx), bBy = By ( bHy ).
+
+C. Quantitative Comparison and Error Metrics 
+
+For each excitation k, the reconstructed magnetic field strength is mapped through the prescribed constitutive law to obtain the reference flux density. For a total of K excitation currents, the reference value and mean relative error are defined compactly as 
+
+B(k) 
+
+> q, ref
+
+= Bq, ref 
+
+ bH(k)
+
+> q
+
+
+
+,Eq = 100% 
+
+K
+
+> K
+
+X
+
+> k=1
+
+bB(k) 
+
+> q
+
+− B(k)
+
+> q, ref
+
+B(k)
+
+> q, ref
+
+, q ∈ { x, y }.
+
+(7) Here, bH(k) 
+
+> q
+
+and bB(k) 
+
+> q
+
+denote the averaged reconstructed fields at the corresponding collection line. The B–H characteristic of NO27 electrical steel, denoted by BNO27 , is used as the reference curve [6]. The reference B–H curve is assigned to the y-direction, corresponding to the rolling direction (RD) and representing the easier magnetization direction. The x-direction corresponds to the transverse direction (TD), for which the magnetic field strength required to reach the same flux density is increased by a factor of three. Accordingly, the two principal reference magnetization characteristics are defined as 
+
+Bx, ref (Hx) := BNO27 
+
+ Hx
+
+3
+
+
+
+,
+
+By, ref (Hy ) := BNO27 (Hy ).
+
+This scaling provides an easily controlled anisotropic test case for evaluating the proposed identification method. V. N UMERICAL SIMULATIONS AND RECONSTRUCTION 
+
+RESULTS 
+
+A. Reconstruction from Unperturbed Data 
+
+The method is first evaluated using unperturbed Cauchy data obtained from the forward solution. As shown in Fig. 3, the reconstructed material properties curves at all three collection lines closely follow the prescribed B–H curves, capturing both the nonlinear low-field region and the gradual saturation at higher field strengths. The corresponding mean relative errors are summarized in Table I. TABLE I: Mean relative reconstruction errors for the unper-turbed data.             
+
+> Collection line Reconstructed characteristic Mean relative error
+> 0◦By(Hy)0.12% 90 ◦Bx(Hx)0.08% 180 ◦By(Hy)0.12%
+
+The maximum mean relative error is 0.12% , while the 
+
+90 ◦ collection line gives the minimum error of 0.08% . This confirms the accuracy of the harmonic reconstruction for unperturbed boundary data. 
+
+B. Reconstruction from Perturbed Data and Robustness Anal-ysis 
+
+To evaluate the robustness of the proposed reconstruction method against measurement uncertainties, additive Gaussian noise is introduced directly into the Cauchy data. For a generic boundary quantity g, the perturbed data are defined as 
+
+egj = gj + εj , εj ∼ N (0 , σ 2 
+
+> g
+
+),
+
+where 
+
+σg = η g RMS , gRMS =
+
+vuut 1
+
+N
+
+> N
+
+X
+
+> j=1
+
+|gj |2.
+
+Here, η denotes the prescribed noise level. In this study, η =3% , 5% , and 10% are considered. The noise is independently generated for the Cauchy data associated with Bn and Ht
+
+on both interfaces. It represents random uncertainty from the Hall probe and data-acquisition system in the measurement procedure described in Section III-B; systematic effects such as probe misalignment and finite stand-off distance are not included. Figure 4 shows that the deviations increase with the noise level, while the overall nonlinear trend remains identifiable in all three collection lines even at 10% noise. The corresponding mean relative errors in the reconstructed flux density are reported in Table II. TABLE II: Mean relative B reconstruction errors under dif-ferent noise levels.                 
+
+> Noise level 0◦90 ◦180 ◦All collection lines
+> 3% 1.80% 1.01% 1.36% 1.39% 5% 2.99% 1.69% 2.26% 2.32% 10% 5.99% 3.40% 4.50% 4.63%
+
+The overall mean error increases from 1.39% at 3% noise to 2.32% and 4.63% at 5% and 10% noise, respectively. The 
+
+90 ◦ collection line, which corresponds to the harder transverse direction, consistently gives the smallest error. These results indicate that the harmonic reconstruction remains stable under moderate perturbations of the Cauchy data. VI. D ISCUSSION 
+
+The main capabilities of the proposed identification frame-work can be summarized as follows:  
+
+> •
+
+Model-free identification: the inverse procedure does not require a predefined analytical model for the nonlinear magnetic constitutive law. The internal magnetic char-acteristics are reconstructed directly from the measured Cauchy data.  
+
+> •
+
+Simplified inverse formulation: instead of iteratively solving a nonlinear constitutive problem, the inverse problem is reduced to linear harmonic reconstruction problems for B and H, which significantly simplifies the numerical implementation.  
+
+> •
+
+Robustness against measurement noise: the numerical results show that the reconstructed B–H characteristics remain close to the reference curves under moderate perturbations of the Cauchy data. Even with a 10% noise level, the overall mean reconstruction error remains below 
+
+5% .The main limitations are:  
+
+> •
+
+Dependence on the harmonic approximation: while 
+
+∇ × H = 0 and ∇ · B = 0 follow directly from the magnetostatic equations inside the current-free core, the additional assumptions 
+
+∇ · bH = 0 , ∇ × bB = 0 
+
+are introduced specifically for the harmonic reconstruc-tion. The error may increase when the material is highly non-uniform, anisotropic, or geometrically complex.  
+
+> •
+
+Restriction to single-valued magnetization character-istics: the present study considers only single-valued 
+
+B–H curves. Demagnetization behavior and hysteresis effects are outside the scope of this work. (a) 0◦ collection line. (b) 90 ◦ collection line. (c) 180 ◦ collection line. 
+
+Fig. 3: Reconstructed magnetic constitutive characteristics obtained from the three collection lines. 
+
+(a) 0◦ collection line. (b) 90 ◦ collection line. (c) 180 ◦ collection line. 
+
+Fig. 4: Reconstructed magnetic characteristics under different noise levels.  
+
+> •
+
+Requirement of boundary measurements: the method requires the normal component of B and the tangential component of H on both core interfaces. In practice, the Hall-probe measurements may be affected by finite probe size and stand-off distance, positioning and orientation errors, limited access near the winding, sensor calibra-tion, and temperature drift. These effects can introduce correlated or systematic errors beyond the independent Gaussian perturbations considered here and should be assessed in future experimental validation. VII. C ONCLUSION 
+
+This work presents a model-free approach for identify-ing nonlinear anisotropic magnetic constitutive characteristics from boundary Cauchy data. By independently reconstructing the magnetic flux density and magnetic field strength using harmonic approximations, the proposed inverse formulation avoids the direct use of the unknown constitutive law. The reconstructed fields are subsequently sampled along selected collection lines to recover the principal-direction B–H char-acteristics. Numerical results demonstrate high reconstruction accuracy for unperturbed data and good robustness under mea-surement noise. The method therefore provides a simple and computationally efficient framework for magnetic constitutive law identification, while its accuracy remains dependent on the validity of the harmonic and locally unidirectional field approximations. REFERENCES [1] M. Hofmann, H. Naumoski, U. Herr, and H.-G. Herzog, “Magnetic properties of electrical steel sheets in respect of cutting: Micromagnetic analysis and macromagnetic modeling,” IEEE Transactions on Magnetics ,vol. 52, no. 2, p. 2000114, 2016. [2] D. Ioan and M. Rebican, “Extraction of B-H relation based on the inverse magnetostatic problem,” International Journal of Applied Electromagnet-ics and Mechanics , vol. 13, no. 1-4, pp. 329–334, Dec. 2002. [3] A. M. A. Abdallh, P. Sergeant, G. Crevecoeur, L. Vandenbossche, L. Dupr´ e, and M. Sablik, “Magnetic material identification in geometries with non-uniform electromagnetic fields using global and local magnetic measurements,” IEEE Transactions on Magnetics , vol. 45, no. 10, pp. 4157–4160, 2009. [4] A. M. A. Abdallh, P. Sergeant, G. Crevecoeur, and L. Dupr´ e, “An inverse approach for magnetic material characterization of an ei core electromagnetic inductor,” IEEE Transactions on Magnetics , vol. 46, no. 2, pp. 622–625, 2010. [5] K. Chwastek, “Anisotropic properties of non-oriented steel sheets,” IET Electric Power Applications , vol. 7, no. 7, pp. 575–579, 2013. [6] A. Daem, P. Sergeant, L. Dupr´ e, and M. N. Ibrahim, “Modeling inter-locking effects on core losses in electrical steel,” IEEJ Transactions on Electrical and Electronic Engineering , vol. 15, no. 12, pp. 1836–1843, 2020.

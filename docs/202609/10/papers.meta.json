@@ -1,0 +1,23 @@
+{
+  "label": "2026-09-10",
+  "date": "2026-09-10",
+  "generated_at": "2026-09-10T21:41:14",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202609/10/2609.07476v1-noninvasive-anisotropic-identification-of-magnetic-properties-in-toroidal-shaped-magnetic-steel",
+      "section": "quick",
+      "title_en": "Noninvasive Anisotropic Identification of Magnetic Properties in Toroidal Shaped Magnetic Steel",
+      "authors": "Xusen Qin, Reza Zeinali, Mitrofan Curt",
+      "date": "2026-09-07",
+      "pdf": "https://arxiv.org/pdf/2609.07476v1",
+      "score": "6.0",
+      "evidence": "磁性钢材料磁性能辨识",
+      "tldr": "该研究提出了一种针对环形软磁材料的无模型逆向识别方法，用于获取其非线性各向异性磁特性。通过谐波近似，该方法从边界测量数据中独立重构内部磁通密度B和磁场强度H，无需预设参数化映射函数。通过沿特定线进行空间平均，可有效恢复材料主方向的B-H特性，为非侵入式磁特性识别提供了一种高效且鲁棒的计算框架。",
+      "tags": "query:pmsm",
+      "abstract_en": "This research proposes a model-free inverse approach for identifying the nonlinear anisotropic single-valued magnetic constitutive characteristics of soft magnetic materials from boundary measurements. Using the harmonic approximation, the internal magnetic flux density B and magnetic field strength H are independently reconstructed from the measured boundary data, thus avoiding the limitation of using a predefined parametric B--H mapping function. Subsequently, the reconstructed fields are spatially averaged along selected collection lines to recover the B--H characteristics of the principal directions. Numerical results demonstrate high reconstruction accuracy for unperturbed data and good robustness against Gaussian perturbations of the boundary measurements, with the overall mean error remaining below 5% for a 10% noise level. These results indicate that under the harmonic-field assumptions, the field-based reconstruction provides a simple and computationally efficient framework for non-invasive identification of nonlinear anisotropic magnetic constitutive characteristics.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

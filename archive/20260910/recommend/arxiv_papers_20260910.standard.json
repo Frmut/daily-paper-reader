@@ -1,0 +1,55 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-09-10T21:41:06.629170+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 1,
+    "quick_skim_target": 11,
+    "quick_selected": 1
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2609.07476v1",
+      "title": "Noninvasive Anisotropic Identification of Magnetic Properties in Toroidal Shaped Magnetic Steel",
+      "abstract": "This research proposes a model-free inverse approach for identifying the nonlinear anisotropic single-valued magnetic constitutive characteristics of soft magnetic materials from boundary measurements. Using the harmonic approximation, the internal magnetic flux density B and magnetic field strength H are independently reconstructed from the measured boundary data, thus avoiding the limitation of using a predefined parametric B--H mapping function. Subsequently, the reconstructed fields are spatially averaged along selected collection lines to recover the B--H characteristics of the principal directions. Numerical results demonstrate high reconstruction accuracy for unperturbed data and good robustness against Gaussian perturbations of the boundary measurements, with the overall mean error remaining below 5% for a 10% noise level. These results indicate that under the harmonic-field assumptions, the field-based reconstruction provides a simple and computationally efficient framework for non-invasive identification of nonlinear anisotropic magnetic constitutive characteristics.",
+      "authors": [
+        "Xusen Qin",
+        "Reza Zeinali",
+        "Mitrofan Curt"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY",
+        "cond-mat.mtrl-sci",
+        "physics.app-ph"
+      ],
+      "published": "2026-09-07T13:33:24+00:00",
+      "link": "https://arxiv.org/pdf/2609.07476v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "identification of magnetic properties in steel",
+      "llm_evidence_cn": "磁性钢材料磁性能辨识",
+      "llm_evidence": "磁性钢材料磁性能辨识",
+      "canonical_evidence": "磁性钢材料磁性能辨识",
+      "llm_tldr_en": "Proposes a model-free approach to identify nonlinear magnetic characteristics of soft magnetic materials.",
+      "llm_tldr_cn": "提出了一种识别软磁材料非线性磁特性的无模型方法。",
+      "llm_tldr": "提出了一种识别软磁材料非线性磁特性的无模型方法。",
+      "llm_tags": [
+        "query:pmsm"
+      ],
+      "matched_query_tag": "query:pmsm",
+      "matched_query_text": "Permanent Magnet Synchronous Motor research",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

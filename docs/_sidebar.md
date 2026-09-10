@@ -1,6 +1,9 @@
 * <a class="dpr-sidebar-root-link" href="#/">首页</a>
 * <a class="dpr-sidebar-root-link dpr-sidebar-noactive-link" href="javascript:void(0)" data-dpr-hash="#/tutorial/README">使用教程</a>
 * Daily Papers
+  * 2026-09-10 <!--dpr-date:20260910-->
+    * 速读区
+      * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202609/10/2609.07476v1-noninvasive-anisotropic-identification-of-magnetic-properties-in-toroidal-shaped-magnetic-steel" data-sidebar-item="{&quot;title&quot;: &quot;Noninvasive Anisotropic Identification of Magnetic Properties in Toroidal Shaped Magnetic Steel&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2609.07476v1-noninvasive-anisotropic-identification-of-magnetic-properties-in-toroidal-shaped-magnetic-steel&quot;, &quot;score&quot;: &quot;6.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;pmsm&quot;}], &quot;evidence&quot;: &quot;磁性钢材料磁性能辨识&quot;}">Noninvasive Anisotropic Identification of Magnetic Properties in Toroidal Shaped Magnetic Steel</a>
   * 2026-09-08 <!--dpr-date:20260908-->
     * 速读区
       * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202609/08/2609.02431v1-multivariable-geometric-laplace-transform-and-fault-detection-in-distributed-converter-lines" data-sidebar-item="{&quot;title&quot;: &quot;Multivariable Geometric Laplace Transform and Fault Detection in Distributed-Converter Lines&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2609.02431v1-multivariable-geometric-laplace-transform-and-fault-detection-in-distributed-converter-lines&quot;, &quot;score&quot;: &quot;6.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;pmsm&quot;}], &quot;evidence&quot;: &quot;分布式变流器线路的故障检测&quot;}">Multivariable Geometric Laplace Transform and Fault Detection in Distributed-Converter Lines</a>
