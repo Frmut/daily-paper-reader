@@ -1,6 +1,9 @@
 * <a class="dpr-sidebar-root-link" href="#/">首页</a>
 * <a class="dpr-sidebar-root-link dpr-sidebar-noactive-link" href="javascript:void(0)" data-dpr-hash="#/tutorial/README">使用教程</a>
 * Daily Papers
+  * 2026-09-11 <!--dpr-date:20260911-->
+    * 速读区
+      * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202609/11/2609.10479v1-deep-learning-based-detection-of-electrical-faults-and-power-quality-disturbances-in-aerospace-power-systems" data-sidebar-item="{&quot;title&quot;: &quot;Deep Learning-Based Detection of Electrical Faults and Power Quality Disturbances in Aerospace Power Systems&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2609.10479v1-deep-learning-based-detection-of-electrical-faults-and-power-quality-disturbances-in-aerospace-power-systems&quot;, &quot;score&quot;: &quot;6.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;pmsm&quot;}], &quot;evidence&quot;: &quot;航空电源系统中的电气故障与扰动检测&quot;}">Deep Learning-Based Detection of Electrical Faults and Power Quality Disturbances in Aerospace Power Systems</a>
   * 2026-09-10 <!--dpr-date:20260910-->
     * 速读区
       * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202609/10/2609.07476v1-noninvasive-anisotropic-identification-of-magnetic-properties-in-toroidal-shaped-magnetic-steel" data-sidebar-item="{&quot;title&quot;: &quot;Noninvasive Anisotropic Identification of Magnetic Properties in Toroidal Shaped Magnetic Steel&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2609.07476v1-noninvasive-anisotropic-identification-of-magnetic-properties-in-toroidal-shaped-magnetic-steel&quot;, &quot;score&quot;: &quot;6.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;pmsm&quot;}], &quot;evidence&quot;: &quot;磁性钢材料磁性能辨识&quot;}">Noninvasive Anisotropic Identification of Magnetic Properties in Toroidal Shaped Magnetic Steel</a>
