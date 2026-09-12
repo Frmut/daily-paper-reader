@@ -1,0 +1,1141 @@
+Title: A Continuous-Time Generalization of the LPV Fundamental Lemma
+
+URL Source: https://arxiv.org/pdf/2609.07241v1
+
+Published Time: Wed, 09 Sep 2026 02:03:48 GMT
+
+Number of Pages: 9
+
+Markdown Content:
+# A Continuous-Time Generalization of the LPV Fundamental Lemma 
+
+Philipp Schmitz and Chris Verhoek 
+
+Abstract — Controller design for physical systems directly from data is of tremendous interest in both the industry and academia. However, the research on direct data-driven control has thus far mainly focused on discrete-time linear time-invariant systems. To make the highly non-trivial step to continuous-time nonlinear systems, this paper explores an intermediate route through the framework of linear parameter-varying (LPV) systems. LPV systems can be used as a con-venient surrogate for nonlinear systems to achieve systematic analysis and controller design. In this work, we generalize the LPV Fundamental Lemma for discrete-time systems towards a class of continuous-time LPV systems, achieving data-driven representations that can be used to design continuous-time LPV controllers. 
+
+Index Terms — ata-driven representation, linear parameter-varying (LPV) systems, Willems’ fundamental lemma, continuous-time systems, data-driven control.ata-driven repre-sentation, linear parameter-varying (LPV) systems, Willems’ fundamental lemma, continuous-time systems, data-driven con-trol.D 
+
+I. I NTRODUCTION 
+
+Direct data-driven methods can be used to extract system properties or design stabilizing controllers directly from data. Because such approaches are overcoming the costly step of identifying a mathematical description of the system itself, there is a surge for the development of such direct data-driven methods. A corner stone result in many direct data-driven analysis and control methods is the so-called Fundamental Lemma by Willems and co-authors [1]. This important result uses behavioral system theory for discrete-time linear time-invariant (LTI) systems [2] to formulate a fully data-based representation of the horizon-L system behavior, using a single sufficiently informative trajectory of measurement data. The success of the Fundamental Lemma is evident from the number of data-based (LTI) methods that followed from it, such as application of the data-driven representation in simulation [3], performance analysis [4], and control design [5], [6]. While the main developments have been focusing on discrete-time systems, novel methods have been proposed recently to obtain similar behavioral data-driven formulations of continuous-time LTI systems [7]–[13]. On the other hand, the behavioral direct data-driven meth-ods have been generalized beyond LTI dynamics, e.g., lin- 
+
+> P. Schmitz is with Technische Universit¨ at Ilmenau, Optimization-based Control Group, 98693 Ilmenau, Germany. C. Verhoek is with the Dept. of Electrical and Systems Engineering at the University of Pennsylvania, Philadelphia, United States, and the Eindhoven University of Technology, Dept. of Electrical Engineering, The Netherlands. P. Schmitz is grateful for the support from the Carl Zeiss Foundation (VerneDCt – No. 2011640173). C. Verhoek is gratefully supported by the European project ‘COVER’ under grant No. 101086228. Both authors contributed equally. Corresponding author: Philipp Schmitz (e-mail address: philipp.schmitz@tu-ilmenau.de ).
+
+ear time-varying systems [14], bilinear systems [15], linear parameter-varying systems [16], [17], feedback linearizable systems [18], convex/affine/conic systems [19], or nonlinear systems that can represented by a basis function expan-sion [20]. While these developments are interesting and important, to our knowledge, extensions for behavioral data-driven representations beyond continuous-time LTI systems 
+
+have not been presented so far. There are works that develop data-driven representations of one-step-ahead predictors of continuous-time input–state systems [21], [22]. These, how-ever, do not consider input–output data and assume that the derivative of the state can be measured, which is generally a restrictive assumption in practice. Extending the fundamental lemma to continuous time is not merely a matter of generality. Continuous-time data-driven methods apply directly to the dynamics of physical systems without a discretization step. This is desirable, for instance, in power electronics, where analog circuits are used to implement fast inner-loop control at low cost. Moreover, from a theoretical standpoint, we see that the discretization step of an LPV system is generally only approximate, since the dynamics depend on the scheduling trajectory within each sampling interval. A continuous-time formulation avoids this approximation. To make the highly non-trivial step from data-driven rep-resentations for discrete-time LTI systems to data-driven rep-resentations continuous-time nonlinear systems, we explore an intermediate route through the framework of continuous-time linear parameter-varying (LPV) systems . The LPV framework [23] considers systems whose behavior is defined by a linear, dynamic relationship. The system parameters that characterize this relationship are varying along a mea-surable scheduling signal , denoted by p. LPV systems are often used in practice as surrogates of nonlinear dynamics, where the scheduling signal captures the nonlinearities and exogenous effects [23], [24]. This allows for efficient and systematic analysis and control design of nonlinear systems. Behavioral data-driven representations have been developed for discrete-time LPV systems [16], [17]. However, methods for constructing direct data-driven LPV representations of 
+
+continuous-time LPV systems are yet to be developed. To fill this gap in the literature, our contribution is the development of data-driven representations for a special class of continuous-time LPV systems. Specifically, LPV systems that can be represented by a kernel representation that has a, what we call, Leibniz-affine scheduling dependence. Our contributions are two-fold: First, we present a reformulation of the continuous-time Fundamental Lemma for LTI systems as an identifiability condition , resulting in conditions on 1arXiv:2609.07241v1 [eess.SY] 7 Sep 2026 the input–output data for the construction of a data-driven representation. Second, we generalize this first contribution for the class of LPV systems with Leibniz-affine scheduling dependence through the use of a temporary LTI embedding. To our knowledge, this is the first result to formulate continuous-time behavioral data-driven representations from input–output data beyond the class of LTI systems. The remainder is structured as follows. We formalize the setting and the considered problem in Section II. Section III details LPV behaviors, their various representations and key structural quantities. Inspired by [16], Section IV proposes an LTI embedding technique for the considered class of LPV systems, which allows us to formulate and prove a continuous-time LPV Fundamental Lemma in Section V. We draw conclusions and provide possible future research directions in Section VI. All proofs can be found in the appendices. 
+
+Notation: R and N denote the real and natural numbers, respectively. For compatible matrices A1, . . . , A m we define 
+
+col( A1, . . . , A m) := A⊤ 
+
+> 1
+
+. . . A⊤
+
+> m
+
+ ⊤. The Kronecker product of two matrices A and B is denoted by A ⊗ B.Both notations extend to matrix-valued functions. Let I ⊂ R
+
+be an open interval. The kth order Sobolev space induced by the space Lq (I, Rd), with q ∈ N ∪ {∞} , is denoted by W k,q (I, Rd). The space of infinitely differentiable, com-pactly supported functions from I to Rd is denoted by 
+
+C∞ 
+
+> c
+
+(I, Rd). Derivatives of a function f are denoted by  
+
+> dk
+> dtk
+
+f = f (k), k ∈ N. In this work, f ′ denotes an augmented variable and is not to be confused with the derivative f (1) .Finally, given two sets W and T, we use the notation WT
+
+for the set of functions from T to W.II. P ROBLEM DESCRIPTION 
+
+LPV dynamical systems are defined by the quadruple Σ := (T, W, P, B), with time axis T, signal space W ⊆ Rnw ,scheduling space P ⊆ Rnp , and behavior B ⊆ (W × P)T.The behavior B is linear in the sense that for a given p,any (w, p ), ( ˜ w, p ) ∈ B, and a, b ∈ R, (aw + b ˜w, p ) ∈ B.Given p ∈ PT, the set of all trajectories w compatible with p
+
+is defined by Bp := {w | (w, p ) ∈ B}, which is a linear subspace of WT. Assume throughout that P is convex with a non-empty interior. To handle non-commutative differential operations in the parametrization of LPV representations, for exam-ple, ddt p(t)w(t)  ̸ = p(t) ddt w(t), we introduce the ⋄-operator from [24]. For a coefficient function r : PT → R·×· and scheduling signal p ∈ PT, the notation r ⋄ p allows us to consider scheduling-dependent parameterizations that are dependent on a finite number of derivatives of p, i.e., 
+
+(r ⋄ p)( t) = r(p, dp 
+
+> dt
+
+, . . . , dnp 
+
+> dtn
+
+).
+
+See [24, Chap. 3] for a more detailed explanation. Us-ing this operator, we can compactly write polynomials in the indeterminate ξ, whose coefficients are dependent on (derivatives of) the scheduling variable, e.g., R(ξ) ⋄ p =(r1 ⋄ p)ξ2 + ( r2 ⋄ p)ξ = (3 p + 2 dp 
+
+> dt
+
+)ξ2 + (sin( p) + d2p 
+
+> dt2
+
+)ξ.  
+
+> u(t)
+> R0
+> C(t)y(t)
+> Fig. 1. RC-circuit with variable capacitance.
+
+We are now ready to introduce LPV kernel representations, which are used to characterize the behavior B.We consider continuous-time LPV systems that can be described by the kernel representation 
+
+(R( ddt ) ⋄ p)w = 0 (1) on an open finite time interval I, i.e., T = I. Here, 
+
+p : I → Rnp is the scheduling signal and w : I → Rnw
+
+is the system trajectory. The dynamics of the LPV system are characterized by the polynomial matrix function R(ξ) in the indeterminant ξ, where ξn corresponds to the nth time derivative. We restrict ourselves to a specific type of dynamic, func-tional scheduling dependence for R. We assume that the coefficients of R are affinely dependent on R, and follow a Leibniz-like dynamic dependence. Hence, R is such that we can write (1) as 
+
+(R( ddt ) ⋄ p)w =
+
+> nr
+
+X
+
+> i=0
+
+
+
+Ri, 0
+
+diw
+
+dti +
+
+> np
+
+X
+
+> j=1
+
+Ri,j 
+
+di(pj w)dti
+
+
+
+= 0 ,
+
+(2) where Ri,j ∈ Rnk×nw . We call this dependency structure 
+
+Leibniz-affine , since the dynamic and functional scheduling dependence arises from derivatives of only the product of the manifest and scheduling signals, excluding any isolated mixed derivative terms. While restrictive compared to the general framework presented in [24], the class of Leibniz-affine captures a relatively large class of physical systems, e.g., RC circuits with varying capacitance (see Example 1) or mass-spring-damper systems with velocity-dependent damp-ing coefficients. Moreover, as shown in Appendix C, systems with a Leibniz-affine scheduling dependence admit a direct state-space realization with static affine dependence, allow-ing for convex, linear matrix inequality-based analysis and control synthesis. 
+
+Example 1. An example of a Leibniz-affine LPV system of the form (2) is the RC-circuit in Fig. 1. Define the input and output voltage u, y, constant resistance R0 and a variable capacitance C(t). Let C(t) := C0 + C1p(t), with p the scheduling variable. Then, Kirchhoff’s voltage law gives: 
+
+R0C0y(1) + R0C1(py )(1) + y − u = 0 .
+
+With w = col( u, y ), we thus obtain the form (2): 
+
+[ −1 1 ]w + [ 0 R0C0 ]w(1) + [ 0 0 ]pw + [ 0 R0C1 ]( pw )(1) = 0 ,
+
+which has Leibniz-affine scheduling dependence. ◀
+
+2In this paper, we are interested in LPV behaviors that are characterized by (2). We investigate the conditions under which these can be fully characterized on the interval I by only measurement data. Before we present the solution to this problem, we need to discuss the solutions and representation variations of (2). III. L EIBNIZ -AFFINE LPV BEHAVIORS &
+
+> REPRESENTATIONS
+
+In this section, we define the behavior associated with (2) as a function space. Further, we recall structural quantities of behaviors and alternative representation forms. 
+
+A. Kernel Representations via Weak Solutions 
+
+We characterize the LPV behavior of (2), i.e., the set of all valid pairs of trajectories and scheduling signals of (2), in a weak sense. Specifically, we further define B as: 
+
+B := 
+
+
+
+(w, p ) ∈ L2(I, Rnw ) × L∞(I, Rnp ) (2) holds weakly 
+
+
+
+.
+
+(3) A pair (w, p ) ∈ L2(I, Rnw ) × L∞(I, Rnp ) is called a weak solution to (2) if for all ϕ ∈ C ∞ 
+
+> c
+
+(I, Rnk ), it holds that 
+
+Z
+
+> I
+
+ nrX
+
+> k=0
+
+(−1) k
+
+wR ⊤ 
+
+> k, 0
+
++
+
+> np
+
+X
+
+> j=1
+
+pj wR ⊤
+
+> k,j
+
+ dk ϕ
+
+> dtk
+
+
+
+dt = 0 . (4) Given a pair (w, p ) of infinitely differentiable, bounded functions, the equivalence of (2) and (4) follows immediately from integration by parts of (4), and the fact that the space of test functions C∞ 
+
+> c
+
+(I, Rnk ) is dense in L2(I, Rnk ). This allows us to conclude the following: 
+
+Lemma 1. The behavior B defined as in (3) is a closed subset of L2(I, Rnw ) × L∞(I, Rnp ).
+
+Choosing B as a subset of L2(I, Rnw ) × L∞(I, Rnp ) is advantageous because, by Lemma 1, it ensures that B is a Banach space, providing a robust framework of analytical treatment. Alternatively, the behavior can be defined more broadly using spaces of locally integrable functions as dis-cussed in [24]. In the remainder, when we refer to B, we always mean the LPV behavior as defined in (3). Next, we will discuss some characteristic structural quantities of B, referred to as the complexity .
+
+B. Complexity of LPV Behaviors 
+
+The complexity of an LPV behavior B is characterized by the triple of integers 
+
+c(B) = ( n(B), l(B), m(B)) . (5) The integer n(B) is the order of B, corresponding to the smallest possible state dimension of a state-space represen-tation with static scheduling dependence whose manifest behavior coincides with B. The integer l(B) is the lag of B,and is the smallest possible nr over all kernel representations of the form (2) that represent B. The integer m(B) is the input dimension , which is defined as follows: If for a partitioning w = col( u, y ), u is such that it is maximally free, i.e., none of the components of y can be chosen freely for all p, then m(B) corresponds to the dimension of u.These quantities are all well-defined in [24, Chap. 3], and are closely linked to minimality properties of the representations of B, e.g., a minimal (2) has nk = nw − m(B).
+
+C. Input–Output Representations 
+
+When considering a partitioning of w in terms of inputs u
+
+and outputs y, it is natural to introduce input–output of (2). For input–output representations, we pick a partitioning 1
+
+w = col( u, y ), such that u : I 7 → Rm(B) is maximally free and y : I 7 → Rny , where ny := nw − m(B). We then split up Ri,j = −Bi,j Ai,j 
+
+ accordingly, where Ai,j ∈ Rnk×ny
+
+and Bi,j ∈ Rnk×m(B), such that we obtain 
+
+Pnr
+
+> i=0
+
+
+
+Ai, 0 diy 
+
+> dti
+
++ Pnp 
+
+> j=1
+
+Ai,j di(pj y)dti
+
+
+
+= Pnr
+
+> i=0
+
+
+
+Bi, 0 diu 
+
+> dti
+
++ Pnp 
+
+> j=1
+
+Bi,j di(pj u)dti
+
+
+
+, (6) which is unique up to permutations. Note that we can write (6) in the short form (A( ddt ) ⋄ p) y = ( B( ddt ) ⋄ p) u
+
+if desired. We assume the following throughout the paper when we consider the input–output realization (6): 2
+
+Assumption 1. The polynomials A(ξ) ⋄ p and B(ξ) ⋄ p
+
+defining (6) are generically coprime in p, i.e., their greatest common divisor is one for generic p ∈ PT. Moreover, the leading coefficient Anr,0 = Iny and Anr,j = 0 for j > 0.
+
+Remark 2. The special case of (6) where nr = 1 , A1,0 = I,and A1,j = 0 and B1,j −1 = 0 for j > 0 yields the well-known LPV input–state realization with affine scheduling dependence:  
+
+> ddt
+
+y = −A0,0y −
+
+> np
+
+X
+
+> j=1
+
+A0,j pj y + B0,0u +
+
+> np
+
+X
+
+> j=1
+
+B0,j pj u. 
+
+With the formal definition of B, the complexity, and input–output representations, we now introduce LTI em-beddings of LPV behaviors. These embeddings allow us to formulate our main result: data-driven representations of continuous-time LPV systems. IV. LTI EMBEDDINGS OF LPV BEHAVIORS 
+
+Inspired by the discrete-time LPV Fundamental Lemma [16], we achieve our generalization to the continuous-time case through a (temporary) LTI embedding                          
+
+> 1In classical behavioral theory [2], the partition of wis generally defined by a full-rank permutation matrix Π, such that w= Π col( u, y ).Throughout, we take w.l.o.g. Π = I.
+> 2While left-coprimeness of A(ξ)⋄pand B(ξ)⋄pcan always be achieved, requiring Anr,0=Iis restrictive. We believe that this assumption can be lifted without affecting the validity of the results that depend on it. However, proving the results without this restriction on Anr,0will require extensive and deep discussions on bridging LPV and LTI realization theory in the continuous-time behavioral setting. As this is not the focus of this paper, we leave this to future work.
+
+3B
+
+wp
+
+> (a)
+
+## B′w′
+
+> (b)
+
+## B′
+
+## B                
+
+> (c) Fig. 2. (a) The LPV behavior Bwith scheduling signal pand manifest variable w. (b) The augmented LTI behavior B′with variable w′, composed of waugmented with npnwauxiliary input signals. (c) Illustration of the embedding B⊂B′. (Figure adopted from [16]).
+
+of B. The embedding is characterized by auxiliary input signals. Given (w, p ), we introduce 
+
+w′ := 
+
+ wp ⊗ w
+
+
+
+=
+
+
+
+wp1w...pnp w
+
+ . (7) If we now temporarily disregard the dependence on p
+
+and consider p1w, . . . , p np w as auxiliary input signals, i.e., they are considered to be free signals, we can define the augmented behavior B′ as 
+
+B′ =
+
+(
+
+w′ ∈ L2(I, Rnw (1+ np)) R′( ddt )w′ = 0 
+
+holds weakly 
+
+)
+
+, (8) with R′ 
+
+> i
+
+= Ri, 0 · · · Ri,n p
+
+ ∈ Rnk×nw (1+ np), and where 
+
+R′( ddt )w′ = 0 is to understood in again in the weak sense. That is, we say that w′ is a weak solution to R′( ddt )w′ = 0 
+
+if for all ϕ ∈ C ∞ 
+
+> c
+
+(I, Rnk ), it holds that 
+
+Z
+
+> I
+> nr
+
+X
+
+> k=0
+
+(−1) kw′(R′
+
+> k
+
+)⊤ dk ϕ 
+
+> dtk
+
+dt = 0 . (9) The following lemma establishes the formal relationship between B and B′.
+
+Lemma 2. A pair (w, p ) ∈ L2(I, Rnw ) × L∞(I, Rnp )
+
+belongs to the LPV behavior B if and only there exists 
+
+w′ ∈ B′ satisfying w′ = col( w, p ⊗ w).
+
+By identifying each pair (w, p ) ∈ B with its augmented trajectory w′ = col( w, p ⊗w) ∈ B′, the LPV behavior B can be viewed as a subset of the augmented LTI behavior B′,i.e., with a slight abuse of notation we conclude B ⊆ B′.However, because we assumed that p1w, . . . , p np w are free auxiliary input signals, we in fact have B ⊂ B′. Hence, the augmented behavior B′ defined by the LTI embedding is an 
+
+over-approximation of B, which we illustrated in Figure 2. Similar to the LPV behavior B, the complexity of the LTI behavior B′ (see, e.g., [25]) is characterized by the triple 
+
+c(B′) = ( n(B′), l(B′), m(B′)) , (10) where n(B′) is the McMillan degree of R′ or, equivalently, the state dimension of a minimal state space representation, 
+
+l(B′) is the lag of B′, and m(B′) is the input dimension of B′, see [2], [25]. With the LTI embedding of (2) charac-terized by (7), the values that define the complexity of the augmented behavior B′ are inherited from c(B). We show this in the following result: 
+
+Lemma 3. Let Assumption 1 hold. The relation between the complexities of B and B′ is n(B) = n(B′), l(B) = l(B′)
+
+and m(B) + npnw = m(B′).
+
+With the LTI embedding and its complexity c(B′) defined, we now present the main results of our paper. V. A F UNDAMENTAL LEMMA 
+
+In this section, we present a data-driven representation for continuous-time LPV systems with behavior B. We build on the continuous-time Fundamental Lemma for LTI systems in [7] and adopt a reformulation tailored to our setting. Specifically, we first present a continuous-time analog of the discrete-time identifiability condition, as presented in [25, Cor. 21]. 
+
+A. An LTI Fundamental Lemma 
+
+The continuous-time Fundamental Lemma in [7] is formu-lated as an input-design result. This provides sufficient, but a priori, conditions on the input data to determine whether the data is able to represent the behavior. In the following, we provide necessary and sufficient, but a posteriori , conditions on the input–output data to determine whether the data can represent the behavior. This provides us with the tools to formulate a continuous-time LPV Fundamental Lemma, and draw parallels with the discrete-time LPV Fundamental Lemma [16, Thm. 1]. 
+
+Proposition 4. Define nw′ := nw(1 + np), and let L ≥
+
+l(B′)+1 . Let w′ ∈ B′ ∩W L−1,2(I, RLn w′ ×Ln w′ ) and define the Gramian matrix 
+
+Γ = 
+
+Z
+
+> I
+
+W(t)W(t)⊤ dt, W =
+
+
+
+w′
+
+...
+
+(w′)(L−1) 
+
+ . (11) 
+
+Then, the following statements are equivalent: 
+
+(i) rank(Γ) = Lm(B′) + n(B′),
+
+(ii) ¯w′ ∈ W L−1,2(I, Rnw′ ) is a trajectory of B′ if and only if there exists g ∈ L2(I, RLn w′ ) such that 
+
+
+
+¯w′
+
+...
+
+( ¯ w′)(L−1) 
+
+ = Γ g. (12) Proposition 4 establishes a necessary and sufficient con-dition on the measured input–output data in the Gramian matrix Γ, guaranteeing that the LTI behavior B′ with com-plexity c(B′) can be represented by the data matrix Γ. As we mentioned earlier, this result presents a continuous-time analog of the identifiability result of [25]. This connects to the fact that Proposition 4 does not require any controllability assumption on the behavior B′, contrary to the continuous-time Fundamental Lemma in [7]. With this observation, we also want to addresses the slight misuse of terminology in this work: in the data-driven literature the term “Fundamental 4Lemma” has been used interchangeably for both the input-design condition, originally proposed in [1], and the resulting data-driven representation itself, which has been used exten-sively for analysis and control. Although, we do not derive an input-design condition, we will stick to the terminology of “Fundamental Lemma.” 
+
+B. An LPV Fundamental Lemma 
+
+We can now generalize Proposition 4 for the considered class of LPV systems, which results in the formulation of an LPV Fundamental Lemma. 
+
+Theorem 5. Let Assumption 1 hold and define nw′ := 
+
+nw(1 + np). Consider L ∈ N, with L ≥ l(B) + 1 , and let (w, p ) ∈ B such that the Gramian matrix Γ in (11) for 
+
+w′ = col( w, p ⊗ w) satisfies 
+
+rank(Γ) = L(m(B) + npnw) + n(B). (13) 
+
+Then, ( ¯ w, ¯p) ∈ W L−1,2(I, Rnw ) × W L−1,∞(I, Rnp ) is a trajectory of B if and only if there exists g ∈ L2(I, RLn w′ )
+
+such that 
+
+¯w
+
+¯p ⊗ ¯w...
+
+¯w(L−1) 
+
+(¯ p ⊗ ¯w)(L−1) 
+
+
+
+= Γ g. (14) Other than the continuous-time Fundamental Lemma for LTI systems [7, Thm. 22], Theorem 5 is formulated based on a rank condition on the full input–output data trajectory instead of an input-design criteria. Hence, it provides a condition on the data that is verified a posteriori. The discrete-time identifiability results for LTI and LPV systems in [16], [25] provide necessary and sufficient conditions on the input–output data to obtain a data-driven representation. We consider showing necessity of the rank condition (13) an important future research direction (similarly for the rank condition in Proposition 4). The following analysis explores the nuances of (14), revealing an insightful structure that is not immediately apparent. Given a scheduling signal ¯p ∈ W L−1,∞(I, Rnp ),we define the scheduling-dependent matrix-valued function with lower block-triangular structure 
+
+¯PL := 
+
+
+
+(00) ¯p 0 ··· 0
+
+(11) ¯p(1) (10) ¯p ... ...... ... ... 0
+
+(L−1
+
+> L−1
+
+) ¯p(L−1) (L−1
+
+> L−2
+
+) ¯p(L−2) ··· (L−10 ) ¯p
+
+ ⊗ Inw ,
+
+with the binomial coefficient  nk
+
+ for nonnegative inte-gers n, k . Note that the entries of ¯PL are signals, i.e., ¯PL
+
+is a function of time. The definition of ¯PL allows us to formulate the following insightful result: 
+
+Corollary 6. Let the assumptions of Theorem 5 hold and consider the partitioning of Γ,
+
+Γ = 
+
+
+
+Γw
+
+Γpw 
+
+...
+
+Γw(L−1) 
+
+Γ(pw )(L−1) 
+
+
+
+(15) 
+
+with Γw, Γw(j) ∈ Rnw ×nw′ , Γpw , Γ(pw )(j) ∈ Rnw np×nw′ ,
+
+j = 1, . . . , L − 1. Then, ( ¯ w, ¯p) ∈ W L−1,2(I, Rnw ) ×
+
+W L−1,∞(I, Rnp ) is a trajectory of B if and only if there exists a g ∈ L2(I, RLn w′ ) with 
+
+¯w = Γ wg, (¯ p ⊗ ¯w) = Γ pw g (16) 
+
+satisfying the differential-algebraic equation 
+
+ddt
+
+
+
+Γw
+
+...
+
+Γw(L−2) 
+
+ g
+
+ =
+
+
+
+Γw(1) 
+
+...
+
+Γw(L−1) 
+
+ g (17) 
+
+and the compatibility condition 
+
+
+
+Γpw 
+
+...
+
+Γ(pw )(L−1) 
+
+ g = ¯PL
+
+
+
+Γw
+
+...
+
+Γw(L−1) 
+
+ g. (18) This result allows us to draw interesting parallels with the discrete-time case studied in [17], which we collect in the following remarks. 
+
+Remark 3. As a consequence of the embedding B into the continuous-time LTI behavior B′, the data-driven description of trajectories of system (2) via (16)–(18) is not restricted to the specific time interval I. Given a different time inter-val ˜I and the corresponding behavior ˜B generated by the dynamics (2) on ˜I, the same data matrix Γ obtained from a trajectory on I can be used to describe trajectories on ˜I, cf. [11, Rem. 7], where the parameter function g is now defined on ˜I.
+
+Remark 4. The discrete-time analog to ¯PL is a matrix ¯PL
+
+with block-diagonal structure, containing the scheduling se-quence, see [16, Eq. (24)]. For a fixed scheduling sequence ¯p,the associated ¯PL is a constant matrix and allows for a characterization of the set of all ¯p-compatible input–output trajectories, cf. B¯p in Section II. In contrast, ¯PL is a matrix-valued function of time with lower block-triangular structure populated with derivatives of ¯p below the diagonal. An analog description of the ¯p-compatible trajectories in B¯p
+
+for the continuous-time case would incur that we project the solution space of the DAE (17) onto the space of all functions that satisfy (18). In the discrete-time case, this kind of projection is achieved using straight-forward linear algebra (projection of the image of a Hankel matrix onto the basis of a null space, which can easily be computed for a given ¯p, see [16, Eqs. (26)–(28)]). The resulting subspace has dimension 
+
+n(B) + Lm(B), emphasizing the linearity of B along a given scheduling trajectory. Achieving a similar condition 5for the continuous-time case is an additional important topic for future work. 
+
+Remark 5. Finally, we acknowledge that a major challenge for the application of Theorem 5 is, that the data-matrix Γ
+
+involves higher-order derivatives of the input, output and scheduling signals, which are typically sensitive to noise. To address this issue, an efficient and robust technique using algebraic differentiators is proposed in [10]. VI. C ONCLUSION AND FUTURE WORKS 
+
+We generalized the LPV Fundamental Lemma for continuous-time LPV systems that can be represented by a kernel representation with a Leibniz-affine scheduling de-pendence. To the best of our knowledge, this result provides the first behavioral data-driven representation for continuous-time systems, beyond the class of LTI systems . To achieve this result, we first formulated an identifiability condition for continuous-time LTI systems, which followed from re-formulating the continuous-time LTI Fundamental Lemma. A temporarily introduced LTI embedding for the considered class of LPV systems allowed us to generalize the LTI identifiability condition for LPV systems. Future work will focus on formulating necessary condi-tions for the identifiability results and extending the pre-sented results to a broader class of continuous-time LPV systems. Furthermore, to make our results actionable and apply them in, e.g., data-driven optimal control or data-driven simulation, robust numerical methods must be developed to efficiently and reliably solve the differential-algebraic equation (17) subject to the compatibility condition (18). These methods will also enable the demonstration of our methods in realistic, numerical examples. VII. ACKNOWLEDGMENTS We thank the anonymous reviewers for their comments, and in particular for pointing out an issue in the proof of Lemma 3, which we have since corrected. REFERENCES [1] J. C. Willems, P. Rapisarda, I. Markovsky, and B. L. De Moor, “A note on persistency of excitation,” Systems & Control Letters , vol. 54, no. 4, pp. 325–329, 2005. [2] J. Polderman and J. Willems, Introduction to mathematical systems theory: A behavioral approach . Springer, 1997. [3] I. Markovsky and P. Rapisarda, “Data-driven simulation and control,” 
+
+International Journal of Control , vol. 81, no. 12, pp. 1946–1959, 2008. [4] H. J. van Waarde, J. Coulson, and A. Padoan, “From time series to dissipativity of linear systems with dynamic supply rates,” arXiv preprint arXiv:2602.13654 , 2026. [5] J. Coulson, J. Lygeros, and F. D¨ orfler, “Data-enabled predictive control: In the shallows of the DeePC,” in Proc. of the 18th European Control Conference , 2019, pp. 307–312. [6] J. Berberich, J. K¨ ohler, M. A. M¨ uller, and F. Allg¨ ower, “Data-driven model predictive control with stability and robustness guarantees,” 
+
+IEEE Trans. Aut. Contr. , vol. 66, no. 4, pp. 1702–1717, 2020. [7] P. Schmitz, T. Faulwasser, P. Rapisarda, and K. Worthmann, “A continuous-time fundamental lemma and its application in data-driven optimal control,” Systems & Control Letters , vol. 194, 105950, 2024. [8] P. Rapisarda, H. J. van Waarde, and M. K. Camlibel, “Orthogonal polynomial bases for data-driven analysis and control of continuous-time systems,” IEEE Trans. Aut. Contr. , vol. 69, pp. 4307–4319, 2023. [9] V. G. Lopez and M. A. M¨ uller, “On a continuous-time version of Willems’ lemma,” in Proc. of the 61st IEEE Conference on Decision and Control (CDC) , 2022, pp. 2759–2764. [10] A. Othmane, P. Schmitz, K. Worthmann, and K. Flaßkamp, “A data-based image representation for continuous-time lti systems,” IEEE Control Systems Letters , vol. 10, pp. 1093–1098, 2026. [11] P. Schmitz, K. Worthmann, T. Faulwasser, and P. Rapisarda, “Data-driven continuous-time optimal control: A unified framework using orthogonal functions,” Math. Control Signals Syst. , 2026. [12] P. Rapisarda, M. K. C ¸ amlibel, and H. J. van Waarde, “A “fundamental lemma” for continuous-time systems, with applications to data-driven simulation,” Systems & Control Letters , vol. 179, 105603, 2023. [13] V. G. Lopez, M. A. M¨ uller, and P. Rapisarda, “An input-output continuous-time version of Willems’ lemma,” IEEE Control Systems Letters , vol. 8, pp. 916–921, 2024. [14] B. Nortmann and T. Mylvaganam, “Direct data-driven control of linear time-varying systems,” IEEE Trans. Aut. Contr. , vol. 68, no. 8, pp. 4888–4895, 2023. [15] I. Markovsky, “Data-driven simulation of generalized bilinear systems via linear time-invariant embedding,” IEEE Trans. Aut. Contr. , vol. 68, no. 2, pp. 1101–1106, 2022. [16] C. Verhoek, I. Markovsky, S. Haesaert, and R. T´ oth, “A behavioral approach for LPV data-driven representations,” IEEE Trans. Aut. Contr. , vol. 71, no. 3, pp. 1616–1629, 2026. [17] C. Verhoek, R. T´ oth, S. Haesaert, and A. Koch, “Fundamental lemma for data-driven analysis of linear parameter-varying systems,” in Proc. of the 60th IEEE Conference on Decision and Control (CDC) , 2021, pp. 5040–5046. [18] M. Alsalti, V. G. Lopez, J. Berberich, F. Allg¨ ower, and M. A. M¨ uller, “Data-based control of feedback linearizable systems,” IEEE Trans. Aut. Contr. , vol. 68, no. 11, pp. 7014–7021, 2023. [19] A. Padoan, F. D¨ orfler, and J. Lygeros, “Data-driven representations of conical, convex, and affine behaviors,” in Proc. of the 62nd IEEE Conference on Decision and Control , 2023, pp. 596–601. [20] M. Lazar, “Basis-functions nonlinear data-enabled predictive control: Consistent and computationally efficient formulations,” in Proc. of the 2024 European Control Conference , 2024, pp. 888–893. [21] H. Chen, A. Bisoffi, and C. De Persis, “Data-driven input-to-state stabilization of polynomial systems,” SIAM Journal on Control and Optimization , vol. 63, no. 6, pp. 3915–3940, 2025. [22] C. De Persis, D. Gadginmath, F. Pasqualetti, and P. Tesi, “Data-driven feedback linearization with complete dictionaries,” in Proc. of the 62nd IEEE Conference on Decision and Control , 2023, pp. 3037–3042. [23] R. T´ oth and C. Verhoek, “Modeling and control of LPV systems,” in 
+
+Encyclopedia of Systems and Control Engineering , 2026, pp. 405–418. [24] R. T´ oth, Modeling and identification of linear parameter-varying systems . Springer, 2010, vol. 403. [25] I. Markovsky and F. D¨ orfler, “Identifiability in the behavioral setting,” 
+
+IEEE Trans. Aut. Contr. , vol. 68, no. 3, pp. 1667–1677, 2022. [26] R. T´ oth, H. S. Abbas, and H. Werner, “On the state-space realization of LPV input-output models: Practical approaches,” IEEE Trans. Contr. Sys. Tech. , vol. 20, no. 1, pp. 139–153, 2011. [27] M. Petreczky, R. T´ oth, and G. Merc` ere, “Realization theory for LPV state-space representations with affine dependence,” IEEE Trans. Aut. Contr. , vol. 62, no. 9, pp. 4667–4674, 2016. [28] ——, “Minimal realizations of input–output behaviors by lpv state-space representations with affine dependence,” IEEE Control Systems Letters , vol. 7, pp. 2952–2957, 2023. 
+
+APPENDIX 
+
+A. Proof of Lemma 1 
+
+Let (wk, p k)k∈N ⊂ B be a sequence of trajectories and scheduling signals such that (wk, p k) → ( ˆ w, ˆp) in 
+
+L2(I, Rnw ) × L∞(I, Rnp ). We show that ( ˆ w, ˆp) ∈ B.Consider any ϕ ∈ C ∞ 
+
+> c
+
+(I, Rnk ). Then, the left-hand side of (4) defines a continuous (nonlinear) functional fϕ :
+
+L2(I, Rnw ) × L∞(I, Rnp ) → R, (w, p ) 7 → fϕ(w, p ). By continuity, we have that fϕ( ˆ w, ˆp) = lim k→∞ fϕ(wk, p k) = 0. Since ϕ was arbitrary, we conclude that ( ˆ w, ˆp) ∈ B. ■
+
+6B. Proof of Lemma 2 
+
+Let (w, p ) ∈ B. Note that w′ = col( w, p ⊗ w) ∈
+
+L2(I, Rnw (1+ np)). Let ϕ be any test function in C∞ 
+
+> c
+
+(I, Rnk ).Then, (4) holds and implies (9). This yields w′ ∈ B′.Conversely, let w′ = col( w, v ) ∈ B′ with w ∈
+
+L2(I, R nw ) and v = p ⊗ w for some p ∈ L∞(I, Rnp ).Then, (9) holds for all ϕ ∈ C ∞ 
+
+> c
+
+(I, Rnk ) and, hence, (4) holds. Therefore, (w, p ) ∈ B. ■
+
+C. Proof of Lemma 3 
+
+Before we give the formal proof of Lemma 3, we need a 
+
+direct realization of the input–output form (6) as a LPV state-space representation. We achieve this through the realization of (6) as a minimal LPV state-space realization with static scheduling dependence, for which we use the cut-and-shift method [24]. To smoothen notation, we will exclusively use the indeterminant ξ, associated with ddt , and reverse operation ξ−1, associated with integration over time. Integrate both sides of (6) nr times, which under Assump-tion 1 gives: 
+
+y + Pnr−1 
+
+> i=0
+
+Ai, 0ξi−nr y + Pnp 
+
+> j=1
+
+Ai,j ξi−nr (pj y)= Pnr−1 
+
+> i=0
+
+Bi, 0ξi−nr u + Pnp 
+
+> j=1
+
+Bi,j ξi−nr (pj u)+ Bnr,0u + Pnp 
+
+> j=1
+
+Bnr,j pj u. (19) Inspired by [26], define x1 ∈ (Rny )T as: 
+
+x1 := Pnr−1 
+
+> i=0
+
+Bi, 0ξi−nr u + Pnp 
+
+> j=1
+
+Bi,j ξi−nr (pj u)
+
+− Pnr−1
+
+> i=0
+
+ Ai, 0ξi−nr y + Pnp 
+
+> j=1
+
+Ai,j ξi−nr (pj y) , (20) such that 
+
+y = x1 + Bnr,0u + Pnp 
+
+> j=1
+
+Bnr,j pj u (21) 
+
+ξx 1 = x2 − Anr−1,0: np
+
+ 1
+
+> p
+
+ ⊗ y + Bnr−1,0: np
+
+ 1
+
+> p
+
+ ⊗ u, 
+
+(22) with Anr−1,0: np = Anr−1,0 · · · Anr−1,n p
+
+, similarly for 
+
+Bnr−1,0: np , and 
+
+x2 := Pnr−2 
+
+> i=0
+
+Bi, 0ξi−nr+1 u + Pnp 
+
+> j=1
+
+Bi,j ξi−nr+1 (pj u)
+
+− Pnr−2
+
+> i=0
+
+ Ai, 0ξi−nr+1 y + Pnp 
+
+> j=1
+
+Ai,j ξi−nr+1 (pj y) .
+
+Repeating this cut-and-shift method in the continuous-time case results until ξx nr = B0,:
+
+ 1
+
+> p
+
+ ⊗ u − A0,:
+
+ 1
+
+> p
+
+ ⊗ y.This construction yields the first order differential equation in (23). We can then partially substitute y as defined in (21) in the equations for ξx i in (23) for only the outputs that are 
+
+not multiplied with the scheduling signal p, which results in the LPV state-space realization with static scheduling dependence shown in (24). Note that the state equation of the realization can be made independent from the output by substituting (24b) in the p ⊗ y term, yielding an LPV state-space representation of the form ξx = A(p)x + B(p)u; y =
+
+C(p)x + D(p)u, affine in p. The state-space realization can be made minimal using an LPV Kalman decomposition [27]. Importantly, the LPV Kalman decomposition uses a constant 
+
+projection matrix that projects the state to a lower dimension, i.e., the LPV state-space representation retains the affine dependency structure. It follows from Assumption 1 and the proof of [16, Lem. 1, Lem. 3] that the rank of the ob-servability matrix of (24) is scheduling-independent. Hence, the observability matrix of (24) will achieve rank n(B)
+
+after l(B) steps, for any p—including p ≡ 0. Thus, (24) is observable in the sense of [27], [28]. Then, by [28, Thm. 2], the (state-minimal) LPV Kalman decomposition of (24) is a minimal realization of the behavior B, i.e., it has a state dimension of n(B). In the remainder, we assume w.l.o.g. that the state dimension of (24) is n(B), meaning that it is complete state-observable [24, Chap. 3,4]. We are now ready to give the proof for Lemma 3: 
+
+Proof. We first argue that m(B) + npnw = m(B′). Under the assumption that the signal p ⊗ w is free, we directly see that m(B′) = m(B) + npnw. Moreover, as we argued before, the observability matrix of (24) achieves rank n(B)
+
+after l(B) steps for any p. Hence, for a free p ⊗ w, the ob-servability matrix of the LTI state-space realization resulting from (24) achieves rank n(B) after l(B). Therefore, we can conclude n(B) = n(B′) and l(B) = l(B′). ■
+
+D. Proof of Proposition 4 
+
+We consider a minimal input–state–output representation of the LTI behavior B′ of the form 
+
+x(1) = Ax + Bu ′, y′ = Cx + Du ′, (25) such that w′ = col( y′, u ′) for w′ ∈ B′. Minimality implies that the dimension of the state variable x equals n(B). Let 
+
+Ok =
+
+
+
+CCA ...CA k−1
+
+ , Tk =
+
+
+
+D, k = 1 "
+
+D
+
+Ok−1B Tk−1
+
+#
+
+, k ≥ 2,
+
+(26) where Ok is a Kalman observability matrix and the block-Toeplitz matrix Tk contains the Markov parameters. Define 
+
+SL =
+
+OL TL
+
+0 ILm(B′)
+
+
+
+. (27) As (25) is observable (see [2, Sec. 6.5.3]) and L ≥ l(B)+1 ,the matrix SL ∈ RLn w′ ×(n(B′)+ Lm(B′)) has full column rank. Let x be the state trajectory corresponding to w′ =col( y′, u ′). Then, it is easy to see that the symmetric, positive semi-definite Gramian 
+
+Γ0 = R 
+
+> I
+
+W0(t)W0(t)⊤ dt, (28) with W0 = col( x, u, . . . , u (L−1) ), satisfies Ω Γ = SLΓ0S⊤ 
+
+> L
+
+,
+
+where Ω is an invertible permutation matrix that separates (the derivatives of) w′ in terms of (the derivatives of) inputs and outputs, i.e., 
+
+Ω col( w′,..., (w′)(L−1) ) = col( y′,..., (y′)(L−1) ,u ′,..., (u′)(L−1) ).
+
+First, we show that (i) is equivalent to the statement (iii) rank Γ 0 = Lm(B′) + n(B′).Assume (i) holds, i.e., rank(Γ) = Lm(B′) + n(B′). Then, 
+
+rank(Γ) = rank(Ω Γ) = rank( SLΓ0S⊤ 
+
+> L
+
+) ≤ rank(Γ 0).
+
+7ξ
+
+
+
+x1
+
+x2
+
+...xnr−1
+
+xnr
+
+
+
+=
+
+
+
+0 I · · · 0 00 0 I · · · 0
+
+... . . . . . . . . . ...
+
+0 · · · · · · 0 I
+
+0 0 · · · · · · 0
+
+
+
+x1
+
+x2
+
+...xnr−1
+
+xnr
+
+
+
+−
+
+
+
+Ana−1,0
+
+Ana−2,0
+
+...A1,0
+
+A0,0
+
+
+
+y +
+
+
+
+−Ana−1,1: np Bna−1,0 Bna−1,1: np
+
+−Ana−2,1: np Bna−2,0 Bna−2,1: np
+
+... ... ...
+
+−A1,1: np B1,0 B1,1: np
+
+−A0,1: np B0,0 B0,1: np
+
+
+
+p ⊗ yup ⊗ u
+
+ ,
+
+(23a) 
+
+y = x1 + Bna,0 Bna,1: np
+
+  up ⊗ u
+
+
+
+. (23b) 
+
+ξ
+
+
+
+x1
+
+x2
+
+...xnr−1
+
+xnr
+
+
+
+=
+
+
+
+−Ana−1,0 I · · · 0 0
+
+−Ana−2,0 0 I · · · 0
+
+... . . . . . . . . . ...
+
+−A1,0 · · · · · · 0 I
+
+−A0,0 0 · · · · · · 0
+
+
+
+x1
+
+x2
+
+...xnr−1
+
+xnr
+
+
+
++
+
+
+
+−Ana−1,1: np
+
+ˆBna−1,0 ˆBna−1,1: np
+
+−Ana−2,1: np
+
+ˆBna−2,0 ˆBna−2,1: np
+
+... ... ...
+
+−A1,1: np
+
+ˆB1,0 ˆB1,1: np
+
+−A0,1: np
+
+ˆB0,0 ˆB0,1: np
+
+
+
+p ⊗ yup ⊗ u
+
+ , (24a) 
+
+y = x1 + Bna,0 Bna,1: np
+
+  up ⊗ u
+
+
+
+, (24b) where: ˆBi, 0 = Bi, 0 − Ai, 0Bnr,0, ˆBi, 1: np = Bi, 1: np − Ai, 0Bnr,1: np
+
+Since, Γ0 ∈ R(n(B′)+ Lm(B′)) ×(n(B′)+ Lm(B′)) the state-ment (iii) directly follows. Assume now that (iii) holds, i.e., 
+
+Γ0 is positive-definite. Then, ker(Γ) = ker( SLΓ0S⊤ 
+
+> L
+
+) = ker( SL). Taking the orthogonal complements yields im(Γ) = im( S⊤ 
+
+> L
+
+) and, thus, rank(Γ) = rank( SL) = Lm(B′) + 
+
+n(B′), i.e., statement (i) holds. By adapting the proof of [7, Thm. 22], where the per-sistency of excitation condition is directly replaced with condition (iii), one sees that (iii) implies (ii). Finally, we show that (ii) implies (i). Consider an arbi-trary state–input trajectory (¯ x, ¯u′) ∈ W L−1,∞(I, Rn(B′)) ×
+
+W L−1,∞(I, Rm(B′)) from the state-space representa-tion (25). The corresponding input–output trajectory ¯w′ =col(¯ y′, ¯u′) is an element of B′ ∩ W L−1,∞(I, Rnw′ ) and satisfies 
+
+Ω
+
+
+
+¯w′
+
+...
+
+( ¯ w′)(L−1) 
+
+ =
+
+
+
+¯y′
+
+...
+
+(¯ y′)(L−1) 
+
+¯u′
+
+...
+
+(¯ u′)(L−1) 
+
+
+
+= SL
+
+
+
+¯x
+
+¯u′
+
+...
+
+(¯ u′)(L−1) 
+
+ . (29) Since, col(¯ x, ¯u′, . . . , (¯ u′)(L−1) ) has Lm(B′) + n(B′) de-grees of freedom and SL is injective, together with (29) the linear subspace of RLn w′
+
+M =
+
+(" ¯w′(t)
+
+> ...
+> ( ¯ w′)(L−1) (t)
+
+# ¯w′ ∈ B′ ∩ W L−1,∞(I, Rnw′ ),t ∈ I 
+
+)
+
+has dimension Lm(B′) + n(B′). Then, by statement (ii), 
+
+M ⊂ im(Γ) , which yields rank(Γ) ≥ Lm(B′) + n(B′).By ΩΓ = SLΓ0S⊤ 
+
+> L
+
+, we find rank(Γ) = rank(ΩΓ) ≤
+
+rank( SL) = Lm(B′) + n(B′), which implies (i). In summary, we have show the equivalence of the state-ments (i), (ii), and (iii), which completes the proof. ■
+
+E. Proof of Theorem 5 
+
+We have that w′ = col( w, p ⊗ w) ∈ B′ and, by Lemma 3, the Gramian Γ in (11) satisfies rank(Γ) = Lm(B′)+ n(B′)
+
+with L ≥ l(B′) + 1 . Let ( ¯ w, ¯p) ∈ W L−1,2(I, Rnw ) ×
+
+W L−1,∞(I, Rnp ) and set ¯w′ = col( ¯ w, ¯p ⊗ ¯w).First, we show that ( ¯ w, ¯p) ∈ B implies (14). Let ( ¯ w, ¯p) ∈
+
+B. By Lemma 2 we have ¯w′ ∈ B′ and by Proposition 4 there exists g ∈ L2(I, RLn w (1+ np)) such that (12) holds. Since ( ¯ w′)(k) = col( ¯ w(k), (¯ p ⊗ ¯w)(k)) for k = 0 , . . . , L − 1,we have (14). Now, we show that (14) implies ( ¯ w, ¯p) ∈ B. Let (14) hold for some g ∈ L2(I, R Ln w (1+ np)). Then (14) yields (12) and, hence, ¯w′ ∈ B′ by Proposition 4. By Lemma 2, we have that 
+
+( ¯ w, ¯p) ∈ B. Thus, ( ¯ w, ¯p) ∈ B if and only if (14) holds. ■
+
+F. Proof of Corollary 6 
+
+It suffices to show the equivalence of (14) to the set of equations (16)–(18). First, we show that (14) implies (16)– (18). Given (14), we find 
+
+
+
+¯w...
+
+¯w(L−1) 
+
+ =
+
+
+
+Γw
+
+...
+
+Γw(L−1) 
+
+ g, (30) 
+
+
+
+¯p ⊗ ¯w...
+
+(¯ p ⊗ ¯w)(L−1) 
+
+ =
+
+
+
+Γpw 
+
+...
+
+Γ(pw )(L−1) 
+
+ g. (31) This directly yields (16). From (30), we have 
+
+ddt (Γ w(j) g) = ¯ w(j+1) = Γ w(j+1) g (32) 8for all j = 0 , . . . , L − 2, where Γw(0) = Γ w, which directly implies (17). Moreover, using the generalized Leibniz rule, we find 
+
+(¯ p ⊗ ¯w)(n) =
+
+> n
+
+X
+
+> k=0
+
+nk
+
+ 
+
+¯p(k) ⊗ Inw
+
+
+
+¯w(n−k) (33) for n = 0 , . . . , L −1. Consequently, the left-hand side in (31) can be expressed as 
+
+
+
+¯p ⊗ ¯w...
+
+(¯ p ⊗ ¯w)(L−1) 
+
+ = ¯PL
+
+
+
+¯w...
+
+¯w(L−1) 
+
+ = ¯PL
+
+
+
+Γw
+
+...
+
+Γw(L−1) 
+
+ g, 
+
+where we substituted (30) to obtain (18). The reverse impli-cation that (16)–(18) implies (14) follows directly from the above derivations. ■
+
+9

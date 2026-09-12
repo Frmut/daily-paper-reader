@@ -1,0 +1,37 @@
+{
+  "label": "2026-09-12",
+  "date": "2026-09-12",
+  "generated_at": "2026-09-12T21:28:42",
+  "count": 2,
+  "papers": [
+    {
+      "paper_id": "202609/12/2609.06621v1-a-control-philosophy-for-multiplexed-power-converters-in-active-distribution-systems",
+      "section": "quick",
+      "title_en": "A Control Philosophy for Multiplexed Power Converters in Active Distribution Systems",
+      "authors": "Matthew Deakin, Mahmood Jamali, Nail Tosun, Shafiq Odhano",
+      "date": "2026-09-06",
+      "pdf": "https://arxiv.org/pdf/2609.06621v1",
+      "score": "6.0",
+      "evidence": "多路复用功率变换器的控制理念",
+      "tldr": "本文针对主动配电网中多路复用电力电子设备（M-PEDs）缺乏操作控制策略的问题，提出了一种基于状态机的控制哲学。该方法通过管理互斥的选择器和电流控制信号，实现了对M-PEDs的有效调度。文中详细介绍了适用于不同场景的“离线”与“热插拔”两种控制方案，并通过背靠背电压源转换器拓扑的仿真验证了其可行性，为复杂电力电子设备的灵活运行提供了理论支撑。",
+      "tags": "query:pmsm",
+      "abstract_en": "Reconfigurable, multiplexed power electronic devices (M-PEDs) can provide more effective, flexible operation for applications in active distribution networks, enabling the mitigation of thermal constraints and voltage violations. To-date, operational approaches of these M-PEDs have not been described, a significant issue as a result of their relative complexity as compared to conventional PEDs. This work proposes a state machine-based control philosophy that can be used to manage the mutually exclusive selector- and current-control signals for M-PEDs. Two control approaches are described using this philosophy: an Off-Load approach, suitable for systems without time-critical network constraints; and a Hot-Swap approach, implemented when the impact of transients must be minimized. Simulations illustrate the evolution of the state machine for a back-to-back voltage source converter topology. It is concluded that the proposed state machine-based control philosophy enables M-PED operation whilst managing the additional complexity of this promising converter topology.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202609/12/2609.07241v1-a-continuous-time-generalization-of-the-lpv-fundamental-lemma",
+      "section": "quick",
+      "title_en": "A Continuous-Time Generalization of the LPV Fundamental Lemma",
+      "authors": "Philipp Schmitz, Chris Verhoek",
+      "date": "2026-09-07",
+      "pdf": "https://arxiv.org/pdf/2609.07241v1",
+      "score": "6.0",
+      "evidence": "非线性系统的数据驱动LPV控制",
+      "tldr": "本文针对连续时间非线性系统控制难题，提出了一种连续时间线性参数变化（LPV）系统的基本引理。研究通过将离散时间LPV基本引理推广至连续时间域，实现了基于数据的系统表示，为直接利用数据进行连续时间LPV控制器设计提供了理论基础，填补了数据驱动控制在连续时间非线性系统应用中的研究空白。",
+      "tags": "query:pmsm",
+      "abstract_en": "Controller design for physical systems directly from data is of tremendous interest in both the industry and academia. However, the research on direct data-driven control has thus far mainly focused on discrete-time linear time-invariant systems. To make the highly non-trivial step to continuous-time nonlinear systems, this paper explores an intermediate route through the framework of linear parameter-varying (LPV) systems. LPV systems can be used as a convenient surrogate for nonlinear systems to achieve systematic analysis and controller design. In this work, we generalize the LPV Fundamental Lemma for discrete-time systems towards a class of continuous-time LPV systems, achieving data-driven representations that can be used to design continuous-time LPV controllers.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

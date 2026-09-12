@@ -1,0 +1,200 @@
+Title: A Control Philosophy for Multiplexed Power Converters in Active Distribution Systems
+
+URL Source: https://arxiv.org/pdf/2609.06621v1
+
+Published Time: Wed, 09 Sep 2026 01:22:04 GMT
+
+Number of Pages: 7
+
+Markdown Content:
+# A Control Philosophy for Multiplexed Power Converters in Active Distribution Systems 
+
+Matthew Deakin 
+
+School of Engineering Newcastle University 
+
+Newcastle-upon-Tyne, UK 
+
+Mahmood Jamali 
+
+School of Engineering Newcastle University 
+
+Newcastle-upon-Tyne, UK 
+
+Nail Tosun 
+
+School of Engineering Newcastle University 
+
+Newcastle-upon-Tyne, UK 
+
+Shafiq Odhano 
+
+School of Engineering Newcastle University 
+
+Newcastle-upon-Tyne, UK 
+
+Abstract —Reconfigurable, multiplexed power electronic de-vices (M-PEDs) can provide more effective, flexible operation for applications in active distribution networks, enabling the mitigation of thermal constraints and voltage violations. To-date, operational approaches of these M-PEDs have not been described, a significant issue as a result of their relative complexity as compared to conventional PEDs. This work proposes a state machine-based control philosophy that can be used to manage the mutually exclusive selector- and current-control signals for M-PEDs. Two control approaches are described using this phi-losophy: an Off-Load approach, suitable for systems without time-critical network constraints; and a Hot-Swap approach, implemented when the impact of transients must be minimized. Simulations illustrate the evolution of the state machine for a back-to-back voltage source converter topology. It is concluded that the proposed state machine-based control philosophy enables M-PED operation whilst managing the additional complexity of this promising converter topology. 
+
+Index Terms —Reconfigurable Converters, Converter Multi-plexing, Power Distribution, Power Quality, Soft Open Point 
+
+I. I NTRODUCTION 
+
+Power electronic devices (PEDs), such as back-to-back soft open points (SOPs) and four-wire static compensators (4W-STATCOMs), are becoming a prevalent solution for distribu-tion system operators (DSOs) to address voltage violations and thermal constraints, aiming to increase capacity headroom or reduce curtailment of distributed energy resources (e.g., rooftop solar). To increase PED flexibility, reconfigurable multiplexed PEDs (M-PEDs) have been proposed as a PED topology that offers increased flexibility when the PED oper-ates as a multiport converter. In particular, M-PEDs include a switching matrix for reconfiguration (i.e., a power multiplexer ,p-mux) at the output of each of the power converter’s modules. The inclusion of these p-muxes can increase the flexibility of the PED by a factor of two or greater (in terms of peak power transfer per port), depending on the converter topology and application [1], [2], [3]. One PED type which can benefit from this structure is a back-to-back soft open point (SOP). An example multiplexed 
+
+M. Deakin was supported by the Royal Academy of Engineering under the Research Fellowship programme. This work was supported by the Engineering and Physical Sciences Research Council (EPSRC) Impact Ac-celeration Account (IAA) at Newcastle University, EP/X525601/1. Contact: 
+
+matthew.deakin@newcastle.ac.uk /// /// /// Power multiplexers Active AC/DC stages Interphase inductors // DC link Feeder F 1      
+
+> Feeder F 2/// Output
+> fi lters ///
+> sel PWM PWM sel sel PWM
+> Mdle .1
+> (3HB) Mdle .3
+> (3HB) Mdle .2
+> (3HB)
+
+Fig. 1. This work proposes a control philosophy that defines how current control signals, PWM , and multiplexer selector signals, sel , are coordinated to enable a transition between configurations and power injections into each feeder (i.e., the feeder to which each module (Mdle.) is connected). The example M-PED we consider in the remainder of the paper is a 3-Module, 2-Feeder M-SOP. 
+
+SOP (M-SOP) topology is shown in Fig. 1. Compared to con-ventional (non-reconfigurable) SOPs, the operating condition of an M-PED is defined not only by pulse-width modulation signals ( PWM , defining the active and reactive powers Pk, Q k
+
+injected by the kth module), but also by the state of the multiplexer’s selector signals ( sel , defining which output port that power is transferred to or from). For conventional (non-reconfigurable) PEDs, proportional-integral (PI) control of the outer voltage loops and inner current loops is dominant for grid-following PEDs such as SOPs [4] or static compensators (D-STATCOMs) [5]. In contrast, there are very few time-domain operational studies considering a PED’s changing quasi-static converter topology, with a notable study considering a PED’s bypass switch in [6]. In contrast, there are increasing numbers of papers consider-ing M-PED operation that focus on quasi-steady-state (QSS) network-level optimal operation [1], [2], where the output of such techniques are the active and reactive injections of each module together with multiplexer configuration. Similar QSS studies have been considered for other related configuration problems, such as (modular) fast charging station distribution systems [7], reconfigurable ac/dc substations [8], or network configuration for fixed PED operation in hybrid ac/dc systems [9]. Given the significant increase in complexity of M-PEDs compared to conventional PEDs, the lack of time-domain con-arXiv:2609.06621v1 [eess.SY] 6 Sep 2026 trol approaches suitable for describing the M-PED operation is a substantial gap. In particular, this gap leaves uncertainty as to how M-PED operational complexity might be addressed reliably and efficiently, as required to realise the benefits of M-PEDs for DSOs. The contribution of this work is to address this gap by proposing a complete control philosophy for M-PEDs, covering QSS operation (through a network-level control system) through to the generation of PWM signals and multiplexer switch sel signals. Simulations results for an M-PED prototype validate the effectiveness of the proposed control philosophy. This work is structured as follows. We first outline the DSO’s requirements for both the PED and M-PED control in an electrical distribution network (Section II). The pro-posed state machine-based M-PED control philosophy is then introduced, with two control approaches compared against classical PI control to demonstrate the philosophy’s effec-tiveness (Section III). The implementation of the proposed approach is considered through a hypothetical time-domain evolution of the state machine, as it could be implemented for prototype hardware (Section IV). Finally, conclusions are drawn (Section V). II. PED AND M-PED C ONTROL REQUIREMENTS FOR 
+
+OPERATION IN ACTIVE DISTRIBUTION NETWORKS 
+
+PEDs (and M-PEDs) are installed by DSOs to increase the capability of the network to deliver power to end-customers safely and reliably. The purpose of their installation could typically be expected to increase network capacity by man-aging thermal constraints or voltage violations; furthermore, they must do so without compromising the quality of power supplied to the end customer—i.e., without compromising electromagnetic compatibility (EMC). If a PED is used to mitigate voltage violations, then it implies that the PED must have the capability to significantly impact on network voltages at its PCC; therefore, EMC with regard to transient- and steady-state voltages must be considered. The most relevant EMC constraints for PED and M-PED operation relate to voltage sags and swells and rapid voltage change (RVC). For a concrete consideration of these issues, we consider EMC requirements for the Great Britain (GB) region. Although the specific thresholds used to define these issues vary [10], this is considered a reasonable region to be representative for considering (M-)PED operational require-ments. Voltage sags and swells are measured by power quality monitors when rms voltages rise above or below a threshold. This means a PED or M-PED should ideally avoid (through its action or inaction) causing the voltage Vt to go outside the acceptable limits 
+
+V Sag ≤ Vt ≤ V Swell ∀ t , (1) where Vt is the full-cycle rms voltage measured at time t,updated every half-cycle (10 ms); and V Sag , V Swell are the sag and swell voltage thresholds, respectively. The severity of a sag/swell can be classified depending on changes in the duration of the voltage excursion [11]; this is not considered further in this work. RVC constraints (or, equivalently, step voltage constraints )mean that changes in voltage magnitude should not exceed an upper threshold, RVC Max ., i.e., 
+
+VPCC (SPED , new ) − VPCC (SPED , old ) ≤ RVC Max . , (2) where SPED , new , S PED , old are hereon referred to as Old and 
+
+New (M-)PED setpoints, and VPCC is the voltage at the point of common coupling (PCC). The value of RVC Max . is typi-cally 3% pu [10]. If voltage changes occur over a short time period or are infrequent, then more complex RVC envelopes can be defined that are less conservative; nevertheless, (2) is considered the most appropriate operational constraint for M-PEDs and PEDs considered in this work. If the PCC voltage changes by more than 3% as a result of the change in setpoints, then a PED or M-PED can be operated so that its output is sufficiently slow to not introduce an RVC constraint [12]. The steady state voltage is defined within the appropriate standard [13] as a 1 s period over which the voltage does not change by more than 0.5%. Whilst a maximum voltage slew rate for VPCC is not presented directly in the standards [12], [13], this steady state voltage definition does imply that inequality (2) can be neglected as a constraint if instead dVPCC 
+
+dt ≤ 0.5% /s . (3) 
+
+A. Conventional PED Control to Meet EMC Requirements 
+
+The control of conventional PEDs is typically maintained through a hierarchical control structure. A network-level con-trol system (NLCS) determines active and reactive power setpoints, then passes these to a real-time PED controller that ultimately generates PWM signals to realise the reference power injections. These PWM signals are typically generated from the output of PI controllers which track reference d-q current signals within a cascaded voltage control loop [4], [5]. For a conventional PED, the voltage sag/swell constraint (1) can be implicitly accounted for by lower-level PI controllers. This is because the operating region is convex (see Fig. 2) and, assuming a linear relationship between PCC voltages and d-q currents (as considered in appropriate examples of [12]), then all operating points between the New and Old NLCS setpoint will be feasible, not passing through any regions which would result in a voltage sag or swell. If RVC is a relevant concern, then the slew rate constraints (3) can be implemented by choosing a time constant which is sufficiently large for the relevant control loops, such that inequality (2) can be neglected. 
+
+B. Characterising M-PED Control Philosophy Challenges 
+
+In general, an M-PED will need to change not only the PWM signals PWM for each converter, but also the configuration of the power multiplexers through sel (Fig. 1). For example, two configuration states of that M-SOP are shown in Fig. 3. In contrast to a PED, there is considerable non-convexity in an M-PED’s operating region [14], in terms of the powers that 1/21/2                          
+
+> [pu] [pu]
+> 001/4
+> Start End From ( 1/2, 0)to ( 0, 1/2)Fig. 2. The first quadrant of the capability chart for a SOP in active and reactive powers, P2, Q 2, respectively. SOP capability charts are convex, so all points between two feasible setpoints are also feasible. 3HB (mdl .1)
+> 3HB (mdl .2)
+> 3HB (mdl .3)/// /// /// // F1
+> F2/// /// Mdle .1
+> (3HB) Mdle .3
+> (3HB) Mdle .2
+> (3HB)
+> (a) Example configuration (i) /// /// /// // /// /// F1
+> F2
+> Mdle .1
+> (3HB) Mdle .3
+> (3HB) Mdle .2
+> (3HB)
+> (b) Example configuration (ii) Fig. 3. Two example M-SOP configurations, (i), (ii) that can be realised by changing the M-SOP’s selector signals sel .
+
+can be injected into each feeder. This non-convexity means that New and Old setpoints will not, in general, have a continuous operating trajectory between them. This means that a given transition path of the M-PED’s current injections may result in a sag or swell. Furthermore, there is a need to change the discrete values of power multiplexer configuration signals sel .There are two approaches that could address this issue. The first would be to aim to complete a transition from the old setpoint to a new setpoint within 10 ms (i.e., half a cycle). This would mean that the rms measurement of voltages by a power quality monitor would not register the issue. This has several substantial practical challenges:  
+
+> •
+
+it will rule out electromechanical switches as a means of implementing the multiplexers (as proposed as an efficient candidate solution for implementation [14]), due to their settling times of tens of ms (e.g., 25 ms operating time for an 80 A contactor [15]);  
+
+> •
+
+either precise zero-current switching will be required to be implemented for the multiplexer switches, or substan-tial snubbers applied to avoid large voltage transients dur-ing on-load switching of the multiplexer’s series switches;  
+
+> •
+
+potentially large angle differences between the feeders (or phases) which are connected for the Old and New PED setpoints create a risk of ‘shoot-through’, so an appropriate deadband should be applied between opening a switch connected to one feeder and closing another;  
+
+> •
+
+if PI controllers are used for current control, these will need very high gains so that new steady-state sinusoidal currents can rapidly be achieved;  
+
+> •
+
+If the voltage changes more than 3%, then a one-shot change from an Old to New setpoint within 10 ms would violate (2), so a series of setpoint changes would need to be defined (noting, if this is the case, then if the series of setpoints is not chosen appropriately, there could be intermediate points within this trajectory for which voltage sag/swell conditions may not be met). Considering these challenges, it is considered the complexity of such an approach will be impractical for a typical M-PED practical, including the experimental implementation devel-oped within this work which uses electromechanical contactors (Section IV). Therefore, for the remainder of this work, we focus on a second approach. This assumes a relatively slow transition through M-PED configurations. This approach can be has constraints on the controller design. (i) the individual switches within the power multiplexer can only be switched off-load. This enables the control to be used with a multiplexer constructed from either electromechanical- or solid-state switches. (ii) The values of sel should never permit more than one multiplexer switch to be closed at any one time. A corollary of (i), (ii) and the non-convexity of M-PED’s operating regions is that it may be impossible for the M-PED controller to avoid all transient sags and swells when the M-PED is being used to avoid voltage violations. We therefore aim to provide a framework which can be the basis of minimizing the impact of these setpoint transitions aiming to avoid (wherever possible) voltage sags/swells (1) whilst respecting the RVC ramp-rate constraint (3). Finally, we add the following requirement, (iii) the operation of an M-PED should aim to be simple and understandable, where this is possible. This final requirement (iii) should be considered heuristic, and can be dropped if the control designer cannot clearly differentiate between different algorithms. III. A N M-PED C ONTROL PHILOSOPHY 
+
+The power multiplexer switches can only be switched when they are in an off-load condition (i). This means that each M-PED module’s PWM and sel control signals are mutually exclusive: either the output current can be controlled, or the state of the multiplexers can be changed. These mutually Network -Level Control System Network -wide measurements DSO control objectives New M-PED setpoint M-PED lead controller M-PED real -time follower controller (state machine) P-MUX con fi gurations Triggers to change state   
+
+> PWM
+> signals
+> sel
+> signals Setpoint reached ok M-PED measurements setpoints Module Fig. 4. Proposed hierarchical M-PED control architecture as a means of implementing the controller requirements.
+
+exclusive control signal pairs lend themselves naturally to a state machine-based control approach. Appropriate logic checks can be implemented within the state machine to ensure that no more than one switch within a multiplexer is closed at any one time (ii). The proposed control philosophy has a three-stage archi-tecture, as shown in Fig. 4. The lowest-level M-PED fol-lower controller implements the state machine to enable or disable sel or PWM signals, with conventional PI controllers implemented for individual module current and voltage control loops, tuned to satisfy (3). This is driven by a lead M-PED controller whose function is to convert a New M-PED setpoint, defined as the active and reactive powers injected into each feeder, into a series of d-q currents, power multiplexer states, and state transition trigger signals that will result in transi-tioning the M-PED from an initial setpoint to a new setpoint whilst meeting (1) where possible. The M-PED’s per-feeder power injection setpoint has been determined by the network-level control system using a DSO’s operational objectives and network-wide measurements. The implementation of the network-level control system has been previously studied, for example, as constrained optimization problems, and is not elaborated on further (see, e.g., [1], [14]). 
+
+A. M-PED Follower Control State Machine 
+
+The M-PED follower controller uses a conventional control approach to realise stable operation, utilising per-module P-Q and Vdc-Q modes during normal operation, driving each module’s PWM signal [16]. Additional states are then defined when some or all output PWM signals are suspended, as necessary to enable the sel signal for one or more modules. (Other states that are also commonly implemented, such as PED start-up sequences, are not considered in this work.) Trigger signals are implemented to indicate when the follower controller should transition to a new state. Guard conditions are implemented, checking when the trigger is received that the module is in an appropriate condition prior to transitioning to a new state. Firstly, a module transitioning from PWM to sel control must have zero current on all phases (to within a numerical tolerance), to meet (i). Conversely, if a module will transition from sel to PWM control, it is checked that the controller has a fixed multiplexer configuration (e.g., sufficient time required to operate any contactors has passed). Under this general state machine-based control philosophy, two specific control approaches are considered for the follower controller.                                       
+
+> TABLE I OFF -L OAD CONTROL CAPABILITIES FOR EACH STATE .State Module 1 Module 2 Module 3
+> S0PWM (P-Q) PWM (P-Q) PWM (Vdc-Q)
+> S1sel sel sel
+> TABLE II HOT SWAP CONTROL CAPABILITIES FOR EACH STATE .State Module 1 Module 2 Module 3
+> S0PWM (P-Q) PWM (P-Q) PWM (Vdc-Q)
+> S1sel PWM (P-Q) PWM (Vdc-Q)
+> S2PWM (P-Q) sel PWM (Vdc-Q)
+> S3PWM (P-Q) PWM (Vdc-Q) sel
+> •
+
+Off-Load control, with two states. Either all modules have 
+
+PWM enabled and are conducting, with no capabilities to change configuration ( S0); or, all modules have sel 
+
+enabled and are nonconducting, with no possibility to inject current ( S1). A pair of triggers T0→1, T1→0 indicate when the controller should transition between S0 and S1. 
+
+> •
+
+Hot-Swap control, with n + 1 states for an n-module M-PED. The first state, S0, has all modules conducting with PWM enabled; thereafter, the (k + 1) th state Sk+1 
+
+corresponds to the kth module nonconducting (with sel 
+
+enabled) and remaining modules conducting with PWM 
+
+enabled. Triggers T0→k, Tk→0 enabling a transition to and from state Sk from S0 respectively, and there are therefore 2n triggers in total. For both of the control approaches, one module is chosen to operate under a Vdc-Q control mode, with all other modules chosen with a P-Q setpoint, both implemented using appropri-ate PI controllers as in [16]. An example of these two control approaches is summarised in Table I and Table II for the M-SOP of Fig. 1. 
+
+1) Implementation of an M-PED lead controller: Depend-ing on the state machine implementation, the complexity of the M-PED lead controller varies. For an Off-Load control approach, the lead controller can be simple. Current setpoints are first set to zero, then the trigger T0→1 moves the state to S1, disabling PWM and enabling sel . Each multiplexer is set to its new configuration, then trigger T1→0 re-enables PWM 
+
+and disables sel , after which the d-q current setpoints are chosen to realise the M-PED setpoint. If there are no voltage sag / swell issues of concern, then this control is considered appropriate to meet the simplicity requirement (iii). There is more complexity in the M-PED lead controller implementation for the Hot Swap approach, although the approach may be necessary to meet voltage sag/swell and RVC requirements (1), (3). In general, the overall transition between M-PED setpoints can be implemented as a series of transitions through states—the current should be set to zero for one module, with the current injections of the other modules chosen to achieve appropriate operational objectives (e.g., ensuring (1), (3) are met). Once the multiplexer configuration [pu] [pu] 1/3 0012/3 1/3 1/2 1/4 Overvoltage  Start Midpoint, set: End From (1/3, 0), with: to (0, 1), with: (a) Off-Load approach [pu] [pu] 1/3 0012/3 1/3 1/2 1/4 Overvoltage Midpoint, set: End Start, set: (b) Hot-Swap approach Fig. 5. Comparison of the two control approaches for the M-SOP (only showing the first quadrant). Compared to the SOP (Fig. 2), the M-PED has increased control complexity, but with increased flexibility in terms of reactive power injections. 
+
+has changed, the configuration of each other module is then also updated in-turn in the same manner, until the M-PED reaches the New setpoint. The operating point chosen during Hot Swap control will significantly influence whether a network meets its operational objectives. Furthermore, the preceding states change the capa-bility chart when a module reaches state Sk (due to a different multiplexer configuration), and therefore the order through which states are passed can also change the characteristics of the operational change. Future work could consider optimal approaches to choose these transitions so that the risk or severity of sags or swells is mitigated. 
+
+B. Example of Off-Load and Hot Swap Control Approaches 
+
+To illustrate both M-PED control approaches and contrast these with conventional PED operation, we consider an M-PED with M-SOP topology shown in Fig. 1, comparing this against a conventional SOP with 1/2 pu module capacity connected to two feeders. For the M-SOP, we consider an Old setpoint change from an active power injection of 1/3 pu from feeder F1 to F2 to New setpoint as a fully reactive injection of 1 pu only on feeder F2 (Fig. 5). The configuration of the multiplexers should change so that the 1/3 pu module capacity initially connected to feeder F2 is increased to 1 pu, as shown in Fig. 3. For the SOP, we consider a change from an active power injection of 1/2 pu from F1 to F2 to a fully reactive injection of 1/2 pu on F2, as shown in Fig. 2. Comparing the conventional SOP control (Fig. 2) and proposed M-SOP control approaches (Fig. 5), the complexity of changing the M-PED setpoint is clear. Nevertheless, the additional power injection that is possible with the M-PED is also evident, with a doubling of the reactive power that can be injected (on a per-unit basis). Comparing Fig. 5a and Fig. 5b, the additional complexity of the Hot Swap control can be seen as it must change state four times (changing multiplexer configurations first at the Start, and then at the Midpoint), as compared to just twice for 1/31/60        
+
+> State :123
+> F1
+> Mdle .F2n/a Feeder
+> Legend
+> Trigger :
+> F2total capacity [pu] :1/31
+> Current [pu] Time
+> (a) Off-Load M-PED control 1/31/60
+> Trigger :
+> State :
+> F2total capacity [pu] : 1/32/31
+> Current [pu] Time
+> (b) Hot-Swap M-PED control Fig. 6. Time-domain summary of states and transitions for the Hot-Swap and Off-Load control approaches for the changes in configuration and injections, considering an M-SOP topology (Fig. 1).
+
+the Off-Load control. Nevertheless, the requirement to pass through the zero-load point is also a distinct disadvantage of Off-Load control, resulting in a transient overvoltage, thereby failing to meet the sag and swell constraint (1). The timing of trigger and multiplexer configuration signals for the M-SOP are shown in Fig. 6. An implementation of Off-Load control can be developed using a simple subroutine to implement the steps shown in Fig. 5a. For the Hot Swap con-trol, the controller must choose active and reactive setpoints that satisfy guard conditions and simultaneously meet sag and swell constraints (1), as well as determining the order of state transitions. IV. S IMULATION RESULTS 
+
+To consider the practicality of the proposed M-PED control philosophy, a simulation of a three-module M-SOP has been developed (Fig. 1) to demonstrate time-domain evolution of the proposed state machine. The power multiplexer’s elec-tromechanical relays, which must be switched off-load, are modeled as ideal switches with a small parallel impedance which acts as a snubber (which is necessary to avoid numerical issues during simulation). The switches are assumed to have a current rating of 10 Arms , with the per-unit current base 30 Arms . The grid is modeled as a three-phase 50 V rms voltage simulating an ac distribution grid with two feeders, F1 and F2, as shown in Fig. 7. Currents are contolled with conventional dq axis current control using PI controllers. Simulations are conducted in PLECS. For the Off Load approach, the transition signals follow the approach described in Section III-B. Fig. 8 shows the state of the multiplexer matrix (via the energization of the contactor /// /// Variac 
+
+3-module M-SOP Fig. 7. The grid is simulated as two feeders, fed from a variac to represent a three-phase ac source, connected to the three-module reconfigurable M-SOP. The currents in feeders F1 and F2 are denoted iF1 , i F2 respectively.  
+
+> Fig. 8. Simulation results for the Off-Load control approach. The subfigures show the multiplexer coil energization (upper), representing state of the power multiplexer; and the rms feeder current (lower). Both subfigures show the timing of the trigger signals to request the M-PED follower control to change state.
+
+coils) and the current injected into each feeder. It can be seen that the changes in the energization occur only between trigger signals T0→1, T1→0 (i.e., when the M-SOP is in state S1), and that current is only non-zero outside of this period (i.e., in state 
+
+S0). The time-domain state machine evolution for the Hot Swap approach also follow the signals introduced in Section III-B. Fig. 9 shows the state of the multiplexer matrix and the injections of feeder current alongside the trigger signals. It can be observed that the reconfiguration of the kth module only occurs between the trigger signal pair T0→k, Tk→0 (i.e., in state Sk). As with the Off-Load approach, a change in configuration of the multiplexer for a given module occurs when that module is not conducting (the implemented current setpoints follow the magnitude of the per-module injection, as shown in Fig. 6b). However, in contrast to the Off-Load approach, the Hot Swap approach continues to inject current during the transition to the new PED setpoint. Note that the initial difference between the feeder RMS currents is due and have a current rating of 10 Arms . A three-phase 50 V rms voltage can be to the DC-link voltage control action, since the converter regulating the DC link injects the additional active power required to balance the DC-link energy. This behaviour appears in both control examples and is not caused by the reconfiguration process itself.  
+
+> Fig. 9. Simulation results for the Hot Swap control approach, demonstrating the ability to change the configuration of an M-PED whilst continuing to inject some power into the distribution network.
+
+The requirements for off-load switching (i) and allowing only one selector output at a time (ii) have been met for both control approaches. In the example shown, the variac provides a stiff ac grid at the PCC of the M-SOP, which means that the requirements (1) and (2) are trivially met. Future experimental works could include feeder impedances to demonstrate that the Hot Swap approach can avoid transient voltage sags and swells. If an M-SOP were implemented in a real distribution grid with a stiff voltage source, its simplicity implies that the Off Load approach would be preferred (by (iii)). V. C ONCLUSIONS 
+
+To enable the benefits of reconfigurable M-PEDs to be realised, control approaches must be developed that can ad-dress their increased operational complexity as compared to conventional PEDs. This work has developed a control philos-ophy to address this issue, proposing to take existing network-level control M-PED setpoints as the control input and then using this to determine PWM and multiplexer configuration signals through the implementation of a state machine. The state machine ensures that mutually exclusive reconfiguration and current control signals cannot occur simultaneously. The scalability of the architecture is clear with the number of states growing only linearly with M-PED modules in the worst case. The Off-Load approach provides a clear and simple im-plementation of the proposed control philosophy, although it risks transient voltage sag or swell events due to the no-load condition during multiplexer reconfiguration. In contrast, the Hot Swap approach sequentially reconfigures M-PED’s multiplexers, enabling the mitigation of voltage changes as the M-PED changes its setpoint, albeit with an increase in complexity. Whilst the Hot Swap approach does not afford the continuously feasible operation of a conventional PED, it does offer the potential to minimize the severity and duration of voltage sags and swells. Future work could further explore M-PED lead controller implementation to develop approaches which achieve this objective through systematic optimization approaches. Reconfigurable power converters have been proposed for diverse applications, from information technology equipment power supplies to electric vehicle fast charging stations. By accounting for the power distribution network requirements in the development of the proposed control, we conclude that M-PEDs have the potential to provide an effective and efficient solution to meet multiport-type mission profiles commonly seen in distribution power flow control applications. REFERENCES [1] M. Deakin, “Multiplexing power converters for cost-effective and flexi-ble soft open points,” IEEE Transactions on Smart Grid , vol. 15, no. 1, pp. 260–271, 2023. [2] X. Cui, G. Ruan, F. Vall´ ee, J.-F. Toubeau, and Y. Wang, “A two-level coordination strategy for distribution network balancing,” IEEE Transactions on Smart Grid , vol. 15, no. 1, pp. 529–544, 2024. [3] M. Deakin and X. Deng, “Reconfigurable power converters with in-creased utilization for unbalanced power distribution system applica-tions,” in 13th International Conference on Power Electronics, Machines and Drives (PEMD 2024) , vol. 2024. IET, 2024, pp. 96–103. [4] X. Jiang, Y. Zhou, W. Ming, P. Yang, and J. Wu, “An overview of soft open points in electricity distribution networks,” IEEE Transactions on Smart Grid , vol. 13, no. 3, pp. 1899–1910, 2022. [5] E. Hashemzadeh, M. Aghamohammadi, M. Asadi, J. Z. Moghaddam, and J. M. Guerrero, “Secondary control for a d-statcom dc-link voltage under capacitance degradation,” IEEE Transactions on Power Electron-ics , vol. 36, no. 11, pp. 13 215–13 224, 2021. [6] Z. Lai, H. Yi, Z. Wang, F. Zhuo, and H. Zhuang, “Transient analysis and overcurrent limited strategy for supply restoration-oriented hybrid soft open point,” IEEE Transactions on Power Electronics , vol. 39, no. 2, pp. 2660–2676, 2023. [7] C. B. Saner, J. Saha, and D. Srinivasan, “A social welfare theory-inspired lexicographic optimal charging scheduling framework for modular ev fast charging stations,” IEEE Transactions on Intelligent Transportation Systems , 2024. [8] A. Shekhar, T. B. Soeiro, L. Ram´ ırez-Elizondo, and P. Bauer, “Offline reconfigurability based substation converter sizing for hybrid ac–dc distribution links,” IEEE Transactions on Power Delivery , vol. 35, no. 5, pp. 2342–2352, 2020. [9] H. M. Ahmed and M. M. Salama, “Energy management of ac–dc hybrid distribution systems considering network reconfiguration,” IEEE Transactions on Power Systems , vol. 34, no. 6, pp. 4583–4594, 2019. [10] J. Barros, M. de Apr´ aiz, and R. I. Diego, “A review of international limits for rapid voltage changes in public distribution networks,” Renewable and Sustainable Energy Reviews , vol. 144, p. 110966, 2021. [11] British Standards Institution, “BS EN 50160:2022+A1:2025 (voltage characteristics of electricity supplied by public electricity networks),” 2025. [12] Energy Networks Association, “Engineering report P28 issue 1 2025: Guide to the application of Engineering Recommendation P28 issue 2,” https://www.ena-eng.org/ena-docs/, accessed 28/6/26. [13] ——, “Engineering recommendation P28 issue 2 2019: Voltage fluc-tuations and the connection of disturbing equipment to transmissions systems and distribution networks in the United Kingdom,” https://www. ena-eng.org/ena-docs/, accessed 4/3/26. [14] M. Deakin, P. C. Taylor, J. Bialek, and W. Ming, “Design and operation of hybrid multi-terminal soft open points using feeder selector switches for flexible distribution system interconnection,” Electric Power Systems Research , vol. 212, no. 108516, 2022. [15] Sensata Technologies, “Datasheet: P195 mini-tactor,” https://www.sensata.com/sites/default/files/a/ sensata-gigavac-p195-series-minitactor-contactors-datasheet.pdf, 2026. [16] W. Cao, J. Wu, N. Jenkins, C. Wang, and T. Green, “Operating principle of soft open points for electrical distribution network operation,” Applied Energy , vol. 164, pp. 245–257, 2016.
