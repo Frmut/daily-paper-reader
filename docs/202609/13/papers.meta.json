@@ -1,0 +1,23 @@
+{
+  "label": "2026-09-13",
+  "date": "2026-09-13",
+  "generated_at": "2026-09-13T21:22:15",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202609/13/2609.11130v1-exact-pid-and-pi-gain-regions-for-uncertain-non-affine-mimo-systems",
+      "section": "quick",
+      "title_en": "Exact PID and PI Gain Regions for Uncertain Non-Affine MIMO Systems",
+      "authors": "Cheng Zhao",
+      "date": "2026-09-10",
+      "pdf": "https://arxiv.org/pdf/2609.11130v1",
+      "score": "6.0",
+      "evidence": "MIMO系统的PID和PI增益区域",
+      "tldr": "本文针对不确定非仿射MIMO系统，研究了PID和PI控制器的精确增益区域。研究通过分析二阶PID系统和一阶PI系统，利用线性子类和公共二次证书，推导出了系统级的精确增益区域。这些结果不仅严格扩大了现有的充分条件范围，还为PID控制提供了顺序整定规则，并揭示了端点重合与边界族等价是获取精确增益区域的关键路径。",
+      "tags": "query:pmsm",
+      "abstract_en": "Characterizing all PID gains that guarantee uniform exponential regulation of uncertain nonlinear systems remains a fundamental problem. Most existing results provide only sufficient conditions derived from a particular Lyapunov construction. This paper gives exact gain regions, defined directly by uniform regulation over the entire uncertainty class, for two classes of nonaffine MIMO systems with $m\\ge2$ controlled coordinates and input channels. For systems of second order under PID control, we independently characterize a common quadratic inner region and an outer region based on a linear subclass. The two regions coincide and therefore characterize the PID gain region exactly at the system level. For systems of first order under PI control, a lossless reduction to a linear family on the uncertainty boundary, combined with a common quadratic certificate, yields the exact PI region. Both regions strictly enlarge existing sufficient regions, and the PID result also provides a sequential tuning rule. A compact linear family with one uncertain parameter shows that common quadratic certification is not generally lossless. These results establish endpoint coincidence and boundary family equivalence as two routes to exact gain regions and motivate the broader question of which nonlinear uncertainty classes admit such characterizations.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

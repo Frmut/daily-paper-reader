@@ -1,0 +1,52 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-09-13T21:22:08.777801+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 1,
+    "quick_skim_target": 11,
+    "quick_selected": 1
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2609.11130v1",
+      "title": "Exact PID and PI Gain Regions for Uncertain Non-Affine MIMO Systems",
+      "abstract": "Characterizing all PID gains that guarantee uniform exponential regulation of uncertain nonlinear systems remains a fundamental problem. Most existing results provide only sufficient conditions derived from a particular Lyapunov construction. This paper gives exact gain regions, defined directly by uniform regulation over the entire uncertainty class, for two classes of nonaffine MIMO systems with $m\\ge2$ controlled coordinates and input channels. For systems of second order under PID control, we independently characterize a common quadratic inner region and an outer region based on a linear subclass. The two regions coincide and therefore characterize the PID gain region exactly at the system level. For systems of first order under PI control, a lossless reduction to a linear family on the uncertainty boundary, combined with a common quadratic certificate, yields the exact PI region. Both regions strictly enlarge existing sufficient regions, and the PID result also provides a sequential tuning rule. A compact linear family with one uncertain parameter shows that common quadratic certification is not generally lossless. These results establish endpoint coincidence and boundary family equivalence as two routes to exact gain regions and motivate the broader question of which nonlinear uncertainty classes admit such characterizations.",
+      "authors": [
+        "Cheng Zhao"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY",
+        "math.OC"
+      ],
+      "published": "2026-09-10T06:19:52+00:00",
+      "link": "https://arxiv.org/pdf/2609.11130v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "PID and PI gain regions for MIMO systems",
+      "llm_evidence_cn": "MIMO系统的PID和PI增益区域",
+      "llm_evidence": "MIMO系统的PID和PI增益区域",
+      "canonical_evidence": "MIMO系统的PID和PI增益区域",
+      "llm_tldr_en": "Characterizes exact PID/PI gain regions for uniform regulation of uncertain non-affine MIMO systems.",
+      "llm_tldr_cn": "表征了不确定非仿射MIMO系统一致调节的精确PID/PI增益区域。",
+      "llm_tldr": "表征了不确定非仿射MIMO系统一致调节的精确PID/PI增益区域。",
+      "llm_tags": [
+        "query:pmsm"
+      ],
+      "matched_query_tag": "query:pmsm",
+      "matched_query_text": "Permanent Magnet Synchronous Motor research",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

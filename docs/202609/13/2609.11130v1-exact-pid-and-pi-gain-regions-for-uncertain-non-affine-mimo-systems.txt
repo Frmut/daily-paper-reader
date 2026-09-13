@@ -1,0 +1,2482 @@
+Title: Exact PID and PI Gain Regions for Uncertain Non-Affine MIMO Systems
+
+URL Source: https://arxiv.org/pdf/2609.11130v1
+
+Published Time: Fri, 11 Sep 2026 00:36:59 GMT
+
+Number of Pages: 34
+
+Markdown Content:
+# Exact PID and PI Gain Regions for Uncertain Non-Affine MIMO Systems 
+
+Cheng Zhao ∗
+
+Abstract 
+
+Characterizing all proportional–integral–derivative (PID) gains that guarantee uniform exponential regulation of uncertain nonlinear systems remains a fundamental problem. Most existing results provide only sufficient conditions derived from a particular Lyapunov construction. This paper gives exact gain regions, defined directly by uniform regulation over the entire uncertainty class, for two classes of nonaffine multi-input multi-output (MIMO) systems with m ≥ 2 controlled coordinates and input channels. For systems of second order under PID control, we independently characterize a common quadratic inner region and an outer region based on a linear subclass. The two regions coincide and therefore characterize the PID gain region exactly at the system level. For systems of first order under PI control, a lossless reduction to a linear family on the uncertainty boundary, combined with a common quadratic certificate, yields the exact PI region. Both regions strictly enlarge existing sufficient regions, and the PID result also provides a sequential tuning rule. A compact linear family with one uncertain parameter shows that common quadratic certification is not generally lossless. These results establish endpoint coincidence and boundary family equivalence as two routes to exact gain regions and motivate the broader question of which nonlinear uncertainty classes admit such characterizations. 
+
+Keywords: PID and PI control, uncertain non-affine MIMO systems, robust gain regions, uniform exponential regulation. 
+
+# 1 Introduction 
+
+Proportional–integral–derivative (PID) control and its common PI and PD variants remain among the most widely used feedback strategies in industrial automation, robotics, and aerospace applications, owing to their relative simplicity and ease of implementation [1]. Since closed-loop stability is a prerequisite for achieving a wide range of performance objectives, the widespread use of PID control makes reliable gain selection a problem of both practical and theoretical importance. A complete stabilizing gain region does more than certify individual controllers: it reveals the robustness limits of a prescribed plant class and provides a stability-preserving domain for performance-oriented tuning [2, 3]. For example, an H∞ (worst-case frequency-response gain) criterion may be optimized over such a region [4]. Classical extremum-seeking methods for feedback-gain tuning are typically analyzed under stability of the frozen closed loops throughout the search domain, whereas stability-certified policy-learning methods require the entire time-varying policy sequence to remain certified [5–8]. A sharp stabilizing gain region, especially an exact one, therefore provides a basis for defining a broad certified search domain, helping preserve closed-loop stability throughout optimization without excluding potentially high-performing controllers. A mature theory for characterizing complete stabilizing PID regions has developed primarily for linear plants, including fixed systems, interval families, and time-delay models [9–12]. Closely 
+
+> ∗State Key Laboratory of Mathematical Sciences, Academy of Mathematics and Systems Science, Chinese Academy of Sciences, Beijing 100190, China. E-mail: zhaocheng@amss.ac.cn.
+
+1arXiv:2609.11130v1 [eess.SY] 10 Sep 2026 related gain-region questions and fundamental performance limitations have also been studied for uncertain stochastic nonlinear systems under PD control [13]. The corresponding linear PID theory relies primarily on polynomial, quasipolynomial, frequency-domain, and parameter-space methods [14–20]. These tools can yield complete stabilizing regions or finite robust-stability tests. Their reliance on a closed-loop characteristic equation and its root distribution, however, prevents a direct extension to general nonlinear uncertainty classes. For uncertain nonlinear systems, substantial progress has been made through Lyapunov, small-gain, differential-inclusion, and Lyapunov–Krasovskii methods. These approaches have established global or semiglobal regulation, exponential convergence, and constructive PID designs for systems with structural uncertainty and extended PID feedback [21], stochastic perturbations [22], input or time-varying delays [23,24], and sampled-data implementations [25,26]. Related feedback-domination arguments have also yielded explicit sufficient gain conditions for uncertain planar nonlinear systems [27]. Broadly speaking, existing theoretical approaches to PID design for uncertain nonlinear sys-tems are predominantly certificate-driven. They typically select a particular Lyapunov function, comparison estimate, small-gain argument, or linear matrix inequality (LMI) formulation and then derive sufficient gain conditions. Such conditions are useful for controller design, but they generally certify only the gains captured by the chosen construction. Even when the Lyapunov matrices and auxiliary variables are optimized over, the resulting gain set often remains implicit and tied to a prescribed certificate class. Moreover, an exact solution of a certificate-level feasibility problem need not recover the intrinsic system-level gain region. The unresolved problem is therefore to characterize all PID or PI gains that guarantee uniform exponential regulation of every admissible nonlinear system, directly in terms of the controller gains and uncertainty bounds and without restricting the stability certificate a priori. This system-level all-gains problem is particularly challenging for non-affine MIMO dynamics, for which neither a common characteristic equation nor a direct scalar stability criterion is available. We address this problem through an inner–outer strategy. A common quadratic certificate defines a tractable inner region, whereas a carefully selected linear test family provides indepen-dently derived necessary conditions and hence an outer region. The two regions are characterized separately, after which system-level exactness is obtained by proving that the gap between them closes. For the second-order PID class, write Ω pid for the system-level gain region, Ω cq pid for the common-quadratic inner region, and Ω lin pid for the linear-subclass outer region. This strategy then takes the form Ωcq pid ⊆ Ωpid ⊆ Ωlin pid .
+
+For the first-order PI class, the same principle is realized through a lossless boundary-linear test family together with an explicit common quadratic certificate. These two constructions provide complementary routes to a complete gain-region characterization: inner–outer endpoint coincidence for PID control and boundary-linear equivalence for PI control. The analogous PI regions are denoted by Ω pi and Ω cq pi . Throughout, Rr>0 denotes the set of real r-vectors with strictly positive components. The contributions below make these two exactness mechanisms precise. The main contribu-tions are summarized as follows. 
+
+i) Exact PID region through endpoint coincidence. For second-order non-affine MIMO systems, we characterize both endpoints exactly and independently. The common-quadratic inner region is reduced to explicit algebraic inequalities in the PID gains and two auxiliary scalars, whereas the linear-subclass outer region is described by an exact frequency-domain condition. Although obtained through different arguments, the two endpoints coincide for every 
+
+m ≥ 2: Ωcq pid = Ω pid = Ω lin pid .
+
+Thus the complete system-level PID gain region is obtained: common-quadratic certification loses no admissible gains, and the linear subclass loses no necessary information. For m = 1, 2both endpoints are still characterized exactly, but they are generally distinct and provide explicit inner and outer bounds on the system-level region. 
+
+ii) Exact PI region through boundary-linear equivalence. For the first-order non-affine MIMO class, we construct a countable boundary-linear family and prove that, for m ≥ 2, uniformly exponentially regulating this family is equivalent to regulating the full nonlinear uncertainty class. Combining this lossless boundary test with an explicit common quadratic Lyapunov function yields Ωcq pi = Ω pi =
+
+> {
+
+(kp, k i) ∈ R2 
+
+> >0
+
+: ki + Lk p < bk 2
+
+> p
+> }
+
+.
+
+This establishes system-level exactness through a mechanism different from the endpoint coinci-dence used for PID control. 
+
+iii) Strict improvements and structural limits. The exact PID and PI regions strictly enlarge the corresponding sufficient regions in [28]. For PID control, the new region captures high-gain scalings excluded by the previous condition and yields a simple sequential tuning rule. We further construct a compact one-parameter linear family whose system-level PID gain region strictly exceeds its common-quadratic region. Thus common-quadratic losslessness is a structural property of the uncertainty classes considered here, rather than a generic feature of robust stability. The remainder of the paper is organized as follows. Section 2 develops the exact PID gain-region characterization for second-order non-affine MIMO systems, including the two endpoint regions, their coincidence for m ≥ 2, and the resulting tuning implications. Section 3 establishes the boundary-linear equivalence and the exact PI gain region for first-order non-affine MIMO systems. Section 4 presents a linear counterexample showing that common-quadratic losslessness is not a generic property. The proofs of the main PID and PI results are collected in Section 5, followed by the conclusion. 
+
+Notation. For a real or complex vector v, ∥v∥ = ( v∗v)1/2 is its Euclidean norm. For a matrix 
+
+A, the same notation denotes the induced Euclidean (spectral or 2-) norm, 
+
+∥A∥ := sup  
+
+> v̸=0
+
+∥Av ∥∥v∥ =
+
+> √
+
+λmax (A∗A).
+
+The superscripts ⊤ and ∗ denote transpose and conjugate transpose, respectively. For a real square matrix A, let Sym( A) := ( A + A⊤)/2. The symbols Sr, Sr
+
+> +
+
+, and Sr 
+
+> ++
+
+denote the real symmetric r × r matrices and their positive-semidefinite and positive-definite cones. For symmetric matrices, A ⪰ B (respectively, A ≻ B) means that A − B is positive semidefinite (respectively, positive definite); ⪯ and ≺ have the reverse meanings. The symbols λmin and λmax 
+
+denote the smallest and largest eigenvalues of a symmetric or Hermitian matrix. We write Ir for the r × r identity, 0 p×q for the p × q zero matrix, and 0 r := 0 r×r; unsubscripted zero blocks have the dimensions dictated by their positions. The notation col( v1, . . . , v j ) means vertical stacking, and diag( A1, . . . , A j ) denotes a block-diagonal matrix. A matrix is Hurwitz if all its eigenvalues have strictly negative real parts; a polynomial is Hurwitz if all its zeros do. Finally, C1(Rp; Rq)denotes continuously differentiable maps from Rp to Rq.
+
+# 2 PID control of second-order non-affine MIMO systems 
+
+This section studies PID regulation for the second-order non-affine MIMO uncertainty class and aims to determine all gains that guarantee uniform exponential regulation over the full nonlinear class. We first formulate the system-level PID gain region directly in terms of closed-loop trajectories. We then introduce and characterize two independently derived endpoint regions: a common-quadratic inner region and a linear-subclass outer region. After obtaining gain-only descriptions of both endpoints, we prove that they coincide for m ≥ 2, thereby yielding the exact 3system-level PID gain region. The scalar case is considered separately. Finally, we compare the resulting region with an existing sufficient region and derive a simple sequential PID tuning rule. 
+
+2.1 Problem formulation and the system-level PID gain region 
+
+For an integer m ≥ 1, consider the following class of uncertain second-order non-affine MIMO systems: ˙x1 = x2, ˙x2 = f (x1, x 2, u ), x1, x 2, u ∈ Rm, (1) where x1 and x2 denote generalized position and velocity, respectively, u is the control input, and f ∈ C1(R3m; Rm) is an unknown nonlinear map that need not be affine in u. The dimension 
+
+m is the number of controlled coordinates and input channels. Subject to the bounds specified below, this class accommodates coupled second-order agents and multi-degree-of-freedom force-or torque-driven systems with state-dependent nonlinearities, cross-channel coupling, and static input nonlinearities. We apply the PID controller with scalar gains kp, k i, k d:
+
+u(t) = kpe(t) + ki  
+
+> ∫t
+> 0
+
+e(s) ds + kd ˙e(t), (2) 
+
+e(t) = y∗ − x1(t).
+
+Here y∗ ∈ Rm is a constant setpoint. For prescribed constants L1, L 2, b > 0, let FL1,L 2,b be the set of all functions f ∈ C1(R3m; Rm)satisfying 
+
+∥ ∂f ∂x 1
+
+∥ ≤ L1, ∥ ∂f ∂x 2
+
+∥ ≤ L2, Sym ( ∂f ∂u  
+
+> )
+
+⪰ bI m, (3) where ∂f ∂x i , i = 1 , 2, and ∂f ∂u are the m × m Jacobian matrices of f with respect to xi and u,respectively. Writing f = ( f1, . . . , f m)⊤, their entries are  
+
+> [
+
+∂f ∂x i
+
+> ]
+> rs
+
+= ∂f r
+
+∂(xi)s
+
+, 
+
+> [
+
+∂f ∂u 
+
+> ]
+> rs
+
+= ∂f r
+
+∂u s
+
+, r, s = 1 , . . . , m. 
+
+The matrix norms in (3) are the induced 2-norm defined above, and all three bounds hold at every ( x1, x 2, u ). Strong monotonicity and coercivity imply that (see Proposition 4.1 in [28]), for each f ∈ F L1,L 2,b and y∗ ∈ Rm, there is a unique u∗ such that f (y∗, 0, u ∗) = 0. The objective is to select the PID gains using only the uncertainty bounds ( L1, L 2, b ) so that every admissible closed loop is forward complete and uniformly exponentially converges to the regulation equilibrium. This leads naturally to the following definition of the system-level PID gain region, in which gain admissibility is determined directly from the closed-loop trajectories of all systems in the uncertainty class, rather than from a prescribed stability certificate. Throughout, the dependence of the gain regions on the dimension m and uncertainty bounds is suppressed for notational simplicity. 
+
+Definition 1 (System-level robust PID gain region) . A gain triple ( kp, k i, k d) ∈ R3 with ki̸ = 0 belongs to Ω pid if there exist constants M ≥ 1 and λ > 0, depending only on the gains and the uncertainty bounds ( L1, L 2, b ), such that, for every f ∈ F L1,L 2,b , every constant reference, and every initial condition, the corresponding closed-loop solution is forward complete and satisfies 
+
+∥z(t)∥ ≤ M e −λt ∥z(0) ∥, t ≥ 0, (4) where 
+
+z = col( η(t) − u∗/k i, e (t), ˙e(t)) , η(t) =  
+
+> ∫t
+> 0
+
+e(s) ds. 
+
+The set Ω pid is called the system-level robust PID gain region .4Remark 1. The restriction ki̸ = 0 in Definition 1 entails no loss of admissible PID gains. Indeed, the class FL1,L 2,b constrains f only through its partial derivatives, so any constant additive disturbance can be absorbed into f without altering the uncertainty bounds. Robust asymptotic regulation over the full uncertainty class therefore requires integral action. Hence every admissible gain triple necessarily satisfies ki̸ = 0, and the term u∗/k i is well defined. Our main objective is to characterize Ω pid exactly, that is, to derive necessary and sufficient algebraic conditions for membership in terms of ( kp, k i, k d) and the uncertainty bounds ( L1, L 2, b ). Unlike a sufficient gain condition, an exact characterization identifies all gains that guarantee uniform exponential regulation over the entire uncertainty class. It therefore makes explicit the robustness limits under the prescribed uncertainty bounds and provides the complete admissible domain for performance-oriented tuning. Obtaining such a characterization directly is difficult because the admissible dynamics may depend nonlinearly and non-affinely on vector-valued states and inputs, with coupling across channels. Consequently, neither a common characteristic equation nor a direct scalar stability criterion is available. Rather than attacking this nonlinear trajectory-level set directly, we adopt an inner–outer strategy based on the inclusion chain Ωcq pid ⊆ Ωpid ⊆ Ωlin pid ,
+
+where Ω cq pid is the common-quadratic inner endpoint and Ω lin pid is the linear-subclass outer endpoint (to be defined later). 
+
+2.2 Common-quadratic inner region 
+
+We first ask a certificate-level question: which PID gains admit some common quadratic Lyapunov function for the entire induced matrix family? Unlike a construction based on a prescribed quadratic form, this searches over the whole common-quadratic class. It is worth noting that the nonemptiness of Ω pid follows from [28], which constructed an explicit open and unbounded sufficient region contained in Ω pid using a particular common quadratic Lyapunov function . Since their construction does not reveal whether alternative certificates can admit additional gains, it motivates determining the set of PID gains that admit a common quadratic certificate. This certificate-level problem provides a tractable first step toward an exact characterization of the system-level robust PID gain region. To formulate this problem, we identify the associated uncertain closed-loop matrix family. Consider first a linear member of the uncertainty class, written about the equilibrium ( y∗, 0, u ∗): 
+
+f (x1, x 2, u ) = D1(x1 − y∗) + D2x2 + Θ( u − u∗).
+
+Here D1, D 2, Θ ∈ Rm×m are the constant state and input Jacobians of this linear member. For 
+
+ki̸ = 0, define z := col( η − u∗/k i, e, ˙e) . Using x1 − y∗ = −e, x2 = − ˙e, and 
+
+u − u∗ = ki (η − u∗/k i) + kpe + kd ˙e, 
+
+the augmented error dynamics become ˙z = A(D1, D 2, Θ) z, (5) where 
+
+A(D1, D 2, Θ) := 
+
+> 
+
+0 Im 00 0 Im
+
+−kiΘ D1 − kpΘ D2 − kdΘ 
+
+> 
+
+.
+
+For a general nonlinear function f ∈ F L1,L 2,b , the mean-value theorem applied along the line segment joining ( y∗, 0, u ∗) to ( x1, x 2, u ) gives the same representation (5) with state-dependent matrices satisfying 
+
+∥Dj (z)∥ ≤ Lj , j = 1 , 2, Sym(Θ( z)) ⪰ bI m.
+
+5Thus every admissible nonlinear closed loop is embedded pointwise in the uncertain matrix family A(D1, D 2, Θ). This representation leads to the following definition. 
+
+Definition 2 (Common-quadratic PID gain region) . A gain triple ( kp, k i, k d) ∈ R3 is called 
+
+common-quadratically admissible if there exist a common P = P ⊤ ≻ 0 in R3m×3m and α > 0such that 
+
+P A(D1, D 2, Θ) + A(D1, D 2, Θ) ⊤P ⪯ − αI 3m (6) for every D1, D 2, Θ ∈ Rm×m satisfying 
+
+∥D1∥ ≤ L1, ∥D2∥ ≤ L2, Sym(Θ) ⪰ bI m. (7) Any such P is called a common quadratic certificate . The set of all common-quadratically admissible PID gains is denoted by Ω cq pid and called the common-quadratic PID gain region .The following proposition connects this certificate-level notion to the system-level PID region by showing that every common-quadratically admissible PID gain belongs to Ω pid .
+
+Proposition 1. Every common-quadratically admissible PID gain triple guarantees the uniform exponential regulation (4) over the uncertainty class FL1,L 2,b . Hence, Ω cq pid ⊆ Ωpid .
+
+Proof. Let P = P ⊤ ≻ 0 and α > 0 be a common quadratic certificate and its uniform decay margin. Taking D1 = D2 = 0 and Θ = bI m in (6) shows that A(0 , 0, bI m) is Hurwitz. Its characteristic polynomial in each channel is 
+
+s3 + bk ds2 + bk ps + bk i.
+
+The Routh–Hurwitz criterion therefore gives 
+
+ki > 0, kp > 0, kd > 0, bk pkd > k i.
+
+In particular, the shifted integral state in (4) is well defined. Fix any admissible nonlinearity, constant reference, and plant initial condition. Write 
+
+z = col( z0, z 1, z 2), q := kiz0 + kpz1 + kdz2.
+
+The segmentwise mean-value decomposition described above, and used similarly in the proof of Theorem 3.1 in [28], gives 
+
+f (y∗ − z1, −z2, u ∗ + q) = −D1(z)z1 − D2(z)z2 + Θ( z)q, (8) where 
+
+∥Dj (z)∥ ≤ Lj , j = 1 , 2, Sym(Θ( z)) ⪰ bI m.
+
+Consequently, the augmented error dynamics satisfy ˙z = A(D1(z), D 2(z), Θ( z))z, (9) with an admissible matrix triple at every closed-loop state. For V (z) := z⊤P z , the common quadratic inequality yields ˙V ≤ − α∥z∥2 ≤ − αλmax (P ) V. 
+
+It follows that ∥z(t)∥ ≤ M e −λt ∥z(0) ∥, where 
+
+M := 
+
+> √
+
+λmax (P )
+
+λmin (P ) , λ := α
+
+2λmax (P ) .
+
+Because P and α are common to the entire matrix family, M and λ are independent of the admissible nonlinearity, reference, and initial condition. This proves (4). Finally, f ∈ C1 makes the closed-loop vector field locally Lipschitz, while the preceding estimate prevents finite escape. The standard continuation theorem therefore gives forward completeness. 6Proposition 1 rigorously establishes the inclusion Ω cq pid ⊆ Ωpid , thereby identifying Ω cq pid as a common-quadratic inner region of the system-level PID gain region. Its membership condition, however, remains implicit through a semi-infinite LMI. We next characterize this inner region exactly. For m = 1, the semi-infinite condition reduces losslessly to a four-vertex LMI test, whereas for m ≥ 2, the Lyapunov matrix can be eliminated entirely, yielding an explicit gain-only characterization in terms of two auxiliary scalars. For m = 1, let V := {− 1, 1} denote the vertex-sign set and define, for s, t ∈ V ,
+
+Asc  
+
+> st
+
+:= 
+
+> 
+
+0 1 00 0 1
+
+−bk i sL 1 − bk p tL 2 − bk d 
+
+> 
+
+. (10) Set e3 =
+
+> [
+
+0 0 1
+
+> ]⊤
+
+, κ := ( ki, k p, k d)⊤. The associated four-vertex feasibility condition is 
+
+∃ P0 = P ⊤ 
+
+> 0
+
+≻ 0, P0e3 = κ, P0Asc  
+
+> st
+
++ ( Asc 
+
+> st
+
+)⊤P0 ≺ 0, (s, t ) ∈ V 2. (11) For the case m ≥ 2, let μ, ρ ∈ (0 , 1) and define Πμ,ρ := k2 
+
+> p
+
+− L21
+
+4b2μρ (1 − μ) , (12) ∆μ,ρ := k2 
+
+> d
+
+− kp
+
+b(1 − μ) − L22
+
+4b2μ(1 − ρ)(1 − μ) . (13) When ( μ, ρ ) are fixed and no confusion can arise, we write Π := Π μ,ρ and ∆ := ∆ μ,ρ for brevity. The next theorem gives the exact common-quadratic region in both the scalar and multivari-able cases. 
+
+Theorem 1 (Exact common-quadratic PID gain region) . The exact common-quadratic PID gain regions are as follows: i) For scalar systems m = 1 , a gain triple belongs to Ωcq pid if and only if it satisfies the four-vertex condition (11) .ii) For every m ≥ 2,
+
+Ωcq pid = ⋃
+
+> μ,ρ ∈(0 ,1)
+> {
+
+(kp, k i, k d) ∈ R3 
+
+> >0
+> ∣∣∣∣∣
+
+Πμ,ρ > 0, ∆μ,ρ > 0, ki < Πμ,ρ 
+
+2(kd − √∆μ,ρ 
+
+> )}
+
+. (14) It is worth mentioning that for every gain in (14), one has 0 < ∆μ,ρ < k 2 
+
+> d
+
+for the corresponding auxiliary parameters, so the denominator is positive. Moreover, every gain in the multivariable region (14) also satisfies the scalar four-vertex condition. The proof is deferred to Section 5. 
+
+Remark 2. Theorem 1 is a lossless elimination result at the certificate level: all matrix-valued certificate variables and uncertainty matrices have been removed. It does not , by itself, imply that Ω cq pid exhausts the system-level region Ω pid ; this requires the independent outer analysis below. 
+
+2.3 Linear-subclass outer region 
+
+The preceding subsection gives an exact inner bound on the system-level region Ω pid . To obtain a complementary outer bound, we now restrict the full nonlinear uncertainty class to its admissible linear subclass. Any gain achieving system-level robust regulation must, in particular, stabilize every member of this subclass. 7Definition 3 (Linear-subclass PID gain region) . Let Flin  
+
+> m
+
+denote the family of linear maps 
+
+fD1,D 2,Θ(x1, x 2, u ) := D1x1 + D2x2 + Θ u
+
+generated by matrices satisfying ∥D1∥ ≤ L1, ∥D2∥ ≤ L2, Sym(Θ) ⪰ bI m. The linear-subclass PID gain region is defined by Ωlin pid := 
+
+{
+
+(kp, k i, k d) ∈ R3 : A(D1, D 2, Θ) is Hurwitz for every fD1,D 2,Θ ∈ F lin 
+
+> m
+
+}
+
+.
+
+Since Flin  
+
+> m
+
+⊆ F L1,L 2,b , every system-level admissible gain must regulate each member of the linear subclass. More precisely, take y∗ = 0, so that u∗ = 0, and set 
+
+Spid := {0} × Rm × Rm.
+
+For each fixed A = A(D1, D 2, Θ), the system-level estimate holds on Spid . Since 
+
+Spid + AS pid = R3m, eAtA = AeAt,
+
+exponential decay extends to the whole augmented state space, and hence A is Hurwitz. Therefore, Ωpid ⊆ Ωlin pid .We next characterize this outer approximation exactly in terms of the PID gains and the uncertainty bounds. 
+
+Proposition 2 (Exact linear-subclass PID gain region) . For m = 1 , denote ¯k0 = bk i, ¯k1 =
+
+bk p − L1 and ¯k2 = bk d − L2, then 
+
+Ωlin pid =
+
+{
+
+(kp, k i, k d) ∈ R3 
+
+> >0
+
+: ¯k1 > 0, ¯k1¯k2 > ¯k0
+
+}
+
+. (15) 
+
+For m ≥ 2,
+
+Ωlin pid =
+
+{
+
+(kp, k i, k d) ∈ R3 
+
+> >0
+
+: bχ (ω) − kpω4 > (L1ω + L2ω2)
+
+√
+
+χ(ω), ∀ ω > 0
+
+}
+
+(16) 
+
+where 
+
+χ(ω) := ( ki − kdω2)2 + k2 
+
+> p
+
+ω2. (17) The proof is deferred to Section 5. 
+
+2.4 Endpoint coincidence and the exact PID gain region 
+
+For m ≥ 2, the two endpoint regions are obtained through independent arguments and admit different exact descriptions. The common-quadratic inner region Ω cq pid is characterized by algebraic inequalities involving two auxiliary parameters, whereas the linear-subclass outer region Ω lin pid is described by a frequency-domain inequality over all positive frequencies. Their coincidence is therefore far from evident a priori. Nevertheless, the general inclusion chain Ωcq pid ⊆ Ωpid ⊆ Ωlin pid 
+
+shows that equality of the two endpoints would close the inner–outer gap and determine the system-level region exactly. The following theorem shows that this is indeed the case. 
+
+Theorem 2 (Endpoint coincidence and exact PID gain region) . For every m ≥ 2, the three gain regions coincide: 
+
+Ωcq pid = Ω pid = Ω lin pid . (18) The proof is deferred to Section 5. 8Remark 3. Theorem 2, together with the exact characterizations of the two endpoint regions, is the central result of this paper and has three complementary consequences. First, it provides a complete gain-only characterization of the system-level PID region Ω pid in terms of the PID gains and the uncertainty bounds ( L1, L 2, b ). Second, every gain that uniformly exponentially regulates the full nonlinear uncertainty class admits a common quadratic certificate; hence common-quadratic certification is lossless at the gain-region level. Third, stabilizing every admissible linear closed-loop matrix is sufficient for robust regulation of the full nonlinear class; hence the linear subclass is a lossless outer test. 
+
+2.5 The endpoint gap in the scalar case 
+
+The coincidence above is a genuinely multivariable phenomenon. To clarify the scope of Theorem 2, we now turn to the scalar case m = 1. Both endpoint regions remain exactly characterized: Ω cq pid by the four-vertex LMIs in (11), and Ω lin pid by (15). However, the inner–outer gap no longer closes, as shown next. 
+
+Proposition 3. For m = 1, Ωcq pid ⊊ Ωlin pid . (19) 
+
+Proof. The inclusion Ω cq pid ⊆ Ωlin pid follows directly from the definitions, since a common quadratic certificate makes every admissible linear closed-loop matrix Hurwitz. To prove strictness, suppose that ( kp, k i, k d) ∈ Ωcq pid . By Theorem 1, there exists P0 = P ⊤ 
+
+> 0
+
+≻ 0satisfying (11). In particular, with 
+
+Q++ := −P0Asc ++ − (Asc ++ )⊤P0 ≻ 0,
+
+the normalization P0e3 = ( ki, k p, k d)⊤ gives 0 < e ⊤ 
+
+> 3
+
+Q++ e3
+
+= −2( P0e3)⊤Asc ++ e3 = 2 [kd(bk d − L2) − kp
+
+]. (20) Hence every gain in Ω cq pid necessarily satisfies 
+
+kd(bk d − L2) > k p.
+
+We now construct a gain in Ω lin pid that violates this condition. Choose εp, ε d > 0 such that 
+
+εd(L2 + εd) < L 1 + εp, and set 
+
+kp := L1 + εp
+
+b , kd := L2 + εd
+
+b , ki := εpεd
+
+2b .
+
+Then ¯k1 = εp, ¯k2 = εd, ¯k0 = εpεd 
+
+> 2
+
+, so that ¯k1 > 0, ¯k1¯k2 > ¯k0.
+
+Proposition 2 therefore gives ( kp, k i, k d) ∈ Ωlin pid . On the other hand, 
+
+bk d(bk d − L2) = εd(L2 + εd) < L 1 + εp = bk p,
+
+which contradicts the necessary condition (20). Thus this gain does not belong to Ω cq pid , proving the proper inclusion. 
+
+Remark 4. Proposition 3, together with the general inner–outer inclusions, gives Ωcq pid ⊆ Ωpid ⊆ Ωlin pid , m = 1 .
+
+Thus the two exact endpoints bracket, but do not determine, the scalar system-level PID region. 92.6 Strict improvement and sequential PID tuning 
+
+We now compare the exact system-level region obtained above with the sufficient region derived in Zhao and Guo [28]. Their region, denoted by Ω ZG pid , consists of all ( kp, k i, k d) ∈ R3 
+
+> >0
+
+satisfying 
+
+k2 
+
+> p
+
+> 2kikd + ¯k, k2 
+
+> d
+
+> k p/b + ¯k, (21) where ¯k := ( L1 + L2)( kp + kd)/b. 
+
+Proposition 4. For every m ≥ 2, ΩZG pid ⊊ Ωpid . (22) Moreover, for every c ∈ (0 , b ), there exists Tc > 0 such that (t, ct 2, t ) ∈ Ωpid \ ΩZG pid , t ≥ Tc. (23) 
+
+Proof. By Theorem 2, it suffices to prove Ω ZG pid ⊊ Ωcq pid and establish the corresponding high-gain claim for Ω cq pid .
+
+Inclusion. For every gain triple in Ω ZG pid , Zhao and Guo [28, Prop. 4.2] construct the common quadratic certificate 
+
+P (m)ZG := 
+
+
+
+2kikpbI m 2kikdbI m kiIm
+
+2kikdbI m (2 kpkdb − ki)Im kpIm
+
+kiIm kpIm kdIm
+
+ .
+
+Hence, Ω ZG pid ⊆ Ωcq pid .
+
+Strictness. Fix c ∈ (0 , b ), choose 0 < μ < 1 − c/b and ρ ∈ (0 , 1), and set 
+
+aμ := 1
+
+b(1 − μ) , C1 := L21
+
+4b2μρ (1 − μ) ,C2 := L22
+
+4b2μ(1 − ρ)(1 − μ) .
+
+For ( kp, k i, k d) = ( t, ct 2, t ), define Π( t) := t2 − C1, ∆( t) := t2 − aμt − C2.
+
+Both quantities are positive for all sufficiently large t. The admissible upper bound on ki in (14) is 
+
+Ki(t) := Π( t)2(t − √∆( t)) .
+
+Rationalization gives 2(t −
+
+√
+
+∆( t)) = 2( aμt + C2)
+
+t + √∆( t) −→ aμ,Ki(t)
+
+t2 −→ 1
+
+aμ
+
+= b(1 − μ) > c. 
+
+Therefore, ct 2 < K i(t) for all sufficiently large t, and hence (t, ct 2, t ) ∈ Ωcq pid .
+
+For the region Ω ZG pid , ¯k = 2( L1 + L2)t/b , and its first defining inequality would require 
+
+t2 > 2ct 3 + 2( L1+L2)tb , which fails for all sufficiently large t. Thus, (t, ct 2, t ) ∈ Ωcq pid \ ΩZG pid 
+
+for all sufficiently large t. This proves Ω ZG pid ⊊ Ωcq pid and the high-gain claim at the certificate level. The equality Ω cq pid = Ω pid from Theorem 2 then yields (22) and (23). 10 0 10 20 30 40 50 
+
+Proportional gain kp       
+
+> 010 20 30 40 50
+> Derivative gain  kd
+> Exact region Ω pid
+> The existing region Ω ZG pid
+> (21, 21)
+> L1=L2= 5, b= 1, ki= 0.5
+
+Figure 1: Comparison of the PID gain regions for L1 = L2 = 5, b = 1, and ki = 0 .5. The orange area represents the sufficient region Ω ZG pid derived in [28], whereas the blue hatched area represents the exact region Ω pid established in this paper. The open circle at (21 , 21) marks the intersection of the two boundary curves of the existing region. 
+
+Remark 5. The threshold c < b in (23) is sharp: along this family, it coincides with the Routh–Hurwitz condition for the admissible nominal system corresponding to D1 = D2 = 0 and Θ = bI m.The strict enlargement in (22) is illustrated in Figure 1 on the ( kp, k d) cross-section obtained by fixing ki = 0 .5. For L1 = L2 = 5 and b = 1, the exact region Ω pid extends well beyond the existing sufficient region Ω ZG pid , admitting a substantially broader range of proportional and derivative gains. The exact description of Ω cq pid involves a two-dimensional search over ( μ, ρ ). The balanced choice μ = ρ = 1 /2 sacrifices some flexibility in exchange for a transparent sequential tuning rule. 
+
+Corollary 1 (A Simple Sequential PID Tuning Rule) . The PID gains can be selected sequentially as follows: i) Choose 
+
+kp >
+
+√2 L1
+
+b .
+
+ii) Having fixed kp, choose 
+
+kd >
+
+√
+
+2kp
+
+b + 2L22
+
+b2 .
+
+11 iii) Define ∆∗ := k2 
+
+> d
+
+− 2kp 
+
+> b
+
+− 2L22 
+
+> b2
+
+, and choose 
+
+0 < k i < k2 
+
+> p
+
+− 2L21/b 2
+
+2(kd − √∆∗ 
+
+> )
+
+.
+
+Every gain triple obtained by this procedure belongs to Ωcq pid for every m ≥ 2.Proof. Set μ = ρ = 1 /2 in (12), (13), and (14). Then Π1/2,1/2 = k2 
+
+> p
+
+− 2L21
+
+b2 , ∆1/2,1/2 = ∆ ∗.
+
+The three conditions are exactly the resulting positivity and integral-gain inequalities. 
+
+# 3 PI control of first-order non-affine MIMO systems 
+
+The PID result above achieves system-level exactness by closing an inner–outer gap. The first-order PI class exhibits an analogous exactness phenomenon, but through a different mechanism: necessity is captured by a boundary-linear test family, whereas sufficiency follows from a common quadratic certificate. We first define the corresponding system-level and common-quadratic PI regions, then establish the boundary-linear equivalence and the exact gain condition, and finally compare the result with the existing sufficient region and discuss the scalar case. 
+
+3.1 Problem formulation and the system-level PI gain region 
+
+Let m ≥ 1 and consider the first-order non-affine system ˙x(t) = f (x(t), u (t)) , x(t), u (t) ∈ Rm, (24) where, for prescribed constants L ≥ 0 and b > 0, FL,b consists of all f ∈ C1(R2m; Rm) satisfying, for every ( x, u ), ∥∥ ∂f ∂x  
+
+> ∥∥
+
+≤ L, Sym ( ∂f ∂u  
+
+> )
+
+⪰ bI m.
+
+Here ∂f /∂x and ∂f /∂u are again m × m Jacobian matrices, with entries ∂f r/∂x s and ∂f r/∂u s,respectively; the norm is the induced 2-norm specified in the notation paragraph. For a constant reference y∗ ∈ Rm, apply the PI controller 
+
+u(t) = kpe(t) + ki 
+
+> ∫t
+> 0
+
+e(s) ds, e(t) = y∗ − x(t). (25) Set η(t) := ∫ t 
+
+> 0
+
+e(s) ds , so that ˙ η = e and η(0) = 0. For given f ∈ F L,b and y∗ ∈ Rm, the map u 7 → f (y∗, u ) is strongly monotone and coercive, and therefore admits a unique zero u∗ ∈ Rm. For any gain pair with ki̸ = 0, the augmented closed-loop equilibrium is ( x, η ) = ( y∗, u ∗/k i). We distinguish the trajectory-defined system-level PI region from its common-quadratic inner region. The following definitions introduce these two regions. 
+
+Definition 4 (System-level robust PI gain region) . A gain pair ( kp, k i) ∈ R2 with ki̸ = 0 belongs to Ω pi if there exist constants M ≥ 1 and λ > 0, depending only on the gains and the uncertainty bounds ( L, b ), such that, for every f ∈ F L,b , every constant reference, and every initial condition, the closed-loop solution is forward complete and satisfies 
+
+∥z(t)∥ ≤ M e −λt ∥z(0) ∥, t ≥ 0, (26) where 
+
+z(t) := col( η(t) − u∗/k i, e (t)) , η(t) := ∫ t 
+
+> 0
+
+e(s) ds. 
+
+The set Ω pi is called the system-level robust PI gain region .12 To compare common-quadratic certification with system-level robustness, define 
+
+API (D, Θ) := 
+
+> [
+
+0 Im
+
+−kiΘ D − kpΘ
+
+> ]
+
+, D, Θ ∈ Rm×m.
+
+Definition 5 (Common-quadratic PI gain region) . A gain pair ( kp, k i) ∈ R2 is called common-quadratically admissible if there exist a matrix P = P ⊤ ≻ 0 in R2m×2m and a constant α > 0such that 
+
+P API (D, Θ) + API (D, Θ) ⊤P ⪯ − αI 2m
+
+for any D, Θ ∈ Rm×m satisfying ∥D∥ ≤ L, Sym(Θ) ⪰ bI m. Any such P is called a common quadratic certificate . The set of all common-quadratically admissible PI gains is denoted by Ω cq pi 
+
+and called the common-quadratic PI gain region .The same state-dependent Jacobian argument used for Proposition 1 shows that every common quadratic certificate yields uniform exponential regulation over FL,b . Hence, one can obtain the relationship Ω cq pi ⊆ Ωpi .
+
+3.2 Boundary-linear equivalence and the exact PI gain region 
+
+To characterize Ω pi exactly, we construct a boundary-linear test family whose state and symmetric input Jacobians attain the uncertainty bounds while its skew-symmetric input component becomes arbitrarily large. For m ≥ 2, define 
+
+J2 := 
+
+> [
+
+0 −11 0
+
+> ]
+
+, Jm := 
+
+> [
+
+J2 02×(m−2) 
+
+0(m−2) ×2 0m−2
+
+> ]
+
+.
+
+For m = 2, the zero-dimensional blocks in this display are absent, so Jm = J2. Let N0 := 
+
+{0, 1, 2, . . . }. We introduce the countable boundary-linear family 
+
+Fm∂ := {fν : ν ∈ N0},fν (x, u ) := Lx + ( bI m + νJ m)u. (27) Every member of Fm∂ belongs to FL,b because 
+
+∥∂f ν /∂x ∥ = L, Sym( ∂f ν /∂u ) = bI m.
+
+Thus (27) is a subset of the nonlinear uncertainty class FL,b while retaining an unbounded skew-symmetric direction. The inclusion Fm∂ ⊆ F L,b gives only one direction; the nontrivial question is whether regulation of this boundary family also recovers the full nonlinear gain region. To compare regulation over the boundary-linear family with that over the full nonlinear class, we introduce the following terminology. Consider system (24) under the PI controller with ( kp, k i) ∈ R2 and ki̸ = 0. For any subclass G ⊆ F L,b , the PI controller is said to uniformly exponentially regulate G if there exist constants M ≥ 1 and λ > 0, independent of the particular 
+
+f ∈ G , reference, and initial condition, such that (26) holds. 
+
+Theorem 3 (Boundary-linear equivalence and exact PI region) . Suppose m ≥ 2. Then the following statements are equivalent: 
+
+i) The PI controller uniformly exponentially regulates the full nonlinear class FL,b .
+
+ii) The PI controller uniformly exponentially regulates the boundary-linear family Fm∂ .
+
+13 iii) The gains satisfy 
+
+kp > 0, ki > 0, ki + Lk p < bk 2 
+
+> p
+
+. (28) 
+
+Remark 6. Theorem 3 reveals two distinct forms of losslessness. First, the equivalence of statements (i) and (ii) shows that the countable boundary-linear family Fm∂ is a lossless test family : uniform exponential regulation over this family recovers exactly the gain region for the full nonlinear uncertainty class. This boundary-reduction principle is reminiscent of Kharitonov’s theorem for interval polynomials, although the present equivalence concerns uniform exponential regulation of a nonlinear MIMO class through a countable boundary family. Second, the proof of (iii) ⇒ (i) constructs a common quadratic certificate for every gain pair satisfying the condition in (iii). Since condition (iii) exactly characterizes Ω pi , this gives Ω pi ⊆ Ωcq pi . Together with the general reverse inclusion, we obtain Ωcq pi = Ω pi =
+
+> {
+
+(kp, k i) ∈ R2 
+
+> >0
+
+: ki + Lk p < bk 2
+
+> p
+> }
+
+. (29) Thus, losslessness occurs at two different levels: Fm∂ is lossless as a test family for the nonlinear uncertainty class, while the common-quadratic class is lossless as a certificate class for the system-level PI gain region. 
+
+Remark 7. For m ≥ 2, the exact condition in Theorem 3 improves the sufficient condition of Zhao and Guo [28] by removing the additional term L2/(4 b). As illustrated in Figure 2, the admissible upper bound on ki is increased by L2/(4 b) for each fixed kp. For m = 1, the same common-quadratic sufficiency construction remains valid, whereas the admissible linear system 
+
+f (x, u ) = Lx + bu yields the necessary condition bk p > L . Consequently, 
+
+> {
+
+(kp, k i) ∈ R2 
+
+> >0
+
+: ki + Lk p < bk 2 
+
+> p
+> }
+
+⊆ Ωcq pi ⊆ Ωpi 
+
+⊆ {(kp, k i) ∈ R2 
+
+> >0
+
+: bk p > L }.
+
+The outer set is the exact pointwise robust PI region obtained in [28]. Since pointwise asymptotic regulation is weaker than uniform exponential regulation, these inclusions bracket, but do not determine, the scalar system-level PI gain region. 
+
+# 4 Scope and Limits of Common-Quadratic Losslessness 
+
+The preceding PID and PI results show that, for the two nonlinear uncertainty classes considered above and for m ≥ 2, common-quadratic certification is lossless: Ωcq pid = Ω pid , Ωcq pi = Ω pi .
+
+This losslessness is, however, specific to those uncertainty classes. As the following example shows, even a one-parameter linear family over a compact interval can have a system-level PID gain region that is strictly larger than its common-quadratic counterpart. Fix L > 0 and consider the second-order linear family ˙x1 = x2, ˙x2 = ax 2 + u, (30) where x1, x 2, u ∈ R and a ∈ [0 , L ] is an unknown but time-invariant parameter. Apply the PID controller (2). Since the equilibrium input associated with a constant reference is zero, the augmented error state z = col( η, e, ˙e) satisfies ˙z = A(a)z, A(a) := 
+
+> 
+
+0 1 00 0 1
+
+−ki −kp a − kd 
+
+> 
+
+. (31) 14 4 5 6 7 8 9 10              
+
+> Proportional gain kp
+> 010 20 30 40 50
+> Integral gain  ki
+> Zhao--Guo region
+> Exact boundary: bk 2
+> p=Lk p+ki
+> Zhao--Guo boundary: bk 2
+> p=Lk p+ki+L2
+> 4b
+
+gain enlargement 
+
+= L2/(4 b) = 6.25     
+
+> Illustration: L= 5, b= 1
+
+Figure 2: Comparison of the PI gain regions for L = 5 and b = 1. The gray area is derived in [28], whereas the hatched area represents the additional gains admitted by the exact condition. The vertical difference between the two boundaries is L2/(4 b) = 6 .25. For this family, let Rsys (L) denote the set of PID gains for which the uniform exponential requirement in Definition 1 holds uniformly over all fixed a ∈ [0 , L ]. Let 
+
+Rcq (L) := 
+
+{
+
+(kp, k i, k d) : ∃ P ≻ 0 such that for all a ∈ [0 , L ], P A (a) + A(a)⊤P ≺ 0
+
+}
+
+denote its common-quadratic PID gain region. 
+
+Proposition 5. For every L > 0, Rcq (L) ⊊ Rsys (L).
+
+Proof. The inclusion Rcq (L) ⊆ R sys (L) follows directly from the Lyapunov inequality. Indeed, for a fixed common P ≻ 0, the compactness of [0 , L ] and continuity of A(a) give a uniform positive margin in −(P A (a) + A(a)⊤P ), and hence uniform exponential decay. It remains to prove strictness. Consider the gain triple (kp, k i, k d) = 
+
+( 32 L2, 52 L3, 3L
+
+)
+
+. (32) For any a ∈ [0 , L ], the characteristic polynomial of A(a) is 
+
+pa(s) = s3 + (3 L − a)s2 + 32 L2s + 52 L3.
+
+All its coefficients are positive and (3 L − a) 32 L2 ≥ 3L3 > 52 L3.
+
+The Routh–Hurwitz criterion therefore shows that A(a) is Hurwitz for every a ∈ [0 , L ]. Since the matrix family is continuous and the uncertainty interval is compact, the corresponding semigroups admit uniform constants M ≥ 1 and λ > 0. Thus the gain triple (32) belongs to 
+
+Rsys (L). 15 We now show that the same gain triple does not belong to Rcq (L). Let A0 := A(0) and 
+
+AL := A(L). A direct calculation gives det( μI 3 − ALA0) = 14 (μ + L2)(4μ2 − 16 L2μ − 25 L4). (33) Hence ALA0 has the negative real eigenvalue −L2. Let v̸ = 0 be a corresponding real eigenvector and set w := A0v. If a common P = P ⊤ ≻ 0 existed, then the Lyapunov inequality for A0 would give 2 v⊤P A 0v = 2 v⊤P w < 0, so v⊤P w < 0. On the other hand, since ALw = ALA0v = −L2v,the Lyapunov inequality for AL would require 0 > 2w⊤P A Lw = −2L2w⊤P v > 0,
+
+a contradiction. Therefore no common quadratic Lyapunov matrix exists for the endpoint pair, and consequently none exists for the whole interval. Thus  
+
+> (
+
+32 L2, 52 L3, 3L
+
+> )
+
+∈ R sys (L) \ R cq (L),
+
+which proves the proposition. Thus, the coincidence between the common-quadratic and system-level gain regions estab-lished above is a structural property of the two nonlinear uncertainty classes, rather than an automatic consequence of robust stability over a compact parametric family. 
+
+# 5 Proofs of the main results 
+
+The proofs follow the structure of the main results. We first establish the exact common-quadratic PID characterization, then derive the exact linear-subclass outer region. Their coincidence closes the PID inner–outer gap. Finally, we prove the boundary-linear equivalence and the exact PI characterization. 
+
+5.1 Common-quadratic PID characterization 
+
+The proof of Theorem 1 begins with two structural reductions. The first shows that the isotropy of the uncertainty class makes the Kronecker form of the certificate lossless. The second derives positivity of the gains and a normalization that fixes the last column of the reduced certificate. 
+
+Lemma 1. A gain triple is common-quadratically admissible if and only if (6) admits a certificate of the form P0 ⊗ Im, where P0 = P ⊤ 
+
+> 0
+
+≻ 0 belongs to R3×3. Here ⊗ denotes the Kronecker product: if A = ( aij ), then A ⊗ B is the block matrix whose (i, j ) block is aij B. In particular, the (i, j )
+
+block of P0 ⊗ Im is (P0)ij Im.Proof. Only necessity requires proof. Let P = P ⊤ ≻ 0 be an arbitrary certificate with margin 
+
+α > 0, and let G± 
+
+> m
+
+denote the signed-permutation group 
+
+G± 
+
+> m
+
+:= {EεP : Eε = diag( ε1, . . . , ε m), ε j ∈ {− 1, 1},
+
+P is an m × m permutation matrix }.
+
+Equivalently, each U ∈ G ± 
+
+> m
+
+has exactly one nonzero entry in every row and column, and that entry is either 1 or −1. Thus G± 
+
+> m
+
+is a finite subgroup of the orthogonal group, with U ⊤U = Im
+
+and |G ±
+
+> m
+
+| = 2 mm!. For U ∈ G ±
+
+> m
+
+, set TU := I3 ⊗ U .The uncertainty set is invariant under the simultaneous conjugation (D1, D 2, Θ) 7 −→ (U D 1U ⊤, U D 2U ⊤, U ΘU ⊤),
+
+16 and the corresponding closed-loop matrices satisfy 
+
+A(U D 1U ⊤, U D 2U ⊤, U ΘU ⊤) = TU A(D1, D 2, Θ) T ⊤ 
+
+> U
+
+.
+
+Applying the inequality for P to the conjugated uncertainty triple and then conjugating the result by TU shows that T ⊤ 
+
+> U
+
+P T U is also a certificate with margin α. Hence the group average 
+
+P := 1
+
+|G ±
+
+> m
+
+| 
+
+> ∑
+> U∈G ±
+> m
+
+T ⊤ 
+
+> U
+
+P T U
+
+is positive definite and remains a certificate with the same margin. The group property also gives T ⊤ 
+
+> U
+
+P T U = P for every U ∈ G ±
+
+> m
+
+. Write P in m × m blocks. Invariance under coordinate sign changes forces each block to be diagonal, whereas invariance under coordinate permutations forces all of its diagonal entries to coincide. Every block is therefore a scalar multiple of Im, so P = P0 ⊗ Im for some P0 = P ⊤ 
+
+> 0
+
+≻ 0. The converse is immediate. Lemma 1 shows that restricting the certificate to P0 ⊗ Im entails no loss of admissible gains. The next lemma shows that feasibility also forces positivity of the gains and permits a useful normalization of P0.
+
+Lemma 2. If (kp, k i, k d) ∈ Ωcq pid , then 
+
+ki > 0, kp > 0, kd > 0, bk pkd > k i.
+
+Besides, there is a certificate P0 ⊗ Im such that 
+
+P0(0 , 0, 1) ⊤ = ( ki, k p, k d)⊤.
+
+Proof. First, as shown in the proof of Proposition 1, the nominal choice D1 = D2 = 0 and Θ = bI m, together with the Routh–Hurwitz criterion, gives ki, k p, k d > 0 and bk pkd > k i.By Lemma 1, there exists a certificate P 0 ⊗ Im, where P 0 = P ⊤ 
+
+> 0
+
+≻ 0, with some margin 
+
+α > 0. It remains to normalize this certificate. Denote e3 = (0 , 0, 1) ⊤, κ = ( ki, k p, k d)⊤, and put 
+
+p := P 0e3. For τ ≥ 0, choose D1 = D2 = 0 and Θ = ( b + τ )Im. The robust inequality becomes 
+
+> [
+
+Hb − τ (pκ ⊤ + κp ⊤)] ⊗ Im ⪯ − αI 3m, τ ≥ 0,
+
+where 
+
+Ab := 
+
+> 
+
+0 1 00 0 1
+
+−bk i −bk p −bk d 
+
+> 
+
+, Hb := P 0Ab + A⊤ 
+
+> b
+
+P 0
+
+are independent of τ . Consequently, 
+
+pκ ⊤ + κp ⊤ ⪰ 0; otherwise, evaluation along a negative direction of this matrix would contradict the preceding inequality for all sufficiently large τ .Since κ̸ = 0, the last positive-semidefiniteness condition implies p = cκ for some c ≥ 0. To see this, write p = cκ + r, where r⊤κ = 0. If r̸ = 0, the restriction of pκ ⊤ + κp ⊤ to span {κ, r }
+
+has negative determinant, which is impossible for a positive-semidefinite matrix. Thus r = 0, and positive semidefiniteness then gives c ≥ 0. Furthermore, 
+
+e⊤ 
+
+> 3
+
+p = e⊤ 
+
+> 3
+
+P 0e3 > 0, e⊤ 
+
+> 3
+
+κ = kd > 0,
+
+so c > 0. Defining P0 := c−1P 0 gives another common quadratic certificate, now with margin 
+
+α/c , and satisfies P0e3 = κ.17 Remark 8. The preceding lemmas reduce the certificate-feasibility problem substantially. Lemma 1 restricts the search losslessly from P ∈ S3m 
+
+> ++
+
+to P0 ∈ S3++ , while Lemma 2 gives 
+
+P0 =
+
+
+
+p11 p12 ki
+
+p12 p22 kp
+
+ki kp kd
+
+ .
+
+Hence, for fixed PID gains, only p11 , p12 , and p22 remain to be eliminated. For m ≥ 2, the rank-two Gram reduction and minimax argument perform this elimination exactly and yield the auxiliary scalars μ and ρ in (14). These scalars arise from the reduction itself rather than from an a priori parametrization of P0. The only step requiring m ≥ 2 is the rank-two Gram realizability. 
+
+Proof of Theorem 1. Set κ := ( ki, k p, k d)⊤ and 
+
+F := 
+
+
+
+0 1 00 0 10 0 0
+
+ .
+
+Part I: exact characterization for m = 1 . With m = 1 understood, we prove that membership in Ω cq pid is equivalent to (11). First, let ( kp, k i, k d) ∈ Ωcq pid . By Lemma 2, the gains are positive and a certificate may be normalized so that P0e3 = κ. For admissible scalars d1, d 2, θ , define 
+
+Asc (d1, d 2, θ ) := 
+
+
+
+0 1 00 0 1
+
+−θk i d1 − θk p d2 − θk d
+
+
+
+and 
+
+Q(d1, d 2, θ ) := −P0Asc (d1, d 2, θ ) − A sc (d1, d 2, θ )⊤P0.
+
+Since 
+
+Asc (d1, d 2, θ ) = Asc (d1, d 2, b ) − (θ − b)e3κ⊤,
+
+the normalization P0e3 = κ gives 
+
+Q(d1, d 2, θ ) = Q(d1, d 2, b ) + 2( θ − b)κκ ⊤. (34) Thus θ = b is the least favorable value. At θ = b, the matrix Q(d1, d 2, b ) is affine in ( d1, d 2). Every point of [ −L1, L 1] × [−L2, L 2]is a convex combination of its four vertices. Hence positivity for every admissible ( d1, d 2) is equivalent to 
+
+−
+
+(
+
+P0Asc  
+
+> st
+
++ ( Asc 
+
+> st
+
+)⊤P0
+
+)
+
+≻ 0, (s, t ) ∈ V 2.
+
+Therefore every gain in Ω cq pid satisfies (11). Conversely, suppose a gain triple in R3 satisfies (11), and let P0 be the corresponding four-vertex certificate. Define the vertex average 
+
+Ab := 
+
+
+
+0 1 00 0 1
+
+−bk i −bk p −bk d
+
+ = 14
+
+∑
+
+> (s,t )∈V 2
+
+Asc 
+
+> st
+
+.
+
+Averaging the four strict LMIs therefore yields P0Ab + A⊤ 
+
+> b
+
+P0 ≺ 0, so Ab is Hurwitz. Its characteristic polynomial is s3 + bk ds2 + bk ps + bk i, and the Routh–Hurwitz criterion yields 
+
+ki > 0, kp > 0, kd > 0, bk pkd > k i.
+
+18 Thus positivity is a consequence of the four-vertex condition rather than an additional assumption. Now set 
+
+α1 := min  
+
+> (s,t )∈V 2
+
+λmin 
+
+(
+
+−P0Asc  
+
+> st
+
+− (Asc 
+
+> st
+
+)⊤P0
+
+)
+
+> 0.
+
+Convexity and (34) yield Q(d1, d 2, θ ) ⪰ α1I3 for all |dj | ≤ Lj and θ ≥ b. Thus P0 satisfies the uniform robust matrix inequality, so the gain belongs to Ω cq pid . This proves the scalar equivalence. 
+
+Part II: sufficiency of the explicit multivariable conditions. Let ( kp, k i, k d) satisfy the conditions on the right-hand side of (14). Choose the corresponding μ, ρ ∈ (0 , 1) and define 
+
+σ := 2 b(1 − μ), ε1 := 2 bμρ, ε2 := 2 bμ (1 − ρ).
+
+Then σ + ε1 + ε2 = 2 b. Put 
+
+A0 := σ(k2 
+
+> p
+
+− 2kikd) − L21
+
+ε1
+
+= σ(Π μ,ρ − 2kikd),C0 := σk 2 
+
+> d
+
+− 2kp − L22
+
+ε2
+
+= σ∆μ,ρ .
+
+The defining inequalities in (14) give C0 > 0 and A0 + 2 ki
+
+√σC 0 > 0. Hence one may choose 
+
+ξ ∈ R such that max 
+
+{
+
+− A0
+
+2 , −ki
+
+√σC 0
+
+}
+
+< ξ < k i
+
+√σC 0. (35) Define 
+
+P0 := 
+
+
+
+σk ikp σk ikd − ξ ki
+
+σk ikd − ξ σk pkd − ki kp
+
+ki kp kd
+
+ .
+
+Set P := P0 ⊗ Im. Then P0e3 = κ. For every admissible triple and every z = col( z0, z 1, z 2), put 
+
+q := ( κ⊤ ⊗ Im)z. Set 
+
+Qb := −(P0F + F ⊤P0) + 2 bκκ ⊤.
+
+The identity P0e3 = κ gives 
+
+− z⊤[
+
+P A(D1, D 2, Θ) + A(D1, D 2, Θ) ⊤P
+
+]
+
+z
+
+= z⊤(Qb ⊗ Im)z + 2 q⊤(Sym(Θ) − bI m
+
+)q
+
+− 2q⊤D1z1 − 2q⊤D2z2.
+
+Applying Young’s inequality to the last two terms and using Sym(Θ) ⪰ bI m yields 
+
+−2q⊤Dj zj ≥ − εj ∥q∥2 − L2
+
+> j
+
+εj
+
+∥zj ∥2, j = 1 , 2,
+
+and hence 
+
+− z⊤[
+
+P A(D1, D 2, Θ) + A(D1, D 2, Θ) ⊤P
+
+]
+
+z
+
+≥ z⊤(̂Q ⊗ Im)z, (36) where ̂
+
+Q := 
+
+
+
+σk 2 
+
+> i
+
+0 ξ
+
+0 A0 + 2 ξ 0
+
+ξ 0 C0
+
+ .
+
+By (35), A0 + 2 ξ > 0 and ξ2 < σk 2 
+
+> i
+
+C0, and therefore ̂ Q ≻ 0. 19 It remains to verify P0 ≻ 0. Since k2 
+
+> d
+
+− ∆μ,ρ ≥ kp/[b(1 − μ)], we have 
+
+kd −
+
+√
+
+∆μ,ρ = k2 
+
+> d
+
+− ∆μ,ρ 
+
+kd + √∆μ,ρ 
+
+> kp
+
+2bk d
+
+.
+
+Hence 2 bk pkd(kd − √∆μ,ρ ) > k 2 
+
+> p
+
+> Πμ,ρ . Together with the upper bound on ki, this gives 
+
+ki < bk pkd; hence s3 + bk ds2 + bk ps + bk i is Hurwitz. Let Ab := ( F − be 3κ⊤) ⊗ Im and 
+
+Qnom  
+
+> b
+
+:= −(P A b + A⊤ 
+
+> b
+
+P ). Taking D1 = D2 = 0 and Θ = bI m in (36) gives 
+
+Qnom  
+
+> b
+
+⪰̂ Q ⊗ Im ≻ 0.
+
+Since Ab is Hurwitz, uniqueness of the Lyapunov equation gives 
+
+P =
+
+∫ ∞
+
+> 0
+
+eA⊤ 
+
+> bt
+
+Qnom  
+
+> b
+
+eAbt dt ≻ 0.
+
+Hence P0 ≻ 0. Equation (36) now supplies a uniform negative margin, so the gain is common-quadratically admissible. Thus every gain satisfying the explicit conditions in (14) belongs to Ωcq pid , in fact for every m ≥ 1. 
+
+Part III: necessity of the explicit multivariable conditions. Let ( kp, k i, k d) ∈ Ωcq pid . By Lemma 2, the gains are positive and we may choose a normalized certificate P0 satisfying 
+
+P0e3 = κ. Define Qb := −(P0F + F ⊤P0) + 2 bκκ ⊤ and, for z = col( z0, z 1, z 2), set q := ( κ⊤ ⊗ Im)z,and abbreviate A = A(D1, D 2, Θ). The normalization P0e3 = κ gives the exact identity 
+
+− z⊤[
+
+(P0 ⊗ Im)A + A⊤(P0 ⊗ Im)
+
+]
+
+z
+
+= z⊤(Qb ⊗ Im)z
+
++ 2 q⊤(Sym(Θ) − bI m
+
+)q
+
+− 2q⊤D1z1 − 2q⊤D2z2.
+
+Thus the skew-symmetric part of Θ cancels and Θ = bI m is least favorable. Minimizing independently over the two norm balls, and using the uniform margin of the normalized certificate, gives some γ > 0 such that, for every z̸ = 0, 
+
+z⊤(Qb ⊗ Im)z − 2L1∥q∥∥ z1∥ − 2L2∥q∥∥ z2∥ ≥ γ∥z∥2. (37) Indeed, equality in each norm bound is attained, whenever the relevant vectors are nonzero, by 
+
+Dj = Lj
+
+q
+
+∥q∥
+
+z⊤
+
+> j
+
+∥zj ∥ , j = 1 , 2.
+
+Let Z = [ z0 z1 z2] ∈ Rm×3 and let G := Z⊤Z be its Gram matrix, so Gij = z⊤
+
+> i−1
+
+zj−1 for 
+
+i, j = 1 , 2, 3. Write 
+
+K := {G ∈ S3+ : tr G = 1 },
+
+where tr is the sum of the diagonal entries. Below, ⟨A, B ⟩ := tr( A⊤B) is the Frobenius inner product, rank is matrix rank, and e2 = (0 , 1, 0) ⊤, e3 = (0 , 0, 1) ⊤ are the second and third standard basis vectors of R3. Define 
+
+r(G) := κ⊤Gκ, s1(G) := e⊤ 
+
+> 2
+
+Ge 2, s2(G) := e⊤ 
+
+> 3
+
+Ge 3,
+
+and 
+
+ϕ(G) := ⟨Q b, G ⟩ − 2L1
+
+√
+
+r(G)s1(G) − 2L2
+
+√
+
+r(G)s2(G).
+
+Equation (37) gives ϕ(G) ≥ γ for every realizable G ∈ K with rank G ≤ m.20 Indeed, tr G = ∥z∥2, r(G) = ∥q∥2, and sj (G) = ∥zj ∥2. Both sides of (37) are homogeneous of degree two in z, so restricting to ∥z∥ = 1 is lossless. Also, K is compact: its eigenvalues are nonnegative and sum to one, and hence ∥G∥ ≤ 1. For an arbitrary G ∈ K , consider the compact convex fiber 
+
+KG := {H ∈ K : r(H) = r(G), s1(H) = s1(G), s2(H) = s2(G)}.
+
+The fiber is nonempty because it contains G. The linear functional H 7 → ⟨Q b, H ⟩ attains its minimum on this compact fiber. Its minimizers form a nonempty compact face, so we may choose a minimizer H∗ that is an extreme point of KG. To justify the last assertion, an extreme point of the minimizing face is also extreme in the fiber: if it is a nontrivial convex combination of two fiber points, linearity forces both points to be minimizers. We claim that rank H∗ ≤ 2. Otherwise H∗ ≻ 0. Since dim S3 = 6, the following four homogeneous linear equations have a nonzero solution X ∈ S3:tr X = 0 , κ⊤Xκ = 0 , e⊤ 
+
+> 2
+
+Xe 2 = 0 , e⊤ 
+
+> 3
+
+Xe 3 = 0 .
+
+For 0 < τ < λ min (H∗)/∥X∥, both H∗ + τ X and H∗ − τ X are positive definite and satisfy all fiber constraints. They are distinct, and their midpoint is H∗, contradicting extremality. This proves the claim without adding the objective value as an extra affine constraint. All nonlinear terms in ϕ are constant on the fiber. Consequently, ϕ(H∗) ≤ ϕ(G). If 
+
+r∗ := rank H∗ ≤ 2, its spectral decomposition gives H∗ = Y ⊤Y with Y ∈ Rr∗×3. For m ≥ 2, appending zero rows gives a matrix in Rm×3 with the same Gram matrix. Thus H∗ is realizable by three vectors in Rm, and ϕ(G) ≥ ϕ(H∗) ≥ γ for every G ∈ K . Since ϕ is continuous on K, it follows that 
+
+δ := min  
+
+> G∈K
+
+ϕ(G) > 0. (38) For ε1, ε 2 > 0, define 
+
+Qε := Qb − (ε1 + ε2)κκ ⊤ − L21
+
+ε1
+
+e2e⊤ 
+
+> 2
+
+− L22
+
+ε2
+
+e3e⊤ 
+
+> 3
+
+.
+
+Using 2L√rs = inf 
+
+> ε> 0
+> (
+
+εr + L2
+
+ε s
+
+> )
+
+,
+
+we obtain ϕ(G) = sup ε1,ε 2>0⟨Q ε, G ⟩.The scalar identity holds for all r, s ≥ 0. For r, s > 0, equality is attained at ε = L√s/r ; for 
+
+r = 0 < s the infimum is approached as ε → ∞ , whereas for s = 0 < r it is approached as ε ↓ 0. If both vanish it is zero for every ε. Thus the identity remains valid even when r(G) or sj (G)vanishes; no pointwise attainment is assumed. Together with (38), this identifies δ as a minimax value. More explicitly, put E := (0 , ∞)2 and Φ( G, ε ) := ⟨Q ε, G ⟩. For each ε ∈ E , Φ( ·, ε ) is continuous and affine, hence convex, on the compact convex set K. For each G ∈ K , it is continuous and concave in ε, since 
+
+∂2Φ
+
+∂ε 2
+
+> j
+
+= − 2L2 
+
+> j
+
+sj (G)
+
+ε3
+
+> j
+
+≤ 0, ∂2Φ
+
+∂ε 1∂ε 2
+
+= 0 .
+
+The set E is convex. These are the hypotheses of Sion’s minimax theorem [29]; only K needs to be compact, so the openness and unboundedness of E cause no difficulty. Therefore 21 0 < δ = min  
+
+> G∈K
+
+sup 
+
+> ε1,ε 2>0
+
+⟨Q ε, G ⟩
+
+= sup 
+
+> ε1,ε 2>0
+
+min 
+
+> G∈K
+
+⟨Q ε, G ⟩
+
+= sup 
+
+> ε1,ε 2>0
+
+λmin (Qε).
+
+For the last equality, diagonalize Qε: its inner product with any G ∈ K is a convex combination of its eigenvalues, and G = vv ⊤ for a unit minimum-eigenvalue eigenvector attains the smallest one. Since δ > 0, the definition of the supremum now supplies a finite pair ε ∈ E for which 
+
+λmin (Qε) > δ/ 2 > 0. Attainment of the supremum is not needed. Crucially, this single pair works for every G, rather than depending on the state vectors. Put 
+
+σ := 2 b − ε1 − ε2, μ := ε1 + ε2
+
+2b , ρ := ε1
+
+ε1 + ε2
+
+.
+
+The (1 , 1) entry of Qε is σk 2 
+
+> i
+
+> 0. Hence σ > 0 and μ, ρ ∈ (0 , 1). Write 
+
+P0 =
+
+
+
+p11 p12 ki
+
+p12 p22 kp
+
+ki kp kd
+
+ , ξ := σk ikd − p12 ,
+
+and define 
+
+A0 := σ(k2 
+
+> p
+
+− 2kikd) − L21
+
+ε1
+
+, C0 := σk 2 
+
+> d
+
+− 2kp − L22
+
+ε2
+
+.
+
+Direct calculation gives the following entry and principal submatrix, where the paired subscript 
+
+{1, 3}, {1, 3} selects rows and columns 1 and 3: (Qε)22 = A0 + 2 ξ, (Qε){1,3},{1,3} =
+
+[
+
+σk 2 
+
+> i
+
+ξξ C0
+
+]
+
+.
+
+Therefore C0 > 0, A0 + 2 ξ > 0, and ξ2 < σk 2 
+
+> i
+
+C0. Since C0 = σ∆μ,ρ and A0 = σ(Π μ,ρ − 2kikd), we obtain ∆ μ,ρ > 0. Moreover, kp, k d > 0 implies 0 < ∆μ,ρ < k 2
+
+> d
+
+. Finally, A0 + 2 ξ > 0 and 
+
+ξ < k i
+
+√σC 0 give 0 < A 0 + 2 ki
+
+√σC 0 = σ
+
+[
+
+Πμ,ρ − 2ki
+
+(kd −
+
+√
+
+∆μ,ρ 
+
+)]
+
+.
+
+Since ki > 0 and kd − √∆μ,ρ > 0, it follows that Πμ,ρ > 0, ki < Πμ,ρ 
+
+2(kd − √∆μ,ρ 
+
+) .
+
+Thus ( kp, k i, k d) satisfies the conditions on the right-hand side of (14). For completeness, the three necessary inequalities above are equivalent to the nonempty interval max {− A0/2, −ki
+
+√σC 0} < ξ < k i
+
+√σC 0, C0 > 0.
+
+Conversely, choose ξ in this interval and set p12 = σk ikd − ξ, p11 = σk ikp, and p22 = σk pkd − ki.These choices cancel the (1 , 2) and (2 , 3) entries of Qε, leaving exactly the positive-definite matrix ̂
+
+Q constructed in Part II. The separate Lyapunov-equation argument there establishes P0 ≻ 0. Thus eliminating these entries and then ξ introduces no additional restriction or unverified positivity assumption on the certificate. Combining Parts II and III proves the exact multivariable representation. Finally, Part II with m = 1, together with Part I, shows that every gain in the multivariable region also satisfies the scalar four-vertex condition. 22 5.2 Linear-subclass PID characterization 
+
+Proof of Proposition 2. We first consider m = 1. Write the admissible matrices as scalars 
+
+d1, d 2, θ , where 
+
+|d1| ≤ L1, |d2| ≤ L2, θ ≥ b. 
+
+The characteristic polynomial of the augmented PID closed loop is 
+
+pd1,d 2,θ (s) = s3 + ( θk d − d2)s2 + ( θk p − d1)s + θk i.
+
+By the Routh–Hurwitz criterion, this polynomial is Hurwitz if and only if 
+
+θk i > 0, θk p − d1 > 0, θk d − d2 > 0,
+
+(θk p − d1)( θk d − d2) > θk i.
+
+Necessity follows by choosing d1 = L1, d2 = L2, and θ = b. Indeed, the preceding conditions give ¯k0 > 0, ¯k1 > 0, ¯k2 > 0, ¯k1¯k2 > ¯k0.
+
+Since ¯k1 > 0 and ¯k1¯k2 > ¯k0 > 0 already imply ¯k2 > 0, these conditions are equivalent to those in (15). Conversely, suppose that the conditions in (15) hold. They imply ki, k p, k d > 0 and ¯k2 > 0. Hence, for every admissible triple, 
+
+θk p − d1 ≥ ¯k1 > 0, θk d − d2 ≥ ¯k2 > 0.
+
+Define 
+
+g(θ) := (θk p − L1)( θk d − L2)
+
+θ .
+
+Since bk p > L 1 and bk d > L 2,
+
+g′(θ) = kpkd − L1L2
+
+θ2 ≥ kpkd − L1L2
+
+b2 > 0, θ ≥ b. 
+
+Therefore, (θk p − d1)( θk d − d2)
+
+θ ≥ g(θ) ≥ g(b) = ¯k1¯k2
+
+b > ¯k0
+
+b = ki.
+
+All Routh–Hurwitz inequalities consequently hold for every admissible d1, d 2, θ . This proves (15). We now turn to the case m ≥ 2. We first note that the frequency inequality in (16) automatically implies the nominal Routh–Hurwitz condition. Indeed, let 
+
+ω0 := 
+
+√
+
+ki
+
+kd
+
+.
+
+Since the gains are positive, 
+
+χ(ω0) = k2 
+
+> p
+
+ω20 ,
+
+√
+
+χ(ω0) = kpω0.
+
+Evaluating the frequency inequality at ω = ω0 and dividing by kpω20 > 0 gives 
+
+bk p − ω20 > L 1 + L2ω0 ≥ 0.
+
+Consequently, 
+
+bk p > ω 20 = ki
+
+kd
+
+, and hence bk pkd > k i.
+
+23 Therefore the nominal polynomial 
+
+s3 + bk ds2 + bk ps + bk i
+
+is Hurwitz by the Routh–Hurwitz criterion. This provides the stable starting point for the continuation argument below. For the linear plant, the characteristic matrix of the augmented PID closed loop is 
+
+P(s) = s3Im + ( kdΘ − D2)s2 + ( kpΘ − D1)s + kiΘ. (39) We first prove necessity. Choosing D1 = D2 = 0 and Θ = bI m gives the scalar characteristic polynomial 
+
+p0(s) = s3 + bk ds2 + bk ps + bk i
+
+in each channel. The Routh–Hurwitz criterion therefore requires 
+
+ki > 0, kp > 0, kd > 0, bk pkd > k i.
+
+Suppose next that the frequency inequality in (16) fails at some ω > 0. In what follows, i2 = −1, ζ is complex conjugation, and Re ζ, Im ζ, and |ζ| denote the real part, imaginary part, and modulus of ζ ∈ C. Put 
+
+qω := ki − kdω2 + i kpω, |qω|2 = χ(ω),
+
+and define 
+
+c1 := iωqω
+
+, c2 := − ω2
+
+qω
+
+, αj := Lj
+
+cj
+
+|cj | .
+
+Finally, let 
+
+β := iω3 + i ωα 1 − ω2α2
+
+qω
+
+.
+
+Then |αj | = Lj and Re β = kpω4
+
+χ(ω) + L1ω + L2ω2
+
+> √
+
+χ(ω) ≥ b. 
+
+Moreover, 
+
+qωβ + ω2α2 − iωα 1 − iω3 = 0 . (40) For ζ ∈ C, define its realification by 
+
+R(ζ) := 
+
+> [
+
+Re ζ − Im ζ
+
+Im ζ Re ζ
+
+> ]
+
+.
+
+When m = 2, choose 
+
+Dj = R(αj ), Θ = R(β).
+
+Then 
+
+∥Dj ∥ = |αj | ≤ Lj , Sym(Θ) = (Re β)I2 ⪰ bI 2.
+
+Identity (40) implies that P(i ω) is singular. Hence the corresponding closed loop has an imaginary-axis characteristic root and is not Hurwitz. For m > 2, the same construction is embedded by taking 
+
+Dj = diag (R(αj ), 0m−2
+
+> )
+
+, Θ = diag (R(β), bI m−2
+
+> )
+
+.
+
+Thus the frequency inequality is necessary for every m ≥ 2. 24 We now prove sufficiency. Suppose that ( kp, k i, k d) ∈ R3 
+
+> >0
+
+satisfies the frequency condition on the right-hand side of (16). Assume, to the contrary, that an admissible linear plant has a characteristic root s = i ω for some ω > 0. Let v ∈ Cm be a corresponding unit vector and set 
+
+aj := v∗Dj v, β := v∗Θv. 
+
+Then 
+
+|aj | ≤ Lj , Re β ≥ b. 
+
+From P(i ω)v = 0 we obtain 
+
+qωβ + ω2a2 − iωa 1 − iω3 = 0 .
+
+Dividing by qω and taking real parts gives 0 ≥ b − kpω4
+
+χ(ω) − L1ω + L2ω2
+
+√χ(ω) ,
+
+which contradicts (16). Hence no nonzero imaginary-axis root is possible. A zero root is also impossible because 
+
+P(0) = kiΘis nonsingular. Finally, connect the nominal matrices (0 , 0, bI m) to any admissible ( D1, D 2, Θ) through 
+
+Dj (τ ) = τ D j , Θ( τ ) = (1 − τ )bI m + τ Θ, 0 ≤ τ ≤ 1.
+
+This path remains admissible. The nominal polynomial is Hurwitz by bk pkd > k i, and the preceding argument excludes any imaginary-axis crossing along the path. Since the characteristic polynomial is monic of fixed degree and depends continuously on the path parameter, its roots cannot leave the open left half-plane without such a crossing. Therefore every admissible linear closed loop is Hurwitz. 
+
+5.3 PID endpoint coincidence 
+
+Proof of Theorem 2. In view of Theorem 1 and the inclusions Ω cq pid ⊆ Ωpid ⊆ Ωlin pid , it suffices to prove Ωcq pid = Ω lin pid .
+
+For t > 0, corresponding to t = ω2, define 
+
+S(t) := 
+
+√
+
+(ki − kdt)2 + k2 
+
+> p
+
+t, R(t) := L1
+
+√t + L2t, 
+
+and 
+
+F (t) := bS (t)2 − kpt2 − R(t)S(t).
+
+Thus the frequency inequality in (16) is equivalent to 
+
+F (t) > 0, ∀ t > 0. (41) 
+
+Step 1: Ωcq pid ⊆ Ωlin pid . Suppose that ( kp, k i, k d) ∈ Ωcq pid . By Theorem 1, there exist μ, ρ ∈ (0 , 1) such that Πμ,ρ > 0, ∆μ,ρ > 0, ki < Πμ,ρ 
+
+2(kd − √∆μ,ρ 
+
+) .
+
+Define 
+
+H(t) := b(1 − μ)S(t)2 − kpt2 − L21t
+
+4bμρ − L22t2
+
+4bμ (1 − ρ) .
+
+25 By the definitions of Π μ,ρ and ∆ μ,ρ ,
+
+H(t) = b(1 − μ)
+
+[
+
+∆μ,ρ t2 + (Πμ,ρ − 2kikd
+
+)t + k2
+
+> i
+
+]
+
+. (42) Moreover, direct completion of squares gives the exact identity 
+
+F (t) − H(t) = 
+
+(√bμρ S (t) − L1
+
+√t
+
+2√bμρ 
+
+)2
+
++
+
+(√
+
+bμ (1 − ρ) S(t) − L2t
+
+2√bμ (1 − ρ)
+
+)2
+
+≥ 0. (43) The quadratic polynomial in (42) satisfies ∆μ,ρ t2 + (Πμ,ρ − 2kikd
+
+)t + k2
+
+> i
+
+=
+
+(√ 
+
+∆μ,ρ t − ki
+
+)2
+
++
+
+[
+
+Πμ,ρ − 2ki
+
+(kd −
+
+√
+
+∆μ,ρ 
+
+)]
+
+t. 
+
+The coefficient in square brackets is strictly positive. Hence H(t) > 0 for every t > 0, and (43) yields (41). It remains to verify the Routh–Hurwitz condition. Set t0 := ki/k d. Since S(t0) = kp
+
+√t0, (41) gives 0 < F (t0) = kpt0
+
+(
+
+bk p − L1 − L2
+
+√t0 − t0
+
+)
+
+.
+
+Therefore 
+
+bk p > t 0 = ki
+
+kd
+
+,
+
+and hence bk pkd > k i. This proves Ω cq pid ⊆ Ωlin pid .
+
+Step 2: Ωlin pid ⊆ Ωcq pid .
+
+Let ( kp, k i, k d) ∈ Ωlin pid . Then F (t) > 0 for all t > 0. Define 
+
+σ(t) := R(t) + 
+
+√
+
+R(t)2 + 4 bk pt2
+
+2b . (44) This is the positive root of 
+
+bs 2 − R(t)s − kpt2 = 0 .
+
+Consequently, 
+
+F (t) > 0 ⇐⇒ S(t) > σ (t). (45) Define 
+
+Z(t) := σ(t)2 − k2 
+
+> p
+
+t. 
+
+Evaluating the polynomial bs 2 − R(t)s − kpt2 at s = kp
+
+√t shows that 
+
+Z(t) > 0 ⇐⇒ t + L2
+
+√t + L1 > bk p. (46) Taking again t0 = ki/k d in (41) gives 
+
+t0 + L2
+
+√t0 + L1 < bk p.
+
+In particular, bk p > L 1. Let tc > 0 be the unique solution of 
+
+tc + L2
+
+√tc + L1 = bk p. (47) 26 The preceding inequality implies t0 < t c.For t > t c, one has Z(t) > 0 and kdt > k i. Hence (45) is equivalent to 
+
+kd > ψ (t) := ki + √Z(t)
+
+t . (48) For 0 < t < t c, one has σ(t) < k p
+
+√t ≤ S(t), so no additional restriction arises. At t = tc,strictness follows from t0 < t c.Thus, under ki/k d < t c, (41) is equivalent to kd > ψ (t) for every t > t c. Define 
+
+D∗ := sup 
+
+> t>t c
+
+ψ(t).
+
+Before replacing these pointwise strict inequalities by kd > D ∗, we must prove that this supremum is attained. First we verify the asserted behavior at tc. Set 
+
+g(t) := t + L2
+
+√t + L1 − bk p, h(t) := kp
+
+√t, p(t, s ) := bs 2 − R(t)s − kpt2.
+
+Then g(tc) = 0, g′(tc) = 1 + L2/(2 √tc) > 0, p(t, σ (t)) = 0, and 
+
+p(t, h (t)) = −kpt g (t), ∂sp(t, σ (t)) = 
+
+√
+
+R(t)2 + 4 bk pt2 > 0.
+
+Since σ(tc) = h(tc), differentiating the two identities for p at tc and subtracting gives 
+
+σ′(tc) − h′(tc) = kptcg′(tc)
+
+√
+
+R(tc)2 + 4 bk pt2
+
+> c
+
+> 0.
+
+Consequently, 
+
+Z′(tc) = 2 kp
+
+√tc
+
+(σ′(tc) − h′(tc)) > 0.
+
+Here ∂sp is the partial derivative in the scalar variable s. Taylor expansion, with O(·) denoting a remainder bounded in absolute value by a constant times its argument in the indicated limit, now gives, as t ↓ tc,
+
+ψ(t) = ki
+
+tc
+
++
+
+√Z′(tc)
+
+tc
+
+√t − tc + O(t − tc).
+
+Hence ψ(t) > k i/t c immediately to the right of tc. On the other hand, as t → ∞ ,
+
+ψ(t) = κ∞ + c∞
+
+√t + O(t−1),
+
+where 
+
+κ∞ := L2 +
+
+√
+
+L22 + 4 bk p
+
+2b , c∞ := L1κ∞
+
+√
+
+L22 + 4 bk p
+
+> 0.
+
+Let 
+
+ℓ := max 
+
+{ ki
+
+tc
+
+, κ ∞
+
+}
+
+.
+
+If ℓ = ki/t c, the first expansion supplies a finite point with ψ(̂t) > ℓ ; if ℓ = κ∞, the second does so because c∞ > 0. Choose a real number a strictly between ℓ and ψ(̂t). The two endpoint limits give tc < t − <̂ t < t + < ∞ such that ψ(t) < a for t ∈ (tc, t −) and for t > t +. The maximum of ψ on [ t−, t +] therefore equals its supremum on ( tc, ∞). In particular, for some 
+
+t∗ ∈ (tc, ∞), 
+
+D∗ = ψ(t∗) > max {ki/t c, κ ∞}.
+
+27 Pointwise strictness at this maximizer now gives kd > D ∗ for the original gain. Conversely, 
+
+kd > D ∗ implies ki/k d < t c and kd > ψ (t) for every t > t c, and hence gives F (t) > 0 for all t > 0. We have therefore justified the strict equivalence 
+
+F (t) > 0 for every t > 0 ⇐⇒ kd > D ∗. (49) Consider the boundary value k∂d := D∗.
+
+To keep the original and boundary gains distinct, write 
+
+S∂ (t) := 
+
+√
+
+(ki − k∂d t)2 + k2 
+
+> p
+
+t, F∂ (t) := bS ∂ (t)2 − kpt2 − R(t)S∂ (t).
+
+Since D∗ > k i/t c, one has ki/k ∂d < t c. For t > t c, the inequality D∗ ≥ ψ(t) yields k∂d t−ki ≥ √Z(t), and thus S∂ (t) ≥ σ(t). For 0 < t < t c, strictness follows from σ(t) < k p
+
+√t ≤ S∂ (t); at t = tc, it follows from k∂d tc > k i. Therefore 
+
+F∂ (t) ≥ 0 (t > 0) , F∂ (t∗) = 0 ,
+
+where equality at t∗ follows from D∗ = ψ(t∗). This proves boundary feasibility without applying a strict-gain criterion at equality. Let 
+
+S∗ := 
+
+√
+
+(ki − k∂d t∗)2 + k2 
+
+> p
+
+t∗ = σ(t∗).
+
+Define 
+
+μ∗ := R(t∗)2bS ∗
+
+, ρ∗ := L1
+
+√t∗
+
+R(t∗) . (50) Because L1, L 2 > 0, one has ρ∗ ∈ (0 , 1). Furthermore, the boundary equality bS 2 
+
+> ∗
+
+− kpt2 
+
+> ∗
+
+−
+
+R(t∗)S∗ = 0 gives 
+
+μ∗ = 12
+
+(
+
+1 − kpt2
+
+> ∗
+
+bS 2
+
+> ∗
+
+)
+
+∈
+
+(
+
+0, 12
+
+)
+
+.
+
+Thus ( μ∗, ρ ∗) ∈ (0 , 1) 2.Use (42), denoting its left-hand side by H∂ (t), with kd = k∂d and ( μ, ρ ) = ( μ∗, ρ ∗). By (50), both squares in (43) vanish at t = t∗. Hence 
+
+H∂ (t∗) = 0 .
+
+Since F∂ (t) ≥ 0 and F∂ (t∗) = 0 at the interior point t∗, one also has F ′ 
+
+> ∂
+
+(t∗) = 0. The derivatives of the two squares in (43) vanish at their common zero, and therefore 
+
+H′ 
+
+> ∂
+
+(t∗) = 0 .
+
+All functions in the square terms are differentiable near t∗ > t c > 0; the derivative of a square is zero at a zero of its underlying function. Thus both the value and derivative of H∂ vanish at 
+
+t∗. Its constant term is b(1 − μ∗)k2 
+
+> i
+
+> 0, so it is not identically zero and cannot be a polynomial of degree at most one with this double zero. Consequently, 
+
+H∂ (t) = b(1 − μ∗) k2
+
+> i
+
+t2
+
+> ∗
+
+(t − t∗)2.
+
+Comparing coefficients proves the identities below. Their strict positivity also uses k∂d − ki/t ∗ =√Z(t∗)/t ∗ > 0. We obtain ∆∗ = k2
+
+> i
+
+t2
+
+> ∗
+
+> 0, Πμ∗,ρ ∗ = 2 ki
+
+(
+
+k∂d − ki
+
+t∗
+
+)
+
+> 0, (51) 28 where ∆ ∗ denotes ∆ μ∗,ρ ∗ evaluated at kd = k∂d . In particular, 
+
+√∆∗ = ki
+
+t∗
+
+and 
+
+ki = Πμ∗,ρ ∗
+
+2(k∂d − √∆∗
+
+) . (52) Return now to the original gain kd > D ∗ and keep ( μ∗, ρ ∗) fixed. Put 
+
+A∗ := kp
+
+b(1 − μ∗) + L22
+
+4b2μ∗(1 − ρ∗)(1 − μ∗) .
+
+Then ∆ μ∗,ρ ∗ = k2 
+
+> d
+
+− A∗, ∆∗ = ( k∂d )2 − A∗. Since the function 
+
+r 7 −→ r − √r2 − A∗
+
+is strictly decreasing for r > √A∗, it follows that 
+
+kd −
+
+√
+
+∆μ∗,ρ ∗ < k ∂d − √∆∗ = Πμ∗,ρ ∗
+
+2ki
+
+.
+
+Indeed, A∗ > 0 and ddr (r − √r2 − A∗) = 1 − r/ √r2 − A∗ < 0. Moreover, ∆ ∗ > 0 implies 
+
+k∂d > √A∗, so the whole interval from k∂d to kd lies in this domain. For the fixed pair ( μ∗, ρ ∗), Πμ∗,ρ ∗ does not depend on kd, while ∆ μ∗,ρ ∗ = k2 
+
+> d
+
+− A∗ increases strictly and remains positive. The displayed denominators are positive because 0 < k 2 
+
+> d
+
+− A∗ < k 2
+
+> d
+
+. Thus increasing kd from its boundary value makes the integral-gain inequality strictly feasible without changing the selected multipliers. Consequently, 
+
+ki < Πμ∗,ρ ∗
+
+2(kd − √∆μ∗,ρ ∗
+
+) .
+
+Together with (51), this proves that the gain satisfies the explicit conditions in (14), and hence belongs to Ω cq pid by Theorem 1. Therefore, Ω lin pid ⊆ Ωcq pid . The two inclusions prove Ωcq pid = Ω lin pid .
+
+Combining this identity with Theorem 1 and the common-quadratic/system-level/linear inclusions gives (18). 
+
+5.4 Exact PI characterization 
+
+Proof of Theorem 3. We prove ( iii ) ⇒ (i) ⇒ (ii ) ⇒ (iii ). 
+
+Step 1: (iii ) ⇒ (i). The sufficiency argument is valid, in fact, for every m ≥ 1. Condition (iii) implies kp > 0 and ki > 0. For a given reference y∗, let u∗ satisfy f (y∗, u ∗) = 0, and define 
+
+z0 := η − u∗
+
+ki
+
+, z1 := e, q := kiz0 + kpz1.
+
+The mean-value theorem and the Jacobian bounds defining FL,b yield f (y∗ − z1, u ∗ + q) = 
+
+−D(z)z1 + Θ( z)q, for some state-dependent matrices satisfying 
+
+∥D(z)∥ ≤ L, Sym(Θ( z)) ⪰ bI m.
+
+Hence, with z = col( z0, z 1), ˙z = API 
+
+(D(z), Θ( z))z. 
+
+29 Put 
+
+γ := ki
+
+kp
+
+, δ := bk p − γ − L. 
+
+The inequality in (iii) is equivalent to δ > 0. Consider 
+
+P0 := 
+
+> [
+
+γ(2 bk p − L) γγ 1
+
+> ]
+
+. (53) Since det P0 = γ(2 bk p − L − γ) = γ(bk p + δ) > 0,
+
+we have P0 ≻ 0. Let P = P0 ⊗ Im and define 
+
+Q(D, Θ) := −
+
+> (
+
+P API (D, Θ) + API (D, Θ) ⊤P
+
+> )
+
+.
+
+Writing H = Sym(Θ), direct calculation gives 
+
+Q(D, Θ) = Qb(D) + 2 kp
+
+> [
+
+γ2 γγ 1
+
+> ]
+
+⊗ (H − bI m),
+
+where 
+
+Qb(D) = 
+
+> [
+
+2bk pγ2Im γ(LI m − D)
+
+γ(LI m − D⊤) 2((bk p − γ)Im − Sym( D))]
+
+.
+
+Thus Q(D, Θ) ⪰ Qb(D). The Schur complement of the upper-left block of Qb(D) is 
+
+S(D) = 2 ((bk p − γ)Im − Sym( D))
+
+− 12bk p
+
+(LI m − D⊤)( LI m − D).
+
+For any nonzero v, let 
+
+rv := v⊤ Sym( D)v
+
+∥v∥2 .
+
+Since ∥D∥ ≤ L, we have ∥(LI m − D)v∥2 ≤ 2L(L − rv)∥v∥2. Consequently, 
+
+v⊤S(D)v
+
+∥v∥2 ≥ 2δ +
+
+> (
+
+2 − Lbk p
+
+> )
+
+(L − rv) ≥ 2δ > 0.
+
+Indeed, δ > 0 implies bk p > L , while rv ≤ L. Hence Qb(D) ≻ 0 for every ∥D∥ ≤ L. By compactness of the matrix ball {D : ∥D∥ ≤ L}, there exists α > 0, depending only on (kp, k i, L, b ), such that 
+
+Q(D, Θ) ⪰ αI 2m
+
+for all admissible D and Θ. The standard Lyapunov estimate, together with equivalence of norms on R2m, yields (26) with constants depending only on ( kp, k i, L, b ). In fact, this estimate holds for arbitrary z(0) and hence, in particular, under the prescribed initialization η(0) = 0. The same estimate precludes finite escape and therefore proves forward completeness. Thus (i) holds. Moreover, P0 ⊗ Im is a common quadratic certificate. 
+
+Step 2: (i) ⇒ (ii ). This follows immediately from 
+
+Fm∂ ⊂ F L,b .
+
+30 Step 3: (ii ) ⇒ (iii ). We first prove that the gains must be positive. Since 0 ∈ N0, the boundary family contains 
+
+f0(x, u ) = Lx + bI mu. 
+
+Choose y∗ = 0, so that u∗ = 0. In the unshifted augmented coordinates z = col( η, e ), the corresponding closed-loop matrix is 
+
+C0 =
+
+[
+
+0 Im
+
+−bk iIm (L − bk p)Im
+
+]
+
+.
+
+Statement (ii), applied to arbitrary plant initial conditions with η(0) = 0, gives exponential decay for every initial state in 
+
+S := {0} × Rm.
+
+As in the corresponding PID argument, this restricted set of initial conditions is sufficient to test Hurwitz stability. Indeed, 
+
+S + C0S = R2m,
+
+and eC0tC0 = C0eC0t. Hence exponential decay on S extends to C0S and therefore to all of R2m.Thus C0 is Hurwitz. Its scalar characteristic polynomial is 
+
+p0(s) = s2 + ( bk p − L)s + bk i.
+
+The Routh–Hurwitz criterion now gives 
+
+bk p − L > 0, bk i > 0.
+
+Since b > 0 and L ≥ 0, we conclude that kp > 0, k i > 0.
+
+It remains to prove the strict gain inequality. Put 
+
+N := bk 2 
+
+> p
+
+− Lk p − ki.
+
+For fν ∈ F m∂ , the shifted closed-loop matrix is 
+
+Cν =
+
+[
+
+0 Im
+
+−kiBν LI m − kpBν
+
+]
+
+, Bν = bI m + νJ m.
+
+Consider the complexified invariant subspace associated with the eigenvalue i of the leading J2
+
+block. On this subspace, the characteristic equation is 
+
+pν (s) = s2 + (kp(b + i ν) − L)s + ki(b + i ν) = 0 .
+
+Because kp > 0 and ki > 0 have already been established, its two roots satisfy, as ν → ∞ ,
+
+sν, 1 = − ki
+
+kp
+
++ O(ν−1), sν, 2 = −ikpν − Nkp
+
++ O(ν−1).
+
+In particular, lim ν→∞ Re sν, 2 = − Nkp .
+
+To account for the prescribed initialization η(0) = 0, choose a plant initial condition supported on the first two coordinates. Identify this real two-dimensional block with C. Under this identification, z1(0) = 1 represents the admissible real initial vector (1 , 0) ⊤. Normalize the initial state by z0(0) = 0 , z 1(0) = 1 . The corresponding error component is z1,ν (t) = aν, 1esν, 1t +aν, 2esν, 2t,
+
+where 
+
+aν, 1 = sν, 1
+
+sν, 1 − sν, 2
+
+= O(ν−1),aν, 2 = − sν, 2
+
+sν, 1 − sν, 2
+
+= 1 + O(ν−1).
+
+31 Thus the second mode is excited by an admissible plant initial condition with a coefficient bounded away from zero. If N < 0, then Re sν, 2 > 0 for all sufficiently large ν, which contradicts stability. If N = 0, then Re sν, 2 → 0. Let M and λ be the uniform constants in (ii). Choose ν sufficiently large that Re sν, 2 > − λ
+
+2 , Re sν, 1 < Re sν, 2,
+
+and |aν, 2| is bounded away from zero. Since the first mode then decays strictly faster than the second, the reverse triangle inequality gives, for all sufficiently large t,
+
+|z1,ν (t)| ≥ 14 eRe sν, 2t > M e −λt ,
+
+contradicting the uniform estimate in (ii). Therefore N > 0, namely, ki + Lk p < bk 2 
+
+> p
+
+. Together with kp > 0 and ki > 0, this proves statement (iii) and completes the proof. 
+
+# 6 Conclusion 
+
+Characterizing all PID and PI gains that guarantee uniform exponential regulation of uncertain nonlinear systems is a fundamental yet highly challenging problem in control theory. This paper established exact system-level PID and PI gain regions for two classes of non-affine MIMO systems with m ≥ 2. For the second-order PID class, independently characterized common-quadratic inner and linear-subclass outer regions were shown to coincide. Thus, common-quadratic certification is lossless at the gain-region level, and the linear subclass is a lossless outer test. For the first-order PI class, uniform exponential regulation of a countable boundary-linear family was shown to be equivalent to regulation of the full nonlinear class, and the resulting exact condition admits a common quadratic certificate. The PID region strictly enlarges the corresponding existing sufficient region and yields a sequential tuning rule, while the PI condition relaxes the corresponding existing bound by L2/(4 b). Beyond these two gain-region formulas, the results raise a broader structural question: for which nonlinear uncertainty classes can a tractable Lyapunov-based inner region and a tractable test-family outer region both coincide with the full system-level gain region? The compact linear counterexample shows that common-quadratic losslessness does not hold in general. Identifying verifiable structural conditions that guarantee such an exact inner–outer coincidence is an important direction for future research. 
+
+# References 
+
+[1] K. J. Åström and T. Hägglund, “The future of PID control,” Control Eng. Pract. , vol. 9, no. 11, pp. 1163–1175, 2001. [2] J. Zhu, C. Zhao, and L. Guo, “Towards guaranteed optimal PID tuning for uncertain nonlinear systems,” in Proc. 23rd IFAC World Congr. , Busan, Republic of Korea, 2026, to appear; also available as arXiv:2606.04787. [3] L. Guo, “Learning and Adaptation in Uncertain Dynamical Systems: Theory, Algorithms, and Challenges,” plenary talk presented at the 23rd IFAC World Congress, Busan, Republic of Korea, 2026. [4] F. Blanchini, A. Lepschy, S. Miani, and U. Viaro, “Characterization of PID and lead/lag compensators satisfying given H∞ specifications,” IEEE Trans. Autom. Control , vol. 49, no. 5, pp. 736–740, May 2004. 32 [5] K. B. Ariyur and M. Krstic, Real-Time Optimization by Extremum-Seeking Control . Hoboken, NJ, USA: Wiley, 2003. [6] N. J. Killingsworth and M. Krstic, “PID tuning using extremum seeking: Online, model-free performance optimization,” IEEE Control Syst. Mag. , vol. 26, no. 1, pp. 70–79, Feb. 2006. [7] B. Pang, T. Bian, and Z.-P. Jiang, “Robust policy iteration for continuous-time linear quadratic regulation,” IEEE Trans. Autom. Control , vol. 67, no. 1, pp. 504–511, 2022. [8] Y. Tan, D. Nešić, and I. Mareels, “On non-local stability properties of extremum seeking con-trol,” Automatica , vol. 42, no. 6, pp. 889–903, 2006, doi: 10.1016/j.automatica.2006.01.014. [9] M.-T. Ho, A. Datta, and S. P. Bhattacharyya, “A linear programming characterization of all stabilizing PID controllers,” in Proc. Amer. Control Conf. , Albuquerque, NM, USA, 1997, vol. 6, pp. 3922–3928. [10] A. Datta, M.-T. Ho, and S. P. Bhattacharyya, Structure and Synthesis of PID Controllers .London, U.K.: Springer-Verlag, 2000. [11] G. J. Silva, A. Datta, and S. P. Bhattacharyya, PID Controllers for Time-Delay Systems .Boston, MA, USA: Birkhäuser, 2005. [12] L. Ou, W. Zhang, and L. Yu, “Low-order stabilization of LTI systems with time delay,” IEEE Trans. Autom. Control , vol. 54, no. 4, pp. 774–787, 2009, doi: 10.1109/TAC.2009.2014935. [13] C. Zhao and Y. Zhang, “Understanding the capability of PD control for uncertain stochas-tic systems,” IEEE Trans. Autom. Control , vol. 69, no. 1, pp. 495–502, Jan. 2024, doi: 10.1109/TAC.2023.3266508. [14] Z. Shafiei and A. T. Shenton, “Frequency-domain design of PID controllers for stable and unstable systems with time delay,” Automatica , vol. 33, no. 12, pp. 2223–2232, 1997. [15] Y.-J. Huang and Y.-J. Wang, “Robust PID tuning strategy for uncertain plants based on the Kharitonov theorem,” ISA Trans. , vol. 39, no. 4, pp. 419–431, 2000. [16] N. Hohenbichler, “All stabilizing PID controllers for time delay systems,” Automatica ,vol. 45, no. 11, pp. 2678–2684, 2009. [17] X.-G. Li, S.-I. Niculescu, J.-X. Chen, and T. Chai, “Characterizing PID controllers for linear time-delay systems: A parameter-space approach,” IEEE Trans. Autom. Control ,vol. 66, no. 10, pp. 4499–4513, Oct. 2021. [18] M.-T. Ho, A. Datta, and S. P. Bhattacharyya, “Robust and non-fragile PID controller design,” Int. J. Robust Nonlinear Control , vol. 11, no. 7, pp. 681–708, 2001. [19] W. Michiels and S.-I. Niculescu, “Characterization of delay-independent stability and delay interference phenomena,” SIAM J. Control Optim. , vol. 45, no. 6, pp. 2138–2155, 2007. [20] P. Appeltans, S.-I. Niculescu, and W. Michiels, “Analysis and design of strongly stabilizing PID controllers for time-delay systems,” SIAM J. Control Optim. , vol. 60, no. 1, pp. 124–146, 2022. [21] C. Zhao and L. Guo, “Control of nonlinear uncertain systems by extended PID,” IEEE Trans. Autom. Control , vol. 66, no. 8, pp. 3840–3847, Aug. 2021. [22] J. Zhang and L. Guo, “PID control of nonlinear stochastic systems with structural uncer-tainties,” IFAC-PapersOnLine , vol. 53, no. 2, pp. 2189–2194, 2020. 33 [23] Y. Li and D. Ma, “Robust PID control of second-order uncertain nonlinear system with time-varying delay: An input-output approach,” IFAC-PapersOnLine , vol. 54, no. 18, pp. 70–75, 2021. [24] X. Lyu and Z. Lin, “Design of PID control for planar uncertain nonlinear systems with input delay,” Int. J. Robust Nonlinear Control , vol. 32, no. 18, pp. 9407–9420, 2022. [25] J. Zhang and E. Fridman, “Sampled-data implementation of extended PID control using delays,” Int. J. Robust Nonlinear Control , vol. 32, no. 18, pp. 9610–9624, 2022. [26] Y. Li and D. Ma, “Robust sampled-data PID controller design for regulation control of nonlinear systems with output delay,” Int. J. Robust Nonlinear Control , vol. 33, no. 11, pp. 6371–6391, 2023. [27] C.-C. Chen, S.-Y. Wu, and W.-S. Hsu, “PID control design for uncertain planar nonlinear systems via feedback domination technique,” Int. J. Robust Nonlinear Control , vol. 36, no. 1, pp. 45–60, 2026. [28] C. Zhao and L. Guo, “Towards a theoretical foundation of PID control for uncertain nonlinear systems,” Automatica , vol. 142, Art. no. 110360, 2022. [29] M. Sion, “On general minimax theorems,” Pacific J. Math. , vol. 8, no. 1, pp. 171–176, 1958, doi: 10.2140/pjm.1958.8.171. 34

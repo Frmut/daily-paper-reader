@@ -6,29 +6,26 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-09-12
-- 运行时间：2026-09-12 21:28:39 UTC
+- 最新运行日期：2026-09-13
+- 运行时间：2026-09-13 21:22:13 UTC
 - 运行状态：成功
-- 本次总论文数：2
+- 本次总论文数：1
 - 精读区：0
-- 速读区：2
+- 速读区：1
 
 ### 今日简报（AI）
-今日聚焦电力电子控制与系统辨识，深入探讨多路功率变换器控制及线性参数变化系统的连续时间推广。
-两篇论文分别在主动配电网控制策略与 LPV 系统基础引理方面提供了理论参考，适合相关领域研究者查阅。
-建议关注电力系统控制的最新演进，通过对比不同控制架构的适用场景，提升对复杂系统稳定性设计的理解。
-- 详情：[/202609/12/README](/202609/12/README)
+今日速读聚焦非仿射 MIMO 系统，探讨了不确定性环境下的 PID 与 PI 控制增益精确区域求解。
+该研究为复杂多变量系统的鲁棒控制提供了理论边界，揭示了增益参数与系统稳定性之间的精确映射关系。
+建议控制工程领域的从业者关注其参数整定方法，以提升复杂工业过程的控制精度与稳定性。
+- 详情：[/202609/13/README](/202609/13/README)
 
 ### 精读区论文标签
 - 本次无精读推荐。
 
 ### 速读区论文标签
-1. [A Control Philosophy for Multiplexed Power Converters in Active Distribution Systems](/202609/12/2609.06621v1-a-control-philosophy-for-multiplexed-power-converters-in-active-distribution-systems)  
+1. [Exact PID and PI Gain Regions for Uncertain Non-Affine MIMO Systems](/202609/13/2609.11130v1-exact-pid-and-pi-gain-regions-for-uncertain-non-affine-mimo-systems)  
    标签：评分：6.0/10、query:pmsm
-   evidence：多路复用功率变换器的控制理念
-2. [A Continuous-Time Generalization of the LPV Fundamental Lemma](/202609/12/2609.07241v1-a-continuous-time-generalization-of-the-lpv-fundamental-lemma)  
-   标签：评分：6.0/10、query:pmsm
-   evidence：非线性系统的数据驱动LPV控制
+   evidence：MIMO系统的PID和PI增益区域
 
 
 <div class="dpr-home-promo-card">

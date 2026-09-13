@@ -1,6 +1,9 @@
 * <a class="dpr-sidebar-root-link" href="#/">首页</a>
 * <a class="dpr-sidebar-root-link dpr-sidebar-noactive-link" href="javascript:void(0)" data-dpr-hash="#/tutorial/README">使用教程</a>
 * Daily Papers
+  * 2026-09-13 <!--dpr-date:20260913-->
+    * 速读区
+      * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202609/13/2609.11130v1-exact-pid-and-pi-gain-regions-for-uncertain-non-affine-mimo-systems" data-sidebar-item="{&quot;title&quot;: &quot;Exact PID and PI Gain Regions for Uncertain Non-Affine MIMO Systems&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2609.11130v1-exact-pid-and-pi-gain-regions-for-uncertain-non-affine-mimo-systems&quot;, &quot;score&quot;: &quot;6.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;pmsm&quot;}], &quot;evidence&quot;: &quot;MIMO系统的PID和PI增益区域&quot;}">Exact PID and PI Gain Regions for Uncertain Non-Affine MIMO Systems</a>
   * 2026-09-12 <!--dpr-date:20260912-->
     * 速读区
       * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202609/12/2609.06621v1-a-control-philosophy-for-multiplexed-power-converters-in-active-distribution-systems" data-sidebar-item="{&quot;title&quot;: &quot;A Control Philosophy for Multiplexed Power Converters in Active Distribution Systems&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2609.06621v1-a-control-philosophy-for-multiplexed-power-converters-in-active-distribution-systems&quot;, &quot;score&quot;: &quot;6.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;pmsm&quot;}], &quot;evidence&quot;: &quot;多路复用功率变换器的控制理念&quot;}">A Control Philosophy for Multiplexed Power Converters in Active Distribution Systems</a>
