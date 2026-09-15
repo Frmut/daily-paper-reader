@@ -1,0 +1,2065 @@
+Title: From Winding-Fault Geometry to Reliability: Estimation and Prognosis of Stator Inter-Turn Faults
+
+URL Source: https://arxiv.org/pdf/2609.13448v1
+
+Published Time: Tue, 15 Sep 2026 00:13:44 GMT
+
+Number of Pages: 25
+
+Markdown Content:
+# FROM WINDING -F AULT GEOMETRY TO RELIABILITY :ESTIMATION AND PROGNOSIS OF STATOR INTER -T URN FAULTS 
+
+Bambang L. Widjiantoro, Katherin Indriawati, Moh Kamalul Wafi 
+
+Department of Engineering Physics Institut Teknologi Sepuluh Nopember Surabaya, Jawa Timur, Indonesia 
+
+{bambang.lw, katherin, kamalul.wafi}@its.ac.id 
+
+Syahrul Munir 
+
+Physics Department Universitas Pembangunan Nasional "Veteran" Jawa Timur Surabaya, Jawa Timur, Indonesia 
+
+syahrul.munir.fisika@upnjatim.ac.id 
+
+# ABSTRACT 
+
+This paper develops an integrated framework for estimation, prognosis, and reliability assessment of stator inter-turn faults in induction motors. The fault is characterized by its severity, defined as the fraction of short-circuited turns, and its spatial orientation. A geometric fault model shows that the resulting output signature is affine in the fault severity and exhibits a fundamental spatial periodicity. Exploiting this structure, an augmented-state particle filter jointly estimates the nonlin-ear electromechanical state and the unknown fault severity while quantifying posterior uncertainty. The estimated degradation is then propagated using four prognostic models: linear trend, Holt ex-ponential smoothing, Bayesian degradation, and particle-based forecasting. Their predictions are connected to threshold-crossing remaining useful life (RUL), first-passage reliability, degradation-dependent hazard reliability, and a Weibull lifetime benchmark, thereby providing both deterministic and probabilistic health assessments. Numerical results demonstrate accurate online fault estimation and output reconstruction, characterize the effects of degradation pattern and prediction horizon on prognosis, and show consistent reliability and threshold-crossing predictions. Moreover, estimation accuracy remains comparable across the distinct fault orientations induced by the spatial periodicity. The resulting framework provides a unified connection from physics-based inter-turn fault modeling to online diagnosis, degradation prognosis, and reliability assessment. 
+
+Keywords Stator Inter-Turn Fault · Induction Motor · Particle Filtering · Fault Prognosis · Remaining Useful Life ·
+
+Reliability Assessment · Predictive Maintenance 
+
+# 1 Introduction 
+
+Induction motors remain central to industrial electromechanical systems, and their reliable operation has motivated extensive research on condition monitoring and fault diagnosis [1–4]. Among electrical failure modes, stator-winding faults are particularly important because insulation degradation may initiate an inter-turn short circuit (ITSC), whose continued development can produce local heating and progressively more severe winding damage [5–7]. Consequently, early detection and severity quantification of ITSC faults have received considerable attention [8–11]. Detecting the presence of a fault, however, addresses only the current condition of the machine. Condition-based and predictive maintenance additionally require prediction of future degradation, remaining useful life (RUL), and the associated uncertainty and failure risk [12–15]. arXiv:2609.13448v1 [eess.SY] 11 Sep 2026 A central difficulty is that a stator ITSC has both a magnitude and a spatial structure . Existing fault models commonly characterize the fault through quantities related to the fraction of short-circuited turns together with the location of the faulty winding [8, 9, 16, 17]. Accordingly, the number of affected turns determines the severity of the winding degradation, while the fault location influences how the resulting electrical asymmetry appears in measured currents and voltages. This dependence has motivated analytical machine models, parameter-identification methods, and signal-based techniques for detecting, locating, and quantifying stator ITSC faults [6, 7, 10, 11, 16]. A useful health variable for prognosis should therefore remain physically interpretable while retaining the connection between fault severity, spatial orientation, and the measured motor response. Model-based fault diagnosis provides a natural mechanism for exploiting this physical structure. Observer- and parameter-estimation approaches have been used to reconstruct winding faults from measured motor variables [9, 18, 19], while Bayesian state estimation provides a systematic framework for representing uncertainty in unknown states and parameters. Particle filtering, in particular, approximates the recursive Bayesian posterior by a weighted particle population and is applicable to nonlinear and non-Gaussian state-space models [20, 21]. This property has also made particle filtering attractive for prognostics, where the posterior health state can be propagated forward to obtain distributions of future degradation and RUL [22–25]. Prognosis nevertheless introduces a modeling problem distinct from online fault estimation. Future degradation must be inferred without future measurements, and the resulting prediction can depend strongly on the assumed degra-dation dynamics and prediction horizon [14, 15, 26]. Local trend extrapolation and exponential smoothing provide computationally simple deterministic forecasts [27–29], whereas stochastic degradation models permit uncertainty in the degradation rate and future evolution to be carried explicitly into RUL prediction [26, 30, 31]. Such uncertainty is particularly important for long-horizon prognosis, for which a single point estimate may conceal substantial variability in the predicted threshold-crossing time [15, 22]. Reliability provides the subsequent connection between predicted degradation and failure risk. When failure is as-sociated with a critical degradation level, RUL can be formulated through the first-passage or first-hitting time of the degradation process [30, 31]. Alternatively, condition information can enter reliability through a degradation-dependent hazard model, allowing the predicted health state to modify the instantaneous failure rate [32,33]. Classical lifetime models such as the Weibull distribution provide a complementary population-level description through their survival and hazard functions [34]. These formulations answer different questions: threshold crossing concerns when a prescribed degradation boundary is reached, first-passage reliability concerns survival of the complete future degra-dation path, and hazard-based reliability accumulates condition-dependent failure risk. More generally, uncertainty propagation from diagnosis through prognosis to reliability remains an important issue in practical PHM [15, 35]. Motivated by these considerations, this paper develops an integrated estimation–prognosis–reliability framework around a common physical health variable. Let ηcc ∈ [0 , 1] denote the fraction of short-circuited stator turns and let γcc 
+
+denote the spatial orientation of the equivalent short-circuit winding. The fault-induced current is represented through a geometric orientation model and factorized into the product of ηcc and an orientation- and operating-condition-dependent signature. This yields a measured-output model that is affine in the unknown fault severity. The same variable ηcc is then carried throughout the remainder of the framework: it is estimated online, propagated into the future, and ultimately mapped into RUL and reliability quantities. The main contributions of this paper are summarized as follows: • A geometric representation of stator inter-turn faults is developed in terms of the physically interpretable pair (ηcc , γ cc ). The resulting fault contribution is affine in ηcc , and its spatial periodicity is characterized, identifying the distinct fault orientations represented by the first-harmonic model. • An augmented-state particle-filter formulation is developed for joint estimation of the nonlinear electrome-chanical state and the constrained fault severity ηcc ∈ [0 , 1] . The posterior particle population provides both an online severity estimate and its uncertainty, rather than only a point-valued fault indicator. • Four prognosis mechanisms are formulated on the same PF-based health information: linear trend, Holt ex-ponential smoothing, Bayesian degradation, and particle-based forecasting. This provides deterministic and probabilistic descriptions of future winding degradation while separating the estimation stage from assump-tions concerning long-term fault evolution. • The resulting forecasts are connected to complementary reliability measures, including threshold-crossing RUL, first-passage reliability, degradation-dependent hazard reliability, and a Weibull lifetime benchmark. For probabilistic forecasts, both pathwise threshold survival and uncertainty-averaged degradation hazards are considered. • Numerical studies evaluate the complete framework under gradual, accelerating, and abrupt degradation, different prediction horizons, and distinct fault orientations. The results demonstrate accurate online severity 2estimation and output reconstruction, quantify the effect of degradation dynamics on prognosis, and illustrate how different reliability formulations interpret the same predicted winding condition. The remainder of the paper is organized as follows. Section 2 presents the induction-motor model. Section 3 develops the stator inter-turn fault model and its spatial representation. Section 4 introduces the augmented-state particle filter. Section 5 develops the four fault-prognosis methods, and Section 6 formulates the corresponding reliability measures. Section 7 presents the numerical results, and the paper is concluded in the final section. 
+
+# 2 Electromechanical Model of the Induction Motor 
+
+This section derives the nominal electromechanical model of the induction motor in the synchronous (d, q ) reference frame. The resulting model describes the common-mode dynamics of the machine and provides the baseline represen-tation upon which the stator winding-fault model is constructed in the following section. The derivation begins with the stator (subscript s) and rotor (subscript r) voltage equations, followed by the corresponding flux-linkage relations. The rotor currents are then eliminated to obtain differential equations in terms of the stator currents and rotor fluxes. Finally, the electrical dynamics are coupled with the mechanical equation of the rotor to obtain the complete nonlinear state-space model. The stator voltage equations in the synchronous (d, q ) reference frame are 
+
+Vsd = Rsisd + ddt λsd − ωsλsq , (1a) 
+
+Vsq = Rsisq + ddt λsq + ωsλsd , (1b) where Vsd and Vsq denote the stator voltages along the d- and q-axes, respectively; isd and isq are the corresponding stator currents; λsd and λsq are the stator flux linkages; and Rs > 0 is the stator resistance. The quantity ωs denotes the synchronous electrical angular velocity of the rotating reference frame. Similarly, the rotor voltage equations in the synchronous (d, q ) reference frame are 
+
+Vrd = Rr ird + ddt λrd − (ωs − pω r)λrq , (2a) 
+
+Vrq = Rr irq + ddt λrq + ( ωs − pω r)λrd , (2b) where Vrd and Vrq denote the rotor voltages along the d- and q-axes, respectively; ird and irq are the corresponding rotor currents; λrd and λrq are the rotor flux linkages; Rr > 0 is the rotor resistance; p is the number of pole pairs; and 
+
+ωr is the mechanical angular velocity of the rotor. Consequently, pω r represents the rotor electrical angular velocity, and ωs − pω r is the relative electrical angular velocity between the synchronous reference frame and the rotor. For a squirrel-cage induction motor, the rotor windings are short-circuited through the end rings and no external voltage is applied to the rotor. Therefore, Vrd = Vrq = 0 . It follows from (2a)–(2b) that the rotor flux dynamics satisfy 
+
+ddt λrd = −Rrird + ( ωs − pω r )λrq , (3a) 
+
+ddt λrq = −Rrirq − (ωs − pω r )λrd . (3b) The rotor flux dynamics in (3a)–(3b) still depend on the rotor currents ird and irq . To express these dynamics in terms of the stator currents and rotor flux linkages, we next use the magnetic coupling relations between the stator and rotor circuits. The stator and rotor flux linkages satisfy 
+
+λsd = Lsisd + Lmird , (4a) 
+
+λsq = Lsisq + Lmirq , (4b) 
+
+λrd = Lr ird + Lmisd , (4c) 
+
+λrq = Lr irq + Lmisq , (4d) where Ls > 0 and Lr > 0 denote the stator and rotor self-inductances, respectively, while Lm > 0 denotes the mutual inductance between the stator and rotor windings. In particular, the terms involving Lm represent the magnetic coupling between the stator and rotor circuits. Since the rotor currents are not selected as state variables, we eliminate 
+
+ird and irq from the subsequent dynamics. Solving (4c) and (4d) for the rotor currents gives 
+
+ird = 1
+
+Lr
+
+(λrd − Lmisd ) , (5a) 3irq = 1
+
+Lr
+
+(λrq − Lmisq ) . (5b) Substituting (5a) and (5b) into (3a) and (3b), respectively, eliminates the rotor currents from the rotor flux dynamics and gives 
+
+ddt λrd = Rr
+
+Lr
+
+(Lmisd − λrd ) + ( ωs − pω r)λrq , (6a) 
+
+ddt λrq = Rr
+
+Lr
+
+(Lmisq − λrq ) − (ωs − pω r)λrd . (6b) Thus, the rotor flux dynamics are expressed entirely in terms of the stator currents isd and isq , the rotor flux linkages 
+
+λrd and λrq , and the rotor angular velocity ωr, without requiring the rotor currents ird and irq as additional dynamic variables. We next derive the dynamics of the stator currents. Starting with the d-axis, substituting the stator flux relation (4a) into (1a) gives 
+
+Vsd = Rsisd + ddt (Lsisd + Lmird ) − ωsλsq 
+
+= Rsisd + Ls
+
+ddt isd + Lm
+
+ddt ird − ωsλsq . (7) The resulting expression contains the derivative of the rotor current ird . To eliminate this quantity, differentiating (5a) with respect to time yields 
+
+ddt ird = 1
+
+Lr
+
+( ddt λrd − Lm
+
+ddt isd 
+
+)
+
+. (8) Substituting (8) into (7) eliminates ˙ird and gives 
+
+Vsd = Rsisd + Ls
+
+ddt isd + Lm
+
+Lr
+
+ddt λrd − L2
+
+> m
+
+Lr
+
+ddt isd − ωsλsq 
+
+= Rsisd +
+
+(
+
+Ls − L2
+
+> m
+
+Lr
+
+) ddt isd + Lm
+
+Lr
+
+ddt λrd − ωsλsq . (9) The expression in (9) still contains ˙λrd . Using the rotor flux dynamics derived in (6a), we obtain 
+
+Vsd = Rsisd +
+
+(
+
+Ls − L2
+
+> m
+
+Lr
+
+) ddt isd + Lm
+
+Lr
+
+[ Rr
+
+Lr
+
+(Lmisd − λrd ) + ( ωs − pω r )λrq 
+
+]
+
+− ωsλsq 
+
+= Rsisd +
+
+(
+
+Ls − L2
+
+> m
+
+Lr
+
+) ddt isd + L2
+
+> m
+
+Rr
+
+L2
+
+> r
+
+isd − LmRr
+
+L2
+
+> r
+
+λrd + Lm
+
+Lr
+
+ωsλrq − Lm
+
+Lr
+
+pω rλrq − ωsλsq . (10) Since 
+
+λsq = Lsisq + Lmirq = Lsisq + Lm
+
+Lr
+
+(λrq − Lmisq ) ,
+
+we have 
+
+λsq =
+
+(
+
+Ls − L2
+
+> m
+
+Lr
+
+)
+
+isq + Lm
+
+Lr
+
+λrq . (11) Substituting (11) into (10) eliminates λsq . Moreover, the two terms containing ωsλrq cancel, resulting in 
+
+Vsd = Rsisd +
+
+(
+
+Ls − L2
+
+> m
+
+Lr
+
+) ddt isd + L2
+
+> m
+
+Rr
+
+L2
+
+> r
+
+isd − LmRr
+
+L2
+
+> r
+
+λrd 
+
+− Lm
+
+Lr
+
+pω rλrq − ωs
+
+(
+
+Ls − L2
+
+> m
+
+Lr
+
+)
+
+isq . (12) To simplify the resulting expressions, define the leakage coefficient 
+
+σ = LsLr − L2
+
+> m
+
+LsLr
+
+, (13) which satisfies 
+
+Ls − L2
+
+> m
+
+Lr
+
+= σL s. (14) 4Using this identity in (12) and solving for ˙isd yields the d-axis stator current dynamics 
+
+ddt isd = Vsd 
+
+σL s
+
+− L2 
+
+> r
+
+Rs + L2
+
+> m
+
+Rr
+
+σL sL2
+
+> r
+
+isd + ωsisq + LmRr
+
+σL sL2
+
+> r
+
+λrd + pL mωr
+
+σL sLr
+
+λrq . (15) We proceed similarly for the q-axis stator current. Substituting the stator flux relation (4b) into the q-axis stator voltage equation (1b) gives 
+
+Vsq = Rsisq + ddt (Lsisq + Lmirq ) + ωsλsd 
+
+= Rsisq + Ls
+
+ddt isq + Lm
+
+ddt irq + ωsλsd . (16) The resulting equation contains the derivative of the rotor current irq . Differentiating (5b) with respect to time gives 
+
+ddt irq = 1
+
+Lr
+
+( ddt λrq − Lm
+
+ddt isq 
+
+)
+
+. (17) Substituting (17) into (16) eliminates ˙irq and yields 
+
+Vsq = Rsisq + Ls
+
+ddt isq + Lm
+
+Lr
+
+ddt λrq − L2
+
+> m
+
+Lr
+
+ddt isq + ωsλsd 
+
+= Rsisq +
+
+(
+
+Ls − L2
+
+> m
+
+Lr
+
+) ddt isq + Lm
+
+Lr
+
+ddt λrq + ωsλsd . (18) The remaining rotor flux derivative ˙λrq can be eliminated using the rotor flux dynamics in (6b). Substitution into (18) gives 
+
+Vsq = Rsisq +
+
+(
+
+Ls − L2
+
+> m
+
+Lr
+
+) ddt isq + Lm
+
+Lr
+
+[ Rr
+
+Lr
+
+(Lmisq − λrq ) − (ωs − pω r )λrd 
+
+]
+
++ ωsλsd 
+
+= Rsisq +
+
+(
+
+Ls − L2
+
+> m
+
+Lr
+
+) ddt isq + L2
+
+> m
+
+Rr
+
+L2
+
+> r
+
+isq − LmRr
+
+L2
+
+> r
+
+λrq − Lm
+
+Lr
+
+ωsλrd + Lm
+
+Lr
+
+pω r λrd + ωsλsd . (19) Since 
+
+λsd = Lsisd + Lmird = Lsisd + Lm
+
+Lr
+
+(λrd − Lmisd ) ,
+
+we have 
+
+λsd =
+
+(
+
+Ls − L2
+
+> m
+
+Lr
+
+)
+
+isd + Lm
+
+Lr
+
+λrd . (20) Substituting (20) into (19) eliminates λsd . The terms containing ωsλrd cancel, and hence 
+
+Vsq = Rsisq +
+
+(
+
+Ls − L2
+
+> m
+
+Lr
+
+) ddt isq + L2
+
+> m
+
+Rr
+
+L2
+
+> r
+
+isq − LmRr
+
+L2
+
+> r
+
+λrq 
+
++ Lm
+
+Lr
+
+pω rλrd + ωs
+
+(
+
+Ls − L2
+
+> m
+
+Lr
+
+)
+
+isd . (21) Using Ls − L2
+
+> m
+
+/L r = σL s and solving (21) for ˙isq yields the q-axis stator current dynamics 
+
+ddt isq = Vsq 
+
+σL s
+
+− L2 
+
+> r
+
+Rs + L2
+
+> m
+
+Rr
+
+σL sL2
+
+> r
+
+isq − ωsisd + LmRr
+
+σL sL2
+
+> r
+
+λrq − pL mωr
+
+σL sLr
+
+λrd . (22) Having derived the stator current and rotor flux dynamics, it remains to describe the mechanical motion of the rotor. The electrical and mechanical dynamics are coupled through the electromagnetic torque, which is given by 
+
+Te = p Lm
+
+Lr
+
+(λrd isq − λrq isd ) , (23) where Te denotes the electromagnetic torque generated by the motor. The rotor angular velocity evolves according to the mechanical torque balance 
+
+J ddt ωr = Te − Tl, (24) 5where J > 0 denotes the total moment of inertia of the rotor and load, and Tl is the external load torque acting against the electromagnetic torque. Equivalently, 
+
+ddt ωr = Te − Tl
+
+J . (25) Substituting (23) into the mechanical equation eliminates Te and yields the rotor-speed dynamics 
+
+ddt ωr = pL m
+
+JL r
+
+(λrd isq − λrq isd ) − Tl
+
+J . (26) We have now obtained differential equations for the two stator currents, the two rotor flux linkages, and the rotor angular velocity. Collecting (15), (22), (6a), (6b), and (26), the complete nonlinear induction motor dynamics are given by 
+
+˙isd = Vsd 
+
+σL s
+
+− L2 
+
+> r
+
+Rs + L2
+
+> m
+
+Rr
+
+σL sL2
+
+> r
+
+isd + ωsisq + LmRr
+
+σL sL2
+
+> r
+
+λrd + pL mωr
+
+σL sLr
+
+λrq , (27a) 
+
+˙isq = Vsq 
+
+σL s
+
+− L2 
+
+> r
+
+Rs + L2
+
+> m
+
+Rr
+
+σL sL2
+
+> r
+
+isq − ωsisd + LmRr
+
+σL sL2
+
+> r
+
+λrq − pL mωr
+
+σL sLr
+
+λrd , (27b) 
+
+˙λrd = Rr
+
+Lr
+
+(Lmisd − λrd ) + ( ωs − pω r)λrq , (27c) 
+
+˙λrq = Rr
+
+Lr
+
+(Lmisq − λrq ) − (ωs − pω r)λrd , (27d) 
+
+˙ωr = pL m
+
+JL r
+
+(λrd isq − λrq isd ) − Tl
+
+J . (27e) Finally, the nonlinear dynamics in (27) can be expressed in compact state-space form. Define the state vector x =[isd , i sq , λ rd , λ rq , ω r]⊤ ∈ R5, which consists of the two stator currents, the two rotor flux linkages, and the rotor angular velocity. The stator voltages constitute the input vector u = [ Vsd , V sq ]⊤ ∈ R2, while the load torque Tl(t) ∈ R
+
+is treated as an external mechanical input to the motor dynamics. For the estimation framework developed in the following sections, the available measurements are assumed to be the two stator currents and the rotor angular velocity. Accordingly, the measured output is y = [ isd , i sq , ω r ]⊤ ∈ R3. The induction motor model can therefore be written compactly as 
+
+˙x(t) = f (x(t), u (t), T l(t)) , (28a) 
+
+y(t) = Cx (t), (28b) where C ∈ R3×5 is the output matrix, and the nonlinear vector field f : R5 × R2 × R → R5 is defined by the right-hand side of (27). The model in (28a)–(28b) constitutes the nominal, or common-mode, representation of the induction motor. It describes the underlying electromechanical dynamics of the machine independently of the winding-fault variables. Rather than modifying these nominal dynamics directly, the stator inter-turn fault is characterized in the following sec-tion through a differential-mode representation parameterized by the fault severity and spatial location. This separation provides a physically interpretable basis for the subsequent fault-estimation and prognosis framework. 
+
+# 3 Stator Inter-Turn Fault Model 
+
+A stator inter-turn fault originates from the deterioration of the insulation between neighboring turns of a stator winding. Once electrical contact occurs, a subset of the winding turns becomes short-circuited and forms a closed conducting path. The magnetic field generated by the machine then induces a circulating current through this path. Since the resistance of the short-circuited turns is relatively small, this circulating current may become significant even at an early stage of the fault. The resulting local heating can further damage the insulation and thereby promote progressive winding degradation. The nominal model developed in the previous section describes the common-mode electromechanical dynamics of the induction motor. To characterize the additional electrical behavior produced by the winding short circuit, we introduce a differential-mode fault representation. The key idea is to replace the localized short-circuited turns by an equivalent symmetrized short-circuit winding whose first-harmonic electromagnetic effect is characterized by two physically meaningful parameters: the fault severity ηcc and the spatial orientation γcc of the short-circuit winding. 63.1 Fault Severity and Spatial Orientation 
+
+Let ns denote the number of turns of a healthy stator phase and let ncc denote the number of turns involved in the short circuit. The dimensionless fault-severity parameter is defined as 
+
+ηcc := ncc 
+
+ns
+
+, 0 ≤ ηcc ≤ 1. (29) Thus, ηcc = 0 corresponds to the healthy winding, whereas ηcc > 0 indicates the presence of an inter-turn short circuit. Increasing values of ηcc represent an increasing fraction of short-circuited turns and therefore provide a natural degradation variable for the subsequent prognosis and reliability analysis. The spatial orientation of the equivalent short-circuit winding is described by the mechanical angular parameter γcc .Accordingly, pγ cc represents its corresponding electrical orientation, where p is the number of pole pairs. In contrast to a phase-level description, γcc identifies the symmetry axis of the equivalent short-circuit winding and therefore characterizes its spatial orientation. For a stator containing ne uniformly distributed slots, the admissible spatial orientations may be represented by the finite set 
+
+γcc ∈
+
+{
+
+k 2πne
+
+: k = 0 , . . . , n e − 1
+
+}
+
+. (30) The parameter ηcc therefore quantifies how severe the winding fault is, while γcc specifies the spatial orientation of the corresponding short-circuit axis. Although (30) contains ne admissible slot orientations, the first-harmonic fault representation possesses an additional spatial periodicity. Consequently, distinct physical slot orientations may generate identical fault signatures, as charac-terized in the following subsection. 
+
+3.2 Geometric Representation of the Fault Orientation 
+
+Having characterized the fault severity ηcc and spatial orientation γcc , we next examine how γcc determines the fault-induced current icc,dq . In particular, the spatial orientation γcc must be represented through a directional projection 
+
+Q(·) and subsequently expressed in the synchronous (d, q ) reference frame through the rotational transformation P(·).To account for the change of orientation in the (d, q ) plane, define the rotational transformation 
+
+P(θ) := 
+
+[cos θ − sin θ
+
+sin θ cos θ
+
+]
+
+∈ R2×2. (31) The matrix P(θ) rotates a (d, q ) vector through the angle θ, allowing the stator-fixed short-circuit winding orientation to be expressed in the synchronous (d, q ) reference frame. The spatial orientation of the short-circuit winding is represented through the directional operator 
+
+Q(θ) := 
+
+[ cos 2 θ cos θ sin θ
+
+cos θ sin θ sin 2 θ
+
+]
+
+∈ R2×2. (32) Unlike P(θ), which rotates a (d, q ) vector through the angle θ, Q(θ) selects the component aligned with the short-circuit winding axis specified by θ. To make this directional role explicit, define q(θ) := [cos θ, sin θ]⊤, such that 
+
+Q(θ) = q(θ)q⊤(θ). Since ‖q(θ)‖ = 1 , it follows immediately that Q⊤(θ) = Q(θ), Q2(θ) = Q(θ), and rank Q(θ) = 1. Thus, Q(θ) is the orthogonal projection onto span {q(θ)} and its spectrum satisfies spec( Q(θ)) = {1, 0}. In particular, 
+
+Q(θ)q(θ) = q(θ),
+
+Q(θ)q⊥(θ) = 0 ,
+
+where q⊥(θ) := [ − sin θ, cos θ]⊤. Hence, q(θ) and q⊥(θ) are the eigenvectors associated with the eigenvalues 1 and 0,respectively. Therefore, Q(θ) preserves the component aligned with the short-circuit winding axis while eliminating its orthogonal component. For the stator inter-turn fault, the spatial orientation of the short-circuit winding is specified by γcc , with pγ cc denoting the corresponding electrical orientation. Consequently, Q(pγ cc ) represents this orientation as a directional projection acting on the (d, q ) quantities. 7The spatial orientation γcc is fixed with respect to the stator, whereas the synchronous (d, q ) reference frame rotates during operation. Let γ(t) denote the mechanical angular position of the synchronous (d, q ) frame with respect to the stationary stator frame. Its corresponding electrical angle is pγ (t) and satisfies 
+
+p ˙γ(t) = ωs, (33) where ωs is the synchronous electrical angular velocity introduced in the previous section. For constant ωs and 
+
+γ(0) = 0 , this gives γ(t) = ωst/p .Using P(·) to account for this reference-frame rotation and Q(pγ cc ) to represent the spatial orientation of the short-circuit winding, the fault-induced current in the synchronous (d, q ) frame is 
+
+icc,dq = 2ηcc 
+
+3Rs
+
+P(−pγ )Q(pγ cc )P(pγ )Vdq , (34) where icc,dq ∈ R2 is the current contribution associated with the short-circuited winding, Vdq = [ Vsd , V sq ]⊤ ∈ R2
+
+is the stator-voltage vector, and Rs > 0 is the stator resistance. Equation (34) separates the roles of the two fault parameters: ηcc determines the magnitude of the fault-induced current, whereas γcc determines its spatial orientation through Q(pγ cc ).More precisely, define 
+
+G(γ, γ cc , V dq ) := 23Rs
+
+P(−pγ )Q(pγ cc )P(pγ )Vdq ∈ R2.
+
+Then, the short-circuit contribution admits the compact factorization 
+
+icc,dq = ηcc G(γ, γ cc , V dq ). (35) Thus, G(γ, γ cc , V dq ) represents the fault-induced current per unit severity. For a fixed spatial orientation and known operating condition, icc,dq therefore depends linearly on the fault severity ηcc .
+
+Proposition 1 (Spatial periodicity of the fault signature) . The orientation matrix satisfies Q(θ + π) = Q(θ). Conse-quently, the fault-induced current per unit severity is periodic with respect to the fault orientation, namely, 
+
+G
+
+(
+
+γ, γ cc + πp , V dq 
+
+)
+
+= G (γ, γ cc , V dq ) . (36) 
+
+Hence, the corresponding output signature also satisfies ψ(t; γcc + π/p ) = ψ(t; γcc ).Proof. Since q(θ + π) = −q(θ) and Q(θ) = q(θ)q⊤(θ), it follows directly that Q(θ + π) = Q(θ). Setting θ = pγ cc 
+
+in the definition of G gives (36). The corresponding periodicity of ψ(t; γcc ) follows from (39). 
+
+Remark 1. Suppose that ne/(2 p) ∈ N. By Proposition 1, the admissible slot orientations in (30) generate only 
+
+Nγ = ne/(2 p) distinct first-harmonic fault signatures over the fundamental interval [0 , π/p ). In particular, for 
+
+ne = 36 and p = 2 , there are nine distinct orientations, γcc ∈ { 0◦, 10 ◦, . . . , 80 ◦}.
+
+3.3 Fault-Induced Output Signature 
+
+Having characterized the fault-induced current icc,dq , we next determine how this current appears in the measured output. Let is,dq = [ isd , i sq ]⊤ ∈ R2 denote the nominal stator-current vector generated by the common-mode model of the previous section. The corresponding stator current in the presence of the winding fault is 
+
+ifs,dq = is,dq + icc,dq 
+
+= is,dq + ηcc G(γ, γ cc , V dq ). (37) The healthy case is recovered immediately from ηcc = 0 , for which icc,dq = 0 and ifs,dq = is,dq . For ηcc > 0,the deviation from the nominal current is determined by the spatial orientation of the short-circuit winding and the instantaneous electrical excitation. Combining the nominal common-mode dynamics with the differential-mode fault representation yields 
+
+˙x(t) = f (x(t), u (t), T l(t)) ,yf (t) = Cx (t) + D η cc (t)G(γ(t), γ cc , V dq (t)) . (38) 8where D = [ 1 0; 0 1; 0 0 ] ∈ R3×2 embeds the fault-induced current into the measured output yf = [ ifsd , i fsq , ω r]⊤ ∈
+
+R3. Thus, the nominal electromechanical dynamics remain in the state equation, whereas the differential-mode fault appears explicitly in the measured output. For subsequent estimation, it is useful to isolate the dependence of the measured output on the unknown fault severity 
+
+ηcc (t). To this end, define the fault-signature vector 
+
+ψ(t; γcc ) := D G(γ(t), γ cc , V dq (t)) ∈ R3. (39) The faulty output equation can then be written in the affine form 
+
+yf (t) = Cx (t) + ηcc (t)ψ(t; γcc ). (40) For a prescribed spatial orientation γcc and known operating condition, ψ(t; γcc ) is known, whereas ηcc (t) is the unknown scalar degradation variable. Hence, although the complete motor model is nonlinear, the differential-mode contribution is affine in the fault severity. In particular, its instantaneous sensitivity satisfies ∂y f (t)/∂η cc = ψ(t; γcc ).From (40), the measured output yf (t) consists of the nominal motor output Cx (t) and the additional fault contribution 
+
+ηcc (t)ψ(t; γcc ). To isolate the latter, define the fault residual as rf (t) := yf (t) − Cx (t). It follows that 
+
+rf (t) = ηcc (t)ψ(t; γcc ). (41) Thus, ηcc (t) = 0 implies rf (t) = 0 . Conversely, whenever ψ(t; γcc ) 6 = 0 , rf (t) = 0 if and only if ηcc (t) = 0 .Moreover, since ηcc (t) ≥ 0,
+
+‖rf (t)‖ = ηcc (t)‖ψ(t; γcc )‖. (42) Hence, for a fixed instantaneous fault signature, the residual magnitude scales directly with the fault severity. Equation (41) therefore provides a direct relation between the measurable effect of the winding fault and its unknown severity ηcc (t). The fault signature ψ(t; γcc ) determines how the spatial orientation of the short-circuit winding and the operating condition shape this effect, whereas ηcc (t) determines its magnitude. Since ηcc (t) is generally unknown and may evolve as the winding deteriorates, it is estimated jointly with the motor states in the following section and subsequently used as the health variable for prognosis and reliability assessment. 
+
+# 4 Augmented-State Particle Filtering 
+
+The fault model in (40) expresses the measured output yf (t) in terms of the nominal motor state x(t), the fault severity ηcc (t), and the fault signature ψ(t; γcc ). Since ηcc (t) is not directly measurable, the estimation problem is to reconstruct the electromechanical state x(t) ∈ R5 while simultaneously estimating the fraction of short-circuited turns 
+
+ηcc (t) ∈ [0 , 1] from the available noisy measurements. For the estimation stage, the spatial orientation γcc of the short-circuit winding is assumed to be fixed and known. Consequently, ψ(t; γcc ) is determined by the prescribed spatial orientation, reference-frame angle, and known stator-voltage excitation, while ηcc (t) remains the unknown time-varying degradation variable. This allows the estimator to focus on the evolution of the fault severity. If γcc is unknown, the estimation may instead be evaluated over the distinct orientation set Γcc := {k2π/n e : k = 0 , . . . , n e/(2 p) − 1}, whenever ne/(2 p) ∈ N, by Proposition 1. 
+
+4.1 Augmented Stochastic Model 
+
+Let Ts > 0 denote the sampling period. To obtain a discrete-time model for recursive estimation, let Fx(xk , u k, T l,k )
+
+denote the one-step propagation of the nonlinear motor dynamics in (28a) over the sampling interval Ts. The discrete-time state model is 
+
+xk+1 = Fx(xk , u k, T l,k ) + wx,k , (43) where xk := x(kT s), uk := u(kT s), and Tl,k := Tl(kT s). The process disturbance is modeled as wx,k ∼ N (0 , Q x),where Qx ∈ R5×5 and Qx  0.During online estimation, no long-term degradation law is imposed on ηcc,k . Instead, its evolution between consecutive sampling instants is modeled locally as a random walk, 
+
+ηcc,k +1 = ηcc,k + wη,k ,
+
+where wη,k ∼ N (0 , Q η) is the stochastic increment and Qη > 0 controls the adaptability of the estimator to changes in the winding degradation. Since ηcc,k represents the fraction of short-circuited turns, it must satisfy ηcc,k ∈ E := 
+
+9[0 , 1] . The unconstrained random walk, however, does not preserve this interval. We therefore define the projection 
+
+ΠE (z) := min {1, max {0, z }} and constrain the severity transition as 
+
+ηcc,k +1 = Π E (ηcc,k + wη,k ) . (44) Thus, the random walk provides local adaptability without allowing the estimated fraction of short-circuited turns to leave its physically admissible interval. Importantly, (44) is an estimation model rather than a prescribed long-term degradation law; future fault evolution is modeled separately in the prognosis stage. To estimate the motor state and fault severity jointly, define the augmented state 
+
+zk := 
+
+[ xk
+
+ηcc,k 
+
+]
+
+∈ Z := R5 × [0 , 1] . (45) Combining (43), (44), and the fault-dependent output model (40) gives the augmented stochastic system 
+
+zk+1 =
+
+[Fx(xk , u k, T l,k ) + wx,k 
+
+ΠE (ηcc,k + wη,k )
+
+]
+
+,yfk = Cx k + ηcc,k ψk(γcc ) + vk.
+
+(46) where wk = [ w⊤
+
+> x,k
+
+, w η,k ]⊤ ∼ N (0 , Q ) with Q = diag( Qx, Q η) ∈ R6×6, while ψk(γcc ) := DG(γk, γ cc , V dq,k ) ∈ R3.The measurement noise satisfies vk ∼ N (0 , R ), where R ∈ R3×3 and R ≻ 0.Accordingly, the augmented state zk contains the five electromechanical states governing the nominal motor dynamics together with the scalar degradation variable ηcc,k governing the fault contribution to the measured output. 
+
+4.2 Bayesian State–Fault Estimation 
+
+Let Yk := {yf 
+
+> 1
+
+, . . . , y fk } denote the measurement history available at sampling instant k. Given Yk, the estimation objective is to infer jointly the electromechanical state xk and the fault severity ηcc,k through the posterior distribution 
+
+p(zk | Y k) = p(xk , η cc,k | Y k). (47) Thus, the motor state and the fraction of short-circuited turns are estimated within a single Bayesian inference problem. The stochastic model (46) defines the state-transition density and measurement likelihood required for recursive Bayesian estimation. Since the motor input uk, load torque Tl,k , and the operating quantities γk and Vdq,k entering the fault signature ψk(γcc ) are known at each sampling instant, their conditioning is suppressed below for notational simplicity. Given the posterior p(zk−1 | Y k−1 ), the Chapman–Kolmogorov prediction gives 
+
+p(zk | Y k−1) = 
+
+∫
+
+> Z
+
+p(zk | zk−1)p(zk−1 | Y k−1) dzk−1. (48) This step propagates the uncertainty in both xk−1 and ηcc,k −1 through the augmented stochastic dynamics. Upon receiving the measurement yfk , the predicted density is corrected using the Gaussian likelihood p(yfk | zk) ∝
+
+exp {− 12 [yfk − Cx k − ηcc,k ψk(γcc )] ⊤R−1[yfk − Cx k − ηcc,k ψk(γcc )] }. Bayes’ rule then gives 
+
+p(zk | Y k ) = p(yfk | zk)p(zk | Y k−1)
+
+p(yfk | Y k−1) . (49) The likelihood therefore assigns greater posterior probability to augmented states whose predicted output is more consistent with the measured output yfk .Because the nonlinear motor dynamics and the fault-dependent measurement map in (46) prevent, in general, closed-form evaluation of the prediction and update equations, the posterior p(zk | Y k) is approximated numerically using a particle filter. 
+
+4.3 Sequential Importance Sampling 
+
+Since the posterior in (47) is generally unavailable in closed form, it is approximated by Np weighted particles as 
+
+p(zk | Y k) ≈
+
+> Np
+
+∑
+
+> i=1
+
+w(i) 
+
+> k
+
+δ
+
+(
+
+zk − z(i)
+
+> k
+
+)
+
+, (50) 10 where z(i) 
+
+> k
+
+= [( x(i) 
+
+> k
+
+)⊤, η (i)
+
+> cc,k
+
+]⊤ ∈ Z is the ith augmented particle and w(i) 
+
+> k
+
+≥ 0 is its normalized importance weight, with ∑Np 
+
+> i=1
+
+w(i) 
+
+> k
+
+= 1 .Using the state-transition density as the importance proposal, each particle is propagated according to 
+
+x(i) 
+
+> k
+
+= Fx
+
+(
+
+x(i)
+
+> k−1
+
+, u k−1, T l,k −1
+
+)
+
++ w(i)
+
+> x,k −1
+
+,η(i) 
+
+> cc,k
+
+= Π E
+
+(
+
+η(i) 
+
+> cc,k −1
+
++ w(i)
+
+> η,k −1
+
+)
+
+.
+
+(51) Thus, each particle represents one possible realization of both the electromechanical state and the physically admissible fault severity at sampling instant k.The predicted particles are then evaluated against the measured output yfk . For the ith particle, define the innova-tion ν(i) 
+
+> k
+
+:= yfk − Cx (i) 
+
+> k
+
+− η(i)
+
+> cc,k
+
+ψk(γcc ) ∈ R3. Since the measurement noise in (46) satisfies vk ∼ N (0 , R ), the corresponding likelihood is 
+
+p(yfk | z(i) 
+
+> k
+
+) = exp 
+
+[
+
+− 12 (ν(i) 
+
+> k
+
+)⊤R−1ν(i)
+
+> k
+
+]
+
+(2 π)3/2 det( R)1/2 . (52) Hence, particles producing smaller innovations relative to the measurement covariance R receive larger likelihood values. Using the transition density as the proposal causes the proposal-dependent terms in the general importance-weight recursion to cancel. The weights therefore reduce to 
+
+˜w(i) 
+
+> k
+
+= w(i)
+
+> k−1
+
+p(yfk | z(i) 
+
+> k
+
+),w(i) 
+
+> k
+
+= ˜w(i)
+
+> kNp
+
+∑
+
+> j=1
+
+˜w(j)
+
+> k
+
+. (53) Consequently, the posterior particle population concentrates on augmented states whose predicted stator currents and rotor speed are most consistent with the measured motor response. 
+
+4.4 Degeneracy and Resampling 
+
+Repeated importance-weight updates may lead to particle degeneracy, whereby the posterior probability becomes concentrated on only a small fraction of the particle population. To monitor this loss of particle diversity, define the effective sample size 
+
+Neff ,k := 
+
+
+
+> Np
+
+∑
+
+> i=1
+
+(
+
+w(i)
+
+> k
+
+)2
+
+
+
+> −1
+
+. (54) Since the weights are nonnegative and normalized, 1 ≤ Neff ,k ≤ Np. Equivalently, the normalized effective sample size ρeff ,k := Neff ,k /N p satisfies 1/N p ≤ ρeff ,k ≤ 1. The upper bound is attained for uniform weights w(i) 
+
+> k
+
+= 1 /N p,whereas values approaching one indicate severe concentration of the posterior mass on a small number of particles. To prevent persistent weight degeneracy, resampling is triggered whenever Neff ,k < N th , equivalently ρeff ,k < ρ res ,where Nth := ρres Np and ρres ∈ (0 , 1) is a prescribed threshold. The particles are then resampled according to their normalized weights w(i) 
+
+> k
+
+, so that particles with large posterior probability are preferentially replicated while particles with negligible probability are discarded. Following resampling, the particle weights are reset as 
+
+w(i) 
+
+> k
+
+= 1
+
+Np
+
+, i = 1 , . . . , N p. (55) Resampling therefore redistributes the finite particle population toward regions of the augmented state space Z having significant posterior probability, thereby maintaining an effective representation of both the motor state xk and the fault severity ηcc,k .11 4.5 Posterior State and Fault Estimates 
+
+Prior to resampling, the minimum-mean-square-error estimates are given by the conditional posterior means, which under the particle approximation (50) are evaluated as ̂
+
+xk =
+
+> Np
+
+∑
+
+> i=1
+
+w(i) 
+
+> k
+
+x(i) 
+
+> k
+
+∈ R5,̂
+
+ηcc,k =
+
+> Np
+
+∑
+
+> i=1
+
+w(i) 
+
+> k
+
+η(i) 
+
+> cc,k
+
+∈ [0 , 1] .
+
+(56) In particular, ̂ ηcc,k provides the online estimate of the fraction of short-circuited stator turns. Since the complete pos-terior particle population is retained, the uncertainty associated with this estimate can also be quantified. Its posterior variance is approximated by ̂
+
+σ2 
+
+> η,k
+
+=
+
+> Np
+
+∑
+
+> i=1
+
+w(i)
+
+> k
+
+(
+
+η(i) 
+
+> cc,k
+
+−̂ ηcc,k 
+
+)2
+
+. (57) Accordingly, the posterior uncertainty band is [η− 
+
+> k
+
+, η + 
+
+> k
+
+], where η− 
+
+> k
+
+:= max {0,̂ ηcc,k −2̂ ση,k } and η+ 
+
+> k
+
+:= min {1,̂ ηcc,k +2̂ ση,k }. Thus, the particle filter provides both the estimated winding degradation ̂ ηcc,k and its associated posterior uncertainty ̂ ση,k .The sequence {̂ ηcc,k } constitutes the estimated degradation history available for prognosis, while the posterior particles retain the uncertainty in the current winding condition. These quantities provide the common information source for the prognostic models developed in the following section, where the estimated fault severity is propagated forward to predict its future evolution and subsequent reliability. 
+
+# 5 Fault Prognosis 
+
+The particle filter developed in the previous section provides the current fault-severity estimate ̂ ηcc,k together with its posterior uncertainty. These quantities characterize the winding condition at sampling instant k; reliability assessment, however, requires information about its future evolution. The prognosis objective is therefore to predict the severity 
+
+ηcc,k +r over a prescribed horizon r ∈ { 1, . . . , H }, where H ∈ N>0.For history-based prognosis, define the estimated degradation history Hηk := {̂ ηcc, 1, . . . , ̂ ηcc,k }. A deterministic prognostic model maps this information into the point forecast ̂
+
+ηcc,k +r|k, r ∈ { 1, . . . , H }, (58) where ̂ ηcc,k +r|k denotes the predicted fraction of short-circuited turns at sampling instant k + r using information available through time k.Probabilistic prognosis instead characterizes the uncertainty in future degradation through 
+
+p(ηcc,k +r | I k) , r ∈ { 1, . . . , H }, (59) where Ik denotes the information available to the prognostic model. For history-based models, Ik = Hηk , whereas the particle-based forecast uses the complete PF posterior p(zk | Y k ) in (47). Thus, the latter retains information that would be lost by reducing the current winding condition to the point estimate ̂ ηcc,k alone. The four prognostic methods considered below differ in how they model the future evolution of the same physical degradation variable ηcc . The linear-trend and Holt models provide deterministic forecasts from the estimated degra-dation history, whereas the Bayesian and particle-based models additionally characterize prediction uncertainty. This common formulation permits the effect of the prognostic model to be assessed independently of the underlying fault-estimation procedure. 
+
+5.1 Linear Trend Model 
+
+The linear-trend model predicts future winding degradation by approximating the recent evolution of the estimated fault severity with a straight line. Let M ≤ k denote the number of most recent PF estimates used for this local approximation and define Jk := {k − M + 1 , . . . , k }. Over this window, model the estimated severity as ̂
+
+ηcc,j = ak + bkj + εj , j ∈ J k, (60) 12 where ak ∈ R is the local intercept, bk ∈ R is the local degradation rate, and εj denotes the fitting residual. The parameters are identified from the recent degradation history by least squares: 
+
+(ˆ ak, ˆbk) = arg min 
+
+> a,b ∈R
+> k
+
+∑
+
+> j=k−M+1
+
+(̂ ηcc,j − a − bj )2 . (61) To express the solution compactly, define 
+
+Φk := 
+
+
+
+1 k − M + 1 
+
+... ...
+
+1 k
+
+ ∈ RM×2, yηk := 
+
+̂ 
+
+ηcc,k −M+1 
+
+...̂
+
+ηcc,k 
+
+ ∈ RM .
+
+For M ≥ 2, the columns of Φk are linearly independent, and hence the least-squares solution is uniquely given by 
+
+[ˆak
+
+ˆbk
+
+]
+
+= (Φ⊤ 
+
+> k
+
+Φk
+
+)−1 Φ⊤ 
+
+> k
+
+yηk . (62) Extrapolating the fitted local trend beyond the current sampling instant gives the unconstrained forecast ˜ηLT  
+
+> cc,k +r|k
+
+:= ˆak + ˆbk(k + r) for r ∈ { 1, . . . , H }. Since linear extrapolation does not, in general, preserve the physical severity interval E = [0 , 1] , the final forecast is projected onto E:̂
+
+ηLT  
+
+> cc,k +r|k
+
+= Π E
+
+(˜ηLT 
+
+> cc,k +r|k
+
+)
+
+, r ∈ { 1, . . . , H }. (63) The window length M determines the balance between smoothing and local adaptation: larger M attenuates fluctua-tions in the PF estimates, whereas smaller M places greater emphasis on recent changes in the degradation rate. 
+
+5.2 Holt Exponential Smoothing 
+
+The second deterministic prognostic model uses Holt exponential smoothing to represent the estimated fault severity through a recursively updated level and trend. Unlike the linear-trend model, which fits the most recent M PF estimates simultaneously, Holt smoothing updates these quantities whenever a new estimate ̂ ηcc,k becomes available. Let ℓk and dk denote the estimated severity level and local degradation trend at sampling instant k, respectively, initialized from the available degradation history with dk0 ≥ 0. Their recursive updates are 
+
+ℓk = α̂ηcc,k + (1 − α) ( ℓk−1 + dk−1) ,dk = max {0, β (ℓk − ℓk−1) + (1 − β)dk−1} . (64) where α, β ∈ (0 , 1) are the level- and trend-smoothing parameters, respectively, and dk ≥ 0 enforces a nonnegative local degradation trend. The parameter α controls how strongly the current PF estimate affects the updated level, whereas β determines how rapidly the estimated degradation trend responds to changes in that level. Propagating the current level with the estimated trend gives the unconstrained r-step-ahead forecast ˜ηH 
+
+> cc,k +r|k
+
+:= 
+
+ℓk + rd k for r ∈ { 1, . . . , H }. As with the linear-trend model, this extrapolation does not necessarily preserve the physical severity interval E = [0 , 1] . The Holt forecast is therefore defined as ̂
+
+ηH 
+
+> cc,k +r|k
+
+= Π E
+
+(˜ηH
+
+> cc,k +r|k
+
+)
+
+, r ∈ { 1, . . . , H }. (65) Holt smoothing therefore provides a recursive deterministic predictor that retains only the current level ℓk and trend 
+
+dk. The parameters α and β determine the balance between smoothing the PF-based degradation history and adapting to recent changes, while (65) ensures that the resulting prediction remains physically admissible. 
+
+5.3 Bayesian Degradation Model 
+
+The deterministic models above provide point forecasts but do not quantify the uncertainty in future fault severity. To obtain a probabilistic forecast, introduce the latent degradation process 
+
+˜ηcc,k +1 = ˜ηcc,k + μ + ξk, (66) 13 where μ ∈ R is the unknown mean degradation increment per sampling interval and ξk ∼ N (0 , σ 2
+
+> d
+
+), with σ2 
+
+> d
+
+>
+
+0, represents stochastic degradation variability. The latent variable ˜ηcc,k ∈ R is introduced to preserve Gaussian tractability; physical admissibility is imposed subsequently on the predictive distribution. Rather than prescribing μ, its value is inferred locally from the PF-based degradation history Hηk. Let MB ≤ k − 1
+
+denote the number of recent increments used for inference and define J B 
+
+> k
+
+:= {k − MB + 1 , . . . , k }. Assign the Gaussian prior μ ∼ N (μ0, σ 2
+
+> μ, 0
+
+), where σ2 
+
+> μ, 0
+
+> 0, and define ∆̂ηcc,j := ̂ ηcc,j −̂ ηcc,j −1 for j ∈ J B 
+
+> k
+
+. Under (66), 
+
+∆̂ηcc,j | μ ∼ N (μ, σ 2 
+
+> d
+
+).For known σ2 
+
+> d
+
+, Gaussian conjugacy gives 
+
+μ | H ηk ∼ N (μk, σ 2
+
+> μ,k
+
+) ,
+
+
+
+σ2 
+
+> μ,k
+
+=
+
+(
+
+1
+
+σ2
+
+> μ, 0
+
++ MB
+
+σ2
+
+> d
+
+)−1
+
+,μk = σ2
+
+> μ,k
+
+[
+
+μ0
+
+σ2
+
+> μ, 0
+
++ 1
+
+σ2
+
+> d
+
+∑ 
+
+> j∈J B
+> k
+
+∆̂ηcc,j 
+
+]
+
+.
+
+(67) Thus, μk estimates the mean degradation increment, while σ2 
+
+> μ,k
+
+quantifies the remaining uncertainty in that rate. Starting from the current PF estimate ̂ ηcc,k and iterating (66) over r future sampling intervals gives ˜ηcc,k +r =̂ ηcc,k +
+
+rμ + ∑r−1 
+
+> j=0
+
+ξk+j . Marginalizing over the posterior uncertainty in μ therefore yields 
+
+˜ηcc,k +r | H ηk ∼ N (mk,r , P k,r ) ,
+
+
+
+mk,r =̂ ηcc,k + rμ k ,Pk,r = rσ 2 
+
+> d
+
++ r2σ2
+
+> μ,k
+
+.
+
+(68) The two terms in Pk,r have distinct origins: rσ 2 
+
+> d
+
+is the accumulated stochastic degradation uncertainty, whereas r2σ2
+
+> μ,k
+
+results from uncertainty in the inferred degradation rate. The latter therefore becomes increasingly influential as the prediction horizon increases. The Gaussian model above is defined on R, whereas the physical fault severity must lie in E = [0 , 1] . For deterministic comparison, we use the projected point forecast ̂
+
+ηB 
+
+> cc,k +r|k
+
+= Π E (mk,r ), r ∈ { 1, . . . , H }. (69) For probabilistic prognosis, physical admissibility is instead enforced on the complete predictive distribution. Let φ(·)
+
+and Φ( ·) denote the standard Gaussian density and distribution functions, respectively. Conditioning the Gaussian predictive law in (68) on ˜ηcc,k +r ∈ [0 , 1] gives 
+
+pE (η | H ηk ) = 1
+
+√Pk,r 
+
+φ
+
+(
+
+η − mk,r 
+
+√Pk,r 
+
+)
+
+Φ
+
+(
+
+1 − mk,r 
+
+√Pk,r 
+
+)
+
+− Φ
+
+(
+
+−mk,r 
+
+√Pk,r 
+
+) , η ∈ [0 , 1] . (70) Hence, the Bayesian model provides both a physically admissible point forecast and a horizon-dependent predictive distribution. The latter retains uncertainty in both the degradation process and its inferred rate and will be used directly in the probabilistic reliability assessment. 
+
+5.4 Particle-Based Forecast 
+
+The Bayesian model characterizes future degradation through a parametric Gaussian distribution initialized from the point estimate ̂ ηcc,k . The particle-based forecast instead propagates an empirical representation of the current severity uncertainty. Let {η(i)
+
+> cc,k
+
+, w (i) 
+
+> k
+
+}Np 
+
+> i=1
+
+denote the severity particles and corresponding normalized weights at the prognosis instant. When the augmented-state PF posterior is available, these are the severity components and weights in (50). The locally in-ferred degradation increment μk in (67) is then used for forward propagation. Each severity particle is then propagated over the prediction horizon according to 
+
+η(i) 
+
+> cc,k +r
+
+= Π E
+
+(
+
+η(i) 
+
+> cc,k +r−1
+
++ μk + ξ(i)
+
+> k+r−1
+
+)
+
+, r ∈ { 1, . . . , H }, (71) 14 where ξ(i) 
+
+> k+r−1
+
+∼ N (0 , σ 2
+
+> d
+
+) independently across particles and prediction steps. The projection onto E = [0 , 1] ensures that every predicted trajectory remains physically admissible. For each prediction step r, the propagated particles define the empirical predictive distribution 
+
+p (ηcc,k +r | Y k ) ≈
+
+> Np
+
+∑
+
+> i=1
+
+w(i) 
+
+> k
+
+δ
+
+(
+
+ηcc,k +r − η(i)
+
+> cc,k +r
+
+)
+
+. (72) Hence, the forecast propagates the current fault-severity uncertainty and the stochastic variability of future degradation. The corresponding point forecast and predictive variance are ̂
+
+ηPF  
+
+> cc,k +r|k
+
+=
+
+> Np
+
+∑
+
+> i=1
+
+w(i) 
+
+> k
+
+η(i)
+
+> cc,k +r
+
+, P PF  
+
+> η,k +r
+
+=
+
+> Np
+
+∑
+
+> i=1
+
+w(i)
+
+> k
+
+(
+
+η(i) 
+
+> cc,k +r
+
+−̂ ηPF 
+
+> cc,k +r|k
+
+)2
+
+. (73) Unlike the Gaussian Bayesian model, the particle forecast imposes no parametric form on the predictive distribution and can therefore represent non-Gaussian uncertainty generated by the posterior distribution, stochastic propagation, and projection onto the physical severity interval. The empirical distribution also provides fault-risk quantities directly. For a prescribed severity threshold ηcrit ∈ (0 , 1) ,the pointwise exceedance probability is approximated by 
+
+P (ηcc,k +r ≥ ηth | Y k) ≈
+
+> Np
+
+∑
+
+> i=1
+
+w(i) 
+
+> k
+
+1[ηth ,1] 
+
+(
+
+η(i)
+
+> cc,k +r
+
+)
+
+. (74) Prediction intervals are obtained analogously from weighted quantiles of the empirical distribution. These quantities will be used directly in the probabilistic reliability assessment of the following section. The four prognostic models therefore provide complementary descriptions of the same physical degradation variable 
+
+ηcc . The linear-trend and Holt models provide deterministic forecasts, whereas the Bayesian and particle-based models additionally characterize prediction uncertainty. All four methods use the same PF-based health information and prediction horizon, enabling their forecasting performance and resulting reliability estimates to be compared on a common basis. 
+
+# 6 Reliability Assessment 
+
+The prognosis methods of Section 5 characterize the future stator-fault severity through point forecasts ̂ ηqcc,k +r|k, where 
+
+q ∈ { LT , H, B, PF } and r ∈ { 1, . . . , H }, or through the predictive distribution p(ηcc,k +r | I k) when probabilistic information is retained. Reliability assessment uses these predictions to quantify whether the winding degradation remains below a prescribed failure condition. Since ηcc ∈ [0 , 1] represents the fraction of short-circuited stator turns, let ηcrit ∈ (0 , 1) denote the critical severity at which failure is declared. For a degradation trajectory evolving from sampling instant k, define the first-passage time 
+
+τk := inf {r ∈ N>0 : ηcc,k +r ≥ ηcrit } , (75) with inf ∅ = ∞. Thus, τk is the number of future sampling intervals until the degradation first reaches the prescribed failure region, while the corresponding physical first-passage time is Tsτk .The conditional reliability over the next r sampling intervals is defined as 
+
+Rk(r) := P (τk > r | I k )= P (ηcc,k +j < η crit , ∀j ∈ { 1, . . . , r } | I k)= P
+
+(
+
+max  
+
+> 1≤j≤r
+
+ηcc,k +j < η crit 
+
+∣∣∣∣ Ik
+
+)
+
+, r ∈ { 1, . . . , H }.
+
+(76) Hence, reliability is a first-passage quantity: the degradation must remain below ηcrit throughout the prediction interval, rather than only at its terminal instant. Based on this common definition, four reliability formulations are considered below: deterministic threshold crossing, Weibull lifetime reliability, Bayesian degradation reliability, and degradation-dependent hazard reliability. 15 6.1 Threshold-Crossing Reliability 
+
+The threshold-crossing formulation maps each point forecast ̂ ηqcc,k +r|k directly into a predicted failure time. For prognostic method q, define ̂
+
+τ qk := inf 
+
+{
+
+r ∈ { 1, . . . , H } :̂ ηqcc,k +r|k ≥ ηcrit 
+
+}
+
+, (77) with inf ∅ = ∞. Thus, ̂ τ qk is the first prediction step at which the forecast severity reaches the critical threshold. If no crossing occurs within the available horizon, only ̂ τ qk > H can be inferred. The corresponding threshold-based reliability indicator is 
+
+Rth ,q k (r) := 1{̂ τ qk >r } = 1{
+
+max 
+
+> 1≤j≤r
+
+̂ ηqcc,k +j|k < η crit 
+
+> }
+
+, r ∈ { 1, . . . , H }, (78) where 1{·} denotes the indicator function. Hence, the deterministic forecast is regarded as reliable through step r only if its entire predicted trajectory remains below ηcrit over that interval. This is the point-forecast counterpart of the first-passage reliability definition in (76). Let Tp > 0 denote the prognosis sampling interval. Whenever ̂ τ qk ≤ H, the corresponding remaining useful life estimate is ̂
+
+RUL qk = Tp̂ τ qk , (79) If no threshold crossing occurs within the prediction horizon, a finite RUL cannot be determined from the available forecast; only RUL qk > T pH. can be inferred. The threshold-crossing formulation therefore provides a direct mapping from each prognostic trajectory to a predicted failure time and RUL. However, Rth ,q k (r) is binary and does not account for uncertainty in either the future degradation or its threshold-crossing time. 
+
+6.2 Weibull Reliability Model 
+
+Unlike the threshold-crossing formulation, which derives reliability from the predicted fault-severity trajectory, the Weibull model describes the motor lifetime statistically. Let Tf ∈ R≥0 denote the time to failure and assume a two-parameter Weibull distribution with scale λW > 0 and shape βW > 0. Its survival function and hazard rate are 
+
+SW (t) = P(Tf > t ) = exp 
+
+[
+
+−
+
+( tλW
+
+)βW
+
+]
+
+, hW (t) = βW
+
+λW
+
+( tλW
+
+)βW −1
+
+, t ≥ 0. (80) The shape parameter determines the evolution of the failure rate: βW < 1, βW = 1 , and βW > 1 correspond to decreasing, constant, and increasing hazards, respectively. At prognosis instant k, let tk denote the corresponding operating time. Reliability over the next r prognosis intervals is conditioned on survival up to tk. Accordingly, 
+
+RWk (r) := P (Tf > t k + rT s | Tf > t k)= SW (tk + rT s)
+
+SW (tk)= exp 
+
+{
+
+−
+
+[( tk + rT s
+
+λW
+
+)βW
+
+−
+
+( tk
+
+λW
+
+)βW
+
+]} 
+
+, r ∈ { 1, . . . , H }.
+
+(81) Equivalently, RWk (r) = exp[ − ∫ tk +rT p 
+
+> tk
+
+hW (τ ) dτ ], showing that reliability is determined by the failure risk accumu-lated over the future interval of interest. The parameters (λW , β W ) must be identified from appropriate lifetime or failure-time data representative of the con-sidered operating conditions. In particular, they are not inferred from the instantaneous fault estimate ̂ ηcc,k . The Weibull model therefore serves as a population-level lifetime benchmark, whereas the other reliability formulations considered here exploit the predicted evolution of the physically defined fault severity ηcc .16 6.3 Bayesian Reliability 
+
+The Bayesian degradation model provides a predictive distribution of the future fault severity and therefore allows degradation uncertainty to enter the reliability assessment directly. At prediction step r, define the pointwise reliability as 
+
+˜RBk (r) := P (ηcc,k +r < η crit | H ηk ) = 
+
+∫ ηcrit 
+
+> 0
+
+pE (η | H ηk ) dη. (82) Using the truncated Gaussian predictive density in (70), this probability becomes 
+
+˜RBk (r) = Φ
+
+(
+
+ηcrit − mk,r 
+
+√Pk,r 
+
+)
+
+− Φ
+
+(
+
+−mk,r 
+
+√Pk,r 
+
+)
+
+Φ
+
+(
+
+1 − mk,r 
+
+√Pk,r 
+
+)
+
+− Φ
+
+(
+
+−mk,r 
+
+√Pk,r 
+
+) , (83) where Φ( ·) denotes the standard Gaussian cumulative distribution function. The quantity ˜RBk (r) is marginal: it evaluates whether the severity is below ηcrit at time k + r but does not exclude an earlier threshold crossing. First-passage reliability instead requires the complete predicted trajectory to remain below the critical severity. Accordingly, 
+
+RBk (r) := P (ηcc,k +j < η crit , ∀j ∈ { 1, . . . , r } | H ηk)= P
+
+(
+
+max  
+
+> 1≤j≤r
+
+ηcc,k +j < η crit 
+
+∣∣∣∣ Hηk
+
+)
+
+. (84) Defining ηk,r := [ ηcc,k +1 , . . . , η cc,k +r ]⊤, the same probability can be expressed as 
+
+RBk (r) = 
+
+∫ 
+
+> [0 ,η crit )r
+
+pE
+
+(ηk,r | H ηk
+
+) dηk,r . (85) Thus, first-passage reliability depends on the joint predictive distribution of the future degradation path, rather than only on the marginal distribution at step r.For the particle-based forecast, this path probability is evaluated directly from the propagated trajectories as 
+
+RPF  
+
+> k
+
+(r) ≈
+
+> Np
+
+∑
+
+> i=1
+
+w(i) 
+
+> k
+
+1{
+
+max  
+
+> 1≤j≤r
+
+η(i) 
+
+> cc,k +j
+
+< η crit 
+
+> }
+
+. (86) Hence, RPF  
+
+> k
+
+(r) is the total weight of predicted severity trajectories that avoid the failure region through step r, with 
+
+w(i) 
+
+> k
+
+= 1 /N p for an equally weighted prognostic ensemble. The distinction is therefore precise: ˜RBk (r) measures survival at a particular future instant, whereas RBk (r) and RPF  
+
+> k
+
+(r)
+
+measure survival over the entire prediction interval. The latter are consistent with the first-passage reliability definition in (76). 
+
+6.4 Degradation-Dependent Hazard Reliability 
+
+The preceding formulations describe reliability through threshold crossing or lifetime statistics. A complementary approach is to define the instantaneous failure rate directly from the predicted fault severity. For each prognostic method q ∈ { LT , H, B, PF }, define the normalized predicted severity 
+
+ρqk+r|k := ̂ ηqcc,k +r|k
+
+ηcrit 
+
+, r ∈ { 1, . . . , H }. (87) Thus, ρqk+r|k = 1 corresponds to the prescribed critical severity. To map the predicted winding condition into a failure rate, define the degradation-dependent hazard 
+
+hqk(r) := h0 exp 
+
+(
+
+αρ qk+r|k
+
+)
+
+= h0 exp 
+
+( α̂ηqcc,k +r|k
+
+ηcrit 
+
+)
+
+, (88) 17 where h0 > 0 is the baseline hazard rate and α > 0 determines the sensitivity of the failure rate to the normalized fault severity. The cumulative hazard and corresponding reliability over the next r sampling intervals are 
+
+Λqk(r) = Tpr∑
+
+> j=1
+
+hqk(j),RH,q k (r) = exp ( −Λqk(r)) .
+
+(89) Substituting (88) gives 
+
+RH,q k (r) = exp 
+
+−Tph0
+
+> r
+
+∑
+
+> j=1
+
+exp 
+
+( α̂ηqcc,k +j|k
+
+ηcrit 
+
+) . (90) Hence, larger predicted fault severities increase the instantaneous hazard and accelerate the decay of reliability. When a probabilistic degradation forecast is available, the uncertainty in the future fault severity can be incorporated by averaging the severity-dependent hazard over its predictive distribution. Specifically, 
+
+hk(r) := E
+
+[
+
+h0 exp 
+
+( αηcrit 
+
+ηcc,k +r
+
+) ∣ ∣∣∣ Ik
+
+]
+
+. (91) Unlike (88), which evaluates the hazard along a point forecast, (91) accounts for the complete predictive distribution of the future fault severity. For the Bayesian degradation model, let c := α/η crit and define the normalization factor 
+
+Zk,r := Φ 
+
+(
+
+1 − mk,r 
+
+√Pk,r 
+
+)
+
+− Φ
+
+(
+
+−mk,r 
+
+√Pk,r 
+
+)
+
+.
+
+Using the truncated Gaussian predictive density in (70), the uncertainty-averaged hazard is 
+
+hBk (r) = h0 exp 
+
+(
+
+cm k,r + c2Pk,r 
+
+2
+
+)
+
+×
+
+Φ
+
+(
+
+1 − mk,r − cP k,r 
+
+√Pk,r 
+
+)
+
+− Φ
+
+(
+
+−mk,r − cP k,r 
+
+√Pk,r 
+
+)
+
+Zk,r 
+
+.
+
+(92) Thus, the Bayesian hazard incorporates both the predicted degradation level and its uncertainty while respecting the physical constraint ηcc ∈ [0 , 1] .For the particle-based forecast, the same expectation is evaluated directly from the propagated severity particles as 
+
+hPF  
+
+> k
+
+(r) ≈ h0
+
+> Np
+
+∑
+
+> i=1
+
+w(i) 
+
+> k
+
+exp 
+
+( αη (i)
+
+> cc,k +r
+
+ηcrit 
+
+)
+
+. (93) This approximation retains the nonparametric predictive distribution represented by the propagated particles, with 
+
+w(i) 
+
+> k
+
+= 1 /N p for an equally weighted prognostic ensemble. For q ∈ { B, PF }, the uncertainty-aware cumulative hazard and reliability are then 
+
+Λqk(r) = Tpr∑
+
+> j=1
+
+hqk(j),RH,q k (r) = exp 
+
+(
+
+−Λqk(r)
+
+)
+
+.
+
+(94) Therefore, RH,q k (r) evaluates the accumulated failure risk along a point forecast, whereas RH,q k (r) incorporates uncer-tainty in the predicted winding degradation. The reliability formulations considered in this section provide complementary interpretations of the prognostic infor-mation. Threshold-crossing reliability converts a predicted severity trajectory into a first-passage time and remaining 18 (a) Fault severity. (b) Estimation error. (c) Effective sample size.        
+
+> Figure 1: Augmented-state particle-filter estimation of the stator inter-turn fault.
+> (a) d-axis stator current. (b) q-axis stator current. (c) Rotor speed.
+> Figure 2: Faulty-output reconstruction using the augmented-state PF.
+
+useful life, while the Weibull model provides an independently identified statistical lifetime benchmark. Bayesian and particle-based reliability evaluate the probability of avoiding the critical severity, whereas degradation-dependent hazard reliability maps the evolving fault severity into accumulated failure risk. All severity-dependent reliability measures originate from the same particle-filter-based fault estimate and subsequent degradation forecasts. This common foundation allows the effects of prognosis and reliability modeling to be exam-ined separately and completes the connection from online fault estimation to degradation prognosis and reliability assessment. 
+
+# 7 Numerical Results 
+
+This section evaluates the complete estimation–prognosis–reliability framework. The nonlinear induction-motor dy-namics are propagated using fourth-order Runge–Kutta integration with sampling period Ts = 5 × 10 −4 s over 10 s. The motor parameters are Lm = 0 .258 H, Ls = Lr = 0 .274 H, Rs = 4 .85 Ω , Rr = 3 .805 Ω , J = 0 .031 kg m 2, p = 2 ,
+
+ωs = 100 π rad/s, and Tl = 1 N m. The applied voltages are Vsd (t) = 220 + 20 sin(0 .8πt ) and Vsq (t) = 20 sin(1 .4πt ).Unless otherwise stated, the stator contains ne = 36 slots and the fault orientation is γcc = 4(2 π/n e) = 40 ◦. The progressive inter-turn fault begins at tf = 2 s and is generated as ηcc (t) = 0 .01 + 0 .008( t − tf ) + 0 .001( t − tf )2 for 
+
+t ≥ tf , with ηcc (t) = 0 before fault occurrence and projection onto [0 , 1] . The measurement-noise standard deviations are [0 .8, 0.8, 1.0] ⊤, while the particle filter uses Np = 1000 particles, Nth = 0 .5Np, Q1/2 
+
+> x
+
+= diag {0.03 , 0.03 , 4 ×
+
+10 −4, 4 × 10 −4, 0.05 }, and Q1/2 
+
+> η
+
+= 3 × 10 −4.
+
+7.1 Fault Estimation and Output Reconstruction 
+
+Figure 1 evaluates the augmented-state PF of Section IV. The estimate ̂ ηcc closely follows the true progressive degra-dation and remains within the posterior ±2̂ ση band in Fig. 1a. The resulting severity-estimation RMSE and MAE are 2.8808 × 10 −3 and 2.3339 × 10 −3, respectively, while the maximum absolute error is 1.1008 × 10 −2. Figure 1c further shows the effective sample size in (54); systematic resampling is activated whenever Neff ,k /N p < 0.5. Over the complete simulation, 1436 resampling events occur and the mean normalized effective sample size is 0.716 .Figure 2 compares the measured, reconstructed, and true faulty outputs generated by (40). The PF reconstructs both stator-current components and the rotor speed despite measurement noise. The enlarged current traces in Figs. 2a–2b 19 (a) Linear trend. (b) Holt. (c) Bayesian. (d) Particle based.     
+
+> Figure 3: Fault-severity prognosis from the common PF-based health information at tk= 6 .5s.
+
+show that the reconstructed outputs follow the fast electrical oscillations, supporting the joint state–fault representation in (45). 
+
+7.2 Fault Prognosis 
+
+For prognosis, the PF degradation history is sampled every Tp = 0 .05 s and the four models of Section V are initialized from the available health information. The nominal comparison uses the prognosis instant tk = 6 .5 s. The linear-trend model uses the most recent 30 samples, Holt smoothing uses α = 0 .25 and β = 0 .12 , and the Bayesian and particle forecasts use the most recent 12 degradation increments with μ0 = 0 , σμ, 0 = 2 × 10 −3, and σd = 5 × 10 −4.Figure 3 compares the four prognostic descriptions of ηcc . The linear-trend and Holt predictors provide the determinis-tic forecasts in (63) and (65), whereas the Bayesian and particle-based methods add predictive uncertainty through (68) and (72). All four methods capture the increasing degradation, while the probabilistic models additionally quantify the growth of uncertainty with prediction horizon. To examine prognosis beyond a single degradation trajectory, three patterns are considered: gradual degradation, 
+
+ηcc = 0 .01 + 0 .012( t − 2) ; accelerating degradation, ηcc = 0 .01 + 0 .006( t − 2) + 0 .0014( t − 2) 2; and an abrupt-change case obtained from the gradual local evolution with an additional severity increase of 0.025 at t = 5 .5 s. Predictions are initiated at tk ∈ { 3, 5, 7} s and evaluated over a common 3-s look-ahead horizon. Figure 4 shows how forecast accuracy depends jointly on the prediction horizon, degradation pattern, and available history. For gradual degradation, the locally fitted models remain accurate over the complete horizon. Acceleration introduces increasing model mismatch as the horizon grows, while the abrupt case is the most demanding because a future change cannot be inferred from pre-change degradation history. The Bayesian and particle-based mean forecasts remain close in all nine cases; their maximum absolute differences range from 8.891 × 10 −5 to 3.736 × 10 −4.
+
+7.3 Threshold Crossing and Reliability 
+
+Figures 5–6 use a dedicated mildly accelerating degradation trajectory beginning at tf = 2 s, ηcc = 0 .015 + 0 .012( t −
+
+tf ) + 3 × 10 −4(t − tf )2, with prognosis initiated at tk = 6 .5 s and critical severity ηcrit = 0 .12 . The corresponding health estimate is perturbed by a small correlated error with standard deviation 5 × 10 −4 and correlation coefficient 
+
+0.92 .Figure 5 applies the first-passage definition in (77). The true degradation reaches ηcrit at tc = 9 .386 s, corresponding to a true RUL of 2.886 s. The predicted crossings are 9.560 , 9.581 , 9.747 , and 9.735 s for the linear-trend, Holt, Bayesian, and particle-based models, respectively, giving RUL predictions of 3.060 , 3.081 , 3.247 , and 3.235 s. Thus, all four forecasts identify the impending threshold crossing, with the linear-trend prediction closest to the realized crossing in this experiment. Figure 6a illustrates the distinction between the marginal Bayesian reliability ˜RBk in (82) and the first-passage reliabili-ties RBk and RPF  
+
+> k
+
+in (84) and (86). The pathwise quantities are more restrictive because survival requires the complete predicted trajectory to remain below ηcrit .For Fig. 6b, the degradation-dependent hazard model uses h0 = 0 .02 and α = 3 .2. Reliability decreases as the accu-mulated severity-dependent hazard in (90) increases. The uncertainty-aware Bayesian and PF curves additionally use the predictive distributions through (92) and (93), thereby separating point-forecast and uncertainty-aware reliability. 20 (a) Gradual, tk = 3 s. (b) Accelerating, tk = 3 s. (c) Abrupt, tk = 3 s.                              
+
+> (d) Gradual, tk= 5 s. (e) Accelerating, tk= 5 s. (f) Abrupt, tk= 5 s.
+> (g) Gradual, tk= 7 s. (h) Accelerating, tk= 7 s. (i) Abrupt, tk= 7 s.
+> Figure 4: Prediction RMSE versus look-ahead horizon for different degradation patterns and prognosis instants.
+
+Finally, Fig. 6c compares the degradation-informed measures with the Weibull benchmark in (81), using λW = 10 .5 sand βW = 3 . The difference between these curves emphasizes their distinct interpretations: Weibull reliability depends on population-level lifetime statistics, whereas the Bayesian, particle-based, and hazard formulations respond directly to the predicted winding condition. 
+
+7.4 Sensitivity to Fault Orientation 
+
+The final experiment evaluates whether PF estimation performance depends strongly on the spatial orientation γcc .From Proposition 1, the 36 -slot, two-pole-pair motor has ne/(2 p) = 9 distinct first-harmonic fault orientations over 
+
+[0 , 90 ◦), namely γcc ∈ { 0◦, 10 ◦, . . . , 80 ◦}. The complete augmented-state PF is rerun for every orientation using five independent Monte Carlo realizations. Figure 7 shows only moderate variation of estimation accuracy with fault orientation. The mean RMSE ranges from 
+
+2.4685 × 10 −3 at γcc = 0 ◦ to 2.7416 × 10 −3 at γcc = 40 ◦, giving a worst-to-best ratio of 1.111 . The overall mean RMSE is 2.6544 × 10 −3 and the relative spread is 10 .29% . Thus, although γcc changes the fault signature ψ(t; γcc ),the augmented-state PF maintains comparable severity-estimation accuracy across all nine distinct spatial orientations. 
+
+# 8 Conclusion 
+
+This paper developed an integrated framework for stator inter-turn fault estimation, prognosis, and reliability assess-ment in induction motors. The fault was represented through a physically interpretable severity variable ηcc and spatial orientation γcc , leading to an output model in which the fault contribution is affine in the unknown severity. An augmented-state particle filter was then used to estimate jointly the electromechanical state and winding degradation while preserving the physical constraint ηcc ∈ [0 , 1] and quantifying posterior uncertainty. 21 Figure 5: Predicted fault-severity trajectories, threshold crossings, and remaining useful life.        
+
+> (a) First-passage reliability. (b) Hazard reliability. (c) Weibull comparison.
+> Figure 6: Reliability assessment over a 10 -s prediction horizon.
+
+The estimated degradation history was subsequently propagated using linear trend, Holt, Bayesian, and particle-based prognostic models. This enabled both deterministic and probabilistic predictions of future fault severity, which were then mapped into threshold-crossing RUL, first-passage reliability, degradation-dependent hazard reliability, and a Weibull lifetime benchmark. The resulting framework therefore connects online fault diagnosis directly to forward-looking health assessment without changing the underlying physical degradation variable. Numerical results showed accurate fault-severity estimation and faulty-output reconstruction, meaningful separation among prognostic models under gradual, accelerating, and abrupt degradation, and consistent threshold-crossing and reliability predictions. The spatial-orientation study further showed that the particle-filter estimation accuracy remains comparable across all distinct fault orientations implied by the periodic fault geometry. These results support the use of the proposed framework as a unified probabilistic pipeline from fault detection and estimation to prognosis and reliability assessment. Future work will extend the framework toward experimental validation under nonstationary operating conditions and supply imbalance, where reliable ITSC diagnosis remains challenging [36]. Joint online inference of the fault severity and spatial orientation will also be investigated, together with physics-informed and hybrid data-driven prognostic models that can exploit the physical degradation structure while adapting to limited fault data [37, 38]. Another direction is the integration of the proposed estimation–prognosis pipeline with digital-twin architectures for continuous model updating and life-cycle health assessment [39–41]. Finally, transfer learning across operating regimes and the explicit conversion of prognostic uncertainty into condition-based maintenance decisions will be considered to improve generalization and operational usefulness [42, 43]. 
+
+# References 
+
+[1] S. Nandi, H. Toliyat, and X. Li, “Condition monitoring and fault diagnosis of electrical motors—a review,” IEEE Transactions on Energy Conversion , vol. 20, no. 4, pp. 719–729, 2005. 22 Figure 7: Sensitivity of fault-severity estimation to the spatial orientation γcc . Error bars denote one standard deviation over five Monte Carlo realizations. 
+
+[2] B. L. Widjiantoro, M. K. Wafi, and K. Indriawati, “Non-linear estimation using the weighted average consensus-based unscented filtering for various vehicles dynamics towards autonomous sensorless design,” Journal of Robotics and Control (JRC) , vol. 4, p. 95–107, Mar. 2023. [3] S. K. Gundewar and P. V. Kane, “Condition monitoring and fault diagnosis of induction motor,” Journal of Vibration Engineering & Technologies , vol. 9, pp. 643–674, Jun 2021. [4] M. Seera, C. P. Lim, S. Nahavandi, and C. K. Loo, “Condition monitoring of induction motors: A review and an application of an ensemble of hybrid intelligent models,” Expert Systems with Applications , vol. 41, no. 10, pp. 4891–4903, 2014. [5] R. M. Tallam, S. B. Lee, G. C. Stone, G. B. Kliman, J. Yoo, T. G. Habetler, and R. G. Harley, “A survey of methods for detection of stator-related faults in induction machines,” IEEE Transactions on Industry Applications ,vol. 43, no. 4, pp. 920–933, 2007. [6] A. Singh, B. Grant, R. DeFour, C. Sharma, and S. Bahadoorsingh, “A review of induction motor fault modeling,” 
+
+Electric Power Systems Research , vol. 133, pp. 191–197, 2016. [7] P. Gangsar and R. Tiwari, “Signal based condition monitoring techniques for fault detection and diagnosis of induction motors: A state-of-the-art review,” Mechanical Systems and Signal Processing , vol. 144, p. 106908, 2020. [8] V. Nguyen, D. Wang, J. Seshadrinath, A. Ukil, M. S. Krishna, S. Nadarajan, and V. Vaiyapuri, “A method for incipient interturn fault detection and severity estimation of induction motors under inherent asymmetry and voltage imbalance,” IEEE Transactions on Transportation Electrification , vol. 3, no. 3, pp. 703–715, 2017. [9] A. Almounajjed, A. K. Sahoo, and M. K. Kumar, “Diagnosis of stator fault severity in induction motor based on discrete wavelet analysis,” Measurement , vol. 182, p. 109780, 2021. [10] M. K. Wafi, R. Hajian, B. Shafai, and M. Siami, “Advancing fault-tolerant learning-oriented control for un-manned aerial systems,” in 2023 9th International Conference on Control, Decision and Information Technolo-gies (CoDIT) , pp. 1688–1693, 2023. [11] G. R. Agah, A. Rahideh, V. Z. Faradonbeh, and S. H. Kia, “Stator winding interturn short-circuit fault modeling and detection of squirrel-cage induction motors,” IEEE Transactions on Transportation Electrification , vol. 10, no. 3, pp. 5725–5734, 2024. [12] A. K. Jardine, D. Lin, and D. Banjevic, “A review on machinery diagnostics and prognostics implementing condition-based maintenance,” Mechanical Systems and Signal Processing , vol. 20, no. 7, pp. 1483–1510, 2006. [13] J. Lee, F. Wu, W. Zhao, M. Ghaffari, L. Liao, and D. Siegel, “Prognostics and health management design for rotary machinery systems—reviews, methodology and applications,” Mechanical Systems and Signal Processing ,vol. 42, no. 1, pp. 314–334, 2014. 23 [14] Y. Lei, N. Li, L. Guo, N. Li, T. Yan, and J. Lin, “Machinery health prognostics: A systematic review from data acquisition to rul prediction,” Mechanical Systems and Signal Processing , vol. 104, pp. 799–834, 2018. [15] Y.-H. Lin, P.-C. Yan, and E. Zio, “Recent advances in uncertainty analysis for prognostics and remaining useful life prediction: A review,” Reliability Engineering & System Safety , vol. 269, p. 112110, 2026. [16] J. A. Toledo, L. A. R. Silva, and T. A. C. Maia, “Modeling of three-phase induction machines under combined inter-turn fault and mechanical eccentricity,” IEEE Access , vol. 13, pp. 178478–178491, 2025. [17] A. Sayed-Ahmed, C.-c. Yeh, N. A. O. Demerdash, and B. Mirafzal, “Analysis of stator winding inter-turn short-circuit faults in induction machines for identification of the faulty phase,” in Conference Record of the 2006 IEEE Industry Applications Conference Forty-First IAS Annual Meeting , vol. 3, pp. 1519–1524, 2006. [18] C. Kallesoe, P. Vadstrup, H. Rasmussen, and R. Izadi-Zamanabadi, “Estimation of stator winding faults in induc-tion motors using an adaptive observer scheme,” in Conference Record of the 2004 IEEE Industry Applications Conference, 2004. 39th IAS Annual Meeting. , vol. 2, pp. 1225–1232 vol.2, 2004. [19] A. Guezmil, H. Berriri, A. Sakly, and M. F. Mimouni, “Observer-based inter-turn short-circuit fault detection in closed-loop controlled induction machine,” in 2017 International Conference on Engineering & MIS (ICEMIS) ,pp. 1–6, 2017. [20] E. Javanfar, M. Rahmani, and M. K. Wafi, “Robust estimation-based non-fragile control for discrete-time non-linear systems,” International Journal of Robust and Nonlinear Control , vol. 35, no. 6, pp. 2462–2471, 2025. [21] M. Arulampalam, S. Maskell, N. Gordon, and T. Clapp, “A tutorial on particle filters for online nonlinear/non-gaussian bayesian tracking,” IEEE Transactions on Signal Processing , vol. 50, no. 2, pp. 174–188, 2002. [22] E. Zio and G. Peloni, “Particle filtering prognostic estimation of the remaining useful life of nonlinear compo-nents,” Reliability Engineering & System Safety , vol. 96, no. 3, pp. 403–409, 2011. [23] D. An, J.-H. Choi, and N. H. Kim, “Prognostics 101: A tutorial for particle filter-based prognostics algorithm using matlab,” Reliability Engineering & System Safety , vol. 115, pp. 161–169, 2013. [24] M. Jouin, R. Gouriveau, D. Hissel, M.-C. Péra, and N. Zerhouni, “Particle filter-based prognostics: Review, discussion and perspectives,” Mechanical Systems and Signal Processing , vol. 72-73, pp. 2–31, 2016. [25] Y. Hu, P. Baraldi, F. Di Maio, and E. Zio, “A particle filtering and kernel smoothing-based approach for new design component prognostics,” Reliability Engineering & System Safety , vol. 134, pp. 19–31, 2015. [26] X.-S. Si, W. Wang, C.-H. Hu, and D.-H. Zhou, “Remaining useful life estimation – a review on the statistical data driven approaches,” European Journal of Operational Research , vol. 213, no. 1, pp. 1–14, 2011. [27] C. C. Holt, “Forecasting seasonals and trends by exponentially weighted moving averages,” International Journal of Forecasting , vol. 20, no. 1, pp. 5–10, 2004. [28] M. K. Wafi, “Filtering module on satellite tracking,” AIP Conference Proceedings , vol. 2088, no. 1, p. 020045, 2019. [29] M. K. Wafi, “Neural-enhanced micro-kalman filtering for satellite tracking: A comparative study,” arXiv preprint arXiv:2607.06830 , 2026. [30] X.-S. Si, W. Wang, C.-H. Hu, M.-Y. Chen, and D.-H. Zhou, “A wiener-process-based degradation model with a recursive filter algorithm for remaining useful life estimation,” Mechanical Systems and Signal Processing ,vol. 35, no. 1, pp. 219–237, 2013. [31] X.-S. Si, W. Wang, C.-H. Hu, D.-H. Zhou, and M. G. Pecht, “Remaining useful life estimation based on a nonlinear diffusion degradation process,” IEEE Transactions on Reliability , vol. 61, no. 1, pp. 50–67, 2012. [32] C. Duan, V. Makis, and C. Deng, “An integrated framework for health measures prediction and optimal main-tenance policy for mechanical systems using a proportional hazards model,” Mechanical Systems and Signal Processing , vol. 111, pp. 285–302, 2018. [33] J. Hu and P. Chen, “Predictive maintenance of systems subject to hard failure based on proportional hazards model,” Reliability Engineering & System Safety , vol. 196, p. 106707, 2020. [34] M. K. Wafi and B. L. Widjiantoro, “Distributed estimation with decentralized control for quadruple-tank process,” 
+
+arXiv preprint arXiv:2304.04763 , 2025. [35] Z. Zhang, X. Si, C. Hu, and Y. Lei, “Degradation data analysis and remaining useful life estimation: A review on wiener-process-based methods,” European Journal of Operational Research , vol. 271, no. 3, pp. 775–796, 2018. [36] X. Dong, J. Yuan, L. Xiong, and G. Niu, “Fault detection of interturn short circuit in induction motors under non-stationary conditions and unbalanced supply voltage,” IEEE Transactions on Instrumentation and Measurement ,vol. 73, pp. 1–10, 2024. 24 [37] W. Deng, K. T. Nguyen, K. Medjaher, C. Gogu, and J. Morio, “Physics-informed machine learning in prognostics and health management: State of the art and challenges,” Applied Mathematical Modelling , vol. 124, pp. 325– 352, 2023. [38] H. M. Hedesh, M. K. Wafi, B. Shafai, and M. Siami, “Robust stability analysis of positive lur’e system with neural network feedback,” in 2025 IEEE Conference on Control Technology and Applications (CCTA) , pp. 976– 981, 2025. [39] B. Xiao, J. Zhong, X. Bao, L. Chen, J. Bao, and Y. Zheng, “Digital twin-driven prognostics and health manage-ment for industrial assets,” Scientific Reports , vol. 14, p. 13443, Jun 2024. [40] M. K. Wafi and M. Siami, “A comparative analysis of reinforcement learning and adaptive control techniques for linear uncertain systems,” in 2023 Proceedings of the Conference on Control and its Applications (CT) , pp. 25–32, 2023. [41] M. K. Wafi, “On the comparison of reinforcement learning and adaptive control for linear systems under packet loss and uncertainty,” arXiv preprint arXiv:2606.32003 , 2026. [42] H. Li, Z. Zhang, T. Li, and X. Si, “A review on physics-informed data-driven remaining useful life prediction: Challenges and opportunities,” Mechanical Systems and Signal Processing , vol. 209, p. 111120, 2024. [43] X. Zhao, P. Chen, and L. C. Tang, “Condition-based maintenance via markov decision processes: A review,” 
+
+Frontiers of Engineering Management , vol. 12, pp. 330–342, Jun 2025. 25
