@@ -1,6 +1,9 @@
 * <a class="dpr-sidebar-root-link" href="#/">首页</a>
 * <a class="dpr-sidebar-root-link dpr-sidebar-noactive-link" href="javascript:void(0)" data-dpr-hash="#/tutorial/README">使用教程</a>
 * Daily Papers
+  * 2026-09-17 <!--dpr-date:20260917-->
+    * 速读区
+      * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202609/17/2609.17404v1-residual-fault-adaptation-for-dexterous-in-hand-manipulation-under-runtime-joint-faults" data-sidebar-item="{&quot;title&quot;: &quot;Residual Fault Adaptation for Dexterous In-Hand Manipulation Under Runtime Joint Faults&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2609.17404v1-residual-fault-adaptation-for-dexterous-in-hand-manipulation-under-runtime-joint-faults&quot;, &quot;score&quot;: &quot;6.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;pmsm&quot;}], &quot;evidence&quot;: &quot;多执行器系统的容错控制&quot;}">Residual Fault Adaptation for Dexterous In-Hand Manipulation Under Runtime Joint Faults</a>
   * 2026-09-15 <!--dpr-date:20260915-->
     * 速读区
       * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202609/15/2609.13448v1-from-winding-fault-geometry-to-reliability-estimation-and-prognosis-of-stator-inter-turn-faults" data-sidebar-item="{&quot;title&quot;: &quot;From Winding-Fault Geometry to Reliability: Estimation and Prognosis of Stator Inter-Turn Faults&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2609.13448v1-from-winding-fault-geometry-to-reliability-estimation-and-prognosis-of-stator-inter-turn-faults&quot;, &quot;score&quot;: &quot;7.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;pmsm&quot;}], &quot;evidence&quot;: &quot;感应电机定子匝间故障估计与预测&quot;}">From Winding-Fault Geometry to Reliability: Estimation and Prognosis of Stator Inter-Turn Faults</a>
