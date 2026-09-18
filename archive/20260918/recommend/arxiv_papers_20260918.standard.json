@@ -1,0 +1,89 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-09-18T21:22:04.909497+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 2,
+    "quick_skim_target": 11,
+    "quick_selected": 2
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2609.14067v1",
+      "title": "Fixed-Time Resilient Integral Reinforcement Learning for Input-Constrained Unknown Nonlinear Systems Under FDI Attacks and Disturbances: A Data-Driven Admissible Warm Start",
+      "abstract": "This paper develops a resilient learning controller for unknown nonlinear systems operating under actuator limits, false-data-injection attacks, and external disturbances. The key idea is to learn a saturated secure policy directly from finite trajectory data while guaranteeing that both the learning error and the closed-loop state converge to compact neighborhoods within a uniform fixed time independent of initial conditions. An integral formulation removes the unknown drift from the implementable learning law, while stored informative data sustain learning after online excitation fades. To mitigate the closed-loop sensitivity to arbitrary critic initialization, pre-deployment data, which may also be reused from the replay stack, are lifted through a finite-dimensional Koopman representation to construct a stabilizing initial policy, whose inverse saturated-policy map provides a data-driven critic-weight warm start. The resulting controller preserves input constraints by construction and guarantees practical fixed-time robustness under persistent attacks and disturbances. The proposed learning and initialization architecture is further verified through a two-link robot stabilization example, where the results demonstrate rapid state recovery, bounded critic learning, reliable actuator-constraint satisfaction, and improved closed-loop behavior under informed critic initialization.",
+      "authors": [
+        "Tien Dat Vu",
+        "Minh Doan"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY"
+      ],
+      "published": "2026-09-12T17:32:42+00:00",
+      "link": "https://arxiv.org/pdf/2609.14067v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "resilient control under actuator attacks and disturbances",
+      "llm_evidence_cn": "执行器攻击与扰动下的弹性控制",
+      "llm_evidence": "执行器攻击与扰动下的弹性控制",
+      "canonical_evidence": "执行器攻击与扰动下的弹性控制",
+      "llm_tldr_en": "Develops a resilient reinforcement learning controller for nonlinear systems under attacks and disturbances.",
+      "llm_tldr_cn": "开发了一种针对受攻击和扰动影响的非线性系统的弹性强化学习控制器。",
+      "llm_tldr": "开发了一种针对受攻击和扰动影响的非线性系统的弹性强化学习控制器。",
+      "llm_tags": [
+        "query:pmsm"
+      ],
+      "matched_query_tag": "query:pmsm",
+      "matched_query_text": "fault-tolerant control of multi-phase motors",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.16273v1",
+      "title": "An Integrated EMT Small-Signal Stability Analysis Tool for Power Systems with High Inverter-Based Resource Penetration",
+      "abstract": "The ongoing replacement of synchronous generation by inverter-based resources (IBRs) introduces fast converter control dynamics whose characteristic frequencies extend beyond the classical electromechanical band. Conventional small-signal stability tools are commonly formulated in the phasor domain, representing electrical quantities as slowly varying phasors at the fundamental frequency, and therefore cannot resolve the sub-synchronous and converter-driven dynamics that increasingly arise in operation. Electromagnetic Transient (EMT) modeling captures these dynamics, but established EMT simulators produce time-domain waveforms rather than the modal indicators (eigenvalues, damping ratios, and participation factors) needed to assess stability risk. This paper presents EMT-SSA, an integrated tool suite for EMT-level small-signal analysis of IBR-rich power systems. From a standard PSS/E system snapshot (.raw/.dyr), it converts the model into an EMT representation with enhanced fidelity, solves an extended power flow for the steady-state equilibrium points of both the network and the device controllers, and linearizes a full-order EMT model to form the system state matrix, from which it produces eigenvalues, oscillation modes, and participation factor analysis results over a device library spanning synchronous generators, grid-following and grid-forming inverters, transmission lines, and loads. The EMT-SSA tool suite identifies poorly damped or unstable modes and attributes them to specific devices. The tool is demonstrated on the Kundur two-area system, with its modal results benchmarked against PSS/E NEVA.",
+      "authors": [
+        "Zihao Qin",
+        "Xiaonan Lu",
+        "Shuan Dong",
+        "Jin Tan"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY"
+      ],
+      "published": "2026-09-14T19:34:30+00:00",
+      "link": "https://arxiv.org/pdf/2609.16273v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "stability analysis for power systems with synchronous generation replacement",
+      "llm_evidence_cn": "同步发电替代下的电力系统稳定性分析",
+      "llm_evidence": "同步发电替代下的电力系统稳定性分析",
+      "canonical_evidence": "同步发电替代下的电力系统稳定性分析",
+      "llm_tldr_en": "Develops an EMT tool for small-signal stability analysis in power systems with high inverter penetration.",
+      "llm_tldr_cn": "开发了一种用于高逆变器渗透率电力系统小信号稳定性分析的EMT工具。",
+      "llm_tldr": "开发了一种用于高逆变器渗透率电力系统小信号稳定性分析的EMT工具。",
+      "llm_tags": [
+        "query:pmsm:composite"
+      ],
+      "matched_query_tag": "query:pmsm:composite",
+      "matched_query_text": "Papers central to 三相及双三相永磁同步电机相关研究检索, especially work that connects or combines: m; s; f; Permanent Magnet Synchronous Motor research; dual three-phase permanent magnet synchronous motor control and design; fault-tolerant control of multi-phase motors; recent advances in dual three phase permanent magnet synchronous motor control; fault tolerant strategies for multi phase permanent magnet synchronous motors.",
+      "matched_requirement_id": "req-composite-pmsm",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

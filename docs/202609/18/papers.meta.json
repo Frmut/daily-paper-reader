@@ -1,0 +1,37 @@
+{
+  "label": "2026-09-18",
+  "date": "2026-09-18",
+  "generated_at": "2026-09-18T21:22:16",
+  "count": 2,
+  "papers": [
+    {
+      "paper_id": "202609/18/2609.14067v1-fixed-time-resilient-integral-reinforcement-learning-for-input-constrained-unknown-nonlinear-systems-under-fdi-attacks-and-disturbances-a-data-driven-admissible-warm-start",
+      "section": "quick",
+      "title_en": "Fixed-Time Resilient Integral Reinforcement Learning for Input-Constrained Unknown Nonlinear Systems Under FDI Attacks and Disturbances: A Data-Driven Admissible Warm Start",
+      "authors": "Tien Dat Vu, Minh Doan",
+      "date": "2026-09-12",
+      "pdf": "https://arxiv.org/pdf/2609.14067v1",
+      "score": "6.0",
+      "evidence": "执行器攻击与扰动下的弹性控制",
+      "tldr": "本文针对存在执行器约束、虚假数据注入攻击及外部干扰的未知非线性系统，提出了一种固定时间鲁棒积分强化学习控制方案。该方法利用积分形式消除未知漂移，通过Koopman算子实现数据驱动的策略初始化，确保系统在固定时间内收敛至紧邻域，并有效提升了学习效率与鲁棒性。",
+      "tags": "query:pmsm",
+      "abstract_en": "This paper develops a resilient learning controller for unknown nonlinear systems operating under actuator limits, false-data-injection attacks, and external disturbances. The key idea is to learn a saturated secure policy directly from finite trajectory data while guaranteeing that both the learning error and the closed-loop state converge to compact neighborhoods within a uniform fixed time independent of initial conditions. An integral formulation removes the unknown drift from the implementable learning law, while stored informative data sustain learning after online excitation fades. To mitigate the closed-loop sensitivity to arbitrary critic initialization, pre-deployment data, which may also be reused from the replay stack, are lifted through a finite-dimensional Koopman representation to construct a stabilizing initial policy, whose inverse saturated-policy map provides a data-driven critic-weight warm start. The resulting controller preserves input constraints by construction and guarantees practical fixed-time robustness under persistent attacks and disturbances. The proposed learning and initialization architecture is further verified through a two-link robot stabilization example, where the results demonstrate rapid state recovery, bounded critic learning, reliable actuator-constraint satisfaction, and improved closed-loop behavior under informed critic initialization.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202609/18/2609.16273v1-an-integrated-emt-small-signal-stability-analysis-tool-for-power-systems-with-high-inverter-based-resource-penetration",
+      "section": "quick",
+      "title_en": "An Integrated EMT Small-Signal Stability Analysis Tool for Power Systems with High Inverter-Based Resource Penetration",
+      "authors": "Zihao Qin, Xiaonan Lu, Shuan Dong, Jin Tan",
+      "date": "2026-09-14",
+      "pdf": "https://arxiv.org/pdf/2609.16273v1",
+      "score": "6.0",
+      "evidence": "同步发电替代下的电力系统稳定性分析",
+      "tldr": "随着电力系统中逆变器资源（IBR）占比提升，传统相量域分析工具难以捕捉高频控制动态。本文提出EMT-SSA工具套件，通过将PSS/E模型转换为高保真EMT模型，实现全阶线性化与模态分析。该工具能计算特征值、阻尼比及参与因子，有效识别IBR主导系统中的次同步振荡与失稳风险，为高比例新能源电力系统的稳定性评估提供了关键技术支撑。",
+      "tags": "query:pmsm",
+      "abstract_en": "The ongoing replacement of synchronous generation by inverter-based resources (IBRs) introduces fast converter control dynamics whose characteristic frequencies extend beyond the classical electromechanical band. Conventional small-signal stability tools are commonly formulated in the phasor domain, representing electrical quantities as slowly varying phasors at the fundamental frequency, and therefore cannot resolve the sub-synchronous and converter-driven dynamics that increasingly arise in operation. Electromagnetic Transient (EMT) modeling captures these dynamics, but established EMT simulators produce time-domain waveforms rather than the modal indicators (eigenvalues, damping ratios, and participation factors) needed to assess stability risk. This paper presents EMT-SSA, an integrated tool suite for EMT-level small-signal analysis of IBR-rich power systems. From a standard PSS/E system snapshot (.raw/.dyr), it converts the model into an EMT representation with enhanced fidelity, solves an extended power flow for the steady-state equilibrium points of both the network and the device controllers, and linearizes a full-order EMT model to form the system state matrix, from which it produces eigenvalues, oscillation modes, and participation factor analysis results over a device library spanning synchronous generators, grid-following and grid-forming inverters, transmission lines, and loads. The EMT-SSA tool suite identifies poorly damped or unstable modes and attributes them to specific devices. The tool is demonstrated on the Kundur two-area system, with its modal results benchmarked against PSS/E NEVA.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

@@ -6,26 +6,29 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-09-17
-- 运行时间：2026-09-17 22:02:54 UTC
+- 最新运行日期：2026-09-18
+- 运行时间：2026-09-18 21:22:13 UTC
 - 运行状态：成功
-- 本次总论文数：1
+- 本次总论文数：2
 - 精读区：0
-- 速读区：1
+- 速读区：2
 
 ### 今日简报（AI）
-今日聚焦灵巧手在运行中出现关节故障时的自适应控制策略。
-该研究通过残差故障适应机制，有效提升了机器人手在突发故障下的操作鲁棒性。
-建议关注机器人容错控制领域，了解如何通过算法补偿硬件损耗以延长设备寿命。
-- 详情：[/202609/17/README](/202609/17/README)
+今日聚焦非线性系统抗攻击控制与高比例电力电子系统稳定性分析。
+重点关注数据驱动的固定时间强化学习在复杂干扰下的鲁棒性，以及逆变器接入对电网小干扰稳定性的影响。
+建议关注数据驱动控制与电力系统稳定性分析的交叉应用，提升复杂动态环境下的系统韧性。
+- 详情：[/202609/18/README](/202609/18/README)
 
 ### 精读区论文标签
 - 本次无精读推荐。
 
 ### 速读区论文标签
-1. [Residual Fault Adaptation for Dexterous In-Hand Manipulation Under Runtime Joint Faults](/202609/17/2609.17404v1-residual-fault-adaptation-for-dexterous-in-hand-manipulation-under-runtime-joint-faults)  
+1. [Fixed-Time Resilient Integral Reinforcement Learning for Input-Constrained Unknown Nonlinear Systems Under FDI Attacks and Disturbances: A Data-Driven Admissible Warm Start](/202609/18/2609.14067v1-fixed-time-resilient-integral-reinforcement-learning-for-input-constrained-unknown-nonlinear-systems-under-fdi-attacks-and-disturbances-a-data-driven-admissible-warm-start)  
    标签：评分：6.0/10、query:pmsm
-   evidence：多执行器系统的容错控制
+   evidence：执行器攻击与扰动下的弹性控制
+2. [An Integrated EMT Small-Signal Stability Analysis Tool for Power Systems with High Inverter-Based Resource Penetration](/202609/18/2609.16273v1-an-integrated-emt-small-signal-stability-analysis-tool-for-power-systems-with-high-inverter-based-resource-penetration)  
+   标签：评分：6.0/10、query:pmsm
+   evidence：同步发电替代下的电力系统稳定性分析
 
 
 <div class="dpr-home-promo-card">
