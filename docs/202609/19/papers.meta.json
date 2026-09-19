@@ -1,0 +1,23 @@
+{
+  "label": "2026-09-19",
+  "date": "2026-09-19",
+  "generated_at": "2026-09-19T21:50:54",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202609/19/2609.15711v1-model-free-pid-tuning-by-step-response-inspection",
+      "section": "quick",
+      "title_en": "Model-Free PID Tuning by Step-Response Inspection",
+      "authors": "Daniel Pachner, Pavel Otta, Jiří Dostál, Vladimír Havlena",
+      "date": "2026-09-14",
+      "pdf": "https://arxiv.org/pdf/2609.15711v1",
+      "score": "6.0",
+      "evidence": "控制回路中的无模型PID整定与故障识别",
+      "tldr": "针对工业PID控制器仍依赖人工手动调试的现状，本文提出了一种名为SPIN的无模型自动整定算法。该方法通过分析单次闭环阶跃响应的相图轨迹绕行次数，无需系统建模或复杂优化，即可自动识别并调整比例、积分、微分增益。SPIN具有确定性、鲁棒性强且无需额外激励的特点，能直接在运行中的工业流程上实现安全、透明的自动整定，显著降低了调试难度。",
+      "tags": "query:pmsm",
+      "abstract_en": "Industrial PID loops are still tuned by hand: step the setpoint, look at the response, change a gain. This paper turns that procedure into an algorithm, SPIN, for Step-response Phase-portrait INspection. From a single closed-loop step response we form three phase portraits of the control deviation and count how many times each trajectory winds around its settling point. The counts are dimensionless and independent of the step size and of the clock. They show which channel is under-damped: integral, proportional, or derivative. A triangular rule reads the three counts, cutting the gain of the one band whose fault is certain and raising that of every band the same test shows to be within its limit. No model is identified and no optimization is solved. The iteration is deterministic and its gains stay inside a fixed box. Because a ringing count is itself the evidence that the loop is in the regime where cutting that band's gain reduces the count, the iteration settles into a cycle at the edge of the well-damped set. It needs no excitation beyond a routine setpoint step, so it can run on a process in operation, and it may start from arbitrary gains, including destabilizing ones. SPIN assumes a stable, self-regulating process whose gain and phase both fall with frequency, which covers the lag-plus-dead-time models common in process control, and a controller from the nested family $\\mathrm{I} \\subset \\mathrm{PI} \\subset \\mathrm{PID}$ with integral action present. We validate it on a battery of process-typical plants with one fixed step size and one set of dimensionless constants throughout. Every decision is visible: the operator sees what the algorithm sees. A reference implementation and an interactive demonstration are public.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

@@ -6,29 +6,26 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-09-18
-- 运行时间：2026-09-18 21:22:13 UTC
+- 最新运行日期：2026-09-19
+- 运行时间：2026-09-19 21:50:52 UTC
 - 运行状态：成功
-- 本次总论文数：2
+- 本次总论文数：1
 - 精读区：0
-- 速读区：2
+- 速读区：1
 
 ### 今日简报（AI）
-今日聚焦非线性系统抗攻击控制与高比例电力电子系统稳定性分析。
-重点关注数据驱动的固定时间强化学习在复杂干扰下的鲁棒性，以及逆变器接入对电网小干扰稳定性的影响。
-建议关注数据驱动控制与电力系统稳定性分析的交叉应用，提升复杂动态环境下的系统韧性。
-- 详情：[/202609/18/README](/202609/18/README)
+今日速读《Model-Free PID Tuning by Step-Response Inspection》，探索无需模型即可实现 PID 参数整定的新路径。
+该研究通过步响应检查实现 PID 自动调优，为复杂系统控制提供了高效的无模型解决方案。
+建议关注自动化控制领域的工程师阅读，了解如何通过简单的响应分析优化系统性能。
+- 详情：[/202609/19/README](/202609/19/README)
 
 ### 精读区论文标签
 - 本次无精读推荐。
 
 ### 速读区论文标签
-1. [Fixed-Time Resilient Integral Reinforcement Learning for Input-Constrained Unknown Nonlinear Systems Under FDI Attacks and Disturbances: A Data-Driven Admissible Warm Start](/202609/18/2609.14067v1-fixed-time-resilient-integral-reinforcement-learning-for-input-constrained-unknown-nonlinear-systems-under-fdi-attacks-and-disturbances-a-data-driven-admissible-warm-start)  
+1. [Model-Free PID Tuning by Step-Response Inspection](/202609/19/2609.15711v1-model-free-pid-tuning-by-step-response-inspection)  
    标签：评分：6.0/10、query:pmsm
-   evidence：执行器攻击与扰动下的弹性控制
-2. [An Integrated EMT Small-Signal Stability Analysis Tool for Power Systems with High Inverter-Based Resource Penetration](/202609/18/2609.16273v1-an-integrated-emt-small-signal-stability-analysis-tool-for-power-systems-with-high-inverter-based-resource-penetration)  
-   标签：评分：6.0/10、query:pmsm
-   evidence：同步发电替代下的电力系统稳定性分析
+   evidence：控制回路中的无模型PID整定与故障识别
 
 
 <div class="dpr-home-promo-card">

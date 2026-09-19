@@ -1,0 +1,361 @@
+Title: Model-Free PID Tuning by Step-Response Inspection
+
+URL Source: https://arxiv.org/pdf/2609.15711v1
+
+Published Time: Tue, 15 Sep 2026 02:59:28 GMT
+
+Number of Pages: 12
+
+Markdown Content:
+# Model-Free PID Tuning by Step-Response Inspection 
+
+Daniel Pachner a, Pavel Otta a, ∗, Jiˇ rí Dostál a, Vladimír Havlena b
+
+> aUniversity Centre for Energy E ffi cient Buildings (UCEEB), Czech Technical University in Prague, Buštˇ ehrad, Czech Republic
+> bDepartment of Control Engineering, Faculty of Electrical Engineering, Czech Technical University in Prague, Prague, Czech Republic
+
+Abstract 
+
+Industrial PID loops are still tuned by hand. The engineer steps the setpoint, looks at the response, and changes a gain. This paper turns that procedure into an algorithm, SPIN, for Step-response Phase-portrait INspection. From a single closed-loop step response we form three phase portraits of the control deviation, and for each we count how many times the trajectory winds around its settling point. The count has no units, and it does not depend on the size of the step or on the clock. It shows in which frequency band the loop is under-damped: that of the integral, the proportional, or the derivative channel. A triangular rule reads the three counts. It reduces the gain of the one band whose fault is certain, and it raises the gain of every band that the same test has shown to be within its limit. No model is identified and no optimization is solved. The iteration is deterministic, and its gains stay inside a fixed box. Cutting the gain of a band that rings does reduce its count, because a ringing count is itself the evidence that the loop is in the regime where this holds. The iteration therefore settles into a cycle at the edge of the well-damped set. It needs no excitation beyond a routine setpoint step, so it can run on a process in operation, and it may start from arbitrary gains, including destabilizing ones. SPIN assumes a stable, self-regulating process whose gain and phase both fall with frequency, which covers the lag-plus-dead-time models common in process control, and a controller from the nested family I ⊂ PI ⊂ PID with integral action present. We validate it on a battery of process-typical plants, using one fixed step size and one set of dimensionless constants throughout. Every decision is visible: an operator who watches the portraits sees what the algorithm sees. A reference implementation and an interactive demonstration are public. 
+
+Keywords: PID control, controller tuning, data-driven control, phase plane, step response 
+
+1. Introduction 
+
+More than eighty years after Ziegler and Nichols [1], PID remains the dominant industrial controller [2]: in a survey of more than eleven thousand controllers, 97% of the regulatory loops used PID [3]. Most PID loops are still tuned by inspection: an engineer steps the setpoint, looks at the response, and adjusts a gain by judgment. Three lines of work replace this inspection. 1) Model-based rules use an identified low-order model instead [1, 4, 5, 6], and therefore inherit the errors of that model; both experimental parts of Ziegler–Nichols have since been revisited with modern robustness tools [7, 8, 9]. 2) Data-driven schemes replace the inspection with a criterion, and with the machinery needed to serve that criterion: a dedicated relay experiment [10], gradient   
+
+> ∗Corresponding author
+> Email address: pavel.otta@cvut.cz (Pavel Otta)
+
+experiments on a quadratic cost [11], an identification-like problem [12], or online perturbation of the gains [13]. 3) Parametric-region methods compute the admis-sible set directly in the plane of two controller parame-ters, every setting in that set meeting an H∞ specifica-tion [14, 15]. The result is a region with a certificate rather than a single tuning, but it needs a plant model, a weighting function and a level fixed in advance, and it treats two parameters at a time. The closest precedent automated the inspection but did not formalize it: the pattern-recognition autotuner of [16], sold industrially as EXACT, reads overshoot and decay ratio from detected peaks and adjusts the gains by heuristic logic. The inspection itself has never been made a well-defined quantity: which gain is at fault, given this response, computed rather than matched to a stored pattern. The inspection di ff ers from all of these in the kind of quantity it reads. Every diagnostic named above is arXiv:2609.15711v1 [eess.SY] 14 Sep 2026 metric: a ratio of amplitudes, an integrated cost, or an identified parameter with units. Each of them therefore needs a scale, and that scale must be supplied for every loop by a model, by a normalization, or by an expert. The turn index reads the oriented shape of the error tra-jectory instead: how many times that trajectory wraps around its settling point. Being a count of turns, it is topological rather than metric, and so independent of units, of amplitude and of the clock, and, in the fast-sampling limit, of the sampling period (Proposition 1). This is why the manual procedure is blind to scale. It is also why one fixed set of dimensionless limits serves every plant in this paper. This paper formalizes the inspection. We call the re-sulting method SPIN, for Step-response Phase-portrait INspection. The name stands for the complete proce-dure: the three portraits, the guarded turn indices com-puted from them, and the triangular rule that acts on the three counts. The contributions are the following. (i) A triple of phase portraits of the control deviation, whose turn indices form a damping diagnostic that has no units, needs no scale, selects one frequency band, and is topological (Section 2). (ii) A well-posedness analysis of the index, containing a counterexample in which a naively windowed count diverges and a settling-anchored guard that restores independence of the win-dow (Section 3). (iii) A single triangular tuning rule in band-ordered gain coordinates, read as loop shaping band by band. The gains stay bounded without fur-ther conditions, and convergence to a bounded neigh-bourhood of the boundary follows from a monotonicity property that the plant class supplies wherever the rule corrects a gain (Proposition 6, Section 4). (iv) Valida-tion on a battery of process-typical plants, with the same default parameters throughout (Section 5). SPIN returns a fast, well-damped tuning, which is what an expert tuner also o ff ers, and asks for one closed-loop setpoint step per iteration and nothing else: no model, no relay experiment, no solver. It can be au-dited in full, since an operator watching the three por-traits sees what the algorithm sees, and it is governed throughout by the fixed dimensionless defaults of Ta-ble 2, none of which was adjusted for any plant. Every move either repairs a diagnosed fault or, when no band objects, raises all gains by one bounded step, so no signal is ever injected only to acquire information, as it is in iterative feedback tuning or in extremum seek-ing [11, 13]. The expanding move does push the loop towards its stability boundary, one step at a time, and the stability screen of Section 3 is what keeps that push bounded. Figures 1 and 2 show the method on one plant (P2, Section 5) before any mathematics: the response and the portraits before and after tuning, from a severely mis-tuned start, recorded from the running implemen-tation (Data availability). The run begins at unit gains (Ki, Kp, Kd) = (1 , 1, 1) with the derivative on the mea-surement, and the P2 preset of the interactive demon-stration reproduces it. The battery of Section 5 is a sep-arate set of runs, starting from a mis-tuned AMIGO de-sign with the derivative on the error. 
+
+2. The turn index 
+
+SPIN rests on two standing assumptions, stated once and used throughout. 
+
+Assumption 1 (Process class) . The plant G is SISO, asymptotically stable and non-integrating (self-regulating). On (0 , ∞) both |G| and arg G decrease strictly, and arg G falls below −3π/ 2.
+
+The last clause is an arithmetic of phase. To destabi-lize a loop the total phase must reach −π, and the con-troller of Assumption 2 supplies at most π/ 2 of lead, so the plant itself must be able to reach −π − π/ 2. This is what places the stability boundary at a finite gain. The other clauses are used as well: asymptotic stabil-ity lets the Nyquist argument of Proposition 2 count en-circlements; self-regulation, that is |G(0) | < ∞, fixes the sign in Proposition 6(i), so that reducing all gains damps the loop rather than destabilizing it; and the two mono-tonicity clauses make a single crossover carry the loop. Membership in this class can be decided by inspection. 
+
+Lemma 1 (Lag chains with dead time) . Let G (s) =
+
+K e −Ls Qni=1(τi s + 1) −1 be a chain of n ≥ 1 first-order lags, with static gain K > 0, lag time constants τi > 0
+
+and dead time L ≥ 0. Then |G| and arg G decrease strictly on (0 , ∞), and arg G falls below −3π/ 2 if and only if L > 0, or L = 0 and n ≥ 4. Such a plant satisfies Assumption 1 exactly when L > 0 or n ≥ 4.Proof. Both derivatives are sums of strictly negative terms for ω > 0, and arg G ∼ − Lω − nπ/ 2 as ω → ∞ ,which diverges for L > 0 and otherwise approaches 
+
+−nπ/ 2 from above. Models with dead time therefore qualify for every 
+
+L > 0, and delay-free lag chains from four lags up. A lightly damped complex pole pair, an integrating plant and a plant with finite zeros fall outside. The assump-tion can also be read from a measured frequency re-sponse [9, 8]. Proposition 2 additionally needs |CG | → 
+
+0, so that the phase crossings die out, and how many 2Figure 1: Step response before (left) and after (right) tuning; P2 from unit gains. The mis-tuned loop sustains an oscillation, and the actuator swings between its limits. Nothing in the left plot shows which gain is at fault. At the end of the run a single overshoot settles cleanly, and the actuator stays unsaturated.           
+
+> Figure 2: Portraits Γ0,Γ1,Γ2(left to right) before (top) and at the end of the run (bottom); the cross marks the settling point. Figure 1 does not show which gain is at fault, but the portraits do. At unit gains the two upper bands are far outside their limits ( N1=4.44 against 0 .75; N2=4.57 against 1.0), while N0=−0.11 stays inside its limit; the stability screen of Section 3 rejects that record anyway. By the end of the run the counts have fallen to (1 .12 ,1.02 ,1.05), and the last feasible iterate is 81 iterations earlier, at (0 .12 ,0.10 ,0.35): the boundary limit cycle of Proposition 7, seen from its violated side.
+
+lags that takes depends on the controller rather than on Assumption 1. For the I and PI members |C| is bounded at high frequency, so n ≥ 1 su ffi ces. The PID member with an ideal derivative has |C| ∼ Kdω, which cancels one lag, so it needs n ≥ 2: with a single lag |CG | tends to the constant KK d/τ 1 and the crossings recur without decaying. 
+
+Remark 1 (Plants with no stability boundary) . The ex-clusion easiest to overlook is the mildest-looking one: a delay-free chain with n ≤ 2, and in particular K /(τs+1) .There arg G > −π, the locus of CG never reaches the negative real axis, and no finite gain destabilizes the loop. The boundary of Proposition 2 does not merely lie far away; it does not exist. No band ever objects, the last row of Table 1 fires at every iteration, and the gains rise to F max , which Section 6 reads as the answer it is. Any dead time, or two further lags, restores the boundary and with it the method. 
+
+Assumption 2 (Controller structure) . The controller is drawn from the nested family I ⊂ PI ⊂ PID . It has a parallel structure in a unity-feedback loop. The inte-gral channel is mandatory (K i > 0); the proportional and derivative channels are optional, K p, Kd ≥ 0. The derivative channel is ideal; any implementation filters 
+
+3it, and Section 5 records what the reference implemen-tation uses. 
+
+Write C(s) = Kp + Ki/s + Kd s for the transfer func-tion of the controller of Assumption 2. Write θ =
+
+(Ki, Kp, Kd) for the controller’s gains. A uniform mul-tiplier m > 0 scales θ 7 → mθ. This is an analysis di-rection, and it is distinct from the per-band multipliers (Fi, Fp, Fd) used by the rule (Section 4). Each channel is linear in its own gain, so C is homogeneous of degree one in θ. Scaling all three gains by m therefore maps the loop CG to m CG exactly, and the Nyquist locus changes in magnitude but not in shape. Homogeneity, not linearity, is all that is used below. A plant with an integrator would satisfy the two monotonicity hypothe-ses, but it would reverse the sign in Proposition 6(i). Reducing all gains would then destabilize the loop in-stead of damping it, which would also remove the basis of Remark 4. The non-integrating clause of Assump-tion 1 excludes this case. Its phase clause excludes a second family with the same reversal (Remark 1). Write y for the measured output, u for the control sig-nal and e for the control deviation y−r. A tuning experi-ment applies a unit setpoint step from rest, so that e runs from −1 to 0, and records ek, k = 0, . . . , M, at period Ts,over a window in which the response settles. Form the running integral and the first and second di ff erences, 
+
+Ek = TskX
+
+> j=0
+
+e j, ∆ek = ek − ek−1, ∆2ek = ∆ ek − ∆ek−1,
+
+(1) with ∆e0 = ∆2e0 = 0. Each portrait plots one of these signals vertically against its own di ff erence hor-izontally: 
+
+Γ0 :  ek, Ek−EM
+
+,
+
+Γ1 :  ∆ek, ek
+
+,
+
+Γ2 :  ∆2ek, ∆ek
+
+. (2) The signal on the vertical axis is the parent of its por-trait: E, e and ∆e for Γ0, Γ1, Γ2. Up to the exchange of axes, Γ1 is the classical ( e, ˙e) phase plane, long used to read nonlinear servo transients graphically [17], and 
+
+Γ0 and Γ2 are its integrated and di ff erentiated versions. All three end at the origin when the loop settles. Putting the di ff erence on the horizontal axis makes an under-damped response wind counter-clockwise in all three. We call (2) Pachner portraits , after the first author, who devised the construction. A well-damped loop spirals into the origin without completing a full turn. An under-damped loop encircles it. The following definition makes the count precise. 
+
+Definition 1 (Turn index) . Given a planar trajectory 
+
+(pk, qk), k = 0, . . . , J, with neither coordinate identi-cally zero: (i) normalize each coordinate by its peak magnitude, mapping the curve into [−1, 1] 2; (ii) after the trajectory first leaves the disc of radius ε ∈ (0 , 1) 
+
+about the origin, truncate at the last sample lying inside it—the last, not the first, so that a record still winding after it settles is not silently discarded (Section 3), and retaining the curve in full if it does not re-enter; (iii) define N as the winding number of the remaining curve about the origin, that is, the total swept angle divided by 2π. We evaluate it as the di ff erence of the endpoint angles, corrected by the signed crossings of the negative horizontal semi-axis. Partial revolutions count fraction-ally. After the normalization each coordinate attains magnitude one, so the first exit in step (ii) always oc-curs. For a trajectory with a coordinate identically zero we set N := 0.
+
+Because N is the winding number about the point at which the loop settles, we call it the turn index .Definition 1 assumes the trajectory ends at the origin, which the integral channel guarantees since e → 0 for every stable tuning of Assumption 2. Proportional ac-tion alone, on a self-regulating plant, would settle at an off set: Γ0 and Γ1 would end away from the origin, the truncation would never occur, and the winding number would measure the wrong quantity. This is what Ki > 0means in practice. Applying Definition 1 to Γ0, Γ1, Γ2 gives the turn-index vector N(θ) = (N0, N1, N2) at the controller set-ting θ = (Ki, Kp, Kd). It comes from a single step test, and it uses no knowledge of the plant. Four propositions carry the construction. First, the count is free of scale and of clock (Proposition 1). Sec-ond, one damping dominates the record, because stabil-ity is lost through one critical pole pair (Proposition 2). Third, the count follows that damping, because near the boundary the trajectory is a logarithmic spiral (Propo-sition 3). Fourth, each portrait isolates one frequency band, because each di ff erencing tilts the spectrum by one power of ω (Proposition 4). 
+
+Proposition 1 (Topological invariance) . N is invariant under time reparametrization t 7 → at, a > 0, and un-der independent positive scaling of either coordinate of each trajectory, in particular under scaling of the set-point step. It is also unchanged by e 7 → − e, which ro-tates every portrait by π: the opposite sign convention gives the same counts. Proof. The winding number depends only on the ori-ented image of the curve, not its parametrization; per-axis peak normalization removes amplitude and units, 4and the truncation disc is centred at the origin, so it is rotation invariant. For a sampled record the time-scaling statement is ex-act when Ts is scaled with the time axis, and holds at fixed Ts in the fast-sampling limit. One set of limits therefore serves all loops. The de-faults ¯ N = (0 .5, 0.75 , 1.0) and ε = 0.1 are used un-changed in every result of this paper. They act as the definition of “well-damped” and not as adjustable set-tings. Since N measures turns, the three limits are 2, 3 and 4 quarter turns. Each band is thus one quarter turn more tolerant than the band below it. Which damping the counts read, and why a single damping dominates, follows from the plant class. 
+
+Proposition 2 (Critical pair) . Let G satisfy Assump-tion 1 and scale all gains together, CG 7 → m CG with m > 0. Then the loop is stable up to a finite m ∗, and at m ∗ it loses stability through one complex pole pair. This happens at the phase-crossover frequency ω180 ,which maximizes |CG ( jω)| over {ω : arg CG ( jω) ≡ − π
+
+(mod 2 π)}. Near m ∗ this pair is the least damped in the loop, and its damping ζ(m) decreases continuously to zero as m ↑ m∗.Proof. Since ℜ C( jω) = Kp ≥ 0, the phase arg C
+
+lies in [ −π/ 2, π/ 2], while arg G falls below −3π/ 2 (As-sumption 1). Hence arg CG reaches −π at frequencies bounded away from 0 and from ∞. Increasing m scales the locus m CG radially. By the Nyquist criterion [18] it first touches −1 at m∗ = 1/|CG ( jω180 )|, and generi-cally at one frequency. The touch is transversal, because 
+
+∂|m CG |/∂ m = |CG | > 0. One conjugate pair therefore crosses the imaginary axis at ω180 , while all other poles keep strictly positive damping nearby. The transversal crossing gives the strict decrease of ζ(m) near m∗, and continuity gives ζ(m) → 0. The modulo formulation is needed because dead time makes arg CG pass −π on infinitely many branches; the maximum over them is attained because |CG | → 0. Near the boundary a single pole pair therefore carries the ringing, and we write 
+
+e(t) = x(t) + r(t), x(t) = A e −αt cos( ωt + φ), (3) where x is the critical mode, with ωn = √α2 + ω2 and damping ζ = α/ω n, and r is the remaining, faster-settling part of the error. The mode comes to domi-nate the record as m ↑ m∗, because its damping tends to zero while r keeps its decay rate. The decomposi-tion is asymptotic in this sense rather than exact. The rule operates between the well-damped boundary and the stability boundary, and there (3) serves as the work-ing model; Section 5 validates it. The propositions be-low are based on (3). 
+
+Proposition 3 (Damping law) . Let the mode of (3) be recorded until its envelope has contracted by a factor 
+
+ρ ∈ (0 , 1) . Then every portrait of Definition 1, truncated there, winds N = ln(1 /ρ )2π
+
+p1 − ζ2
+
+ζ + η, |η| < 1, (4) 
+
+where η collects the phase of the cut, the phase of the start and the linear distortion of the angle. The leading term is strictly decreasing on (0 , 1) .Proof. In the mode’s own phase plane ( x, ˙x/ω n) the tra-jectory is a circular logarithmic spiral, whose angle ad-vances at the rate ω while the envelope decays at α.Contraction by ρ takes the time α−1 ln(1 /ρ ), over which the angle advances by (ln(1 /ρ )/2π)( ω/α ) turns, with 
+
+ω/α = p1 − ζ2/ζ . Three terms perturb this count. The cut is the last crossing of the settling level, at most half a cycle before the envelope reaches it, and half rather than a whole because |e| peaks twice per cycle. The record starts where the envelope still exceeds the first peak of |e|, returning arcsin ζ/ 2π < 1/4 of a turn. And di ff erentiation multiplies the mode by −α + jω, so ev-ery portrait is a linear image of that plane, as is the peak normalization; a linear isomorphism induces a mono-tone degree-one map of directions and shifts an accumu-lated angle by less than π. Monotonicity follows from d( p1 − ζ2/ζ )/dζ < 0. The stopping rule fixes ρ: cutting at the first meeting with the ε-disc gives ρ = ε, while under the settling-anchored window of Section 3 the record ends first whenever δ < ε , and then ρ = δ, which is the case for the defaults of Table 2. Measured over ζ ∈ [0 .13 , 0.90], the residual holds to − 12 < η < 14 for Γ0 and Γ1, and to that interval shifted down half a turn for Γ2, which starts at the origin since ∆2e0 = 0 (Figure 3). Each Nk
+
+is piecewise constant with jumps of at most half a turn, the step of the cut, so each crossing Nk = ¯Nk fixes an interval of damping whose midpoint is the calibrated ¯ ζk.It follows that, up to the endpoint band, Nk >
+
+¯Nk ⇐⇒ ζ < ¯ζk: the verdict “rings” is a sign test, free of scale and of clock by Proposition 1. The rule uses only this sign. Since η shifts the constant in (4) without changing its monotonicity, the damping spec-ifications are calibrated rather than derived. For the exact second-order step error the measured Nk cross ¯N = (0 .5, 0.75 , 1.0) at ¯ ζ ≈ 0.78 , 0.53 , 0.38 (Figure 3b), so the specification is strictest in the lowest band. 5Figure 3: Proposition 3. (a) One logarithmic spiral at three dampings, here through Γ1; the other two are linear images of it. Each curve is cut where the envelope has contracted by ρ; the lower the damping, the more turns that takes. (b) The turn index against damping for the exact second-order step error, ρ = δ = 0.02. The leading term of (4) is smooth, while the measured counts are piecewise constant, because the cut moves by half a cycle at a time. The shaded band is − 12 < η < 14 , the half cycle of the cut below and the start term above. Γ2 runs half a turn low because ∆2e0 = 0starts it at the origin; the dotted curve is N2 + 12 , which lies in the same band as the other two. Each limit is met on a step, whose midpoint is ¯ ζk.
+
+Proposition 4 (Band selectivity and upward leakage) .
+
+Write e = x + r as in (3) , and let the residual r be com-pletely monotone with rates bounded by αr < ω n, that is, r(t) = R  
+
+> (0 ,α r]
+
+e−λt dμ(λ) for a finite nonnegative measure 
+
+μ. Write w j for the visibility of the mode in the parent signal of Γ j, the ratio of its amplitude to the magnitude of the residual there. Then w j/w j−1 ≥ ωn/α r > 1 (5) 
+
+at every time and for every j. The mode is therefore suppressed in every band below its own, and its visibility increases from its own band upward. Its own band is therefore the lowest one whose count it lifts, and the set of bands whose count a mode lifts is upward-closed, 
+
+{k, k+1, . . . }.Proof. Di ff erentiation multiplies the amplitude of the mode by exactly ωn, since ddt e−αt cos( ωt + φ) =
+
+ωn e−αt cos( ωt + φ + ψ) with ψ = arg( −α + jω), and integration multiplies it by exactly 1 /ω n. For the resid-ual, di ff erentiating under the integral gives r( j)(t) =
+
+(−1) jR λ je−λt dμ(λ), so that |r( j)(t)| ≤ α jr r(t) at every t,while the j-fold antiderivative R λ− je−λt dμ(λ) is at least 
+
+α− jr r(t). One band step therefore scales the mode by 
+
+ω±1 
+
+> n
+
+and the residual by at most α±1 
+
+> r
+
+in the same di-rection, which is (5). The bound holds pointwise in t,so it survives the peak normalization of Definition 1. Upward closure follows because a count is nondecreas-ing in the visibility of the mode that drives it. Several modes superpose, each contributing an upward-closed set; interference between them is neglected, and the syn-thetic tests below and Section 5 support the approxima-tion. Proposition 4 orders the three portraits by frequency, but it does not yet attach any of them to a controller channel. What supplies that link is the way the loop gain responds to each gain separately. 
+
+Lemma 2 (Channel ownership) . Let C be the controller of Assumption 2, and let σk(ω) = ∂ log |C|/∂ log K(k) be the elasticity of the loop gain with respect to the gain of channel k. Then 
+
+σ0(ω) + σ1(ω) + σ2(ω) = 1 (6) 
+
+at every ω, and each term tends to 1 on its own band: 
+
+σ0 → 1 as ω → 0, σ2 → 1 as ω → ∞ , and σ1 → 1
+
+wherever K p dominates |C|.Proof. Write C( jω) = Kp + jX with X = Kdω−Ki/ω , so that |C|2 = K2 
+
+> p
+
++ X2. Di ff erentiating gives σ1 = K2
+
+> p
+
+/|C|2,
+
+σ2 = XK dω/ |C|2 and σ0 = −XK i/(ω|C|2), and their sum is ( K2 
+
+> p
+
++ X2)/|C|2 = 1. This is Euler’s identity for the degree-one homogeneity of C in θ. The limits follow because exactly one of Ki/ω , Kp and Kdω dominates |C|
+
+on each band. Since G does not depend on the gains, σk is also the elasticity of |CG |. Changing K(k) therefore moves the loop gain essentially only on band k, and by Proposi-tion 2 it is the damping of the crossover in that band which responds, while Proposition 4 says Γk is the por-trait that reads the same band. The two orderings agree: this is the sense in which N0 points to Ki, N1 to Kp and 
+
+N2 to Kd, and that correspondence is the entire basis of the tuning rule. Two qualifications belong with (6). It partitions unity but not into nonnegative parts, since σ0 and σ2 dip slightly below zero where the two reactances cancel. And the bands must exist: where the integral and deriva-tive times Ti = Kp/Ki and Td = Kd/Kp are close, no frequency range is owned by Kp and N1 loses its selec-tivity. 6Attribution. The violated set is a union of upward-closed sets (Proposition 4). Its lowest member is there-fore the only band whose violation cannot be leakage, because there is no band below it from which leakage could come. Violations above it carry no evidence either way. Section 5 shows the asymmetry on a real plant, and the rule of Section 4 is built on it. 
+
+3. Well-posedness of the count 
+
+Normalizing each axis separately gives Proposition 1, but removes all information about absolute scale. Asmall persistent oscillation, from quantization, a weakly damped parasitic mode or numerical residue, can then dominate ∆e and ∆2e long after e has settled: normal-ized, it fills the portrait and winds without end, and the comparison with the limits becomes an artifact of the window. This failure is not hypothetical. Take G(s) =
+
+e−4s/(8 s + 1) 6 at gains the rule reaches during an iter-ation. The response settles well inside the default win-dow, yet lengthening that window sixfold raises N1 from 4.13 to 7 .89 and N2 from 4 .31 to 17 .9. Meanwhile N0
+
+does not move at all, since integration suppresses the fast residual that di ff erencing amplifies (Proposition 4). The growth stops only where the residue reaches the res-olution of the record; in a noisy installation the residue does not decay, and it would not stop at all. In closed loop the comparisons with the limits then follow the window rather than the loop, and the corrective moves work against each other rather than converging. The remedy is to anchor the window to the settling of the parent signal. 
+
+Definition 2 (Settling-anchored window) . Fix δ ∈ (0 , 1) 
+
+(default δ = 0.02 ). Let k δ = 1 + max {k : |ek| >δ max j |e j|} and truncate all three trajectories (2) at k δ
+
+before applying Definition 1. 
+
+Proposition 5 (Well-posedness) . Under Definition 2, the turn indices N do not depend on the window length, for every window that contains the δ-settling time of e. Proposition 1 continues to hold, because δ has no units and is defined on the normalized error. 
+
+Both claims are immediate: every sample beyond kδ
+
+is discarded, kδ depends only on e up to its δ-settling time, and kδ is defined through the ratio |ek|/ max j |e j|.On the counterexample the guarded counts hold to three digits on all three windows, at N1 = 2.04 and 
+
+N2 = 2.11, and Section 5 shows the closed-loop iter-ation on the same plant converging cleanly. From here on the guard is part of the index. The failure it excludes is silent and window-dependent, so it deserves a formal guard rather than the judgment of the operator. The def-inition then carries exactly the dimensionless defaults ( ¯ N, ε, δ ). The rule of Section 4 adds the step β and the multiplier box, which completes Table 2. None of these defaults was adjusted for any plant in this paper. 
+
+Remark 2 (Scope of the guard) . Proposition 5 assumes e is noise-free. With noise level ν the index k δ is well defined only if δ max j |e j| ≫ ν; otherwise it follows the noise. The default δ = 0.02 therefore assumes noise below roughly two percent of the step, which should be checked and not taken for granted. In practice, keep tens to a few hundred samples per transient so that ∆eand ∆2e are not dominated by quantization, and di ff er-ence only from the step onward. Filtering the deriva-tive channel does not help: the portraits (2) di ff erence the recorded error outside the controller, so the noise reaches them anyway. A stability screen. The guard, and the counts them-selves, assume that the record settles at all; the winding of a diverging error is merely an artifact of where the recording stopped. Whether it settles can be decided from the record itself, with no model and no thresholds. 
+
+Definition 3 (Stability screen) . Model the recorded er-ror as the output of two zero-mean Gaussian genera-tors switched once at an unknown sample, a maximum-likelihood changepoint test [19]. The switch point is 
+
+ℓ∗ = arg max 
+
+> ℓ
+
+−ℓ ln s21(ℓ) − (M−ℓ+1) ln s22(ℓ), (7) 
+
+where s 21 and s 22 are the mean squares of e 0, . . . , eℓ−1 and of e ℓ, . . . , eM , and ℓ ranges over splits leaving at least 
+
+10% of the record on each side. For a margin c > 1
+
+(default c = 2) the record is unstable when s 22(ℓ∗) ≥
+
+c s 21(ℓ∗), and stable otherwise. 
+
+A settling response has most of its energy early and a diverging one has most of it late, and the verdict sur-vives scaling of either axis. Moments are taken about zero, which Ki > 0 justifies. A bounded sustained oscil-lation passes the screen, and this is deliberate: a limit cycle has a frequency and belongs to the band rules, whereas the screen is reserved for divergence, which no count can describe. The margin secures this, since a constant-amplitude oscillation gives s22 ≈ s21 at every split while divergence sends the ratio up without bound. 
+
+4. The tuning rule 
+
+Order the gains by the frequency band each channel dominates and write 
+
+K(0) = Ki, K(1) = Kp, K(2) = Kd, (8) 7Table 1: The tuning rule in compact form. The rows are read from top to bottom, and the first matching row applies, once per step test. Here “unstable” is the verdict of Definition 3, and “loops” means Nk > ¯Nk.                                      
+
+> ↑: multiply by γ;↓: divide by γ;⇓a: divide by 2 a;·: unchanged. Projections onto [ Fmin ,Fmax ] implied. In the last column, reset is the traditional name for integral action and rate for derivative action. Condition FiFpFdmanual reading unstable ⇓1⇓2⇓3diverging: back o ff , rate hardest
+> Γ0loops ↓··slow cycling: less reset
+> Γ1loops ↑↓·ringing: less gain
+> Γ2loops ↑↑↓fast cycling: less rate none ↑↑↑all quiet: tighten Table 2: Constants and defaults, used unchanged on every plant in this paper.
+
+Symbol Meaning Default ¯N band limits (0 .5, 0.75 , 1.0) 
+
+ε truncation radius 0.1
+
+δ settling band 0.02 
+
+β step size 0.1
+
+c screen margin 2
+
+a backo ff profile (1 , 2, 3) box multiplier range [0 .001 , 10] so that the band number matches the portraits: Nk is the turn index that points to K(k), the gain that owns band k (Lemma 2). Parametrize the gains as multipli-ers F(k) ∈ [Fmin , Fmax ] on any conservative stabilizing initialization, so that F(0) = Fi, F(1) = Fp and F(2) = Fd
+
+in the notation of Table 1; fix a step β (Table 2), and let 
+
+γ = 1/(1 − β). Each iteration performs one step test, evaluates N, and updates the gains. Table 1 contains the entire decision logic. Manual commissioning practice can be recognized row by row. The lower-triangular pattern that gives the rule its name is visible in the arrows. A row that cuts one gain raises the gains below it. This is not compensation: a band below the fault has just been measured within its limit in the same exper-iment, so its margin is evidence, and the objective re-quires spending it. The screen verdict takes precedence. An unstable record backs the multipliers o ff , and no counts are eval-uated, because the portraits of a diverging error carry no usable information. The backo ff is deliberately coarse: it halves the multipliers instead of dividing them by γ.Instability is a state to be left quickly, not corrected care-fully. The backo ff is also graded: with a = (1 , 2, 3) the multipliers are divided by 2, 4 and 8. The grading is what keeps the rule from cycling. A uniform backo ff is the exact mirror of the last row of Table 1, and the two moves cancel: a sluggish loop is expanded until it goes unstable, backed o ff uniformly until it is sluggish again, and returned to the same place, since the ratios Ki : Kp : Kd never move. Expansion is the right response to no evidence, so it is the backo ff 
+
+that must break the symmetry. Graded, it changes those ratios one way: each retreat sheds derivative action for integral action until some band objects. The order is one of cost rather than of blame, which the screen cannot supply, and derivative action is the cheapest of the three to give up. The spacing is arithmetic because the band edges move by the di ff erences of a, so equal di ff erences slide the whole partition one octave and leave counts comparable across a backo ff . Nothing is remembered, and the retreat is never weaker than a uniform halving in any band, so Proposition 6(i) continues to describe it. For a stable record, define the violated set and its lowest member as 
+
+V = {k : Nk > ¯Nk}, kmin = min V, (9) with kmin = 3 by convention if V = ∅. The update reads 
+
+F(k) ←
+
+
+
+γ F(k), k < kmin (raise band) ,
+
+F(k)/γ, k = kmin (cut band) ,
+
+F(k), k > kmin (untouched) .
+
+(10) When kmin = 3 this degenerates to raising all bands. The rule pursues one objective: the largest gains whose counts stay within the limits. The tuning should be fast, not merely well damped, and for a unit load dis-turbance the integrated error is 1 /Ki, so raising Ki as far as the lowest band allows acts directly on what makes a slow loop slow. The rows of Table 1 are not chosen freely. Because 
+
+kmin is the lowest violated band, the bands fall into three states of knowledge, and each state allows exactly one action. 
+
+• k < kmin : measured within limits in this same exper-iment, because kmin is the lowest violated band, and the objective requires that this margin be used. ↑
+
+• k = kmin : identified as the fault . It is the only mem-ber of V whose violation cannot be leakage (Propo-sition 4), and reducing its gain is e ff ective (Proposi-tion 6(ii)). ↓
+
+• k > kmin : no evidence either way . The count may be genuine, or the mode of band kmin seen through further di ff erencing. Raising a violated band would worsen the fault; reducing one within its limit would give up gain for nothing. ·
+
+Reading these three cases gives (10) entry by entry: below kmin there is a measurement, above it there is 8none. The argument fixes only the pattern of signs; the step size and the strength of the third case remain free, and reducing the unobserved bands too would serve the same objective at the price of the attribution (Section 5). The rule therefore acts in sequence, and Proposition 6 guarantees that each stage ends. In loop-shaping terms the gain profile is pushed up from the low-frequency end and steps down at the first band that objects: a lexicographic bandwidth maximizer, and a fixed-point search for the boundary of the well-damped set F = {θ : N(θ) ≤ ¯N}. Gains and multipliers di ff er only by the fixed initialization, so we write F for the multipliers too. One fact follows from (10). In logarithmic gain co-ordinates the corrective moves are lower-triangular and unimodular, so their compositions reach every point of the multiplicative γ-lattice, and an unwanted compen-sation is cancelled by a correction in a lower band one iteration later. 
+
+Proposition 6 (Monotone steering) . Let Assumption 1 hold, and consider an iterate at which band k is vio-lated. The record is then measurably under-damped, 
+
+ζ < ¯ζk, so by Proposition 2 the loop lies in the upper part of its gain range and the critical pair carries the record. We argue on the leading term ˆN(ζ) of (4) , since the measured count moves in half-turn steps and only the smooth part is strictly monotone. Then: (i) along the uniform-multiplier direction CG 7 → m CG, ζ de-creases strictly with m and ˆN increases strictly with m; (ii) the same holds for ˆNk in its own band gain K (k), at a crossover that its band owns. The counts themselves are monotone in a weaker sense, because N and ˆN di ff er by the bounded term η of Proposition 3. They never move against ˆN, and they move with it whenever ˆN sweeps a full unit. The reduction in the corrective row of (10) 
+
+therefore does not increase N kmin and strictly decreases 
+
+ˆNkmin , and the compensating increases do not cancel this eff ect. Proof. Write ∂ ˆN/∂ log m = (∂ ˆN/∂ζ ) ( ∂ζ/∂ log m). The first factor is negative by Proposition 3. For the sec-ond factor, note that the phase-crossover frequencies of 
+
+m CG do not move with m, because arg m CG = arg CG ,while the gain at each of them grows linearly in m.The margin to the first touch of −1 therefore decreases strictly, and near the boundary the damping of the criti-cal pair follows it (Proposition 2). The product is posi-tive. For (ii), the same computation is carried out along the band’s own gain, at the crossover that its mode owns (Proposition 4). The compensating increases act on lower bands, which are subdominant in |C( jω)| at that crossover, so one step of the rule preserves the sign of the reduction. The term η is bounded and piecewise con-stant, so N follows ˆN in unit jumps and cannot move against it. Part (ii) is the weaker half: it rests on the lo-cal dominance of K(k), since moving one gain shifts its crossover too. 
+
+Remark 3 (Scope) . The corrective row fires only where a count is violated, which is exactly the hypothesis of Proposition 6: a violated count is measured under-damping, and that places the loop in the upper part of its gain range. Monotonicity is therefore not a further condition to be checked at each iterate. It is a property of the states in which the rule uses it, and Assumption 1 supplies it there. Two limits remain. The statement is scalar, about one count, one loop gain and one crossover; it does not claim that every pole damping is monotone in every band gain. And strong derivative action can raise the dominant damping over a middle range of gain, where the critical pair is captured by the controller zeros. A violated count at low gain would then fall outside the argument. None occurred on the battery of Section 5. 
+
+Proposition 7 (Behavior of the iteration) . The iteration is deterministic without further conditions, and its iter-ates remain inside the multiplier box. Assume in addi-tion the following. Assumption 1 holds, so that Proposi-tion 6 is available. The start θ0 is accepted by the screen (Definition 3). No multiplier reaches F min on a violated band during the run. No condition on the iterates is needed beyond these, because every corrective move is taken at a state that satisfies the hypothesis of Propo-sition 6 (Remark 3). Then the iteration reaches ∂F to within one multiplicative step per gain in finitely many steps, or it saturates at the box if F contains the box. After that it remains within a bounded band around ∂F
+
+and on it executes a limit cycle. Proof. Boundedness follows from the construction of the projections. On F we have V = ∅, and the rule multiplies all gains by γ > 1. This is an expanding map, so it leaves any compact subset of the interior in finitely many steps, or it saturates at Fmax . Once V , ∅,the corrective form of the rule reduces the lowest vio-lated index, and the decrease is strict in ˆ N by Proposi-tion 6. Screen events are finite in number: each divides 
+
+Ki : Kp : Kd by 1 : 2 : 4, while the uniform expansion, the only other move available on F , leaves those ratios un-changed and cannot undo the change. The ratios there-fore never revisit a value, and the box bounds how far they may travel, so after finitely many screen events ei-ther a band objects or a multiplier reaches its bound, the detectable outcome excluded by hypothesis. Thereafter 9the moves are γ±1 only, the iterates live on a finite mul-tiplicative lattice inside the box, and the strict decreases over the finitely many visited states have a positive min-imum. The Fmin hypothesis ensures that the reduction is never blocked at the bound. When that index clears, either the leaked violations above it clear with it, or a genuine one becomes the new kmin and is reduced in its turn. Feasibility is therefore restored in finitely many steps. On the same finite lattice the deterministic itera-tion is eventually periodic, and the alternation of expan-sion and correction confines the cycle to a band bounded by the box. Its width does not follow from this argu-ment, because the bands below kmin are raised until a lower violation appears; on the battery of Section 5 the excursion is at most two multiplicative steps per gain, which we report as a measurement. 
+
+Remark 4 (Bootstrap from arbitrary gains) . With the screen row, a stabilizing initialization is a convenience and not a precondition. Plants of Assumption 1 are open-loop stable, so successive backo ff s reach a region the screen accepts within a few experiments, or else reach F min , a detectable outcome; after that Proposi-tion 7 applies unchanged. The grading shortens the bootstrap as well as the recovery, dividing the loop gain at the top of the range by 8 rather than 2, which is where a diverging record usually has its energy. Each backo ff 
+
+costs one experiment on an unstable loop, so a conser-vative start remains good practice. Termination. No stopping rule is needed. The ex-panding form is active exactly on F , so the iteration never rests; by Proposition 7 it ends in a limit cycle around ∂F whose controllers remain usable. It may be left running or stopped at any iterate, and Section 5 quotes the last feasible one. A step test aborts, with roll-back, if |e| exceeds a configured multiple of the step: a site safety setting, not a constant of the method. The gains change with the loop closed, so the controller is realized in velocity form [20], which absorbs a gain change without a discontinuity in u and without reini-tializing any state. This form is assumed throughout Section 5. In a real installation the Kd term is best taken on the measurement rather than on the error, to avoid the derivative impulse at a setpoint step. 
+
+5. Validation on a plant battery 
+
+SPIN was run on four process-typical plants, cover-ing lag-dominant, balanced, delay-dominant and high-order dynamics: P1 (lag-dominant): e−s 
+
+> (10 s+1)( s+1) 3
+
+,
+
+P2 (balanced): 1.25 e−8s 
+
+> (5 s+1) 4
+
+,
+
+P3 (delay-dominant): e−10 s 
+
+> (2 s+1)( s+1) 3
+
+,
+
+P4 (high-order slow): e−4s 
+
+> (8 s+1) 6
+
+.
+
+These four cases follow the process classification used in [7] to organize achievable PID performance. Rela-tive dead time is treated there as the main axis of dif-ficulty for a fixed PID structure. Let La and Ta be the apparent dead time and the apparent time constant of a two-point fit of the open-loop step response, and let κ = La/(La+Ta) be the relative dead time. Plants P1–P4 cover this axis: from lag-dominant ( κ ≈ 0.28, P1) through balanced ( κ ≈ 0.58, P2) to strongly delay-dominant ( κ ≈ 0.79, P3). Plant P4 ( κ ≈ 0.54) instead tests a high model order at a moderate relative dead time. Of the dynamics Assumption 1 excludes, strong non-minimum-phase behavior is rare in the process indus-tries while integrating plants are not; extending the method to them is left open [3]. All four plants here are lag chains with dead time and n ≥ 4, so Lemma 1 applies directly and Assumption 1 holds (Table 3). All runs use the same constants: ¯ N = (0 .5, 0.75 , 1.0), 
+
+ε = 0.1, δ = 0.02, β = 0.1, and the box [0 .001 , 10]. The simulated plant only generates step responses; the tuner sees the recorded error alone, exactly as it would on hardware. The reference implementation filters the derivative channel with time constant Kd/10, as any im-plementation must; the theory above is stated for the ideal channel of Assumption 2. The derivative acts on the error, the actuator limits are ±10 under anti-windup, and each noise-free record has 500 samples spanning ten times the apparent time constant Ta. The demon-stration run of Figures 1–4 instead takes the derivative on the measurement, as recommended in Section 4; the portraits are formed from the recorded error either way. The initial gains came from an AMIGO design [7], com-puted on a two-point FOPTD fit of each plant. The pro-portional and integral gains were then halved and the derivative gain tripled: a deliberately mis-tuned start that exercises the rule at every band position. Each run spans 200 iterations. Three observations follow. 1) On P2, P3 and P4 the tripled derivative creates a fast parasitic mode. The raw response does not show it, but Γ2 does: there N2 = 2.06, 7.93 and 2 .04, while both lower bands stay within their limits, so the attribution is unambiguous. The exchange of derivative gain for proportional and integral gain is 10 Figure 4: P2, single-band rule: gain trajectories ( Ki, Kp, Kd ) against iteration, on a log scale; the demonstration run of Figures 1 and 2. The start is not stabilizing, so the screen row carries it: five graded backo ff s (iterations 1–5) drive Kp and Kd to the lower bound 0 .001 and settle the record, and band-0 corrections restore feasibility by iteration 15 (Remark 4). Kp and Ki then enter the boundary limit cycle of Proposition 7, visible as a ripple of one multiplicative step. From iteration 120 the Γ2 row reduces Kd again, one step per cycle: on this delay-dominant plant the derivative action gained during the rise adds no damping at the boundary, so the rule gives it up. Table 3: Plant battery: initial and returned turn indices, and returned multipliers, over runs of 200 iterations. The returned tuning is the last feasible iterate, reached at iterations 198, 193, 192 and 193 respec-tively. The constants are identical throughout and the rule is (10). No run fired the screen. Plant N initial N returned (Fi, Fp, Fd )P1 (0 .62 , 0.42 , 1.42) (0 .11 , 0.02 , −0.13) (2 .09 , 2.87 , 0.53) P2 (0 .12 , −0.03 , 2.06) (0 .12 , 0.07 , 0.51) (2 .32 , 2.87 , 0.59) P3 (0 .16 , −0.14 , 7.93) (0 .12 , 0.08 , 0.65) (2 .58 , 2.87 , 0.73) P4 (0 .12 , 0.01 , 2.04) (0 .12 , 0.10 , 0.33) (2 .32 , 2.32 , 0.38) 
+
+still visible in the returned multipliers: on P2, Fd = 0.59 against Fi = 2.32 and Fp = 2.87. 2) Every run ends in the limit cycle of Proposition 7, and feasibility is revis-ited within a few iterations of the cap of 200, the last feasible iterates being 192–198. 3) The rule uses its margin where the plant allows: the integral multiplier is more than doubled on every plant, the derivative mul-tiplier is cut on every plant, and no multiplier lies at a box bound. The returned counts are well inside the limits, which is where the alternation of Proposition 7 leaves the last feasible iterate, and not a claim of tight-ness. The leakage asymmetry also appears in the runs. At iteration 20 of the P3 run, the rise has violated all three bands, with N = (1 .62 , 1.43 , 4.20). A single reduction of band 0, the only band whose fault is certain, returns (0 .12 , −0.03 , 2.72). The violation in band 0 clears be-cause its fault was repaired; the one in band 1 clears with it, having been leakage from the same low-frequency mode; the genuine high-band violation remains and be-comes the next kmin . A variant that reduces every vio-lated band at once would have changed three channels for this single fault, and on this battery it reaches com-parable tunings. We keep single-band action for the at-tribution it preserves, not because a penalty was mea-sured. 
+
+6. Limitations 
+
+The claim that the oscillation of a band can be cured by reducing the gain of that band is derived, and not assumed (Proposition 6, Remark 3). Several limits re-main. 1) A plant outside Assumption 1 breaks this claim, but it does so visibly and safely, because the iteration then stops at a bound. The sign of Nk is not used any-where; small negative counts, as for P2 in Table 3, are endpoint artifacts. 2) Noise enters the di ff erenced coordinates directly. The guard excludes settled noise under Remark 2, but it does not exclude broadband noise inside the transient. Noisy installations need filtering, which lies outside the scope of this paper. 3) Each iteration needs one settled window; a distur-bance corrupts one test, not the procedure. 4) Single-band action is the price of attribution. A stable start that violates all bands converges through a sequence of sin-gle corrections. Take P4, started from three, two and four times the initial Ki, Kp and Kd of Table 3. All three bands are violated at the start, at N = (3 .91 , 4.02 , 4.01), and first feasibility takes 32 iterations. The graded back-off makes no attribution and assumes the top of the range, and the screen reserves it for divergence. 5) Leakage can misdirect a correction when the true source sits just below its own threshold; the rule then corrects itself within a few iterations. 6) A multiplier resting at a bound is an outcome to report rather than tune through, and the counts tell the cases apart. A multiplier at Fmin while its band still rings blocks the cascade: the violation of kmin never clears, so no band above it is ever examined, and for kmin = 0 the iteration stops at an infeasible fixed point, which no run reported here reached. Proposition 7 then gives deter-minism and boundedness but not convergence, because its hypothesis excludes this saturation. Widening the box is the first remedy, although no box can be certified 11 wide enough in advance. Multipliers at Fmax with every count quiet carry the opposite message: not a box that is too small, but a plant with no finite stability boundary (Remark 1), for which no box is wide enough. P4 from unit gains rests Kd at the ceiling with every band within limits, which is this benign case. The destination is a fast, well-damped tuning and not an optimum; where a particular criterion matters, it is a sound starting point for refinement against it. 
+
+7. Conclusion 
+
+Three portraits make under-damping visible band by band, a winding count turns it into a number, a settling-anchored guard makes that number independent of the observation window, and one triangular rule, reducing only the band whose fault is certain, turns it into a de-cision. The turn indices carry no units and no clock, so fixed dimensionless constants serve every plant tested. The iteration is deterministic and bounded without fur-ther conditions. A violated count is itself the evidence that the loop is under-damped, which is the condition under which reducing that band helps, so the plant class supplies the monotonicity wherever the rule corrects a gain. Under it the iteration reaches a bounded neigh-bourhood of the boundary of the well-damped set. SPIN needs no model, and it shows how it reaches its result: an operator who watches the three portraits sees every decision the algorithm makes. More generally, a closed-loop record can be read through invariants of its trajectory instead of through an identified model, and tuning then becomes the problem of driving three wind-ing numbers below three fixed fractions of a turn. The setting here is the plainest practical one: a fixed step, a noise-free analysis, and one set of defaults. What the iteration seeks asymptotically, how a diminishing step would reach it, and how measurement noise should be handled are left for follow-up work. 
+
+CRediT authorship contribution statement Daniel Pachner: Conceptualization, Methodology, Software, Writing – review & editing. Pavel Otta: 
+
+Software, Validation, Visualization, Writing – original draft. Jiˇ rí Dostál: Investigation, Writing – review & editing. Vladimír Havlena: Supervision, Writing – re-view & editing. 
+
+Declaration of competing interest 
+
+The authors declare that they have no known com-peting financial interests or personal relationships that could have appeared to influence the work reported in this paper. 
+
+Data availability 
+
+Reference implementation of SPIN, with the interac-tive demonstration that reproduces results reported here: 
+
+https://robopid-simulator.uceeb.cvut.cz/ 
+
+Declaration of generative AI and AI-assisted tech-nologies in the manuscript preparation process 
+
+During the preparation of this work the authors used Anthropic Claude in order to improve the readability and the language of the manuscript and to check the consistency of the notation. After using this tool, the authors reviewed and edited the content as needed and take full responsibility for the content of the published article. 
+
+References                         
+
+> [1] J.G. Ziegler, N.B. Nichols, Optimum settings for automatic controllers, Trans. ASME 64 (1942) 759–768. [2] K.J. Åström, T. Hägglund, The future of PID control, Control Eng. Pract. 9 (11) (2001) 1163–1175. [3] L. Desborough, R. Miller, Increasing customer value of industrial control performance monitoring—Honeywell’s experience, in: Chemical Process Control VI, AIChE Symposium Series No. 326, Vol. 98, 2002, pp. 169– 188. [4] G.H. Cohen, G.A. Coon, Theoretical consideration of retarded control, Trans. ASME 75 (1953) 827–834. [5] D.E. Rivera, M. Morari, S. Skogestad, Internal model control. 4. PID con-troller design, Ind. Eng. Chem. Process Des. Dev. 25 (1) (1986) 252–265. [6] S. Skogestad, Simple analytic rules for model reduction and PID con-troller tuning, J. Process Control 13 (4) (2003) 291–309. [7] K.J. Åström, T. Hägglund, Revisiting the Ziegler–Nichols step response method for PID control, J. Process Control 14 (6) (2004) 635–650. [8] M. Schlegel, Exact revision of the Ziegler–Nichols frequency response method, in: Proc. IASTED Int. Conf. Control and Applications, Cancún, Mexico, 2002, pp. 121–126. [9] M. Schlegel, M. ˇ Cech, Computing value sets from one point of frequency response with applications, in: Proc. 16th IFAC World Congress, Prague, 2005, pp. 325–330. [10] K.J. Åström, T. Hägglund, Automatic tuning of simple regulators with specifications on phase and amplitude margins, Automatica 20 (5) (1984) 645–651. [11] H. Hjalmarsson, M. Gevers, S. Gunnarsson, O. Lequin, Iterative feedback tuning: theory and applications, IEEE Control Syst. Mag. 18 (4) (1998) 26–41. [12] M.C. Campi, A. Lecchini, S.M. Savaresi, Virtual reference feedback tun-ing, Automatica 38 (8) (2002) 1337–1346. [13] N.J. Killingsworth, M. Krstic, PID tuning using extremum seeking, IEEE Control Syst. Mag. 26 (1) (2006) 70–79. [14] M. Brabec, M. Schlegel, Analytical design of a wide class of controllers with two tunable parameters based on H∞specifications, in: Proc. 24th Int. Conf. Process Control, 2023, pp. 221–226. [15] M.-T. Ho, Synthesis of H∞PID controllers: a parametric approach, Auto-matica 39 (6) (2003) 1069–1075. [16] T.W. Kraus, T.J. Myron, Self-tuning PID controller uses pattern recogni-tion, Control Eng. (1984) 106–111. [17] D. Graham, D. McRuer, Analysis of Nonlinear Control Systems, Wiley, 1961. [18] H. Nyquist, Regeneration theory, Bell Syst. Tech. J. 11 (1932) 126–147. [19] M. Basseville, I.V. Nikiforov, Detection of Abrupt Changes, Prentice-Hall, 1993. [20] K.J. Åström, T. Hägglund, Advanced PID Control, ISA, 2006.
+
+12
