@@ -1,0 +1,23 @@
+{
+  "label": "2026-09-20",
+  "date": "2026-09-20",
+  "generated_at": "2026-09-20T21:03:50",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202609/20/2609.14260v1-recursive-self-improvement-llm-agents-for-inverter-dynamic-model-identification",
+      "section": "quick",
+      "title_en": "Recursive Self-Improvement LLM Agents for Inverter Dynamic Model Identification",
+      "authors": "Jie Feng, Xiaoyang Wang, Xin Chen, Yuanyuan Shi",
+      "date": "2026-09-13",
+      "pdf": "https://arxiv.org/pdf/2609.14260v1",
+      "score": "6.0",
+      "evidence": "逆变器资源的动态模型辨识",
+      "tldr": "本文提出利用递归自我改进（RSI）大语言模型代理进行逆变器动态模型识别。针对逆变器内部控制逻辑不透明的问题，研究通过限制搜索空间为标准控制模块，并结合块图语法规则，利用LLM在频域导纳数据指导下搜索最优控制结构，有效提升了黑盒模型的解释性与拟合精度。",
+      "tags": "query:pmsm",
+      "abstract_en": "This is a position paper. We demonstrate that recursive self-improvement (RSI) large language model (LLM) agents are a natural search engine for dynamic model identification of inverter-based resources (IBRs) whose internal controls are often proprietary and hidden from grid operators. White-box models provide physical transparency but require vendor disclosure; black-box models avoid this requirement but sacrifice interpretability; and existing grey-box approaches, including sparse and symbolic regression, are poorly suited to discovering feedback control architectures or incorporating control-engineering priors. Our position is that this gap can be alleviated by (1) restricting the search space to a typed vocabulary of standard control modules, including PI controllers, phase-locked loops (PLLs), low-pass filters, etc., composed under block-diagram grammar rules, and (2) using an RSI LLM agent to perform program search over candidate block-diagram models, guided by measured frequency-domain admittance data at the point of common coupling (PCC), while fitting the free parameters of each candidate by nonlinear least squares. We instantiate this position by adapting ThetaEvolve, an open-source program-evolution framework supporting in-context evolution and test-time learning, to inverter model discovery. In a proof-of-concept study on a grid-following (GFL) inverter benchmark, the RSI loop reduces the normalized root mean square error (NRMSE) of a naive open-loop model from 0.470 to 0.0435 and identifies a 15-module closed-loop structure that closely resembles the hidden ground-truth GFL controller.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

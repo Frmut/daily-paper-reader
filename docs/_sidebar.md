@@ -1,6 +1,9 @@
 * <a class="dpr-sidebar-root-link" href="#/">首页</a>
 * <a class="dpr-sidebar-root-link dpr-sidebar-noactive-link" href="javascript:void(0)" data-dpr-hash="#/tutorial/README">使用教程</a>
 * Daily Papers
+  * 2026-09-20 <!--dpr-date:20260920-->
+    * 速读区
+      * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202609/20/2609.14260v1-recursive-self-improvement-llm-agents-for-inverter-dynamic-model-identification" data-sidebar-item="{&quot;title&quot;: &quot;Recursive Self-Improvement LLM Agents for Inverter Dynamic Model Identification&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2609.14260v1-recursive-self-improvement-llm-agents-for-inverter-dynamic-model-identification&quot;, &quot;score&quot;: &quot;6.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;pmsm&quot;}], &quot;evidence&quot;: &quot;逆变器资源的动态模型辨识&quot;}">Recursive Self-Improvement LLM Agents for Inverter Dynamic Model Identification</a>
   * 2026-09-19 <!--dpr-date:20260919-->
     * 速读区
       * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202609/19/2609.15711v1-model-free-pid-tuning-by-step-response-inspection" data-sidebar-item="{&quot;title&quot;: &quot;Model-Free PID Tuning by Step-Response Inspection&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2609.15711v1-model-free-pid-tuning-by-step-response-inspection&quot;, &quot;score&quot;: &quot;6.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;pmsm&quot;}], &quot;evidence&quot;: &quot;控制回路中的无模型PID整定与故障识别&quot;}">Model-Free PID Tuning by Step-Response Inspection</a>

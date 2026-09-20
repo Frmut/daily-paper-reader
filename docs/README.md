@@ -6,26 +6,26 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-09-19
-- 运行时间：2026-09-19 21:50:52 UTC
+- 最新运行日期：2026-09-20
+- 运行时间：2026-09-20 21:03:48 UTC
 - 运行状态：成功
 - 本次总论文数：1
 - 精读区：0
 - 速读区：1
 
 ### 今日简报（AI）
-今日速读《Model-Free PID Tuning by Step-Response Inspection》，探索无需模型即可实现 PID 参数整定的新路径。
-该研究通过步响应检查实现 PID 自动调优，为复杂系统控制提供了高效的无模型解决方案。
-建议关注自动化控制领域的工程师阅读，了解如何通过简单的响应分析优化系统性能。
-- 详情：[/202609/19/README](/202609/19/README)
+探索递归自改进智能体在逆变器动态模型识别中的应用潜力。
+该研究展示了利用 LLM 智能体迭代优化模型参数的自动化路径，为电力电子建模提供了新思路。
+建议关注大模型在复杂物理系统辨识中的辅助作用，了解 AI 如何提升工程建模效率。
+- 详情：[/202609/20/README](/202609/20/README)
 
 ### 精读区论文标签
 - 本次无精读推荐。
 
 ### 速读区论文标签
-1. [Model-Free PID Tuning by Step-Response Inspection](/202609/19/2609.15711v1-model-free-pid-tuning-by-step-response-inspection)  
+1. [Recursive Self-Improvement LLM Agents for Inverter Dynamic Model Identification](/202609/20/2609.14260v1-recursive-self-improvement-llm-agents-for-inverter-dynamic-model-identification)  
    标签：评分：6.0/10、query:pmsm
-   evidence：控制回路中的无模型PID整定与故障识别
+   evidence：逆变器资源的动态模型辨识
 
 
 <div class="dpr-home-promo-card">
