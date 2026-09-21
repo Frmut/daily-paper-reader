@@ -1,0 +1,565 @@
+Title: LunaDrive: A Delay-Compensated High-Voltage GaN FET-Based Motor Driver for Dynamic Robots with Flat BLDC Motors
+
+URL Source: https://arxiv.org/pdf/2609.21818v1
+
+Published Time: Mon, 21 Sep 2026 01:02:48 GMT
+
+Number of Pages: 8
+
+Markdown Content:
+# LunaDrive: A Delay-Compensated High-Voltage GaN FET-Based Motor Driver for Dynamic Robots with Flat BLDC Motors 
+
+Sota Yuzaki 1, Temma Suzuki 1, Hiromi Tada 1, Masanori Konishi 1, Kento Kawaharazuka 1,2, and Kei Okada 1
+
+Abstract — The performance improvement of high-power flat BLDC motors has accelerated the development of dynamic robots. However, many commercially available servo motors assume operating voltages of 48 V or lower, which limits the maximum rotational speed. Dynamic robots require rapid energy generation, so this voltage constraint restricts motion performance. Therefore, driving motors beyond the rated voltage is desirable to increase the instantaneous maximum speed. On the other hand, semiconductor devices used in motor drivers have a trade-off between voltage rating and current capacity. Conventional drivers using Si MOSFETs have difficulty achieving both high-voltage and high-current operation. Although GaN FETs are promising, compact drivers that can be mounted on the rear side of flat BLDC motors remain limited. In this study, a motor driver for high-power flat BLDC motors using GaN FETs is developed. The effect of delay compensation in the high-speed region beyond the rated operating range is also investigated. In the experiments, under 
+
+96 V operation, a continuous current of 30 A was achieved with a heat sink attached. A peak current of 80 A and a maximum electrical frequency of 3110 Hz were confirmed. A high-speed load lifting experiment driven by a LiPo battery 24S ( 100 V ) was also conducted, demonstrating applicability to dynamic robot operation. 
+
+I. I NTRODUCTION 
+
+In recent years, robot motion performance has signifi-cantly improved, and dynamic motions such as backflips by humanoid and quadruped robots have been widely demon-strated [1], [2]. These robots commonly use high-power flat BLDC motors, which provide high torque and enable low gear ratio mechanisms suitable for dynamic motion. Re-cently, integrated servo motors combining a motor, gearbox, and motor driver have also become widely available and are adopted in many robots because of their convenience [3]–[5]. However, many of these servo motors operate at 48 V or lower [6], [7]. Since motor speed is proportional to the applied voltage, this voltage effectively limits the maximum rotational speed and causes speed saturation during high-speed motion. Therefore, dynamic robots require operation beyond the rated motor voltage. Semiconductor devices used in motor drivers, however, exhibit a trade-off between voltage rating and current capa-bility, making sufficient current difficult to supply at high voltage. Because semiconductor performance limits depend on material properties [8], changing the material is an   
+
+> 1The authors are with the Department of Mechano-Informatics, Graduate School of Information Science and Technology, The University of Tokyo, 7-3-1 Hongo, Bunkyo-ku, Tokyo, 113-8656, Japan.
+
+[yuzaki, t-suzuki, h-tada, konishi, kawaharazuka, k-okada]@jsk.t.u-tokyo.ac.jp  
+
+> 2The author is with the AI Center, Graduate School of Information Science and Technology, The University of Tokyo, Japan.
+
+High 
+
+Voltage 
+
+Separated Boards 
+
+Assembled Driver 
+
+GaN FET-Based 
+
+LunaDrive 
+
+High 
+
+Sp eed 
+
+> Fig. 1. LunaDrive enabling high-voltage, high-speed operation for dynamic robots
+
+effective approach. Replacing the Si MOSFETs used in many motor drivers with high-performance GaN FETs enables both high-voltage and high-current operation. Accordingly, GaN FET-based BLDC motor drives have been actively studied in power electronics [9]–[11]. Although these studies demonstrate the effectiveness of GaN FETs, many target experimental benches or industrial applications and are difficult to integrate directly into robots because of size and weight constraints. Few drivers offer the compactness and high power density required for mounting behind high-power flat BLDC motors. We therefore designed LunaDrive, a compact GaN FET motor driver for this con-figuration, under severe electrical, thermal, and packaging constraints. The previous discussion focused on hardware, but software is also important. Control of a BLDC motor requires the electrical angle, which is given by p times the mechanical angle. Here, p denotes the number of pole pairs. The high-power flat BLDC motors considered in this study typically have a large pole pair number of p = 21. When driven beyond the rated voltage, the electrical angular velocity becomes very high. Under the conditions assumed in this study, the maximum electrical frequency reaches approximately 3000 Hz. In contrast, the recommended maximum electrical frequency of commonly used BLDC motor drivers [12] is about 700 Hz. Therefore, this study targets a frequency range several times higher. arXiv:2609.21818v1 [cs.RO] 18 Sep 2026 GaN FET 
+
+Bottom Side 
+
+Top Side  
+
+> Schottky Diode
+> Gate Driver
+> Shunt Resistor
+> Amplifier
+> Board Thermistor
+> Isolated DC/DC
+> MCU
+> Digital Isolator
+> Encoder
+> CAN FD Transceiver
+> Motor Thermistor Port
+> Debug Port
+> CAN FD & Logic Power Port Motor Power Port
+> Board to Board Connector
+> Expansion Port
+> Debug Port
+> MCU
+> Logic Power Side
+> Motor Power Side
+
+Controller Board  Driver Board 
+
+> High-Frequency
+> Capacitor
+> Bulk Capacitor
+> RC Snubber
+
+Fig. 2. LunaDrive composed of two boards: a controller board and a driver board Half Bridge MCU  Encoder      
+
+> Isolated DC/DC Digital Isolator
+> Motor Thermistor 12V Supply CAN FD
+> Board
+> CAN FD Transceiver
+> MCU Board to Board
+> Connector
+> Gate Driver
+> GaNFET
+> Schottky Diode
+> Amplifier
+> Shunt
+> Resistor
+> 96V Supply
+> Board Thermistor
+> Controller Board
+> Voltage
+> Divider
+> High Voltage
+> Low Voltage
+> Digital Signal
+> Analog Signal
+> BLDC
+> Motor
+> Voltage
+> Divider
+> PWM, EN, FLT
+> Current
+> Voltage
+> Temperature
+> Driver Board
+> DC/DC and LDO
+> SPI SPI
+> CAN FD
+> DC/DC and LDO
+> Temperature
+> CAN TX/RX
+> Voltage
+> 12V
+> 3.3V
+> 12V
+> 3.3V
+> 12V
+> 5V
+> 3.3V
+> 96V
+
+Fig. 3. Electronic block diagram of LunaDrive 
+
+At such high electrical angular velocities, system delay increases the electrical-angle phase error and may degrade or destabilize control. Although delay compensation in motor control systems has been widely studied [13]–[15], most studies consider relatively low electrical frequencies. We experimentally evaluate delay compensation at high electrical frequencies using the developed driver. As an application example of LunaDrive, a wire-driven robot that winds a wire using a motor as a power transmission mechanism is considered. Robots that achieve large jumps by securing a long acceleration distance with a long wire have been reported [16]. In such systems, speed saturation becomes a design bottleneck, and operation beyond the rated voltage is required. Therefore, a wire module using LunaDrive is developed and its effectiveness for dynamic robots is evaluated (Fig. 1). II. M ETHOD 
+
+A. Design of LunaDrive with GaNFET-Based Driving 
+
+LunaDrive consists of two boards, as shown in Fig. 2. One is a controller board for motor control and communication with the host system. The other is a driver board that 
+
+Fig. 4. Schematic of GaN FET-based half-bridge circuit TABLE I PERFORMANCE COMPARISON OF 150-V POWER FET S
+
+Device Type On-Resistance Size [m Ω] [mm 2]FET-1 GaN FET 3 15 FET-2 MOSFET 2.5 116 FET-3 MOSFET 5.6 30 FET-1: EPC2305 (EPC). FET-2: IPT025N15NM6ATMA1 (Infineon Technologies). FET-3: SIRS5700DP-T1-RE3 (Vishay Siliconix). 
+
+drives the BLDC motor using GaN FETs. The diameter is 70 mm. Only the connector section used by the user protrudes outward. The thickness is 8 .51 mm. The power system has two supplies: a logic supply (12 V) for the microcontroller and gate drive circuits, and a motor supply (96 V, peak 150 V). The power stage components are rated for 150 V. 
+
+1) Design of the controller board: The configuration of the controller board is shown on the left side of Fig. 3. The board is separated into logic and motor power domains by an isolated DC/DC converter and digital isolators. A 6-layer PCB with 1 oz copper was used to improve implementation density and noise immunity. The logic power domain includes DC/DC converters, a Low Dropout Regulator (LDO), a microcontroller for com-munication and higher-level control, a magnetic encoder for motor angle measurement, a CAN FD transceiver, a voltage divider for supply voltage measurement, and a thermistor for motor temperature measurement. PIC32MK1024MCM064 (Microchip), which integrates CAN FD and provides abun-dant PWM and ADC peripherals, was used as the micro-controller. The motor power domain similarly consists of a power circuit and a microcontroller for motor control. 
+
+2) Design of the driver board: The configuration of the driver board is shown on the right side of Fig. 3. The driver board consists of a voltage divider for supply voltage mea-surement, a thermistor for board temperature measurement, and three GaN FET-based half-bridge circuits for motor driving. To handle large currents, a 2 oz 8-layer PCB (total 16 oz copper) was used. The GaN FET-based half-bridge is shown in Fig. 4. As summarized in Table I, GaN FETs are smaller than Si MOSFETs with similar on-resistance and have lower on-resistance than similarly sized Si MOSFETs. We selected the EPC2305 (EPC), which has a breakdown voltage of 150 V, TABLE II SELECTED HIGH -AREAL -CAPACITANCE MLCC S ACROSS PACKAGE FORM FACTORS AND VOLTAGE RATINGS EVALUATED UNDER PRACTICAL DC BIAS CONDITIONS                                                                                  
+
+> Manufacturer Part Number Nominal Cap. Retention (DC Bias) Rated Volt. Package Size Height Areal Cap. [μF] [%] [V] [mm] [μF mm −2]Murata GRM32EC72A106KE05 10 25.1 100 3225M 2.5 0.078 TDK C5750X7S2A226M280KB 22 45.5 100 5750M 3.1 0.088 TDK CAA572X7S2A336M640LJ 33 47.0 100 6050M 6.9 0.129 TDK C3225X7T2E334K200AA 0.33 69.3 250 3225M 2.0 0.029 TDK C5750X7T2E225K250KA 2.2 58.5 250 5750M 2.5 0.045 TDK CKG57NX7T2E335M500JJ 3.3 60.5 250 6050M 5.5 0.067 TABLE III CAPACITORS MOUNTED ON THE POWER SUPPLY LINE OF LUNA DRIVE
+> Manufacturer Part Number Nominal Cap. Rated Volt. Package Size Height Quantity [μF] [V] [mm] [-] Murata GRM32EC72A106KE05 10 100 3225M 2.5 76 TDK C2012X7T2E104K125AA 0.1 250 2012M 1.25 18 TDK CGA4J3X7R2E223K125AE 0.022 250 2012M 1.25 12
+
+an on-resistance of 3 m Ω, and dimensions of 3 mm ×5 mm. 
+
+Dead time. Compared with Si MOSFETs, GaN FETs have higher reverse voltage and tend to increase reverse conduc-tion loss during dead time, although they allow high-speed switching. Previous studies reduce this loss by shortening the dead time [17], [18]. In this study, stable operation under motor load with large current fluctuations was prioritized. Therefore, a relatively long dead time of 100 ns was adopted, and a Schottky barrier diode was connected in parallel to suppress reverse conduction loss. 
+
+Gate drive. In Si MOSFETs, the gate voltage rating is typically 20 V and the recommended gate voltage is about 12 V. In contrast, GaN FETs typically have a gate voltage rating of 6 V and a recommended gate voltage of 5 V, leaving only a 1 V margin and making gate driving difficult. In this study, STDRIVEG212 (STMicroelectronics), a gate driver with integrated LDOs for both low-side and high-side circuits, was adopted. The wiring length from the driver to the GaN FET was designed to be shorter than 5 mm. 
+
+Capacitor selection method. To handle large currents on a compact PCB, sufficient effective capacitance must be secured within a limited mounting area. When high-voltage Multilayer Ceramic Capacitors (MLCCs) are connected in series, the effective capacitance decreases in proportion to 1/Ns, while the mounting area increases in proportion to Ns.As a result, the capacitance efficiency per unit area decreases in proportion to 1 /N2 
+
+> s
+
+.To evaluate this efficiency, the effective capacitance per unit area Carea with DC bias reduction is defined as follows. 
+
+Carea = Cnom rDC 
+
+A N 2
+
+> s
+
+(1) Here, Cnom is the nominal capacitance, rDC is the capaci-tance retention ratio under DC bias, A is the mounting area of a single device, and Ns is the number of series connections. 
+
+Capacitor evaluation. The results are shown in Table II. Assuming a supply voltage of 100 V, 100 V-rated capacitors were evaluated with two devices in series, while 250 V-rated capacitors were evaluated with one device. The DC bias values were taken at 50 V and 100 V, respectively. As a result, two 100 V-rated capacitors in series provided higher effective capacitance per unit area than one 250 V-rated capacitor. Within the same voltage rating, larger packages also showed higher capacitance per unit area. 
+
+Capacitor selection for flat BLDC motors. To keep the board thin, the capacitor height was restricted to 4 mm. In addition, as shown in Fig. 2, the available mounting area is a semicircle excluding a rectangular region, so large packages may reduce placement efficiency. Considering these constraints, GRM32EC72A106KE05 (Murata, 10 μF, 100 V, 3225M) was adopted as shown in Table III. Additional capacitors were placed to suppress high-frequency noise from GaN FET switching. In total, 106 capacitors were mounted on the power line for high-current operation. 
+
+B. Control of LunaDrive with Delay Compensation 
+
+Field-Oriented Control (FOC) is used for BLDC motor control. In FOC, the three-phase AC quantities in the uvw coordinate system are transformed into the dq coordinate system by Clarke and Park transformations. Control is then performed on these quantities as DC values. An amplitude-invariant transformation was used so that the amplitudes of voltage and current are preserved. The coordinate transformations in FOC and the voltage equations in the dq coordinate system are shown below. 
+
+ fα
+
+fβ
+
+
+
+= 23
+
+"
+
+1 − 12 − 12
+
+0 
+
+> √32
+
+−
+
+> √32
+
+#  fu
+
+fv
+
+fw
+
+ (2) 
+
+ fd
+
+fq
+
+
+
+=
+
+ cos θe sin θe
+
+− sin θe cos θe
+
+  fα
+
+fβ
+
+
+
+(3) 
+
+Vd
+
+Vq
+
+
+
+=
+
+ R −Lωe
+
+Lωe R
+
+  id
+
+iq
+
+
+
++ L ddt 
+
+id
+
+iq
+
+
+
++
+
+ 0
+
+Keωe
+
+
+
+(4) Here, θe denotes the electrical angle, ωe denotes the electrical angular velocity, R denotes the phase resistance, Modulation  
+
+> Encoder
+> PI
+> Controller
+> PI Controller
+> 𝑖 𝑞
+> ref
+> 0
+> Park
+> Transform
+> 𝑖 𝑑
+> 𝑖 𝑞 Clarke
+> Transform
+> 𝑖 𝛼
+> 𝑖 𝛽
+> 𝑖 𝑢
+> 𝑖 𝑣
+> Delay Compensation
+> in MCU
+> Motor
+> DAEC
+> Calculation
+> ADC
+> 𝑖 𝑤
+> Decoupling
+> Compensation
+> 𝑣 𝑞
+> 𝑣 𝑑
+> Inverse
+> Park
+> Transform
+> Inverse
+> Clarke
+> Transform
+> 𝑣 𝛼
+> 𝑣 𝛽
+> 𝑣 𝑢
+> 𝑣 𝑣
+> 𝑣 𝑤
+> BLDC
+> Driver
+> PWM 𝑢
+> PWM 𝑣
+> PWM 𝑤
+> Sensor
+> 𝜔
+> 𝜃
+> 𝜃 ′
+> +
+> −
+> +
+> −
+
+Fig. 5. Control block diagram of LunaDrive with delay compensation LunaDrive     
+
+> PC USB-CANFD
+> Converter
+> Supervisory
+> MCU
+> Motor Control
+> MCU
+> SPI CANFD USB
+> 1kHz 1kHz 2kHz 25kHz FOC
+> Power Supply
+> LiPo 24S
+> 96V
+> 100V
+
+Fig. 6. Overall system configuration 
+
+L denotes the phase inductance, and Ke denotes the back-EMF constant with respect to the electrical angular velocity. Since the Park transformation includes rotation by the electrical angle θe, an error between the electrical angle obtained from the sensor and the actual electrical angle de-grades motor efficiency. If the error becomes large, sufficient torque cannot be generated. When the motor rotates at an electrical angular velocity ωe and a system delay Td exists, the estimated electrical angle θ ′ 
+
+> e
+
+is expressed by the following equation. Therefore, a large angle deviation is expected in the region where the electrical angular velocity is high. 
+
+θ ′ 
+
+> e
+
+= θe + Td ωe (5) The system delay consists of encoder delay, microcon-troller delay, and delay after the driver stage. The delay in the above equation can be calculated in the microcontroller and compensated by adding it to the electrical angle. However, the encoder delay is asynchronous with the microcontroller, so Td is not constant and depends on the encoder sampling timing. In this study, AS5147U (ams OSRAM) with Dy-namic Angle Error Compensation (DAEC) was adopted to compensate the encoder delay internally. The delay after the microcontroller was compensated by the same calculation in the microcontroller. The current control consists of PI control and a decoupling compensation term, as shown below. 
+
+Vd
+
+Vq
+
+
+
+=
+
+ 0 −Lωe
+
+Lωe 0
+
+  iref 
+
+> d
+
+iref 
+
+> q
+
+
+
++
+
+ 0
+
+Keωe
+
+
+
++
+
+ud
+
+uq
+
+
+
+(6) 
+
+ud
+
+uq
+
+
+
+= Kp
+
+iref  
+
+> d
+
+− id
+
+iref  
+
+> q
+
+− iq
+
+
+
++ Ki
+
+Z iref  
+
+> d
+
+− id
+
+iref  
+
+> q
+
+− iq
+
+
+
+dt (7) 
+
+iref  
+
+> d
+
+= 0 (8) The obtained dq voltage commands are transformed back into three-phase voltages and output by PWM. In this study, Space Vector Modulation (SVM) was adopted to achieve a high modulation index. Pulley 
+
+> Wire
+> LunaDrive
+> Pressure
+> Roller
+> RO80
+> with Frame
+
+Fig. 7. High-power wire module using LunaDrive TABLE IV RO80 F RAMELESS BLDC M OTOR SPECIFICATIONS 
+
+Name Value Rated Voltage 48 V No Load Speed 5040 rpm Rated Torque 1.3 Nm Peak Torque 4 Nm Pole Pairs 21 
+
+For a surface-mounted permanent magnet motor, the motor torque τ is expressed using the torque constant Kt with respect to the q-axis current as follows. However, in the region where the current is very large, this relationship does not strictly hold due to magnetic saturation. 
+
+τ = Kt iq (9) The overall system configuration is shown in Fig. 6. The PC and LunaDrive communicate at 1 kHz via a USB-CAN FD converter. The microcontrollers inside LunaDrive com-municate via SPI at 2 kHz. The motor control microcontroller executes FOC at 25 kHz. The power supply is normally provided by a power supply unit at 96 V. However, in the high-speed load lifting experi-ment assuming a jump motion, regenerative operation occurs. Therefore, a LiPo battery was used. In this case, 100 V is supplied immediately after charging. 
+
+C. Design of a High-Power Wire Winding Module Using LunaDrive 
+
+Using the designed LunaDrive and the frameless BLDC motor RO80 (CubeMars) [19], a high-power wire module shown in Fig. 7 was developed. The main specifications of the RO80 are summarized in Table IV. The module consists of a pulley and a pressure roller. Thermal Pad TG-A1250   
+
+> Thermal Silicone Paste
+> SCV-22
+> 15 mm
+> Thermal Pad
+> TG-A1250
+> Thermal Silicone Paste
+> SCV-22
+> 17.8 mm
+> Heat Sink
+> V5618B
+> (b) Finned Heat Sink
+> (a) Flat Heat Sink Fig. 8. Two types of heat sinks 96V
+> 4.5 V/ns
+> Minor Ringing
+> Fig. 9. Switching waveform of drain-to-source voltage at 10 A motor current
+
+The diameter of the pulley is 18 mm. The diameter of the wire used, which has a Zylon core and a polyester sheath, is 2 mm. Therefore, the winding radius is 10 mm. Using this winding radius r, the wire tension T is expressed by the following equation. 
+
+T = τ
+
+r (10) The pressure pulley presses the wire against the pulley to prevent slack when the wire is wound under no-load conditions. To reduce the thermal resistance of the GaN FETs used in the motor driver, two types of heat sinks were fabricated as shown in Fig. 8. One is a Flat Heat Sink composed of Thermal Interface Material (TIM), a cover made of a 1 mm-thick copper plate, and a machined copper component. The other is a Finned Heat Sink, in which 24 small commercial heat sinks are attached on the Flat Heat Sink using TIM. The heights from the frame are 15 mm for the Flat Heat Sink and 17 .8 mm for the Finned Heat Sink. III. E XPERIMENTS 
+
+A. Basic Experiment: Switching Waveform Measurement 
+
+In this experiment, switching waveforms were observed when 10 A was applied to the motor in order to verify proper switching operation. The oscilloscope used for the measure-ment was an MDO4054B-3 (Tektronix) with a bandwidth of 500 MHz. The measurement results are shown in Fig. 9. Since the motor is a load with large current fluctuations, the slew rate was set to 4 .5 V /ns as a conservative design choice.                     
+
+> TABLE V RESULTS OF THE HIGH -S PEED OPERATION EXPERIMENT
+> Voltage Delay Compensation Speed Electrical Frequency [V] [rpm] [Hz] 48 Disabled 4340 1520 48 Enabled 4340 1520 96 Disabled 5760 2020 96 Enabled 8890 3110 5760 rpm
+> Diverging
+> Oscillation
+> 8890 rpm
+> Stable
+
+(a) Without delay comp.  (b) With delay comp.  
+
+> Fig. 10. Current and speed responses at 96 V with and without delay compensation
+
+Although this value is slightly lower than typical GaN FET operation, it is still faster than conventional Si MOSFETs. The figure confirms that the ringing is sufficiently small. 
+
+B. High-Speed Operation with Delay Compensation 
+
+In this experiment, the improvement in motor speed was investigated when the supply voltage was increased from 48 V to 96 V. To evaluate the effect of delay compensation, comparative experiments were conducted with the delay compensation in the microcontroller enabled and disabled. A current command of 5 A was applied to the motor under no-load conditions, and the rotational speed was measured. The results are summarized in Table V. Increasing the sup-ply voltage from 48 V to 96 V increased the rotational speed from 4340 rpm to 8890 rpm. The speed at 48 V remained below the specified no-load speed of 5040 rpm, likely be-cause of the 95 % PWM duty-ratio limit and the modulation index. At 48 V, both delay-compensation settings produced the same speed of 4340 rpm. At 96 V, enabling compensation increased the speed from 5760 rpm to 8890 rpm, a difference of 3130 rpm. The time-series waveforms of the current and speed at 96 V are shown in Fig. 10. Without delay compensation, interference between the d- and q-axes occurs due to control delay. The control becomes unstable and the system stops due to overcurrent detection. With delay compensation, sta-ble operation is achieved. The electrical frequency reaches Peak-Torque Tension Fig. 11. Current–tension relationship Limit   
+
+> 6.5 ℃
+> Fig. 12. Board and motor tem-peratures at 20 A
+
+3110 Hz, indicating extremely high-speed operation. Near the maximum speed, the current does not follow the command value due to speed saturation. 
+
+C. Validation of Sufficient Current Capability for the Target Motor 
+
+In this experiment, it was verified that LunaDrive has sufficient peak and continuous current capability for the RO80 motor mounted on the fabricated wire module. First, the peak current capability was evaluated. The driver capability was verified by confirming whether torque exceeding the peak torque specified in the motor datasheet could be generated. Since the definition of current, such as peak or RMS value, may differ depending on the specifi-cation, tension was directly measured in this experiment. The relationship between current and tension is shown in Fig. 11. Tension was measured using a ZTS-500N (IMADA) with a maximum capacity of 500 N. A current was applied for 2 s under each condition, and up to 60 A was supplied. As a result, the measured tension exceeded 400 N, which is the value calculated from the specified peak torque. This confirms that LunaDrive has sufficient peak current capability. Next, the continuous current capability was evaluated. A continuous current of 20 A was applied to the motor, and the board and motor temperatures were compared to verify that the board was not the limiting factor. The experiment was conducted with the Flat Heat Sink attached. In this evaluation, FOC was performed with the electrical angle 
+
+θe fixed at 0 so that the heat generation location remained constant. When θe = 0, the UVW phase currents with respect to the d-axis current id are expressed as follows. 
+
+iu = id , iv = − 12 id , iw = − 12 id (11) Under this condition, the maximum current is continu-ously applied to the U phase. Therefore, heat generation is governed by the maximum current rather than the RMS value. In addition, the temperature sensor is located within 2 mm of the U-phase FET. This measurement condition is conservative with respect to the board temperature. The results of the continuous current test are shown in Fig. 12. The temperature limit was set to 80 ◦C. The results show that the motor reached the temperature limit first. At that 0.5 s       
+
+> 80 A
+> Thermal Response Delay
+> (a) Current (b) Temperature
+> Fig. 13. Current and board temperature when 80 A is commanded Limit
+> 46.8 ℃
+> 64.4 ℃
+> 76.7 ℃Limit
+> 32.3 ℃
+> 55.9 ℃
+> 78.2 ℃
+> 39.3 ℃
+> Limit
+> 33.3 ℃
+> 53.8 ℃
+> 79.1 ℃
+> 39.0 ℃
+> (a) No heat sink (b) Flat Heat Sink (c) Finned Heat Sink
+> Fig. 14. Temperature rise over time at different continuous current levels
+
+time, the board temperature was 6.5 ◦C lower than the motor temperature. After reaching the limit, the drive circuit was stopped for safety. These results confirm that LunaDrive has sufficient continuous current capability for the RO80 motor. 
+
+D. Characterization of the Peak and Continuous Current Capability 
+
+In this experiment, the peak and continuous current ca-pability of LunaDrive was investigated. Since the RO80 used in the wire module has a lower allowable current than LunaDrive, a U13II KV130 motor (T-Motor) for large drones was used as the load. As in the RO80 continuous current test, measurements were performed with the electrical angle 
+
+θe fixed at 0. This is a conservative condition in which heat generation concentrates in a specific phase. First, the peak current capability was evaluated. The experiment was conducted without a heat sink. The result when 80 A was applied to the motor is shown in Fig. 13. It can be confirmed that 80 A was applied for 0 .5 s. In addition, a large thermal response delay was observed in the board temperature. This suggests that, under large current conditions, the temperature of the GaN FET may not be measured accurately. Next, the continuous current capability of LunaDrive was evaluated under different cooling conditions. Three condi-tions were tested: without a heat sink, with a Flat Heat Sink, and with a Finned Heat Sink. The results are shown in Fig. 14. Each current was applied for 10 min. The current was increased in 10 A increments at low temperatures and 1 A increments near the 80 ◦C limit. The highest tested current below this limit was defined as the maximum continuous current. The resulting values were 13 A without a heat sink, 28 A with the Flat Heat Sink, and 30 A with the Finned Heat Sink. Compared with the RO80 continuous current test, the lower temperature can be Wire    
+
+> Module
+> Wire
+> Load
+> 8.1 kg
+> Upper
+> Cushion
+> Lower
+> Cushion
+> Passive
+> Pulley
+> Unit
+> 12
+> 34
+> High
+> Speed
+> Impact
+> Fall
+> USB-CANFD Fig. 15. Overview of the high-speed load lifting experiment. The sequential snapshots show the lifting motion at 100 V.
+
+attributed to reduced heat transfer from the motor to the board due to lower motor heat generation. In particular, without a heat sink, the board temperature increased to 46 .8 ◦C even at 0 A. This temperature rise is mainly attributed to switching losses caused by charging and discharging of the parasitic capacitances of the FETs and the snubber capacitors. Since these losses depend on the supply voltage, non-negligible heat generation occurs under the present condition of 96 V operation. At the maximum current condition, the temperature con-tinued to rise even after 10 min. However, 80 ◦C was set as a conservative limit considering safety margins. The board includes MLCCs with a temperature rating of 125 ◦C. Suffi-cient margin exists with respect to their rated temperature. 
+
+E. High-Speed Load Motion Experiment 
+
+In this experiment, a high-speed load lifting test was conducted as an application experiment assuming a jumping robot. The setup is shown in Fig. 15. The fabricated wire module was mounted on a universal wire testing machine [20], and a load with a mass of 8 .1 kg was lifted at high speed. The wire from the wire module was redirected through a passive pulley unit and then connected to the load. For safety, TPU cushions were placed above and below the moving part. Current control was implemented by commanding 50 A until 0 .5 m of wire was wound. Experiments were conducted under supply voltages of 50 V and 100 V. Since regenerative operation occurs during the falling motion of the load, a LiPo24S (100 V) battery was used instead of a power supply. The results are shown in Fig. 16. Under the 50 V condition, the current failed to follow the command in the latter half of acceleration due to speed saturation. In contrast, under the 100 V condition, the current followed the command until just before the end of acceleration. The maximum speeds were 4.14 m /s and 4 .92 m /s, corresponding to an improvement of approximately 19 %. The limited improvement may be due 4.14 m/s   
+
+> Error
+> 4.92 m/s
+> (a) 50 V (b) 100 V
+> Fig. 16. Current and speed responses during high-speed load lifting at 50 V and 100 V
+
+to the short acceleration distance of 0 .5 m, which does not fully utilize the benefit of the higher voltage. As shown in Fig. 15, the load collided with the upper cushion at high speed and generated a large impact. This behavior indicates that LunaDrive enables high-current and high-voltage operation and can produce large instantaneous power. IV. D ISCUSSION 
+
+In this study, we proposed a motor driver, LunaDrive, which employs GaN FETs instead of Si MOSFETs to enable higher drive voltage and large-current operation for flat BLDC motors. In this section, the performance improvement obtained by adopting GaN FETs is discussed through com-parison with an existing motor driver. LunaDrive has a disk shape with a diameter of 70 mm, excluding a part of the connector section, and a board thick-ness of 8 .51 mm. The rated voltage is 96 V. The component rating and peak voltage are 150 V. The continuous current was 13 A without a heat sink at a thickness of 8 .51 mm, 28 A with a Flat Heat Sink at a thickness of 15 mm, and 30 A with a Finned Heat Sink at a thickness of 17 .8 mm. A peak current of 80 A was achieved. Gold Solo Twitter (Elmo Motion Control, hereafter ELMO) is a compact high-power commercial motor driver. Its dimensions are 47.2×30×19.35 mm. The continuous cur-rent is 3 A at 85 V operation without a heat sink at a thickness of 19 .35 mm, 7 A with the FLAT Heat-Sink (ELMO) at a thickness of 23 .35 mm, and 12 A with the FINs Heat-Sink (ELMO) at a thickness of 28 .85 mm [21]. The peak current is 45 A for the R45/150 model, which can operate with LiPo24S at 100 V. For flat motor applications, the thickness dimension is important. When compared based on thickness, LunaDrive shows advantages in both continuous current and peak cur-rent within the same voltage range. Since Gold Solo Twitter does not include an encoder, additional circuitry may be required in practical use, which may increase the thickness. The heat sink of LunaDrive is fixed to the frame, and heat is dissipated through the frame. Therefore, a direct comparison of thermal conditions is not possible. However, LunaDrive without a heat sink shows higher continuous current capability than Gold Solo Twitter with a heat sink. LunaDrive also provides higher volumetric continuous cur-rent capability in the heat-sink-less configuration, which in-dicates a design advantage. For peak current, LunaDrive also achieves higher current capability when LiPo24S (100 V) operation is assumed. These results show that the adoption of GaN FET enables both high-voltage and large-current operation. V. C ONCLUSION 
+
+In this study, we proposed a compact motor driver, Lu-naDrive, which employs GaN FETs to drive high-power flat BLDC motors used in recent dynamic robots at high voltage beyond their nominal rating for high-speed operation. To address the large electrical angular velocity associated with high-voltage drive, delay compensation was implemented on both the encoder and microcontroller sides, and its effective-ness was verified. LunaDrive has a compact structure with a diameter of 70 mm and a thickness of 8 .51 mm. Large-current operation was achieved by reinforced wiring using a 2 oz 8-layer PCB and capacitor design based on effective capacitance. Evaluation of switching waveforms confirmed stable oper-ation. A maximum speed of 8890 rpm, corresponding to an electrical frequency of 3110 Hz, was achieved. When the delay compensation was disabled, divergent oscillation occurred at approximately 5760 rpm, which demonstrates the effectiveness of the compensation. The continuous current was 13 A without a heat sink, 28 A with a Flat Heat Sink, and 30 A with a Finned Heat Sink. A peak current of 80 A was achieved without a heat sink. Sufficient continuous and peak current capability was also confirmed for the RO80 installed in a wire module. Furthermore, experiments assuming actual robot operation demonstrated that velocity saturation can be avoided in the high-voltage and large-current region. These results indicate that LunaDrive realizes high-voltage and large-current drive in a compact and thin configuration. This contributes to improving the motion performance of dynamic robots. Future work includes integration into an actual robot system to further validate its effectiveness. REFERENCES [1] “Unitree H1 The World’s First Full-size Motor Drive Hu-manoid Robot Flips on Ground,” https://youtu.be/V1LyWsiTgms?si= WYwkbYO607QaFuuj. [2] B. Katz, J. D. Carlo, and S. Kim, “Mini cheetah: A platform for pushing the limits of dynamic quadruped control,” in Proceedings of the 2019 IEEE International Conference on Robotics and Automation ,2019, pp. 6295–6301. [3] K. Kawaharazuka, S. Inoue, T. Suzuki, S. Yuzaki, S. Sawaguchi, K. Okada, and M. Inaba, “Mevius: A quadruped robot easily con-structed through e-commerce with sheet metal welding and machin-ing,” in Proceedings of the 2024 IEEE-RAS International Conference on Humanoid Robots , 2024, pp. 631–636. [4] B. Xia, B. Li, J. Lee, M. Scutari, and B. Chen, “The duke humanoid: Design and control for energy-efficient bipedal locomotion using passive dynamics,” in Proceedings of the 2025 IEEE/RSJ International Conference on Intelligent Robots and Systems , 2025, pp. 6579–6586. [5] M. Nishiura, A. Hatano, K. Nishii, and Y. Okumatsu, “Development of low-inertia backdrivable arm focusing on learning-based control,” in Proceedings of the 2022 IEEE/RSJ International Conference on Intelligent Robots and Systems , 2022, pp. 9642–9649. [6] “RobStride series(ROBSTRIDE DYNAMICS),” https://robstride.com/. [7] “AK series(CubeMars),” https://www.cubemars.com/jp/categorys/ ak-series-robotic-actuator. [8] B. Baliga, “Power semiconductor device figure of merit for high-frequency applications,” IEEE Electron Device Letters , vol. 10, no. 10, pp. 455–457, 1989. [9] M. Palma, S. Musumeci, and V. Barba, “Modeling and experimental validation of gan-based switching leg in inverter topology for motor drives applications,” in PCIM Europe 2023; International Exhibition and Conference for Power Electronics, Intelligent Motion, Renewable Energy and Energy Management , 2023, pp. 1–6. [10] A. Hesener, “Gan power ics drive efficiency and size improvements in bldc motor drive applications,” in PCIM Europe 2023; International Exhibition and Conference for Power Electronics, Intelligent Motion, Renewable Energy and Energy Management , 2023, pp. 1–6. [11] W. A. Khan, A. Ebrahimian, S. I. Hosseini S., and N. Weise, “Design of high current, high power density gan based motor drive for all electric aircraft application,” in 2022 IEEE 9th Workshop on Wide Bandgap Power Devices & Applications (WiPDA) , 2022, pp. 247–253. [12] “ODrive Pro(Odrive Robotics),” https://shop.odriverobotics.com/ products/odrive-pro. [13] M. Tang, A. Gaeta, A. Formentini, K. Ohyama, P. Zanchetta, and G. Asher, “Enhanced dbcc for high-speed permanent magnet syn-chronous motor drives,” IET Power Electronics , vol. 9, no. 15, pp. 2880–2890, 2016. [14] C. Lian, F. Xiao, J. Liu, and S. Gao, “Analysis and compensation of the rotor position offset error and time delay in field-oriented-controlled pmsm drives,” IET Power Electronics , vol. 13, no. 9, pp. 1911–1918, 2020. [15] M. Lee and K. Kong, “Fourier-series-based phase delay compensation of brushless dc motor systems,” IEEE Transactions on Power Elec-tronics , vol. 33, no. 1, pp. 525–534, 2018. [16] T. Suzuki, Y. Toshimitsu, Y. Nagamatsu, K. Kawaharazuka, A. Miki, Y. Ribayashi, M. Bando, K. Kojima, Y. Kakiuchi, K. Okada, and M. Inaba, “Ramiel: A parallel-wire driven monopedal robot for high and continuous jumping,” in Proceedings of the 2022 IEEE/RSJ International Conference on Intelligent Robots and Systems , 2022, pp. 5017–5024. [17] M. Palma, S. Musumeci, F. Mandrile, and V. Barba, “Experimental evaluation of dead time reverse conduction losses in motor drives applications,” in PCIM Europe 2022; International Exhibition and Conference for Power Electronics, Intelligent Motion, Renewable Energy and Energy Management , 2022, pp. 1–6. [18] F. Mandrile, S. Musumeci, and M. Palma, “Dead time management in gan based three-phase motor drives,” in 2021 23rd European Conference on Power Electronics and Applications (EPE’21 ECCE Europe) , 2021, pp. P.1–P.10. [19] “RO80 KV105 Lite(CubeMars),” https://www.cubemars.com/product/ ro80-kv105-lite-without-hall-frameless-torque-motor.html. [20] T. Suzuki, K. Kawaharazuka, and K. Okada, “A universal wire testing machine for enhancing the performance of wire-driven robots,” in 
+
+Proceedings of the 2025 IEEE-RAS International Conference on Humanoid Robots , 2025, pp. 539–545. [21] “GOLD Twitter thermal management(Elmo),” https://elmomc.cn/ wp-content/uploads/2018/07/2-GOLD-Twitter-Thermal-Management. pdf.

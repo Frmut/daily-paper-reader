@@ -1,0 +1,445 @@
+Title: Bifurcation Beyond Surface-Tangential Asymptotic Convergence in Continuous Sliding Mode Control
+
+URL Source: https://arxiv.org/pdf/2609.19682v1
+
+Published Time: Fri, 18 Sep 2026 00:46:05 GMT
+
+Number of Pages: 13
+
+Markdown Content:
+# Bifurcation Beyond Surface-Tangential Asymptotic Convergence in Continuous Sliding Mode Control 
+
+## Fan Zhang a,b , Jingwen Xu a, Peng Li a, Jun Zhou a,b and Yaohua Guo a,∗
+
+> a
+
+School of Astronautics, Northwestern Polytechnical University, , Xi’an, 710072, China 
+
+> b
+
+Ningbo Institute of Northwestern Polytechnical University, 315103, Ningbo, China 
+
+A R T I C L E I N F O 
+
+Keywords :Bifurcation phase portrait sliding mode control smooth entry state ratio 
+
+A B S T R A C T 
+
+For second-order systems under continuous sliding mode control (SMC), the literature has long relied, largely through phase-portrait illustrations, on the implicit convention that the phase-plane trajectory approaches the equilibrium along a direction tangential to the designed sliding surface. This paper investigates this tangential convergence assumption through a rigorous phase-plane analysis of the double-integrator system subject to standard linear SMC. We reveal that the asymptotic state ratio is not unique but instead exhibits a bifurcation that depends on the control gains, the sliding surface parameter, and the initial conditions. The key finding is that the system may converge along an implicit secondary manifold rather than aligning with the designed sliding surface, implying that smooth entry is not globally guaranteed. We derive closed-form expressions for the convergence ratios and establish a classification framework that precisely characterizes when the smooth-entry assumption holds and when it fails. The analysis is further extended to classical PD control, and we show that the bifurcation threshold coincides with the critical damping boundary that separates the two convergence regimes. These findings bridge terminal geometry and convergence smoothness, providing a predictive framework for high-performance motion control design. Simulation results validate the proposed classification of convergence regimes. 
+
+## 1. Introduction 
+
+Sliding mode control (SMC) has long been applied to the operation of classical second-order systems, owing to its conceptual simplicity and inherent robustness against uncertainties [1, 2]. The core idea is to enforce the system states onto a prescribed sliding manifold and maintain it there thereafter [3, 4, 5]. Once the sliding motion is established, the system behavior is entirely governed by the reduced-order dynamics on this manifold, which are independent of plant perturbations. Over the past decades, research in this field has reached a high level of maturity, with major thrusts concentrated on three pillars: achieving finite/fixed-time convergence [6, 7], enhancing robustness against matched/unmatched uncertainties [8, 9], and alleviating the chattering issue [10, 11, 12]. Despite these extensive developments, a surprisingly fundamental geometric aspect concerning the terminal convergence behavior of continuous SMC systems has remained largely overlooked. For classical second-order systems, the literature has long adhered, largely through the phase-portrait illustrations [13, 14], to an implicit convention that the phase-plane trajectory enters the equilibrium along the sliding surface 𝑠 = 0 , namely smoothly .Specifically, it is tacitly presumed that the trajectory approaches and crosses the manifold with its phase-plane tangent aligned with the sliding surface, so that the ratio of the two state variables at the instant of entry coincides with the slope determined by the manifold. To the best of our knowledge, this smooth-entry hypothesis has never been formally investigated in prior works. One likely reason is that the entry detail is deemed immaterial to the standard reachability and stability analyses: for the purpose of proving convergence, whether this geometric alignment holds globally does not affect the validity of the conventional arguments. However, the lack of scrutiny becomes consequential when one moves beyond qualitative stability to finite/fixed-time convergence behavior. As we shall demonstrate in the subsequent sections, the validity of the smooth-entry assumption has a direct and nontrivial bearing on whether the 
+
+> ∗
+
+Corresponding author 
+
+zhangfan_nwpu@nwpu.edu.cn (F. Zhang); xjw0324@nwpu.edu.cn (J. Xu); lp@nwpu.edu.cn (P. Li); 
+
+zhoujun@nwpu.edu.cn (J. Zhou); y.guo2@nwpu.edu.cn (Y. Guo) 
+
+> ORCID
+
+(s): 0000-0003-3664-3553 (F. Zhang); 0009-0008-7174-437X (J. Xu); 0000-0002-4895-7659 (P. Li); 
+
+0000-0001-5810-5153 (J. Zhou); 0000-0002-1489-969X (Y. Guo) 
+
+Fan Zhang et al.: Preprint submitted to Elsevier Page 1 of 13 arXiv:2609.19682v1 [eess.SY] 17 Sep 2026 Bifurcation Beyond Surface-Tangential Asymptotic Convergence Designed sliding surface Implicit secondary manifold Phase portrait  
+
+> Figure 1: Trajectory does not align with the designed sliding surface.
+
+convergence time is finite or infinite, thereby challenging a foundational premise that underlies the standard transient analysis and convergence rate estimation [15]. Our analysis reveals that this presumed geometric alignment is not always globally valid for the continuous SMC systems. The entry ratio may, in fact, bifurcate and deviate markedly from the slope of the sliding surface, depending critically on the initial conditions and controller parameters. It is important to clarify at the outset that the present paper does not challenge the invariance property of the sliding motion after the state has reached the sliding surface. It is well known that, once on the manifold, the phase-plane trajectory indeed obeys the structure of the designed sliding surface and the state ratio is uniquely determined. Rather, our focus is on the geometric manner in which the trajectory enters the sliding surface when continuous SMC is applied. The revelation that this entry is not universally smooth has direct practical consequences: in hardware-in-the-loop emulations and digital implementations of SMC, the entry geometry affects the dynamic range and quantization accuracy of the controller near the switching surface, and may explain unexpectedly suboptimal convergence speeds observed in practice [16]. From a theoretical standpoint, this overlooked geometric nuance also carries profound implications for the broader family of terminal SMC. It has been a long-standing open problem to furnish a fully rigorous proof of finite-time stability for second-order Terminal SMC systems [17]. A central difficulty lies in the fact that finite-time convergence proofs rely on precise bounds of the phase-plane trajectory during the terminal phase. Most critically, on the behavior of the trajectory in the vicinity of the sliding manifold. While existing Lyapunov-based arguments typically circumvent this issue by employing homogeneous inequalities, they often implicitly rely on a favorable (i.e., smooth) entry geometry. Our findings on the linear SMC prototype demonstrate that such smooth entry is, in general, non-global and parameter-dependent. Thus, the bifurcation phenomenon we reveal for the linear case serves as a foundational cautionary example, highlighting that any rigorous finite-time proof for Terminal SMC must explicitly account for the entry geometry rather than take smooth entry for granted. In this paper, we challenge the entrenched smooth-entry assumption by conducting a thorough phase-plane analysis of the classical double-integrator system under linear SMC, as depicted in Fig. 1. We show that, for the classical linear SMC law and the specific sliding mode, the entry ratio bifurcates according to the controller gain, the sliding surface parameter, and the initial state. Consequently, the revealed geometric bifurcation is an intrinsic property of the closed-loop dynamics, not an artifact of a particular control implementation. We further extend the analysis to the broader class of PD controllers and show that the sliding-mode result emerges as a special case of a more general critical parameter boundary, thereby unifying the understanding of second-order linear feedback systems. The main contributions of this work are summarized as follows: 1. A novel bifurcation phenomenon in the asymptotic convergence of continuous SMC is uncovered, breaking the conventional tangential surface convergence consensus. 2. Closed-form convergence ratio expressions and a unified classification framework are derived to judge the validity and failure of the classic smooth-entry assumption.   
+
+> Fan Zhang et al.: Preprint submitted to Elsevier Page 2 of 13 Bifurcation Beyond Surface-Tangential Asymptotic Convergence
+
+3. The inherent correlation between the proposed bifurcation threshold and the critical damping boundary of PD control is revealed, guiding high-performance motion control design. The remainder of this paper is organized as follows. Section 2 formulates the problem about the smooth sliding entry. Section 3 presents the bifurcation phenomenon of continuous SMC systems and the analytical characterization of the entry ratio, and extends the results to the general PD control framework. Section 4 provides numerical validations and phase-plane illustrations, and Section 5 concludes the paper with a discussion on future directions. 
+
+## 2. Problem Formulation 
+
+Consider a classical double-integrator linear system as ̇𝑥 1(𝑡 ) = 𝑥 2(𝑡 )̇𝑥 2(𝑡 ) = 𝑢 (𝑡 ), (1) where 𝑥 1, 𝑥 2 ∈ ℝ are the system states and 𝑢 ∈ ℝ is the control input. 1 This model describes a broad class of second-order physical systems, such as simplified mechanical positioning stages and vehicle dynamics. A linear sliding surface is defined as 
+
+𝑠 (𝑡 ) = 𝑥 1(𝑡 ) + 𝑘𝑥 2(𝑡 ), (2) where 𝑘 > 0 is a design parameter that determines the slope of the sliding surface in the phase plane. To rigorously characterize the terminal convergence geometry, we introduce the definition of smooth sliding entry. 
+
+Definition 1 (Smooth sliding entry) . The terminal convergence of the closed-loop system (1) is said to exhibit smooth sliding entry if 
+
+lim 
+
+> 𝑡 →∞
+
+𝑥 1(𝑡 )
+
+𝑥 2(𝑡 ) = − 𝑘, (3) 
+
+where 𝑘 is the slope of the prescribed sliding surface (2) . Otherwise, the convergence is said to exhibit non-smooth entry , and the degree of misalignment is quantified by the indicator 
+
+Ψ ≜
+
+|||||
+
+arctan 
+
+(
+
+lim 
+
+> 𝑡 →∞
+
+𝑥 1(𝑡 )
+
+𝑥 2(𝑡 )
+
+)
+
++ arctan 𝑘 
+
+|||||
+
+. (4) 
+
+Remark 1. According to Definition 1, tangential smooth entry ( Ψ = 0 ) indicates that the phase plane trajectory asymptotically aligns with the sliding surface, ensuring a seamless transition to the equilibrium. However, Ψ ≠ 0
+
+indicates that the trajectory converges to the origin along a path distinct from the sliding surface, revealing the emergence of bifurcation. This deviation quantifies the “lack of smoothness” during the terminal convergence phase. 
+
+With Definition 1, we characterize the convergence behavior. Specifically, the following issues are investigated: 1. To derive the exact analytical expression for the asymptotic state ratio 
+
+lim 
+
+> 𝑡 →∞
+
+𝑥 1(𝑡 )
+
+𝑥 2(𝑡 )
+
+and rigorously prove its bifurcating dependence on the controller parameter 𝑘 and the initial conditions. 2. To demonstrate that the classical linear SMC system inherently exhibits two convergence modes governed by an implicit secondary manifold, and to provide its precise mathematical description. 3. To extend the analysis to general PD controllers and identify the critical threshold that governs both the bifurcation behavior and the equivalence between PD and sliding mode control. To focus the analysis on convergence, we impose the following non-triviality assumption on initial conditions. 
+
+Assumption 1. |𝑥 1(0) | + |𝑥 2(0) | ≠ 0 holds. 
+
+Remark 2. If the initial condition satisfies 𝑥 1(0) = 0 and 𝑥 2(0) = 0 , then the system would perpetually satisfy 
+
+𝑥 1(𝑡 ) ≡ 0 and 𝑥 2(𝑡 ) ≡ 0 for all 𝑡 ⩾ 0 under the given control, which constitutes a degenerate case for asymptotic analysis.          
+
+> 1For clarity, 𝑥 ∈ℝdenotes a point in the state space, whereas 𝑥 (𝑡 ) ∈ ℝdenotes the solution trajectory of the system.
+> Fan Zhang et al.: Preprint submitted to Elsevier Page 3 of 13 Bifurcation Beyond Surface-Tangential Asymptotic Convergence
+
+## 3. Main Results of SMC Bifurcation 
+
+This section establishes the analytical framework for the asymptotic state ratio under a general class of linear sliding mode control laws. We reveal that the terminal convergence behavior is not unique but exhibits a bifurcation phenomenon determined by the interplay between control parameters and initial conditions. We introduce a general linear control input as 
+
+𝑢 (𝑡 ) = − 1
+
+𝑘 
+
+(𝑥 2(𝑡 ) + ℎ𝑠 (𝑡 )) , (5) where ℎ > 0 is a reaching rate parameter that generalizes the reaching behavior. This control law encompasses two classical cases: ℎ = 1 corresponds to the standard linear reaching law, and ℎ = 𝑘 yields a parameter-dependent reaching rate. Based on the control law (5), we have the following theorem. 
+
+Theorem 1. Consider the closed-loop system (1) the control law (5) and suppose that Assumption 1 holds. Then, the equilibrium at the origin is globally asymptotically stable. Moreover, the system exhibits a bifurcation behavior characterized by the asymptotic ratio 
+
+Ψ = 
+
+{
+
+0, if 1
+
+𝜓 nz , if 2
+
+(6) 
+
+where 𝜓 nz is some nonzero scalar, and the convergence regimes partition the parameter and initial state space as 
+
+• 1 ∶ (0 < 𝑘ℎ < 1 and 𝑠 (0) = 0) 
+
+or (𝑘ℎ > 1 and ℎ𝑥 1(0) + 𝑥 2(0) ≠ 0) 
+
+or (𝑘ℎ = 1); 
+
+• 2 ∶ (0 < 𝑘ℎ < 1 and 𝑠 (0) ≠ 0) 
+
+or (𝑘ℎ > 1 and ℎ𝑥 1(0) + 𝑥 2(0) = 0) .
+
+Proof. The proof proceeds in three parts: stability analysis, Asymptotic State Ratio Analysis for 𝑘ℎ ≠ 1, and Asymptotic State Ratio Analysis for 𝑘ℎ = 1 .
+
+Part 1: Stability Analysis. Consider the Lyapunov function candidate 
+
+𝑉 (𝑡 ) = 12 𝑠 2(𝑡 ).
+
+Its derivative along the closed-loop trajectories is ̇𝑉 (𝑡 ) = 𝑠 (𝑥 2(𝑡 ) + 𝑘𝑢 (𝑡 )) , (7) where (1) and (2) are utilized. Substituting the control law (5) into (7) yields ̇𝑉 (𝑡 ) = − ℎ𝑠 2(𝑡 ). (8) By LaSalle’s invariance principle, all trajectories converge to the largest invariant set contained in {𝑠 = 0} . On 𝑠 = 0 ,the control reduces to 
+
+𝑢 (𝑡 ) = − 𝑥 2(𝑡 )
+
+𝑘 ,
+
+giving ̇𝑥 2 = − 𝑥 2(𝑡 )
+
+𝑘 and 𝑥 1(𝑡 ) = − 𝑘𝑥 2(𝑡 )
+
+, which asymptotically approaches the origin. Hence the origin is globally asymptotically stable. 
+
+Part 2: Asymptotic State Ratio Analysis for 𝑘ℎ ≠ 1. To analyze the terminal convergence behavior, we introduce the new coordinates 
+
+𝜎 1(𝑡 ) = ℎ𝑥 1(𝑡 ) + 𝑥 2(𝑡 )  
+
+> Fan Zhang et al.: Preprint submitted to Elsevier Page 4 of 13
+
+Bifurcation Beyond Surface-Tangential Asymptotic Convergence 
+
+𝜎 2(𝑡 ) = 𝑠 (𝑡 ). (9) Based on this coordinate transformation, we decouple the system (1) into two independent first-order linear differential equations as ̇𝜎 1(𝑡 ) = − 1
+
+𝑘 𝜎 1(𝑡 )̇𝜎 2(𝑡 ) = − ℎ𝜎 2(𝑡 ). (10) Their solutions are 
+
+𝜎 1(𝑡 ) = 𝜎 1(0) 𝑒 − 𝑡 𝑘 
+
+𝜎 2(𝑡 ) = 𝜎 2(0) 𝑒 −ℎ𝑡 . (11) Since 𝑘ℎ ≠ 1, the inverse transformation is well defined and yields 
+
+𝑥 1(𝑡 ) = 𝑘𝜎 1(𝑡 ) − 𝜎 2(𝑡 )
+
+𝑘ℎ − 1 
+
+𝑥 2(𝑡 ) = ℎ𝜎 2(𝑡 ) − 𝜎 1(𝑡 )
+
+𝑘ℎ − 1 . (12) Consequently, 
+
+𝑥 1(𝑡 )
+
+𝑥 2(𝑡 ) = 𝑘𝜎 1(𝑡 ) − 𝜎 2(𝑡 )
+
+ℎ𝜎 2(𝑡 ) − 𝜎 1(𝑡 ) . (13) Substituting (11) into (13), we have 
+
+𝑥 1(𝑡 )
+
+𝑥 2(𝑡 ) = 𝑘𝜎 1(0) 𝑒 − 𝑡 𝑘 − 𝜎 2(0) 𝑒 −ℎ𝑡 
+
+ℎ𝜎 2(0) 𝑒 −ℎ𝑡 − 𝜎 1(0) 𝑒 − 𝑡 𝑘 
+
+. (14) Dividing both numerator and denominator by 𝑒 −ℎ𝑡 yields 
+
+𝑥 1(𝑡 )
+
+𝑥 2(𝑡 ) = − 𝜎 2(0) − 𝑘𝜎 1(0) 𝜌 (𝑡 )
+
+ℎ𝜎 2(0) − 𝜎 1(0) 𝜌 (𝑡 ) , (15) where 
+
+𝜌 (𝑡 ) ≜ 𝑒 𝑘ℎ −1  
+
+> 𝑘 𝑡
+
+.
+
+The asymptotic behavior is determined by the sign of 𝑘ℎ − 1 . Next, the following cases are considered. • Case of 0 < 𝑘ℎ < 1 and 𝜎 2(0) = 0 : If 𝜎 2(0) = 0 holds, then 𝜎 1(0) ≠ 0 according to (9) and Assumption 1. Hence, 
+
+lim 
+
+> 𝑡 →∞
+
+𝑥 1(𝑡 )
+
+𝑥 2(𝑡 ) = − 𝑘, (16) which gives Ψ = 0 .• Case of 0 < 𝑘ℎ < 1 and 𝜎 2(0) ≠ 0: If 𝜎 2(0) ≠ 0 and 𝑘ℎ − 1 < 0, then 𝜎 1(0) ≠ 0 and lim 𝑡 →∞ 𝜌 (𝑡 ) = 0 . As a result, 
+
+lim 
+
+> 𝑡 →∞
+
+𝑥 1(𝑡 )
+
+𝑥 2(𝑡 ) = − 1
+
+ℎ , (17) which gives Ψ ≠ 0.
+
+Fan Zhang et al.: Preprint submitted to Elsevier Page 5 of 13 Bifurcation Beyond Surface-Tangential Asymptotic Convergence 
+
+• Case of 𝑘ℎ > 1 and 𝜎 1(0) ≠ 0: It is known that 𝑘ℎ > 1 implies that 𝜌 (𝑡 ) tends to positive infinity. This fact, together with 𝜎 1(0) ≠ 0, leads to 
+
+lim 
+
+> 𝑡 →∞
+
+𝑥 1(𝑡 )
+
+𝑥 2(𝑡 ) = − 𝑘, (18) which gives Ψ = 0 .• Case of 𝑘ℎ > 1 and 𝜎 1(0) = 0 : If 𝜎 1(0) = 0 holds, then 𝜎 2(0) ≠ 0 according to (9) and Assumption 1. This fact, together with (15), implies 
+
+lim 
+
+> 𝑡 →∞
+
+𝑥 1(𝑡 )
+
+𝑥 2(𝑡 ) = − 1
+
+ℎ , (19) which gives Ψ ≠ 0.
+
+Part 3: Asymptotic State Ratio Analysis for 𝑘ℎ = 1 . When 𝑘ℎ = 1 , we have 𝜎 1(𝑡 ) = ℎ𝜎 2(𝑡 ), and the decoupling coordinate transformation used above becomes singular. Solving the system (1) with the aid of (11) gives ̇𝑥 1(𝑡 ) = 𝑥 2(𝑡 )̇𝑥 2(𝑡 ) = − 1
+
+𝑘 𝑥 2(𝑡 ) − 1
+
+𝑘 2 𝜎 2(0) 𝑒 − 𝑡 𝑘 ,
+
+and consequently, 
+
+𝑥 1(𝑡 ) = 
+
+(
+
+𝑥 1(0) + 1
+
+𝑘 𝜎 2(0) 𝑡 
+
+)
+
+𝑒 − 𝑡 𝑘 
+
+𝑥 2(𝑡 ) = 
+
+(
+
+𝑥 2(0) − 1
+
+𝑘 2 𝜎 2(0) 𝑡 
+
+)
+
+𝑒 − 𝑡 𝑘 . (20) If 𝜎 2(0) = 0 , then 𝑥 1(0) = − 𝑘𝑥 2(0) by (9), which implies 
+
+lim 
+
+> 𝑡 →∞
+
+𝑥 1(𝑡 )
+
+𝑥 2(𝑡 ) = 𝑥 1(0) 
+
+𝑥 2(0) = − 𝑘. (21) If 𝜎 2(0) ≠ 0, then 
+
+lim 
+
+> 𝑡 →∞
+
+𝑥 1(𝑡 )
+
+𝑥 2(𝑡 ) = lim  
+
+> 𝑡 →∞1
+> 𝑘
+
+𝜎 2(0) 𝑡 
+
+− 1 
+
+> 𝑘 2
+
+𝜎 2(0) 𝑡 
+
+= − 𝑘. (22) Hence Ψ = 0 holds for all initial conditions when 𝑘ℎ = 1 .The above analysis establishes (6), demonstrating that the system undergoes a bifurcation in its asymptotic behavior. This completes the proof of Theorem 1. 
+
+Remark 3. Since Assumption 1 excludes the equilibrium as an initial state, the conditions 𝑠 (0) = 0 and ℎ𝑥 1(0) + 
+
+𝑥 2(0) = 0 are mutually exclusive for any 𝑘ℎ ∈ (0 , 1) ∪ (1 , ∞) . Consequently, the regimes 1 and 2 cover all possible convergence scenarios for 𝑘 > 0 and ℎ > 0.
+
+Remark 4. The bifurcation of the state ratio is an intrinsic property of the control structure. The parameters 𝑘 and ℎ
+
+serve as the “modal weights.” This shift is what forces the system trajectory to switch its terminal alignment, leading to the two convergence behavior observed in Theorem 1. 
+
+Remark 5. The bifurcation directly affects two key performance metrics: convergence speed and transient smooth-ness. When 𝑘ℎ ≠ 1, the effective decay rate of the states is either 1 
+
+> 𝑘
+
+or ℎ. Moreover, 𝜓 nz ≠ 0 shows that the trajectory bypasses the designed sliding surface. Thus, the bifurcation provides a theoretical basis for parameter selection and initial condition planning in high-precision motion control.                                              
+
+> Fan Zhang et al.: Preprint submitted to Elsevier Page 6 of 13 Bifurcation Beyond Surface-Tangential Asymptotic Convergence
+> Table 1
+> Simulation Parameters for Four Cases
+> Case Description 𝑘 ℎ𝑥 1(0) 𝑥 2(0) 10< 𝑘ℎ < 1,𝑥 1(0) + 𝑘𝑥 2(0) = 0 2.00.42.0−1 .02𝑘ℎ > 1,ℎ𝑥 1(0) + 𝑥 2(0) ≠02.00.62.01.030< 𝑘ℎ < 1,𝑥 1(0) + 𝑘𝑥 2(0) ≠02.00.42.01.04𝑘ℎ > 1,ℎ𝑥 1(0) + 𝑥 2(0) = 0 2.00.62.0−1 .2
+
+It is worth noting that the sliding mode control law (5) can be viewed as a special case of a PD controller of the form (23), where the proportional and derivative gains are not independent but instead satisfy a particular algebraic relation imposed by the sliding surface design. A natural extension is to consider the general PD control law 
+
+𝑢 (𝑡 ) = − 𝛼𝑥 1(𝑡 ) − 𝛽𝑥 2(𝑡 ), (23) where 𝛼 > 0 and 𝛽 > 0.
+
+Theorem 2. Consider the closed-loop system (1) under the control law (23) and suppose that Assumption 1 holds. Then the equilibrium at the origin is globally asymptotically stable. Moreover, the asymptotic behavior of the system depends on the controller gains as follows: 
+
+• If 𝛽 > 2√𝛼 , the system exhibits a bifurcation behavior, i.e., Ψ = 0 for some initial conditions and Ψ = 𝜓 nz for others, where 𝜓 nz is a nonzero scalar. 
+
+• If 𝛽 = 2 √𝛼 , the system exhibits no bifurcation, and Ψ = 0 holds for all initial conditions. Proof. The proof follows directly from Theorem 1 via a straightforward controller parameter transformation and is therefore omitted for brevity. 
+
+Remark 6. Extending the linear SMC (5) to the general PD structure (23) not only preserves the global asymptotic stability of the origin but also reveals a richer bifurcation structure parameterized by the controller gains 𝛼 and 𝛽 .This extension uncovers the threshold 𝛽 = 2 √𝛼 as the critical sliding surface boundary: when 𝛽 > 2√𝛼 , the system exhibits a bifurcated sliding mode with the asymptotic regime depending on the initial conditions; when 𝛽 = 2 √𝛼 , the sliding mode is non-bifurcated and Ψ = 0 holds for all initial conditions; when 𝛽 < 2√𝛼 , no classical linear sliding mode corresponding to (5) exists. 
+
+## 4. Simulation of Four Asymptotic Cases 
+
+In this section, numerical simulations are conducted to investigate the dynamic evolution characteristics of the closed-loop system formulated in (1), where the control law designed in (5) is adopted as the core control strategy for all simulation scenarios. The primary objective of the numerical study is to quantitatively and qualitatively verify the theoretical asymptotic properties of the system state ratio derived in (6), with a particular focus on validating the distinct dynamic behaviors corresponding to the four predefined asymptotic cases. All simulation parameters and initial state conditions utilized in the numerical experiments are summarized in Tab. 1. These configurations are elaborately selected to strictly satisfy the prerequisite theoretical constraints for each of the four asymptotic cases, ensuring that the simulation scenarios can fully reproduce the dynamic regimes analyzed in the theoretical derivation. Such a parameter setting scheme guarantees the consistency between numerical verification and theoretical analysis, and enables a reliable validation of the proposed theoretical results. The theoretical conclusions presented in the previous sections are comprehensively validated via four cases of comparative numerical simulations, whose dynamic responses are visualized in Figs. 2, 3, 4, and 5. Specifically, Figs. 2a, 3a, 4a, and 5a depict the phase plane trajectories of the system (1) in the state space under the parameter and initial condition configurations corresponding to the four cases. For the first two asymptotic cases, the system phase trajectories gradually approach the system equilibrium point with a tangential trend toward the predefined sliding surface 𝑠 = 0 . This typical dynamic characteristic corresponds to the conventional smooth sliding mode entry                                    
+
+> Fan Zhang et al.: Preprint submitted to Elsevier Page 7 of 13 Bifurcation Beyond Surface-Tangential Asymptotic Convergence
+> Table 2
+> Simulation Results for Four Cases
+> Case Description Theoretical State Ratio Limit simulated State Ratio Limit
+> 10< 𝑘ℎ < 1,𝑥 1(0) + 𝑘𝑥 2(0) = 0 −2 .0000 −2 .0025 2𝑘ℎ > 1,ℎ𝑥 1(0) + 𝑥 2(0) ≠0−2 .0000 −1 .9975 30< 𝑘ℎ < 1,𝑥 1(0) + 𝑘𝑥 2(0) ≠0−2 .5000 −2 .4975 4𝑘ℎ > 1,ℎ𝑥 1(0) + 𝑥 2(0) = 0 −1 .6667 −1 .6642
+
+behavior, which is consistent with the classic sliding mode dynamic mechanism. In sharp contrast, the last two cases exhibit entirely different convergence characteristics, where the system phase trajectories converge along an implicit secondary manifold rather than the predefined sliding surface. Notably, the fourth case presents the most distinct geometric dynamic feature: the steady-state trajectory fails to align with the predefined sliding manifold 𝑠 = 0 , but maintains a constant and noticeable deflection angle relative to the manifold, and finally converges asymptotically along the inherent secondary slope. The above intuitive simulation observations solidly demonstrate that the terminal dynamic behavior of the system state trajectory is dominated by the dominant exponential convergence mode of the system, rather than constrained by the artificially predefined sliding surface 𝑠 = 0 .Furthermore, Figs. 2b, 3b, 4b, and 5b illustrate the time-domain evolution curves of the system states 𝑥 1(𝑡 ) and 
+
+𝑥 2(𝑡 ) for all four simulation cases. It can be clearly observed that the system state variables 𝑥 1(𝑡 ) and 𝑥 2(𝑡 ) continuously decay and eventually converge to zero under all four scenarios. This time-domain response characteristic verifies that the closed-loop system maintains global asymptotic stability uniformly, irrespective of the differences in convergence pathways and asymptotic dynamic regimes among the four cases, which further confirms the stability conclusion of the theoretical analysis. Figs. 2c, 3c, 4c, and 5c present the time-domain variation of the indicator variable Ψ corresponding to the four simulation cases. The results show that Ψ = 0 is always satisfied throughout the dynamic evolution process for the first two cases, whereas Ψ ≠ 0 holds steadily for the latter two cases. This distinct difference directly reveals that the system cannot achieve smooth entry into the predefined sliding surface when the 2 condition is satisfied. The essential cause of this phenomenon lies in the generation and dominance of the implicit secondary manifold in the closed-loop system dynamics, and this special manifold-induced dynamic deviation can also be clearly observed from the phase plane trajectory characteristics of the fourth case in Figs. 2a and 3a. In addition, the theoretical asymptotic state ratios of the four cases predicted by Theorem 1 are −2 .0000 , −2 .0000 ,
+
+−2 .5000 , and −1 .6667 , respectively, as quantified in Tab. 2. The theoretical predicted values and the numerical state ratios extracted from closed-loop simulation results are comparatively listed in Tab. 1. It is observed that the numerical simulation results are in excellent agreement with the theoretical calculation values, with the relative error of all four cases controlled below 0.15% . The negligible minor discrepancies are solely attributed to the inherent finite step size of the numerical simulation algorithm. The high consistency between simulation and theoretical results effectively verifies the correctness and accuracy of the proposed Theorem 1, and demonstrates the validity of the theoretical analysis for the four asymptotic dynamic cases. 
+
+## 5. Conclusion 
+
+This paper has presented a detailed analysis of the convergence characteristics of linear SMC applied to second-order systems. By deriving analytical expressions for the state trajectories, we have obtained exact formulas for the asymptotic state ratio and characterized the conditions under which convergence occurs strictly along the designed sliding surface. A central contribution is the demonstration that the conventional intuition of a unique smooth sliding entry is fundamentally incomplete: the system exhibits a bifurcation in its convergence modes, wherein the terminal state ratio depends critically on the interplay among control gains, surface parameters, and initial conditions. The analysis has further been generalized to PD controllers, revealing that the bifurcation threshold. These findings offer both deeper theoretical insight and a practical criterion for controller tuning in finite or fixed-time control applications.   
+
+> Fan Zhang et al.: Preprint submitted to Elsevier Page 8 of 13
+
+Bifurcation Beyond Surface-Tangential Asymptotic Convergence 0 0.5 1 1.5 2 2.5 -1 01
+
+(a) Phase portrait and state trajectories. 0 5 10 15 20 -1 012
+
+(b) The evolution of two states. 0 5 10 15 20 020 40 60 80 
+
+(c) Angular relationship between phase trajectories and reference lines. 
+
+Figure 2: Simulation Results for Case 1. 
+
+## CRediT authorship contribution statement 
+
+Fan Zhang: Conceptualization, Funding acquisition, Methodology, Writing - original draft. Jingwen Xu: Writing - Review & editing. Peng Li: Writing - Review & editing. Jun Zhou: Validation. Yaohua Guo: Funding acquisition, Writing - review & editing. 
+
+Fan Zhang et al.: Preprint submitted to Elsevier Page 9 of 13 Bifurcation Beyond Surface-Tangential Asymptotic Convergence 0 0.5 1 1.5 2 2.5 -1 01
+
+(a) Phase portrait and state trajectories. 0 5 10 15 20 -1 012
+
+(b) The evolution of two states. 0 5 10 15 20 020 40 60 80 
+
+(c) Angular relationship between phase trajectories and reference lines. 
+
+Figure 3: Simulation Results for Case 2. 
+
+## Declaration of Competing Interest 
+
+The authors declare that they have no known competing financial interests or personal relationships that could have appeared to influence the work reported in this paper. 
+
+Fan Zhang et al.: Preprint submitted to Elsevier Page 10 of 13 Bifurcation Beyond Surface-Tangential Asymptotic Convergence 0 0.5 1 1.5 2 2.5 -1 01
+
+(a) Phase portrait and state trajectories. 0 5 10 15 20 -1 012
+
+(b) The evolution of two states. 0 5 10 15 20 020 40 60 80 
+
+(c) Angular relationship between phase trajectories and reference lines. 
+
+Figure 4: Simulation Results for Case 3. 
+
+## Acknowledgments 
+
+This research was supported in part by Zhejiang Provincial Natural Science Foundation of China under Grant QN26F030021, in part by the Natural Science Basic Research Program of Shaanxi under Grant 2025JC-YBMS-718, and in part by the Fundamental Research Funds for the Central Universities. 
+
+Fan Zhang et al.: Preprint submitted to Elsevier Page 11 of 13 Bifurcation Beyond Surface-Tangential Asymptotic Convergence 0 0.5 1 1.5 2 2.5 -1 01
+
+(a) Phase portrait and state trajectories 0 5 10 15 20 -1 012
+
+(b) The evolution of two states. 0 5 10 15 20 020 40 60 80 
+
+(c) Angular relationship between phase trajectories and reference lines. 
+
+Figure 5: Simulation Results for Case 4. 
+
+## References 
+
+[1] V. Utkin, J. Guldner, J. Shi, Sliding Mode Control in Electro-Mechanical Systems (Second Edition), CRC Press, 2009. [2] A. Javadi, S. H. Moosapour, R. Chaichaowarat, Root barrier function-based adaptive sliding mode control for serial variable stiffness actuators, Journal of the Franklin Institute 363 (7) (2026) 108616. 
+
+Fan Zhang et al.: Preprint submitted to Elsevier Page 12 of 13 Bifurcation Beyond Surface-Tangential Asymptotic Convergence 
+
+[3] K. D. Young, V. I. Utkin, U. Ozguner, A control engineer’s guide to sliding mode control, IEEE transactions on control systems technology 7 (3) (1999) 328–342. [4] L. Ovalle, A. Gonzalez, L. Fridman, H. Haimovich, Discrete implementations of sliding-mode controllers with barrier-function adaptations require a revised framework, Automatica 185 (2026) 112797. [5] C. Kravaris, G. Savoglidis, Tracking the singular arc of a continuous bioreactor using sliding mode control, Journal of the Franklin Institute 349 (4) (2012) 1583–1601. [6] W. Perruquetti, J. P. Barbot, SlidiNg Mode Control in Engineering, Vol. 11, Marcel Dekker New York, 2002. [7] G. Chang, Z. Chen, C. Guo, M. Pang, Neural network-based nonsingular terminal sliding mode control of the stewart platform, CAAI Transactions on Intelligent Systems 19 (2) (2024) 353–359. [8] S. Ranjan, S. Majhi, Adaptive neural predefined-time attitude control of an uncertain quadrotor uav with actuator fault, IEEE Transactions on Circuits and Systems II: Express Briefs 71 (12) (2024) 4939–4943. [9] A. T. Banza, I. Mareels, Nonlinear integral sliding mode control design for singularly perturbed systems under matched and unmatched uncertainties, IEEE Transactions on Automatic Control 70 (5) (2025) 3324–3330. [10] X. Guan, T. Guan, K.-F. Cedric Yiu, B. Li, Y. Song, Predefined-time and predefined-accuracy sliding mode control with unknown bound uncertainties, IEEE Transactions on Circuits and Systems I: Regular Papers 72 (11) (2025) 7380–7388. [11] Y. Deng, E. Moulay, V. Léchappé, Z. Chen, B. Liang, F. Plestan, Robust nonsingular predefined-time terminal sliding mode control for perturbed chains of integrators, IEEE Transactions on Automatic Control 69 (12) (2024) 8946–8953. [12] B. Jiang, Y. Liu, Y. Liu, J. Lu, Event-triggered robust control of linear systems: Sliding mode cone method, Systems & Control Letters 213 (2026) 106439. [13] B. Lu, Y. Fang, N. Sun, Continuous sliding mode control strategy for a class of nonlinear underactuated systems, IEEE Transactions on Automatic Control 63 (10) (2018) 3471–3478. [14] F. A. Miranda-Villatoro, B. Brogliato, F. Castaños, Set-valued sliding-mode control of uncertain linear systems: Continuous and discrete-time analysis, SIAM Journal on Control and Optimization 56 (3) (2018) 1756–1793. [15] B. Jiang, J. Li, C. Li, Y. Wenqing, Review on finite-time control method for a second-order system, Control Theory & Applications 41 (5) (2024) 769–797 (In Chinese). [16] F. Zhang, D. Meng, Bettering adaptive iterative learning for rotation maneuvers of rigid bodies via segment-wise rectification, Automatica 174 (2025) 112125. [17] Z. Man, A. Paplinski, H. Wu, A robust mimo terminal sliding mode control scheme for rigid robotic manipulators, IEEE Transactions on Automatic Control 39 (12) (1994) 2464–2469. 
+
+Fan Zhang et al.: Preprint submitted to Elsevier Page 13 of 13

@@ -1,0 +1,318 @@
+Title: Impedance-Aware Optimized Pulse Patterns for Reconfigurable Battery Systems
+
+URL Source: https://arxiv.org/pdf/2609.16828v1
+
+Published Time: Wed, 16 Sep 2026 00:53:15 GMT
+
+Number of Pages: 11
+
+Markdown Content:
+> PREPRINT — SUBMITTED TO THE IEEE OPEN JOURNAL OF POWER ELECTRONICS 1
+
+# Impedance-Aware Optimized Pulse Patterns for Reconfigurable Battery Systems 
+
+Julian Estaller, Johannes Buberger, Andreas Wiedenmann, Wolfgang Grupp, Tobias Högerl, and Thomas Weyh 
+
+Abstract —Reconfigurable battery systems (RBS) synthesize the converter output voltage by inserting and bypassing battery cell groups, so every switching state changes not only the source voltage but also the source impedance. This paper shows that this configuration-dependent impedance breaks a tacit assumption of optimized pulse patterns (OPP): patterns designed with the customary linear plant model overestimate their achievable current quality by up to an order of magnitude and converge to a distortion floor set by the resistance modulation. We propose impedance-aware optimized pulse patterns (IA-OPP), which embed the level-dependent source impedance in the opti-mization objective, combined with an event-budget formulation that treats the reconfiguration rate of the communication bus as a managed resource. An exact closed-form evaluation of the piecewise-exponential load current renders the objective smooth in the switching instants. In a simulated cascaded-bridge reference system, IA-OPP attains 0.52 % current total harmonic distortion (THD) at a reconfiguration rate of 2.4 kHz, outperforming nearest-level modulation, phase-shifted carrier pulse-width modulation (PWM) at up to five times the switching rate, and a classical OPP baseline at every event budget; the advantage persists across the modulation-index range and un-der ±30 % parameter mismatch. For three-wire star-connected systems, masking triplen orders in the objective restores the full advantage, with the impedance-aware patterns beating their linear-model counterparts by about 20 % at equal budget. 
+
+Index Terms —Reconfigurable battery systems, cascaded H-bridge, optimized pulse patterns, nearest-level modulation, se-lective harmonic mitigation, multilevel converters, THD. 
+
+I. I NTRODUCTION 
+
+# RECONFIGURABLE battery systems (RBS) move the power electronics into the battery itself: half-bridge sub-modules (SMs) insert or bypass individual cells or cell groups, so the converter synthesizes its ac output voltage directly from the battery in cell-voltage granularity [1]–[3]. In a cascaded-bridge realization, the submodules of each module set the voltage magnitude in fine steps while an H-bridge per module provides the polarity. For modulation this yields an unusually rich actuator: the phase voltage is a staircase whose step 
+
+instants and step heights are both free—a design freedom well beyond that of classical multilevel converters with a fixed level sequence. The task of the modulator is to convert this freedom into current quality without losing sight of the cost of switching. 
+
+The authors are with the Chair of Electrical Energy Supply, Univer-sity of the Bundeswehr Munich, 85577 Neubiberg, Germany (e-mail: ju-lian.estaller@unibw.de). This work has been submitted to the IEEE for possible publication. Copyright may be transferred without notice, after which this version may no longer be accessible. 
+
+The application scenario considered here is a motor-type load, represented by a series RL surrogate. It shapes the requirement profile in a characteristic way. Operation is sta-tionary and periodic, with the reference constant over many fundamental periods. What matters is the quality of the 
+
+current , since low-order current harmonics cause additional losses and torque ripple. At the same time, every switching action is expensive—as a loss event in the semiconductors and, specifically for reconfigurable systems, as a telegram on the communication bus that coordinates the submodules. The goal is therefore maximum current quality at a minimal, predictable 
+
+number of switching events. This is precisely the domain of optimized pulse patterns (OPP) [4]–[6]: when the operating point varies slowly, switching patterns can be computed offline to be optimal over a full period, stored in a lookup table, and merely replayed online. For an RBS feeding a motor-type load, this class of methods suggests itself as the natural choice. On closer inspection, however, no existing member of the class fits the system, because reconfigurable battery systems violate two basic assumptions of the classical OPP formu-lation. The first concerns the source. The configuration of an RBS determines its impedance: every voltage level cor-responds to a distinct configuration and hence a distinct path resistance, so the source resistance is modulated synchronously with the switching pattern . Classical OPP optimization, in con-trast, presumes an ideal or at least configuration-independent source. A pattern that is optimal for such a model is no longer optimal for the real plant, and the deviation is systematic, not random. Conversely, untapped potential lies here: a method that already knows the configuration-dependent impedance in its objective can exploit it deliberately instead of optimizing past it. The second peculiarity concerns the cost of switching. Clas-sical OPP formulations count pulses of a fixed step height; the pulse number serves simultaneously as switching-frequency and loss measure. In an RBS these quantities decouple: a level change is one string reconfiguration and loads the communi-cation bus exactly once—regardless of how many submodules switch in the process—while the number of submodule switch-ing actions governs the switching losses. Together with the free step size, this creates a cost structure that a single pulse number no longer describes. The appropriate formulation is an 
+
+event budget of level changes per period, assessed by a dual metric of bus events and submodule switching actions. This leads to the thesis of the paper: OPP is the right class of methods for reconfigurable battery systems, but only a formulation that incorporates both structural properties— arXiv:2609.16828v1 [eess.SY] 15 Sep 2026 PREPRINT — SUBMITTED TO THE IEEE OPEN JOURNAL OF POWER ELECTRONICS 2
+
+configuration-dependent source impedance and event-based cost structure—into the optimization unlocks the potential of the system. We develop such a formulation as impedance-aware optimized pulse patterns (IA-OPP). The contributions are: 1) an OPP objective that models the level-dependent source impedance of the RBS and thereby minimizes the cur-rent distortion of the real plant (Sections III and IV); 2) a cost formulation matched to the event-based structure of the system: an exact event budget per period with free step sizes, assessed by the dual metric of string re-configurations and submodule switching actions, instead of a fixed pulse number as the sole switching measure (Section IV); 3) an exact, sampling-free closed-form evaluation of the switched RL plant under level-synchronously varying path resistance, which yields exact Fourier coefficients and loss figures and places the optimization and every comparison in this paper on an identical footing (Sec-tion III); 4) a quantitative measurement of the value of plant model-ing via a single-variable experiment against a classically formulated OPP baseline at identical budget, together with a benchmark against carrier-based and reference-tracking methods, a robustness analysis, and a three-phase extension in which a triplen-masked objective restores the full advantage (Sections V and VI). The study is simulation-based throughout; all quantitative claims rest on an exact analytical evaluation of the switched RL plant rather than on time-stepping simulation, and ex-perimental validation remains future work (Section VII). The remainder of the paper is organized as follows. Section II posi-tions the method within the OPP literature and the modulation literature on reconfigurable batteries. Section III introduces the reference system, the level-synchronous resistance mod-ulation, and the closed-form evaluation. Section IV develops the IA-OPP optimization. Section V reports the single-phase results, including the classical-OPP baseline experiment, the benchmark, and the robustness analysis. Section VI extends the analysis to three-wire star-connected systems, and Section VII concludes. II. R ELATED WORK 
+
+The idea of optimizing the switching angles of a periodic waveform offline against a spectral criterion goes back to the selective harmonic elimination (SHE) of Patel and Hoft [7], [8]. It was soon complemented by the minimization of a scalar distortion measure [4] and by the synchronous optimal pulse-width modulation (PWM) developed by Holtz and coworkers for high-power drives, later extended to multilevel converters [5], [6]. This line established the conventions that the OPP family shares and that the present method adopts without claiming them as contributions: quarter-wave symmetry to reduce the search space, the number of switching events per period as the design parameter, and the storage of patterns in offline lookup tables over the modulation index. The state of the optimization art now extends to certified lower bounds on the attainable distortion, with modern formulations optimizing the sequence of voltage levels alongside the switching instants [9]. For multilevel converters, angle optimization was trans-ferred to staircase waveforms, first with a fixed level se-quence [10]–[12], later for cascaded bridges with unequal dc-link voltages [13] up to minimization of the current total harmonic distortion (THD) with the source-voltage ratios as additional design variables [14]. These works share one modeling assumption: the sources may be unequal, but they are constant —the voltage spectrum, or the current of a linear surrogate plant, is evaluated while the source itself remains unaffected by the switching state. A source impedance that is modulated synchronously with the levels, as exhibited by a reconfigurable battery system, lies outside this model class. The same holds for OPP formulations for modular multilevel converters [15], which account for internal system states but not for a configuration-dependent source impedance. For battery-integrated converters—the system class of this paper—modulation has so far mainly served battery manage-ment: works on nearest-level and carrier-based schemes use the reconfiguration freedom for state-of-charge balancing, loss and temperature distribution, and the mitigation of ripple-induced aging [1], [2], [16]–[19]. That the configuration simul-taneously determines the impedance of the system is known in this literature as a system property and is used, e.g., in loss and ripple models; as part of a modulation objective —i.e., as a quantity that shapes the switching pattern itself—it has, to the best of the authors’ knowledge, not been used. The most recent work confirms this picture: current research on modulation optimization for reconfigurable batteries shifts carrier phases online by means of neural networks against a THD criterion on a linear model [20]—carrier-based, greedy in operation, and without impedance in the plant model, and thus complementary to the offline, period-optimal, impedance-aware patterns pursued here. Finally, finite-control-set model predictive control (FCS-MPC) does bring a plant model into the switching decision [21], but optimizes greedily over short horizons at every sampling step: neither does a period-optimal pattern emerge, nor is the number of events per period deterministic—a structural disadvantage for the bus-bound operation of an RBS. Table I condenses this positioning. IA-OPP differs from the optimizing methods in three characteristics: the plant model (level-dependent source impedance), the objective eval-uated on it (current THD of the real plant), and the cost formulation—an exact event budget per period with free step sizes, assessed by the dual metric of string reconfigurations and submodule switching actions, instead of a fixed pulse number as the sole switching measure. The freedom of the level sequence taken by itself is shared with recent OPP formulations [9]; what is new is its coupling to the event-based cost structure of the RBS. Conversely, we do not claim optimized angle computation as such, quarter-wave symmetry, or the lookup-table principle—in these respects the method deliberately stands in the tradition of the OPP family, inherit-ing its maturity and operational track record. The quantitative evidence that the plant model carries the difference follows PREPRINT — SUBMITTED TO THE IEEE OPEN JOURNAL OF POWER ELECTRONICS 3                       
+
+> TABLE I POSITIONING OF IA-OPP AGAINST THE OPTIMIZING MODULATION METHODS .SHE-PWM OPP FCS-MPC IA-OPP
+> Design offline offline online offline
+> Switching instants optimized optimized grid-bound optimized
+> Step height fixed fixed free free
+> Objective selective elimination THD-optimal (voltage) cost function per step
+> THD-optimal (current)
+> Plant model none (ideal source) ideal to linear linear (prediction)
+> level-dep. impedance
+> Events per period fixed (pulse no.) fixed (pulse no.) variable
+> budgeted (n)
+> (a)
+> Mod. 1 Mod. 2 · · · Mod. 5
+> iRLload
+> vs
+> (b)
+> SM 1 SM 2 SM 12 H-bridge (polarity) SM chain
+> (c)
+> ucell
+> half-bridge
+> Fig. 1. Reference system. (a) Single-phase string of five cascaded modules feeding the RL load. (b) Module: twelve series submodules form the dc side of an H-bridge polarity stage. (c) Submodule: a half-bridge inserts or bypasses one battery cell.
+
+in Section V through the direct comparison with a classically formulated OPP baseline at identical budget. III. S YSTEM MODEL AND EVALUATION METRICS 
+
+A. Reference System and Operating Point 
+
+The reference system is the single-phase string of acascaded-bridge RBS (Fig. 1): five series-connected modules, each comprising twelve half-bridge submodules with one battery cell each (cell voltage 3.7 V). The submodule layer thus provides up to 60 voltage levels per string with a range of 222 V; the H-bridges set the polarity. The operating point represents a motor-type load at partial load by an RL surro-gate: fundamental frequency 50 Hz , voltage amplitude 80 V—a modulation index ma ≈ 0.36 , defined as the ratio of the reference amplitude to the 222 V maximum string voltage— load resistance R = 2 Ω , and load inductance L = 10 mH .No back electromotive force (back-EMF) is modeled; the sur-rogate captures the stationary current response only. Table II summarizes the parameters. 
+
+B. Level-Synchronous Resistance Modulation 
+
+The coupling between configuration and impedance takes a form that is decisive for modulation. The effective path 
+
+> TABLE II PARAMETERS OF THE REFERENCE SYSTEM AND THE NOMINAL OPERATING POINT .
+
+Quantity Value System Modules per string 5Submodules per module 12 Cell voltage 3.7 V
+
+Number of levels (max.) 60 Cell internal resistance rbat 10 mΩ 
+
+Submodule on-resistance rSM 1 mΩ 
+
+H-bridge on-resistance rHB 2 mΩ 
+
+Operating point Fundamental frequency 50 Hz 
+
+Voltage amplitude (reference) 80 V
+
+Modulation index ma ≈ 0.36 
+
+Load resistance R 2 Ω
+
+Load inductance L 10 mH 
+
+resistance at voltage level k is 
+
+Rpath (k) = R + 5 · 2 rHB +
+
+l |k|
+
+> 12
+
+m
+
+· 12 rSM + |k| · rbat , (1) with the load resistance R, two conducting semiconductors per H-bridge ( rHB = 2 mΩ , in the path even when a module is bypassed), the submodule contribution ( rSM = 1 mΩ ), and the internal resistances of the inserted cells ( rbat = 10 mΩ ). The submodule term jumps module-wise: in every active module the entire submodule chain carries the current—one conducting semiconductor per submodule, whether its cell is inserted or bypassed—whereas bypassed modules contribute no submodule term. Only the battery term grows linearly with the level. At the nominal operating point (levels up to 
+
+±22 in use), the path resistance therefore spans the range from 2.020 Ω (zero level) to 2.264 Ω—a level-synchronous modulation of 12 % relative to the zero level. The plant is consequently not time-invariant but is modulated in step with the switching pattern itself. Any method that designs its pattern on a time-invariant model systematically works against the wrong plant; the consequences are quantified in Section V-C. Since the level magnitude |k(t)| repeats with half the funda-mental period, Rpath (t) contains exclusively even harmonics: at the nominal point, a mean of 2.18 Ω dominated by the second order with an amplitude of 99.5 mΩ —a modulation depth of about 4.6 %. An even-modulated transfer behavior mixes with the odd fundamental to exclusively odd current har-monics; the dominant mixing product of the second resistance harmonic and the fundamental lands on the third order. This prediction holds quantitatively: from R2, the fundamental cur-rent, and the plant impedance at 3ω, a third current harmonic of 0.107 A follows for a voltage-faithful staircase—the exact evaluation yields 0.114 A, the remaining 7 % stemming from higher-order mixing cascades. This mechanism will reappear throughout the paper as a distortion floor for all voltage-oriented methods. 
+
+C. Closed-Form Evaluation of the Switched RL Plant 
+
+Between two switching events, the RL plant sees a constant level voltage un at constant path resistance Rn. The current PREPRINT — SUBMITTED TO THE IEEE OPEN JOURNAL OF POWER ELECTRONICS 4
+
+follows the closed-form solution 
+
+i(t) = un
+
+Rn
+
++
+
+
+
+i(tn) − un
+
+Rn
+
+
+
+e−(t−tn)/τ n , τn = LRn
+
+, (2) for t ∈ [tn, t n+1 ), where the segment initial values i(tn) are chained by continuity and the periodicity of the steady-state solution closes the system of equations. Since (2) consists piecewise of exponential and constant terms, all evaluation quantities—the Fourier coefficients of the current, root-mean-square (RMS) values, active and apparent power, and the ohmic losses—can be integrated segment-wise exactly . Time-stepping simulation is dispensed with entirely. This has two consequences that carry the paper. First, all metrics are free of sampling and discretization errors and smooth in the switching instants—the prerequisite for the continuous timing refinement in Section IV. Second, every method in this paper—IA-OPP, baselines, and reference methods—passes through the same closed-form evaluation, so differences in the results are attributable exclusively to the patterns themselves. 
+
+D. Evaluation Metrics 
+
+Current quality is assessed as the THD of the load current, 
+
+THD i =
+
+qP50  
+
+> h=2
+
+ˆI2
+
+> h
+
+ˆI1
+
+, (3) with the exactly computed harmonics ˆIh up to order 50. Restricting the band is uncritical in the reference system be-cause the load inductance strongly attenuates higher-frequency components; in-band and wide-band THD practically coincide. As the feasibility condition, the fundamental amplitude of the staircase source voltage—computed exactly from its Fourier series—must match the 80 V reference within 1 %; the current and load-voltage fundamentals do not enter feasibility. The phase is fixed by construction for quarter-wave-symmetric patterns and poses no separate condition. Losses follow in closed form from the segment-wise Rn-weighted integrals of the squared current. The cost of switching is captured by the dual metric motivated in Section I. The number of level changes per fun-damental period, n, counts the string reconfigurations and is the measure of bus load; at 50 Hz , n = 48 corresponds to a bus rate of 2.4 kHz . The number of submodule switching actions per period captures the loss effort: a level change spanning several levels is one bus event but switches correspondingly many submodules. The two quantities decouple systematically in an RBS; only their pair describes the switching cost completely. IV. I MPEDANCE -A WARE OPTIMIZED PULSE PATTERNS 
+
+A. Pattern Structure and Search Space 
+
+IA-OPP optimizes staircase patterns under three structural constraints. First, the pattern is quarter-wave symmetric : all even harmonics and all cosine components vanish, and the search space reduces to the first quarter period—the classical OPP convention [7]. Second, the quarter wave is strictly mono-tonically increasing : every switching edge raises the level, and no event is spent on up-and-down movement within the quarter wave. Third, the step sizes are free : an edge may switch several submodule levels at once. A pattern is thus completely described by the K edge instants and the associated level heights of the first quarter period; per fundamental period, 
+
+n = 4 K level changes result. The event budget n—the bus load of Section III-D—is thereby directly the central design parameter, and monotonicity ensures that every budgeted event produces voltage swing. 
+
+B. Two-Stage Optimization 
+
+For each budget, the pattern is determined in two stages: a dynamic program (DP) provides the level sequence and an initial placement of the edge instants; a coordinate descent subsequently refines the edge instants continuously on the exact plant model. The DP operates on a discretization of the quarter period into 90 intervals. The grid is adaptive: the interval density follows 0.30 + 0 .70 | cos( ωt )|—dense at the zero crossing of the reference, where it is steep and edge instants strongly influence the result, coarser at the crest. The state space comprises the interval index, the voltage level, and the number of level changes already spent; admissible transitions are remaining on the level or switching to a strictly higher one— the monotonicity of the quarter wave is thus built directly into the transition structure. As additive cost, each interval contributes the time-weighted squared error of the level voltage against an impedance-compensated reference, 
+
+Vreq (t) = videal (t) + Rconv (ℓ) iideal (t), (4) i.e., the ideal load voltage plus the voltage drop that the level-dependent converter-internal resistance share Rconv (ℓ)
+
+from (1) causes at the ideal current. Impedance awareness is thus anchored already in the initialization: even the discrete candidate aims not at the ideal voltage shape but at the predistorted shape that produces the ideal current on the real plant. The DP criterion is deliberately a surrogate—it renders the problem additive and hence exactly solvable; assessment by current THD is left to the refinement and the selection rule. For every reachable number of changes, the best terminal state is reconstructed into a quarter-wave pattern, mirrored to the full period, and evaluated exactly—one candidate per exact budget. That the budget is met exactly rather than as an upper bound is a deliberate choice: only then does a clean mapping from bus load to attainable current quality emerge—the Pareto view evaluated in Section V-D. The second stage refines the edge instants at fixed level sequence by cyclic coordinate descent: per edge, aone-dimensional minimization (golden-section search with parabolic interpolation) is executed between the neighboring edges, with a minimum spacing of T / 7200 ≈ 2.8 μs and a time resolution of 100 ns ; a new edge instant is accepted only upon strict improvement. The passes over all edges terminate as soon as a full pass improves the objective by less than 
+
+10 −3 percentage points. This direct search on the continuous parameter is possible because the closed-form evaluation of Section III-C rates every candidate configuration exactly and PREPRINT — SUBMITTED TO THE IEEE OPEN JOURNAL OF POWER ELECTRONICS 5
+
+smoothly in the edge instants—the optimizer is not fighting discretization noise. The refinement objective is 
+
+J = THD i + w · ε1 + B(ε1), w = 0 .01 , (5) with the fundamental error ε1 of the staircase source voltage and a hard barrier B upon violation of the 1 % tolerance. The fundamental error is thus not forced to zero but only weakly penalized: within the tolerance band, the optimization may shift the fundamental amplitude if doing so lowers the current THD. The choice of w is uncritical: the budget selection is invariant over more than three orders of magnitude of w, and the attained THD lies on a plateau (0.519 to 0.521 %) for 
+
+w ≤ 1; only a dominant fundamental weight degrades the result markedly, because it subjects the edge placement to the wrong goal. The decisive point is that in (5) the current THD of the real plant appears: through the closed-form evaluation, the level-dependent path resistance enters every rating—this, together with (4), is where IA-OPP departs from the classical OPP formulation. The refinement is a local search from a single DP ini-tialization; a multi-start probe at the selected budget shows this to be benign. Ten runs at n = 48 with the initial edge instants jittered by up to 20 % of the local edge spacing all remain feasible and end within 0.513 to 0.522 % THD (standard deviation 0.004 percentage points), with individual starts finding marginally better local optima than the reported solution—the headline values are thus conservative. Only at very small budgets ( n ≤ 20 ) does the single-start scheme scatter noticeably; the operating range of this paper ( n ≥ 24 )is unaffected. 
+
+C. Selection Rule and Operating Modes 
+
+From the refined candidates—one per budget—a determin-istic rule selects: feasible is whoever meets the fundamental tolerance; among the feasible, the minimum current THD wins; if candidates lie closer than 0.01 percentage points, the smaller budget wins. The tie-break encodes the dual metric into the selection: current quality that differs only in the fourth decimal place does not justify a higher bus load. Besides selection at a prescribed budget, the method supports a target-THD mode: the budgets are traversed in ascending order and the search stops at the first budget meeting the required current quality—yielding the minimum bus load for a demanded quality, the more natural question in application. Like classical OPP, the method is an offline approach: the patterns are precomputed per operating point and stored as a lookup table; online, only the replay of the switching table remains. The computational effort of the optimization is incurred once, outside of operation—and it is modest: a full budget sweep at one operating point ( n = 4 to 96 , i.e., 24 can-didate optimizations) completes in 5.8 s in a single-threaded MATLAB implementation on a current desktop-class CPU, of which the dynamic program and candidate construction take 0.2 s and the timing refinement the remainder. Populating a lookup table over the modulation-index range is thus a matter of minutes, not hours. Time (ms)       
+
+> 0510 15 20
+> Voltage (V), current (A)
+> -100 -50 050 100
+> IA-OPP voltage ideal voltage load current ideal current
+> Fig. 2. Selected IA-OPP solution ( n= 48 ) at the nominal operating point: staircase source voltage and load current over one fundamental period, each with its ideal reference.
+
+V. S IMULATION RESULTS 
+
+All following results refer to the nominal operating point of Table II; every method passes through the identical closed-form evaluation of Section III-C. The reference methods are nearest-level modulation with fixed step size S (S-NLM, where 1S-NLM switches single submodule levels) and phase-shifted carrier PWM (PS-PWM) with carrier-to-fundamental frequency ratio mf , applied at the submodule level and at the module level; the classical OPP baseline is introduced in Section V-C. 
+
+A. Selected Solution 
+
+With free budget selection, the selection rule picks the pattern with n = 48 level changes per period: current THD 0.521 %, source-voltage fundamental amplitude 80.507 V (er-ror 0.633 %, within tolerance), and losses 34.8 W. In the dual metric this corresponds to a bus load of 2.4 kHz at 88 submodule switching actions per period (4.4 kHz ). Fig. 2 shows the pattern over one fundamental period: the staircase voltage hugs the ideal voltage with a visibly nonuniform edge distribution—dense near the zero crossings, where the reference is steep, and wide plateaus at the crest. The resulting load current is barely distinguishable from the ideal current at this scale. A comparison of the current-error waveforms against the reference methods at comparable switching effort is instruc-tive. The ideal current is deliberately defined against the pure load ( R and L, without any converter impedance)—it is what an ideal converter would deliver. Accordingly, all methods share a slowly varying error component of nearly identical shape: the fundamental response to the time-weighted mean series resistance of the converter of about 0.18 Ω, which lowers the current fundamental from 21.5 A to 21.1 A and shifts its phase by roughly 2 ◦. This component is common to all methods and neutral for the THD, which counts only orders h ≥ 2. It is worth noting that it turns out slightly smaller for IA-OPP than the mean impedance would suggest (0.83 A instead of 0.93 A peak)—a first visible effect of the PREPRINT — SUBMITTED TO THE IEEE OPEN JOURNAL OF POWER ELECTRONICS 6                               
+
+> TABLE III DUAL SWITCHING METRIC ,CURRENT THD, AND CONDUCTION LOSSES OF THE MAIN CANDIDATES AT THE NOMINAL OPERATING POINT .Method Bus rate (kHz) SM rate (kHz) THD (%) Cond. losses (W) IA-OPP ( n= 48 )2.4 4.4 0.521 34.8 Classical OPP ( n= 48 )2.4 4.2 0.607 33.2 1S-NLM 4.4 4.4 0.561 34.2 2S-NLM 2.2 4.4 0.562 34.5 PS-PWM submodule ( mf= 2 )11.8 11.8 0.571 34.1 PS-PWM module ( mf= 10 )4.8 57.6 0.750 32.9
+
+predistortion isolated in Section V-C. What distinguishes the methods is the superimposed switching ripple—the quantity the THD measures: a coarse 7S staircase buys its low event count with wide error arcs (1.09 %; included for illustration only—as the benchmark in Section V-D establishes, fixed steps S ≥ 4 cannot meet the fundamental tolerance at this operating point); module-level PS-PWM imprints hard ripple spikes (0.75 %); submodule-level PS-PWM (0.57 %) and 2S-NLM (0.56 %) lie close together; IA-OPP shows the smoothest trace (0.52 %), at a bus load undercut in this field only by the two fixed-step staircases—marginally by the 2S (2.2 kHz 
+
+versus 2.4 kHz , at 0.04 percentage points higher THD) and, at the price of infeasibility, by the 7S. Table III collects the dual metric, the current THD, and the conduction losses of the main candidates. Two observations. First, the table makes the decoupling of the two switching met-rics concrete: for PS-PWM every switching action is a string reconfiguration (the two rates coincide), whereas the staircase methods separate them—IA-OPP pairs 2.4 kHz of bus load with 4.4 kHz of submodule actions, and module-level PS-PWM turns a moderate bus rate into a thirteenfold submodule rate because every module event switches twelve submodules. Second, the conduction losses lie in a narrow band (32.9 to 34.8 W, or 7.8 to 8.0 % of the delivered fundamental power); the absolute differences stem mainly from the delivered power itself—IA-OPP, exploiting the tolerance band with a 0.6 %
+
+fundamental amplitude, also delivers the most power. The loss figures are conduction losses only: switching losses are not modeled, and precisely for them the submodule switching rate remains the proxy—module-level PS-PWM shows the lowest conduction losses in the field, but at a submodule rate that real switching losses would dominate. 
+
+B. Spectral Distribution 
+
+Fig. 3 shows the current harmonics up to order 50. Three observations structure the picture. First, all methods share a dominant third harmonic of about 0.5 %—it alone accounts for the bulk of the THD of every candidate and is the first hint of a method-independent mechanism, isolated in Section V-C. Second, the methods differ in where they place the remain-ing distortion: 1S-NLM spreads it broadband over the odd orders; IA-OPP deliberately suppresses the low orders and shifts residual energy toward medium orders, where the load inductance attenuates it more strongly—the spectral image of impedance-aware optimization. Submodule-level PS-PWM 3 5 7 11 15 20 30 40 50 
+
+Harmonic order  
+
+> 10 -3
+> 10 -2
+> 10 -1
+> 10 0
+> Current harmonic (% of fundamental)
+> IA-OPP 1S-NLM PS-PWM (submodule) PS-PWM (module) classical OPP
+> Fig. 3. Current harmonics at the nominal operating point (logarithmic, relative to the fundamental) for IA-OPP, 1S-NLM, PS-PWM at submodule and module level, and the classical OPP baseline at identical budget.
+
+keeps the considered band almost empty but pays with carrier energy above the band and massive switching effort: 2.7 times the submodule switching rate and—since for it every switching action is also a string reconfiguration—4.9 times the bus load of the IA-OPP solution. For module-level PS-PWM the carrier sidebands already grow into the band from h ≈ 43 . Third, the classical OPP baseline carried along (identical budget n = 48 )shows elevated harmonics at h = 7 to 11 —a preview of the systematic effect of misplaced edges that the next subsection quantifies. 
+
+C. Value of Plant Modeling 
+
+The thesis of this paper—only impedance in the objective unlocks the potential of the system—can be measured directly. To this end, a classical OPP baseline is constructed that differs from IA-OPP in exactly one respect: the same optimizer with the same pattern structure, the same budgets, the same refinement, and the same selection rule rates its candidates during optimization on a linear plant model—the converter-internal resistances are set to zero in the objective, exactly as in the classical OPP criterion of Section II. With the converter resistances zeroed, the current THD of the linear RL plant is equivalent to an impedance-weighted voltage distortion—the customary weighted-THD (WTHD) OPP criterion of Table I; evaluating the baseline by current THD rather than voltage THD makes it, if anything, the stronger variant of the classical formulation. The finished patterns of both methods then pass through the same exact evaluation on the real plant. Any difference in the outcome is thus causally attributable to the plant model. 
+
+1) Prediction Gap of the Linear Model: The first finding concerns the self-assessment of the classical formulation: for budgets n ≥ 24 , the linear model promises current THD values of 0.047 to 0.25 %—on the real plant the same patterns attain 0.56 to 0.64 %, a deviation of up to a factor of 10. Classical OPP solves its optimization problem precisely, but it is the PREPRINT — SUBMITTED TO THE IEEE OPEN JOURNAL OF POWER ELECTRONICS 7
+
+wrong problem: its quality prediction is unusable as a design basis, because it promises a current quality that no switching budget, however large, can redeem. 
+
+2) Resistance Modulation as a THD Floor: The sec-ond finding explains why the prediction fails. With growing budget, the real THD of classical OPP converges to about 0.565 %—the same value at which 1S-NLM and submodule-level PS-PWM saturate (Fig. 5). This is no coincidence but a common floor with the precisely identifiable mechanism of Section III-B: all these methods are voltage-oriented— they reproduce the ideal voltage shape ever more faithfully, while the plant translates voltage into current through the level-synchronously modulated path resistance (1), whose dominant second harmonic mixes with the fundamental onto the third current harmonic. For voltage-oriented methods this distortion is a floor that no amount of switching effort breaks, because it does not originate in the pattern but in the plant. (Since the third harmonic is a common-mode quantity in a three-phase arrangement, the floor question poses itself anew there; Section VI pursues it.) A counter-experiment confirms this: if the same patterns are evaluated on a plant with constant resistance, the floor vanishes—submodule PS-PWM drops to 0.0002 %, 1S-NLM to 0.073 %. The floor is thus a property of the plant, not of the patterns. The reverse direction is equally instructive: the IA-OPP solution attains only 0.245 % on the constant-resistance plant—worse than the PWM there, because its predistortion now corrects an error that no longer exists. Pattern and plant belong together; a pattern is optimal only for the plant it was designed for. 
+
+3) Implicit Predistortion: How IA-OPP undercuts the floor is shown in Fig. 4 by the direct comparison of both methods at identical budget n = 48 . The voltage staircases (top) are nearly congruent—the differences are limited to slightly shifted edges and a marginally higher crest plateau. The current errors (bottom) differ clearly: the error of classical OPP oscillates at about ±1.1 A and carries the elevated harmonics h = 7 
+
+to 11 of Fig. 3; IA-OPP stays below ±0.85 A with a visibly more uniform trace. The effect arises almost entirely from the placement of the edges and the choice of the step sizes—the pattern aims, as laid out in (4), at the predistorted voltage shape that produces the ideal current on the real plant. Exploitation of the fundamental tolerance band contributes only marginally at this budget (below 0.01 percentage points); it becomes visible as a partial compensation of the common fundamental-response deviation discussed in Section V-A. In numbers: at n = 48 , 0.607 % versus 0.521 % separate the two methods—a relative advantage of about 14 %; IA-OPP thereby undercuts the floor of the voltage-oriented methods, as the only method in the field, by close to 8 %. With shrinking budget the gap grows drastically— n = 12 : 2.00 %
+
+versus 1.07 %; n = 8 : 5.00 % versus 1.99 %—because the fewer edges are available, the more their correct placement matters. The value of plant modeling is thus measured, not asserted: same optimizer, same budget, same evaluation—only the model in the objective differs, and with it the prediction capability (factor 10), the attainable quality (floor broken), and the efficiency of small budgets (factor 2 to 2.5). 0 5 10 15 20       
+
+> Source voltage (V)
+> -100 -50 050 100
+> Time (ms)
+> 0510 15 20
+> Current error (A)
+> -1.5 -1 -0.5 00.5 11.5
+> IA-OPP classical OPP
+> Fig. 4. Implicit predistortion: IA-OPP and classical OPP at identical budget
+> n= 48 —nearly congruent voltage staircases (top), clearly different current errors (bottom).
+
+D. Benchmark 1) The THD Plane: Current Quality Versus Bus Load: 
+
+Fig. 5 plots, for every method, the string reconfiguration frequency—the bus component of the dual metric—against the current THD; both axes logarithmic. Each method family appears as a curve over its respective effort parameter: IA-OPP over the budget n = 4 to 96 , the classical OPP baseline over the same budgets, NLM over the step size S, and the two PS-PWM variants over the frequency ratio mf . Open markers denote configurations violating the fundamental tolerance. The picture orders the field completely. The IA-OPP curve forms the Pareto front: at every bus load it attains the lowest THD, and for every demanded THD the lowest bus load. 1S-NLM reaches 0.561 % at 4.4 kHz —IA-OPP undercuts this with 0.521 % at 2.4 kHz , i.e., better quality at just under half the bus load; 2S-NLM at comparable bus load (2.2 kHz ) lies 0.04 percentage points above. Coarser fixed-step staircases (S ≥ 4) already fail feasibility: with fixed large steps, the fundamental amplitude can no longer be met within 1 % at this operating point—an immediate argument for free step sizes. Submodule-level PS-PWM illustrates the floor of Sec-tion V-C drastically: from mf = 2 its curve stands vertical— a fivefold increase of the switching effort to beyond 60 kHz 
+
+buys no current quality whatsoever. Module-level PS-PWM, the polarity-stage reference, runs to the right of the field throughout. The classical OPP, finally, accompanies the IA-OPP curve at a constant offset and merges into the floor with growing budget—the gap measured in Section V-C, here in the overall picture. A knee of the Pareto front is discernible around n = 32 to 48 : above it the gain flattens, which supports the selection rule’s choice ( n = 48 ) in hindsight. PREPRINT — SUBMITTED TO THE IEEE OPEN JOURNAL OF POWER ELECTRONICS 810 0 10 1
+
+Current THD (%)      
+
+> 10 -1
+> 10 0
+> 10 1
+> 10 2
+> String reconfiguration frequency (kHz)
+> 10S 11S 9S 12S 7S 8S 5S 6S 4S 3S 2S 1S IA-OPP classical OPP fixed-step NLM fixed-step NLM (tol. violated) PS-PWM (submodule) PS-PWM (module)
+> Fig. 5. THD plane at the nominal operating point: string reconfiguration frequency versus current THD (both logarithmic) for IA-OPP, classical OPP, fixed-step NLM, and PS-PWM at submodule and module level; open markers violate the fundamental tolerance.
+
+2) Operating-Point Sweep: A lookup-table method must hold up across the modulation range. Fig. 6 shows the current THD for modulation indices ma = 0 .2 to 0.9 (45 to 200 V): IA-OPP is re-optimized per operating point—precisely the lookup-table concept—with the budget held fixed at n = 48 ;additionally plotted is the best budget n ≤ 96 . The reference methods scale by their own logic: the NLM staircases follow the reference (their event count grows with the modulation index), the PS-PWM variants keep their mf .Three findings. First, IA-OPP with fixed budget is the best method at every operating point—at the lower end ( ma = 0 .2)with 0.279 % against 0.319 % for 1S-NLM, which there uses the same budget of 48 events: the advantage stems purely from the better placement of equally many edges. At the upper end ( ma = 0 .9) the figures are 1.25 % against 1.41 %—with 1S-NLM requiring 216 events there, 4.5 times the bus load. Second, the fixed budget is practically optimal: the curve of the best budget n ≤ 96 lies almost on top of the n = 48 curve (1 to 2 % better in relative terms; at the lower end, n = 48 is exactly the best budget)—a single budget carries across the entire modulation range, which simplifies the lookup table accordingly. One idiosyncrasy of the exact budget binding deserves mention: a forced large budget at small modulation degenerates (at ma = 0 .2, n = 96 forces needle pulses and 7.2 % THD); the budget selection must admit small budgets, as the selection rule and the target-THD mode do. Third, the sweep confirms the layer assignment: module-level PS-PWM—which switches whole modules through the polarity stage—is the worst method throughout and loses touch at small modulation (flat at 0.763 % against 0.279 % for IA-OPP, factor 2.7): its carrier ripple does not scale with the modulation index, and fine submodule-level actuation steps are unavailable to it in principle. 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1
+
+Modulation index         
+
+> 0.4 0.6 0.8 11.2 1.4
+> Current THD (%)
+> IA-OPP (n = 48) IA-OPP (best n 596) 1S-NLM 2S-NLM PS-PWM (submodule) PS-PWM (module)
+> Fig. 6. Operating-point sweep: current THD versus modulation index for IA-OPP (fixed budget n= 48 and best budget n≤96 ), fixed-step NLM, and PS-PWM at submodule and module level.
+
+E. Robustness 
+
+A method that predistorts its patterns on a plant model is committed to that model—the constant-resistance counter-experiment of Section V-C showed how a predistortion turns into a disadvantage when the modeled property vanishes entirely. For lookup-table operation it must therefore be ex-amined how parameter deviations of realistic size play out. To this end, the patterns designed at the nominal point— the IA-OPP solution ( n = 48 ) and all reference methods— are evaluated unchanged on perturbed plants: load inductance 
+
+L, load resistance R, cell internal resistance rbat , and cell voltage each vary by ±30 %, first individually, then in all 16 simultaneous combinations of the extreme values. Rating again uses the identical closed-form evaluation. In the single-parameter sweeps, IA-OPP remains the best method at every point of every parameter; its worst value is 0.661 %, while the best baseline at the same point does not drop below 0.703 %. The predistortion thus degrades gracefully: a 30 % model deviation narrows the advantage but nowhere reverses it. The cell voltage is a special case: it scales the entire staircase voltage and with it the current proportion-ally, so the THD as a ratio remains exactly invariant—affected is solely the fundamental amplitude, whose tracking in lookup-table operation falls to the amplitude control anyway and is not a pattern-shape question. The 16 simultaneous corner points are the harder test because the deviations accumulate. IA-OPP is the best method in 12 of the 16 corners; its worst case over all corners is 0.945 % against 0.993 % for the best baseline—even under maximum simultaneous perturbation, the nominally designed solution remains the most reliable choice. The four exceptions are instructive: they are without exception the benign corners with increased inductance and decreased cell resistance—more filtering, weaker resistance modulation. There, precisely the effect that IA-OPP exploits shrinks; all methods lie far below their nominal THD, and 1S-NLM edges ahead by at most PREPRINT — SUBMITTED TO THE IEEE OPEN JOURNAL OF POWER ELECTRONICS 9
+
+0.017 percentage points. This is the expected mild end of the spectrum whose extreme end the constant-resistance counter-experiment marks: IA-OPP loses ground exclusively where the problem it solves has become smaller—and even then only marginally. For operation this means: within a parameter uncertainty of ±30 %, the lookup-table patterns require neither adaptation nor re-identification; the advantage over the reference methods is retained in nearly all constellations, and where it is not, the deficit is orders of magnitude smaller than the gain at the nom-inal point. Systematic parameter drift—e.g., through aging— can moreover be absorbed by occasional offline recomputation of the lookup table without touching running operation. VI. T HREE -P HASE OPERATION 
+
+The results so far hold for the individual string and thus directly for single-phase systems, four-wire configurations with neutral conductor, and delta connection. In a three-wire star connection an additional question arises: harmonics of triplen order are common-mode quantities there and drive no line current—and it is precisely the dominant third harmonic of the resistance-modulation floor that would fall to the zero sequence. The following analysis is of zeroth order: the triplen orders are removed from the exactly computed single-string spectra (patterns shifted by T / 3 per phase, feedback of the phase coupling neglected); the triplen voltages persist as common mode and shift the star point, but drive no line current. The numbers confirm the intuition: the floor is, to 88 to 98 %
+
+of its distortion energy, a triplen phenomenon—of the 0.565 %
+
+floor, only about 0.09 % remains in the three-wire star. For the patterns optimized in the single-phase setting, the advantage shrinks accordingly: IA-OPP stays ahead of classical OPP at equal budget (0.109 % against 0.177 % non-triplen THD at 
+
+n = 48 ) but is narrowly undercut by submodule-level PS-PWM (0.082 % at 11.8 kHz ) and by classical OPP at double budget (0.089 % at n = 96 ). This computation, however, measures the wrong task: a pat-tern that spends budget on compensating a harmonic that the grid filters anyway optimizes past the goal. The grid topology belongs—like the impedance—in the objective. With triplen-masked THD in the objective (orders 3, 9, 15 , . . . excluded from (3) during refinement and selection), the three-phase-aware IA-OPP restores the order of the field: at n = 48 it attains 0.076 % and thereby undercuts every method in the field—including submodule-level PS-PWM (0.082 %) at one fifth of its bus load; even n = 40 (2.0 kHz ) already beats the PWM. With free budget selection, the selection rule picks 
+
+n = 92 at 0.051 %—against 0.063 % at n = 96 for the best feasible linear-model counterpart. The optimizer actively exploits the mask: the same pattern, evaluated single-phase, exhibits 1.44 %—the distortion is deliberately shifted into the currentless triplen orders. The patterns are therefore specific to the grid topology; which plant and which grid a pattern will see belongs entirely among its design assumptions. The fair yardstick is again the single-variable experiment: the same mask, but a linear plant model in the objective.           
+
+> TABLE IV THREE -PHASE -AWARE OPTIMIZATION (TRIPLEN -MASKED THD IN THE OBJECTIVE ): NON -TRIPLEN THD ON THE REAL PLANT FOR IA-OPP AND FOR CLASSICAL OPP WITH THE IDENTICAL MASK .
+
+Budget n Classical OPP IA-OPP Advantage 48 0.098 % 0.076 % 22 %
+
+64 0.079 % 0.062 % 21 %
+
+96 0.063 % 0.050 % 21 %
+
+Table IV shows the result—the impedance advantage survives the three-phase case and even grows in relative terms, from 14 % to about 21 % at n = 48 and consistently 15 to 30 %
+
+over the operating range n ≥ 24 . This has a nameable reason: the triplen floor common to all methods disappears, and the remaining orders 5, 7, 11 , . . . are exactly those on which impedance-aware edge placement acts. The prediction gap of the linear model also persists in three-phase operation (promised 0.031 %, delivered 0.098 % at n = 48 —a factor of 3). 1
+
+VII. D ISCUSSION AND CONCLUSION 
+
+A. Summary of Findings 
+
+This paper has substantiated its thesis: the class of optimized pulse patterns fits the reconfigurable battery system, but only the inclusion of the system’s structural properties in the optimization unlocks its potential. The value of plant modeling was not asserted but measured in a single-variable experiment: against classically formulated OPP at identical budget stands a quality advantage of 14 % at the nominal point up to a factor of 2.5 at small budgets; the prediction of the linear model misses reality by up to a factor of 10; and the THD floor of the voltage-oriented methods—traced back completely to the level-synchronous resistance modulation—is undercut by IA-OPP as the only method in the field. The event budget with free step sizes places IA-OPP on the Pareto front of the benchmark—the lowest bus load for every demanded current quality—, the robustness analysis shows that the predistortion degrades gracefully within ±30 % parameter uncertainty, and the three-phase extension demonstrates that the impedance advantage survives—and even grows—once the grid topology joins the impedance in the objective. 
+
+B. Limitations 
+
+Three limitations accompany the results. First, this is a simulation study: all quantities derive from an exact analytical evaluation of the switched RL plant, but no experimental validation is available; measurements on a hardware demon-strator remain future work. Within the simulation scope, the RL surrogate represents the motor-type load only stationarily; back-EMF and torque formation are outside the model. The           
+
+> 1At very small budgets ( n≤20 ) both three-phase-aware runs scatter due to local optima of the timing refinement; reliable statements there require multi-start optimization. The operating range n≥24 considered here is unaffected—cf. the multi-start probe at n= 48 in Section IV-B, which scatters by only 0.004 percentage points. PREPRINT — SUBMITTED TO THE IEEE OPEN JOURNAL OF POWER ELECTRONICS 10
+
+plant model is idealized in two further respects: the cell impedance is represented by a purely ohmic internal resistance, whereas real cell impedance is frequency- and state-of-charge-dependent, and switching transitions are ideal (no dead times or commutation transients). The robustness analysis addresses the first simplification in part—the advantage survives ±30 %
+
+resistance mismatch—but an impedance-spectrum-aware ob-jective, immediately formulable with the same machinery, remains an extension for future work. Second, IA-OPP is an offline method for stationary operating points from afeedforward perspective: the transition between lookup-table patterns upon operating-point changes—a classical problem area of the OPP family—was not examined; the transition strategies established there [5] should carry over, but the demonstration is pending. A closed current-control loop could compensate part of the plant mismatch online, at the cost of bandwidth and without the deterministic event guarantees that motivate the approach here. Third, the method optimizes the current THD; the losses are computed exactly but do not enter the objective—a multi-criteria extension is immediately formulable with the same evaluation machinery. In the same category belongs state-of-charge balancing: the optimized level sequence determines how many cells are inserted at any time, not which —the assignment of specific submodules remains available as a degree of freedom for balancing rotation, whose interaction with the switching metric was not examined here. The three-phase analysis, finally, is of zeroth order; an exact coupled three-phase evaluation with free star point is future work. 
+
+C. Transferability 
+
+The formulation is not tied to the reference system. The plant enters the objective exclusively through the mapping from voltage level to path resistance (1)—any system class whose source impedance depends on the switching state merely supplies a different such mapping. This includes re-configurable systems without a polarity stage: the modulation operates almost entirely on the submodule layer anyway, the H-bridges steering only the polarity; for a unipolar system the polarity mirroring is dropped while the quarter-wave structure and the optimization core remain unchanged (a demonstrating computation is pending). The resistance mapping is likewise extensible to additional configuration degrees of freedom— e.g., parallel module groups whose path resistance does not grow monotonically with the level; the dynamic program does not require monotonicity of the mapping. The three-phase analysis has already exercised this modularity: grid topology and plant impedance are two independent configurations of the same objective, and only their combination defines the correct optimization problem in each case. In summary, impedance-aware optimized pulse patterns es-tablish themselves as the natural stationary modulation strategy of reconfigurable battery systems: the method inherits the ma-turity and lookup-table principle of the OPP family, takes the structural properties of the system—configuration-dependent impedance, event-based cost structure, and grid topology— into the optimization, and is rewarded with a current quality that remains fundamentally out of reach for voltage-oriented methods on this plant class—in the single string as in the three-phase arrangement. ACKNOWLEDGMENT 
+
+This research out of the project MORE (Munich Mobility Research Campus) is funded by dtec.bw—Digitalization and Technology Research Center of the Bundeswehr, which we gratefully acknowledge. dtec.bw is funded by the European Union—NextGenerationEU. The authors acknowledge the use of a large language model (Claude, Anthropic) to assist in drafting and editing the text of this manuscript. All methods, computations, results, and conclusions were developed and verified by the authors, who take full responsibility for the content of this article. The MATLAB implementation and the result data are available from the corresponding author on reasonable request. REFERENCES [1] S. M. Goetz, A. V. Peterchev, and T. Weyh, “Modular multilevel converter with series and parallel module connectivity: Topology and control,” IEEE Transactions on Power Electronics , vol. 30, no. 1, pp. 203–215, 2015. [2] S. M. Goetz, Z. Li, X. Liang, C. Zhang, S. M. Lukic, and A. V. Peterchev, “Control of modular multilevel converter with parallel connectivity— application to battery systems,” IEEE Transactions on Power Electron-ics , vol. 32, no. 11, pp. 8381–8392, 2017. [3] E. Chatzinikolaou and D. J. Rogers, “Cell SoC balancing using a cas-caded full-bridge multilevel converter in battery energy storage systems,”                                              
+
+> IEEE Transactions on Industrial Electronics , vol. 63, no. 9, pp. 5394– 5402, 2016. [4] G. S. Buja and G. B. Indri, “Optimal pulsewidth modulation for feeding AC motors,” IEEE Transactions on Industry Applications , vol. IA-13, no. 1, pp. 38–44, 1977. [5] J. Holtz and N. Oikonomou, “Synchronous optimal pulsewidth modula-tion and stator flux trajectory control for medium-voltage drives,” IEEE Transactions on Industry Applications , vol. 43, no. 2, pp. 600–608, 2007. [6] A. K. Rathore, J. Holtz, and T. Boller, “Synchronous optimal pulsewidth modulation for low-switching- frequency control of medium-voltage multilevel inverters,” IEEE Transactions on Industrial Electronics ,vol. 57, no. 7, pp. 2374–2381, 2010. [7] H. S. Patel and R. G. Hoft, “Generalized techniques of harmonic elimination and voltage control in thyristor inverters: Part I—harmonic elimination,” IEEE Transactions on Industry Applications , vol. IA-9, no. 3, pp. 310–317, 1973. [8] ——, “Generalized techniques of harmonic elimination and voltage control in thyristor inverters: Part II—voltage control techniques,” IEEE Transactions on Industry Applications , vol. IA-10, no. 5, pp. 666–673, 1974. [9] J. Miller, P. Karamanakos, and T. Geyer, “Bounding the minimal current harmonic distortion in optimal modulation of single-phase power converters,” arXiv:2512.08201, 2025. [10] J. N. Chiasson, L. M. Tolbert, K. J. McKenzie, and Z. Du, “A complete solution to the harmonic elimination problem,” IEEE Transactions on Power Electronics , vol. 19, no. 2, pp. 491–499, 2004. [11] M. S. A. Dahidah and V. G. Agelidis, “Selective harmonic elimination PWM control for cascaded multilevel voltage source converters: A generalized formula,” IEEE Transactions on Power Electronics , vol. 23, no. 4, pp. 1620–1630, 2008. [12] M. S. A. Dahidah, G. Konstantinou, and V. G. Agelidis, “A review of multilevel selective harmonic elimination PWM: Formulations, solving algorithms, implementation and applications,” IEEE Transactions on Power Electronics , vol. 30, no. 8, pp. 4091–4106, 2015. [13] L. M. Tolbert, J. N. Chiasson, Z. Du, and K. J. McKenzie, “Elimination of harmonics in a multilevel converter with nonequal DC sources,” IEEE Transactions on Industry Applications , vol. 41, no. 1, pp. 75–82, 2005. [14] E. Barbie, A. Kuperman, and D. Baimel, “Current-THD minimization in multilevel inverters with variable DC ratios utilizing ageneric closed-form analytic formulation of line-voltage WTHD,” Alexandria Engineering Journal , vol. 66, pp. 211–239, 2023. PREPRINT — SUBMITTED TO THE IEEE OPEN JOURNAL OF POWER ELECTRONICS 11
+
+[15] J. E. Huber and A. J. Korn, “Optimized pulse pattern modulation for modular multilevel converter high-speed drive,” in Proc. 15th Interna-tional Power Electronics and Motion Control Conference (EPE/PEMC) ,2012. [16] A. Kersten, O. Theliander, E. A. Grunditz, T. Thiringer, and M. Bon-giorno, “Battery loss and stress mitigation in a cascaded H-bridge multilevel inverter for vehicle traction applications by filter capacitors,” 
+
+IEEE Transactions on Transportation Electrification , vol. 5, no. 3, pp. 659–671, 2019. [17] F. Altaf, B. Egardt, and L. Johannesson Mårdh, “Load management of modular battery using model predictive control: Thermal and state-of-charge balancing,” IEEE Transactions on Control Systems Technology ,vol. 25, no. 1, pp. 47–62, 2017. [18] J. Kacetl, J. Fang, T. Kacetl, N. Tashakor, and S. Goetz, “Design and analysis of modular multilevel reconfigurable battery converters for variable bus voltage powertrains,” IEEE Transactions on Power Electronics , vol. 38, no. 1, pp. 130–142, 2023. [19] T. Kacetl, J. Kacetl, N. Tashakor, and S. M. Goetz, “Ageing mitigation and loss control through ripple management in dynamically reconfig-urable batteries,” arXiv:2211.03143, 2022. [20] A. Hashemi-Zadeh, N. Tashakor, S. Hettiarachchi, and S. Goetz, “AI-driven phase-shifted carrier optimization for cascaded bridge con-verters, modular multilevel converters, and reconfigurable batteries,” arXiv:2511.04470, 2025. [21] J. Rodriguez, M. P. Kazmierkowski, J. R. Espinoza, P. Zanchetta, H. Abu-Rub, H. A. Young, and C. A. Rojas, “State of the art of finite control set model predictive control in power electronics,” IEEE Transactions on Industrial Informatics , vol. 9, no. 2, pp. 1003–1016, 2013.

@@ -1,0 +1,210 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-09-21T23:06:43.847762+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 5,
+    "quick_skim_target": 11,
+    "quick_selected": 5
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2609.16828v1",
+      "title": "Impedance-Aware Optimized Pulse Patterns for Reconfigurable Battery Systems",
+      "abstract": "Reconfigurable battery systems (RBS) synthesize the converter output voltage by inserting and bypassing battery cell groups, so every switching state changes not only the source voltage but also the source impedance. This paper shows that this configuration-dependent impedance breaks a tacit assumption of optimized pulse patterns (OPP): patterns designed with the customary linear plant model overestimate their achievable current quality by up to an order of magnitude and converge to a distortion floor set by the resistance modulation. We propose impedance-aware optimized pulse patterns (IA-OPP), which embed the level-dependent source impedance in the optimization objective, combined with an event-budget formulation that treats the reconfiguration rate of the communication bus as a managed resource. An exact closed-form evaluation of the piecewise-exponential load current renders the objective smooth in the switching instants. In a simulated cascaded-bridge reference system, IA-OPP attains 0.52% current total harmonic distortion (THD) at a reconfiguration rate of 2.4 kHz, outperforming nearest-level modulation, phase-shifted carrier pulse-width modulation (PWM) at up to five times the switching rate, and a classical OPP baseline at every event budget; the advantage persists across the modulation-index range and under +/-30% parameter mismatch. For three-wire star-connected systems, masking triplen orders in the objective restores the full advantage, with the impedance-aware patterns beating their linear-model counterparts by about 20% at equal budget.",
+      "authors": [
+        "Julian Estaller",
+        "Johannes Buberger",
+        "Andreas Wiedenmann",
+        "Wolfgang Grupp",
+        "Tobias Hoegerl",
+        "Thomas Weyh"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY"
+      ],
+      "published": "2026-09-15T08:29:06+00:00",
+      "link": "https://arxiv.org/pdf/2609.16828v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Optimized pulse patterns for converter output voltage",
+      "llm_evidence_cn": "变换器输出电压的优化脉冲模式",
+      "llm_evidence": "变换器输出电压的优化脉冲模式",
+      "canonical_evidence": "变换器输出电压的优化脉冲模式",
+      "llm_tldr_en": "Proposes impedance-aware pulse patterns for converters, which are core components in PMSM drives.",
+      "llm_tldr_cn": "为变换器提出阻抗感知优化脉冲模式，变换器是永磁同步电机驱动的核心组件。",
+      "llm_tldr": "为变换器提出阻抗感知优化脉冲模式，变换器是永磁同步电机驱动的核心组件。",
+      "llm_tags": [
+        "query:pmsm:composite"
+      ],
+      "matched_query_tag": "query:pmsm:composite",
+      "matched_query_text": "Papers central to 三相及双三相永磁同步电机相关研究检索, especially work that connects or combines: m; s; f; Permanent Magnet Synchronous Motor research; dual three-phase permanent magnet synchronous motor control and design; fault-tolerant control of multi-phase motors; recent advances in dual three phase permanent magnet synchronous motor control; fault tolerant strategies for multi phase permanent magnet synchronous motors.",
+      "matched_requirement_id": "req-composite-pmsm",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.19682v1",
+      "title": "Bifurcation Beyond Surface-Tangential Asymptotic Convergence in Continuous Sliding Mode Control",
+      "abstract": "For second-order systems under continuous sliding mode control (SMC), the literature has long relied, largely through phase-portrait illustrations, on the implicit convention that the phase-plane trajectory approaches the equilibrium along a direction tangential to the designed sliding surface. This paper investigates this tangential convergence assumption through a rigorous phase-plane analysis of the double-integrator system subject to standard linear SMC. We reveal that the asymptotic state ratio is not unique but instead exhibits a bifurcation that depends on the control gains, the sliding surface parameter, and the initial conditions. The key finding is that the system may converge along an implicit secondary manifold rather than aligning with the designed sliding surface, implying that smooth entry is not globally guaranteed. We derive closed-form expressions for the convergence ratios and establish a classification framework that precisely characterizes when the smooth-entry assumption holds and when it fails. The analysis is further extended to classical PD control, and we show that the bifurcation threshold coincides with the critical damping boundary that separates the two convergence regimes. These findings bridge terminal geometry and convergence smoothness, providing a predictive framework for high-performance motion control design. Simulation results validate the proposed classification of convergence regimes.",
+      "authors": [
+        "Fan Zhang",
+        "Jingwen Xu",
+        "Peng Li",
+        "Jun Zhou",
+        "Yaohua Guo"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY"
+      ],
+      "published": "2026-09-17T04:27:04+00:00",
+      "link": "https://arxiv.org/pdf/2609.19682v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Sliding mode control is a common method for PMSM speed and current regulation",
+      "llm_evidence_cn": "滑模控制是永磁同步电机转速和电流调节的常用方法",
+      "llm_evidence": "滑模控制是永磁同步电机转速和电流调节的常用方法",
+      "canonical_evidence": "滑模控制是永磁同步电机转速和电流调节的常用方法",
+      "llm_tldr_en": "Analyzes convergence properties of sliding mode control, a key technique in motor drive systems.",
+      "llm_tldr_cn": "分析了滑模控制的收敛特性，这是电机驱动系统中的关键技术。",
+      "llm_tldr": "分析了滑模控制的收敛特性，这是电机驱动系统中的关键技术。",
+      "llm_tags": [
+        "query:pmsm"
+      ],
+      "matched_query_tag": "query:pmsm",
+      "matched_query_text": "Permanent Magnet Synchronous Motor research",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.21046v1",
+      "title": "Constraint-Unified MPC for Over-Actuated Surface Vehicles with Post-Detection Fault Reconfiguration",
+      "abstract": "Choreographed aquatic performances require small autonomous surface vehicles to track precise paths under per-thruster force and rate limits, including after thruster failures. We report a deployed system in which trajectory tracking, thrust allocation, and the per-thruster force and rate limits are resolved in a single quadratic program over the per-thruster commands, with fault reconfiguration entering through one binary flag per thruster from an external detector. The system has driven a fleet in live performances on Lake Zürich and at the Time Space Existence 2025 exhibition in Venice. The field campaign measures 1.6 cm root mean square position error in a 10-minute hold and 4.3 cm over a 10 m square at 0.6 m/s. At 0.5 m/s, losing the front thruster increases the error to 11.6 cm, while losing the starboard-side thruster increases it to 11.5 cm. Losing two thrusters simultaneously leaves the craft tracking a 0.4 m/s square with a root mean square position error of 1.25 m. Compared to our own cascaded baseline, the unified formulation tracks the nominal square to the same few centimeters and holds station more tightly with roughly half the thruster force. The architectures separate after a thruster failure, where the unified controller stays within 24 cm of the reference path while the cascade leaves it.",
+      "authors": [
+        "Sebastian Burmester",
+        "Ruiheng Jiang",
+        "Noa Sendlhofer",
+        "Raffaello D'Andrea",
+        "Aswin Ramachandran"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "eess.SY"
+      ],
+      "published": "2026-09-17T20:05:23+00:00",
+      "link": "https://arxiv.org/pdf/2609.21046v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "MPC for over-actuated vehicles with post-detection fault reconfiguration",
+      "llm_evidence_cn": "针对过驱动车辆的MPC及检测后故障重构控制",
+      "llm_evidence": "针对过驱动车辆的MPC及检测后故障重构控制",
+      "canonical_evidence": "针对过驱动车辆的MPC及检测后故障重构控制",
+      "llm_tldr_en": "Proposes a unified MPC for over-actuated vehicles to handle thruster failures via fault reconfiguration.",
+      "llm_tldr_cn": "提出一种统一的MPC框架，通过故障重构处理过驱动车辆的推进器失效问题。",
+      "llm_tldr": "提出一种统一的MPC框架，通过故障重构处理过驱动车辆的推进器失效问题。",
+      "llm_tags": [
+        "query:pmsm"
+      ],
+      "matched_query_tag": "query:pmsm",
+      "matched_query_text": "fault-tolerant control of multi-phase motors",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.21307v1",
+      "title": "Stability-aware Residual Reinforcement Learning Framework for Robotic Manipulator Disturbance Compensation",
+      "abstract": "Although conventional controllers and disturbance observers (DOBs) are the standard for precision tracking in manipulators, they suffer from parameter uncertainty, nonlinear friction, and compound disturbances. This study proposes a residual reinforcement learning DOB framework that pairs an analytical observer with an RL policy. The deterministic baseline operates within a reliable region, whereas the RL policy explicitly targets the residuals that the model cannot capture. To make this compensation disturbance-aware, an estimator network aligns the observation history with a privileged disturbance context, organizing the latent space by disturbance regime and enabling rapid adaptation across disturbance transitions. To guarantee stability, we derived and enforced a state-dependent action bound on the RL policy from an input-to-state stability (ISS) analysis such that the closed loop provably confines the tracking error to a certified envelope for arbitrary policy outputs. Experiments on a 6-DOF manipulator demonstrated consistent improvements in disturbance estimation and tracking, including a 27.8% tracking-error reduction on real hardware under zero-shot sim-to-real transfer and a 38.0% reduction under a base-vibration disturbance that was not observed during training.",
+      "authors": [
+        "Jihong Kim",
+        "Joonhyuk Kwon",
+        "Hwa Soo Kim",
+        "TaeWon Seo",
+        "Hyung-Tae Seo"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-09-18T04:35:01+00:00",
+      "link": "https://arxiv.org/pdf/2609.21307v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Disturbance compensation and residual reinforcement learning for tracking",
+      "llm_evidence_cn": "用于跟踪的扰动补偿和残差强化学习",
+      "llm_evidence": "用于跟踪的扰动补偿和残差强化学习",
+      "canonical_evidence": "用于跟踪的扰动补偿和残差强化学习",
+      "llm_tldr_en": "Combines analytical observers with RL for disturbance compensation, applicable to motor precision tracking.",
+      "llm_tldr_cn": "将分析观测器与强化学习结合用于扰动补偿，可应用于电机精密跟踪。",
+      "llm_tldr": "将分析观测器与强化学习结合用于扰动补偿，可应用于电机精密跟踪。",
+      "llm_tags": [
+        "query:pmsm"
+      ],
+      "matched_query_tag": "query:pmsm",
+      "matched_query_text": "fault-tolerant control of multi-phase motors",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.21818v1",
+      "title": "LunaDrive: A Delay-Compensated High-Voltage GaN FET-Based Motor Driver for Dynamic Robots with Flat BLDC Motors",
+      "abstract": "The performance improvement of high-power flat BLDC motors has accelerated the development of dynamic robots. However, many commercially available servo motors assume operating voltages of 48 V or lower, which limits the maximum rotational speed. Dynamic robots require rapid energy generation, so this voltage constraint restricts motion performance. Therefore, driving motors beyond the rated voltage is desirable to increase the instantaneous maximum speed. On the other hand, semiconductor devices used in motor drivers have a trade-off between voltage rating and current capacity. Conventional drivers using Si MOSFETs have difficulty achieving both high-voltage and high-current operation. Although GaN FETs are promising, compact drivers that can be mounted on the rear side of flat BLDC motors remain limited. In this study, a motor driver for high-power flat BLDC motors using GaN FETs is developed. The effect of delay compensation in the high-speed region beyond the rated operating range is also investigated. In the experiments, under 96 V operation, a continuous current of 30 A was achieved with a heat sink attached. A peak current of 80 A and a maximum electrical frequency of 3110 Hz were confirmed. A high-speed load lifting experiment driven by a LiPo battery 24S (100 V) was also conducted, demonstrating applicability to dynamic robot operation.",
+      "authors": [
+        "Sota Yuzaki",
+        "Temma Suzuki",
+        "Hiromi Tada",
+        "Masanori Konishi",
+        "Kento Kawaharazuka",
+        "Kei Okada"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-09-18T14:23:14+00:00",
+      "link": "https://arxiv.org/pdf/2609.21818v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "high-voltage motor driver for BLDC motors",
+      "llm_evidence_cn": "无刷直流电机的高压驱动器",
+      "llm_evidence": "无刷直流电机的高压驱动器",
+      "canonical_evidence": "无刷直流电机的高压驱动器",
+      "llm_tldr_en": "Presents a GaN FET-based motor driver to improve speed performance of flat BLDC motors.",
+      "llm_tldr_cn": "提出了一种基于氮化镓场效应管的电机驱动器，提升无刷直流电机转速。",
+      "llm_tldr": "提出了一种基于氮化镓场效应管的电机驱动器，提升无刷直流电机转速。",
+      "llm_tags": [
+        "query:pmsm"
+      ],
+      "matched_query_tag": "query:pmsm",
+      "matched_query_text": "Permanent Magnet Synchronous Motor research",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

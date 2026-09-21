@@ -1,0 +1,79 @@
+{
+  "label": "2026-09-21",
+  "date": "2026-09-21",
+  "generated_at": "2026-09-21T23:06:59",
+  "count": 5,
+  "papers": [
+    {
+      "paper_id": "202609/21/2609.16828v1-impedance-aware-optimized-pulse-patterns-for-reconfigurable-battery-systems",
+      "section": "quick",
+      "title_en": "Impedance-Aware Optimized Pulse Patterns for Reconfigurable Battery Systems",
+      "authors": "Julian Estaller, Johannes Buberger, Andreas Wiedenmann, Wolfgang Grupp, Tobias Hoegerl, Thomas Weyh",
+      "date": "2026-09-15",
+      "pdf": "https://arxiv.org/pdf/2609.16828v1",
+      "score": "6.0",
+      "evidence": "变换器输出电压的优化脉冲模式",
+      "tldr": "针对可重构电池系统（RBS）中切换状态改变源阻抗导致传统优化脉冲模式（OPP）性能下降的问题，本文提出了阻抗感知优化脉冲模式（IA-OPP）。该方法将电平相关的源阻抗嵌入优化目标，并结合事件预算管理，通过闭式评估负载电流实现平滑优化。实验表明，IA-OPP在显著降低电流总谐波失真（THD）的同时，在不同调制指数和参数偏差下均优于传统PWM及经典OPP方案。",
+      "tags": "query:pmsm",
+      "abstract_en": "Reconfigurable battery systems (RBS) synthesize the converter output voltage by inserting and bypassing battery cell groups, so every switching state changes not only the source voltage but also the source impedance. This paper shows that this configuration-dependent impedance breaks a tacit assumption of optimized pulse patterns (OPP): patterns designed with the customary linear plant model overestimate their achievable current quality by up to an order of magnitude and converge to a distortion floor set by the resistance modulation. We propose impedance-aware optimized pulse patterns (IA-OPP), which embed the level-dependent source impedance in the optimization objective, combined with an event-budget formulation that treats the reconfiguration rate of the communication bus as a managed resource. An exact closed-form evaluation of the piecewise-exponential load current renders the objective smooth in the switching instants. In a simulated cascaded-bridge reference system, IA-OPP attains 0.52% current total harmonic distortion (THD) at a reconfiguration rate of 2.4 kHz, outperforming nearest-level modulation, phase-shifted carrier pulse-width modulation (PWM) at up to five times the switching rate, and a classical OPP baseline at every event budget; the advantage persists across the modulation-index range and under +/-30% parameter mismatch. For three-wire star-connected systems, masking triplen orders in the objective restores the full advantage, with the impedance-aware patterns beating their linear-model counterparts by about 20% at equal budget.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202609/21/2609.19682v1-bifurcation-beyond-surface-tangential-asymptotic-convergence-in-continuous-sliding-mode-control",
+      "section": "quick",
+      "title_en": "Bifurcation Beyond Surface-Tangential Asymptotic Convergence in Continuous Sliding Mode Control",
+      "authors": "Fan Zhang, Jingwen Xu, Peng Li, Jun Zhou, Yaohua Guo",
+      "date": "2026-09-17",
+      "pdf": "https://arxiv.org/pdf/2609.19682v1",
+      "score": "6.0",
+      "evidence": "滑模控制是永磁同步电机转速和电流调节的常用方法",
+      "tldr": "本文研究了连续滑模控制（SMC）中关于轨迹沿滑模面切向收敛的传统假设。通过对双积分系统进行严格的相平面分析，研究发现收敛行为存在分岔现象，即系统可能沿次级流形而非预设滑模面收敛。论文推导了收敛比的闭式解，建立了分类框架以界定平滑进入条件的适用范围，并揭示了其与PD控制中临界阻尼边界的内在联系，为高性能运动控制设计提供了理论指导。",
+      "tags": "query:pmsm",
+      "abstract_en": "For second-order systems under continuous sliding mode control (SMC), the literature has long relied, largely through phase-portrait illustrations, on the implicit convention that the phase-plane trajectory approaches the equilibrium along a direction tangential to the designed sliding surface. This paper investigates this tangential convergence assumption through a rigorous phase-plane analysis of the double-integrator system subject to standard linear SMC. We reveal that the asymptotic state ratio is not unique but instead exhibits a bifurcation that depends on the control gains, the sliding surface parameter, and the initial conditions. The key finding is that the system may converge along an implicit secondary manifold rather than aligning with the designed sliding surface, implying that smooth entry is not globally guaranteed. We derive closed-form expressions for the convergence ratios and establish a classification framework that precisely characterizes when the smooth-entry assumption holds and when it fails. The analysis is further extended to classical PD control, and we show that the bifurcation threshold coincides with the critical damping boundary that separates the two convergence regimes. These findings bridge terminal geometry and convergence smoothness, providing a predictive framework for high-performance motion control design. Simulation results validate the proposed classification of convergence regimes.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202609/21/2609.21046v1-constraint-unified-mpc-for-over-actuated-surface-vehicles-with-post-detection-fault-reconfiguration",
+      "section": "quick",
+      "title_en": "Constraint-Unified MPC for Over-Actuated Surface Vehicles with Post-Detection Fault Reconfiguration",
+      "authors": "Sebastian Burmester, Ruiheng Jiang, Noa Sendlhofer, Raffaello D'Andrea, Aswin Ramachandran",
+      "date": "2026-09-17",
+      "pdf": "https://arxiv.org/pdf/2609.21046v1",
+      "score": "6.0",
+      "evidence": "针对过驱动车辆的MPC及检测后故障重构控制",
+      "tldr": "本文提出了一种针对过驱动水面无人艇的约束统一模型预测控制（MPC）框架，旨在解决复杂水上表演中高精度轨迹跟踪及推进器故障后的重构问题。该方法将轨迹跟踪、推力分配及物理约束整合进单一二次规划问题中，通过简单的二进制标志位实现故障实时重构。实测表明，该系统在正常运行及多推进器故障场景下均表现出优异的跟踪精度与鲁棒性，显著优于传统的级联控制架构。",
+      "tags": "query:pmsm",
+      "abstract_en": "Choreographed aquatic performances require small autonomous surface vehicles to track precise paths under per-thruster force and rate limits, including after thruster failures. We report a deployed system in which trajectory tracking, thrust allocation, and the per-thruster force and rate limits are resolved in a single quadratic program over the per-thruster commands, with fault reconfiguration entering through one binary flag per thruster from an external detector. The system has driven a fleet in live performances on Lake Zürich and at the Time Space Existence 2025 exhibition in Venice. The field campaign measures 1.6 cm root mean square position error in a 10-minute hold and 4.3 cm over a 10 m square at 0.6 m/s. At 0.5 m/s, losing the front thruster increases the error to 11.6 cm, while losing the starboard-side thruster increases it to 11.5 cm. Losing two thrusters simultaneously leaves the craft tracking a 0.4 m/s square with a root mean square position error of 1.25 m. Compared to our own cascaded baseline, the unified formulation tracks the nominal square to the same few centimeters and holds station more tightly with roughly half the thruster force. The architectures separate after a thruster failure, where the unified controller stays within 24 cm of the reference path while the cascade leaves it.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202609/21/2609.21307v1-stability-aware-residual-reinforcement-learning-framework-for-robotic-manipulator-disturbance-compensation",
+      "section": "quick",
+      "title_en": "Stability-aware Residual Reinforcement Learning Framework for Robotic Manipulator Disturbance Compensation",
+      "authors": "Jihong Kim, Joonhyuk Kwon, Hwa Soo Kim, TaeWon Seo, Hyung-Tae Seo",
+      "date": "2026-09-18",
+      "pdf": "https://arxiv.org/pdf/2609.21307v1",
+      "score": "6.0",
+      "evidence": "用于跟踪的扰动补偿和残差强化学习",
+      "tldr": "针对机器人机械臂在复杂扰动下的高精度控制难题，本文提出了一种稳定性感知残差强化学习扰动观测器框架。该方法结合了传统解析观测器与强化学习策略，通过引入基于输入到状态稳定性（ISS）分析的状态相关动作边界，确保了闭环系统的稳定性。实验表明，该框架在零样本仿真到现实迁移及未知扰动环境下，显著提升了机械臂的跟踪精度与鲁棒性。",
+      "tags": "query:pmsm",
+      "abstract_en": "Although conventional controllers and disturbance observers (DOBs) are the standard for precision tracking in manipulators, they suffer from parameter uncertainty, nonlinear friction, and compound disturbances. This study proposes a residual reinforcement learning DOB framework that pairs an analytical observer with an RL policy. The deterministic baseline operates within a reliable region, whereas the RL policy explicitly targets the residuals that the model cannot capture. To make this compensation disturbance-aware, an estimator network aligns the observation history with a privileged disturbance context, organizing the latent space by disturbance regime and enabling rapid adaptation across disturbance transitions. To guarantee stability, we derived and enforced a state-dependent action bound on the RL policy from an input-to-state stability (ISS) analysis such that the closed loop provably confines the tracking error to a certified envelope for arbitrary policy outputs. Experiments on a 6-DOF manipulator demonstrated consistent improvements in disturbance estimation and tracking, including a 27.8% tracking-error reduction on real hardware under zero-shot sim-to-real transfer and a 38.0% reduction under a base-vibration disturbance that was not observed during training.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202609/21/2609.21818v1-lunadrive-a-delay-compensated-high-voltage-gan-fet-based-motor-driver-for-dynamic-robots-with-flat-bldc-motors",
+      "section": "quick",
+      "title_en": "LunaDrive: A Delay-Compensated High-Voltage GaN FET-Based Motor Driver for Dynamic Robots with Flat BLDC Motors",
+      "authors": "Sota Yuzaki, Temma Suzuki, Hiromi Tada, Masanori Konishi, Kento Kawaharazuka, Kei Okada",
+      "date": "2026-09-18",
+      "pdf": "https://arxiv.org/pdf/2609.21818v1",
+      "score": "6.0",
+      "evidence": "无刷直流电机的高压驱动器",
+      "tldr": "针对动态机器人对扁平BLDC电机高压驱动的需求，本文开发了一款基于GaN FET的高压电机驱动器LunaDrive。该驱动器通过引入延迟补偿技术，突破了传统48V电压限制，实现了在96V电压下的高效驱动。实验证明其具备高电流承载能力与高频响应特性，为动态机器人实现更高瞬时速度和运动性能提供了紧凑且高性能的解决方案。",
+      "tags": "query:pmsm",
+      "abstract_en": "The performance improvement of high-power flat BLDC motors has accelerated the development of dynamic robots. However, many commercially available servo motors assume operating voltages of 48 V or lower, which limits the maximum rotational speed. Dynamic robots require rapid energy generation, so this voltage constraint restricts motion performance. Therefore, driving motors beyond the rated voltage is desirable to increase the instantaneous maximum speed. On the other hand, semiconductor devices used in motor drivers have a trade-off between voltage rating and current capacity. Conventional drivers using Si MOSFETs have difficulty achieving both high-voltage and high-current operation. Although GaN FETs are promising, compact drivers that can be mounted on the rear side of flat BLDC motors remain limited. In this study, a motor driver for high-power flat BLDC motors using GaN FETs is developed. The effect of delay compensation in the high-speed region beyond the rated operating range is also investigated. In the experiments, under 96 V operation, a continuous current of 30 A was achieved with a heat sink attached. A peak current of 80 A and a maximum electrical frequency of 3110 Hz were confirmed. A high-speed load lifting experiment driven by a LiPo battery 24S (100 V) was also conducted, demonstrating applicability to dynamic robot operation.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
