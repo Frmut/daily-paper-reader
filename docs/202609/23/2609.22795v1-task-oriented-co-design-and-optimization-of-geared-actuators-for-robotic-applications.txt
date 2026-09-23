@@ -1,0 +1,405 @@
+Title: Task-Oriented Co-Design and Optimization of Geared Actuators for Robotic Applications
+
+URL Source: https://arxiv.org/pdf/2609.22795v1
+
+Published Time: Tue, 22 Sep 2026 00:49:34 GMT
+
+Number of Pages: 8
+
+Markdown Content:
+# Task-Oriented Co-Design and Optimization of Geared Actuators for Robotic Applications 
+
+Xuanyu Huang, Jianqiang Dong, and Hang Zhao 
+
+Abstract — Different tasks performed by legged robots impose distinct torque and speed requirements on actuators. Existing robotic actuators are generally optimized at the component level for metrics such as torque or power density, without explicit task guidance. System-level optimization across components such as motors, gearboxes, and sensors is challenging because of the high computational cost and coupling among mechanical, electrical, and electromagnetic behaviors. Consequently, improvements in individual components may not translate into better robot performance in a specific task. To this end, we present a systematic optimization framework for task-oriented co-design of actuator hardware and control. First, surrogate models are employed to accelerate motor evaluation and support global ex-ploration of the coupled design space. Then, a hierarchical mixed-variable optimization strategy is adopted, combining discrete enumeration with continuous search over dimensions and real-valued indices. These indices are rounded to select admissible values for the remaining discrete choices before each evaluation. Within this search, rated output torque density and task performance are jointly optimized, with B´ ezier-parameterized joint torque profiles determined for each hardware candidate. Finally, the effectiveness of the proposed framework is validated through actuator fabrication and experiments on a two-degree-of-freedom jumping leg. Based on its measured mass, the fabricated prototype achieves a nominal rated output torque density of 
+
+35 .7 N m /kg , approximately 60% higher than that of a widely used commercial geared joint actuator, while being 18 .6% lighter. Under matched bench conditions, it achieves 12 .0% greater jump height at twice-rated torque. Together, these results demonstrate a systematic route from task requirements to actuator design and control. 
+
+Index Terms — Actuator design, Task-oriented co-design, Mixed-variable optimization, Legged robots. 
+
+I. I NTRODUCTION 
+
+Advances in permanent-magnet motors, power electronics, batteries, and control strategies have made compact electric joint drives central to legged and humanoid robots [1], [2]. Early electric humanoids generally relied on compact high-reduction servo joints and rigid position control [3]–[8]. Series-elastic and low-reduction drives later emphasized force regulation, impact tolerance, transparency, and bandwidth [9]– [11], while the Mini Cheetah demonstrated highly integrated modular drives for dynamic motion [12]. These architectures entail distinct trade-offs: high reduction increases compact output torque but also reflected inertia and transmission losses [13]; series elasticity adds mechanical and control complexity; and low reduction improves backdrivability but demands 
+
+This work was supported by the National Natural Science Foundation of China under Grant 52407066. The authors are with the Hong Kong University of Science and Technol-ogy (Guangzhou), Guangzhou, China (e-mail: xhuang313@connect.hkust-gz.edu.cn; jdong921@connect.hkust-gz.edu.cn; hangzhao@hkust-gz.edu.cn). Hang Zhao is the corresponding author. Task-oriented co-design Built and tested 
+
+> Motor Gearbox
+> Hardware + control Task feedback Actuator limits
+> Speed Torque Mass · inertia · torque–speed
+> Joint torque profiles Hip
+> Time Torque
+> Knee
+> Time Torque
+> Jumping experiment 12.0% greater slider rise 18.6% lighter Fabricated actuator
+> vs. DM8009
+
+Fig. 1. Overview of the task-oriented motor–gearbox and control co-design framework and its experimental validation. 
+
+higher motor torque density [14], [15]. Their suitability therefore depends on the robot scale, package, and intended motion rather than on a single component metric. Among these architectures, this work focuses on compact actuators based on planetary gearboxes, which are widely adopted for their practical balance of cost, control simplicity, and torque density [2], [12], [15]. Robots using such actuators have progressed from steady locomotion to increasingly dynamic motions such as running and jumping. These motions do not merely scale a common actuator requirement: even on the same robot, they occupy different torque–speed regions and emphasize different com-binations of continuous torque, peak torque, speed, efficiency, mass, and reflected inertia. Component ratings alone therefore cannot determine whether an actuator is well matched to a particular motion. Task-aware design and robot co-design studies recognize this dependence [16]–[19]. Task-oriented co-design is therefore needed to match actuator characteristics to task-specific demands and improve robot-level performance across diverse operating scenarios. Closing this task-to-actuator loop requires motor, gearbox, and robot dynamics to be considered together. Motor geome-try, transmission topology, reduction ratio, reflected inertia, mass, and control limits jointly define the feasible joint-level operating envelope [13], [14]. Drive-train optimization has jointly selected motors and transmissions for system-level performance [20]; computational design has extended co-design to leg geometry and actuator sizing [17], [21]; and dynamic co-design has coupled robot morphology, actuation, and motion [18], [22]. However, integrating detailed motor and gearbox design, task dynamics, and control within one optimization remains difficult: the models span electromag-arXiv:2609.22795v1 [cs.RO] 19 Sep 2026 Fast walking Stair ascent Jumping Fig. 2. Representative MuJoCo frames for Unitree G1 fast walking, stair ascent, and jumping. 0 2 4 6 8 10 12 14 16 18 20 22 050 100 140    
+
+> Absolute joint speed (rad/s) Absolute joint torque (N m)  Fast walking Stair ascent Jump
+> Fig. 3. Pooled G1 knee and hip-pitch torque–speed operating points and smoothed moving-window requirement envelopes for fast walking, jumping, and stair ascent. Envelopes use all recorded samples; scatter points are subsampled for visibility.
+
+netic, electrical, mechanical, and control domains; the design variables combine discrete and continuous choices; and each candidate is costly to evaluate. Many existing co-design formulations therefore fix motor characteristics or use sim-plified scaling laws. Such assumptions reduce computational cost but leave detailed motor electromagnetic and gearbox design variables outside the system-level optimization. To address this limitation, the proposed framework integrates these variables with task dynamics and candidate-specific control; surrogate motor evaluation [23], [24] and hierarchical mixed-variable optimization keep the coupled search tractable. Figure 1 summarizes the proposed task-oriented co-design and validation loop, coupling motor and gearbox design with joint torque control and jumping-task feedback. This paper makes three contributions. First, it formulates task-oriented actuator co-design by linking motor geometry and winding, planetary-gearbox design, actuator mass and inertia, and the dynamics of a reduced-order two-degree-of-freedom jumping leg. Second, it develops a surrogate-assisted hierarchical mixed-variable optimization strategy that enumerates major discrete cases and performs continuous search over bounded motor and gearbox variables, with real-valued indices rounded to admissible values for the remaining discrete choices. Third, it couples hardware search with candidate-specific control-policy optimization through B´ ezier-parameterized hip and knee torque profiles. The selected design is then fabricated and experimentally validated against a commercial geared actuator. II. T ASK MOTIVATION AND JUMPING -L EG MODEL 
+
+A. Task-Dependent Requirements in Humanoid Motion 
+
+The G1 data used here comprise fast walking, a dynamic jumping takeoff, and a six-step stair-ascent rollout, all simulated with the Unitree G1 model in MuJoCo [25]. For q1        
+
+> q2
+> foot knee hip/body shank CoM thigh CoM payload
+> τh
+> τk
+> Fx, F y
+> yx
+> (a) vertical-guide leg
+> 00.20.40.60.8100.51
+> Normalized extension s
+> Torque ratio  αj
+> αh(s)
+> αk(s)
+> (b) B´ ezier joint-torque profiles
+> Fig. 4. Reduced-order jumping-task representation: (a) the two-DOF vertical-guide leg and (b) representative fifth-order B´ ezier profiles with six control coefficients for each joint.
+
+each motion, the bilateral knee and hip-pitch torque–speed samples are mapped to absolute magnitudes and pooled into one task-level point set. Requirement envelopes are computed as moving-window maxima over 1.0 rad /s speed neighborhoods and smoothed over a 0.75 rad /s bandwidth for visualization. Fig. 3 shows that jumping occupies the highest torque– speed region. Across the pooled knee and hip-pitch samples, the peak torque and speed are 103 N m and 16 .6 rad /s for fast walking, 139 N m and 20 .1 rad /s for jumping, and 109 N m 
+
+and 14 .3 rad /s for stair ascent. The fast-walking and stair-ascent envelopes cross: fast walking extends to higher speed, whereas stair ascent reaches higher torque. These data show that different dynamic tasks impose distinct torque–speed requirements on their actuators. 
+
+B. Reduced-Order Jumping-Leg Task 
+
+The G1 results reveal a key actuator-level demand of jumping: high joint torque over a broad speed range. To demonstrate the effectiveness of the proposed co-design frame-work while keeping computation and hardware validation tractable, we reduce the whole-robot jumping problem to the two-DOF vertical-guide leg in Fig. 4(a), yielding a leg-level actuator co-design benchmark [17]. The model retains coupled hip–knee push-off, ground contact, and the resulting joint torque–speed trajectories while removing whole-body balance and lateral dynamics. The framework is not specific to this benchmark and can be extended to other robots and tasks by replacing the task model, objectives, and task-specific constraints within the same co-design loop. Let q = [ q1, q 2]T , where q1 is the absolute shank angle and q2 is the included knee angle. During sticking push-off, the foot is taken as the origin. For equal shank and thigh lengths, ls = lt, the vertical guide imposes 
+
+xh(q) = ls cos q1 − lt cos( q1 − q2) = 0 ,yh(q) = ls sin q1 − lt sin( q1 − q2). (1) With A(q) = ∂x h/∂ q and guide reaction λ, let τ =[τh, τ k]T collect the hip and knee actuator output torques, with each torque defined positive in the leg-extension direction. The constrained stance dynamics and actuator-to-generalized 1 Design variables 2 Coupled system evaluation 3 Pareto output 
+
+Task specification: 2-DOF jumping leg, payload, motion limits, and jump-height objective 
+
+> Discrete / enumerated
+> Slot–pole and winding choices Gearbox topology and reduction ratio
+> Continuous / bounded
+> Motor geometry and stack length Gear dimensions and profile shifts
+> Hierarchical mixed-variable search
+> enumerate cases; optimize variables; round indices
+> Geared Actuator Motor model
+> Surrogate electromagnetic prediction Length and winding scaling
+> Planetary gearbox model
+> Topology-specific kinematics and efficiency Strength-based gear sizing
+> Geared-actuator model
+> Map motor limits through the gearbox Combine package mass and reflected inertia
+> Jumping-task evaluation
+> 2-DOF leg dynamics and contact Dual-joint B´ ezier push control Predictive braking and jump-height evaluation
+> Task objective
+> Maximize predicted jump height
+> Actuator objective
+> Maximize rated output torque density
+> Constrained NSGA-II
+> Feasibility-first ranking
+> Torque density Jump height Pareto front
+> next design candidate
+
+Fig. 5. Hierarchical mixed-variable optimization for task-oriented motor–gearbox co-design and constrained Pareto selection. 
+
+torque mapping are 
+
+M(q)¨ q+h+G = Bτ +A(q)T λ, Bτ =
+
+ −τh
+
+τh + τk
+
+
+
+. (2) Motivated by Ding and Park [17], we parameterize both joint torque ratios with separate B´ ezier curves over the common normalized extension phase s, as illustrated in Fig. 4(b): 
+
+s = q2 − q2,0
+
+q2,f − q2,0
+
+, j ∈ { h, k },τj (s) = αj (s)¯ τj ,αj (s) = 
+
+> 5
+
+X
+
+> i=0
+
+cj,i 
+
+5
+
+i
+
+
+
+(1 − s)5−isi, 0 ≤ cj,i ≤ 1.
+
+(3) Here, ¯τj is the available torque at joint j under its instanta-neous actuator limits. The policy contains 12 free coefficients, six for each joint. For every motor–gearbox candidate, all 12 coefficients are jointly optimized using bounded L-BFGS-B to maximize hjump while the contact constraints remain enforced during the rollout. To prevent either joint from reaching its travel limit at high speed, an inertia-aware predictor initiates coordinated braking when 
+
+dstop ,j = ω+ 
+
+> j
+
+td + Jeff ,j (ω+ 
+
+> j
+
+)2
+
+2τc
+
++ ∆ ϕm,drem ,j ≤ dstop ,j , j ∈ { h, k },
+
+(4) where ω+ 
+
+> j
+
+is the extension-direction speed, Jeff ,j includes the reflected rotor inertia, τc is the available braking torque, td is the response-delay allowance, and ∆ϕm is a position margin. Once either axis satisfies Eq. (4), coordinated reverse torques brake both joints before the mechanical limit. Throughout push-off and catch, the actuator torques are bounded by the motor–gearbox-dependent torque–speed envelopes, while sticking contact requires Fn ≥ 0 and |Ft| ≤ μF n. The equations are integrated until release, and the terminal stance state determines the subsequent vertical motion. The task metric is 
+
+hjump = max  
+
+> t≥0
+
+[yh(t) − yh(0)] 
+
+≡ F (xm, xg , c). (5) Here, F denotes the coupled nonlinear response under fixed task conditions; xm, xg , and c collect the motor, gearbox, and B´ ezier-policy variables, respectively. The quantity yh is the vertical hip position and, under the guide constraint, also the slider position on the experimental bench; we therefore refer to hjump as the slider rise. III. M OTOR –G EARBOX CO-D ESIGN METHOD 
+
+Here, motor–gearbox co-design denotes the joint search over motor electromagnetic design and gearbox topology and design parameters. Each combined design is evaluated through its resulting actuator mass, reflected inertia, torque–speed limits, and predicted task-level jumping performance. With the representative jumping task fixed, this section formulates the resulting mixed discrete–continuous problem and describes its surrogate-assisted evaluation and constrained Pareto search. 
+
+A. Problem Formulation 
+
+Let x ∈ X mix denote a candidate geared-actuator design. Its motor, reducer, assembled-actuator, and jumping-task responses are evaluated by the coupled map Φ(x) shown in Fig. 5. TABLE I MOTOR –G EARBOX DESIGN VARIABLES AND CONSTRAINTS                                            
+
+> Group Symbols Range or options Feasibility constraints Motor: slot–pole
+> (S, P )18S /{16 ,20 ,22 }P;
+> 24S /{22 ,26 ,28 }P;
+> 27S /30P
+> winding factor:
+> kw, 1>0.9
+> Motor: radial
+> Dso , D b;
+> wt, h s
+> Dso : 60 –96 mm ;
+> Db: 36 .1–75 mm ;
+> wt: 2 –5 mm ;hs: 1 –19 .15 mm
+> valid stator and slot geometry Motor: slot/magnet
+> htt , w so ;
+> tmag , α mag
+> htt , w so : 0 .5–2 mm ;
+> tmag : 1 –3 mm ;
+> αmag : 120 –180 ◦elec. positive clearances; manufacturable geometry Motor: axial/winding
+> lm, d w, b lm: 1 –30 mm ;standard wire index; symmetry divisors realizable winding; current/voltage limits Reducer: selection
+> T, i tT ∈ { NGW ,NW ,3K };
+> it: 1 –50 in 0.5steps assembly and ratio feasibility Reducer: geometry
+> z, r a;
+> m,xp
+> topology-dependent integers; bounded continuous values geometry and tooth-root strength constraints Actuator: package
+> Dact , L act derived Dact ≤98 mm ;
+> Lact ≤50 mm
+> Task: contact
+> Fn, F tderived Fn≥0;|Ft| ≤ μF n;valid task integration Tooth width
+> Tooth -tip depth
+> Slot opening
+> Magnet thickness
+> Magnet arc
+
+(a)  
+
+> NGW
+> NW 3K
+
+(b) 
+
+Fig. 6. Coupled motor–gearbox design space: (a) motor geometric design variables and (b) planetary gearbox topologies considered, including NGW, NW, and 3K configurations. 
+
+1) Objectives: The task-level objective is the predicted slider rise hjump , while the actuator-level objective is the rated output torque density ρT . Rated torque density is a common actuator-level measure of mass-specific torque capability in dynamic legged robots [10], [11]. These objectives are retained separately because jump height captures hardware– control interactions that rated torque density alone cannot represent. Following the minimization convention used by NSGA-II, the problem is written as 
+
+minimize 
+
+> x∈X mix
+
+f (x) = [ −hjump (x), −ρT (x)] ,ρT (x) = Trated ,out (x)
+
+mact (x) . (6) For consistent comparison, Trated ,out is evaluated for all candidates at the same single-conductor current-density setting, Jrated = 6 A /mm 2, a commonly adopted value for naturally cooled permanent-magnet machines [26], [27]. 
+
+2) Variables: The motor and gearbox vectors introduced above are partitioned into discrete and continuous components in the hardware design vector, x = [ xdm, xcm, xdg , xcg ]. Motor variables describe the slot–pole layout, radial and axial geom-2 4 6246             
+
+> Motor simulation Surrogate prediction (a) Kt(×10 −2)
+> 24682468
+> Motor simulation Surrogate prediction (b) Ke(×10 −2)
+> 50 60 70 80 50 60 70 80
+> Motor simulation Surrogate prediction (c) Efficiency
+> 0.96 0.98 1
+> Kt
+> Ke
+> Tavg
+> n0
+> ηJr
+> Ld
+> Lq
+> 0.997 0.997 0.988 0.968 0.973 0.999 0.982 0.980
+> R2
+> (d) Per-output R2
+
+Fig. 7. Validation of the 18S/20P motor surrogate using 200 independent cases: parity plots for Kt, Ke, and efficiency, and R2 values for eight predicted outputs. 
+
+etry, magnets, and winding. Reducer variables describe the planetary topology, target ratio, tooth numbers, and geometry. The combined variables and their associated feasibility checks are summarized in Table I; their geometric interpretation is shown in Fig. 6 [13], [28]. 
+
+3) Constraints: A candidate is feasible only if its motor geometry and winding are realizable, its operating points satisfy current and voltage limits, and its reducer meets assembly, clearance, and tooth-root-strength requirements [29]. The assembled actuator must also satisfy the reference package envelope, and the jumping simulation must maintain admissible contact and complete without an invalid state. The corresponding checks are summarized in Table I. 
+
+B. Hierarchical Mixed-Variable Search 
+
+The complete formulation couples more than 20 discrete and continuous hardware–control variables. We handle this mixed space hierarchically. Major categorical choices, in-cluding slot–pole combinations and reducer topologies, are first enumerated. Within each enumerated case, the bounded continuous motor and gearbox variables are searched directly. Remaining discrete choices are represented by real-valued indices, then clipped, rounded, and decoded into admissible values before candidate evaluation. This preserves real-valued resolution for continuous variables while ensuring that every decoded discrete choice is realizable. The decoded motor and gearbox designs are evaluated using the surrogate and analytical models described next. 
+
+C. Motor Surrogate and Validation 
+
+Motor electromagnetic performance varies nonlinearly with geometry and winding because of coupled flux distribution, magnetic saturation, leakage, and loss mechanisms. Accurate closed-form models over the considered design space are therefore difficult to obtain, whereas repeated field-based elec-tromagnetic evaluations would make the system-level search prohibitively expensive. We consequently use surrogates for motor evaluation. We construct a separate motor surrogate for each of the seven retained slot–pole combinations. For each combination, 1000 valid designs are sampled from the eight-dimensional cross-sectional geometry space using Latin hypercube sam-pling (LHS) [30], [31]. Motor length and winding choices are applied subsequently through analytical scaling. Each surrogate is a standardized quadratic model fitted with ridge regression. It predicts the electromagnetic and physical quantities required by the downstream actuator evaluator, including Kt, Ke, torque, speed, efficiency, inductance, motor mass, and rotor inertia. Separate models are used because the slot–pole combinations introduce discrete changes in winding layout and electromagnetic behavior. Predictive accuracy is assessed using 200 independent validation cases. For the representative 18S/20P topology, the 
+
+R2 values of the eight reported outputs range from 0.9681 to 0.9993 (Fig. 7), supporting use of the surrogates for large-scale candidate screening. The selected design is subsequently re-evaluated before prototype fabrication. 
+
+D. Planetary Gearbox Modeling 
+
+Unlike the nonlinear motor electromagnetic response, gearbox kinematics, efficiency, strength-based sizing, mass, and inertia can be evaluated efficiently using analytical relations once the topology and tooth-number combination are specified. We therefore use the analytical model developed below for gearbox evaluation. The NGW, NW, and 3K reducers in Fig. 6(b) are dis-tinguished by their kinematic topology and tooth-number combinations, from which the reduction ratio is calculated analytically. Here, zs, zp, and zr denote sun, planet, and ring tooth numbers, respectively; subscripts distinguish the compound members. Individual mesh efficiencies ηa, ηb, and ηc are calculated from the tooth numbers, mesh type, friction coefficient, and contact geometry [13]. With q = ( zp1/z s)( zr1/z p2), i1 =
+
+zr1/z s, and i2 = zr1zp2/(zr2zp1), the forward efficiencies are 
+
+ηNGW /NW = 1 + qη aηb
+
+1 + q ,η3K = (1 + ηaηbi1)(1 − i2)(1 + i1)(1 − ηbηci2) .
+
+(7) The NGW case follows by setting zp1 = zp2, while the 3K expression corresponds to the considered arrangement with 
+
+i2 < 1.For target ratios from 1 to 50 in increments of 0.5, feasible tooth-number combinations are enumerated and the working center distance, module, and profile shifts are selected to maximize gearbox efficiency subject to assembly, clearance, and package constraints. Gear face widths are then sized from the per-planet load Tp using 
+
+bj = σref ,j Tpbref 
+
+Tref σtar 
+
+, (8) where σref ,j is the reference tooth-root stress of mesh pair j
+
+and σtar is the allowable target stress [29]. The sized gears determine reducer mass, axial length, and inertia. For each topology–ratio pair, the highest-efficiency feasible candidate is retained for the co-design search. Its actual ratio ig and efficiency ηg are then used to map the motor torque–speed limits to the joint output side. The motor-side rotary inertia is reflected to the joint output by the square of the reduction ratio, 
+
+Jref ,out = i2 
+
+> g
+
+(Jm,rotor + Jhub + Jsun ) , (9) where the three terms are the inertias of the motor rotor, rotor hub, and sun gear on the gearbox input side, respectively. 
+
+E. Actuator Mass Estimation 
+
+Rather than assigning a fixed actuator mass, we recompute it for every candidate from the motor materials, structural parts, gears, and gearbox structures. Motor materials follow the candidate geometry and winding, while gear masses follow the topology-specific geometry and strength-based sizing. Supporting components are approximated as solid or hollow cylinders and annuli. The same geometric approximations provide the input-side inertias used in Eq. (9). The result-ing candidate-specific mass enters both the torque-density objective and the jumping dynamics. 
+
+F. Multi-Objective Co-Design Optimization 
+
+Each enumerated motor–gearbox case is searched using constrained NSGA-II [32], [33]. For each decoded hardware candidate, an inner bounded L-BFGS-B search jointly op-timizes 12 B´ ezier coefficients, six for the hip-torque curve and six for the knee-torque curve. The resulting policy is evaluated under the candidate-specific torque–speed limits, contact constraints, and predictive-catch condition in Eq. (4). The optimized hjump and rated actuator torque density then form the two objectives in Eq. (6). Each enumerated case uses a population of 48 for 30 generations (1488 evaluations including initialization). Stan-dard NSGA-II selection, crossover, and bounded mutation are applied with feasibility-first ranking; infeasible candidates are ordered by aggregate constraint violation. Feasible fronts from all cases are then merged and re-ranked to obtain the global Pareto set. IV. O PTIMIZATION RESULTS 
+
+A. Pareto-Front and Design Trade-Off Analysis 
+
+Fig. 8 shows the feasible trade-off between predicted slider rise and rated output-torque density across slot–pole combinations when the hip and knee B´ ezier policies are optimized for every hardware candidate. Candidates with similar torque density can produce substantially different task-level performance, indicating that actuator-level metrics alone are insufficient to rank designs for the jumping task. The fabricated 18S/20P actuator is shown as a reference rather than as a point on the Pareto fronts. It was selected from an earlier Pareto front and fabricated before the co-design workflow was subsequently updated. 20 30 40 50 60 400 600 800 1,000 1,200 DM8009 reference Fabricated actuator Rated actuator torque density [N m/kg] Predicted slider rise [mm] 18S/16P 18S/20P 18S/22P 24S/22P 24S/26P 24S/28P 27S/30P Fig. 8. Pareto-front analysis across slot–pole combinations after per-candidate dual-joint B´ ezier-policy optimization. Colored markers denote feasible nondominated candidates. The star and cross show the fabricated actuator and DM8009 reference, respectively. TABLE II MODEL COMPARISON WITH THE DM8009 Metric DM8009 Optimized Estimated mass [kg] 0.896 0.689 Gear ratio 9.00 32.63 Rated output torque [N m] 20.0 25.8 Rated torque density [N m/kg] 22.3 37.4 Peak torque [N m] 40.0 51.5 Maximum speed [rpm] 320 250 Predicted slider rise [m] 0.930 1.008 
+
+B. Actuator- and Task-Level Comparison with the Reference Actuator 
+
+Before fabrication, the selected 18S/20P candidate is locally re-evaluated in motor simulation software under the final manufacturable winding and rated-current-density setting. The resulting rated output torque and torque density are 
+
+25 .8 N m and 37 .4 N m /kg . For convenient normalization of the hardware commands, the 25 .8 N m estimate is rounded to a nominal rated output torque of 26 N m in the experiments. The design is compared with a commercial DM8009 geared joint actuator produced by DAMIAO Tech., selected as a representative baseline because it is used in robotic-arm, exoskeleton, and legged-robot platforms, under the same modeled jumping task and constraints (Table II) and in the subsequent hardware validation. The optimized actuator remains lighter and provides higher rated and peak output torque, yielding an increase of ap-proximately 68% in rated torque density. Its lower maximum speed still covers the task-relevant operating region. Under the same dynamics model, the predicted slider rise is 0.930 m 
+
+for the DM8009 and 1.008 m for the optimized actuator, an improvement of approximately 8% . Thus, additional high-speed capability does not necessarily improve task performance when the target motion primarily benefits from greater usable torque. V. E XPERIMENTAL VALIDATION 
+
+A. Prototype Design and Implementation 
+
+The final motor, planetary gearbox, bearings, housing, and electronics are integrated into a compact coaxial actuator (a) CAD (b) prototype                     
+
+> Fig. 9. Mechanical design and fabricated prototype of the optimized actuator: (a) CAD sectional view and (b) fully assembled prototype. (a) wound stator (b) rotor (c) gearbox
+> Fig. 10. Fabricated key components of the optimized actuator: (a) wound stator, (b) rotor, and (c) planetary gearbox. (a) single-motor test module (b) assembled bench-test setup
+> Fig. 11. Single-motor bench characterization hardware: (a) fabricated motor test module and (b) assembled setup with the load device and torque sensor. TABLE III MOTOR MODEL AND BENCH MEASUREMENTS
+> Parameter Model Measured
+> Kt[N m/ Aline ,pk ]0.04780 0.04453
+> Ke[Vll ,pk /(rad/s)] 0.05618 0.06391
+> ω0[rad/s] 898.7 790
+
+(Fig. 9). The wound stator, rotor, and planetary gearbox confirm that the optimized electromagnetic and transmission designs can be manufactured and assembled as intended (Fig. 10). This implementation converts the optimized design variables into a physical actuator for subsequent experimental validation. The prototype mass is 0.729 kg , 5.8% above the predicted 
+
+0.689 kg but 18 .6% below the DM8009 mass. At the 26 N m 
+
+rated output-torque setting used in the hardware experiments, its measured-mass torque density is 35 .7 N m /kg . The re-maining mass difference reflects practical implementation details not fully represented in the design-stage model. 
+
+B. Motor Bench Characterization 
+
+The fabricated motor is characterized before gearbox integration using the single-motor module and bench setup (a) DM8009 reference actuator at a 40 N m twice-rated output-torque command 
+
+(b) Optimized actuator prototype at a 52 N m twice-rated output-torque command Fig. 12. Representative jumping sequences at twice-rated output torque under the common 5.5 kg bench load and 48 V DC bus: (a) DM8009 at 
+
+40 N m and (b) optimized actuator at 52 N m .TABLE IV NORMALIZED TORQUE -S WEEP EXPERIMENTAL RESULTS 
+
+Command level DM8009 Optimized 
+
+0.75 × rated No jump 0.490 m 
+
+1.00 × rated 0.490 m 0.580 m 
+
+1.50 × rated 0.615 m 0.745 m 
+
+2.00 × rated 0.750 m 0.840 m 
+
+shown in Fig. 11. The tests compare Kt, Ke, and no-load speed ω0 with the model values (Table III). These quantities characterize the realized torque production and speed capability before the complete actuator is evaluated at the task level. The measured Kt is 6.8% lower, Ke is 13 .8% 
+
+higher, and no-load speed is 12 .1% lower. The fabricated motor thus retains the principal characteristics predicted by the electromagnetic model, while measurable deviations remain in the realized hardware. These deviations are considered when interpreting the model–experiment difference in task performance. 
+
+C. Two-DOF Jumping-Leg Experimental Validation 
+
+The optimized actuator and DM8009 are evaluated on the same vertical-guide jumping platform under a common 
+
+5.5 kg bench load and 48 V DC bus. Rather than comparing a single torque command, the completed experiment sweeps the output-torque command relative to each actuator’s rated value. The DM8009 is tested at 15 , 20 , 30 , and 40 N m , while the optimized prototype is tested at 19 .5, 26 , 39 , and 52 N m ,corresponding to 0.75 ×, 1.0×, 1.5×, and 2.0× rated torque (Fig. 12). Across the normalized sweep, the optimized prototype increases the rise from 0.490 to 0.580 m at rated torque and from 0.750 to 0.840 m at twice-rated torque, corresponding to improvements of 18 .4% and 12 .0% (Table IV). Figures 13 and 14 focus on the twice-rated condition. During the push-Knee Hip Experiment Model           
+
+> −50
+> −25 025 50
+> Torque [N m]
+> Output torque
+> 0510 15 20 25
+> Speed [rad/s]
+> Joint speed
+> 00.05 0.1 0.15 0.2 0.25
+> 00.511.5
+> Time [s] Relative position [rad]  Joint position
+> 00.05 0.1 0.15 0.2 0.25
+> 00.10.20.3
+> Time [s] Rise [m]
+> Slider rise during push-off
+
+Fig. 13. Twice-rated ( 52 N m ) push-phase comparison between measured optimized-actuator feedback and the design-stage vertical-guide model prediction. Colors distinguish the knee and hip joints; solid and dashed lines denote experiment and model, respectively. Knee torque Hip torque Knee speed Hip speed Knee position Hip position     
+
+> −50
+> −25 025 50
+> Torque [N m]
+> DM8009 — twice-rated output torque: 40 N m
+> −20 020
+> Speed [rad/s]
+> 012
+> Relative position [rad]
+> 00.40.81.21.6
+> −50
+> −25 025 50
+> Time [s] Torque [N m]
+> Optimized actuator — twice-rated output torque: 52 N m
+> −20 020
+> Speed [rad/s]
+> 012
+> Relative position [rad]
+
+Fig. 14. Measured hip and knee responses at twice-rated output-torque commands: 40 N m for the DM8009 and 52 N m for the optimized actuator. Solid and dashed curves denote knee and hip quantities, respectively. TABLE V TWICE -R ATED PREDICTION –E XPERIMENT ERROR DECOMPOSITION 
+
+Case Slider rise [m] Cum. loss [%] Design-stage model 1.008 0.0 Measured motor parameters 0.898 10.9 
+
++ measured actuator mass 0.893 11.3 Experiment 0.840 16.6 
+
+off phase, the optimized actuator reaches knee and hip torque peaks of 49 .28 and 42 .96 N m , respectively, with the larger tracking deficit at the hip. At this condition, the model predicts an earlier end to the push-off phase than observed experimentally ( 0.194 versus 
+
+0.240 s ) and less rise during push-off ( 0.287 versus 0.343 m ), yet overpredicts the total rise by 16 .6% . The discrepancy is therefore dominated by the post-release prediction. Re-evaluating the same candidate with the measured motor parameters and actuator mass explains 11 .3 percentage points, leaving 5.3 percentage points for unmodeled transmission, guide, and control effects (Table V). Additional experimental videos and an interactive illustra-tion of the co-design framework are available on the project page: https://actuator-codesign.github.io/jump-study/. VI. C ONCLUSION AND FUTURE WORK 
+
+This paper presented a task-oriented motor–gearbox co-design framework for compact geared actuators. Evidence from representative humanoid motions first showed that different tasks impose different joint torque–speed require-ments. A tractable two-DOF jumping leg was then used to formulate and validate the co-design problem. The framework jointly considers motor electromagnetic design, planetary-gearbox design, actuator mass and inertia, task dynamics, and control. A hierarchical mixed-variable strategy enables the joint optimization of discrete and continuous design variables. The resulting actuator was fabricated and evaluated through motor bench characterization and jumping experiments against a commercial actuator. The results show that evaluating coupled motor–gearbox designs through task-relevant torque– speed demands and task-level performance can produce more suitable actuators than optimizing isolated component metrics. The comparison between model predictions and hardware measurements further demonstrates the importance of propagating manufactured actuator characteristics to task-level evaluation. Although demonstrated with a planetary-geared actuator, the framework can be extended to other actuator architectures and to system-level co-design of robot mechanisms, actuators, and control. Future work will fabricate and experimentally evaluate a new actuator selected from the Pareto set and extend validation to coordinated multi-joint, whole-robot, and multi-task settings. REFERENCES [1] M. Hutter, C. Gehring, D. Jud, A. Lauber, C. D. Bellicoso, V. Tsounis, J. Hwangbo, K. Bodie, P. Fankhauser, M. Bloesch, R. Diethelm, S. Bachmann, A. Melzer, and M. A. Hoepflinger, “ANYmal: A highly mobile and dynamic quadrupedal robot,” in Proceedings of the IEEE/RSJ International Conference on Intelligent Robots and Systems ,2016, pp. 38–44. [2] Q. Liao, B. Zhang, X. Huang, X. Huang, Z. Li, and K. Sreenath, “Berkeley humanoid: A research platform for learning-based control,” in Proceedings of the IEEE International Conference on Robotics and Automation , 2025, pp. 2897–2904. [3] G. Ficht and S. Behnke, “Bipedal humanoid hardware design: A technology review,” Current Robotics Reports , vol. 2, pp. 201–210, 2021. [4] K. Hashimoto, “Mechanics of humanoid robot,” Advanced Robotics ,vol. 34, no. 21–22, pp. 1390–1397, 2020. [5] K. Hirai, M. Hirose, Y. Haikawa, and T. Takenaka, “The development of Honda humanoid robot,” in Proceedings of the IEEE International Conference on Robotics and Automation , vol. 2, 1998, pp. 1321–1326. [6] M. Hirose and K. Ogawa, “Honda humanoid robots development,” 
+
+Philosophical Transactions of the Royal Society A: Mathematical, Physical and Engineering Sciences , vol. 365, no. 1850, pp. 11–19, 2007. [7] H. Hirukawa, F. Kanehiro, K. Kaneko, S. Kajita, K. Fujiwara, Y. Kawai 
+
+et al. , “Humanoid robotics platforms developed in HRP,” Robotics and Autonomous Systems , vol. 48, no. 4, pp. 165–175, 2004. [8] Y. Ogura, H. Aikawa, K. Shimomura, H. Kondo, A. Morishima, H. O. Lim, and A. Takanishi, “Development of a new humanoid robot WABIAN-2,” in Proceedings of the IEEE International Conference on Robotics and Automation , 2006, pp. 76–81. [9] G. A. Pratt and M. M. Williamson, “Series elastic actuators,” in 
+
+Proceedings of the IEEE/RSJ International Conference on Intelligent Robots and Systems , 1995, pp. 399–406. [10] S. Seok, A. Wang, M. Y. Chuah, D. J. Hyun, J. Lee, D. M. Otten, J. H. Lang, and S. Kim, “Design principles for energy-efficient legged locomotion and implementation on the MIT cheetah robot,” IEEE/ASME Transactions on Mechatronics , vol. 20, no. 3, pp. 1117–1129, 2015. [11] P. M. Wensing, A. Wang, S. Seok, D. M. Otten, J. H. Lang, and S. Kim, “Proprioceptive actuator design in the MIT cheetah: Impact mitigation and high-bandwidth physical interaction for dynamic legged robots,” 
+
+IEEE Transactions on Robotics , vol. 33, no. 3, pp. 509–522, 2017. [12] B. Katz, J. Di Carlo, and S. Kim, “Mini cheetah: A platform for pushing the limits of dynamic quadruped control,” in Proceedings of the IEEE International Conference on Robotics and Automation , 2019, pp. 6295–6301. [13] H. Matsuki, K. Nagano, and Y. Fujimoto, “Bilateral drive gear—a highly backdrivable reduction gearbox for robotic actuators,” IEEE/ASME Transactions on Mechatronics , vol. 24, no. 6, pp. 2661–2673, 2019. [14] H. Zhu, C. Nesler, N. Divekar, V. Peddinti, and R. D. Gregg, “Design principles for compact, backdrivable actuation in partial-assist powered knee orthoses,” IEEE/ASME Transactions on Mechatronics , vol. 26, no. 6, pp. 3104–3115, 2021. [15] J. He and F. Gao, “Mechanism, actuation, perception, and control of highly dynamic multilegged robots: A review,” Chinese Journal of Mechanical Engineering , vol. 33, no. 1, p. 79, 2020. [16] J. Di Carlo, P. M. Wensing, B. Katz, G. Bledt, and S. Kim, “Dynamic locomotion in the MIT cheetah 3 through convex model-predictive control,” in Proceedings of the IEEE/RSJ International Conference on Intelligent Robots and Systems , 2018, pp. 1–9. [17] Y. Ding and H.-W. Park, “Design and experimental implementation of a quasi-direct-drive leg for optimized jumping,” in Proceedings of the IEEE/RSJ International Conference on Intelligent Robots and Systems ,2017, pp. 300–305. [18] G. Fadini, S. Kumar, R. Kumar, T. Flayols, A. Del Prete, J. Carpentier, and P. Sou` eres, “Co-designing versatile quadruped robots for dynamic and energy-efficient motions,” Robotica , vol. 42, no. 6, pp. 2004–2025, 2024. [19] Z. Wu, K. Zheng, Z. Ding, and H. Gao, “A survey on legged robots: Advances, technologies and applications,” Engineering Applications of Artificial Intelligence , vol. 138, p. 109418, 2024. [20] L. Zhou, S. Bai, and M. R. Hansen, “Design optimization on the drive train of a lightweight robotic arm,” Mechatronics , vol. 21, no. 3, pp. 560–569, 2011. [21] G. Fadini, T. Flayols, A. Del Prete, N. Mansard, and P. Sou` eres, “Computational design of energy-efficient legged robots: Optimizing for size and actuators,” in Proceedings of the IEEE International Conference on Robotics and Automation , 2021, pp. 9898–9904. [22] T. Dinev, C. Mastalli, V. Ivan, S. Tonneau, and S. Vijayakumar, “A versatile co-design approach for dynamic legged robots,” in Proceedings of the IEEE/RSJ International Conference on Intelligent Robots and Systems , 2022, pp. 10 343–10 349. [23] N. V. Queipo, R. T. Haftka, W. Shyy, T. Goel, R. Vaidyanathan, and P. K. Tucker, “Surrogate-based analysis and optimization,” Progress in Aerospace Sciences , vol. 41, no. 1, pp. 1–28, 2005. [24] Y. Jin, “Surrogate-assisted evolutionary computation: Recent advances and future challenges,” Swarm and Evolutionary Computation , vol. 1, no. 2, pp. 61–70, 2011. [25] E. Todorov, T. Erez, and Y. Tassa, “MuJoCo: A physics engine for model-based control,” in Proceedings of the IEEE/RSJ International Conference on Intelligent Robots and Systems , 2012, pp. 5026–5033. [26] J. F. Gieras and J.-X. Shen, Modern Permanent Magnet Electric Machines: Theory and Control . CRC Press, 2023. [27] M. A. Jalali Kondelaji, M. R. Sarshar, P. Asef, and M. Mirsalim, “A multi-tooth interactive flux reversal permanent magnet motor,” IEEE Transactions on Industrial Electronics , 2026, early access. [28] J. Pyrh¨ onen, T. Jokinen, and V. Hrabovcov´ a, Design of Rotating Electrical Machines , 2nd ed. Wiley, 2014. [29] International Organization for Standardization, ISO 6336-3:2019 ,International Organization for Standardization, 2019. [30] M. D. McKay, R. J. Beckman, and W. J. Conover, “A comparison of three methods for selecting values of input variables in the analysis of output from a computer code,” Technometrics , vol. 21, no. 2, pp. 239–245, 1979. [31] M. Stein, “Large sample properties of simulations using latin hypercube sampling,” Technometrics , vol. 29, no. 2, pp. 143–151, 1987. [32] K. Deb, A. Pratap, S. Agarwal, and T. Meyarivan, “A fast and elitist multiobjective genetic algorithm: NSGA-II,” IEEE Transactions on Evolutionary Computation , vol. 6, no. 2, pp. 182–197, 2002. [33] H. Zhao, C. Liu, Z. Song, and W. Wang, “Exact modeling and multiobjective optimization of vernier machines,” IEEE Transactions on Industrial Electronics , vol. 68, no. 12, pp. 11 740–11 751, 2021.

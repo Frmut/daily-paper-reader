@@ -1,0 +1,199 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-09-23T21:53:29.951419+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 2,
+    "deep_cap": 6,
+    "deep_selected": 2,
+    "quick_candidates": 3,
+    "quick_skim_target": 11,
+    "quick_selected": 3
+  },
+  "deep_dive": [
+    {
+      "id": "2609.25759v1",
+      "title": "Model-Free Current Control of Permanent Magnet Synchronous Motors via ESO-Based Disturbance Feedforward and Data-Driven H-infinity Residual Feedback",
+      "abstract": "This paper proposes a model-free current control method for permanent magnet synchronous motors (PMSMs) based on disturbance feedforward and residual feedback. An ultra-local current model incorporates motor dynamics, parameter uncertainties, cross-coupling effects, and other nonideal factors into generalized lumped disturbances. An extended state observer (ESO) estimates these lumped disturbances and compensates for them through feedforward action, transforming the original PMSM current-control problem into regulation of a simplified post-compensation residual system. A state-feedback H-infinity controller for the residual system is then learned directly from operating data using off-policy integral reinforcement learning. Owing to the simplified residual dynamics, the value function and control policies are parameterized in quadratic and linear forms, reducing the learning problem to low-dimensional parameter estimation without neural-network approximation. The proposed method requires neither prior knowledge nor online identification of PMSM electrical parameters: input-gain mismatch is incorporated into the ESO-estimated lumped dynamics, while the residual-feedback policy is obtained from operating data. Comparative simulations against deadbeat predictive current control, model-based H-infinity control, and model-free predictive current control show fast current tracking, low current distortion, and strong robustness to large parameter variations. With the learned H-infinity policy fixed and without retraining or retuning, nearly unchanged control performance is maintained when stator resistance, stator inductance, and permanent-magnet flux linkage are simultaneously varied to 20% and 200% of their nominal values.",
+      "authors": [
+        "YongBo Li",
+        "Shuang Liang",
+        "HongWei Ma"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY"
+      ],
+      "published": "2026-09-22T06:53:39+00:00",
+      "link": "https://arxiv.org/pdf/2609.25759v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 10.0,
+      "llm_evidence_en": "Directly addresses current control of Permanent Magnet Synchronous Motors (PMSM)",
+      "llm_evidence_cn": "直接针对永磁同步电机（PMSM）的电流控制进行研究",
+      "llm_evidence": "直接针对永磁同步电机（PMSM）的电流控制进行研究",
+      "canonical_evidence": "直接针对永磁同步电机（PMSM）的电流控制进行研究",
+      "llm_tldr_en": "Proposes a model-free current control for PMSMs using ESO-based disturbance feedforward and H-infinity feedback.",
+      "llm_tldr_cn": "提出一种基于ESO扰动前馈和H-infinity反馈的永磁同步电机无模型电流控制方法。",
+      "llm_tldr": "提出一种基于ESO扰动前馈和H-infinity反馈的永磁同步电机无模型电流控制方法。",
+      "llm_tags": [
+        "query:pmsm"
+      ],
+      "matched_query_tag": "query:pmsm",
+      "matched_query_text": "Permanent Magnet Synchronous Motor research",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2609.25878v1",
+      "title": "High-Performance Sensorless Control for High-Speed PMSM with Current Source Inverters",
+      "abstract": "Current source inverters (CSIs) are emerging as competitive alternatives to voltage source inverters (VSIs) for high-speed motor drives because they inherently suppress harmonic currents, offer output-voltage boosting, and reduce motor-side electromagnetic interference. Sensorless control of CSI-fed permanent magnet synchronous machines (PMSMs) remains less mature than VSI counterparts, primarily because conventional implementations require measurement of all circuit state variables. This paper proposes a weak-resonance-based approximation that reconstructs stator currents from inverter modulation commands and feedforward capacitor-current estimation, thereby reducing the sensing requirement to the dc-link current and two terminal voltages. The proposed observer--PLL structure is analysed for computational complexity and validated through simulations and experiments on a 100~W, 100~krpm GaN-based two-stage CSI prototype (buck + CSI). Quantitative results demonstrate accurate rotor-position tracking and high-bandwidth operation while maintaining the reduced sensor set. Proposed method performs well in simulation and experiment, achieving a position estimation error below $5^\\circ$ at 100~krpm.",
+      "authors": [
+        "Nail Tosun",
+        "Devinda Molligoda",
+        "Xu Deng",
+        "Barrie Mecrow"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY"
+      ],
+      "published": "2026-09-22T08:45:21+00:00",
+      "link": "https://arxiv.org/pdf/2609.25878v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 10.0,
+      "llm_evidence_en": "Sensorless control for high-speed PMSM with current source inverters",
+      "llm_evidence_cn": "电流源逆变器供电的高速永磁同步电机无传感器控制",
+      "llm_evidence": "电流源逆变器供电的高速永磁同步电机无传感器控制",
+      "canonical_evidence": "电流源逆变器供电的高速永磁同步电机无传感器控制",
+      "llm_tldr_en": "Proposes a sensorless control method for high-speed PMSMs using current source inverters.",
+      "llm_tldr_cn": "提出一种用于电流源逆变器驱动的高速永磁同步电机的无传感器控制方法。",
+      "llm_tldr": "提出一种用于电流源逆变器驱动的高速永磁同步电机的无传感器控制方法。",
+      "llm_tags": [
+        "query:pmsm"
+      ],
+      "matched_query_tag": "query:pmsm",
+      "matched_query_text": "Permanent Magnet Synchronous Motor research",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2609.22795v1",
+      "title": "Task-Oriented Co-Design and Optimization of Geared Actuators for Robotic Applications",
+      "abstract": "Different tasks performed by legged robots impose distinct torque and speed requirements on actuators. Existing robotic actuators are generally optimized at the component level for metrics such as torque or power density, without explicit task guidance. System-level optimization across components such as motors, gearboxes, and sensors is challenging because of the high computational cost and coupling among mechanical, electrical, and electromagnetic behaviors. Consequently, improvements in individual components may not translate into better robot performance in a specific task. To this end, we present a systematic optimization framework for task-oriented co-design of actuator hardware and control. First, surrogate models are employed to accelerate motor evaluation and support global exploration of the coupled design space. Then, a hierarchical mixed-variable optimization strategy is adopted, combining discrete enumeration with continuous search over dimensions and real-valued indices. These indices are rounded to select admissible values for the remaining discrete choices before each evaluation. Within this search, rated output torque density and task performance are jointly optimized, with Bezier-parameterized joint torque profiles determined for each hardware candidate. Finally, the effectiveness of the proposed framework is validated through actuator fabrication and experiments on a two-degree-of-freedom jumping leg. Based on its measured mass, the fabricated prototype achieves a nominal rated output torque density of 35.7 N m/kg, approximately 60% higher than that of a widely used commercial geared joint actuator, while being 18.6% lighter. Under matched bench conditions, it achieves 12.0% greater jump height at twice-rated torque. Together, these results demonstrate a systematic route from task requirements to actuator design and control.",
+      "authors": [
+        "Xuanyu Huang",
+        "Jianqiang Dong",
+        "Hang Zhao"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-09-19T05:54:37+00:00",
+      "link": "https://arxiv.org/pdf/2609.22795v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "system-level optimization of motors and control",
+      "llm_evidence_cn": "电机与控制的系统级优化",
+      "llm_evidence": "电机与控制的系统级优化",
+      "canonical_evidence": "电机与控制的系统级优化",
+      "llm_tldr_en": "Presents a co-design framework for optimizing motor hardware and control based on specific robotic tasks.",
+      "llm_tldr_cn": "提出了一个针对特定机器人任务优化电机硬件和控制的协同设计框架。",
+      "llm_tldr": "提出了一个针对特定机器人任务优化电机硬件和控制的协同设计框架。",
+      "llm_tags": [
+        "query:pmsm"
+      ],
+      "matched_query_tag": "query:pmsm",
+      "matched_query_text": "Permanent Magnet Synchronous Motor research",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.23918v1",
+      "title": "Quasi-Static Fault-Tolerant Feedback Control of a Quadrotor under Rotor Failure with Provable Safety Guarantees",
+      "abstract": "This paper presents a nonlinear control law for a quadrotor unmanned aerial vehicle (UAV) under single-rotor failure that guarantees set stabilization via quasi-static feedback (QSF). Given a geometric curve in three-dimensional space, we characterize and stabilize the zero-dynamics manifold, also known as the path-following manifold, which represents all feasible motions along the path. Stabilizing this manifold ensures path-invariance: a UAV with a failed rotor initialized on the path with an appropriate orientation remains on the path for all future time. Furthermore, local exponential convergence to the manifold is guaranteed under certain conditions, implying that, under the stated assumptions, rotor failure during flight does not cause transverse deviation from the path. The proposed controller thus provides theoretical safety guarantees, which are validated through numerical experiments in the Drake physics-based simulation engine. The code is publicly available at https://gradslab.github.io/quasistatic-ftc/.",
+      "authors": [
+        "Mohamed Al Lawati",
+        "Adeel Akhtar"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY",
+        "math.DS",
+        "math.OC"
+      ],
+      "published": "2026-09-20T22:46:49+00:00",
+      "link": "https://arxiv.org/pdf/2609.23918v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Fault-tolerant feedback control for rotor failure in multi-rotor systems",
+      "llm_evidence_cn": "多旋翼系统中针对旋翼失效的容错反馈控制",
+      "llm_evidence": "多旋翼系统中针对旋翼失效的容错反馈控制",
+      "canonical_evidence": "多旋翼系统中针对旋翼失效的容错反馈控制",
+      "llm_tldr_en": "Develops a fault-tolerant control law for quadrotors to maintain path stability after a rotor failure.",
+      "llm_tldr_cn": "为四旋翼无人机开发了一种容错控制律，以在旋翼失效后保持路径稳定性。",
+      "llm_tldr": "为四旋翼无人机开发了一种容错控制律，以在旋翼失效后保持路径稳定性。",
+      "llm_tags": [
+        "query:pmsm"
+      ],
+      "matched_query_tag": "query:pmsm",
+      "matched_query_text": "fault-tolerant control of multi-phase motors",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.24339v1",
+      "title": "An Algebraic Observer for State-Affine Systems",
+      "abstract": "We present a new systematic method to design an algebraic swapping lemma observer for nonlinear systems which are affine in the state. Four are the main features of the new observer: (i) Far superior transient performance compared to standard asymptotically convergent observers; (ii) structural simplicity - its construction relies solely on basic linear filtering and a single matrix inversion; (iii) applicability to non-uniformly-completely-observable systems, for which classical methods are not applicable; (iv) straightforward extension to the cases of unknown time-varying parameters and measurement delay. The core idea exploited in the paper is to combine the construction of a generalized parameter estimation-based observer with a simple filtering technique to derive the algebraic observer. The resulting design is shown to apply to a class of state-affine systems satisfying a weak generic condition. Moreover, it is established that for time-invariant systems, this condition is always satisfied globally.",
+      "authors": [
+        "Romeo Ortega",
+        "Alexey Bobtsov",
+        "Anton Pyrkin",
+        "Olga Zarina"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY"
+      ],
+      "published": "2026-09-21T09:35:58+00:00",
+      "link": "https://arxiv.org/pdf/2609.24339v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "State observers are critical components for sensorless PMSM control",
+      "llm_evidence_cn": "状态观测器是永磁同步电机无感控制的关键组件",
+      "llm_evidence": "状态观测器是永磁同步电机无感控制的关键组件",
+      "canonical_evidence": "状态观测器是永磁同步电机无感控制的关键组件",
+      "llm_tldr_en": "Presents a new algebraic observer for state-affine systems with superior transient performance.",
+      "llm_tldr_cn": "提出一种适用于状态仿射系统的新型代数观测器，具有优异的瞬态性能。",
+      "llm_tldr": "提出一种适用于状态仿射系统的新型代数观测器，具有优异的瞬态性能。",
+      "llm_tags": [
+        "query:pmsm:composite"
+      ],
+      "matched_query_tag": "query:pmsm:composite",
+      "matched_query_text": "Papers central to 三相及双三相永磁同步电机相关研究检索, especially work that connects or combines: m; s; f; Permanent Magnet Synchronous Motor research; dual three-phase permanent magnet synchronous motor control and design; fault-tolerant control of multi-phase motors; recent advances in dual three phase permanent magnet synchronous motor control; fault tolerant strategies for multi phase permanent magnet synchronous motors.",
+      "matched_requirement_id": "req-composite-pmsm",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

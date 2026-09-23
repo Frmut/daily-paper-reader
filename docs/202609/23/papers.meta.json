@@ -1,0 +1,79 @@
+{
+  "label": "2026-09-23",
+  "date": "2026-09-23",
+  "generated_at": "2026-09-23T21:53:53",
+  "count": 5,
+  "papers": [
+    {
+      "paper_id": "202609/23/2609.25759v1-model-free-current-control-of-permanent-magnet-synchronous-motors-via-eso-based-disturbance-feedforward-and-data-driven-h-infinity-residual-feedback",
+      "section": "deep",
+      "title_en": "Model-Free Current Control of Permanent Magnet Synchronous Motors via ESO-Based Disturbance Feedforward and Data-Driven H-infinity Residual Feedback",
+      "authors": "YongBo Li, Shuang Liang, HongWei Ma",
+      "date": "2026-09-22",
+      "pdf": "https://arxiv.org/pdf/2609.25759v1",
+      "score": "10.0",
+      "evidence": "直接针对永磁同步电机（PMSM）的电流控制进行研究",
+      "tldr": "本文提出了一种针对永磁同步电机（PMSM）的无模型电流控制方法。该方法利用扩张状态观测器（ESO）估计并补偿电机动态与参数不确定性，将复杂系统简化为残差系统，并通过离线策略积分强化学习直接从运行数据中学习H-infinity反馈控制器。该方案无需电机参数先验知识，实现了高精度的电流跟踪与极强的鲁棒性。",
+      "tags": "query:pmsm",
+      "abstract_en": "This paper proposes a model-free current control method for permanent magnet synchronous motors (PMSMs) based on disturbance feedforward and residual feedback. An ultra-local current model incorporates motor dynamics, parameter uncertainties, cross-coupling effects, and other nonideal factors into generalized lumped disturbances. An extended state observer (ESO) estimates these lumped disturbances and compensates for them through feedforward action, transforming the original PMSM current-control problem into regulation of a simplified post-compensation residual system. A state-feedback H-infinity controller for the residual system is then learned directly from operating data using off-policy integral reinforcement learning. Owing to the simplified residual dynamics, the value function and control policies are parameterized in quadratic and linear forms, reducing the learning problem to low-dimensional parameter estimation without neural-network approximation. The proposed method requires neither prior knowledge nor online identification of PMSM electrical parameters: input-gain mismatch is incorporated into the ESO-estimated lumped dynamics, while the residual-feedback policy is obtained from operating data. Comparative simulations against deadbeat predictive current control, model-based H-infinity control, and model-free predictive current control show fast current tracking, low current distortion, and strong robustness to large parameter variations. With the learned H-infinity policy fixed and without retraining or retuning, nearly unchanged control performance is maintained when stator resistance, stator inductance, and permanent-magnet flux linkage are simultaneously varied to 20% and 200% of their nominal values.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202609/23/2609.25878v1-high-performance-sensorless-control-for-high-speed-pmsm-with-current-source-inverters",
+      "section": "deep",
+      "title_en": "High-Performance Sensorless Control for High-Speed PMSM with Current Source Inverters",
+      "authors": "Nail Tosun, Devinda Molligoda, Xu Deng, Barrie Mecrow",
+      "date": "2026-09-22",
+      "pdf": "https://arxiv.org/pdf/2609.25878v1",
+      "score": "10.0",
+      "evidence": "电流源逆变器供电的高速永磁同步电机无传感器控制",
+      "tldr": "本文针对电流源逆变器（CSI）驱动的高速永磁同步电机（PMSM）无传感器控制难题，提出了一种基于弱谐振近似的观测器方案。该方法通过调制指令和电容电流前馈重构定子电流，仅需测量直流链路电流和端电压即可实现高精度转子位置估计，有效降低了硬件传感需求，并在100krpm的高速工况下验证了其鲁棒性与高带宽性能。",
+      "tags": "query:pmsm",
+      "abstract_en": "Current source inverters (CSIs) are emerging as competitive alternatives to voltage source inverters (VSIs) for high-speed motor drives because they inherently suppress harmonic currents, offer output-voltage boosting, and reduce motor-side electromagnetic interference. Sensorless control of CSI-fed permanent magnet synchronous machines (PMSMs) remains less mature than VSI counterparts, primarily because conventional implementations require measurement of all circuit state variables. This paper proposes a weak-resonance-based approximation that reconstructs stator currents from inverter modulation commands and feedforward capacitor-current estimation, thereby reducing the sensing requirement to the dc-link current and two terminal voltages. The proposed observer--PLL structure is analysed for computational complexity and validated through simulations and experiments on a 100~W, 100~krpm GaN-based two-stage CSI prototype (buck + CSI). Quantitative results demonstrate accurate rotor-position tracking and high-bandwidth operation while maintaining the reduced sensor set. Proposed method performs well in simulation and experiment, achieving a position estimation error below $5^\\circ$ at 100~krpm.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202609/23/2609.22795v1-task-oriented-co-design-and-optimization-of-geared-actuators-for-robotic-applications",
+      "section": "quick",
+      "title_en": "Task-Oriented Co-Design and Optimization of Geared Actuators for Robotic Applications",
+      "authors": "Xuanyu Huang, Jianqiang Dong, Hang Zhao",
+      "date": "2026-09-19",
+      "pdf": "https://arxiv.org/pdf/2609.22795v1",
+      "score": "7.0",
+      "evidence": "电机与控制的系统级优化",
+      "tldr": "针对足式机器人执行器在特定任务中性能优化不足的问题，本文提出了一种任务导向的执行器硬件与控制协同设计框架。通过引入代理模型加速评估，并采用分层混合变量优化策略，实现了电机、减速器等组件的系统级协同优化。实验表明，该方法设计的执行器在扭矩密度和跳跃性能上均显著优于商用产品，为机器人执行器从任务需求到硬件设计的全流程优化提供了系统性方案。",
+      "tags": "query:pmsm",
+      "abstract_en": "Different tasks performed by legged robots impose distinct torque and speed requirements on actuators. Existing robotic actuators are generally optimized at the component level for metrics such as torque or power density, without explicit task guidance. System-level optimization across components such as motors, gearboxes, and sensors is challenging because of the high computational cost and coupling among mechanical, electrical, and electromagnetic behaviors. Consequently, improvements in individual components may not translate into better robot performance in a specific task. To this end, we present a systematic optimization framework for task-oriented co-design of actuator hardware and control. First, surrogate models are employed to accelerate motor evaluation and support global exploration of the coupled design space. Then, a hierarchical mixed-variable optimization strategy is adopted, combining discrete enumeration with continuous search over dimensions and real-valued indices. These indices are rounded to select admissible values for the remaining discrete choices before each evaluation. Within this search, rated output torque density and task performance are jointly optimized, with Bezier-parameterized joint torque profiles determined for each hardware candidate. Finally, the effectiveness of the proposed framework is validated through actuator fabrication and experiments on a two-degree-of-freedom jumping leg. Based on its measured mass, the fabricated prototype achieves a nominal rated output torque density of 35.7 N m/kg, approximately 60% higher than that of a widely used commercial geared joint actuator, while being 18.6% lighter. Under matched bench conditions, it achieves 12.0% greater jump height at twice-rated torque. Together, these results demonstrate a systematic route from task requirements to actuator design and control.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202609/23/2609.23918v1-quasi-static-fault-tolerant-feedback-control-of-a-quadrotor-under-rotor-failure-with-provable-safety-guarantees",
+      "section": "quick",
+      "title_en": "Quasi-Static Fault-Tolerant Feedback Control of a Quadrotor under Rotor Failure with Provable Safety Guarantees",
+      "authors": "Mohamed Al Lawati, Adeel Akhtar",
+      "date": "2026-09-20",
+      "pdf": "https://arxiv.org/pdf/2609.23918v1",
+      "score": "6.0",
+      "evidence": "多旋翼系统中针对旋翼失效的容错反馈控制",
+      "tldr": "本文针对四旋翼无人机在单旋翼失效后的容错控制问题，提出了一种基于准静态反馈（QSF）的非线性控制律。通过表征并稳定零动力学流形（路径跟踪流形），该方法确保了无人机在失效后仍能保持在预定路径上飞行，实现了路径不变性与局部指数收敛，为受损无人机的安全飞行提供了理论保障，并通过Drake仿真验证了其有效性。",
+      "tags": "query:pmsm",
+      "abstract_en": "This paper presents a nonlinear control law for a quadrotor unmanned aerial vehicle (UAV) under single-rotor failure that guarantees set stabilization via quasi-static feedback (QSF). Given a geometric curve in three-dimensional space, we characterize and stabilize the zero-dynamics manifold, also known as the path-following manifold, which represents all feasible motions along the path. Stabilizing this manifold ensures path-invariance: a UAV with a failed rotor initialized on the path with an appropriate orientation remains on the path for all future time. Furthermore, local exponential convergence to the manifold is guaranteed under certain conditions, implying that, under the stated assumptions, rotor failure during flight does not cause transverse deviation from the path. The proposed controller thus provides theoretical safety guarantees, which are validated through numerical experiments in the Drake physics-based simulation engine. The code is publicly available at https://gradslab.github.io/quasistatic-ftc/.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202609/23/2609.24339v1-an-algebraic-observer-for-state-affine-systems",
+      "section": "quick",
+      "title_en": "An Algebraic Observer for State-Affine Systems",
+      "authors": "Romeo Ortega, Alexey Bobtsov, Anton Pyrkin, Olga Zarina",
+      "date": "2026-09-21",
+      "pdf": "https://arxiv.org/pdf/2609.24339v1",
+      "score": "6.0",
+      "evidence": "状态观测器是永磁同步电机无感控制的关键组件",
+      "tldr": "本文提出了一种针对状态仿射非线性系统的代数交换引理观测器。该方法通过结合广义参数估计与线性滤波技术，在无需复杂观测器设计的情况下，实现了优于传统渐近收敛观测器的瞬态性能。该观测器结构简单，仅需基础滤波和矩阵求逆，且适用于非一致完全可观测系统，并能扩展处理参数时变及测量延迟问题。",
+      "tags": "query:pmsm",
+      "abstract_en": "We present a new systematic method to design an algebraic swapping lemma observer for nonlinear systems which are affine in the state. Four are the main features of the new observer: (i) Far superior transient performance compared to standard asymptotically convergent observers; (ii) structural simplicity - its construction relies solely on basic linear filtering and a single matrix inversion; (iii) applicability to non-uniformly-completely-observable systems, for which classical methods are not applicable; (iv) straightforward extension to the cases of unknown time-varying parameters and measurement delay. The core idea exploited in the paper is to combine the construction of a generalized parameter estimation-based observer with a simple filtering technique to derive the algebraic observer. The resulting design is shown to apply to a class of state-affine systems satisfying a weak generic condition. Moreover, it is established that for time-invariant systems, this condition is always satisfied globally.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

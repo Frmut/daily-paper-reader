@@ -1,0 +1,320 @@
+Title: High-Performance Sensorless Control for High-Speed PMSM with Current Source Inverters
+
+URL Source: https://arxiv.org/pdf/2609.25878v1
+
+Published Time: Wed, 23 Sep 2026 00:53:28 GMT
+
+Number of Pages: 7
+
+Markdown Content:
+# High-Performance Sensorless Control for High-Speed PMSM with Current Source Inverters 
+
+Nail Tosun†, Devinda Molligoda, Xu Deng, and Barrie C. Mecrow 
+
+Electrical Power Group, Newcastle University Newcastle upon Tyne, NE1 7UR United Kingdom †e-mail: n.tosun2@newcastle.ac.uk 
+
+Abstract —Current source inverters (CSIs) are emerging as competitive alternatives to voltage source inverters (VSIs) for high-speed motor drives because they inherently suppress har-monic currents, offer output-voltage boosting, and reduce motor-side electromagnetic interference. Sensorless control of CSI-fed permanent magnet synchronous machines (PMSMs) remains less mature than VSI counterparts, primarily because con-ventional implementations require measurement of all circuit state variables. This paper proposes a weak-resonance-based approximation that reconstructs stator currents from inverter modulation commands and feedforward capacitor-current esti-mation, thereby reducing the sensing requirement to the dc-link current and two terminal voltages. The proposed observer–PLL structure is analysed for computational complexity and validated through simulations and experiments on a 100 W, 100 krpm GaN-based two-stage CSI prototype (buck + CSI). Quantitative results demonstrate accurate rotor-position tracking and high-bandwidth operation while maintaining the reduced sensor set. Proposed method performs well in simulation and experiment, achieving a position estimation error below 5◦ at 100 krpm. 
+
+I. I NTRODUCTION 
+
+Current source inverters (CSIs) have regained attention in motor drives due to the advent of wide-bandgap devices. They offer several advantages over voltage source inverters (VSIs) [1], including inherent short-circuit protection [2], improved dc-link utilisation, improved high-speed performance [3], [4], and reduced electromagnetic interference [5]. However, sen-sorless control of CSI-fed permanent magnet synchronous ma-chines (PMSMs) remains less mature than its VSI counterpart. Torres et al. proposed a sensorless control method based on high-frequency signal injection [6]–[8]; however, this approach requires machine saliency, which is limited in surface-mount PMSMs. Prior work [9]–[11] has investigated back-EMF-observer-based sensorless control for CSI-fed PMSM drives. However, these approaches typically require measurement of all state variables, including filter-capacitor voltages and stator currents, increasing cost and complexity. In CSI-fed PMSM drives, output filter capacitor is placed to filter out current harmonics. This capacitor bank forms a parallel LC resonance with the machine inductance. There is a potential for this resonance to be excited by switching 
+
+This work was supported by the Engineering and Physical Sciences Research Council (grand number EP/S024069/1). This work conducted within the Centre for Doctoral Training in Sustainable Electric Propulsion. 
+
+Fig. 1. 100 W, 100 krpm motor and its relative size compared with a £1 coin (left). Position sensor attachment (MA600A, Monolithic Power Systems) and its size compared with the machine. 
+
+harmonics or operating-point transients, leading to oscillatory terminal voltages and currents, increased losses, and degraded control performance. Consequently, conventional approaches often rely on active damping and additional sensing to ensure stability [12]. This feature makes CSI-fed drives inherently more complex than VSI-fed PMSM drives. In order to make CSI-fed drives more competitive, a more efficient sensor-less control method is needed. This paper proposes a high-performance sensorless control method for CSI-fed PMSM drives. The proposed method does not require the stator current to be measured, but instead uses the modulation commands and a feedforward capacitor-current estimate. Elevated switch-ing frequency and a small machine inductance enables this estimation, thus only the dc-link current and two terminal voltages are required. Faster control-loop execution can be achieved by this due to the reduced computational burden. A 100 W, 100 krpm PMSM is selected for experimental validation, where the high fundamental frequency demands high-performance sensorless control. The short shaft and lim-ited space make mechanical sensor integration impractical, as shown in Fig. 1. A two-stage GaN-based CSI prototype — comprising a buck converter followed by a CSI power stage — is used. The drive starts via V/f from standstill, with the sensorless algorithm enabled once back-EMF is sufficient for reliable estimation. Simulation and experimental results confirm a position estimation error below 5◦ at 100 krpm. arXiv:2609.25878v1 [eess.SY] 22 Sep 2026 Fig. 2. Current-source-inverter-fed PMSM drive. 
+
+II. C URRENT SOURCE INVERTER -F ED PMSM D RIVES 
+
+CSI-fed PMSM drives are higher-order than VSI drives due to the output filter capacitor. Fig. 2 shows the drive topology; the open-loop plant from modulation current to stator current can be modelled as: 
+
+G(s) = Isdq (s)
+
+Iwdq (s) = 1
+
+s2LsCf + sR sCf + 1 (1) where Isdq is the stator current, Iwdq is the modulation current, 
+
+Ls and Rs are stator parameters, and Cf is the filter capacitor. The corresponding resonance and damping are: 
+
+fres = 12πpLsCf
+
+(2) 
+
+ζ = Rs
+
+2
+
+r Cf
+
+Ls
+
+(3) High Q = 12ζ yields a pronounced resonance, increasing high-frequency losses and often motivating active damping (typi-cally at the cost of extra sensing and inner-loop complexity). Low-inductance machines reduce τs = Ls/R s, pushing VSI drives toward higher loop bandwidth. However, smaller Ls
+
+lowers Q in CSI drives. With sufficiently large Rs and high switching frequency, the LC resonance becomes weak and less likely to be excited. 
+
+A. Conventional CSI PMSM Drive 
+
+Conventional CSI PMSM drives are commonly imple-mented as two-stage systems (buck + CSI) because the CSI stage exhibits boost behaviour. The overall control structure is illustrated in Fig. 3. More detail about controller design can be found in [12]–[14]. CSI PMSM drive control inherently higher order and more complicated than VSI. 
+
+B. Weak Resonance Approximation 
+
+If the Ls is sufficiently small and/or Rs is large, the machine impedance can be approximated as resistive, especially at lower frequencies. In that case, (1) can be approximated as: 
+
+G(s) ≈ 1
+
+sR sCf + 1 (4)   
+
+> Fig. 3. Block diagram of the conventional CSI PMSM drive.
+> Fig. 4. Bode plot of the CSI PMSM drive and its weak resonance approxi-mation.
+
+Neglecting the second-order term yields a first-order ap-proximation. The stator current can be adjusted via the modu-lation current command, while the capacitor current can be compensated using a feedforward term; under this model, output-voltage and dc-link current measurements are sufficient, avoiding direct stator current sensing. Fig. 4 compares the full plant and the approximation. The outer-loop structure remains similar to the conventional drive (Fig. 5); the dc-link current loop can use duty ratio D
+
+and modulation index m depending on operating point. The key input–output relations are: 
+
+Vll 
+
+Vdc 
+
+= 2
+
+√3
+
+Dm (5) 
+
+Io = mI dc (6) In the dq frame, inverter current is the sum of stator and capacitor currents: Fig. 5. Control loops of the weak resonance CSI PMSM drive. 
+
+iidq = idq + icdq (7) To improve stator-current tracking, icdq can be compensated via a feedforward angle θc (with Vq low-pass filtered). The resulting structure is shown in Fig. 6. 
+
+θc = sin −1
+
+ ωeCf Vq
+
+mI dc 
+
+
+
+(8)  
+
+> Fig. 6. Block diagram of the conventional CSI PMSM drive with weak resonance approximation.
+
+Fig. 6 shows the current/voltage loop structure under the weak-resonance model; the sensorless estimation is introduced in the next section. III. P ROPOSED SENSORLESS CONTROL STRATEGY 
+
+The proposed sensorless scheme consists of a back-EMF observer and a phase-locked loop (PLL). For surface-mount PMSMs, back-EMF-based methods are preferred over high-frequency signal injection because saliency is limited. Table I compares the proposed method against existing sensorless con-trol approaches for CSI-fed motor drives. The key advantage of the proposed method is the reduced sensor requirement: only the DC-link current and two terminal voltages are needed, eliminating the filter capacitor voltage and stator current sensors required by prior work. This is achieved through the weak-resonance approximation, which allows stator currents to be reconstructed from the modulation commands. Further-more, the proposed method operates at a switching frequency of 200 kHz enabled by GaN devices, which is significantly higher than prior CSI sensorless implementations, allowing high-speed operation up to 100 krpm. 
+
+A. Back-EMF Observer Design 
+
+The back-EMF in the αβ frame is: 
+
+eαβ =
+
+eα
+
+eβ
+
+
+
+= ωeψP M 
+
+− sin( θe)cos( θe)
+
+
+
+(9) where ωe is the electrical angular speed, ψP M is the permanent magnet flux linkage, and θe is the rotor angle. The stator voltage equation can be written as: 
+
+vαβ = Rsiαβ + Ls
+
+diαβ 
+
+dt + eαβ (10) From (10), the back-EMF estimate is: 
+
+ˆeαβ = vαβ − Rsiαβ − Ls
+
+diαβ 
+
+dt (11) (11) is needed to be solved, both for VSI and CSI drives. In VSI case, the stator current is measured and terminal voltage is known since it is modulated. In CSI case inverter current is modulated, thus both terminal voltage and stator currents are needed to measured to solve (11). However, the proposed method utilizes the stator current estimation enabled by the weak resonance approximation as it is explained in the previous section. 
+
+B. Back-EMF Observer Implementation 
+
+A sliding-mode observer is adopted for robustness [19]. The sliding surface is the voltage estimation error: 
+
+S(X) = vαβ − ˆvαβ (12) The Lyapunov candidate function is chosen as V (X) = 
+
+> 12
+
+S(X)T S(X) which satisfies V (X) ≥ 0. For stability, 
+
+˙V (X) ≤ 0 is required; choosing K > 0 enforces the sliding condition and thus convergence. The complete block diagram structure is: 
+
+iαβ [k] = iiαβ [k] − C · vαβ [k] − vαβ [k − 1] 
+
+Ts
+
+(13) 
+
+˙iαβ [k] = iiαβ [k] − iiαβ [k − 1] 
+
+Ts
+
+− C · vαβ [k] − 2vαβ [k − 1] + vαβ [k − 2] 
+
+T 2
+
+> s
+
+(14) 
+
+ˆvαβ [k] = Riαβ [k] + L˙iαβ [k] + ˆeαβ [k − 1] (15) 
+
+S[k] = vαβ [k] − ˆvαβ [k] (16) 
+
+ˆeαβ [k] = ˆeαβ [k − 1] + KT s
+
+L sgn (S[k]) (17) where Ts is the sampling time, [k] denotes the current sample, and [k − 1] , [k − 2] denote delayed samples. 
+
+C. Phase-Locked Loop Design 
+
+It is well known that observer based position estimation is sensitive to noise and jitter [20]. To mitigate this, a PLL is used to track the rotor position. With the small-angle approximation, the phase error can be written as: 
+
+∆θ = ˆ eα cos 
+
+ˆθe
+
+
+
+− ˆeβ sin 
+
+ˆθe
+
+
+
+= ˆ ωeψP M sin 
+
+
+
+θe − ˆθe
+
+
+
+≈ ˆωeψP M (θe − ˆθe)
+
+(18) TABLE I COMPARISON OF SENSORLESS CONTROL METHODS FOR CSI/CSC-FED MOTOR DRIVES .
+
+Reference Method Saliency req. Measurements Computation fsw / fISR Max. speed 
+
+[10] PLL No vabc , iabc , idc PLL – –[11] PLL + observer No vabc , iabc , idc PLL, back-EMF observer – –[6] HFI (PVE) Yes † vC , iabc , idc BPF, signal demodulation – –[15] HFI (pulsating) Yes vC , iabc , idc BPF, MS-SVM, demodulation 540–720 Hz Zero/low speed [16] Back-EMF observer No vC , iabc , idc Observer, I-f startup – –[17] Discrete SMO No vC , iabc , idc SMO, LPF, DVC 420–540 Hz –[18] Exact discrete SMO No vC , iabc , idc SMO, adaptive filter, DVC 420–540 Hz –
+
+Proposed SMO + PLL No vabc , idc SMO, PLL 200 kHz 100 krpm 
+
+vabc : motor terminal voltages, iabc : motor phase currents, vC : filter cap. voltages, idc : DC-link current. 
+
+> †
+
+Works with low-saliency SPM but saliency is still fundamentally required. 
+
+This linearization enables a standard PI design with open-loop transfer function: 
+
+GP LL (s) = kps + ki
+
+s2 (19) where kp and ki are the proportional and integral gains of the PI controller, respectively. The two poles at the origin indicate a type-2 PLL, which tracks a ramp input (position) with zero steady-state error. The PLL also attenuates high-frequency noise and jitter that can arise from direct arctan( ·)
+
+angle extraction in the back-EMF observer. IV. S IMULATION RESULTS 
+
+A PLECS model is developed to validate the proposed sensorless control method using the same machine and system parameters as the experimental setup. This section summarises the parameters and then presents the results. 
+
+A. Machine 
+
+A 100 W, 100 krpm high-speed PMSM is selected due to its high fundamental frequency and the resulting need for high-performance sensorless control. The machine has very low inductance ( < 10% p.u. at rated speed). Fig. 1 shows the prototype and Table II lists the parameters.  
+
+> TABLE II PMSM PARAMETERS .
+
+Symbol Value Unit Definition 
+
+Ls 23 μH Stator inductance 
+
+Rs 0.40 Ω Stator resistance 
+
+ψP M 1.1 ×10 −3 Wb PM flux linkage 
+
+σ 1 – Lq /L d ratio 
+
+Kload 8.7 ×10 −11 N·m·s2/rad 2 Load torque constant 
+
+J 3.7 ×10 −8 kg ·m2 Rotor inertia 
+
+Bm 6.4 ×10 −8 N·m·s/rad Viscous friction 
+
+B. System Parameters 
+
+System parameters are summarised in Table III. The key design variables are the filter capacitor Cf and switching frequency fsw ; as a guideline, the resonance should be well separated from the switching and fundamental frequencies: 
+
+fsw ≫ fres ≫ ff und . (20) In motor drives applications, ff und varies with speed (and slot harmonics may appear), so Cf must be selected to avoid exciting the resonance across the operating range. Here, Cf =5 μF is chosen, yielding a weak resonance and near-sinusoidal terminal voltages (enabling simpler filtering in the back-EMF observer). In per-unit terms, Cf ≈ 0.16 p.u., keeping operation close to unity power factor. 
+
+Zbase = V 2
+
+> ll
+
+Prated 
+
+= 3 .26Ω (21) 
+
+Cbase = 1
+
+ωrated Zbase 
+
+= 29 .2μF (22)  
+
+> TABLE III SYSTEM PARAMETERS .
+
+Symbol Value Unit Definition 
+
+Ls (p.u.) 0.09 – Stator inductance (p.u.) 
+
+Rs (p.u.) 0.17 – Stator resistance (p.u.) 
+
+Vdc 18 V dc-link voltage 
+
+Cf 5 μF Filter capacitor 
+
+fres 14.8 kHz Resonant frequency 
+
+fsw 200 kHz Switching frequency 
+
+ff und 1.66 kHz Rated fundamental frequency 
+
+Q 0.10 – Quality factor 
+
+C. Simulation Results 
+
+Simulation results using the parameters in Tables II and III are summarised in Fig. 7. The proposed method tracks rotor position accurately after start-up, with brief transients due to PLL dynamics and low back-EMF. Fig. 7(c) and Fig. 7(d) demonstrate stable operation at 50 krpm and 100 krpm. Fig. 8 (a) Position estimation during start-up. (b) Position estimation error during start-up.     
+
+> (c) Simulation results at 50 krpm. (d) Simulation results at 100 krpm. Fig. 7. Simulation results showing the performance of the proposed sensorless control method. (a) Position estimation comparing actual and estimated rotor position during start-up. (b) Position estimation error. (c) Simulation results at 50 krpm showing stator currents and terminal voltages. (d) Simulation results at 100 krpm demonstrating high-speed operation.
+> Fig. 8. Dynamic response of the proposed sensorless control system. Without compensation, Idexhibits a steady offset due to capacitor currents.
+
+highlights the capacitor-current compensation: without com-pensation, Id exhibits a steady offset, whereas compensation drives Id → 0.V. E XPERIMENTAL RESULTS 
+
+This section presents experimental results for the proposed sensorless control method. The experimental setup is described first, followed by high-speed operating results. 
+
+A. Experimental Setup 
+
+An accurate position measurement system is required to val-idate the proposed sensorless control method. However, given the size of the test motor, installing any sensor is challenging.  
+
+> Fig. 9. Experimental setup showing the PMSM, laser sensor, reflective tape and black mark.
+
+Moreover, conventional position sensors are unreliable at high speeds due to bandwidth limitations. To overcome these chal-lenges, a laser-based position measurement system is used for the experimental validation. A small reflective tape is attached to the rotor surface, and a laser sensor is used to detect the position. When the laser beam hits the reflective tape, the reflected light is detected by the sensor, and an output pulse is generated. This pulse is used to mark the zero position for reference. This is illustrated in Fig. 9. 
+
+B. High-Speed Operating Results 
+
+High-speed experimental results are shown in Fig. 10. The laser-based reference struggles to detect the zero position during transients due to the laser power amplifier time con-stant; once the laser output settles, the reference is sufficiently accurate for validation. The proposed method achieves robust high-speed operation, with position estimation error below 5◦
+
+at 100 krpm. VI. C ONCLUSION 
+
+This paper proposes a high performance sensorless control method for CSI-fed PMSM drives. The proposal uses only Fig. 10. Experimental results demonstrate sensorless control performance at 100 krpm. The upper traces show three-phase currents, and the lower traces show two line-to-line voltages. The blue sawtooth is the estimated position exported via the MCU DAC for visualisation, while the red trace is the laser amplifier output marking the zero-position reference. 
+
+dc-link current and two terminal voltage measurements since it eliminates stator current measurements. This elimination is done by weak resonance approximation, which is enabled by elevated switching frequency and small machine inductance. A back-EMF observer and a PLL are used to estimate rotor po-sition and speed. The approach is validated in simulation and experiments on a 100 W, 100 krpm prototype, demonstrating high-performance operation for low-inductance machines. REFERENCES [1] N. Nain, D. Zhang, J. W. Kolar, and J. Huber, “Synergetic control of a monolithic-bidirectional-gan-transistor-based three-phase current dc-link ac–ac converter,” IEEE Transactions on Power Electronics , vol. 40, no. 7, pp. 9167–9186, 2025. [2] T. M. Jahns and B. Sarlioglu, “Wide bandgap semiconductor switching devices in integrated motor drives,” in Integrated Motor Drives , X. Deng and B. Mecrow, Eds. IET, 2024, pp. 83–131. [3] V. Madonna, G. Migliazza, P. Giangrande, E. Lorenzani, G. Buticchi, and M. Galea, “The rebirth of the current source inverter: Advantages for aerospace motor design,” IEEE Industrial Electronics Magazine , vol. 13, no. 4, pp. 65–76, 2019. [4] F. Chen, S. Lee, W. Feng, K. Chen, J. Paddock, T. M. Jahns, and B. Sarlioglu, “Power-dense integrated motor drive using a wbg-enabled current-source inverter for ev traction applications,” IEEE Transactions on Transportation Electrification , pp. 1–1, 2025. [5] S. Lee, F. Chen, T. M. Jahns, and B. Sarlioglu, “Pwm for simultaneous minimization of switching losses and cm voltage in current source inverters,” IEEE Transactions on Transportation Electrification , vol. 10, no. 4, pp. 9788–9802, 2024. [6] R. A. Torres, S. Lee, H. Dai, W. Lee, T. M. Jahns, and B. Sarlioglu, “Analysis of pulsating high-frequency injection self-sensing control for csi pm motor drives,” IEEE Transactions on Power Electronics , vol. 40, no. 3, pp. 4345–4357, 2025. [7] R. A. Torres, H. Dai, W. Lee, T. M. Jahns, and B. Sarlioglu, “Evaluation of sensorless techniques for surface permanent-magnet integrated motor drive using current-source inverter,” in 2020 IEEE Energy Conversion Congress and Exposition (ECCE) , 2020, pp. 2387–2394. [8] Q. Song, Z. Wang, P. Liu, Y. Xu, C. Tang, and M. Cheng, “Sensorless control of current-source-converters fed synchronous motor drives using high frequency signal injection,” in 2019 22nd International Conference on Electrical Machines and Systems (ICEMS) , 2019, pp. 1–5. [9] M. Bahrami-Fard, M. G. Korrani, and B. Fahimi, “Sensorless field oriented control of csi-fed pmsm drives used in submersible pumps,” 2025. [Online]. Available: https://arxiv.org/abs/2503.22855 [10] E. Carfagna, G. Migliazza, G. Buticchi, E. Lorenzani, Z. Xu, Z. Zou, and H. Zhang, “Pll-based sensorless control for single-stage current source inverter in motor drive application,” in IECON 2021 – 47th Annual Conference of the IEEE Industrial Electronics Society , 2021, pp. 1–6. [11] E. Carfagna, G. Migliazza, G. Buticchi, and E. Lorenzani, “Direct voltage measurement for sensorless control of single-stage current source inverter in motor drive applications,” IET Power Electronics , vol. 18, no. 1, p. e70152, 2025. [Online]. Available: https://ietresearch.onlinelibrary.wiley.com/doi/abs/10.1049/pel2.70152 [12] H.-J. Lee, S. Jung, and S.-K. Sul, “A current controller design for current source inverter-fed ac machine drive system,” IEEE Transactions on Power Electronics , vol. 28, no. 3, pp. 1366–1381, 2013. [13] Y. Xu, Z. Wang, Y. Shen, J. He, and G. Buticchi, “A csi-fed pmsm drive system with single-stage operation for extended constant-torque range,” IEEE Transactions on Industrial Electronics , vol. 71, no. 9, pp. 10 389–10 401, 2024. [14] G. Migliazza, G. Buticchi, E. Carfagna, E. Lorenzani, V. Madonna, P. Giangrande, and M. Galea, “Dc current control for a single-stage current source inverter in motor drive application,” IEEE Transactions on Power Electronics , vol. 36, no. 3, pp. 3367–3376, 2021. [15] E. Al-nabi, B. Wu, N. R. Zargari, and V. Sood, “Sensorless control of CSC-fed IPM machine for zero- and low-speed operations using pulsating HFI method,” IEEE Transactions on Industrial Electronics ,vol. 60, no. 5, pp. 1711–1723, 2013. [16] M. Bahrami-Fard, M. G. Korrani, M. Rastegar, and B. Fahimi, “Ad-vanced startup and smooth transition to sensorless field oriented control for CSI-fed PMSM drives in submersible pumps,” IEEE Transactions on Power Electronics , vol. 40, no. 9, pp. 12 402–12 415, 2025. [17] L. Ding, Y. W. Li, N. R. Zargari, and R. Paes, “Sensorless control of CSC-fed PMSM drives with low switching frequency for electrical submersible pump application,” IEEE Transactions on Industry Appli-cations , vol. 56, no. 4, pp. 3799–3808, 2020. [18] L. Ding, Y. W. Li, and N. R. Zargari, “Discrete-time SMO sensorless control of current source converter-fed PMSM drives with low switching frequency,” IEEE Transactions on Industrial Electronics , vol. 68, no. 3, pp. 2120–2129, 2021. [19] Z. Qiao, T. Shi, Y. Wang, Y. Yan, C. Xia, and X. He, “New sliding-mode observer for position sensorless control of permanent-magnet syn-chronous motor,” IEEE Transactions on Industrial Electronics , vol. 60, no. 2, pp. 710–719, 2013. [20] S. Bolognani, S. Calligaro, and R. Petrella, “Design issues and esti-mation errors analysis of back-emf-based position and speed observer for spm synchronous motors,” IEEE Journal of Emerging and Selected Topics in Power Electronics , vol. 2, no. 2, pp. 159–170, 2014. Nail Tosun received the B.Sc. and M.Sc. degrees from the Department of Electrical and Electronics Engineering, Middle East Technical University (METU), Ankara, Turkiye, in 2019 and 2021, respectively. He is currently pursuing the Ph.D. degree with Newcastle University, Newcastle upon Tyne, U.K. He is a member of the Sustainable Electric Propulsion CDT at Newcastle University. His current research interests include electromagnetic FEM analy-sis, multiphysics models, design optimization of electrical machines, magnetic materials, renewable energy, and power electronics. He has a particular focus on high-frequency power electronics for motor drives, including wide-bandgap semiconductor devices such as GaN-based converters, with emphasis on current source inverter topologies. His work also extends to sensorless motor drive techniques for advanced electric propulsion systems. During his time at METU, he contributed to the electromagnetic design and 3D FEA modelling of high-energy electromagnetic launchers (railguns) under the TUFAN project, and investigated winding type alternation strategies for the refurbishment and efficiency improvement of hydro-generators. He is the recipient of the WEMDCD Alessandro Costabeber Best Student Paper Award. 
+
+Devinda Molligoda received the B.Sc. (Hons) in electronics and telecom-munication and the M.Sc. degree in electronics and automation from the University of Moratuwa, Moratuwa, Sri Lanka, in 2009 and 2014 respec-tively. He is currently working toward the Ph.D. degree in electrical and electronic engineering from Nanyang Technological University (NTU), School of Electrical and Electronic Engineering, Singapore.,From 2009 to 2014, he was an Electronic Design Engineer with Excel Technology Lanka, Colombo, Sri Lanka, before joining the Rolls-Royce@NTU Corporate Lab, Singapore, in 2015, as a Research Engineer. His research interests include three-phase power converters for high-power-density applications, their modulation, control and more-electrical aircraft. 
+
+Xu Deng received the B.Eng. and M.Eng. degrees from Nanjing University of Aeronautics and Astronautics, Nanjing, China, in 2010 and 2013, respectively, and the Ph.D. degree from Newcastle University, Newcastle upon Tyne, U.K, in 2017, all in electrical engineering.,Currently, she is with Newcastle Univer-sity Academic Track (NUAcT) Fellow in Electrical Power of Electrical Power Research Group, School of Engineering, Newcastle University, Newcastle upon Tyne, U.K. Her research interests include integrated motor drives (IMDs) and advanced control techniques for electric motor drives and high-frequency power electronics. 
+
+Barrie Mecrow received the Ph.D. degree from Newcastle University, Newcastle upon Tyne, U.K., in 1987, with a focus on 3-D eddy current computation applied to turbogenerators.,He commenced his career as a Turbo-Generator Design Engineer with NEI Parsons, Newcastle upon Tyne. In 1987, he became a Lecturer, and in 1998 he became a Professor of electrical power engineering with Newcastle University. He is actively involved with industry in aerospace, automotive, and consumer product sectors, who fund a large range of projects. His research interests include fault tolerant drives, high-performance PM machines, and novel switched reluctance drives.

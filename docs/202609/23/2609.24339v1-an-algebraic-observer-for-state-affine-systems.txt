@@ -1,0 +1,1322 @@
+Title: An Algebraic Observer for State-Affine Systems
+
+URL Source: https://arxiv.org/pdf/2609.24339v1
+
+Published Time: Tue, 22 Sep 2026 02:30:57 GMT
+
+Number of Pages: 14
+
+Markdown Content:
+# An Algebraic Observer for State-Affine Systems ⋆
+
+# Romeo Ortega b Alexey Bobtsov a, Anton Pyrkin c,a, Olga Zarina a,
+
+> a
+
+Department of Control Systems and Robotics, ITMO University, Kronverkskiy av. 49, Saint Petersburg, 197178, Russia 
+
+> b
+
+Departamento Acad´ emico de Ingenier´ ıa El´ ectrica y Electr´ onica, ITAM, Progreso Tizap´ an, R´ ıo Hondo 1, Ciudad de M´ exico, 01080, M´ exico 
+
+> c
+
+HDU-ITMO Joint Institute, Hangzhou Dianzi University, Hangzhou, 310005, China 
+
+Abstract 
+
+We present a new systematic method to design an algebraic swapping lemma observer (Bobtsov et al., 2026b) for nonlinear systems which are affine in the state. Four are the main features of the new observer: (i) Far superior transient performance compared to standard asymptotically convergent observers; (ii) structural simplicity—its construction relies solely on basic linear filtering and a single matrix inversion; (iii) applicability to non-uniformly-completely-observable systems, for which classical methods are not applicable; (iv) straightforward extension to the cases of unknown time-varying parameters and measurement delay. The core idea exploited in the paper is to combine the construction of a generalized parameter estimation-based observer (Ortega et al., 2021b) with a simple filtering technique to derive the algebraic observer. The resulting design is shown to apply to a class of state-affine systems satisfying a weak generic condition . Moreover, it is established that for time-invariant systems, this condition is always satisfied globally. 
+
+Key words: Observer design, Adaptive observers, Algebraic observer, State-affine systems 
+
+1 Introduction and Problem Formulation 
+
+A class of nonlinear systems for which the problem of designing a state observer is well-known, are the so-called state-affine systems, whose dynamics is described by (Bernard, 2019, Equation 3.1): ˙x = A(y, u )x + B(y, u )
+
+y = h(x, u ), (1) where x(t) ∈ Rn is the unmeasurable state, y(t) ∈ Rp
+
+denotes the measured output signal and u(t) ∈ Rm is the control input. When the read-out map is linear in x,that is, h(x, u ) = Cx the most famous observer used for this kind of systems is the Kalman-Bucy’s Filter (KBF) introduced in (Kalman and Bucy, 1961) for linear time-varying (LTV) systems—which are obtained evaluating the matrices A, B and C of the system above along the input and output trajectories. That is, rewriting the sys-tem (1) as the LTV system ˙x = A(t)x + B(t)uy = Cx, (2) 
+
+⋆ Corresponding author: Anton Pyrkin (pyrkin@itmo.ru). 
+
+with A(t) ∈ Rn×n, B (t) ∈ Rn×m and C ∈ Rp×n are defined via 
+
+A(t) := A(y(t), u (t)) , B (t) := B(y(t), u (t)) , C := C.
+
+It is well-known that to ensure global convergence for this observer it is necessary to impose very strong ex-citation assumptions on the system, namely, uniform complete observability (UCO) of the pair ( A(t), B (t)) (Bernard, 2019; Kalman and Bucy, 1961). In a recent paper (Wang et al., 2023) it was shown that state ob-servation of LTV systems is possible imposing only the (necessary) assumption of observability . For, it is pro-posed to use the recently reported generalized parame-ter estimation-based observers (GPEBO) (Ortega et al., 2021b). The main feature of GPEBO is that the problem of state observation is recast as a problem of parame-ter estimation, namely of the systems initial conditions. This approach has proven to be very successful for the state observation of state-affine systems, and many ex-tensions and practical applications to the method have been reported (Bezzubov et al., 2022; Bobtsov et al., 2021a,b; Pyrkin et al., 2023; Romero and Ortega, 2023). In the recent publication (Bobtsov et al., 2026b) a 
+
+Preprint submitted to Automatica 22 September 2026 arXiv:2609.24339v1 [eess.SY] 21 Sep 2026 novel approach to the problem of state observation was reported. The main feature of these new observers is that we center our attention in the design of algebraic observers —the qualifier “algebraic” meaning that we want to obtain an algebraic relation between the system state and filtered versions of the systems inputs and outputs, which holds true for all t ≥ 0. The algebraic property should be contrasted with the usual procedure of designing a dynamical system whose output (the state estimate) asymptotically (or in fixed/finite time) converges to the systems state. As shown in (Bobtsov et al., 2026b) a key component in the design of this algebraic observer is the application of the Swapping Lemma (Sastry and Bodson, 1989, Lemma 3.6.5), hence we give to the new observer the name Algebraic Swap-ping Lemma Observer (ASLO). A key feature of the ASLO is that, in contrast with stan-dard asymptotically convergent observers, its transient behavior is not dependent on the prior knowledge of the systems initial state. Indeed, in classical observer the ini-tial value of the state estimation error ˜ x(t) := ˆ x(t) − x(t)is clearly ˆ x(0) −x(0), where ˆ x(t) is the state of a dynamic system-based observer, whose initial conditions are cho-sen by the designer. In ASLO, as the construction of the estimate is algebraic—and not via the construction of an auxiliary dynamical system—such a direct dependence is conspicuous by its absence. The application of ASLO for general nonlinear systems of the form ˙ x = f (x, u ), y = h(x) is restricted to the case when the derivative of some of the states is known —or a new state can be constructed for which this property is verified (Bobtsov et al., 2026b, Assumption 1). Clearly, the construction of such an “auxiliary” state involves the solution of a partial differential equation that, as is well known, is hard to obtain. The main contribution of this paper is the proof that for the particular case of state-affine systems (1) it is always possible to design an ASLO, and an explicit, systematic procedure to do it is given in the paper. The main idea exploited in the paper is to combine the construction of a GPEBO (Ortega et al., 2021b) with a simple filtering technique to derive the ASLO. The remainder of the paper is organized as follows. Sec-tion 2 gives the main result. In Section 3 we consider the case of LTI systems. In Section 4 we apply the method to solve the challenging problem of state estimation of systems which are not UCO or their states converge to non observable ones. Section 5 presents some simulation results for LTI and LTV systems. In Section 6 we present extensions of the result to the cases of systems with measurement delay, unknown parameters and switching parameters. The paper is wrapped-up with concluding remarks in Section 7. The proof of some propositions, which are technically burdensome, are given in Appen-dices A and B. 
+
+Notation. I n is the n × n identity matrix, 0n×s is an 
+
+n × s matrix of zeros, ej ∈ Rn is the j-th component of the Euclidean basis, and 1n is an n-dimensional vector of ones. R+ and Z+ denote the positive real and inte-ger numbers, respectively. For q ∈ Z+ we define the set ¯q := {1, 2, . . . , q }. For a vector a ∈ Rn, we denote its Euclidean norm by |a| and for a matrix A ∈ Rn×m its Euclidean matrix norm is denoted ∥A∥. To simplify the notation, the time argument in the signals is avoided when clear from the context. The action of an LTI fil-ter F(p) ∈ R(p) on a signal w(t) is denoted as F(p)[ w], where pn[w] := dnw(t) 
+
+> dt n
+
+.
+
+2 Main Result 
+
+In this section we present the new construction of the ASLO for state-affine systems proceeding from the de-sign of a GPEBO and adding a required dynamic exten-sion. 
+
+Proposition 1 Consider the LTV system (2) with 
+
+A(t) ∈ Rn×n, B (t) ∈ Rn×m and C ∈ Rp×n known , with 
+
+C constant , and the unforced system ˙ x = A(t)x stable. Assume the ratio np is a rational number. Define the dynamic extension ˙ξ = A(t)ξ + B(t)u, ξ (0) = ξ0 ∈ Rn
+
+˙Φ = A(t)Φ , Φ(0) = In (3) and the filtered signals ˙ΦFi = −λiΦFi + λiΦ, ΦFi (0) = 0n×n (4a) ˙ξFi = −λiξFi + λiξ, ξFi (0) = 0n×1 (4b) ˙yFi = −λiyFi + λiy, yFi (0) = 0p×n, (4c) where i ∈ n − 1, λi > 0 and λi̸ = λj , ∀i̸ = j, which are 
+
+tuning parameters . Define the matrices 
+
+Y := 
+
+
+
+y − Cξ yF 
+
+> 1
+
+− Cξ F
+
+> 1
+
+...
+
+yFn−1 − Cξ Fn−1
+
+
+
+∈ Rnp ,Q := 
+
+
+
+CΦ
+
+CΦF
+
+> 1
+
+...
+
+CΦFn−1
+
+
+
+∈ Rnp ×n. (5) 
+
+P1 Assume that det {Q⊤(t)Q(t)} is non-zero almost ev-erywhere, with zeros only at isolated points. De-fine the set I ⊂ (0 , ∞] as the set of times when 2Q⊤(t)Q(t) has full rank . For t ∈ I define the signal ˆx(t) := ξ(t) − Φ( t)Q†(t)Y (t). (6) Then, ˆx(t) = x(t), ∀t ∈ I .
+
+That is, (6) is an ASLO for the system. 
+
+P2 All signals remain bounded for all control sig-nals u(t) that ensure the state trajectories remain 
+
+bounded .
+
+Proof 1 The proof of P1 proceeds first constructing a GPEBO for the system (2), including the associated linear regression equation (LRE). Then, create an aug-mented system—piling up the original LRE and its fil-tered version—and compute explicitly the unknown pa-rameter of GPEBO. The last step is to give the final, 
+
+algebraic expression of the state replacing the parameter vector in the definition of the state given by GPEBO. Defining the signal 
+
+e := ξ − x, (7) we have that ˙e = A(t)e, as shown in (Ortega et al., 2021b) this implies: 
+
+e = Φ θ, 
+
+where θ ∈ Rn is a vector of unknown parameters. More-over, replacing the equation above in (7) we have that 
+
+x = ξ − Φθ, (8) Multiplying (8) by C we get the LRE 1
+
+y − Cξ = CΦθ (9) Now, applying the LTI filters λi 
+
+> p+λi
+
+to (9), and taking into account the dynamic equation above, we get a set of filtered LREs 
+
+yFi − Cξ Fi = CΦFi θ. (10) Piling up (9) and the q versions of (10) we get the ex-tended LRE 
+
+Y = Qθ, 
+
+with Y and Q defined in (5). Under the assumption of   
+
+> 1As explained in (Ortega et al., 2021b), the design of GPEBO is completed adding an estimator for θ, and replac-ing it in (8).
+
+full rank Q we can write 
+
+θ = Q†Y, 
+
+that, replaced in (8) yields (6) completing the proof of 
+
+P1 .The proof of P2 follows from (3), the assumption of stability of the autonomous system and the condition imposed on the control signal u(t). 
+
+Remark 1 We have constructed the key matrix Q ap-plying a simple first order LTI filter λi 
+
+> p+λi
+
+to the LRE (9). It is clear that we can achieve a similar extension apply-ing any linear operator H : Lp 
+
+> ∞
+
+7 → L (n−1) p 
+
+> ∞
+
+. As shown in (Ortega et al., 2021a) the use of different operators conveys special properties to the subsequent operations carried out with the matrix Q. In our particular case we would be interested in ensuring it is full rank .
+
+Remark 2 The assumption of np a rational number, is made to simplify the notation. If this is not the case, we must introduce as many filters as needed to make Q
+
+a tall matrix to ensure the pseudo-inverse matrix is the 
+
+left inverse. 
+
+3 Case of LTI Systems 
+
+In this section we consider the particular case of LTI systems. Interestingly, for this case we can prove that det {Q(t) }̸ = 0 under precise generic conditions on the filters coefficients. For the sake of ease of presentation we consider the case of single output systems, that is, 
+
+p = 1. The extension for the multi-output case follows 
+
+mutatis mutandi .
+
+Proposition 2 Consider the case of n-th order, single output, LTI observable systems. Let σ{A} be the set of eigenvalues of A, denoted μk ∈ C. Define the matrix 
+
+Q(t) given in Proposition 1. 
+
+S1 Assume all eigenvalues of A are real . Then, the fol-lowing equivalence holds true det {Q(t)}̸ = 0 , ∀t > 0 ⇐⇒ 
+
+σ{A} ∩ {− λ1, −λ2, . . . , −λn−1} = ∅.
+
+S2 If some of the eigenvalues are complex , 2 that is 
+
+∃k ∈ ¯n | μk = αk + jβ k, α k, β k ∈ R, β k > 0.
+
+Then, there exists a set of isolated time instants   
+
+> 2With possibly repeated eigenvalues—here and in S1 .
+
+3{tj }∞ 
+
+> j=1
+
+when det {Q(tj )} = 0 .
+
+Proof 2 The proof of the proposition is given in Ap-pendix A. 
+
+Remark 3 It is clear from the description above that the function det {Q(t)} satisfies the conditions of Propo-sition 1. 
+
+4 Two non-UCO Examples 
+
+In this section we design an ASLO for two examples whose state cannot be observed with standard tech-niques. The first one is the dynamics of a non-holonomic vehicle which, as is well-known (Wang et al., 2023), does not satisfy the UCO property, therefore the KBF can-not be used to estimate the state. The second example is also a non-UCO system. 
+
+4.1 State Estimation of Non-Holonomic Vehicles 
+
+Consider a non-holonomic vehicle of the form (Bernard, 2019) ˙z1 = u1 cos( z3)˙z2 = u1 sin( z3)˙z3 = u1u2
+
+(11) where the inputs u1 and u2 represent the norm of the vehicle velocity and the orientation of the front steer-ing wheels, respectively, and the measurable outputs are 
+
+y = col( z1, z 2). We follow the linearization approach of (Bernard, 2019, Subsection 6.3.3) by defining 
+
+x1 = z1 , x2 = z2 , x3 = cos( z3) , x4 = sin( z3) .
+
+In this way, the system (11) is transformed into a state-affine form that can be rewritten as an LTV system, with the definitions 
+
+A(t) = 
+
+
+
+0 0 u1(t) 00 0 0 u1(t)0 0 0 −u1(t)u2(t)0 0 u1(t)u2(t) 0
+
+
+
+, (12) 
+
+C⊤ =
+
+
+
+1 0 0 1 0 0 0 0 
+
+
+
+, (13) 
+
+B(t) = 0 . (14) Let 
+
+u1 = e−t , u2 =
+
+( 2 − 2t , t ≤ 10 , t > 1 . (15) It is easy to show that the resulting LTV system is ob-servable but not UCO —therefore, it is not amenable for the application of the Kalman Filter for the estimation of the state. The lemma below proves that it is possible to apply the ASLO observer of Proposition 1 
+
+Lemma 1 Consider the LTV system (2) with (12)-(14) and (15). For all values of the filter constant λ > 0, the matrix Q(t) constructed in Proposition 1 satisfies that det {Q(t)} is non-zero almost everywhere, with zeros only at isolated points. 
+
+Proof 3 The proof is given in Appendix B. We apply the ASLO of Proposition 1 to estimate the state x(t), and the resulting simulations using λ = 1 are given in Figs. 1 and 2. It can be seen from Fig. 1 that det {Q(t) } satisfies the conditions of the lemma—being zero only at t = 0 and t = ∞. From Fig. 2 we see that the observed states ˆ x(t) follow the actual states x(t) almost immediately —please, notice the time scale. T ime, s      
+
+> 012345
+> det {Q(t)}
+> 00.005 0.01 0.015 0.02 0.025
+> Fig. 1. Signal det {Q(t) }
+
+The state observation of the system given above has been addressed in (Wang et al., 2023) using the GPEBO pro-posed in that paper. It is very revealing to compare the transient of the state error signals for the ASLO shown in Fig. 2 with the ones reported in Fig. 4 in that paper, which are repeated here in Fig. 3 for ease of reference. Contrary to the almost instantaneous tracking of ASLO the GPEBO takes more than 40 s to converge. This, un-questionably reveals the superiority of the new ASLO. 40 0.002 0.004 0.006 0.008 0.01 
+
+T ime, s   
+
+> 00.5 11.5 2
+> ×10 -10
+> ˜x1
+> ˜x2
+> ˜x3
+> ˜x4Fig. 2. State estimation errors
+> Fig. 3. State estimation errors ˆ x(t)−x(t) of the GPEBO reported in (Wang et al., 2023)
+
+It should be mentioned that to study the robustness of the GPEBO of (Wang et al., 2023), the case with measurement noises which are generated by the block “Uniform Random Number” of Simulink was also sim-ulated and only small state estimation errors are ob-served, showing robustness to measurement noise—see (Wang et al., 2023, Fig. 5). On the other hand, repeat-ing this noisy simulation for the ASLO resulted in a se-rious degradation of the performance as shown in Fig. 4. Current research is under way to try to improve this drawback of our ASLO design. As a comparison, in (Wang et al., 2023) the KBF of (Bernard, 2019, Theorem 3.3) was also used derive the state estimate. The simulation result is given in (Wang et al., 2023, Fig. 6), where it is seen that the state esti-mation errors do not converge to zero. This fact is not surprising since there is no guarantee of asymptotic state estimation using KBF for systems that are not UCO. T ime, s        
+
+> 00.5 11.5 22.5 3-1 -0.8 -0.6 -0.4 -0.2 00.2 0.4 0.6 0.8 ˜x1
+> ˜x2
+> ˜x3
+> ˜x4
+> Fig. 4. State estimation errors ˆ x(t)−x(t) under measurement noises
+
+4.2 A simple non-UCO system 
+
+Consider the two-dimensional LTV system (2), with the definitions 
+
+A(t) = 
+
+"0 e−kt 
+
+0 0
+
+#
+
+, C =
+
+h
+
+1 0 
+
+i
+
+, B(t) = 0 . (16) with k > 0. The state-transition matrix Φ( t, τ ), is given by Φ( t, τ ) = 
+
+
+
+1 1
+
+k (e−kτ − e−kt )0 1
+
+ .
+
+Consequently, the principal matrix Φ( t) := Φ( t, 0) = 
+
+
+
+1 1
+
+k (1 − e−kt )0 1
+
+ .
+
+Some simple calculations show that the observability Gramian on [0 , T ] is 
+
+Wo(0 , T ) = 
+
+
+
+T kT − ηk2
+
+kT − ηk2
+
+2k2T − 4kη + (1 − e−2kT )2k3
+
+ ,
+
+with η = 1 − e−kT , whose determinant is det {Wo(0 , T )} = 12k4 η2 − 2kT e −kT .
+
+5At T → 0+, det Wo(0 , T ) → 0; hence the system is not UCO and the KBF cannot be applied for the estimation of the state. On the other hand, the point-wise observ-ability matrix yields 
+
+O(t) = 
+
+" CC(t)A(t) + ˙C(t)
+
+#
+
+=
+
+"1 00 e−kt 
+
+#
+
+which has full rank for all t > 0, hence the system is observable and the ASLO is applicable. The filtered matrix equation, with λ̸ = k and initial condition Φ F (0) = 02×2, yields ΦF (t) = 
+
+
+
+1 − e−λt 1 − e−λt 
+
+k − λ  e−kt − e−λt 
+
+k(λ − k)0 1 − e−λt 
+
+ .
+
+Consequently 
+
+Q(t) = 
+
+ C Φ( t)
+
+C ΦF (t)
+
+ ==
+
+
+
+1 1 − e−kt 
+
+k
+
+1 − e−λt 1 − e−λt 
+
+k − λ  e−kt − e−λt 
+
+k(λ − k)
+
+ . (17) The determinant is det {Q(t)} = e−kt (1 − e−λt )
+
+k − λ  e−kt − e−λt 
+
+k(λ − k) .
+
+Therefore, we conclude that rank {Q(t)} = 2 , ∞ > t > 0,
+
+verifying the conditions of Proposition 1. In 5 we plot det {Q(t)} and in Fig 6 the state estimation errors. We believe the wiggly behavior of the latter sig-nals is due to numerical instability—please, notice the very small amplitude scale. 
+
+5 Simulation Results for Linear Systems 
+
+Simulations were performed for a third order LTI sys-tem and a second order UCO LTV system. For these systems, besides an ASLO, a Luenberger observer and a KBF were designed, respectively. The objective of this simulation is to compare the performance a a classical observer with our ASLO. T ime, s           
+
+> 012345-7 -6 -5 -4 -3 -2 -1 0
+> det {Q}
+> ×10 -3
+> Fig. 5. Signal det {Q(t) }012345
+
+T ime, s 
+
+> -0.5 00.5 11.5 22.5 3
+> ×10 -11
+> ˜x1
+> ˜x2
+> Fig. 6. State estimation errors
+
+5.1 Third order LTI system 
+
+In this subsection we present simulation results for a third order stable LTI system. The parameters of the system were chosen as follows: 
+
+A =
+
+
+
+−4 1 2
+
+−1 −3 12 −1 −5
+
+ , B =
+
+
+
+1
+
+−32
+
+ , C =
+
+
+
+100
+
+ . (18) The initial condition of the state are x(0) = col(1 , 2, 2). The control signal is u = 5 sin(10 t). It can be easily shown that the system is observable. The results for the ASLO with λ1 = 0 .1 and λ2 = 0 .01 are shown in Fig. 7, 8 and 9. As expected the behavior is extraordinary. 6T ime, s                    
+
+> 00.2 0.4 0.6 0.8 1-1.5 -1 -0.5 00.5 11.5 2ˆx1
+> ˆx2
+> ˆx3
+> x1
+> x2
+> x3Fig. 7. Transient of the state vector x(t) and state vector estimate ˆ x(t). T ime, s
+> 00.01 0.02 0.03 0.04 0.05
+> |x − ˆx|
+> 00.05 0.1 0.15 0.2 0.25
+> Fig. 8. Transient of the estimation error norm |x(t)−ˆx(t)|.T ime, s
+> 00.5 11.5 2
+> det( Q)
+> -0.02 -0.015 -0.01 -0.005 0
+> Fig. 9. Transient of det {Q(t) }
+
+The poles of the system are 
+
+p1 = −5.88 , p2 = −3.65 , p3 = −2.47 .
+
+A Luenberger observer of the classical form ˙ˆx = Aˆx + Bu + L(y − C ˆx)was designed for this system for various choices of the observer poles. (1) Fast poles {− 10 , −11 , −12 }, with L =
+
+
+
+21 
+
+−819 484 
+
+.(2) Slower poles {− 5, −6, −7}, with L =
+
+
+
+6
+
+−24 19 
+
+.(3) Faster poles {− 20 , −21 , −22 }, with L =
+
+
+
+51 
+
+−10659 5764 
+
+.(4) Complex poles {− 5 ± 2j, −6}, with L =
+
+
+
+4
+
+−30 21 
+
+.The transient behavior of the fours designs is shown in Fig. 10. It is clear that performance of the ASLO is sig-nificantly superior to that of the Luenberger design. It is clearly observed that to achieve a reduced settling time an inadmissibly large pick—of 150 times the ini-tial error—in the transient errors is observed! A reduced order Luenberger observer was also simulated achieving basically the same performance. 
+
+5.2 Second order UCO LTV system 
+
+Consider the system matrices 
+
+A(t) = 
+
+"0 2 + sin t
+
+0 0
+
+#
+
+, C =
+
+h
+
+1 0 
+
+i
+
+.
+
+with x(0) = col(3 , −1). To investigate if ASLO is appli-cable we check its observability. The state transition and the principal matrices are given as Φ( t, τ ) = 
+
+"1 2( t − τ ) + cos τ − cos t
+
+0 1
+
+#
+
+,
+
+Φ( t, 0) = 
+
+"1 2 t + 1 − cos t
+
+0 1
+
+#
+
+7Fig. 10. State estimation errors of the Luenberger observer for the four desired pole locations. 
+
+On the other hand, the observability matrix is of the form 
+
+O(t, τ ) = 
+
+
+
+C Φ( t, τ )
+
+∂∂t 
+
+ C Φ( t, τ ) =
+
+1 2( t − τ ) + cos τ − cos t
+
+0 2 + sin t
+
+
+
+and its determinant is det O(t, τ ) = 2 + sin t. 
+
+Hence the system is observable. We proceed, then, to de-sign an ASLO with λ = 1. For, we compute the solution of ˙ΦF (t) = −ΦF (t) + Φ( t), ΦF (0) = 0 .
+
+This is given by ΦF (t) = 
+
+"1 − e−t 2t − 1 + 32 e−t − 12 (sin t + cos t)0 1 − e−t
+
+#
+
+The matrix Q(t) takes the form 
+
+Q(t) = 
+
+" 1 2t + 1 − cos t
+
+1 − e−t 2t − 1 + 32 e−t − sin t+cos t
+
+> 2
+
+#
+
+,
+
+with its determinant det Q(t) = −2 + cos t − sin t
+
+2 + e−t
+
+
+
+2t + 52 − cos t
+
+
+
+.
+
+The transient behavior of the state estimation error and det {Q(t)} are shown in Figs. 11, 12 and 13, respectively. T ime, s      
+
+> 0246810 -20 -15 -10 -5 05
+> ˆx1
+> ˆx2
+> x1
+> x2
+
+Fig. 11. Transient of the state vector x(t) and state vector estimate ˆ x(t). 
+
+80 0.02 0.04 0.06 0.08 0.1 
+
+T ime, s 
+
+02468
+
+> |x − ˆx|
+
+×10 -12 Fig. 12. Transient of the estimation error norm |x(t) − ˆx(t)|.
+
+Fig. 13. Transient of det {Q(t) }
+
+To check if we can apply the KBF to estimate the state we evaluate its UCO. Since det O(t, τ ) ≥ 1 > 0 uni-formly in time, the system it is UCO. Indeed, the ob-servability Gramian satisfies 
+
+Wo(t, t + δ) ⪰ α(δ) I2 > 0, ∀t. 
+
+We proceed to design a KBF as ˙ˆx(t) = A(t) ˆ x(t) + L(t)y(t) − C ˆx(t)
+
+˙P (t) = A(t)P (t) + P (t)A⊤(t) − 1
+
+r P (t)C⊤CP (t)
+
+L(t) = 1
+
+r
+
+"p11 (t)
+
+p12 (t)
+
+#
+
+,
+
+with r > 0. A plot of the observation errors for x(0) = (3 , −1) and ˆ x(0) = (0 , 0) is given in Fig. 12. We see that the settling time is about 5 sec . Again, the performance of the ASLO is markedly superior to the one of the KBF. 0 1 2 3 4 5 6 7 8 9 10         
+
+> −202Time t[s] Estimation error ˜ xi(t)
+> ˜x1(t) = x1−ˆx1
+> ˜x2(t) = x2−ˆx2
+
+Figure 12 Observation errors ˜ x1(t) and ˜ x2(t). 
+
+6 Some Extensions 
+
+In this section we present extensions of Proposition 1 to the following cases. 
+
+E1 Systems with unknown time-varying parameters .
+
+E2 Measurement of the output signal with a time-varying delay .
+
+E3 Systems with unknown switching parameters .In all cases we simply replace the derivation of the GPEBO equations reported in Proposition 1 for the model (2) to the one reported in a recent publication for the new model. Exact reference to the publication as well as the equations that need to be replaced is given in each subsection. To simplify the cross-referencing, we keep in the sequel the notation used in the correspond-ing paper and give the precise numbers of the equations. 
+
+6.1 Systems with unknown time-varying parameters 
+
+Following the derivations of (Bobtsov et al., 2021b) we consider LTV systems described by the equations ˙x = [ A(t) + θ(t)C⊤]x + B(t)u(t)
+
+y = C⊤x
+
+where the unknown, time-varying parameter θ(t) ∈ Rn
+
+satisfies the differential equation ˙θ(t) = M (t)θ(t),M (t) ∈ Rn×n known and such that θ(t) is bounded. It is shown in (Bobtsov et al., 2021b, Equation (11)) that it is possible to generate a LRE 
+
+q(t) = m(t)η
+
+9with η ∈ R2n an unknown parameter and express the state as (Bobtsov et al., 2021b, Equation (9)) 
+
+x(t) = ξ1(t) + Φ( t)η, 
+
+where q(t), m (t), ξ 1(t) and Φ( t) are measurable .It is clear that replacing (8) and (9) by the two equations above, we can construct the ASLO simply adding the filtered quantities. 
+
+6.2 Delayed output measurement 
+
+In (Bobtsov et al., 2021a) we consider the case where the measurement of the output in (2) is of the form (Bobtsov et al., 2021a, Equations (1),(16)) 
+
+y(t) = Cx (t − d(t)) where the time-varying delay satisfies 0 ≤ d(t) ≤ dM .Similarly to the previous case we generate a LRE (Bobtsov et al., 2021a, Equation (12)) 
+
+z(t) = Ψ( t)θ
+
+with θ ∈ Rn an unknown parameter and express the state as (Bobtsov et al., 2021a, Equation (9)) 
+
+x(t) = ξ(t) + Φ a(t)θ, 
+
+where z(t), Ψ( t), ξ 1(t) and Φ( t) are measurable .
+
+6.3 Systems with unknown switching parameters 
+
+In (Romero and Ortega, 2023) we consider switching systems of the form ˙x = A(t)x + B(t)u(t) + M (t)θρ[k]
+
+y = C⊤x + D(t)where A(t), B (t), M (t), C and D(t) are known and θρ[k]
+
+denotes the switched unknown parameter which takes values in a finite set 
+
+θθρ[k] ∈ Θ : {θ1, θ 2, . . . , θ q }, q ∈ Z+.
+
+The switching signal θρ[k] : Z+ 7 → ¯q is a known pulse-wise signal. It is shown in (Romero and Ortega, 2023, Equation (8)) that it is possible to generate a LRE 
+
+Y (t) = ϕ(t)ηk
+
+with ηk ∈ Rn+m an unknown parameter and express the state as (Romero and Ortega, 2023, Equation (6)) 
+
+x(t) = ξ(t) + Ψ( t)ηk,
+
+where Y (t), ϕ (t), ξ (t) and Ψ( t) are measurable .
+
+Remark 4 In (Bezzubov et al., 2022) the case of systems with measurement delay and unknown time-varying parameters is considered. This corresponds to combining the cases of Subsection 6.1 and 6.2. 
+
+Remark 5 In (Pyrkin et al., 2023) we consider, besides unknown time-varying parameters, the presence of an external additive disturbance δ(t) ∈ R to the state equa-tions. It is assumed that these disturbances satisfy an 
+
+internal model , that is ˙w(t) = S(ρ)w(t)
+
+δ(t) = h⊤ 
+
+> δ
+
+w(t),
+
+with S known, but ρ ∈ Rnρ and hδ ∈ Rnw unknown .A globally convergent GPEBO is designed for this ob-server. However, the LRE does not comply with the con-ditions required for the application of our technique to obtain an ASLO. Current research is underway to clear this problem. 
+
+Remark 6 As indicated in Remark 1 we have created our extended regressor using the simplest LTI filter, while these can be done with any linear operator. Cur-rent research is underway to investigate the potential advantages of using other operators, particularly with the objective of creating a full rank matrix Q(t). 
+
+7 Concluding Remarks 
+
+The newly introduced concept of an algebraic observer represents a major breakthrough in the field of observer design. A class of algebraic observer has been derived in an extensive series of publications, including (Fliess et al., 2008; Sira-Ram´ ırez et al., 2014). In these works its unquestionable superiority vis-` a-vis classical asymptotic observers is discussed at length. Moreover, it is argued that the availability of algebraic observers trivializes the control design task. Unfortunately, in all these works the authors rely on the operation of successive signal differentiation —an operation that may be problematic for practical applications where the presence of noise is unavoidable. This undesirable feature is conspicuously absent from our ASLO approach. We present four key features of algebraic observers to demonstrate their superiority: 
+
+F1 Far superior transient performance, stemming from the fact that the estimated state signal be-10 comes aligned with the true state almost immedi-ately and, under a generic rank condition on an algorithm-generated matrix, remains exact for all subsequent time. This stands in sharp contrast to classical asymptotic (or finite/fixed-time) conver-gent designs. 
+
+F2 Structural simplicity: the construction relies solely on basic linear filtering and a single matrix inver-sion. These computational requirements compare favorably with the ≈ 4n3 + 4 n2m + 2 nm 2 flops per time step required by the KBF (Sandberg et al., 2014). 
+
+F3 Applicability to non-UCO systems , or systems with trajectories converging to unobservable states, for which classical methods such as the KBF are not applicable—see Section 4 and (Bobtsov et al., 2026a). 
+
+F4 As shown in Section 6 it is straightforward to extend our design to several challenging situations, e.g. ,unknown time-varying or switching parameters as well as output measurement with time-varying de-lay. None of these cases can be handled with exist-ing observers. As discussed in (Bobtsov et al., 2026b), the applica-tion of ASLO to general nonlinear systems of the form ˙x = f (x, u ), y = h(x), is restricted to cases where the 
+
+derivative of certain state components are known . Fur-thermore, the design proceeds on a case-by-case basis, with no unified systematic methodology. In contrast to this situation, for the particular class of state-affine sys-tems , we show in this paper that an ASLO can always be constructed and will be applicable under weak generic conditions. Moreover, we provide a simple, step-by-step, systematic design procedure that requires only the op-eration of linear filtering and a matrix inversion. 
+
+Acknowledgments 
+
+This paper is supported by the Ministry of Science and Higher Education of the Russian Federation (project No. FSER-2025-0002). 
+
+References 
+
+P. Bernard. Observer Design for Nonlinear Systems .Springer, Switzerland, 2019. V. Bezzubov, A. Bobtsov, D. Efimov, R. Ortega, and N. Nikolaev. Adaptive state observation of linear time-varying systems with delayed measurements and un-known parameters. International Journal of Robust and Nonlinear control , 33:1203–1213, 2022. A. Bobtsov, N. Nikolaev, R. Ortega, and D. Efimov. State observation of ltv systems with delayed mea-surements: A parameter estimation-based approach with fixed convergence time. Automatica , 131:109674, 2021a. A. Bobtsov, R. Ortega, B. Yi, and N. Nikolaev. Adap-tive state estimation of state-affine systems with un-known time-varying parameters. International Jour-nal of Control , 95(9):2460–2472, 2021b. A. Bobtsov, A. Pyrkin, R. Ortega, J.G. Romero, and D. Dochain. An algebraic state observer for a batch reactor. Journal of Process Control , 2026a. (submit-ted). A. Bobtsov, J.G. Romero, R. Ortega, and A. Pyrkin. An algebraic state observer for a class of physical systems. 
+
+arXiv:2604.23142 , 2026b. (submitted). M. Fliess, C. Join, and H. Sira-Ram?rez. Non-linear estimation is easy. International Journal of Modelling, Identification and Control , 4(1):12–27, 2008. R. Kalman and R. Bucy. New results in linear filtering and prediction theory. Journal of Basic Engineering ,108:83–95, 1961. R. Ortega, S. Aranovskiy, A. Pyrkin, A. Astolfi, and A. Bobtsov. New results on parameter estimation via dynamic regressor extension and mixing: Continuous and discrete-time cases. IEEE Transactions on Auto-matic Control , 66(5):2265–2272, 2021a. R. Ortega, A. Bobtsov, N. Nikolaev, J. Schiffer, and D. Dochain. Generalized parameter estimation-based observers: application to power systems and chemical-biological reactors. Automatica , 129:109635, 2021b. A. Pyrkin, A. Bobtsov, R. Ortega, and A. Isidori. An adaptive observer for uncertain linear time-varying systems with unknown additive perturbations. Auto-matica , 147:110677, 2023. J. G. Romero and R. Ortega. Adaptive state obser-vation of linear time-varying systems with switching unknown parameters: Application to gain scheduling and event-triggered control. International Journal on Adaptive Control and Signal Processing , 37:2915– 2933, 2023. H. Sandberg, J-C. Delvenne, N. J. Newton, and S. K. Mitter. Thermodynamic costs in implementing kalman-bucy filters. In 2014 52nd Annual Allerton Conference on Communication, Control, and Comput-ing, Allerton , pages 550–555, 2014. S. Sastry and M. Bodson. Adaptive Control: Stability, Convergence and Robustness . Prentice-Hall, New Jer-sey, 1989. H. Sira-Ram´ ırez, C. Garc´ ıa-Rodr´ ıguez, J. Cort´ es-Romero, and A. Luviano-Ju´ arez. Algebraic Identifi-cation and Estimation Methods in Feedback Control Systems . Wiley, 2014. L. Wang, R. Ortega, and A. Bobtsov. Observability is sufficient for the design of globally exponentially con-vergent state observers for state-affine nonlinear sys-tems. Automatica , 149:110838, 2023. 11 A Proof of Proposition 2 
+
+Let A ∈ Rn×n and C ∈ Rn be in the observability canon-ical form 
+
+A =
+
+
+
+−a1 1 0 · · · 0
+
+−a2 0 1 · · · 0... ... ... . . . ...
+
+−an−1 0 0 · · · 1
+
+−an 0 0 · · · 0
+
+
+
+, C =
+
+
+
+10...0
+
+
+
+.
+
+It is clear from (3) that Φ( t) = eAt . Define the charac-teristic polynomial of A as 
+
+p(s) = sn + a1sn−1 + · · · + an =
+
+> n
+
+Y
+
+> k=1
+
+(s − μk), μ k ∈ C.
+
+We proceed now to evaluate the impulse response of the system. Towards this end, we need to consider the cases of repeated or non repeated eigenvalues. In the latter case we have 
+
+p(s) = 
+
+> n
+
+Y
+
+> m=1
+
+(s − μm) = ⇒ p′(μk) = 
+
+> n
+
+Y
+
+> m=1
+> m̸=k
+
+(μk − μm)̸ = 0 ,
+
+and the partial-fraction expansion is: 1
+
+p(s) =
+
+> n
+
+X
+
+> k=1
+
+1
+
+p′(μk) · 1
+
+s − μk
+
+.
+
+The associated impulse response of the system is given by 
+
+z0(t) := C⊤Φ( t) = 
+
+> n
+
+X
+
+> k=1
+
+1
+
+p′(μk) e μkt. 
+
+On the other hand, when there are repeated eigenvalues, that is, when 
+
+p(s) = 
+
+> r
+
+Y
+
+> k=1
+
+(s − μk)mk , m1 + m2 + · · · + mr = n. 
+
+where the distinct eigenvalues be μ1, . . . , μ r have mul-tiplicities m1, . . . , m r . Then, the partial-fraction expan-sion becomes: 1
+
+p(s) =
+
+> r
+
+X
+
+> k=1
+
+ Ak, 1
+
+s − μk
+
++ Ak, 2
+
+(s − μk)2 + · · · + Ak,m k
+
+(s − μk)mk
+
+
+
+,
+
+where: 
+
+Ak,ν = 1(mk − ν)! 
+
+d mk −ν
+
+ds mk −ν
+
+ (s − μk)mk
+
+p(s)
+
+
+
+> s=μk
+
+.
+
+The impulse response for repeated eigenvalues is 
+
+z0(t) = C⊤eAt =
+
+> r
+
+X
+
+> k=1
+
+eμk th
+
+Ak, 1 + Ak, 2t++ Ak, 3
+
+t2
+
+2! + · · · + Ak,m k
+
+tmk −1
+
+(mk − 1)! 
+
+i
+
+.
+
+where we used 
+
+L−1
+
+ 1(s − μk)ν
+
+
+
+= t ν−1
+
+(ν − 1)! eμk t.
+
+Now, the filtered signals satisfy the linear ODE: ˙ΦFi = −λiΦFi + λieAt , ΦFi (0) = 0n×n.
+
+Integrating, yields ΦFi (t) = λie−λit
+
+Z t
+
+> 0
+
+e(λiI+A)τ dτ, 
+
+so: 
+
+zi(t) := C⊤ΦFi (t) = λie−λit
+
+Z t
+
+> 0
+
+z0(τ )eλiτ dτ. 
+
+Substituting z0(t) = Pnk=1 ckeμk t we get 
+
+zi(t) = 
+
+> n
+
+X
+
+> k=1
+
+λick
+
+λi + μk
+
+ eμk t − e−λit ,
+
+where, to simplify the notation, we defined 
+
+ck := 1
+
+p′(μk)̸ = 0 .
+
+The matrix Q(t) is then given as 
+
+Q(t) = −
+
+
+
+z0(t)
+
+z1(t)...
+
+zn−1(t)
+
+
+
+,
+
+so det {Q(tk)}̸ = 0 if and only if the rows {z0(tk),z1(tk), . . . , z n−1(tk)} are linearly independent .12 We consider three different cases: 
+
+C1 Eigenvalues of A are real and distinct .
+
+C2 Eigenvalues of A are real but not distinct .
+
+C3 There are complex eigenvalues. 
+
+Case 1 
+
+Rewrite all signals as: 
+
+z0(t) = 
+
+> n
+
+X
+
+> k=1
+
+ckeμk t
+
+zi(t) = 
+
+> n
+
+X
+
+> k=1
+
+λick
+
+λi + μk
+
+eμk t −
+
+> n
+
+X
+
+> k=1
+
+λick
+
+λi + μk
+
+!
+
+e−λit.
+
+The set of exponential functions {eμ1t, . . . , e μnt, e −λ1t,. . . , e −λn−1t} is linearly independent over (0 , ∞) if and only if all exponents are distinct. Linear dependence oc-curs if and only if some λi = −μk, a case that is ruled out under the standing assumptions. On the other hand, because of the assumption of stability of A, we see that we have det {Q(t)} = 0 at t = ∞.
+
+Case 2 
+
+Let the distinct eigenvalues be {μ1, . . . , μ r } with mul-tiplicities summing to n. Repeated eigenvalues produce polynomial–exponential terms: 
+
+eμt , te μt , t 2eμt , . . . , t m−1eμt .
+
+The impulse response becomes: 
+
+z0(t) = 
+
+> r
+
+X
+
+> k=1
+
+qk(t)eμk t,
+
+where qk(t) is a polynomial of degree ≤ mk − 1. The family of functions {tseμk t} ∪ { e−λit} is linearly inde-pendent if and only if all exponents are distinct and no 
+
+λi = −μk that, again, is ruled out. We conclude then that repeated eigenvalues do not destroy independence. 
+
+Case 3 
+
+Let a conjugate pair of non-real eigenvalues be: 
+
+μ = α + jβ, μ = α − jβ, α, β ∈ R, β > 0.
+
+The condition for linear independence of the rows of 
+
+Q(t) given above is λi + μ = 0, which is impossible to hold because β > 0. Consequently det {Q(t) } ≡ 0 cannot 
+
+happen. However, we will show below that det {Q(t) }
+
+may be equal to zero for some isolated times tj > 0. The terms corresponding to μ and μ in the determinant sum are: e ( α + jβ )t
+
+Qn−1 
+
+> i=1
+
+(λi + α + jβ ) + e ( α − jβ )t
+
+Qn−1 
+
+> i=1
+
+(λi + α − jβ ) .
+
+For simplicity, take n = 2 (one λ1): e ( α + jβ )tλ1 + α + jβ + e ( α − jβ )tλ1 + α − jβ == 2 e αt 
+
+(λ1 + α)2 + β2
+
+(λ1 + α) cos βt + β sin βt .
+
+We consider, again, two cases. First, when λ1̸ = −α. In this case, both coefficients ( λ1 + α) and β are non-zero. The trigonometric combination: (λ1 + α) cos βt + β sin βt 
+
+is a sinusoidal signal—it vanishes at isolated times but never identically for all t ≥ 0. The second case is when λ1 = −α. Then, the expression simplifies to 2 e −λ1tβ sin βt , This term vanishes at t = 
+
+> kπ β
+
+, k = 0 , 1, 2, . . . , but does not vanish for all t ≥ 0. This completes the proof. 
+
+B Proof of Lemma 1 
+
+B.1 Evaluation of Φ( t) for the non-holonomic system 
+
+(12) -(14) , (15) Consider the matrix ODE: ˙Φ( t) = A(t) Φ( t), Φ(0) = I4,
+
+where 
+
+A(t) = 
+
+"02×2 A12 (t)02×2 A22 (t)
+
+#
+
+, A12 (t) = e−tI2,A22 (t) = 
+
+" 0 −f (t)
+
+f (t) 0
+
+#
+
+,
+
+and 
+
+f (t) = 2 e−t + 2 te −t.
+
+Define the phase function: 
+
+g(t) = 
+
+Z t
+
+> 0
+
+f (τ ) dτ = 4 − 2( t + 2) e−t.
+
+13 Then the solution is block-triangular: Φ( t) = 
+
+" I2 Φ12 (t)02×2 R(g(t)) 
+
+#
+
+,
+
+where the rotation matrix is 
+
+R(g) = 
+
+"cos g − sin g
+
+sin g cos g
+
+#
+
+,
+
+and the off-diagonal block satisfies Φ12 (t) = 
+
+"C(t) −S(t)
+
+S(t) C(t)
+
+#
+
+with 
+
+C(t) = 
+
+Z t
+
+> 0
+
+e−τ cos g(τ ) dτ, S(t) = 
+
+Z t
+
+> 0
+
+e−τ sin g(τ ) dτ. 
+
+These integrals do not admit elementary closed form and are evaluated numerically. 
+
+B.2 Evaluation of ΦF (t)Solve ˙ΦF (t) = −λΦF (t) + λΦ( t), ΦF (0) = 04×4, λ > 0.
+
+Using the integrating factor eλt , the solution is: ΦF (t) = λ e −λt 
+
+Z t
+
+> 0
+
+eλτ Φ( τ ) dτ. 
+
+By block structure: ΦF (t) = 
+
+"ΦF
+
+> 11
+
+(t) Φ F
+
+> 12
+
+(t)ΦF
+
+> 21
+
+(t) Φ F
+
+> 22
+
+(t)
+
+#
+
+,
+
+where ΦF
+
+> 11
+
+(t) = (1 − e−λt )I2, ΦF
+
+> 21
+
+(t) ≡ 0,
+
+ΦF
+
+> 22
+
+(t) = λ e −λt 
+
+"Uc(t) −Us(t)
+
+Us(t) Uc(t)
+
+#
+
+,Uc(t) = 
+
+Z t
+
+> 0
+
+eλτ cos g(τ ) dτ, Us(t) = 
+
+Z t
+
+> 0
+
+eλτ sin g(τ ) dτ, 
+
+and ΦF
+
+> 12
+
+(t) = 
+
+C(t) − e−λt Kc(t) −S(t) + e−λt Ks(t)
+
+S(t) − e−λt Ks(t) C(t) − e−λt Kc(t)
+
+ ,
+
+with 
+
+Kc(t) = 
+
+Z t
+
+> 0
+
+e(λ−1) τ cos g(τ ) dτ, Ks(t) = 
+
+Z t
+
+> 0
+
+e(λ−1) τ sin g(τ ) dτ. 
+
+B.3 Evaluation of the rank of Q(t)Define 
+
+Q(t) = 
+
+" I2 Φ12 (t)ΦF
+
+> 11
+
+(t) Φ F
+
+> 12
+
+(t)
+
+#
+
+.
+
+Using the block-determinant formula: det Q(t) = det  ΦF
+
+> 12
+
+(t) − ΦF
+
+> 11
+
+(t)Φ 12 (t) == det  −e−λt K(t) ,
+
+where 
+
+K(t) = 
+
+"Kc(t) −Ks(t)
+
+Ks(t) Kc(t)
+
+#
+
+.
+
+Thus det Q(t) = e−2λt  Kc(t)2 + Ks(t)2.
+
+We have the following conclusion. 
+
+• At t = 0: Kc(0) = Ks(0) = 0 =⇒ det Q(0) = 0, so rank Q(0) = 2 (singular). 
+
+• For all t > 0: Kc(t)2 + Ks(t)2 > 0 almost everywhere, hence rank Q(t) = 4 (full rank). 
+
+• As t → ∞ , det Q(t) → 0. In conclusion Q(t) is singular only at t = {0, ∞} and is full rank for all ∞ > t > 0. 14
