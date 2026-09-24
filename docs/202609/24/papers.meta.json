@@ -1,0 +1,37 @@
+{
+  "label": "2026-09-24",
+  "date": "2026-09-24",
+  "generated_at": "2026-09-24T22:16:49",
+  "count": 2,
+  "papers": [
+    {
+      "paper_id": "202609/24/2609.25163v1-learning-neural-feedback-linearization-for-data-driven-systems-via-augmented-lagrangian",
+      "section": "quick",
+      "title_en": "Learning Neural Feedback Linearization for Data-driven Systems via Augmented Lagrangian",
+      "authors": "Lakshmi Priya P. K., Andreas Schwung",
+      "date": "2026-09-21",
+      "pdf": "https://arxiv.org/pdf/2609.25163v1",
+      "score": "6.0",
+      "evidence": "在直流电机上验证的反馈线性化控制方法",
+      "tldr": "本文提出了一种基于增强拉格朗日法的神经反馈线性化框架，旨在解决数据驱动系统控制问题。通过将相对度条件显式融入学习过程，利用神经李导数替代传统反馈控制器组件，实现了完全数据驱动的反馈线性化。研究不仅建立了闭环稳定性理论，证明了有界辨识误差可导致有界跟踪误差，并通过直流电机控制实验验证了该方法的有效性。",
+      "tags": "query:pmsm",
+      "abstract_en": "The paper proposes a novel data-driven framework for designing and training a feedback linearizing controller by explicitly incorporating relative degree based conditions into the learning process. This enables the conventional feedback controller components to be replaced by neural Lie derivatives, thereby facilitating a fully data-driven feedback linearization framework. Furthermore, practical closed-loop stability is established by deriving sufficient conditions under which bounded identification errors lead to bounded tracking errors. The derived theoretical results are validated through their application to an armature controlled DC motor.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202609/24/2609.28244v1-modularity-is-not-enough-demonstration-of-a-solderless-400-v-dc-25-kw-three-phase-inverter",
+      "section": "quick",
+      "title_en": "Modularity is Not Enough: Demonstration of a Solderless 400 V DC, 2.5 kW Three-Phase Inverter",
+      "authors": "Luc Imperiali, Aaron Griesser, Jonas Huber",
+      "date": "2026-09-23",
+      "pdf": "https://arxiv.org/pdf/2609.28244v1",
+      "score": "6.0",
+      "evidence": "用于变速驱动的三相逆变器",
+      "tldr": "本文提出了一种完全无焊的400V、2.5kW氮化镓（GaN）三相逆变器设计，通过螺钉夹紧树脂模具和橡胶压缩垫替代传统焊接。研究验证了该方案在热循环和高振动环境下的电气稳定性，并证明了其支持组件无损更换与回收利用，为实现可维修、可持续的工业级电力电子转换器提供了可行方案。",
+      "tags": "query:pmsm",
+      "abstract_en": "This paper presents the design and experimental evaluation of a fully solderless realization of a 400 V, 2.5 kW GaN-based variable speed drive (VSD), using screw-clamped resin molds and rubber compression pads instead of soldered interconnections. The power stage uses 650 V GaN power transistors and is operated at a switching frequency of 200 kHz. The solderless demonstrator is compared to a soldered reference realization using an identical printed circuit board (PCB). Over 120 thermal cycles with heatsink temperatures up to 90 °C, the solderless contacts show no degradation in effective on-state resistances (including contact resistances). Separately, open-loop vibration sweeps from 5 Hz to 2 kHz with acceleration amplitudes above 10 g were performed on the solderless assembly and left the continuously powered demonstrator electrically intact; subsequent resistance and nominal-power checks likewise indicate no contact degradation. An initial life-cycle assessment (LCA) indicated a higher embodied carbon footprint for the solderless realization due to 3D-printed resin molds, whereas a prospectively evaluated injection-molding scenario reduces the carbon footprint to near that of the soldered reference. The solderless assembly furthermore enables non-destructive component replacement, as demonstrated after a power transistor failure, as well as component re-use. These results support the feasibility of repair-oriented, industrially relevant kilowatt-class solderless power converters.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

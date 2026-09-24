@@ -6,37 +6,29 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-09-23
-- 运行时间：2026-09-23 21:53:51 UTC
+- 最新运行日期：2026-09-24
+- 运行时间：2026-09-24 22:16:46 UTC
 - 运行状态：成功
-- 本次总论文数：5
-- 精读区：2
-- 速读区：3
+- 本次总论文数：2
+- 精读区：0
+- 速读区：2
 
 ### 今日简报（AI）
-今日精选 5 篇电机控制与机器人动力学前沿论文，重点攻克永磁同步电机的高性能控制难题。
-核心推荐关注基于 ESO 的无模型电流控制及电流源逆变器驱动下的高速电机无传感器控制技术。
-建议电机控制领域从业者优先研读两篇满分论文，深入理解数据驱动与扰动观测在复杂工况下的应用。
-- 详情：[/202609/23/README](/202609/23/README)
+今日精选两篇前沿技术论文，涵盖数据驱动控制与电力电子硬件创新。
+重点关注神经网络反馈线性化在复杂系统中的应用，以及无焊式三相逆变器的模块化设计突破。
+建议关注控制算法与电力硬件的交叉领域，了解数据驱动系统与高效能电源转换的最新进展。
+- 详情：[/202609/24/README](/202609/24/README)
 
 ### 精读区论文标签
-1. [Model-Free Current Control of Permanent Magnet Synchronous Motors via ESO-Based Disturbance Feedforward and Data-Driven H-infinity Residual Feedback](/202609/23/2609.25759v1-model-free-current-control-of-permanent-magnet-synchronous-motors-via-eso-based-disturbance-feedforward-and-data-driven-h-infinity-residual-feedback)  
-   标签：评分：10.0/10、query:pmsm
-   evidence：直接针对永磁同步电机（PMSM）的电流控制进行研究
-2. [High-Performance Sensorless Control for High-Speed PMSM with Current Source Inverters](/202609/23/2609.25878v1-high-performance-sensorless-control-for-high-speed-pmsm-with-current-source-inverters)  
-   标签：评分：10.0/10、query:pmsm
-   evidence：电流源逆变器供电的高速永磁同步电机无传感器控制
+- 本次无精读推荐。
 
 ### 速读区论文标签
-1. [Task-Oriented Co-Design and Optimization of Geared Actuators for Robotic Applications](/202609/23/2609.22795v1-task-oriented-co-design-and-optimization-of-geared-actuators-for-robotic-applications)  
-   标签：评分：7.0/10、query:pmsm
-   evidence：电机与控制的系统级优化
-2. [Quasi-Static Fault-Tolerant Feedback Control of a Quadrotor under Rotor Failure with Provable Safety Guarantees](/202609/23/2609.23918v1-quasi-static-fault-tolerant-feedback-control-of-a-quadrotor-under-rotor-failure-with-provable-safety-guarantees)  
+1. [Learning Neural Feedback Linearization for Data-driven Systems via Augmented Lagrangian](/202609/24/2609.25163v1-learning-neural-feedback-linearization-for-data-driven-systems-via-augmented-lagrangian)  
    标签：评分：6.0/10、query:pmsm
-   evidence：多旋翼系统中针对旋翼失效的容错反馈控制
-3. [An Algebraic Observer for State-Affine Systems](/202609/23/2609.24339v1-an-algebraic-observer-for-state-affine-systems)  
+   evidence：在直流电机上验证的反馈线性化控制方法
+2. [Modularity is Not Enough: Demonstration of a Solderless 400 V DC, 2.5 kW Three-Phase Inverter](/202609/24/2609.28244v1-modularity-is-not-enough-demonstration-of-a-solderless-400-v-dc-25-kw-three-phase-inverter)  
    标签：评分：6.0/10、query:pmsm
-   evidence：状态观测器是永磁同步电机无感控制的关键组件
+   evidence：用于变速驱动的三相逆变器
 
 
 <div class="dpr-home-promo-card">

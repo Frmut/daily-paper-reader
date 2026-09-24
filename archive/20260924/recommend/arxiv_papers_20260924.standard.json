@@ -1,0 +1,88 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-09-24T22:16:36.711359+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 2,
+    "quick_skim_target": 11,
+    "quick_selected": 2
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2609.25163v1",
+      "title": "Learning Neural Feedback Linearization for Data-driven Systems via Augmented Lagrangian",
+      "abstract": "The paper proposes a novel data-driven framework for designing and training a feedback linearizing controller by explicitly incorporating relative degree based conditions into the learning process. This enables the conventional feedback controller components to be replaced by neural Lie derivatives, thereby facilitating a fully data-driven feedback linearization framework. Furthermore, practical closed-loop stability is established by deriving sufficient conditions under which bounded identification errors lead to bounded tracking errors. The derived theoretical results are validated through their application to an armature controlled DC motor.",
+      "authors": [
+        "Lakshmi Priya P. K.",
+        "Andreas Schwung"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-09-21T11:51:04+00:00",
+      "link": "https://arxiv.org/pdf/2609.25163v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Feedback linearization control method validated on a DC motor",
+      "llm_evidence_cn": "在直流电机上验证的反馈线性化控制方法",
+      "llm_evidence": "在直流电机上验证的反馈线性化控制方法",
+      "canonical_evidence": "在直流电机上验证的反馈线性化控制方法",
+      "llm_tldr_en": "This paper proposes a data-driven feedback linearization framework and validates it on a DC motor.",
+      "llm_tldr_cn": "该论文提出了一个数据驱动的反馈线性化框架，并在直流电机上进行了验证。",
+      "llm_tldr": "该论文提出了一个数据驱动的反馈线性化框架，并在直流电机上进行了验证。",
+      "llm_tags": [
+        "query:pmsm"
+      ],
+      "matched_query_tag": "query:pmsm",
+      "matched_query_text": "Permanent Magnet Synchronous Motor research",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.28244v1",
+      "title": "Modularity is Not Enough: Demonstration of a Solderless 400 V DC, 2.5 kW Three-Phase Inverter",
+      "abstract": "This paper presents the design and experimental evaluation of a fully solderless realization of a 400 V, 2.5 kW GaN-based variable speed drive (VSD), using screw-clamped resin molds and rubber compression pads instead of soldered interconnections. The power stage uses 650 V GaN power transistors and is operated at a switching frequency of 200 kHz. The solderless demonstrator is compared to a soldered reference realization using an identical printed circuit board (PCB). Over 120 thermal cycles with heatsink temperatures up to 90 °C, the solderless contacts show no degradation in effective on-state resistances (including contact resistances). Separately, open-loop vibration sweeps from 5 Hz to 2 kHz with acceleration amplitudes above 10 g were performed on the solderless assembly and left the continuously powered demonstrator electrically intact; subsequent resistance and nominal-power checks likewise indicate no contact degradation. An initial life-cycle assessment (LCA) indicated a higher embodied carbon footprint for the solderless realization due to 3D-printed resin molds, whereas a prospectively evaluated injection-molding scenario reduces the carbon footprint to near that of the soldered reference. The solderless assembly furthermore enables non-destructive component replacement, as demonstrated after a power transistor failure, as well as component re-use. These results support the feasibility of repair-oriented, industrially relevant kilowatt-class solderless power converters.",
+      "authors": [
+        "Luc Imperiali",
+        "Aaron Griesser",
+        "Jonas Huber"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY"
+      ],
+      "published": "2026-09-23T15:08:18+00:00",
+      "link": "https://arxiv.org/pdf/2609.28244v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Three-phase inverter for variable speed drive",
+      "llm_evidence_cn": "用于变速驱动的三相逆变器",
+      "llm_evidence": "用于变速驱动的三相逆变器",
+      "canonical_evidence": "用于变速驱动的三相逆变器",
+      "llm_tldr_en": "This paper demonstrates a solderless 400 V DC, 2.5 kW three-phase inverter design suitable for variable speed drives.",
+      "llm_tldr_cn": "该论文展示了一种适用于变速驱动的无焊 400 V DC、2.5 kW 三相逆变器设计。",
+      "llm_tldr": "该论文展示了一种适用于变速驱动的无焊 400 V DC、2.5 kW 三相逆变器设计。",
+      "llm_tags": [
+        "query:pmsm:composite"
+      ],
+      "matched_query_tag": "query:pmsm:composite",
+      "matched_query_text": "Papers central to 三相及双三相永磁同步电机相关研究检索, especially work that connects or combines: m; s; f; Permanent Magnet Synchronous Motor research; dual three-phase permanent magnet synchronous motor control and design; fault-tolerant control of multi-phase motors; recent advances in dual three phase permanent magnet synchronous motor control; fault tolerant strategies for multi phase permanent magnet synchronous motors.",
+      "matched_requirement_id": "req-composite-pmsm",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
