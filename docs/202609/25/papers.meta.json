@@ -1,0 +1,65 @@
+{
+  "label": "2026-09-25",
+  "date": "2026-09-25",
+  "generated_at": "2026-09-25T21:53:26",
+  "count": 4,
+  "papers": [
+    {
+      "paper_id": "202609/25/2609.29290v1-temporal-regression-based-model-free-sensorless-control-of-permanent-magnet-synchronous-motor",
+      "section": "deep",
+      "title_en": "Temporal Regression-Based Model-Free Sensorless Control of Permanent Magnet Synchronous Motor",
+      "authors": "Fobao Zhou, Yang Shen, Xueyan Wang, Zhenxiao Yin, Yujia Zhang, Yuanfeng Qu, Hang Zhao",
+      "date": "2026-09-24",
+      "pdf": "https://arxiv.org/pdf/2609.29290v1",
+      "score": "10.0",
+      "evidence": "永磁同步电机无模型无感控制",
+      "tldr": "针对表贴式永磁同步电机（SPMSM）无传感器控制对电机参数敏感的问题，本文提出了一种基于时间回归的无模型控制（TFC）方法。该方法通过构建有限窗口回归模型，利用投影算子消除电感项，并结合最小二乘法重构转子磁链，实现了在无需预知定子电阻、电感及磁链参数的情况下进行高精度转子位置估计。",
+      "tags": "query:pmsm",
+      "abstract_en": "To address the widespread sensitivity of surface-mounted permanent magnet synchronous motor (SPMSM) sensorless control to motor parameters, this paper proposes a temporal regression-based model-free sensorless control (TFC) method. First, voltage integrals and current increments over consecutive short intervals are stacked to construct a finite window regression, in which the unknown stator inductance appears as a common scalar coefficient. Second, a projection operator constructed from the stacked current increments eliminates the inductance term, and a least-squares formulation is developed to reconstruct the rotor flux vector. Meanwhile, the analysis of the projected regression and current-flux geometry establishes a two-dimensional direction vector whose components share a common amplitude containing the stator resistance and flux linkage. This amplitude cancels during position extraction. By setting the resistance reference to zero, the proposed method estimates the position without specifying the stator resistance, inductance, or flux linkage. Finally, experimental results verify the effectiveness of the proposed TFC method.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202609/25/2609.29313v1-equivalent-flux-compensation-for-spmsm-sensorless-control-under-parameter-mismatch",
+      "section": "deep",
+      "title_en": "Equivalent Flux Compensation for SPMSM Sensorless Control under Parameter Mismatch",
+      "authors": "Fobao Zhou, Jiaqiao Liang, Zhenxiao Yin, Xueyan Wang, Yang Shen, Zhongyu Shi, Hang Zhao",
+      "date": "2026-09-24",
+      "pdf": "https://arxiv.org/pdf/2609.29313v1",
+      "score": "10.0",
+      "evidence": "表贴式永磁同步电机（SPMSM）无传感器控制及参数失配补偿",
+      "tldr": "针对表贴式永磁同步电机（SPMSM）无传感器控制中参数失配导致的转子位置估计误差问题，本文提出了一种等效磁链补偿（EFC）方法。该方法通过非线性磁链观测器实时估计参数失配引起的磁链扰动，并结合几何误差设计了磁链更新律，引入饱和函数增强数值稳定性。实验证明，该方法能有效补偿电阻和磁链失配，显著降低位置估计误差，并具备良好的收敛性和稳定性。",
+      "tags": "query:pmsm",
+      "abstract_en": "Parameter mismatch is the main source of rotor position estimation error in sensorless control of surface-permanent magnet synchronous motors (SPMSMs). To this end, this paper proposes a simple yet efficient equivalent flux compensation (EFC) method that directly estimates the equivalent flux disturbance caused by parameter mismatches in real time. First, the equivalent flux disturbance caused by parameter mismatches is derived from a nonlinear flux observer. Second, a flux update law is proposed to minimize both magnitude and directional errors by leveraging geometric error together with the derived equivalent flux disturbance. To enhance numerical stability, a saturation function is introduced to improve gradient continuity in the update process. Additionally, Lyapunov analysis is employed to ensure the stability of the proposed update law, from which the corresponding error bounds and convergence properties are derived. Finally, experimental results validate that the proposed method fully compensates for the steady-state effects of resistance and flux mismatches, and partially mitigates the influence of inductance variation, effectively constraining the position estimation error within a relatively small range.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202609/25/2609.27436v1-a-harmonic-regression-arma-model-for-rotating-machinery-dynamics-identification-and-fault-detection-under-varying-conditions",
+      "section": "quick",
+      "title_en": "A Harmonic-Regression ARMA model for rotating machinery dynamics identification and fault detection under varying conditions",
+      "authors": "Dimitrios M. Bourdalos, John S. Sakellariou, Spilios D. Fassois",
+      "date": "2026-09-23",
+      "pdf": "https://arxiv.org/pdf/2609.27436v1",
+      "score": "7.0",
+      "evidence": "变工况下旋转机械的故障检测",
+      "tldr": "针对旋转机械在变工况下故障诊断困难的问题，本文提出了一种谐波回归ARMA（HR-ARMA）模型。该方法将确定性周期分量与随机宽带动力学相结合，有效克服了传统ARMA模型在处理混合谱特征时的局限性。通过多模型框架，该方法在单级齿轮箱实验中实现了高精度的动力学识别与故障检测，显著提升了诊断性能。",
+      "tags": "query:pmsm",
+      "abstract_en": "Fault detection in rotating machinery under varying operating conditions remains a challenging problem. Existing approaches are mainly based either on non-parametric vibration signal representations, parametric deep learning models, or on parametric ARMA-type models. While deep learning approaches often lack transparency and require large training datasets, ARMA-type models rely on the assumption of a purely rational spectrum, which can be restrictive for rotating machinery vibration signals exhibiting mixed spectral characteristics. To address these limitations, a novel Harmonic Regression ARMA (HR-ARMA) model is presented for rotating machinery dynamics identification, which combines an explicit harmonic regression part for representing the dominant deterministic cyclical components with an ARMA part for the remaining broadband stochastic dynamics. Based on this model and within a Multiple Model framework, fault detection is achieved under varying operating conditions. The HR-ARMA modelling performance is validated through simulation and experimental studies on a single-stage gearbox, demonstrating accurate representation of both cyclical and broadband dynamics, improved parsimony and significantly higher fault detection performance compared with conventional ARMA models, achieving at least 98% True Positive Rate at 5% False Positive Rate in the experimental study.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202609/25/2609.27010v1-three-high-performance-global-tracking-composite-adaptive-controllers-for-fully-actuated-euler-lagrange-systems-experimental-validation",
+      "section": "quick",
+      "title_en": "Three High Performance Global Tracking Composite Adaptive Controllers for Fully Actuated Euler-Lagrange Systems: Experimental Validation",
+      "authors": "Luis Cervantes-Pérez, Jose Guadalupe Romero, Romeo Ortega, Víctor Santibáñez, Jesús Sandoval",
+      "date": "2026-09-22",
+      "pdf": "https://arxiv.org/pdf/2609.27010v1",
+      "score": "6.0",
+      "evidence": "针对欧拉-拉格朗日系统的自适应跟踪控制",
+      "tldr": "本文针对全驱动欧拉-拉格朗日系统，提出了三种高性能全局跟踪复合自适应控制器。研究通过引入新型参数化方法和高效估计方案，实现了在弱区间激励条件下的全局指数收敛。其中一款控制器采用简化的类PID结构，无需额外滤波即可实现高性能控制。通过在二自由度机械臂上的实验验证，证明了该方案在跟踪精度和鲁棒性上优于现有的学习型自适应控制器。",
+      "tags": "query:pmsm",
+      "abstract_en": "Three adaptive global tracking controllers for fully actuated Euler-Lagrange systems, with verifiable performance improvement over existing designs, are reported in this letter. Two of these controllers ensure global exponential convergence under a weak interval excitation condition. Besides, one of the proposed controllers features a simple adaptive PID-like structure that-unlike classical solutions-avoids the need for additional filtering. We adopt a composite adaptation architecture, invoke a novel parameterization of the system dynamics and use a high performance estimation scheme recently introduced in the literature. Real-time experiments and a comparative study with a learning-based adaptive controller on a two-degrees-of-freedom manipulator arm illustrate the effectiveness of the proposed controllers.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

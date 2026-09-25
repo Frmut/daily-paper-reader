@@ -1,0 +1,630 @@
+Title: Temporal Regression-Based Model-Free Sensorless Control of Permanent Magnet Synchronous Motor
+
+URL Source: https://arxiv.org/pdf/2609.29290v1
+
+Published Time: Fri, 25 Sep 2026 00:51:44 GMT
+
+Number of Pages: 10
+
+Markdown Content:
+> JOURNAL OF L ATEX CLASS FILES 1
+
+# Temporal Regression-Based Model-Free Sensorless Control of Permanent Magnet Synchronous Motor 
+
+Fobao Zhou, Student Member, IEEE , Yang Shen, Student Member, IEEE , Xueyan Wang, Zhenxiao Yin, Member, IEEE , Yujia Zhang, Yuanfeng Qu, and Hang Zhao ∗, Member, IEEE 
+
+Abstract —To address the widespread sensitivity of surface-mounted permanent magnet synchronous motor (SPMSM) sen-sorless control to motor parameters, this paper proposes atemporal regression-based model-free sensorless control (TFC) method. First, voltage integrals and current increments over consecutive short intervals are stacked to construct a finite win-dow regression, in which the unknown stator inductance appears as a common scalar coefficient. Second, a projection operator constructed from the stacked current increments eliminates the inductance term, and a least-squares formulation is developed to reconstruct the rotor flux vector. Meanwhile, the analysis of the projected regression and current-flux geometry establishes a two-dimensional direction vector whose components share a common amplitude containing the stator resistance and flux linkage. This amplitude cancels during position extraction. By setting the resistance reference to zero, the proposed method estimates the position without specifying the stator resistance, inductance, or flux linkage. Finally, experimental results verify the effectiveness of the proposed TFC method. 
+
+Index Terms —Permanent magnet synchronous motor (PMSM), temporal regression, model-free control, sensorless control. 
+
+I. I NTRODUCTION 
+
+# PERMANENT magnet synchronous motors (PMSMs) are widely used in high performance electric drives, including electric vehicles, industrial servo systems, and robotics, owing to their high efficiency, high power density, compact structure, and favorable dynamic performance. High performance vector control requires accurate rotor position information. However, mechanical position sensors increase cost and size and can compromise reliability in harsh environments, motivating ex-tensive research into position sensorless control [1]. At medium and high speeds, sensorless control typically re-lies on the fundamental-frequency model to estimate the back electromotive force (EMF) or flux linkage and subsequently recover the rotor position. Representative approaches include kalman filter (KF) [2], [3], sliding-mode observer (SMO) [4], [5], extended state observer (ESO) [6], [7], and flux observer [8], [9]. Despite their different structures, these methods generally rely on the motor voltage equations and require the stator resistance, inductance, or flux linkage. However, these parameters vary with temperature and magnetic satu-ration under different operating conditions, and the resulting 
+
+This work is supported by the National Natural Science Foundation of China (No. 52407066), Guangdong Science and Technology Program (2025A0505020029), and Youth S&T Talent Support Program of Guangdong Provincial Association for Science and Technology (SKXRC2025464). ( Cor-responding author: Hang Zhao.) 
+
+The authors are with the Robotics and Autonomous Systems Thrust, The Hong Kong University of Science and Technology (Guangzhou), Guangzhou 511453, China (e-mail: hangzhao@hkust-gz.edu.cn). 
+
+mismatches introduce back-EMF or flux estimation errors that degrade rotor position accuracy [10]. Therefore, reducing this parameter dependence is essential for improving the robustness of sensorless control. To address parameter sensitivity, considerable effort has been devoted to robust observer design or parameter-robust structures. In [11], an ESO-based robust hybrid flux observer estimates and compensates for active flux errors caused by pa-rameter mismatches, improving robustness to inductance and flux variations. In [12], an improved flux observer incorporates a compensation mechanism to reduce the influence of stator resistance mismatch on position estimation. In [13], an adap-tive full-order terminal SMO decouples the mutual inductance from the estimated active flux in speed observation, improving robustness to inductance variations. In [14], an SMO-based predictive observer combines an improved observer structure with parameter identification to enhance position estimation under parameter variations. These approaches nevertheless retain the motor model and attenuate the effects of parameter mismatches through robust design or error compensation, rather than eliminating parameter dependence. Recently, an ul-tralocal model-based sensorless method has been developed in [15] to reduce reliance on the conventional motor model. How-ever, it still requires the design of additional model parameters, and residual sensitivity to substantial inductance mismatches remains a concern. Overall, existing robust observers and parameter-robust controllers not only rely on motor parameters but also introduce additional observer or compensation gains, increasing the tuning effort. Therefore, sensorless methods that avoid both physical parameter dependence and complicated parameter tuning are of significant research value. An alternative approach is to identify parameters online and update the position observer accordingly. In [16], online resis-tance identification improves position estimation at low speeds, although the inductance must still be determined beforehand. In [17], adaptive full-state feedback control enables online estimation of the resistance, inductance, and flux linkage, and the estimates are used to improve position estimation accuracy. In [18], virtual back-EMF injection constructs a full-rank identification model for joint estimation of these three parameters. In [19], parameter mismatch detection and online inductance identification are incorporated into robust predictive sensorless control to compensate for steady-state parameter errors. Under sensorless operation, however, the motor parameters, back-EMF, and rotor position are simultane-ously unknown. Parameter identification is therefore subject to rank deficiency, parameter coupling, and interactions between arXiv:2609.29290v1 [eess.SY] 24 Sep 2026 JOURNAL OF L ATEX CLASS FILES 2
+
+position estimation errors and parameter estimation errors. Although online identification can mitigate parameter mis-matches, it also introduces additional computational, tuning, and convergence considerations [20], [21]. To eliminate the dependence of surface-mounted PMSM (SPMSM) sensorless position estimation on motor parameters while avoiding the complexity of online parameter iden-tification, elaborate error compensation, and extensive ob-server tuning, this paper proposes a temporal regression-based model-free sensorless control (TFC) method. The proposed method exploits temporal relationships in measured voltage and current data to recover rotor position without requiring motor parameter inputs. Its central feature is the separation of position information from parameter dependent components through temporal projection and the current-flux geometry of the SPMSM. This formulation eliminates the need for online motor parameter identification and reduces the com-plexity associated with mismatch compensation and observer tuning, providing a direct approach to parameter independent sensorless position estimation. This paper makes several key contributions and innovations: 1) A model-free sensorless control method is developed to reconstruct rotor position from voltage and current data without requiring stator resistance, inductance, or flux linkage as inputs or identifying them online. 2) A temporal projection framework is introduced to elim-inate the unknown inductance directly from a finite window data regression, exploiting its shared coefficient across consecutive intervals. 3) The current-flux geometry is exploited to incorporate the effects of resistance and flux linkage into a common amplitude factor of the direction vector, and this factor cancels during angle extraction. 4) The resulting estimation structure primarily involves two tuning parameters, the window size and the interval duration, which simplifies implementation and tuning. II. SPMSM M ODEL AND CURRENT -F LUX GEOMETRY 
+
+A. SPMSM Model 
+
+The SPMSM under study is modeled as a two-dimensional vector system in the stationary αβ reference frame. Let u, i,and λ denote the stator voltage vector, current vector, and flux vector, respectively, defined as: 
+
+u =
+
+uα
+
+uβ
+
+
+
+, i =
+
+iα
+
+iβ
+
+
+
+, λ =
+
+λα
+
+λβ
+
+
+
+(1) Let Ls > 0 and Rs > 0 denote the actual stator inductance and stator resistance, respectively. The SPMSM model is: 
+
+λ = Lsi + x, ˙λ = u − Rsi (2) where x ∈ R2 is the flux vector. Let θ denote the rotor electrical angle, and let ψf > 0 denote the flux linkage. The flux vector is: 
+
+x = ψf c(θ), c(θ) = 
+
+cos θ
+
+sin θ
+
+
+
+(3) where c(θ) is the unit vector along the rotor d-axis. Con-sequently, the flux model becomes λ = Lsi + ψf c(θ). The proposed estimator uses these electromagnetic relationships to construct a regression from measured data. 
+
+B. Current-Flux Orthogonality 
+
+Define the counterclockwise 90 ◦ rotation matrix J and the two-dimensional identity matrix I2 by: 
+
+J =
+
+0 −11 0
+
+
+
+, JT = −J, J2 = −I2 (4) The vector Jc (θ) is the unit vector along the rotor q-axis. Let id and iq denote the stator current components along the actual rotor d- and q-axis, respectively. The stationary-frame current then satisfies: 
+
+i = idc(θ) + iq Jc (θ) (5) In field-oriented control with id = 0, (5) satisfies the following conditions: 
+
+i = iq Jc (θ) = iq
+
+ψf
+
+Jx , xTi = 0 (6) Equation (6) shows that the stator current is orthogonal to the flux vector. This geometric constraint provides the direction information required for rotor position estimation after the inductance contribution has been removed. III. T EMPORAL REGRESSION -B ASED MODEL -F REE 
+
+SENSORLESS CONTROL METHOD 
+
+This section presents the proposed TFC method in detail. Voltage and current measurements over consecutive short in-tervals are stacked into a regression whose common inductance term is removed by projection, and the rotor position is then recovered from the projected data. 
+
+A. Finite Window Representation 
+
+For a constant flux linkage within the data window, differ-entiation of (3) gives: 
+
+˙x = ωJx , ω = ˙θ (7) where ω is the rotor electrical angular velocity. The planar rotation matrix C(φ) is defined as: 
+
+C(φ) = 
+
+cos φ − sin φ
+
+sin φ cos φ
+
+
+
+(8) where φ is the position. This matrix satisfies CT(φ)C(φ) = 
+
+I2 and JC (φ) = C(φ)J.Consider N ≥ 2 consecutive intervals with boundary times 
+
+t0 < t 1 < · · · < t N , where N is the number of intervals and 
+
+tN is the current window endpoint. Let xN = x(tN ) denote the flux vector to be reconstructed. For the boundary index 
+
+j = 0 , . . . , N , define the relative electrical angle: 
+
+φj = θ(tj ) − θ(tN ) = −
+
+Z tN
+
+> tj
+
+ω(τ ) d τ (9) The flux vector at each boundary can be expressed relative to the current endpoint as: 
+
+x(tj ) = C(φj )xN (10) JOURNAL OF L ATEX CLASS FILES 3
+
+Equation (10) is exact for a constant ψf , including when speed varies, provided that the relative angles are known. For a sufficiently short window with slowly varying speed, the relative angles can be approximated by: 
+
+φj ≃ ω(tj − tN ) (11) In implementation, ω is replaced by the estimated electrical speed ˆω, so that φj ≃ ˆω(tj − tN ).
+
+B. Short Interval Integral Regression 
+
+To analyze resistance dependence, introduce an algorithmic resistance ˆRs and its mismatch: 
+
+eRs = ˆRs − Rs (12) where eRs is the resistance mismatch. For interval j = 1 , . . . , N , define the voltage integral zj ,current integral hj , and current increment dj as: 
+
+zj =
+
+Z tj
+
+> tj−1
+
+[u(τ ) − ˆRsi(τ )] d τ, (13) 
+
+hj =
+
+Z tj
+
+> tj−1
+
+i(τ ) d τ, dj = i(tj ) − i(tj−1) (14) where zj , hj and dj are constructed from voltage and current samples. With ˆRs = 0 , zj is simply the voltage integral, and 
+
+hj is needed only for the resistance analysis. Integrating (2) over each interval yields: 
+
+zj = Lsdj + ∆ xj − eRshj (15) where ∆xj = x(tj ) − x(tj−1) is the flux increment. Using (10), the interval rotation matrix Aj is defined as: 
+
+Aj = C(φj ) − C(φj−1), ∆xj = Aj xN (16) Substituting (16) into (15) yields the regression model: 
+
+zj = Lsdj + Aj xN − eRshj (17) The unknown flux vector at the window endpoint enters linearly, while the inductance multiplies a measured current increment. Finite interval integration avoids current differen-tiation and requires no initial stator flux value. 
+
+C. Temporal Projection and Inductance Elimination 
+
+Let col( ·) denote vertical concatenation of vectors or matri-ces. Stack the interval quantities as: 
+
+Z = col( z1, . . . , zN ) ∈ R2N ,
+
+D = col( d1, . . . , dN ) ∈ R2N ,
+
+H = col( h1, . . . , hN ) ∈ R2N ,
+
+A = col( A1, . . . , AN ) ∈ R2N ×2
+
+(18) where Z, D, and H collect the voltage integrals, current in-crements, and current integrals of the N intervals, respectively, and A collects the corresponding interval rotation matrices. The extended regression becomes: 
+
+Z = DLs + AxN − eRsH (19) All intervals share the same unknown scalar Ls. Therefore, its complete contribution lies in the one-dimensional subspace spanned by the measured vector D.For a window satisfying DTD > 0, define the temporal projection matrix: 
+
+PL = I2N − DD T
+
+DTD (20) where I2N is the identity matrix. The matrix PL projects onto the orthogonal complement of D and satisfies: 
+
+P T 
+
+> L
+
+= PL, P 2 
+
+> L
+
+= PL, PLD = 0 (21) Left multiplying (19) by PL gives: 
+
+PLZ = PLAxN − eRsPLH (22) As shown in (22), the unknown inductance term is elimi-nated by the temporal projection, yielding an inductance-free regression equation. For the actual resistance, where eRs = 0 , this regression is solved by the least-squares method: 
+
+ˆxN = arg min 
+
+> ξ∈R2
+
+∥PLZ − PLAξ∥22 (23) where ˆxN is the estimated flux vector at the current window endpoint and ξ is a candidate flux vector. Define the Gram matrix G and the data direction vector Y by: 
+
+G = ATPLA, Y = ATPLZ (24) From (22) and (24), the normal equation of (23) and its minimum norm solution are as follows: 
+
+G ˆxN = Y , ˆxN = G†Y (25) where (·)† denotes the Moore-Penrose pseudoinverse. Therefore, the temporal projection constructs an inductance-free regression model and provides an explicit solution for the estimated flux vector. The rotor position can then be obtained from the direction of this estimated flux vector. 
+
+D. Flux Direction Reconstruction and Angle Extraction 
+
+For matched resistance, (22) and (24) give Y = Gx N . The rotational excitation factor χ is defined as: 
+
+χ = 12 tr( ATA) (26) Under the operating conditions analyzed later, the projected data vector is aligned with the endpoint rotor flux direction: 
+
+Gx N = χxN , Y = χψ f
+
+cos θ(tN )sin θ(tN )
+
+
+
+(27) These conditions include equally spaced intervals, locally constant speed, zero d-axis current, constant q-axis current, and nonzero rotational excitation; the proof is given in Sec-tion IV. Thus, the components of Y contain the desired position and share the same positive amplitude χψ f .Let Yα and Yβ denote the stationary-axis components of 
+
+Y = [ Yα, Y β ]T. The rotor position estimate at the window endpoint is: 
+
+ˆθ(tN ) = tan −1
+
+ Yβ
+
+Yα
+
+
+
+(28) JOURNAL OF L ATEX CLASS FILES 4PI  
+
+> PI
+> Temporal Regression-Based
+> Model-Free Sensorless Control
+> SVPWM Inverter
+> Speed
+> Estimation
+> PI
+> Time
+> PMSM
+> Fig. 1. Block diagram of the proposed TFC method for sensorless control.
+
+where ˆθ(tN ) is the estimated rotor position at the window endpoint. The unknown flux linkage cancels as a common amplitude; it is not needed to normalize the vector. Under re-sistance mismatch, Section IV-D establishes the corresponding positive amplitude condition. To obtain an explicit expression for Y , substitute the projection matrix in (20) into its definition in (24). Distributing the matrix products gives: 
+
+Y = AT
+
+
+
+I2N − DD T
+
+DTD
+
+
+
+Z
+
+= ATZ − ATDD TZDTD .
+
+(29) Since DTD is a nonzero scalar, associativity allows the nu-merator of the second term to be evaluated as (ATD)( DTZ),where ATD is a two-dimensional vector and DTZ is a scalar. The vector can be evaluated without explicitly storing the 
+
+2N × 2N projection matrix: 
+
+Y = ATZ − (ATD)( DTZ)
+
+DTD (30) Each update integrates new data, advances the window, forms relative rotation matrices, and evaluates (28) and (30), from which the estimated rotor position at the window end-point is obtained. Fig. 1 shows the block diagram of the method. The implementation is summarized in Algorithm 1. IV. T HEORETICAL ANALYSIS AND PARAMETER 
+
+INDEPENDENCE 
+
+This section theoretically analyzes the proposed TFC method. It reveals how the rotor flux direction is preserved af-ter the temporal projection and the associated matrix mapping, and how the proposed method avoids the need for resistance and flux linkage information. 
+
+A. Properties of the Temporal Rotation Matrix 
+
+Consider equally spaced interval boundaries with interval duration ∆t = tj − tj−1 > 0. Under constant electrical speed, define the electrical angle increment over each interval as δ =
+
+ω∆t. The relative angles satisfy φj −φj−1 = δ, and expansion of (16) gives: 
+
+AT 
+
+> j
+
+Aj = 2 I2 − C(δ) − C(−δ)= 2(1 − cos δ)I2
+
+= 4 sin 2(δ/ 2) I2 (31) 
+
+Algorithm 1 Proposed Model-Free Sensorless Control  
+
+> 1:
+
+Control input: window size N , interval duration ∆t 
+
+> 2:
+
+Optional: algorithmic resistance ˆRs (default: 0) 
+
+> 3:
+
+Output: position estimate ˆθ(tN ) 
+
+> 4:
+
+repeat  
+
+> 5:
+
+Measure stator voltage u and current i. 
+
+> 6:
+
+Update the window of N consecutive intervals.  
+
+> 7:
+
+Compute zj and dj by (13) and (14).  
+
+> 8:
+
+Compute φj by (11) using ˆω. 
+
+> 9:
+
+Form Aj by (16).  
+
+> 10:
+
+Stack Z, D, and A by (18).  
+
+> 11:
+
+Compute the direction vector Y by (30).  
+
+> 12:
+
+Recover ˆθ(tN ) from Y by (28).  
+
+> 13:
+
+Estimate speed ˆω from ˆθ(tN ). 
+
+> 14:
+
+until the motor is stopped Therefore, 
+
+ATA = χI2, χ = 4 N sin 2
+
+ ω∆t
+
+2
+
+
+
+(32) The two columns of A are orthogonal and have equal squared norm χ. This isotropic Gram matrix allows temporal projection to be related to a spatial direction. When χ > 0, the time window contains nonzero flux rotation information, which can be further used for position direction recovery. Moreover, for fixed N and ∆t, the direction signal weakens as the speed decreases. 
+
+B. Geometry of Current Increments 
+
+Assume id = 0 and a constant nonzero q-axis current iq
+
+throughout the window. By (6), (10), and the commutation of 
+
+J and C, we have: 
+
+i(tj ) = C(φj )q, q = iq
+
+ψf
+
+Jx N (33) where q ∈ R2 is the current vector expressed at the window endpoint. In particular, q = i(tN ), qTxN = 0 , and qTq = i2 
+
+> q
+
+.The vector is parallel to the endpoint q-axis, with its orienta-tion determined by the sign of iq .Taking adjacent differences yields: 
+
+dj = Aj q, D = Aq (34) Combining (34) with (32) gives: 
+
+ATD = χq, DTD = χqTq = χi 2 
+
+> q
+
+(35) JOURNAL OF L ATEX CLASS FILES 5
+
+Equation (35) establishes an important geometric relation between the temporally extended current data D and the flux direction at the window endpoint. 
+
+C. Preservation of the Rotor Flux Direction 
+
+Substituting (20) into the definition of G gives: 
+
+G = ATA − (ATD)( ATD)T
+
+DTD (36) For χ > 0 and iq̸ = 0 , substituting (32) and (35) into (36) reduces it to: 
+
+G = χ
+
+
+
+I2 − qq T
+
+qTq
+
+
+
+(37) Since q is orthogonal to xN , it follows from the two-dimensional orthogonal basis identity that: 
+
+I2 − qq T
+
+qTq = xN xT
+
+> N
+
+∥xN ∥22
+
+(38) The projected Gram matrix therefore has the explicit form: 
+
+G = χ xN xT
+
+> N
+
+∥xN ∥22
+
+, Gx N = χxN (39) The analysis above constitutes the proof of (27). Temporal projection retains the rotor d-axis component: G has eigen-value χ along xN and zero along Jx N . Although this rank-one matrix has no conventional inverse, the physical flux lies in its retained subspace. Its pseudoinverse is: 
+
+G† = 1
+
+χ
+
+xN xT
+
+> N
+
+∥xN ∥22
+
+(40) For matched resistance, Y = χxN , and hence G†Y = xN .The minimum-norm least-squares solution therefore coincides with the physical flux under the stated geometry. Since χ > 0,
+
+Y = χxN directly establishes the correct orientation in (28). Preserving the flux subspace is sufficient; full column rank of the projected regression is unnecessary. 
+
+D. Resistance and Flux Independence 
+
+Consider a constant resistance mismatch eRs over a window with id = 0 , constant iq̸ = 0 , and constant ω̸ = 0 . Combining (6) and (7), we have: 
+
+i = iq
+
+ψf ω ˙x (41) Integrating (41) and using (16) yields: 
+
+hj = iq
+
+ψf ω Aj xN , H = iq
+
+ψf ω AxN (42) Substitution of (42) into (22) and (24) yields: 
+
+Y = Gx N − eRsATPLH
+
+= 1 − eRsiq
+
+ψf ω
+
+!
+
+Gx N = χκ RxN (43) where the resistance scaling factor is: 
+
+κR = 1 − eRsiq
+
+ψf ω (44) 
+
+> Fig. 2. Experimental verification platform.
+
+Define the common amplitude Ψ = χκ Rψf . The direction-vector components are then: 
+
+Yα = Ψ cos ˆθ(tN ), Yβ = Ψ sin ˆθ(tN ) (45) Both the flux linkage and the resistance mismatch enter through Ψ. Whenever χ > 0, ψf > 0, and κR > 0, this amplitude is positive and cancels in the ratio Yβ /Y α:
+
+ˆθ(tN ) = tan −1  Ψ sin ˆθ(tN )
+
+ Ψ cos ˆθ(tN )
+
+!
+
+(46) From (46), the resistance mismatch rescales the flux term without changing its direction. A fully parameter-independent realization follows by choosing ˆRs = 0 . In this case, we have: 
+
+zj =
+
+Z tj
+
+> tj−1
+
+u(τ ) d τ, κR = 1 + Rsiq
+
+ψf ω ,
+
+Y = χ
+
+
+
+ψf + Rsiq
+
+ω
+
+
+
+c ˆθ(tN )
+
+(47) Thus, (30) and (28) can be evaluated from voltage and current data and estimated relative rotations without specifying 
+
+Rs, Ls, or ψf . The actual resistance and flux linkage remain physical determinants of the signal amplitude, but their values are absent from the angle computation. In summary, the proposed TFC method does not require the motor parameters in the rotor position estimation:  
+
+> •
+
+The stator inductance Ls is removed by temporal projec-tion, because its contribution lies in the subspace spanned by the measured current increment vector.  
+
+> •
+
+The stator resistance Rs is not used as an input parameter. With ˆRs = 0 , its effect only appears as a scalar factor in the direction vector.  
+
+> •
+
+The flux linkage ψf is also included in the same scalar factor and is therefore canceled when the rotor position is obtained from the direction of Y .As shown in Algorithm 1, the choice of the resistance ˆRs
+
+is optional; when it is set to a nonzero value, it should not be chosen too large, so that κR > 0 is preserved in (44). V. E XPERIMENTAL RESULTS AND ANALYSIS 
+
+A. Experimental Setup 
+
+The proposed TFC method is evaluated on the SPMSM platform shown in Fig. 2. Two mechanically coupled PMSMs JOURNAL OF L ATEX CLASS FILES 6  
+
+> (a) Method 1 (b) Method 2 (c) Proposed TFC
+
+Fig. 3. Experimental results of different methods at 1000 rpm under a sudden full load transient.                
+
+> (a) Rs→0.5Rs(b) Rs→1.5Rs(c) Ls→0.5Ls(d) Ls→1.5Ls
+
+Fig. 4. Experimental results of the Method 1 under resistance and inductance variations at 1000 rpm and full load.                
+
+> (a) Rs→0.5Rs(b) Rs→1.5Rs(c) Ls→0.5Ls(d) Ls→1.5Ls
+
+Fig. 5. Experimental results of the Method 2 under resistance and inductance variations at 1000 rpm and full load. TABLE I PARAMETERS OF THE SPMSM S YSTEM 
+
+Description Parameter Value Rated power Pr 1 kW Rated torque Tr 4 N · mNumber of pole pairs Np 4DC voltage Udc 300 V Sampling time Ts 100 μsStator resistance Rs 1.38 Ω
+
+Stator inductance Ls 3.21 mH Rotor flux linkage ψs 0.148 Wb Window size N 30 Interval duration ∆t 2Ts
+
+Algorithmic resistance ˆRs 0
+
+form the drive-load arrangement, with control implemented on a dSPACE DS1202 system connected to a power driver and a host computer. The speed controller is updated at 2 kHz, while the current controller operates at 10 kHz. Table I summarizes the motor and control parameters, including the window size 
+
+N and interval duration ∆t used by the proposed TFC method. Two approaches are selected as benchmarks: Method 1 is a model-free controller in [15], and Method 2 is the SMO-based method in [22]. 
+
+TABLE II RMSE OF ESTIMATION ERRORS UNDER DIFFERENT PARAMETER 
+
+MISMATCH CONDITIONS AT 1000 RPM . U NIT : RAD 
+
+0.5 Rs 1.5 Rs 0.5 Ls 1.5 Ls
+
+Method 1 0.65 0.05 0.03 0.60 Method 2 0.19 0.24 0.16 0.28 0.5 Rs Rs 1.5 Rs 2Rs
+
+Proposed TFC 0.15 0.15 0.15 0.15 
+
+B. Performance under Load Transition 
+
+Fig. 3 compares the load-transition performance of the three methods at 1000 rpm. Before loading, the proposed TFC maintains a position error of about −0.02 rad, which is smaller than those of Method 1 and Method 2, at approximately −0.19 
+
+rad and 0.25 rad, respectively. After the rated load is suddenly applied, all three methods remain stable. The proposed method settles to about −0.15 rad, whereas Method 1 and Method 2 exhibit steady-state errors of approximately −0.23 rad and 
+
+0.21 rad, respectively. In addition, Method 1 and Method 2 exhibit more pronounced error oscillations, whereas the proposed TFC method provides smoother position estimation. 
+
+C. Performance under Parameter Variations 
+
+To evaluate the parameter sensitivity, step variations of the resistance and inductance are introduced at 1000 rpm under JOURNAL OF L ATEX CLASS FILES 7                                             
+
+> (a) 0→0.5Rs(b) 0→Rs(c) 0→1.5Rs(d) 0→2Rs
+> Fig. 6. Experimental results of the proposed TFC method under resistance variations at 1000 rpm and full load.
+> (a) Rs→0.5Rs(b) Rs→1.5Rs(c) Ls→0.5Ls(d) Ls→1.5Ls
+> Fig. 7. Experimental results of the Method 1 under resistance and inductance variations at 200 rpm and full load.
+> (a) Rs→0.5Rs(b) Rs→1.5Rs(c) Ls→0.5Ls(d) Ls→1.5Ls
+> Fig. 8. Experimental results of the Method 2 under resistance and inductance variations at 200 rpm and full load.
+
+full load. As shown in Fig. 4, Method 1 exhibits significant sensitivity to both parameters. Under 0.5Rs, the position error changes from about −0.22 rad to −0.65 rad, while 1.5Ls
+
+results in an error of about −0.60 rad. As shown in Fig. 5, Method 2 is less sensitive to parameter variations, with only small shifts in the position error under resistance and inductance changes. As shown in Fig. 6, although the proposed TFC method does not require motor parameters, the resistance is optional and can be selected. Therefore, ˆRs is varied from zero to 0.5Rs, Rs, 1.5Rs, and 2Rs. The position error remains around −0.15 rad in all cases, with only slight transient fluctuations. Overall, the proposed TFC method exhibits the strongest robustness against parameter variations. Table II summarizes the root mean square error (RMSE) of the position estimate for the three methods under parameter mismatch. 
+
+D. Performance under Low-Speed Operation 
+
+To evaluate low-speed parameter robustness, experiments are conducted at 200 rpm under full load, with the stator resistance and inductance stepped to 0.5Rs, 1.5Rs, 0.5Ls, and 
+
+1.5Ls, as shown in Figs. 7 and 8. Method 1 exhibits smaller error shifts than at 1000 rpm, with errors of approximately 
+
+−0.52 rad at 0.5Rs and −0.40 rad at 1.5Ls. Method 2 is particularly sensitive to inductance reduction, with error oscillations reaching approximately ±1.0 rad at 0.5Ls.Different parameter variations are applied to the proposed TFC method in Fig. 9, where the resistance ˆRs is tested using both positive and negative values. According to (44), κR
+
+should remain positive, and a negative ˆRs can increase κR and improve low-speed observability. Variations in ˆRs have little effect on the mean error but change the error oscillation. 
+
+E. Performance under Regression Parameter Variations 
+
+To investigate the influence of the regression parameters, the window size N and interval duration ∆t are varied at 1000 and 200 rpm. As shown in Fig. 10, at 1000 rpm, a small or moderate ∆t provides stable estimation, whereas the error oscillation increases as ∆t and N become large, especially for N = 40 . At 200 rpm, Fig. 11 shows that an excessively small ∆t may lead to insufficient rotational excitation, while increasing ∆t initially reduces the estimation oscillation. However, an overly large interval or window again increases the error oscillation. In practice, a smaller interval duration can be selected at medium and high speeds, whereas a larger interval duration is preferred at low speeds to preserve sufficient rotational excitation. 
+
+F. Performance under Speed Transients 
+
+To evaluate the dynamic performance over a wide speed range, the motor accelerates from 200 to 1000 rpm. As shown JOURNAL OF L ATEX CLASS FILES 8             
+
+> (a) 0→0.5Rs(b) 0→Rs(c) 0→ − 0.5Rs(d) 0→ − Rs
+
+Fig. 9. Experimental results of the proposed TFC method under resistance variations at 200 rpm and full load.         
+
+> (a) N= 20 (b) N= 30 (c) N= 40
+
+Fig. 10. Experimental result of the proposed TFC method under different window sizes and interval durations at 1000 rpm and full load.         
+
+> (a) N= 20 (b) N= 30 (c) N= 40
+
+Fig. 11. Experimental result of the proposed TFC method under different window sizes and interval durations at 200 rpm and full load. 
+
+Fig. 12. Experimental results during acceleration from 200 rpm to 1000 rpm. 
+
+in Fig. 12, the proposed TFC method maintains continuous position estimation throughout the acceleration process with-out loss of synchronization. The speed fluctuation is about 10 rpm at 200 rpm and decreases to approximately 1 rpm at 1000 rpm, while the position error remains bounded during the entire transition. Overall, the experimental results show that the proposed TFC method achieves model-free sensorless control with few tuning parameters, strong robustness, and reliable operation over a wide-speed range through purely data-driven estimation. VI. C ONCLUSION 
+
+This paper proposes a temporal regression-based model-free sensorless control method for SPMSM. By constructing a finite window regression from measured voltage and current data, the inductance term is eliminated, while the effects of resistance and flux linkage are canceled during position extraction. Thus, position estimation is achieved without re-quiring resistance, inductance, or flux linkage. Experimental results demonstrate strong robustness against load and pa-rameter variations, reliable low-speed operation, and stable performance from 200 to 1000 rpm. The effects of window size and interval duration are also investigated to provide practical tuning guidelines. In summary, the proposed TFC offers a purely data-driven sensorless solution with few tuning parameters and reliable wide-speed range operation. REFERENCES [1] G. Wang, M. Valla, and J. Solsona, “Position sensorless permanent magnet synchronous machine drives—a review,” IEEE Transactions on Industrial Electronics , vol. 67, no. 7, pp. 5830–5842, 2020. [2] F. Xiang, K. Yu, C. Chen, and S. Li, “Sensorless control of pmsm drives using octant newton–raphson method and reduced-order ekf considering speed reversal and noise,” IEEE Transactions on Power Electronics ,vol. 40, no. 8, pp. 10 793–10 803, 2025. [3] Y. Wang, Z. Li, J. Qiu, S. Zhou, H. Li, and Z. Zhang, “Robust encoderless control for pmsm drives via a revised unscented kalman filter,” IEEE Transactions on Industrial Electronics , vol. 73, no. 2, pp. 1837–1848, 2026. JOURNAL OF L ATEX CLASS FILES 9
+
+[4] D. Wang and X. Liu, “Sensorless control of pmsm with improved adaptive super-twisting sliding mode observer and ist-qsg,” IEEE Trans-actions on Transportation Electrification , vol. 11, no. 1, pp. 721–731, 2025. [5] C. Song, W. Hu, J. Zhang, C. Zhao, and X. Sun, “A gain-adaptive high-order terminal sliding mode observer under spmsm sensorless control,” 
+
+IEEE Transactions on Power Electronics , vol. 40, no. 5, pp. 6555–6565, 2025. [6] H. Sun, X. Zhang, X. Liu, and H. Su, “Adaptive robust sensorless control for pmsm based on improved back emf observer and extended state observer,” IEEE Transactions on Industrial Electronics , vol. 71, no. 12, pp. 16 635–16 643, 2024. [7] P. Du, B. Wang, and D. Xu, “A bemf harmonic-extended state γδ -axes observer for pmsm sensorless control reducing structural redundancy,” 
+
+IEEE Transactions on Industrial Electronics , vol. 72, no. 5, pp. 4623– 4638, 2025. [8] Z. Yin, F. Zhou, X. Wang, Y. Shen, J. Liang, X. Su, and H. Zhao, “Nonlinear bounded error compensation for flux-based encoderless con-troller of pmsms,” IEEE Transactions on Transportation Electrification ,vol. 12, no. 4, pp. 5617–5631, 2026. [9] F. Zhou, X. Wang, Z. Yin, Y. Shen, Y. Liang, and H. Zhao, “Optimized robust observer-based encoderless control for spmsm,” IEEE Transac-tions on Industrial Electronics , vol. 72, no. 12, pp. 12 632–12 643, 2025. [10] P. Du, B. Wang, and D. Xu, “Parameter robustness sensorless synrm drives via lut-driven position error compensation for nonlinear flux observer,” IEEE Transactions on Industrial Electronics , vol. 73, no. 4, pp. 5078–5090, 2026. [11] K. Wang, G. Wang, G. Zhang, Q. Wang, B. Li, and D. Xu, “ESO-based robust hybrid flux observer with active flux error estimation for position sensorless PMa-SynRM drives,” IEEE Trans. Transport. Electrific. , vol. 11, no. 1, pp. 2049–2060, Feb. 2025. [12] H. Wang, W. Sun, T. Jin, D. Li, and R. Qu, “Parameter robustness improvement of hybrid flux observer for low-speed sensorless drive of PMSM,” IEEE Trans. Power Electron. , vol. 41, no. 4, pp. 4541–4545, Apr. 2026. [13] S. Cheng, W. Xu, J. Ge, Y. Tang, H. Xiao, Z. Chen, and I. Boldea, “Full-order terminal sliding mode observer with adaptive gain based sensorless control for linear induction machine in urban rail transit,” IEEE Trans. Power Electron. , vol. 41, no. 6, pp. 9223–9235, Jun. 2026. [14] F. Tan, L. Zhang, X. Zhu, J. Hang, and S. Ding, “New sliding mode predictive observer for variable-leakage-flux PMSM sensorless drive system,” IEEE Trans. Ind. Electron. , vol. 72, no. 11, pp. 11 130–11 140, Nov. 2025. [15] S. A. Davari, M. S. Mousavi, B. Nikmaram, F. Flores-Bahamonde, F. Wang, P. Wheeler, and J. Rodriguez, “Sensorless model-free predictive control of permanent magnet synchronous motor,” IEEE Trans. Ind. Electron. , vol. 73, no. 2, pp. 1570–1581, Feb. 2026. [16] Y. Inoue, Y. Kawaguchi, S. Morimoto, and M. Sanada, “Performance improvement of sensorless IPMSM drives in a low-speed region using online parameter identification,” IEEE Trans. Ind. Appl. , vol. 47, no. 2, pp. 798–804, Mar./Apr. 2011. [17] Y. Yao, Y. Huang, F. Peng, and J. Dong, “Position sensorless drive and online parameter estimation for surface-mounted PMSMs based on adaptive full-state feedback control,” IEEE Trans. Power Electron. ,vol. 35, no. 7, pp. 7341–7355, Jul. 2020. [18] P. Wang, Z. Q. Zhu, and D. Liang, “Virtual back-EMF injection based online parameter identification of surface-mounted PMSMs under sensorless control,” IEEE Trans. Ind. Electron. , vol. 72, no. 6, pp. 5579– 5590, Jun. 2025. [19] Y. Hu, Y. Luo, W. Hua, M. Hu, Y. Wang, and W. Yu, “Robust deadbeat predictive current sensorless control scheme for permanent magnet synchronous machine considering parameter mismatch,” IEEE Trans. Power Electron. , vol. 40, no. 4, pp. 5846–5856, Apr. 2025. [20] Z. Q. Zhu, P. Wang, N. M. A. Freire, Z. Azar, and X. Wu, “A novel rotor position-offset injection-based online parameter estimation of sensorless controlled surface-mounted pmsms,” IEEE Transactions on Energy Conversion , vol. 39, no. 3, pp. 1930–1946, 2024. [21] P. Wang, Z. Q. Zhu, and D. Liang, “Virtual back-emf injection based online parameter identification of surface-mounted pmsms under sen-sorless control,” IEEE Transactions on Industrial Electronics , vol. 72, no. 6, pp. 5579–5590, 2025. [22] X. Wu, X. Hu, X. Yu, Y. Feng, T. Wu, and S. Huang, “Improved super-twisting flux sliding-mode observer for sensorless IPMSM drives with FFPS-PLL,” IEEE Trans. Transport. Electrific. , vol. 11, no. 1, pp. 1949– 1960, 2025. 
+
+Fobao Zhou (Graduate Student Member, IEEE) received the B.Eng. degree in Robot Engineering from Guangzhou University, Guangzhou, China, in 2022. He is currently pursuing the Ph.D. degree at The Hong Kong University of Science and Technol-ogy (Guangzhou), Guangzhou, China. His research interests include the integration of machine learning and control theory for the development of advanced intelligent systems. He aims to contribute to the field of engineering through innovative research and practical applications in these areas. 
+
+Yang Shen (Graduate Student Member, IEEE) re-ceived the B.S. and M.S. degrees from the North China University of Technology, Beijing, China, in 2018 and 2021, respectively. He is currently working toward the Ph.D. degree in Robotics and Autonomous Systems at the Hong Kong University of Science and Technology (HKUST), Guangzhou and Hong Kong SAR, China. He is also a full-time cross-campus PhD student in the Department of Electronic and Computer Engineering in HKUST. His research interests include the research of special motor control and linear motor drive. 
+
+Xueyan Wang received the B.S. degree in electrical engineering and automation and the M.S. degree in electrical engineering from Xi’an University of Science and Technology, Xi’an, China, in 2020 and 2023, respectively. He is currently pursuing the Ph.D. degree at The Hong Kong University of Science and Technology (Guangzhou), Guangzhou, China. His research interest covers model predictive control of permanent magnet synchronous motor drives, power electronics, and power transmission. 
+
+Zhenxiao Yin (Graduate Student Member, IEEE) received the B.Sc. degree in mechanical engineer-ing from Paderborn University (UPB), Paderborn, Germany, in 2018, and the double M.Sc. degrees in mechanical engineering, mechatronics and robotics from the Technical University of Munich (TUM), Munich, Germany, in 2021 and 2022, respectively. He received the Ph.D. degree in Robotics and Au-tonomous Systems from The Hong Kong University of Science and Technology (HKUST), Guangzhou and Hong Kong SAR, China, in 2026. He was also a full-time cross-campus PhD student in the Department of Mechanical and Aerospace Engineering in HKUST. His research interests include learning-based control and state drop com-pensator for electric machines in flying vehicles. He was the recipient of German National Scholarship from TUM. 
+
+Yujia ZHANG received the B.Eng. degree in me-chanical engineering from South China University of Technology, Guangzhou, China, in 2023, and received the M.Phil. in Robotics and Autonomous Systems at the Hong Kong University of Science and Technology (Guangzhou), Guangzhou. He is currently pursuing Ph.D. at the Hong Kong Uni-versity of Science and Technology (Guangzhou). His research interests include control of multi-phase machines, robotic joint control techniques, online neural network techniques and signal processing. If you want more information, check https://orcid.org/0009-0000-9392-1041 JOURNAL OF L ATEX CLASS FILES 10 
+
+Yuanfeng Qu received the B.Sc. degree in Automa-tion from Beijing Institute of Technology, Beijing, China, in 2023, where he was a recipient of the School Scholarship. He received the M.Sc. degree in Electronic Engineering from The Hong Kong University of Science and Technology, Hong Kong, China, in 2024. He is currently pursuing the Ph.D. degree in Robotics and Autonomous Systems at The Hong Kong University of Science and Technology (Guangzhou), Guangzhou, China. His research inter-ests include learning-based control, advanced motor control, and autonomous systems. 
+
+Hang Zhao (Member, IEEE) received the B.Eng. and M.Eng. degrees from Huazhong University of Science and Technology, Wuhan, China, and the Ph.D. degree from City University of Hong Kong, Hong Kong SAR, China, all in electrical engineering in 2015, 2017, and 2021, respectively. He is cur-rently an Assistant Professor at the Robotics and Autonomous Systems Thrust, Systems Hub, The Hong Kong University of Science and Technol-ogy (Guangzhou), Guangzhou, China, and also an Affiliate Assistant Professor at the Department of Electronic and Computer Engineering, The Hong Kong University of Science and Technology, Hong Kong SAR, China. He was a Research Fellow at The University of Hong Kong, Hong Kong SAR, China, in 2021. His research interests include electric machines and drives, applications of motor drives in robots, and electrified transportation.

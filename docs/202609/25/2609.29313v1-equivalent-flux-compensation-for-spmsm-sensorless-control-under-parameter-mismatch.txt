@@ -1,0 +1,1356 @@
+Title: Equivalent Flux Compensation for SPMSM Sensorless Control under Parameter Mismatch
+
+URL Source: https://arxiv.org/pdf/2609.29313v1
+
+Published Time: Fri, 25 Sep 2026 00:53:09 GMT
+
+Number of Pages: 13
+
+Markdown Content:
+> JOURNAL OF L ATEX CLASS FILES 1
+
+# Equivalent Flux Compensation for SPMSM Sensorless Control under Parameter Mismatch 
+
+Fobao Zhou, Student Member, IEEE , Jiaqiao Liang, Zhenxiao Yin, Student Member, IEEE ,Xueyan Wang, Yang Shen, Student Member, IEEE , Zhongyu Shi, and Hang Zhao ∗ ˙ID , Member, IEEE 
+
+Abstract —Parameter mismatch is the main source of ro-tor position estimation error in sensorless control of surface-permanent magnet synchronous motors (SPMSMs). To this end, this paper proposes a simple yet efficient equivalent flux com-pensation (EFC) method that directly estimates the equivalent flux disturbance caused by parameter mismatches in real time. First, the equivalent flux disturbance caused by parameter mismatches is derived from a nonlinear flux observer. Second, a flux update law is proposed to minimize both magnitude and directional errors by leveraging geometric error together with the derived equivalent flux disturbance. To enhance numerical stability, a saturation function is introduced to improve gradient continuity in the update process. Additionally, Lyapunov analysis is employed to ensure the stability of the proposed update law, from which the corresponding error bounds and convergence properties are derived. Finally, experimental results validate that the proposed method fully compensates for the steady-state effects of resistance and flux mismatches, and partially mitigates the influence of inductance variation, effectively constraining the position estimation error within a relatively small range. 
+
+Index Terms —permanent magnet synchronous motor (PMSM), sensorless control, nonlinear flux observer, parameter mismatch. 
+
+I. I NTRODUCTION 
+
+# PERMANENT Magnet Synchronous Motors (PMSMs) are widely used in electric vehicles, industrial production, and renewable energy systems due to their high efficiency, high power density, and excellent dynamic performance [1]. Accu-rate rotor position information is crucial for high-performance vector control. However, mechanical sensors like encoders and resolvers increase cost and size while reducing reliability in harsh environments. Therefore, sensorless control has become a key research focus for PMSMs, offering clear advantages in cost, reliability, and environmental robustness [2]. In recent years, various technical approaches have been de-veloped in the field of sensorless control for PMSMs, primarily 
+
+This work is supported by the National Natural Science Foundation of China (No. 52407066), Guangdong Basic and Applied Basic Research Foundation (No. 2024A1515010882) and Guangzhou Municipal Education Bureau 2024 Yangcheng Scholar Project (No. 2024312044). Fobao Zhou, Zhenxiao Yin, Xueyan Wang, Yang Shen and Hang Zhao are with the Robotics and Autonomous Systems Thrust at The Hong Kong Uni-versity of Science and Technology (Guangzhou), Guangzhou 511453,China. Jiaqiao Liang is with Shien-Ming Wu School of Intelligent Engineering at South China University of Technology, Guangzhou 511442, China. Zhongyu Shi is with the Department of Engineering Science, University of Oxford, Oxford OX1 2JD, U.K. Hang Zhao is the corresponding author (hangzhao@hkust-gz.edu.cn). 
+
+including back electromotive force (back-EMF) methods [3]– [5], model reference adaptive systems (MRAS) [6], [7], ex-tended Kalman filters (EKFs) [8], [9], sliding mode observers (SMOs) [10], [11], and nonlinear flux observers [12]–[16]. Among these, nonlinear flux observers are widely used in practical applications owing to their simple structure and fast dynamic response. However, the practical implementation of the aforemen-tioned sensorless control methods commonly faces a funda-mental challenge: parameter mismatch [17]–[19]. The perfor-mance of various observers strongly relies on the accuracy of motor parameters, particularly the stator resistance [20], inductance [21], and flux [22]. In real-world operation, fac-tors such as temperature rise, magnetic saturation, and aging effects cause continuous drift in motor parameters, resulting in inherent deviations between controller nominal values and actual parameters [23], [24]. These deviations directly lead to observation errors, which in turn cause inaccuracies in rotor position estimation and may even induce system instability. Consequently, parameter mismatch has become a critical bot-tleneck restricting further improvements in sensorless control performance, and is one of the primary sources of rotor position estimation error [25], [26]. To address the issue of parameter mismatch in sensorless control, existing approaches can be broadly classified into two categories: parameter identification methods and robust observer methods. Parameter identification methods aim to mitigate the impact of parameter mismatch on the system through online parameter estimation and dynamic compensa-tion [27]. In [28], a sensorless control strategy incorporating an auxiliary filtering system and a gain matrix based on an adaptive interconnected observer was proposed. This method enables simultaneous estimation of rotor speed, rotor position, load torque, stator inductance, and resistance. In [29], a fault-tolerant sensorless strategy based on a second-order extended state observer (ESO) and a dual-MRAS observer was pro-posed. This approach enables the estimation of stator resis-tance, inductance, and flux using only a single current sensor, thereby enhancing system reliability. Although these methods are effective, they have practical limitations. Simultaneous identification of multiple parameters can significantly increase computational complexity, while strong coupling between identification and state estimation, as well as convergence issues, poses significant challenges [28]. Another approach, namely robust observer techniques, en-hances system robustness by incorporating adaptive laws or arXiv:2609.29313v1 [eess.SY] 24 Sep 2026 JOURNAL OF L ATEX CLASS FILES 2
+
+robust control structures, thereby reducing sensitivity to pa-rameter variations [18], [30]. In [31], a robust sensorless control method that integrates an ESO with a hybrid flux observer was proposed to mitigate the adverse impact of inductance and flux errors on position estimation accuracy. Similarly, in [32], an approach based on an extended SMO and a back-EMF compensator is introduced, which effectively suppresses the negative effects of stator resistance and flux variations, thereby significantly improving the robustness of the overall control scheme. Furthermore, an improved linear active disturbance rejection control (ILADRC) strategy is proposed in [33], utilizing an adaptive harmonic filtering ESO to simultaneously mitigate the effects of parameter mismatch and harmonic disturbances on back-EMF estimation. However, the aforementioned robust observer typically require an in-crease in the observer’s order or the introduction of additional nonlinear terms, which inevitably lead to higher parameter tuning complexity and potential chattering issues [31]–[33]. Overall, existing parameter identification and robust ob-server methods are limited by computational complexity, pa-rameter coupling, structural design, and real-time performance. Thus, there is an urgent need for a controller with a simple structure, efficient computation, decoupled parameters, and superior real-time performance. To address the aforementioned issues, this paper integrates concepts from parameter identi-fication and robust observers to propose a sensorless control method based on a nonlinear flux observer that incorporates equivalent flux compensation (EFC). Specifically, an error dynamics model is established to clarify how resistance, induc-tance, and flux mismatches influence state estimation. On this basis, the combined effects of parameter deviations are mapped into the flux domain, where the resulting offset components are absorbed into an equivalent flux variable. A concise and computationally efficient update law is proposed to adaptively eliminate these bias terms. Robustness is therefore achieved through flux compensation rather than high-gain disturbance rejection or multi-parameter identification. In summary, the main contributions of this article are as follows: 1) An equivalent flux update law is proposed to address parameter mismatch in nonlinear flux observers. The multi-parameter mismatch problem involving resistance, inductance, and flux is transformed into an adaptive flux compensation problem, leading to a structurally simple and decoupled implementation. 2) Without introducing complex nonlinear or high-order robust structures, the proposed scheme achieves com-plete steady-state compensation for resistance and flux mismatches, and partially mitigates the influence of in-ductance variations, thereby enhancing robustness under wide parameter and load variations. 3) A detailed analysis of the effects of parameter mismatch on the error dynamics and stability of flux observers is conducted, providing a theoretical foundation for evalu-ating system performance under mismatch conditions. II. P RELIMINARIES 
+
+This section briefly outlines the mathematical model of the SPMSM and the structure of the nonlinear observer. 
+
+A. Mathematical Model of SPMSM 
+
+The SPMSM is modeled in α−β frame as follow: 
+
+Ls ˙iαβ = −Rsiαβ + vαβ − eαβ (1) where Ls and Rs denote the actual inductance and stator resistance, respectively; iαβ = [ iα, i β ]⊤ and vαβ = [ vα, v β ]⊤
+
+are the current and voltage measured in the α–β reference frame. The back-EMF eαβ has the following form: 
+
+eαβ = ωψ m
+
+− sin θ
+
+cos θ
+
+
+
+(2) where ω, ψm, and θ are the electrical angular velocity, actual permanent magnet flux linkage, and electrical rotor position, respectively. The primary goal of sensorless control is to estimate the rotor speed ω and position θ.
+
+B. Nonlinear Flux Observer 
+
+This section briefly reviews the fundamental design of the nonlinear flux observer. First, an extended stator flux vector x
+
+and its time derivative ˙x are defined based on (1) and (2): 
+
+x = Lsiαβ + ψm
+
+cos θ
+
+sin θ
+
+
+
+, ˙x = −Rsiαβ + vαβ = y (3) By defining an auxiliary flux vector η(x) = x − Lsiαβ ,the geometric constraint is naturally satisfied ∥η(x)∥2 = ψ2
+
+> m
+
+.Based on this inherent property, the nonlinear observer is constructed as follows: 
+
+˙ˆx = y + ϕη (ˆ x)  ψ2 
+
+> m
+
+− ∥ η(ˆ x)∥2 (4) where ˆx ∈ R2 denotes the estimated state, η(ˆ x) = ˆ x − Lsiαβ ,and ϕ > 0 is the observer gain. Finally, based on the geometric relationship in (3), the estimated position ˆθ is obtained directly as follows: 
+
+ˆθ = tan −1
+
+ ˆx2 − Lsiβ
+
+ˆx1 − Lsiα
+
+
+
+(5) Furthermore, the error dynamics of the flux observer are considered for the case without parameter mismatches. Defin-ing the observation error as ˜x = x − ˆx, its derivative follows as ˙˜x = ˙ x − ˙ˆx, leading to the following error dynamics: 
+
+˙˜x = −ϕη (ˆ x)( ψ2 
+
+> m
+
+− ∥ η(ˆ x)∥2) (6) According to (3) and η(ˆ x) = x − Lsiαβ − ˜x, we have: 
+
+∥η(ˆ x)∥2 = ψ2 
+
+> m
+
+− 2ψm(˜ x1 cos θ + ˜ x2 sin θ) + ∥˜x∥2 (7) Substituting (7) into (6) yields: 
+
+˙˜x = ϕξ 1(˜ x)
+
+
+
+˜x − ψm
+
+cos θ
+
+sin θ
+
+ 
+
+(8) where ξ1(˜ x) = 2 ψm(˜ x1 cos θ + ˜ x2 sin θ) − ∥ ˜x∥2.The error dynamics of the nonlinear flux observer under accurate parameters are described by (6)-(8). Based on (5), the rotor position can then be estimated. However, many studies and experiments have shown that parameter mismatches, such as errors in resistance, inductance, or flux, can significantly degrade estimation accuracy. Therefore, the central objective of this paper is to address the impact of parameter mismatches on position estimation. JOURNAL OF L ATEX CLASS FILES 3
+
+III. E RROR DYNAMICS WITH PARAMETER MISMATCH 
+
+This section analyzes the error dynamics of the nonlinear flux observer under parameter mismatches and discusses a potential compensation strategy. 
+
+A. Nonlinear Flux Observer of Parameter Mismatch 
+
+The parameter deviations are defined as ∆Rs = Rs − Rz ,
+
+∆Ls = Ls − Lz , and ∆ψm = ψm − ψz , where the subscript 
+
+(·)z denotes the nominal values in the motor, and the others represent the actual motor parameters. The flux observer under parameter mismatches is given as follows: 
+
+
+
+˙x∗ = −Rz iαβ + vαβ = y∗
+
+∥η(ˆ x∗)∥2 = ∥ˆx∗ − Lz iαβ ∥2 = ψ2
+
+> z
+
+˙ˆx∗ = y∗ + ϕ(ˆ x∗ − Lz iαβ )
+
+
+
+ψ2 
+
+> z
+
+− ∥ η(ˆ x∗)∥2
+
+ˆθ∗ = tan −1 ((ˆ x∗ 
+
+> 2
+
+− Lz iβ )/(ˆ x∗ 
+
+> 1
+
+− Lz iα)) 
+
+(9) where ˙x∗, y∗, ˆx∗, and η(ˆ x∗) are the observer states under parameter mismatches, and ˆθ∗ is the estimated position under these mismatches. With the definitions ˜x∗ = x − ˆx∗, ˙˜x∗ = ˙ x − ˙ˆx∗, ˜θ = θ − ˆθ
+
+and ˜θ∗ = θ − ˆθ∗, the following relation is obtained: 
+
+˙˜x∗ = −∆Rsiαβ − ϕ(ˆ x∗ − Lz iαβ )( ψ2 
+
+> z
+
+− ∥ η(ˆ x∗)∥2) (10) 
+
+B. Lemma 
+
+To facilitate the subsequent analysis, the following lemmas are presented in advance for clarification. 
+
+Lemma 1. For ∀ a ∈ R, the following holds: 
+
+| tanh( a)| ≥ |a|
+
+1 + |a| (11) 
+
+Proof. The proof of Lemma 1 is provided in Appendix A. 
+
+Lemma 2. Under the Park transformation, define id =
+
+iα cos θ +iβ sin θ and ˆi∗ 
+
+> d
+
+= iα cos ˆθ∗ +iβ sin ˆθ∗. The following relationship holds: 
+
+
+
+Q1 = ˜ x⊤ [cos θ; sin θ] = ψm(1 − cos ˜θ)
+
+Q∗ 
+
+> 1
+
+= ˜ x∗⊤ [cos θ; sin θ] = ∆ Lsid + ψm − ψz cos ˜θ∗
+
+Q∗ 
+
+> 2
+
+= ˜ x∗⊤ iαβ = ∆ Ls∥iαβ ∥2 + ψmid − ψzˆi∗
+
+> d
+
+(12) 
+
+Proof. The proof of Lemma 2 is provided in Appendix B. 
+
+C. Error Dynamics of Parameter Mismatch 
+
+The expression η(ˆ x∗) is considered, which yields: 
+
+η(ˆ x∗) = ˆ x∗ − Lz iαβ = ∆ Lsiαβ + ψm
+
+cos θ
+
+sin θ
+
+
+
+− ˜x∗ (13) From (12) and (13), we have: 
+
+∥η(ˆ x∗)∥2 = ψ2 
+
+> m
+
++ ∥˜x∗∥2 − 2ψmQ∗
+
+> 1
+
+− ∆L2
+
+> s
+
+∥iαβ ∥2 + 2∆ Lsψzˆi∗
+
+> d
+
+(14) Substituting (14) into (10) yields: 
+
+˙˜x∗ =ϕ
+
+
+
+˜x∗ − ψm
+
+cos θ
+
+sin θ
+
+
+
+− ∆Lsiαβ 
+
+
+
+(ξ∗ 
+
+> 1
+
++ ξ∗ 
+
+> 2
+
+) − ∆Rsiαβ 
+
+(15) where 
+
+ξ∗ 
+
+> 1
+
+= 2 ψmQ∗ 
+
+> 1
+
+− ∥ ˜x∗∥2 (16) 
+
+ξ∗ 
+
+> 2
+
+= ψ2 
+
+> z
+
+− ψ2 
+
+> m
+
++ ∆ L2
+
+> s
+
+∥iαβ ∥2 − 2∆ Lsψzˆi∗ 
+
+> d
+
+(17) Expanding (15) leads to the following expression: 
+
+˙˜x∗ = ϕξ ∗
+
+> 1
+
+
+
+˜x∗ − ψm
+
+cos θ
+
+sin θ
+
+ 
+
++ ϕξ ∗
+
+> 2
+
+
+
+˜x∗ − ψm
+
+cos θ
+
+sin θ
+
+ 
+
+− ϕ (ξ∗ 
+
+> 1
+
++ ξ∗ 
+
+> 2
+
+) ∆ Lsiαβ − ∆Rsiαβ 
+
+(18) Obviously, by comparing (8) and (18), it can be seen that parameter mismatches introduce additional observation error 
+
+∆ ˙ ˜x∗ in the flux observer: 
+
+∆ ˙ ˜x∗ =ϕξ ∗
+
+> 2
+
+
+
+˜x∗ − ψm
+
+cos θ
+
+sin θ
+
+ 
+
+− ϕ (ξ∗ 
+
+> 1
+
++ ξ∗ 
+
+> 2
+
+) ∆ Lsiαβ − ∆Rsiαβ 
+
+(19) The impact of parameter mismatches, including resistance, inductance, and flux deviations, on the observer state variables is presented in (18) and (19). Two key characteristics of parameter mismatches in the flux observer can be identified:  
+
+> •
+
+The influence of parameter mismatches is not constant but varies with both rotor angle and current due to the underlying parameter deviations, thereby directly com-promising the accuracy of angle estimation.  
+
+> •
+
+During long-term operation in industrial applications, motor parameters inevitably change over time. These parameter variations increase oscillations and reduce the accuracy in angle estimation. Therefore, addressing the degradation of accuracy caused by parameter mismatches is crucial. 
+
+D. Compensation Strategy for Parameter Mismatch 
+
+To address the aforementioned issues, this paper proposes transferring the effects of angle estimation degradation caused by parameter inaccuracies to the flux domain and mitigating them by compensating for the equivalent flux. From (8), (18) and (19), the simplest approach is to identify an equivalent error flux ∆ψz to compensate for ∆ ˙ ˜x∗. Evi-dently, ∆ψz should satisfy the following condition: 
+
+˙˜x∗ = ϕξ ∗
+
+> 1
+
+
+
+˜x∗ −  ψm + ∆ ψz
+
+ cos θ
+
+sin θ
+
+ 
+
++ ∆ ˙ ˜x∗
+
+= ϕξ ∗
+
+> 1
+
+
+
+˜x∗ − ψm
+
+cos θ
+
+sin θ
+
+ (20) From (20), we have: 
+
+ϕξ ∗ 
+
+> 1
+
+∆ψz
+
+cos θ
+
+sin θ
+
+
+
+= ∆ ˙ ˜x∗ ⇒ ∆ψz = η⊤(x) ∆ ˙ ˜x∗
+
+ϕξ ∗ 
+
+> 1
+
+ψm
+
+(21) Thus, the corresponding equivalent flux should be: 
+
+ˆψz = ψm + ∆ ψz = η⊤(x)
+
+ ϕξ ∗ 
+
+> 1
+
+η(x) + ∆ ˙ ˜x∗
+
+ϕξ ∗ 
+
+> 1
+
+ψm
+
+
+
+(22) where ˆψz represents the equivalent flux that combines the nominal flux with the compensation for parameter mismatches. JOURNAL OF L ATEX CLASS FILES 4     
+
+> Fig. 1. Dynamic response of ∥η(x)−η(ˆ x∗)∥in the nonlinear flux observer under resistance variation at 1000 rpm and full load.
+
+Unfortunately, the exact value of (22) is unknown. However, by applying the scalar projection formula, the relationship between ˆψz and η(x) can be established, allowing (22) to be reformulated as follows: 
+
+ˆψz = ∥η(x)∥ · sp ⇒ sp > 0 (23) 
+
+sp = comp η(x)
+
+ ϕξ ∗ 
+
+> 1
+
+η(x) + ∆ ˙ ˜x∗
+
+ϕξ ∗ 
+
+> 1
+
+ψm
+
+
+
+(24) where sp = comp (·)(⋆) denotes the scalar projection of vector 
+
+(⋆) onto the direction of vector (·).From (23), the following approximate relationship can be obtained: ˆψz ∝ ∥ η(x)∥ ⇒ ˆψz ∝ ∥ η(ˆ x∗)∥ (25) In practical systems, the estimated flux ˆψz remains strictly positive, which ensures that sp is also positive and bounded. As illustrated in Fig. 1, the residual ∥η(x) − η(ˆ x∗)∥ remains relatively small, compared to fundamental harmonics, even under a ±50% step change in resistance at 1000 rpm and full load, confirming the validity of the approximation in (25). IV. E QUIVALENT FLUX UPDATE LAW 
+
+In the previous section, the relationship governing the equivalent flux was derived. In this section, a flux update law is designed based on a loss function constructed from the geometric structure, considering both the magnitude and directional errors. In the α-β reference frame, the stator flux can be expressed as a two-dimensional vector ψm,αβ , given by: 
+
+ψm,αβ =
+
+ψm,α 
+
+ψm,β 
+
+
+
+= ψm
+
+cos θ
+
+sin θ
+
+
+
+(26) where ψm =
+
+q
+
+ψ2 
+
+> m,α
+
++ ψ2 
+
+> m,β
+
+represents the magnitude, and 
+
+n = [cos θ; sin θ] denotes the unit direction vector. Thus, we have ψm,αβ = ψm · n = η(x).First, for the estimated state ˆx∗, the estimated flux direction 
+
+ˆn and the flux observation can be written as: 
+
+ˆn = η(ˆ x∗)
+
+∥η(ˆ x∗)∥ =
+
+cos ˆθ∗
+
+sin ˆθ∗
+
+
+
+, η (ˆ x∗) = ˆψz
+
+cos ˆθ∗
+
+sin ˆθ∗
+
+
+
+(27) To minimize both magnitude and direction errors, the loss function T (ˆ x∗) is designed as: 
+
+T (ˆ x∗) = 12 ˆψz ˆn − η(ˆ x∗) 2
+
+= 12 (∥η(ˆ x∗)∥ − ˆψz )2
+
+(28) Next, based on (28), the following equivalent flux update law is proposed: 
+
+˙ˆψz = −ˆsp1
+
+∂T (ˆ x∗)
+
+∂ ˆψz
+
+= ˆ sp1(∥η(ˆ x∗)∥ − ˆψz ) (29) where ˆsp1 > 0 denotes the gain of the equivalent flux update law. This formulation achieves linear asymptotic convergence by simultaneously regulating both the magnitude and direction of the flux. To further enhance the stability and convergence of the flux update law, (29) is modified into a nonlinear update form with the following saturation characteristics: 
+
+˙ˆψz = ˆ sp1 tanh 
+
+
+
+ˆsp2(∥η(ˆ x∗)∥ − ˆψz )
+
+
+
+(30) where ˆsp2 > 0 is also a gain for the equivalent flux update law. In the subsequent stability analysis, it is proven that ˆsp1
+
+and ˆsp2 accelerate the convergence of the equivalent flux. The improved nonlinear equivalent flux update law offers the following advantages:  
+
+> •
+
+First, the improved update law (30) ensures gradient continuity, improving numerical stability and avoiding saturation dead zones. This update mechanism improves the convergence and robustness of equivalent flux esti-mation.  
+
+> •
+
+Second, during startup or transient operating conditions, significant estimation errors and disturbances may occur. The linear update law (29) can lead to divergence or overshoot of ˙ψz , resulting in flux estimation errors. The 
+
+tanh( ·) function provides near-linear accuracy for small errors while limiting the update rate for large errors, effectively preventing oscillations and overshoot. The overall block diagram and the algorithmic flowchart of the proposed control strategy are presented in Fig. 2 and Algorithm 1, respectively. V. S TABILITY ANALYSIS 
+
+This section primarily employs the direct Lyapunov method to analyze the stability of the flux observer under parameter mismatches, as well as the stability and convergence of the equivalent flux update law. 
+
+A. Stability Analysis Under Nominal Parameter Conditions 
+
+Before conducting the stability analysis under parameter mismatches, it is necessary to first establish the system’s stability under the nominal parameter conditions. A Lyapunov function is constructed as: 
+
+V1 = 12 ∥˜x∥2 = 12 (˜ x21 + ˜ x22) (31) JOURNAL OF L ATEX CLASS FILES 5PI   
+
+> PI
+> Flux
+> Observer
+> SVPWM Inverter
+> Speed
+> Estimation
+> Speed
+> Loop
+> PMSM
+> Proposed EFC
+> Framework
+> Equivalent Flux Update Law
+> Fig. 2. Proposed control scheme based on equivalent flux update law.
+
+Algorithm 1 Proposed EFC Method  
+
+> 1:
+
+Motor Parameters: Lz , Rz 
+
+> 2:
+
+Control Input: ϕ, ˆsp1, ˆsp2 
+
+> 3:
+
+Output: Position ˆθ∗ 
+
+> 4:
+
+repeat  
+
+> 5:
+
+Measure currents and voltages: iαβ , vαβ  
+
+> 6:
+
+Compute variable:  
+
+> 7:
+
+y∗ = −Rz iαβ + vαβ  
+
+> 8:
+
+Calculate state:  
+
+> 9:
+
+η(ˆ x∗) = ˆ x∗ − Lz iαβ  
+
+> 10:
+
+Update flux observer:  
+
+> 11:
+
+˙ˆx∗ = y∗ + ϕ(ˆ x∗ − Lz iαβ )
+
+ ˆψ2 
+
+> z
+
+− ∥ η(ˆ x∗)∥2 
+
+> 12:
+
+Equivalent flux update law:  
+
+> 13:
+
+˙ˆψz = ˆ sp1 tanh 
+
+
+
+ˆsp2(∥η(ˆ x∗)∥ − ˆψz )
+
+ 
+
+> 14:
+
+Calculate ˆx∗ and ˆψz 
+
+> 15:
+
+Estimate ˆθ∗ 
+
+> 16:
+
+ˆθ∗ = tanh −1 ((ˆ x∗ 
+
+> 2
+
+− Lz iβ )/(ˆ x∗ 
+
+> 1
+
+− Lz iα))  
+
+> 17:
+
+until Motor stop 
+
+Theorem 1. For the SPMSM system described by (1) , (2) with the control strategy (4) and the update law (3) -(5) under the nominal parameters, the variable ˜x is uniformly bounded. The 
+
+˜x converges to a compact set Ω1, defined as follows: 
+
+Ω1 = ˜x ∈ R2 | ∥ ˜x∥ ≤ 2ψm (32) 
+
+Proof. The proof of Theorem 1 is provided in Appendix C. 
+
+B. Stability Analysis Under Parameter Mismatch 
+
+This subsection analyzes the stability of the flux observer under parameter mismatches and discusses the effects of re-sistance, inductance, and flux mismatches on system stability. A new Lyapunov function is constructed as: 
+
+V2 = 12 ∥˜x∗∥2 = 12 (˜ x∗21 + ˜ x∗22 ) (33) 
+
+Theorem 2. For the SPMSM system described by (1) and 
+
+(2) with the control strategy (9) under parameter mismatches, the stability of the flux observer is governed by parameter  
+
+> Fig. 3. Experimental platform of SPMSM.
+
+accuracy. Excessive deviations in flux, inductance, or resis-tance will violate the Lyapunov stability criteria, leading to increased steady-state errors or observer divergence. Proof. The proof of Theorem 2 is provided in Appendix D. It should be noted from the proof of Theorem 2 that param-eter mismatch does not necessarily exert a detrimental effect on observer performance. Under certain operating conditions, an appropriate increase or decrease in the nominal values of resistance and inductance can reduce the convergence error 
+
+∥˜x∗∥. This compensatory effect is intrinsically linked to the system’s operating point, specifically the load conditions, the stator current iαβ , and the sign and magnitude of the d-axis current deviation (id − ˆi∗
+
+> d
+
+).
+
+C. Stability Analysis of the Equivalent Flux Update Law 
+
+This part analyzes the stability of the equivalent flux update law. First, define the flux error variable ˜ψz = ˆψz − ∥ η(ˆ x∗)∥.A new Lyapunov function is constructed as: 
+
+V3 = 12 ˜ψ2 
+
+> z
+
+(34) 
+
+Theorem 3. For the SPMSM system described by (1) , (2) 
+
+with the control strategy (9) and equivalent flux update law 
+
+(30) under parameter mismatches, the auxiliary variable ˜ψz
+
+is uniformly bounded. The ˜ψz converges to a compact set Ω2,defined as follows: 
+
+Ω2 =
+
+
+
+˜ψz ∈ R | | ˜ψz | ≤ Ψˆsp2(ˆ sp1 − Ψ) 
+
+
+
+(35) 
+
+where Ψ = sup ∥ ˙η(ˆ x∗)∥ is bounded. Proof. The proof of Theorem 3 is provided in Appendix E. Since | ˜ψz | > 0, from (35), ˆsp1 should be chosen with a high gain to satisfy ˆsp1 − Ψ > 0. In practice, the exact value of Ψ is unnecessary, as an appropriate gain ˆsp1 can be easily obtained through simple parameter tuning. JOURNAL OF L ATEX CLASS FILES 6 
+
+> TABLE I PARAMETERS OF THE SPMSM S YSTEM
+
+Description Parameter Value Rated power Pr 1 kW External torque Te 4 N · mNumber of pole pairs Np 4 poles DC voltage Udc 300 V Nominal inductance Lz 3.21 mH Nominal stator resistance Rz 1.38 Ω
+
+Nominal flux linkage ψz 0.148 Wb Observer gain ϕ 8000 Update law gains (ˆ sp1, ˆsp2) (10,10)   
+
+> (a) (b)
+> (c) (d) Fig. 4. Experimental results under no-load, half-load, and full-load conditions at 1000 rpm. (a) Method 1. (b) Method 2. (c) Method 3. (d) Proposed EFC.
+
+VI. E XPERIMENTAL RESULTS AND ANALYSIS 
+
+To validate the proposed equivalent flux update law, a sensorless SPMSM experimental platform is built, as shown in Fig. 3. It consists of two PMSMs, a dSPACE DS1202 system, a driver module, and a host computer. The speed loop runs at 2 kHz, and both the current loop and PWM switching frequency are 10 kHz. Key SPMSM parameters are listed in Table I. 
+
+A. Experimental Setup 
+
+To evaluate the control performance under parameter un-certainties, comparative experiments are conducted by intro-ducing ±50% step variations and sinusoidal mismatches to the resistance, inductance, and flux. Three representative con-trollers are compared: Method 1, the nonlinear flux observer [12]; Method 2, an EKF-based controller [34]; and Method 3, a linear flux observer-based controller [35]. The control framework relies on three independent tuning parameters, namely one observer gain ϕ and two update law gains (ˆ sp1, ˆsp2). These gains are tuned by first optimizing the observer gain and then the update law gains. Each parameter is determined through a systematic iterative process, progressing from coarse to fine tuning, and the finalized values are summarized in Table I. For position error visualization, the 
+
+±2π phase-wrapping outliers are filtered and replaced with the preceding data to ensure clarity without affecting the analysis.        
+
+> TABLE II RMSE OF ESTIMATION ERRORS UNDER DIFFERENT PARAMETER
+> MISMATCH CONDITIONS . U NIT :RAD
+
+Method 1 Method 2 Method 3 Proposed EFC 
+
+Rz 0.215 0.174 0.17 9 0.129 0.5Rz 0.279 0.207 0.197 0.128 1.5Rz 0.157 0.145 0.163 0.130 
+
+Lz 0.215 0.174 0.179 0.129 0.5Lz 0.261 0.131 0.233 0.181 1.5Lz 0.172 0.219 0.128 0.078 
+
+ψz 0.215 0.174 0.179 0.129 0.5ψz 0.532 0.684 0.332 0.129 1.5ψz 0.222 0.096 0.023 0.130                                          
+
+> (a) (b) Fig. 5. Experimental results under resistance mismatch at 1000 rpm and full load, showing the flux ˆψzupdate in the proposed EFC. (a) Rz→0.5Rz.(b) Rz→1.5Rz.
+> (a) (b) Fig. 6. Experimental results under inductance mismatch at 1000 rpm and full load, showing the flux ˆψzupdate in the proposed EFC. (a) Lz→0.5Lz. (b)
+> Lz→1.5Lz.
+> (a) (b)
+> (c) (d) Fig. 7. Experimental results under flux mismatch at 1000 rpm and full load. (a) ψz→0.5ψz. (b) ψz→1.5ψz. (c) Update of ˆψzin proposed EFC with initial 0.5ψz. (d) Update of ˆψzin proposed EFC with initial 1.5ψz.
+
+B. Performance Under Variable Load 
+
+To evaluate the steady-state accuracy and robustness of the algorithm under different loading conditions, comparative experiments are conducted at 1000 rpm with transitions among no-load, half-load, and full-load operation. The experimental results are shown in Fig. 4. JOURNAL OF L ATEX CLASS FILES 7
+
+Under no-load and half-load conditions, Method 2 and the proposed EFC demonstrate superior accuracy, bounding the position error within ±0.11 rad. As the load increases to full-load, the proposed EFC significantly outperforms the other methods, achieving the lowest estimation error of approxi-mately −0.13 rad, compared to −0.22 rad, −0.17 rad, and 
+
+−0.18 rad for Methods 1, 2, and 3, respectively. Although es-timation errors rise with loading for all methods, the proposed EFC consistently maintains a relatively low steady-state error throughout the loading transitions, validating its robustness against load torque disturbances. 
+
+C. Performance Under Step Parameter Mismatch 
+
+To evaluate the robustness of the proposed method against parameter mismatch, comparative experiments are performed at 1000 rpm under full-load conditions, focusing on step variations in resistance, inductance, and flux. Fig. 5 shows the results under resistance mismatch. At 
+
+0.5Rz , Method 1 exhibits the largest error of approximately 
+
+−0.28 rad, while at 1.5Rz , Method 2 achieves a smaller error of about −0.15 rad. In contrast, the proposed EFC maintains the smallest error near −0.13 rad, and recovers within 20 ms in both cases, showing effective resistance mismatch compensation. The influence of inductance variation is presented in Fig. 6. For 0.5Lz , Method 1 produces the largest error, reaching approximately −0.26 rad, while Method 2 shows a smaller error. For 1.5Lz , the proposed EFC achieves the smallest error, about −0.07 rad. The proposed method reduces sensitivity to inductance variation, although the improvement is less pronounced than in the resistance case. Fig. 7 illustrates the results under flux variation, where the influence is more pronounced than that of resistance and inductance. At 0.5ψz , Method 2 produces the largest error of about −0.71 rad, while Method 3 shows a smaller deviation at 
+
+1.5ψz . In contrast, the proposed EFC converges to the same steady-state error of −0.13 rad and flux of 0.16 Wb under both conditions, although the convergence at 1.5ψz is slower. Overall, the proposed method exhibits strong robustness to resistance and flux mismatch, while also providing partial mitigation of inductance sensitivity. The root mean square errors (RMSE) calculated over a 2s steady-state period for parameter mismatch are summarized in Table II. 
+
+D. Performance Under Sinusoidal Parameter Mismatch 
+
+To further evaluate the robustness against time-varying parameter mismatches, sinusoidal variations in resistance, in-ductance, and flux are introduced at 1000 rpm under full-load conditions. The extreme estimation errors are consistent with those observed in the step mismatch tests. Fig. 8 shows the results under sinusoidal resistance variation 
+
+Rz + 0 .5Rz sin(2 πt ). Methods 1-3 exhibit periodic errors synchronized with the resistance change, whereas the proposed EFC maintains a nearly constant angle error around −0.13 rad with only small fluctuations. Fig. 9 shows the results under inductance variation Lz + 0 .5Lz sin(2 πt ). Methods 1, 3, and       
+
+> (a)
+> (b)
+> (c)
+> (d) Fig. 8. Experimental results under resistance mismatch Rz+0 .5Rzsin(2 πt )
+> at 1000 rpm and full load. (a) Method 1. (b) Method 2. (c) Method 3. (d) Proposed EFC.
+> (a)
+> (b)
+> (c)
+> (d) Fig. 9. Experimental results under inductance mismatch Lz+0 .5Lzsin(2 πt )
+> at 1000 rpm and full load. (a) Method 1. (b) Method 2. (c) Method 3. (d) Proposed EFC.
+
+the proposed EFC show periodic errors correlated with the inductance variation, while Method 2 exhibits an inverse trend. Fig. 10 illustrates the results under sinusoidal flux variation 
+
+ψz + 0 .5ψz sin(2 πt ). Methods 1-3 again produce periodic er-rors with the flux variation. In contrast, the proposed EFC con-JOURNAL OF L ATEX CLASS FILES 8
+
+(a) 
+
+(b) 
+
+(c) 
+
+(d) 
+
+(e) Fig. 10. Experimental results under flux mismatch ψz + 0 .5ψz sin(2 πt ) at 1000 rpm and full load. (a) Method 1. (b) Method 2. (c) Method 3. (d) Update of ˆψz in proposed EFC with initial 0.5ψz . (e) Update of ˆψz in proposed EFC with initial 1.5ψz .
+
+(a)  (b) 
+
+(c)  (d) Fig. 11. Experimental results under parameter mismatch at 200 rpm and full load. (a) Resistance mismatch Rz +0 .5Rz sin(2 πt ). (b) Inductance mismatch 
+
+Lz + 0 .5Lz sin(2 πt ). (c) Update of ˆψz in proposed EFC with initial 0.5ψz .(d) Update of ˆψz in proposed EFC with initial 1.5ψz .
+
+verges to the same steady-state angle error of approximately 
+
+−0.13 rad under both 0.5ψz and 1.5ψz initial conditions, although larger transient fluctuations occur for 1.5ψz .
+
+(a)  (b) 
+
+(c)  (d) Fig. 12. Experimental results under Gaussian noise N (0 , 0.5) at 1000 rpm and full load. (a) Method 1. (b) Method 2. (c) Method 3. (d) Proposed EFC. 
+
+(a)  (b) 
+
+(c)  (d) Fig. 13. Experimental results of the proposed EFC under parameter mismatch and initial value sensitivity at 1000 rpm and full load. (a) Resistance mismatch 
+
+Rz + 0 .8Rz sin(2 πt ). (b) Inductance mismatch Lz + 0 .8Lz sin(2 πt ). (c) Update of ˆψz with various initial flux. (d) Update of ˆψz under different gains. 
+
+(a)  (b) Fig. 14. Experimental results of the proposed EFC under full load. (a) Acceleration process from 200 rpm to 1000 rpm. (b) Update of ˆψz at 1000 rpm with different observer gains. 
+
+E. Performance Under Low-Speed and Noise Immunity 
+
+To validate the proposed method under low-speed condi-tions, additional experiments are conducted at 200 rpm and full load with sinusoidal variations in resistance, inductance, and flux. As shown in Fig. 11, the error trends under Rz , Lz ,and ψz mismatches are consistent with those at 1000 rpm, while all methods exhibit larger estimation errors due to the reduced back-EMF at low speed. Furthermore, Gaussian noise N (0 , 0.5) is injected into the 
+
+α-β currents at 1000 rpm and full load to evaluate noise immunity. As shown in Fig. 12, all methods keep bounded estimation errors. High-frequency fluctuations appear in the estimated position, but the steady-state bias remains stable, confirming acceptable noise immunity for all methods. Overall, Figs. 5-12 show that the proposed EFC method compensates for parameter mismatches through equivalent flux. The mismatch-induced flux distortion is effectively ab-sorbed into the equivalent flux term. JOURNAL OF L ATEX CLASS FILES 9                 
+
+> TABLE III CURRENT THD AND COMPUTATIONAL TIME OF FOUR METHODS
+> Method 1 Method 2 Method 3 Proposed EFC THD (%) 5.39 6.44 5.55 6.03
+> Time ( μs )16 .18 72 .32 15 .59 17 .01
+
+F. Analysis of Initial Sensitivity and Convergence Dynamics 
+
+To further verify the stability and robustness of the proposed EFC, experiments are conducted under larger parameter mis-matches, different initial flux, and varying observer gains. Fig. 13 presents the results at 1000 rpm and full load with larger sinusoidal variations Rz + 0 .8Rz sin(2 πt ) and Lz +0.8Lz sin(2 πt ). Under resistance mismatch, the estimation error remains around −0.13 rad. Under inductance mismatch, the error increases slightly. For initial flux values ranging from 0.2ψz to 1.8ψz , ˆψz converges to the same steady-state value, demonstrating robustness against large initial deviations. Different observer gains (ˆ sp1, ˆsp2) mainly affect the conver-gence speed. Larger gains accelerate convergence, whereas excessively large gains introduce transient oscillations. Fig. 14 shows the acceleration process from 200 rpm to 1000 rpm under full load. The estimation error remains bounded during the speed transition. Under different observer gains ϕ, the steady-state performance after full-load applica-tion remains nearly identical, further confirming the stability and robustness of the proposed method. Moreover, Table III summarizes the current total harmonic distortion (THD) of the four methods at 1000 rpm under full-load conditions, together with their computation time in DSP implementation. The proposed method exhibits a slightly higher current THD but requires shorter computation time, indicating reduced computational resource requirements. VII. D ISCUSSION 
+
+Experimental results demonstrate the high estimation accu-racy and robustness of the proposed EFC method. Neverthe-less, two aspects warrant further investigation. First, extending the method to interior PMSMs (IPMSMs) requires incorpo-rating an inductance matrix into the observer dynamics [16]. While theoretically compatible due to the adaptive mecha-nism, this extension requires experimental validation. Second, although the EFC framework eliminates resistance and flux mismatches, its decoupling capability against inductance vari-ations remains limited. Eliminating this remaining inductance sensitivity in future designs holds the potential to realize a fully model-free sensorless drive system. VIII. C ONCLUSION 
+
+To address the estimation accuracy degradation caused by parameter mismatches in sensorless control, this paper pro-poses an EFC method based on a flux observer integrated with an equivalent flux update law. Formulated within a geometric error framework, the proposed scheme dynamically updates both the amplitude and angle of the equivalent flux based on the error dynamics under parameter mismatches. Furthermore, a rigorous stability proof for the overall observer system is established by leveraging Lyapunov stability theory. These analytical insights explicitly reveal the position estimation behavior under various mismatch scenarios, which are sub-sequently validated through comparative experiments. Bench-marked against three methods, the proposed EFC strategy guarantees exceptional estimation robustness under diverse operating conditions; even under severe resistance and flux mismatches, the estimation error is effectively restored to its original baseline state, confirming its strong robustness to parameter variations. APPENDIX APROOF OF LEMMA 1
+
+Proof. By symmetry, it suffices to prove the inequality for a ≥
+
+0, where it simplifies to tanh( a) ≥ a 
+
+> 1+ a
+
+. This is equivalent to proving 1 − tanh( a) ≤ 11+ a . Using the exponential definition of tanh( a), we have: 
+
+1 − tanh( a) = 2
+
+e2a + 1 ≤ 11 + a (36) Rearranging the inequality in (36) yields: 
+
+e2a ≥ 1 + 2 a (37) which unconditionally holds according to the fundamental exponential inequality ex ≥ 1 + x, ∀x ∈ R. Equality holds if and only if a = 0 , which completes the proof. APPENDIX BPROOF OF LEMMA 2
+
+Proof. The proofs for Q1, Q∗
+
+> 1
+
+, and Q∗ 
+
+> 2
+
+are presented below, respectively: 
+
+Q1 = ( x1 − ˆx1) cos θ + ( x2 − ˆx2) sin θ
+
+= ψm(cos θ − cos ˆθ) cos θ
+
++ ψm(sin θ − sin ˆθ) sin θ
+
+= ψm(1 − cos ˜θ)
+
+(38) 
+
+Q∗ 
+
+> 1
+
+= ( x1 − ˆx∗
+
+> 1
+
+) cos θ + ( x2 − ˆx∗
+
+> 2
+
+) sin θ
+
+= (∆ Lsiα + ψm cos θ − ψz cos ˆθ∗) cos θ
+
++ (∆ Lsiβ + ψm sin θ − ψz sin ˆθ∗) sin θ
+
+= ∆ Lsid + ψm − ψz cos ˜θ∗
+
+(39) 
+
+Q∗ 
+
+> 2
+
+= ( x1 − ˆx∗
+
+> 1
+
+)iα + ( x2 − ˆx∗
+
+> 2
+
+)iβ
+
+= (∆ Lsiα + ψm cos θ − ψz cos ˆθ∗)iα
+
++ (∆ Lsiβ + ψm sin θ − ψz sin ˆθ∗)iβ
+
+= ∆ Ls∥iαβ ∥2 + ψmid − ψzˆi∗
+
+> d
+
+(40) JOURNAL OF L ATEX CLASS FILES 10 
+
+APPENDIX CPROOF OF THEOREM 1
+
+Proof. The Lyapunov function (31) for the flux observer under accurate parameters takes the following form: 
+
+˙V1 = ϕξ 1(˜ x)˜ x⊤
+
+
+
+˜x − ψm
+
+cos θ
+
+sin θ
+
+ 
+
+= ϕ  2ψmQ1 − ∥ ˜x∥2   ∥˜x∥2 − ψmQ1
+
+ (41) Equation (41) clearly describes a quadratic polynomial in terms of ∥˜x∥2 with a negative leading coefficient. Because its discriminant D = 4 ϕ2ψ2
+
+> m
+
+Q21 is strictly positive, the equation possesses two distinct real roots. According to the Lyapunov stability criteria for such dynamics, ∥˜x∥2 will converge to the larger root, yielding lim  
+
+> t→∞
+
+∥˜x∥ = √2ψmQ1 ≤ 2ψm.It should be noted that according to Lyapunov stability theory, ∥˜x∥2 would converge to zero if the initial state satisfies 
+
+V1(0) < ψmQ1. However, since the observer is typically initialized with large values in practical applications, this scenario is omitted here and in the subsequent analysis of V2.APPENDIX DPROOF OF THEOREM 2
+
+Proof. According to (15)-(17) and Lemma 2, the time deriva-tive of (33) is described as: 
+
+˙V2 = ˜ x∗⊤ ˙˜x∗
+
+= ϕ˜x∗⊤ 
+
+˜x∗ − ψm
+
+cos θ
+
+sin θ
+
+
+
+− ∆Lsiαβ 
+
+
+
+(ξ∗ 
+
+> 1
+
++ ξ∗ 
+
+> 2
+
+)
+
+− ∆Rs ˜x∗⊤ iαβ 
+
+= ϕ ∥˜x∗∥2 − ψmQ∗ 
+
+> 1
+
+− ∆LsQ∗
+
+> 2
+
+  − ∥ ˜x∗∥2
+
++ 2 ψmQ∗ 
+
+> 1
+
++ ξ∗
+
+> 2
+
+ − ∆RsQ∗
+
+> 2
+
+(42) Next, the impacts of mismatches in flux, resistance, and inductance on the stability of the nonlinear flux observer are analyzed separately. Note that the effect of the discriminant D∗
+
+in (42) does not need explicit consideration. Since the leading coefficient is negative, D∗ ≤ 0 directly implies ˙V2 ≤ 0,ensuring stability and convergence of ∥˜x∗∥ to zero. Therefore, the subsequent analysis assumes D∗ > 0.
+
+A. Effect of Flux Mismatch 
+
+When exclusively considering the effect of flux mismatch 
+
+∆ψm < ψ m, the resistance and inductance mismatches are set to zero, i.e., ∆Rs = ∆ Ls = 0 . In this case, one obtains 
+
+Q∗ 
+
+> 1
+
+= ψm − ψz cos ˜θ∗, Q∗ 
+
+> 2
+
+= ψmid − ψzˆi∗
+
+> d
+
+, and ξ22 = ψ2 
+
+> z
+
+−
+
+ψ2
+
+> m
+
+. Substituting these expressions into (42), the equation is rewritten as follows: 
+
+˙V2 = ϕ ∥˜x∗∥2 − rψm1
+
+  − ∥ ˜x∗∥2 + rψm2
+
+ (43) where rψm1 = ψ2 
+
+> m
+
+− ψmψz cos ˜θ∗ and rψm2 = ψ2 
+
+> m
+
++ ψ2 
+
+> z
+
+−
+
+2ψmψz cos ˜θ∗ denote the two roots of ˙V2 under flux mismatch. According to Lyapunov stability theory, ∥˜x∗∥2 converges to the larger root. Therefore, when ψz ≥ ψm cos ˜θ∗, one has 
+
+lim  
+
+> t→∞
+
+∥˜x∗∥2 = rψm2 , whereas when 0 < ψ z < ψ m cos ˜θ∗, it follows that lim  
+
+> t→∞
+
+∥˜x∗∥2 = rψm1 .         
+
+> (a) (b) Fig. 15. Steady-state estimation error boundaries under flux mismatch. (a)
+> 0< ψ z< ψ mcos ˜θ∗; (b) ψz≥ψmcos ˜θ∗.
+
+Fig. 15 illustrates the steady-state error boundaries rψm1
+
+and rψm2 under flux mismatch. The results indicate that the estimation error boundaries are directly determined by the deviation of ψz from ψm, where a larger mismatch leads to an increased steady-state error. 
+
+B. Effect of Inductance Mismatch 
+
+When examining the effect of inductance mismatch ∆Ls <Ls, the flux and resistance mismatches are set to zero, that is, ∆ψm = ∆ Rs = 0 . In this case, the corresponding terms become Q∗ 
+
+> 1
+
+= ∆ Lsid + ψm − ψm cos ˜θ∗, Q∗ 
+
+> 2
+
+= ∆ Ls∥iαβ ∥2 +
+
+ψmid − ψmˆi∗
+
+> d
+
+, and ξ∗ 
+
+> 2
+
+= ∆ L2
+
+> s
+
+∥iαβ ∥2 − 2∆ Lsψmˆi∗
+
+> d
+
+. Accord-ingly, (42) is rewritten as follows: 
+
+˙V2 = ϕ ∥˜x∗∥2 − rLs1
+
+  − ∥ ˜x∗∥2 + rLs2
+
+ (44) where rLs1 = ψ2
+
+> m
+
+(1 −cos ˜θ∗)+∆ L2
+
+> s
+
+∥iαβ ∥2+∆ Lsψm(2 id−ˆi∗
+
+> d
+
+)
+
+and rLs2 = 2 ψ2
+
+> m
+
+(1 − cos ˜θ∗) + ∆ L2
+
+> s
+
+∥iαβ ∥2 + 2∆ Lsψm(id −
+
+ˆi∗
+
+> d
+
+) denote the two roots of ˙V2 under inductance mismatch. Similarly, ∥˜x∗∥2 converges to the larger of the two roots. It thus remains to identify which root is dominant: 
+
+rLs2 − rLs1 = ψm
+
+ ψm(1 − cos ˜θ∗) − ∆Lsˆi∗
+
+> d
+
+ (45) It is clear that (45) is positive, since ψm and (1 − cos ˜θ∗)
+
+are smaller in magnitude than ∆Ls, and ˆi∗ 
+
+> d
+
+is of comparable magnitude. Therefore, it follows that lim  
+
+> t→∞
+
+∥˜x∗∥2 = rLs2 and: 
+
+∆Ls,a = − ψm(id − ˆi∗
+
+> d
+
+)
+
+∥iαβ ∥2 (46) where ∆Ls,a denotes the axis of symmetry of rLs2 as a function of ∆Ls.Fig. 16 illustrates the steady-state error boundaries rLs2
+
+under inductance mismatch. In both cases, rLs2 follows a parabolic trend, reaching a minimum at the symmetry axis 
+
+∆Ls,a . Specifically, a properly sized negative mismatch re-duces the error when id > ˆi∗
+
+> d
+
+, whereas a positive mismatch is beneficial when id < ˆi∗
+
+> d
+
+. However, excessive deviations in either direction significantly degrade system stability and may lead to observer divergence. 
+
+C. Effect of Resistance Mismatch 
+
+When analyzing the effect of resistance mismatch ∆Rs <Rs, the flux and inductance mismatches are set to zero, namely 
+
+∆ψm = ∆ Ls = 0 . Under this condition, the corresponding JOURNAL OF L ATEX CLASS FILES 11 
+
+(a) (b) Fig. 16. Steady-state estimation error boundaries under inductance mismatch. (a) id > ˆi∗
+
+> d
+
+; (b) id < ˆi∗
+
+> d
+
+.
+
+(a) (b) Fig. 17. Steady-state estimation error boundaries under resistance mismatch. (a) id > ˆi∗
+
+> d
+
+; (b) id < ˆi∗
+
+> d
+
+.
+
+terms reduce to Q∗ 
+
+> 1
+
+= ψm − ψm cos ˜θ∗, Q∗ 
+
+> 2
+
+= ψmid − ψmˆi∗
+
+> d
+
+,and ξ∗ 
+
+> 2
+
+= 0 . Thus, (42) is rewritten as follows: 
+
+˙V2 = ϕ ∥˜x∗∥2 − ψmQ∗
+
+> 1
+
+  − ∥ ˜x∗∥2 + 2 ψmQ∗
+
+> 1
+
+
+
+− ∆Rsψm(id − ˆi∗
+
+> d
+
+)= ϕ ∥˜x∗∥2 − rRs1
+
+  − ∥ ˜x∗∥2 + rRs2
+
+ (47) where rRs1 and rRs2 denote the two roots of ˙V2 under resistance mismatch. In the nominal case, the roots are ψmQ∗
+
+> 1
+
+and 2ψmQ∗
+
+> 1
+
+. The resistance mismatch introduces a constant perturbation that vertically shifts the quadratic, yielding the modified roots rRs1 and rRs2 . Consequently, it follows that 
+
+lim  
+
+> t→∞
+
+∥˜x∗∥2 = rRs2 :
+
+rRs2 = 3ψmQ∗
+
+> 1
+
+2 +
+
+s
+
+ψ2
+
+> m
+
+Q∗21
+
+4 − ∆Rsψm(id − ˆi∗
+
+> d
+
+)
+
+ϕ (48) Fig. 17 illustrates the steady-state error boundaries rRs2
+
+under resistance mismatch. Based on (48), when id < ˆi∗
+
+> d
+
+, a negative mismatch reduces the convergence radius, whereas it amplifies the error when id > ˆi∗
+
+> d
+
+. However, excessive deviations lead to either a significantly increased error or a negative term under the radical in (48), the latter resulting in the absence of a real solution; both of which potentially lead to observer divergence. APPENDIX EPROOF OF THEOREM 3
+
+Proof. The time derivative of ˜ψz is given by ˙˜ψz =
+
+−ˆsp1 tanh(ˆ sp2 ˜ψz ) − ∥ ˙η(ˆ x∗)∥. Considering the upper bound 
+
+∥ ˙η(ˆ x∗)∥ ≤ Ψ, the Lyapunov function V3 satisfies: 
+
+˙V3 = ˜ψz ˙˜ψz ≤ − ˆsp1| ˜ψz | · | tanh(ˆ sp2 ˜ψz )| + | ˜ψz |Ψ (49) According to Lemma 1, the inequality in (49) can be further bounded by: 
+
+˙V3 ≤ − ˆsp1 ˆsp2
+
+1 + ˆ sp2| ˜ψz | | ˜ψz |2 + | ˜ψz |Ψ (50) Letting γ = √2V3 = | ˜ψz |, it follows that ˙V3 = γ ˙γ. Thus, (50) becomes: 
+
+˙γ ≤ − ˆsp1 ˆsp2γ
+
+1 + ˆ sp2γ + Ψ = f (γ) (51) Evidently, f (γ) is Lipschitz continuous and strictly decreas-ing for γ ≥ 0, since |f ′(γ)| = −ˆsp1 ˆsp2/(1 + ˆ sp2γ)2 ≤
+
+ˆsp1 ˆsp2. Therefore, setting f (γ) = 0 yields a unique positive equilibrium point γ∗:
+
+γ∗ = Ψˆsp2(ˆ sp1 − Ψ) (52) Based on the comparison theorem, γ∗ is a stable equilib-rium, and all solutions of γ will eventually converge to the region bounded by γ∗. Consequently, the transient bound and the ultimate steady-state bound are established as: 
+
+| ˜ψz |∞ = lim  
+
+> t→∞
+
+γ = Ψˆsp2(ˆ sp1 − Ψ) (53) where ˜ψz (0) denotes the initial value. REFERENCES [1] X. Liu, H. Chen, J. Zhao, and A. Belahcen, “Research on the perfor-mances and parameters of interior pmsm used for electric vehicles,” 
+
+IEEE Transactions on Industrial Electronics , vol. 63, no. 6, pp. 3533– 3545, 2016. [2] G. Wang, M. Valla, and J. Solsona, “Position sensorless permanent magnet synchronous machine drives—a review,” IEEE Transactions on Industrial Electronics , vol. 67, no. 7, pp. 5830–5842, 2019. [3] S. Bolognani, S. Calligaro, and R. Petrella, “Design issues and esti-mation errors analysis of back-emf-based position and speed observer for spm synchronous motors,” IEEE Journal of Emerging and Selected Topics in Power Electronics , vol. 2, no. 2, pp. 159–170, 2014. [4] W. He, X. Wu, and J. Chen, “Optimization design of pmsm sensorless control using generalized integrator,” IEEE Transactions on Industrial Electronics , vol. 71, no. 8, pp. 8625–8634, 2023. [5] H. Zhang, L. Deng, H. Li, S. Zheng, H. Jin, and B. Chen, “Commutation point optimization method for sensorless bldc motor control using vector phase difference of back emf and current,” IEEE/ASME Transactions on Mechatronics , vol. 29, no. 1, pp. 423–433, 2023. [6] K. Prabhakaran and A. Karthikeyan, “Electromagnetic torque-based model reference adaptive system speed estimator for sensorless surface mount permanent magnet synchronous motor drive,” IEEE Transactions on Industrial Electronics , vol. 67, no. 7, pp. 5936–5947, 2020. [7] X. Yan and M. Cheng, “An mras observer-based speed sensorless control method for dual-cage rotor brushless doubly fed induction generator,” 
+
+IEEE Transactions on Power Electronics , vol. 37, no. 10, pp. 12 705– 12 714, 2022. [8] C. M. Verrelli, S. Bifaretti, E. Carfagna, A. Lidozzi, L. Solero, F. Crescimbini, and M. Di Benedetto, “Speed sensor fault tolerant pmsm machines: From position-sensorless to sensorless control,” IEEE Transactions on Industry Applications , vol. 55, no. 4, pp. 3946–3954, 2019. [9] F. Xiang, K. Yu, C. Chen, and S. Li, “Sensorless control of pmsm drives using octant newton-raphson method and reduced-order ekf considering speed reversal and noise,” IEEE Transactions on Power Electronics ,2025. [10] X. Wu, C. Li, Y. Zhang, S. Chen, Z. Ma, Y. Han, X. Zhang, and G. Tan, “Sensorless control of ipmsm equipped with lc sinusoidal filter based on full-order sliding mode observer and feedforward qpll,” IEEE Transactions on Power Electronics , vol. 39, no. 7, pp. 8072–8085, 2024. JOURNAL OF L ATEX CLASS FILES 12 
+
+[11] Q. Yang, K. Mao, S. Zheng, and Y. Le, “Rotor position estimation based on fast terminal sliding mode for magnetic suspension centrifugal compressor drives,” IEEE Transactions on Instrumentation and Mea-surement , 2024. [12] J. Lee, J. Hong, K. Nam, R. Ortega, L. Praly, and A. Astolfi, “Sensorless control of surface-mount permanent-magnet synchronous motors based on a nonlinear observer,” IEEE Transactions on power electronics ,vol. 25, no. 2, pp. 290–297, 2009. [13] F. Zhou, X. Wang, Z. Yin, Y. Shen, Y. Liang, and H. Zhao, “Optimized robust observer-based encoderless control for spmsm,” IEEE Transac-tions on Industrial Electronics , vol. 72, no. 12, pp. 12 632–12 643, 2025. [14] R. Ortega, L. Praly, A. Astolfi, J. Lee, and K. Nam, “Estimation of rotor position and speed of permanent magnet synchronous motors with guaranteed stability,” IEEE Transactions on Control Systems Technology ,vol. 19, no. 3, pp. 601–614, 2010. [15] Z. Yin, F. Zhou, X. Wang, Y. Shen, J. Liang, X. Su, and H. Zhao, “Non-linear bounded error compensation for flux based encoderless controller of pmsms,” IEEE Transactions on Transportation Electrification , 2026. [16] A. Khlaief, M. Bendjedia, M. Boussak, and M. Gossa, “A nonlinear observer for high-performance sensorless speed control of ipmsm drive,” 
+
+IEEE Transactions on Power Electronics , vol. 27, no. 6, pp. 3028–3040, 2011. [17] W. Xu, Y. Jiang, C. Mu, and F. Blaabjerg, “Improved nonlinear flux observer-based second-order soifo for pmsm sensorless control,” IEEE Transactions on Power Electronics , vol. 34, no. 1, pp. 565–579, 2018. [18] S. Zhou, Z. Zhang, H. Li, Z. Li, Q. Xing, X. Liu, F. Wang, and J. Ro-driguez, “A robust encoderless control for pmsm drives: A revised hybrid active flux-based technique,” IEEE Transactions on Power Electronics ,vol. 38, no. 11, pp. 14 438–14 449, 2023. [19] P. Bernard and L. Praly, “Estimation of position and resistance of a sensorless pmsm: A nonlinear luenberger approach for a nonobservable system,” IEEE Transactions on Automatic Control , vol. 66, no. 2, pp. 481–496, 2020. [20] M. Hinkkanen, T. Tuovinen, L. Harnefors, and J. Luomi, “A combined position and stator-resistance observer for salient pmsm drives: Design and stability analysis,” IEEE Transactions on Power Electronics , vol. 27, no. 2, pp. 601–609, 2011. [21] W. Li, J. Fang, H. Li, and J. Tang, “Position sensorless control without phase shifter for high-speed bldc motors with low inductance and nonideal back emf,” IEEE Transactions on Power Electronics , vol. 31, no. 2, pp. 1354–1366, 2015. [22] H. Li, Z. Wang, C. Wen, and X. Wang, “Sensorless control of surface-mounted permanent magnet synchronous motor drives using nonlinear optimization,” IEEE Transactions on Power Electronics , vol. 34, no. 9, pp. 8930–8943, 2018. [23] P. Bernard and L. Praly, “Convergence of gradient observer for rotor position and magnet flux estimation of permanent magnet synchronous motors,” Automatica , vol. 94, pp. 88–93, 2018. [24] M. N. Islam and R. J. Seethaler, “Sensorless position control for piezoelectric actuators using a hybrid position observer,” IEEE/ASME Transactions On Mechatronics , vol. 19, no. 2, pp. 667–675, 2013. [25] J. Choi, K. Nam, A. A. Bobtsov, A. Pyrkin, and R. Ortega, “Robust adaptive sensorless control for permanent-magnet synchronous motors,” 
+
+IEEE Transactions on Power Electronics , vol. 32, no. 5, pp. 3989–3997, 2016. [26] B. Li, J. Zou, Y. Xu, S. Li, and S. Jin, “Sensorless control of dtp-synrm with hybrid flux observer and disturbance observer considering magnetic saturation and cross-coupling effect,” IEEE Transactions on Power Electronics , 2025. [27] O. C. Kivanc and S. B. Ozturk, “Sensorless pmsm drive based on stator feedforward voltage estimation improved with mras multiparameter estimation,” IEEE/ASME Transactions on Mechatronics , vol. 23, no. 3, pp. 1326–1337, 2018. [28] M. A. Hamida, J. De Leon, A. Glumineau, and R. Boisliveau, “An adap-tive interconnected observer for sensorless control of pm synchronous motors with online parameter identification,” IEEE Transactions on Industrial Electronics , vol. 60, no. 2, pp. 739–748, 2012. [29] Z. Liu, J. Nie, H. Wei, L. Chen, F. Wu, and M. Lv, “Second-order eso-based current sensor fault-tolerant strategy for sensorless control of pmsm with b-phase current,” IEEE/ASME Transactions on Mechatron-ics , vol. 27, no. 6, pp. 5427–5438, 2022. [30] T. D. Nguyen, G. Foo, K. Tseng, and D. M. Vilathgamuwa, “Mod-eling and sensorless direct torque and flux control of a dual-airgap axial flux permanent-magnet machine with field-weakening operation,” 
+
+IEEE/ASME Transactions On Mechatronics , vol. 19, no. 2, pp. 412–422, 2013. [31] K. Wang, G. Wang, G. Zhang, Q. Wang, B. Li, and D. Xu, “Eso-based robust hybrid flux observer with active flux error estimation for position sensorless pma-synrm drives,” IEEE Transactions on Transportation Electrification , vol. 11, no. 1, pp. 2049–2060, 2024. [32] A. T. Woldegiorgis, X. Ge, Y. Zuo, H. Wang, and M. Hassan, “Sensorless control of interior permanent magnet synchronous motor drives consid-ering resistance and permanent magnet flux linkage variation,” IEEE Transactions on Industrial Electronics , vol. 70, no. 8, pp. 7716–7730, 2022. [33] D. Yang, S. Huang, W. Liao, X. Wu, X. Yu, T. Wu, D. Luo, and S. Huang, “Iladrc-based sensorless ipmsm strategy with adaptive har-monic filtering-extended state observer for current quality improvement,” 
+
+IEEE Transactions on Power Electronics , vol. 41, no. 2, pp. 1752–1763, 2026. [34] S. Xu, A. Shen, Q. Tang, M. Wang, P. Luo, X. Luo, and J. Xu, “Surface-pmsm sensorless control strategy based on reduced-order linear kalman filter cooperating with prediction error rolling compensation,” IEEE Transactions on Power Electronics , vol. 40, no. 8, pp. 10 804–10 815, 2025. [35] S. Zhou, Z. Zhang, H. Li, Z. Li, Q. Xing, X. Liu, F. Wang, and J. Ro-driguez, “A robust encoderless control for pmsm drives: A revised hybrid active flux-based technique,” IEEE Transactions on Power Electronics ,vol. 38, no. 11, pp. 14 438–14 449, 2023. 
+
+Fobao Zhou (Graduate Student Member, IEEE) received the B.Eng. degree in Robot Engineering from Guangzhou University, Guangzhou, China, in 2022. He is currently pursuing the Ph.D. degree at The Hong Kong University of Science and Technol-ogy (Guangzhou), Guangzhou, China. His research interests include the integration of machine learning and control theory for the development of advanced intelligent systems. He aims to contribute to the field of engineering through innovative research and practical applications in these areas. 
+
+Jiaqiao Liang received the B.Eng. degree in Me-chanical Design, Manufacturing, and Automation from Guangzhou University, Guangzhou, China, in 2023. He is currently pursuing the M.Eng. degree in Mechanical Engineering at South China Univer-sity of Technology, Guangzhou, China. His research focuses on nonlinear and robust control, underwater robotic systems, and bioinspired actuation, with em-phasis on modeling and control of bistable-actuated soft robots and cross-medium locomotion. 
+
+Zhenxiao Yin (Graduate Student Member, IEEE) received a B.Sc. degree in mechanical engineer-ing from Paderborn University (UPB), Paderborn, Germany, in 2018. Subsequently, he earned double M.Sc. degrees in Mechanical Engineering, Mecha-tronics and Robotics from the Technical Univer-sity of Munich (TUM), Munich, Germany, in 2021 and 2022, where he was the recipient of the German National Scholarship. He is pursuing aPh.D. in Robotics and Autonomous Systems at the Hong Kong University of Science and Technology (HKUST), while he is studying in the department of Mechanical and Aerospace Engineering at HKUST, Guangzhou and Hong Kong SAR, China. His research interests encompass learning-based control and state drop com-pensator for electric machines in flying vehicles. 
+
+Xueyan Wang received the B.S. degree in electrical engineering and automation and the M.S. degree in electrical engineering from Xi’an University of Science and Technology, Xi’an, China, in 2020 and 2023, respectively. He is currently a Research Assis-tant with The Hong Kong University of Science and Technology (Guangzhou), Guangzhou, China. His research interests include model predictive control of permanent magnet synchronous motor drives, power electronics, and power transmission. JOURNAL OF L ATEX CLASS FILES 13 
+
+Yang Shen (Graduate Student Member, IEEE) re-ceived the B.Eng. and the M.Eng. degree from the North China University of Technology, Beijing, China, all in electrical engineering in 2018 and 2021, respectively. He is currently pursuing a Ph.D. in the Robotics and Autonomous Systems Thrust, Systems Hub, The Hong Kong University of Science and Technology (Guangzhou), Guangzhou, China. His research interests include electric machines and drives, robotic applications of motor drives, and electrified transportation systems. 
+
+Zhongyu Shi is expected to receive the B.A. de-gree in Engineering Science from the University of Oxford in 2026. She is currently working toward the M.Eng. degree in Engineering Science at the University of Oxford. She is also a visiting student at the Robotics and Autonomous Systems Thrust, Systems Hub, The Hong Kong University of Science and Technology (Guangzhou). Her research inter-ests include permanent magnet synchronous motor drives, parameter identification, and control. 
+
+Hang Zhao (Member, IEEE) received the B.Eng. and M.Eng. degrees from Huazhong University of Science and Technology, Wuhan, China, and the Ph.D. degree from City University of Hong Kong, Hong Kong SAR, China, all in electrical engineering in 2015, 2017, and 2021, respectively. He is cur-rently an Assistant Professor at the Robotics and Autonomous Systems Thrust, Systems Hub, The Hong Kong University of Science and Technol-ogy (Guangzhou), Guangzhou, China, and also an Affiliate Assistant Professor at the Department of Electronic and Computer Engineering, The Hong Kong University of Science and Technology, Hong Kong SAR, China. He was a Research Fellow at The University of Hong Kong, Hong Kong SAR, China, in 2021. His research interests include electric machines and drives, applications of motor drives in robots, and electrified transportation.

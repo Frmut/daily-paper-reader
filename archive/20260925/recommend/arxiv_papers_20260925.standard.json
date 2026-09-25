@@ -1,0 +1,170 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-09-25T21:52:39.179269+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 2,
+    "deep_cap": 6,
+    "deep_selected": 2,
+    "quick_candidates": 2,
+    "quick_skim_target": 11,
+    "quick_selected": 2
+  },
+  "deep_dive": [
+    {
+      "id": "2609.29290v1",
+      "title": "Temporal Regression-Based Model-Free Sensorless Control of Permanent Magnet Synchronous Motor",
+      "abstract": "To address the widespread sensitivity of surface-mounted permanent magnet synchronous motor (SPMSM) sensorless control to motor parameters, this paper proposes a temporal regression-based model-free sensorless control (TFC) method. First, voltage integrals and current increments over consecutive short intervals are stacked to construct a finite window regression, in which the unknown stator inductance appears as a common scalar coefficient. Second, a projection operator constructed from the stacked current increments eliminates the inductance term, and a least-squares formulation is developed to reconstruct the rotor flux vector. Meanwhile, the analysis of the projected regression and current-flux geometry establishes a two-dimensional direction vector whose components share a common amplitude containing the stator resistance and flux linkage. This amplitude cancels during position extraction. By setting the resistance reference to zero, the proposed method estimates the position without specifying the stator resistance, inductance, or flux linkage. Finally, experimental results verify the effectiveness of the proposed TFC method.",
+      "authors": [
+        "Fobao Zhou",
+        "Yang Shen",
+        "Xueyan Wang",
+        "Zhenxiao Yin",
+        "Yujia Zhang",
+        "Yuanfeng Qu",
+        "Hang Zhao"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY"
+      ],
+      "published": "2026-09-24T09:27:04+00:00",
+      "link": "https://arxiv.org/pdf/2609.29290v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 10.0,
+      "llm_evidence_en": "Model-free sensorless control of Permanent Magnet Synchronous Motor",
+      "llm_evidence_cn": "永磁同步电机无模型无感控制",
+      "llm_evidence": "永磁同步电机无模型无感控制",
+      "canonical_evidence": "永磁同步电机无模型无感控制",
+      "llm_tldr_en": "Develops a temporal regression-based model-free sensorless control for SPMSM to reduce parameter sensitivity.",
+      "llm_tldr_cn": "开发了一种基于时间回归的表贴式永磁同步电机无模型无感控制方法，降低了参数敏感性。",
+      "llm_tldr": "开发了一种基于时间回归的表贴式永磁同步电机无模型无感控制方法，降低了参数敏感性。",
+      "llm_tags": [
+        "query:pmsm"
+      ],
+      "matched_query_tag": "query:pmsm",
+      "matched_query_text": "Permanent Magnet Synchronous Motor research",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2609.29313v1",
+      "title": "Equivalent Flux Compensation for SPMSM Sensorless Control under Parameter Mismatch",
+      "abstract": "Parameter mismatch is the main source of rotor position estimation error in sensorless control of surface-permanent magnet synchronous motors (SPMSMs). To this end, this paper proposes a simple yet efficient equivalent flux compensation (EFC) method that directly estimates the equivalent flux disturbance caused by parameter mismatches in real time. First, the equivalent flux disturbance caused by parameter mismatches is derived from a nonlinear flux observer. Second, a flux update law is proposed to minimize both magnitude and directional errors by leveraging geometric error together with the derived equivalent flux disturbance. To enhance numerical stability, a saturation function is introduced to improve gradient continuity in the update process. Additionally, Lyapunov analysis is employed to ensure the stability of the proposed update law, from which the corresponding error bounds and convergence properties are derived. Finally, experimental results validate that the proposed method fully compensates for the steady-state effects of resistance and flux mismatches, and partially mitigates the influence of inductance variation, effectively constraining the position estimation error within a relatively small range.",
+      "authors": [
+        "Fobao Zhou",
+        "Jiaqiao Liang",
+        "Zhenxiao Yin",
+        "Xueyan Wang",
+        "Yang Shen",
+        "Zhongyu Shi",
+        "Hang Zhao"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY"
+      ],
+      "published": "2026-09-24T09:47:41+00:00",
+      "link": "https://arxiv.org/pdf/2609.29313v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 10.0,
+      "llm_evidence_en": "Sensorless control of surface-permanent magnet synchronous motors (SPMSM) with parameter mismatch compensation",
+      "llm_evidence_cn": "表贴式永磁同步电机（SPMSM）无传感器控制及参数失配补偿",
+      "llm_evidence": "表贴式永磁同步电机（SPMSM）无传感器控制及参数失配补偿",
+      "canonical_evidence": "表贴式永磁同步电机（SPMSM）无传感器控制及参数失配补偿",
+      "llm_tldr_en": "Proposes an equivalent flux compensation method to improve rotor position estimation in SPMSM sensorless control.",
+      "llm_tldr_cn": "提出一种等效磁链补偿方法，用于提高SPMSM无传感器控制中的转子位置估计精度。",
+      "llm_tldr": "提出一种等效磁链补偿方法，用于提高SPMSM无传感器控制中的转子位置估计精度。",
+      "llm_tags": [
+        "query:pmsm"
+      ],
+      "matched_query_tag": "query:pmsm",
+      "matched_query_text": "Permanent Magnet Synchronous Motor research",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2609.27436v1",
+      "title": "A Harmonic-Regression ARMA model for rotating machinery dynamics identification and fault detection under varying conditions",
+      "abstract": "Fault detection in rotating machinery under varying operating conditions remains a challenging problem. Existing approaches are mainly based either on non-parametric vibration signal representations, parametric deep learning models, or on parametric ARMA-type models. While deep learning approaches often lack transparency and require large training datasets, ARMA-type models rely on the assumption of a purely rational spectrum, which can be restrictive for rotating machinery vibration signals exhibiting mixed spectral characteristics. To address these limitations, a novel Harmonic Regression ARMA (HR-ARMA) model is presented for rotating machinery dynamics identification, which combines an explicit harmonic regression part for representing the dominant deterministic cyclical components with an ARMA part for the remaining broadband stochastic dynamics. Based on this model and within a Multiple Model framework, fault detection is achieved under varying operating conditions. The HR-ARMA modelling performance is validated through simulation and experimental studies on a single-stage gearbox, demonstrating accurate representation of both cyclical and broadband dynamics, improved parsimony and significantly higher fault detection performance compared with conventional ARMA models, achieving at least 98% True Positive Rate at 5% False Positive Rate in the experimental study.",
+      "authors": [
+        "Dimitrios M. Bourdalos",
+        "John S. Sakellariou",
+        "Spilios D. Fassois"
+      ],
+      "primary_category": "eess.SP",
+      "categories": [
+        "eess.SP"
+      ],
+      "published": "2026-09-23T06:58:27+00:00",
+      "link": "https://arxiv.org/pdf/2609.27436v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Fault detection in rotating machinery under varying conditions",
+      "llm_evidence_cn": "变工况下旋转机械的故障检测",
+      "llm_evidence": "变工况下旋转机械的故障检测",
+      "canonical_evidence": "变工况下旋转机械的故障检测",
+      "llm_tldr_en": "Introduces a HR-ARMA model for fault detection in rotating machinery like motors.",
+      "llm_tldr_cn": "引入HR-ARMA模型，用于电机等旋转机械在变工况下的故障检测。",
+      "llm_tldr": "引入HR-ARMA模型，用于电机等旋转机械在变工况下的故障检测。",
+      "llm_tags": [
+        "query:pmsm"
+      ],
+      "matched_query_tag": "query:pmsm",
+      "matched_query_text": "fault-tolerant control of multi-phase motors",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.27010v1",
+      "title": "Three High Performance Global Tracking Composite Adaptive Controllers for Fully Actuated Euler-Lagrange Systems: Experimental Validation",
+      "abstract": "Three adaptive global tracking controllers for fully actuated Euler-Lagrange systems, with verifiable performance improvement over existing designs, are reported in this letter. Two of these controllers ensure global exponential convergence under a weak interval excitation condition. Besides, one of the proposed controllers features a simple adaptive PID-like structure that-unlike classical solutions-avoids the need for additional filtering. We adopt a composite adaptation architecture, invoke a novel parameterization of the system dynamics and use a high performance estimation scheme recently introduced in the literature. Real-time experiments and a comparative study with a learning-based adaptive controller on a two-degrees-of-freedom manipulator arm illustrate the effectiveness of the proposed controllers.",
+      "authors": [
+        "Luis Cervantes-Pérez",
+        "Jose Guadalupe Romero",
+        "Romeo Ortega",
+        "Víctor Santibáñez",
+        "Jesús Sandoval"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY"
+      ],
+      "published": "2026-09-22T19:49:09+00:00",
+      "link": "https://arxiv.org/pdf/2609.27010v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Adaptive tracking control for Euler-Lagrange systems",
+      "llm_evidence_cn": "针对欧拉-拉格朗日系统的自适应跟踪控制",
+      "llm_evidence": "针对欧拉-拉格朗日系统的自适应跟踪控制",
+      "canonical_evidence": "针对欧拉-拉格朗日系统的自适应跟踪控制",
+      "llm_tldr_en": "Proposes adaptive controllers for Euler-Lagrange systems, applicable to motor dynamics control.",
+      "llm_tldr_cn": "提出适用于欧拉-拉格朗日系统的自适应控制器，可应用于电机动力学控制。",
+      "llm_tldr": "提出适用于欧拉-拉格朗日系统的自适应控制器，可应用于电机动力学控制。",
+      "llm_tags": [
+        "query:pmsm"
+      ],
+      "matched_query_tag": "query:pmsm",
+      "matched_query_text": "Permanent Magnet Synchronous Motor research",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
