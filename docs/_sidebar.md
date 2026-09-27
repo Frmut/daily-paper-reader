@@ -1,6 +1,9 @@
 * <a class="dpr-sidebar-root-link" href="#/">首页</a>
 * <a class="dpr-sidebar-root-link dpr-sidebar-noactive-link" href="javascript:void(0)" data-dpr-hash="#/tutorial/README">使用教程</a>
 * Daily Papers
+  * 2026-09-27 <!--dpr-date:20260927-->
+    * 速读区
+      * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202609/27/2609.29031v1-simple-torque-observation-alignment-for-zero-shot-sim-to-real-grasping-with-a-direct-drive-gripper" data-sidebar-item="{&quot;title&quot;: &quot;Simple Torque-Observation Alignment for Zero-Shot Sim-to-Real Grasping with a Direct-Drive Gripper&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2609.29031v1-simple-torque-observation-alignment-for-zero-shot-sim-to-real-grasping-with-a-direct-drive-gripper&quot;, &quot;score&quot;: &quot;6.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;pmsm&quot;}], &quot;evidence&quot;: &quot;电机电流通过转矩常数K_tau线性映射到关节转矩&quot;}">Simple Torque-Observation Alignment for Zero-Shot Sim-to-Real Grasping with a Direct-Drive Gripper</a>
   * 2026-09-25 <!--dpr-date:20260925-->
     * 精读区
       * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202609/25/2609.29290v1-temporal-regression-based-model-free-sensorless-control-of-permanent-magnet-synchronous-motor" data-sidebar-item="{&quot;title&quot;: &quot;Temporal Regression-Based Model-Free Sensorless Control of Permanent Magnet Synchronous Motor&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2609.29290v1-temporal-regression-based-model-free-sensorless-control-of-permanent-magnet-synchronous-motor&quot;, &quot;score&quot;: &quot;10.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;pmsm&quot;}], &quot;evidence&quot;: &quot;永磁同步电机无模型无感控制&quot;}">Temporal Regression-Based Model-Free Sensorless Control of Permanent Magnet Synchronous Motor</a>

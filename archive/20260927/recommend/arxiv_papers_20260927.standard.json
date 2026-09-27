@@ -1,0 +1,57 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-09-27T22:13:42.313476+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 1,
+    "quick_skim_target": 11,
+    "quick_selected": 1
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2609.29031v1",
+      "title": "Simple Torque-Observation Alignment for Zero-Shot Sim-to-Real Grasping with a Direct-Drive Gripper",
+      "abstract": "Torque observations in reinforcement learning remain challenging because simulated and measured torque differ in scale, offset, and noise. In this paper, we propose a simple torque observation alignment method for robots with direct-drive (DD) actuators, in which motor current maps linearly to joint torque through a motor-type-specific torque constant K_tau. First, dynamometer calibration identifies K_tau* and corrects the scale mismatch between simulated and real torque. Second, the method uses delta_tau(t) = tau(t) - tau(t-1) as the observation in both domains to eliminate the constant offset instead of using the direct torque tau(t), which carries a domain-dependent bias. Third, Gaussian noise obtained from the dynamometer measurement data is injected during the learning process. To validate the proposed method, we train a teacher-student grasping policy entirely in simulation and deploy the distilled student on a multifingered DD gripper. The deployed policy performs proprioceptive grasping using only joint positions and torque differences. We conduct an ablation study comparing the proposed method with alternative alignment variants on nine in-distribution (ID) objects. The proposed method achieves 100% grasp success. These results demonstrate that the proposed alignment method improves the robustness of zero-shot policy transfer on the DD gripper against real-world torque-observation mismatches.",
+      "authors": [
+        "Doyoung Kim",
+        "Edgar Lee",
+        "Hyeonsun Park",
+        "Chunghyeon Lee",
+        "Chihyun Han",
+        "Uisu Hwang",
+        "Seokhwan Jeong"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-09-24T05:03:27+00:00",
+      "link": "https://arxiv.org/pdf/2609.29031v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Motor current maps linearly to joint torque through torque constant K_tau",
+      "llm_evidence_cn": "电机电流通过转矩常数K_tau线性映射到关节转矩",
+      "llm_evidence": "电机电流通过转矩常数K_tau线性映射到关节转矩",
+      "canonical_evidence": "电机电流通过转矩常数K_tau线性映射到关节转矩",
+      "llm_tldr_en": "Aligns simulated and real torque for direct-drive actuators using motor-specific torque constants.",
+      "llm_tldr_cn": "利用电机特定转矩常数对直驱执行器的仿真和实际转矩进行对齐。",
+      "llm_tldr": "利用电机特定转矩常数对直驱执行器的仿真和实际转矩进行对齐。",
+      "llm_tags": [
+        "query:pmsm"
+      ],
+      "matched_query_tag": "query:pmsm",
+      "matched_query_text": "Permanent Magnet Synchronous Motor research",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

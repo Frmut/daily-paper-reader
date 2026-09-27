@@ -1,0 +1,532 @@
+Title: Simple Torque-Observation Alignment for Zero-Shot Sim-to-Real Grasping with a Direct-Drive Gripper
+
+URL Source: https://arxiv.org/pdf/2609.29031v1
+
+Published Time: Fri, 25 Sep 2026 00:34:09 GMT
+
+Number of Pages: 8
+
+Markdown Content:
+# Simple Torque-Observation Alignment for Zero-Shot Sim-to-Real Grasping with a Direct-Drive Gripper 
+
+Doyoung Kim, Edgar Lee, Hyeonsun Park, Chunghyeon Lee, Chihyun Han, Uisu Hwang, and Seokhwan Jeong ∗Simulation  Real-world (Direct-Drive Gripper) 
+
+𝜏 mreal = 𝛼 ∙ 𝜏 msim + b t + 𝜖 
+
+# Torque Observation 
+
+scale  bias  noise 
+
+w/o our method 
+
+No external sensor 
+
+Proprioceptive grasping  Our method 
+
+Aligned  Unaligned  
+
+> Fig. 1. Overview of the proposed simple torque-observation alignment method for zero-shot sim-to-real grasping with a direct-drive gripper.
+
+Abstract —Torque observations in reinforcement learning re-main challenging because simulated and measured torque differ in scale, offset, and noise. In this paper, we propose a simple torque observation alignment method for robots with direct-drive (DD) actuators, in which motor current maps linearly to joint torque through a motor-type-specific torque constant Kτ .First, dynamometer calibration identifies K∗ 
+
+> τ
+
+and corrects the scale mismatch between simulated and real torque. Second, the method uses ∆τt = τt − τt−1 as the observation in both domains to eliminate the constant offset instead of using the direct torque 
+
+τt, which carries a domain-dependent bias. Third, Gaussian noise obtained from the dynamometer measurement data is injected during the learning process. To validate the proposed method, we train a teacher–student grasping policy entirely in simulation and deploy the distilled student on a multifingered DD gripper. The deployed policy performs proprioceptive grasping using only joint positions and torque differences. We conduct an ablation study comparing the proposed method with alternative alignment variants on nine in-distribution (ID) objects. The proposed method achieves 100% grasp success. These results demonstrate that the proposed alignment method improves the robustness of zero-shot policy transfer on the DD gripper against real-world torque-observation mismatches. 
+
+Index Terms —Grasping, reinforcement learning, multifingered hands, sim-to-real transfer, direct-drive actuation. 
+
+I. I NTRODUCTION 
+
+# SIMULATION-BASED reinforcement learning has become a widely used approach to contact-rich robotic manipula-tion as it can generate large amounts of interaction experience without costly and time-consuming hardware trials [1]–[6]. Grasping requires information about both the gripper and the object, yet the object’s state and properties are often not fully known. Feedback from physical interaction can help address this uncertainty, and joint torque can complement joint-position feedback by providing proprioceptive informa-tion about contact onset and changes in grasp load. In direct-drive (DD) actuation, torque is transmitted di-rectly to the robot joints without a gearbox [7]. The gearless  
+
+> All authors are with the Department of Mechanical Engineering, Sogang University, Seoul, South Korea. ∗Corresponding author: Seokhwan Jeong (e-mail: seokhwan@sogang.ac.kr).
+
+configuration reduces friction and backlash and promotes backdrivability and high mechanical transparency. This allows motor-side proprioceptive signals to reflect changes in inter-action loads more directly than in geared actuators, where high reflected inertia, transmission friction and backlash can obscure these changes [7]. Together with an approximately linear current-to-torque relationship, these characteristics make motor current a practical source of torque observations for learning-based contact-rich manipulation. However, even in robotic systems with DD actuators, simulated and real joint-torque observations can differ in scale, additive bias, and noise. In simulation, actuator torque is computed from the control command and the simulated dynamics [8], [9], whereas the real-world torque observation considered here is estimated from motor current. Scale mis-match can arise from errors in the torque constant or current calibration used for current-to-torque conversion [10], [11]. Bias mismatch occurs when simulated and real-world torque observations contain constant or slowly varying offsets, re-sulting in different observation baselines [12]. Noise mismatch arises from effects in real-world torque measurements, such as electrical fluctuations and quantization, that are not modeled identically in simulation [12]. These discrepancies can cause a simulation-trained policy to interpret contact and load changes differently in the real world. Even with the high mechanical transparency of DD actuators, torque-observation mismatch therefore remains a challenge that needs to be addressed for reliable policy transfer. Prior work addresses torque-related sim-to-real discrepan-cies through implicit and explicit methods. Implicit meth-ods improve policy robustness to domain differences through dynamics randomization and torque perturbations [13], [14]. Such training increases tolerance to modeling errors without directly matching simulated and real torque signals. However, these methods do not explicitly establish a calibrated corre-spondence between simulated and real torque observations, and their effectiveness depends on the chosen randomization ranges. Explicit methods directly use real-world measurements 1arXiv:2609.29031v1 [cs.RO] 24 Sep 2026 𝝅 𝒔𝒕𝒖𝒅𝒆𝒏𝒕  at                    
+
+> 𝜏 tsim
+> 𝜖 ~ 𝒩(0, 𝜎 m2)
+> ǁ𝜏 tsim ∆𝜏 tsim
+> (= ǁ𝜏 tsim −ǁ𝜏 t−1 sim )
+> 𝜖 real
+> ǁ𝜏 t
+> real ∆𝜏 treal
+> (= ǁ𝜏 treal −ǁ𝜏 t−1 real )
+> bt
+> itK𝜏 ∗∙ i t
+> Measured
+> current
+> Calibrated
+> torque Scale
+> Estimated
+> torque
+> Noise injection
+> Bias
+> Noise
+> Simulation
+> Aligned
+> observation
+> q, ∆𝜏
+> Torque
+> differencing
+> Torque
+> differencing
+> Torque observation alignment Dynamometer calibration
+> Real-world
+> Torque [Nm]
+> Current [A]
+> Simulation
+> torque
+> Distilled by RL-based policy
+> with bc-transformer
+> Torque constant
+> calibration
+> K𝜏 K𝜏 ∗
+> Datasheet
+> torque constant
+> Measured
+> torque constant
+> Real data-based
+> noise injection
+> Residual
+> Calibration
+> Data
+> residual
+> 𝜖~𝒩(0, 𝜎 m
+> 2)
+> Gaussian fit Fig. 2. Simple torque observation alignment method pipeline.
+
+to reduce the mismatch between the two domains. Actuator-modeling methods reproduce real actuator behavior in simu-lation using analytical models or learned networks [15]–[18]. This real-to-simulation mapping improves simulation fidelity. However, actuator modeling requires actuator-specific iden-tification or model training. Observation-alignment methods instead convert real torque measurements to match the policy input used in simulation [19], [20]. Closely related work [20] aligns normalized motor current with simulated torque ob-servations through fingertip contact-force measurements and uses tactile feedback during grasping. Our method combines motor-type-specific dynamometer calibration with temporal torque differencing, enabling deployment using only joint positions and motor-current-derived torque changes, without tactile sensors. These considerations motivate a simple torque-observation method for robots with DD actuators that com-bines explicit cross-domain alignment with implicit robustness training. We propose a simple torque-observation alignment method between the simulation and real-world domains for robots with DD actuators (Fig. 1). First, we apply a dynamometer calibration method to identify the torque constant K∗ 
+
+> τ
+
+. K∗
+
+> τ
+
+converts measured motor current into a torque estimate, re-ducing the cross-domain scale mismatch. For the two motor types used in our DD gripper, datasheet-based torque estimates exceed dynamometer-calibrated estimates by approximately 38.0% and 7.8% (Table I). These unequal errors distort the relative torque pattern across joints and motivate motor-type-specific observation alignment. Second, we use the torque difference ∆τt = τt − τt−1 as policy input in both domains to cancel constant offsets and attenuate slowly varying baselines. Torque-change observations provide proprioceptive cues about changing interaction loads with reduced sensitivity to obser-vation baselines. Third, we add Gaussian noise to simulated torque observations during training, using dynamometer cali-bration data to set the noise level. The proposed method thus provides a compact observation-processing pipeline for zero-shot sim-to-real policy transfer. We validate the proposed method through proprioceptive grasping with a multifingered DD gripper. Trained entirely in simulation, the deployed policy grasps, lifts, and holds objects using only actuator proprioception (joint position qt
+
+and joint-torque change ∆τt), without vision or dedicated contact sensors. Real-world ablations show the benefit of the proposed alignment, while tests on unseen objects demonstrate transfer beyond the training object set. The main contributions of this work are as follows:  
+
+> •
+
+We present a framework for learning proprioceptive grasping policies for a direct-drive multifingered grip-per. By integrating torque-observation alignment with simulation-based teacher–student learning, the framework enables zero-shot sim-to-real transfer using only joint po-sitions and torque differences, without vision or dedicated tactile or force sensors during deployment.  
+
+> •
+
+We approximate torque-observation mismatch using a physically motivated affine model with a motor-type-specific scale factor, a constant or slowly varying off-set, and measurement noise. The method combines dynamometer-based torque-constant calibration, temporal differencing, and measurement-informed Gaussian noise injection without learning a nonlinear mapping.  
+
+> •
+
+We validate the framework through real-world abla-tions and zero-shot grasp–lift–hold experiments. Under the evaluated conditions, the proposed method achieves 100.0% success on nine in-distribution objects and 99.0% overall across 21 objects, including twelve previously unseen out-of-distribution objects. A supplementary video accompanying this paper demon-strates real-world grasping, lifting, and holding with the pro-posed method. II. M ETHOD 
+
+An overview of the proposed method is shown in Fig. 2. It has two parts. First, we align the joint-torque observation across domains (Section II-B). Second, we train a teacher policy for the grasping task in simulation using privileged information and the aligned torque observation, and distill it into a student policy for real-world deployment (Section II-C). 
+
+A. Direct-Drive Gripper Platform 
+
+The hardware platform is a three-fingered, 9-DoF gripper (see Fig. 3). Each finger has three independently actuated 2(a)  (b)  (c) Fig. 3. Direct-drive gripper platform. (a) DD actuator-based multifingered gripper. (b) Direct-Drive (DD) actuators integrated into a single finger. (c) Joint and link configuration. DD actuator   
+
+> Torque sensor
+> Absolute encoder
+> (a)
+> (b) (c)
+> DD actuator
+> Absolute encoder
+> Fig. 4. Dynamometer-based identification of the effective torque constants. (a) Experimental setup consisting of a test motor, a load motor, and an inline torque sensor. (b) Measured shaft torque versus quadrature current for the GL40 motor. (c) The corresponding result for the GL60 motor. Dashed lines denote the linear regression fits.
+
+joints, with a DD motor integrated coaxially into each joint without a mechanical transmission. The metacarpophalangeal (MCP) joint is driven by a 69-mm-diameter DD motor (Cube-Mars, GL60 KV25), whereas the proximal interphalangeal (PIP) and distal interphalangeal (DIP) joints are each driven by a 46.5-mm-diameter DD motor (CubeMars, GL40 KV70). A microcontroller unit (ROBOTIS, OpenCR 1.0) acquires joint positions and quadrature-axis currents iq from brushless motor controllers (ODrive Robotics, ODrive Micro) over CAN. The measured iq is converted into a joint-torque estimate using the corresponding torque constant. The gripper model and grasping task environment are implemented in NVIDIA Isaac Sim using the Isaac Lab framework [9]. 
+
+B. Simple Torque Observation Alignment 
+
+Cross-Domain Torque Model. The policy receives a joint-torque observation in both domains, although the observations are generated differently. In simulation, actuator torque is computed by the proportional–derivative (PD) controller and applied to the simulated joints. In the real world, the torque                              
+
+> TABLE I DATASHEET AND DYNAMOMETER -IDENTIFIED TORQUE CONSTANTS WITH REGRESSION ACCURACY .Motor Datasheet KτCalibrated K∗
+> τR2RMSE [Nm] [Nm/A] [Nm/A] GL60 KV25 0.4500 0.3260 0.9940 0.0098 GL40 KV70 0.1500 0.1392 0.9992 0.0023 TABLE II MOTOR -TYPE -SPECIFIC GAUSSIAN NOISE DERIVED FROM DYNAMOMETER REGRESSION RESIDUALS AND INJECTED INTO SIMULATED TORQUE OBSERVATIONS .Motor Gaussian model ϵm,t Injected std. σm[Nm] GL60 KV25 N(0 ,9.688465 ×10 −5)0.009843 GL40 KV70 N(0 ,5.313025 ×10 −6)0.002305
+
+observation is estimated from the measured motor current as 
+
+ˆτm,t = Kτ iq (t), where Kτ is the torque constant used for current-to-torque conversion. We represent the cross-domain relation using a multiplicative scale factor, an additive base-line, and a residual term: 
+
+ˆτ real  
+
+> m,t
+
+= ατ sim  
+
+> m,t
+
++ bt + ϵt, α = Kτ
+
+K∗
+
+> τ
+
+. (1) We take (1) as the premise of the method. The scale factor α
+
+is the ratio of the torque constant used for current-to-torque conversion to the calibrated torque constant K∗ 
+
+> τ
+
+. The term bt
+
+represents a slowly varying baseline mismatch between the two domains, including contributions from gravity, friction, and current offset. The term ϵt denotes residual noise from measurements and unmodeled actuator effects. Overall, (1) expresses the real current-derived torque observation as a scaled simulated actuator torque with a slowly varying baseline and residual error. 
+
+Scale: Dynamometer Calibration. We reduce the torque-scale mismatch by identifying the effective torque constant 
+
+K∗ 
+
+> τ
+
+through dynamometer calibration and using it for real-world current-to-torque conversion. Differences between nom-inal and effective torque constants arise from motor variation, current calibration, and current conventions [10], [11]. This discrepancy causes a scale mismatch between simulated and real torque observations. We identify the effective torque constants of the DD actu-ators (GL60 KV25 and GL40 KV70) using a motor-loaded rotary dynamometer [21]. As shown in Fig. 4, each test motor is coupled coaxially to a load motor through an inline torque sensor (CALT Sensor, DYN-200). The controller applies iq
+
+commands while the load motor provides opposing torque. The controller-reported current iq and measured shaft torque are recorded simultaneously. For each motor type, we linearly regress the measured shaft torque against the corresponding controller-reported current iq . The GL60 KV25 motor re-gression uses all recorded operating points up to 0.500 Nm, whereas the GL40 KV70 motor regression is restricted to input torques not exceeding 0.300 Nm. Table I summarizes the identified torque constants and regression accuracy. Only the fitted slope K∗ 
+
+> τ
+
+is used for current-to-torque conversion. 3Reinforcement Learning 
+
+MLP 
+
+Demo curation 
+
+Imitation Learning  
+
+> (Teacher policy, 𝜋 𝑡 )
+
+State 
+
+Action 
+
+Action 
+
+Transformer 
+
+State  
+
+> (Student policy, 𝜋 s)
+
+Simulation 
+
+Real-world 
+
+Demo curation                      
+
+> (rt> Threshold) Fig. 5. Teacher-student policy training and deployment pipeline. TABLE III TRAINING HYPERPARAMETERS .
+> Teacher (PPO)
+> Parameter Value Learning rate 10 −3
+> Steps per environment 24 PPO update epochs 5Minibatches 6Activation ELU Discount factor γ0.99 GAE parameter λ0.95 Entropy coefficient 0.003
+> Student (BC)
+> Parameter Value Learning rate 10 −4
+> Batch size 256 Optimizer AdamW Loss function MSE Context length 30 Transformer layers 6Embedding dimension 512 Attention heads 8
+
+Bias: Temporal Differencing. To suppress the torque-observation bias between the two domains, we apply temporal differencing to both observations: 
+
+∆τt = τm,t − τm,t −1. (2) After dynamometer calibration, applying (2) to (1) gives 
+
+∆ˆ τ real  
+
+> m,t
+
+= ∆ τ sim  
+
+> m,t
+
++ ( bt − bt−1)
+
+| {z }
+
+> baseline residual
+
++ (ϵt − ϵt−1)
+
+| {z }
+
+> differenced residual
+
+. (3) Temporal differencing cancels this baseline when bt = bt−1
+
+and attenuates its slowly varying components. It thus reduces sensitivity to observation baselines while preserving cues about changes in interaction loads. 
+
+Noise: Dynamometer-Residual Gaussian Injection. To improve policy robustness to residual noise in real-world torque observations, we inject Gaussian noise derived from experimental dynamometer data into the simulated torque observations during teacher training. For each motor type, we use the dynamometer regression RMSE reported in Table I as the standard deviation of the injected Gaussian noise. The resulting noise models are summarized in Table II. Let σj denote the noise standard deviation assigned to joint 
+
+j according to its motor type: σj = 0 .009843 N m for MCP joints and σj = 0 .002305 N m for PIP and DIP joints. At each observation step, Gaussian noise is added to the simulated torque observation as 
+
+eτ sim  
+
+> j,t
+
+= τ sim  
+
+> j,t
+
++ ϵj,t , ϵj,t ∼ N  0, σ 2
+
+> j
+
+ . (4)                                                        
+
+> TABLE IV DIMENSIONS OF THE TRAINING OBJECTS .Shape Dimensions [cm] ABCCuboid Base length ×height 6×68×810 ×8
+> Cylinder Radius ×height 4×44.5×4.55×5
+> Sphere Radius 44.55
+> TABLE V RANDOMIZATION APPLIED DURING TEACHER TRAINING .
+> Parameter Range
+> Robot: Initial MCP Joint Offset (rad) +U[−0.06 ,0.06]
+> Robot: Initial PIP Joint Offset (rad) +U[−0.35 ,0.35]
+> Object: Initial Position ( x,y) (m) +U[−0.01 ,0.01]
+> Object: Initial Yaw (rad) U[−π, π ]
+> Object: Mass ×U [0 .5,3.0]
+> Actuator: P (Stiffness) Gain ×U [0 .85 ,1.05]
+> Actuator: D (Damping) Gain ×U [0 .75 ,1.50]
+> Static Friction Coefficient U[0 .7,1.3]
+> Dynamic Friction Coefficient U[0 .7,1.3]
+> Perturbation: Downward Velocity (m/s) U[−0.5,0]
+> Perturbation: Interval (s) U[8 ,10]
+
+The policy receives the temporally differenced observation 
+
+∆eτ sim  
+
+> j,t
+
+= eτ sim  
+
+> j,t
+
+− eτ sim 
+
+> j,t −1
+
+= ∆ τ sim  
+
+> j,t
+
++ ϵj,t − ϵj,t −1. (5) This procedure exposes the policy to torque noise with a magnitude determined from real measurements while applying the same temporal-differencing process in both domains. 
+
+C. Learning Method 
+
+We consider a proprioceptive grasping task with a direct-drive multifingered gripper. Due to the high mechanical transparency of direct-drive actuation, contact-induced torque changes can be observed through motor current without tac-tile or external force sensors. The deployed policy therefore grasps, lifts, and holds an object using only proprioceptive observations (joint position qt and joint-torque change ∆τt). Training follows a teacher–student framework [3], [22], illus-trated in Fig. 5. The teacher policy uses a multilayer perceptron (MLP) with hidden dimensions [512, 256, 128]. We train the teacher using proximal policy optimization (PPO) [23] in Isaac Lab [9] with 9,000 parallel simulation environments for 2,000 iterations on an RTX 5090 GPU. For each student-policy configuration, we collect 90,000 demonstration trajectories. Teacher rollouts are retained when the task reward rt at the final step exceeds the corresponding selection threshold. The student policy uses a Transformer trained by behavior cloning for 2,000 epochs on the collected trajectories. The hyperpa-rameters for teacher and student training are summarized in Table III. We use cuboids, cylinders, and spheres as training objects, with three size variants (A–C) for each shape. Their dimensions are listed in Table IV. The teacher receives joint-level proprioceptive observations and simulator-only privileged information. Its observation is defined as 
+
+oT 
+
+> t
+
+= qt, ∆τt, a t−1, ˙qt, τ m,t , o priv 
+
+> t
+
+ ∈ R82 ,
+
+40                 
+
+> 20
+> 40
+> 60
+> 80
+> 100
+> Success rate (%)
+> ABCABCABC
+> 10.0
+> 55.6
+> 100.0
+> Average
+> Cuboid Cylinder Sphere
+> Noise Only Scale + Noise Bias + Noise Scale + Bias Our Method
+> 26.7
+> 62.2 Fig. 6. Real-world ablation of the three alignment operations on nine in-distribution objects (10 trials per object and variant). Bars show observed success rates. Error bars are shown only for Average and denote ±1standard error of the equally weighted mean across the nine objects, computed by propagating the per-object sampling variances under independent trials. Per-object error bars are omitted for clarity.
+
+where qt and ˙qt denote the joint positions and velocities, respectively; ∆τt is the joint-torque difference defined in (2); 
+
+τm,t is the joint-torque observation; and at−1 is the previous action. The privileged observation opriv  
+
+> t
+
+∈ R37 comprises the object position, orientation, linear and angular velocities, fingertip positions and orientations, and fingertip-to-object distances. In contrast, the deployable student receives only the joint positions and joint-torque differences: 
+
+oS 
+
+> t
+
+= qt, ∆τt
+
+ ∈ R18 .
+
+The action is a 9-dimensional vector of relative joint-position changes, at = ∆ θt ∈ R9. The policy operates at 20 Hz with a control period of Ts = 50 ms. The reward function is designed to encourage smooth object lifting while maintaining the object near the gripper center to promote grasp stability. It combines a task reward with an action-magnitude penalty and an action-rate penalty: 
+
+r = w1rt + w2ra + w3rar , (6) where w1 = 1 .0, w2 = −0.004 , and w3 = −0.002 . The task reward is defined as 
+
+rt =
+
+(fh(ht)fd(dxy ), (dxy < d max , h t < h cut )0 (otherwise ) (7) where fh measures the lifting progress and fd measures the planar-centering progress: 
+
+fh(ht) = 1 −
+
+
+
+clip 
+
+ h⋆ − ht
+
+h⋆ , 0, 1
+
+ 1/2
+
+, (8) 
+
+fd(dxy ) = 1 −
+
+
+
+clip 
+
+ dxy − dtol 
+
+dmax − dtol 
+
+, 0, 1
+
+ 1/2
+
+. (9) Here, ht denotes the object height relative to its environment-specific initial height, and dxy denotes the planar distance between the object and the gripper center. We use h⋆ = 3 cm ,
+
+dtol = 0 .1 cm , dmax = 10 cm , and hcut = 4 cm . The initial height is recorded at the first post-reset step of each simulation environment. The action-magnitude penalty discourages large relative joint-position commands and is defined as 
+
+ra = ∥at∥22 =
+
+> 9
+
+X
+
+> j=1
+
+a2 
+
+> t,j
+
+. (10) The action-rate penalty promotes smoother control during grasping and lifting by penalizing abrupt changes between consecutive commands: 
+
+rar = ∥at − at−1∥22 =
+
+> 9
+
+X
+
+> j=1
+
+(at,j − at−1,j )2. (11) An episode ends on timeout after 10 s, or when the object leaves the workspace, defined as a planar displacement ex-ceeding 10 cm from the gripper center. We apply domain randomization to initial conditions, physi-cal parameters, and external disturbances (see Table V). Joint-angle offsets and object poses are resampled at each episode reset. Object mass, actuator stiffness and damping, and static and dynamic friction coefficients are randomized once at environment initialization and remain fixed across subsequent episodes. Downward velocity perturbations are applied to the object at random time intervals to encourage stable grasping. III. E XPERIMENTS 
+
+This section evaluates the proposed observation alignment through zero-shot grasping on a DD multifingered gripper using only actuator proprioception. Each trial consists of four stages: a prescribed non-contact initial state, grasping, lifting, and holding. First, we compare five alignment variants on nine in-distribution (ID) objects (Fig. 6). The variants use different combinations of torque-constant calibration, temporal differencing, and measurement-derived noise injection. This experiment examines how each component affects real-world grasping performance. Second, we evaluate our method on 21 objects. The evaluation includes nine ID objects and twelve out-of-distribution (OOD) objects with unseen shapes, materials, and surface properties. This experiment assesses grasping performance and generalization to unseen objects (Fig. 7). Third, we analyze representative grasping sequences 5Simulation , 𝜋 s
+
+In-distribution        
+
+> Real-world, 𝜋 s
+> Small Middle Large
+> Small Middle Large
+> Small Middle Large
+> Box
+> Wine glass
+
+Out-of-distribution       
+
+> Stuffed toy Tennis ball Plastic container
+> Light bulb Bowl Mini soccer ball
+> Spool of thread Piggy bank
+> Real-world, 𝜋 s
+> Artificial orange Drinking glass
+
+Fig. 7. Objects used in the real-world evaluation. The evaluation includes 21 objects: nine in-distribution (ID) objects and twelve out-of-distribution (OOD) objects. The ID objects belong to the cuboid, cylinder, and sphere categories used during simulation training. The OOD objects are real-world items with previously unseen shapes, materials, and surface properties that fit within the gripper workspace. TABLE VI SIMULATION AND REAL -WORLD SUCCESS RATES OF STUDENT POLICIES 
+
+πs .Policy Observation Noise Success rate Simulation Real-world 
+
+Position Only [qt] N/A 68.9% 15.6% 
+
+Scale + Noise [qt, τ t] On 100.0% 26.7% 
+
+Scale + Bias [qt, ∆τt] Off 100.0% 62.2% 
+
+Our Method [qt, ∆τt] On 100.0% 100.0%   
+
+> All torque-based policies listed here use calibrated K∗
+> τat deployment.
+
+and ∆τ trajectories to characterize failure patterns during grasp establishment, lifting, and holding (Fig. 8). All policies are trained entirely in simulation and transferred to the real-world without fine-tuning or adaptation. 
+
+A. Ablation Study 
+
+We evaluate five torque-observation alignment variants on nine ID objects. The objects match the training shapes and dimensions listed in Table IV. We conduct ten trials per object for each variant. Each trial starts from the same prescribed non-contact initial condition. A trial is successful when the gripper grasps the object, lifts it completely from the support-ing surface, and holds it until the end of the 10-s episode. The five variants use different combinations of the three alignment components. Noise Only uses the datasheet Kτ and absolute torque τ with measurement-derived noise injection. 
+
+Scale + Noise replaces the datasheet value with the calibrated 
+
+K∗ 
+
+> τ
+
+while retaining absolute torque. Bias + Noise uses the datasheet Kτ and temporal difference ∆τ with noise injection. 
+
+Scale + Bias combines the calibrated K∗ 
+
+> τ
+
+and ∆τ without noise injection. Our Method combines the calibrated K∗ 
+
+> τ
+
+, ∆τ ,and measurement-derived noise injection. We train three torque-based student-policy configurations: an absolute-torque policy with noise, a ∆τ policy with noise, and a ∆τ policy without noise. Noise Only and Scale + Noise use the same absolute-torque policy, but one applies the datasheet Kτ and the other applies the calibrated K∗ 
+
+> τ
+
+during 
+
+TABLE VII REAL -WORLD GRASPING SUCCESS RATES ON ID AND OOD OBJECTS .                                                             
+
+> ID Objects OOD Objects #Object Rate #Object Rate
+> 1Cuboid A 100% 10 Box 100% 2Cuboid B 100% 11 Stuffed toy 100% 3Cuboid C 100% 12 Tennis ball 90% 4Cylinder A 100% 13 Plastic container 100% 5Cylinder B 100% 14 Wine glass 100% 6Cylinder C 100% 15 Light bulb 90% 7Sphere A 100% 16 Bowl 100% 8Sphere B 100% 17 Mini soccer ball 100% 9Sphere C 100% 18 Spool of thread 100% 19 Piggy bank 100% 20 Drinking glass 100% 21 Artificial orange 100%
+> Average 100.0% Average 98.3% Overall Average 99.0%
+
+deployment. Likewise, Bias + Noise and Our Method use the same noise-injected ∆τ policy. Scale + Bias uses a ∆τ
+
+policy trained without noise injection. All other training and deployment settings were kept identical across the variants. Table VI summarizes the simulation and real-world success rates of the student policies πs. Simulation evaluation also uses 10 trials per ID object, for a total of 90 trials per policy. We include a Position Only policy to evaluate the contribution of torque feedback beyond joint positions. The 
+
+Position Only student achieves 68.9% success in simulation, suggesting difficulty in reproducing the teacher’s behavior using joint positions alone, and 15.6% in the real world. All three torque-based students achieve 100.0% success in simulation. In the real world, the proposed method maintains 100.0% success, whereas the absolute-torque policy achieves 26.7% and the torque-difference policy without noise injection achieves 62.2%. These results support the value of torque feedback for distillation and highlight the importance of ob-servation alignment for real-world deployment. 
+
+Our Method achieves 100.0% success on all nine ID objects, as shown in Fig. 6. Noise Only achieves 10.0%, and 
+
+Scale + Noise achieves 26.7%. These results indicate that the remaining bias mismatch significantly affects reliable sim-to-real transfer of absolute-torque observations. Bias + Noise in-6(b) Grasping, Lifting fail mode                  
+
+> (c) Holding fail mode
+> ∆𝜏 measurement
+> (a) Success mode
+> Initial state Lifting Holding Grasping
+> 𝐾 𝑡 ∗, ∆𝜏 (w/o noise)
+> 𝐾 𝑡 , ∆𝜏
+> Fail
+> Fail
+> Our method Scale + Bias Bias + Noise
+> Lifting fail
+> Holding fail
+> Success Fig. 8. Representative real-world grasping sequences and motor-current-derived ∆τtrajectories for the complete method and two ∆τablations on the DD gripper. The sequences show grasp outcomes alongside the torque-change observations. (a) Our Method , using calibrated K∗
+> τand noise injection, completes the grasp–lift–hold task. (b) Scale + Bias , using calibrated K∗
+> τwithout noise injection, exhibits a grasping/lifting failure. (c) Bias + Noise , using the datasheet
+> Kτwith noise injection, exhibits a holding failure. In the plot legends, F1–F3 denote the three fingers, while MCP, PIP, and DIP denote the three joints of each finger.
+
+creases the success rate to 55.6%, showing the benefit of tem-poral differencing. Adding scale calibration increases this re-sult to 100.0% with Our Method . This 44.4-percentage-point improvement highlights the importance of torque-constant calibration for reliable zero-shot policy transfer. Scale + Bias 
+
+achieves 62.2%, whereas adding noise injection increases the result to 100.0%. This 37.8-percentage-point improvement supports the use of noise injection during training to improve real-world grasping performance. Together, these comparisons demonstrate the complementary roles of all three alignment operations in zero-shot sim-to-real transfer. 
+
+B. Real-World Grasping Experiments 
+
+We evaluate our method on 21 objects under the same protocol as the ablation study. The twelve OOD objects are previously unseen real-world objects with combinations of geometry, material, and surface properties not represented during training. Each object is evaluated over 10 trials from the same prescribed initial condition. As summarized in Table VII, our method achieves average success rates of 100.0% on the ID objects and 98.3% on the OOD objects, resulting in an overall success rate of 99.0%. The two unsuccessful trials involved the light bulb and the ten-nis ball. The light bulb tilted to one side before falling during holding, whereas the tennis ball slipped between the fingers during lifting. These results show that our method enables zero-shot proprioceptive grasping of previously unseen objects using DD actuator proprioception. The high mechanical trans-parency of DD actuation allows motor-current-derived torque changes to provide cues about contact onset and changing interaction loads. The deployed policy only uses these cues together with joint positions, without external sensors. 
+
+C. Failure-Mode Analysis 
+
+We examine representative unsuccessful trials to illustrate failure patterns during grasp establishment, lifting, and hold-ing. Because the absolute-torque variants do not achieve reliable transfer, as shown in Fig. 6, the analysis focuses on the three ∆τ variants in Fig. 8. These variants are the Our Method , the calibrated variant without training noise Scale + Bias , and the datasheet-Kτ variant Bias + Noise .All three variants exhibit an initial torque transient dur-ing closure. After contact, the complete method produces a coordinated torque transition followed by rapid stabilization. In contrast, both ablated variants exhibit continued torque redistribution after the initial closure transient. The datasheet values overestimate the GL60 and GL40 torque channels by 38.0% and 7.8%, respectively, relative to their calibrated val-ues. These unequal scale errors alter the relative torque pattern across joints driven by the two motor types. The corresponding grasp sequence shows continued closure after contact, middle-finger overtravel, and asymmetric support by the remain-ing fingers. The variant trained without measurement-derived noise instead exhibits repeated action corrections and unstable torque redistribution before lifting. Both observation mismatches are associated with a loss of balanced three-finger support. Grasp-establishment failure occurs when a stable three-finger contact configuration is not formed. Lift failure occurs when an asymmetric grasp cannot support the object during lifting, while hold failure occurs when the object is lifted but subsequently loses support. In contrast, Our Method stabilizes the grasp after contact and maintains coordinated support throughout grasping, lifting, and holding. Together, the ablation results and measured ∆τ
+
+trajectories show that the proposed torque-observation align-ment improves the reliability of zero-shot sim-to-real transfer. 7IV. D ISCUSSION AND LIMITATIONS 
+
+Despite the successful sim-to-real transfer, the proposed method has several limitations. First, the deployed policy uses torque differences rather than absolute torque and does not directly observe sustained torque levels. In our task, lifting involves dynamic motion, whereas the settled holding phase is quasi-static. Baseline suppression assumes slowly varying offsets, so more dynamic tasks may require additional com-pensation. Second, the torque constants and noise parameters are identified under specific dynamometer conditions. Their validity across motor units and operating temperatures requires further evaluation. Third, the experiments focus on single-object grasping with a fixed-base gripper under prescribed initial conditions, using objects within its workspace. Further evaluation with an arm-mounted gripper is needed to assess grasping across a wider variety of objects. The results highlight the value of motor-current feedback for sim-to-real grasping when scale, baseline, and noise dif-ferences are addressed. The proposed method aligns policy observations without learning an actuator model or requiring real-world policy training. The resulting policy grasps unseen objects using joint positions and torque changes, without vision or dedicated tactile and force/torque sensors. These findings support proprioceptive feedback as a useful source of contact information for DD grippers. Future work will integrate the DD gripper with a robotic arm to evaluate grasping across a broader range of objects with different sizes and stiffnesses, and investigate damage-free grasping of deformable objects using proprioceptive torque feedback without external sensors. V. C ONCLUSION 
+
+We presented a simple torque-observation alignment method for robots with DD actuators and validated it through zero-shot grasping on a DD multifingered gripper. Dynamometer calibration reduces torque-scale mismatch, temporal differ-encing cancels constant offsets and attenuates slowly varying baselines, and Gaussian noise based on dynamometer residuals is injected during training to improve robustness to residual observation noise. The method requires neither a learned actuator model nor real-world policy training. Real-world ablations show the highest success when all three alignment components are combined. The policy achieved 100.0% success on nine ID objects and 98.3% on twelve OOD objects, with an overall success rate of 99.0%. Building on the high mechanical transparency of DD actuation, the proposed approach uses simple observation processing to make motor-current-derived torque changes usable as feedback about contact onset and varying interaction loads. Under the evaluated grasp–lift–hold conditions, joint positions and torque differences support zero-shot proprioceptive grasping without vision or dedicated tactile or force/torque sensors. REFERENCES [1] M. Andrychowicz, B. Baker, M. Chociej et al. , “Learning dexterous in-hand manipulation,” International Journal of Robotics Research , vol. 39, no. 1, pp. 3–20, 2020. [2] A. Handa, A. Allshire, V. Makoviychuk et al. , “Dextreme: Transfer of agile in-hand manipulation from simulation to reality,” in Proceedings of the IEEE International Conference on Robotics and Automation (ICRA) ,2023, pp. 5977–5984. [3] T. Chen, J. Xu, and P. Agrawal, “A system for general in-hand object re-orientation,” in Proceedings of the 5th Conference on Robot Learning (CoRL) , ser. Proceedings of Machine Learning Research, vol. 164. PMLR, 2022, pp. 297–307. [4] H. Zhang, Z. Wu, L. Huang, S. Christen, and J. Song, “RobustDexGrasp: Robust dexterous grasping of general objects,” in Proceedings of the Conference on Robot Learning (CoRL) , 2025, arXiv:2504.05287. [5] M. Bauza, J. E. Chen, V. Dalibard, N. Gileadi, R. Hafner, M. F. Martins, J. Moore, R. Pevceviciute, A. Laurens, D. Rao, M. Zambelli, M. Ried-miller, J. Scholz, K. Bousmalis, F. Nori, and N. Heess, “DemoStart: Demonstration-led auto-curriculum applied to sim-to-real with multi-fingered robots,” arXiv preprint arXiv:2409.06613 , 2024. [6] T. G. W. Lum, K. Kedia, C. K. Liu, and J. Bohg, “Play2Perfect: What matters in dexterous play pretraining for precise assembly?” arXiv preprint arXiv:2606.26428 , 2026. [7] A. Bhatia, A. M. Johnson, and M. T. Mason, “Direct drive hands: Force-motion transparency in gripper design,” in Proceedings of Robotics: Science and Systems , 2019. [8] E. Todorov, T. Erez, and Y. Tassa, “Mujoco: A physics engine for model-based control,” in 2012 IEEE/RSJ International Conference on Intelligent Robots and Systems , 2012, pp. 5026–5033. [9] M. Mittal, P. Roth, J. Tigue et al. , “Isaac lab: A gpu-accelerated simulation framework for multi-modal robot learning,” arXiv preprint arXiv:2511.04831 , 2025. [10] P. I. Corke, “In situ measurement of motor electrical constants,” Robot-ica , vol. 14, no. 4, pp. 433–436, 1996. [11] D. Lin, P. Zhou, and Z. J. Cendes, “In-depth study of the torque constant for permanent-magnet machines,” IEEE Transactions on Magnetics ,vol. 45, no. 12, pp. 5383–5387, 2009. [12] M. Hu, W. Hua, Z. Wu, N. Dai, H. Xiao, and W. Wang, “Compensation of current measurement offset error for permanent magnet synchronous machines,” IEEE Transactions on Power Electronics , vol. 35, no. 10, pp. 11 119–11 128, 2020. [13] L. Campanaro, S. Gangapurwala, W. Merkt, and I. Havoutis, “Learn-ing and deploying robust locomotion policies with minimal dynamics randomization,” arXiv preprint arXiv:2209.12878 , 2022. [14] W. Cha, J. R. Cha, J. Shin, D. Kim, and J. Park, “Sim-to-real of humanoid locomotion policies via joint torque space perturbation in-jection,” arXiv preprint arXiv:2504.06585 , 2025. [15] J. Tan, T. Zhang, E. Coumans et al. , “Sim-to-real: Learning agile locomotion for quadruped robots,” in Proceedings of Robotics: Science and Systems (RSS) , 2018. [16] S. Masuda and K. Takahashi, “Sim-to-real transfer of compliant bipedal locomotion on torque sensor-less gear-driven humanoid,” arXiv preprint arXiv:2204.03897 , 2022. [17] J. Hwangbo, J. Lee, A. Dosovitskiy et al. , “Learning agile and dynamic motor skills for legged robots,” Science Robotics , vol. 4, no. 26, p. eaau5872, 2019. [18] N. Rudin, D. Hoeller, P. Reist, and M. Hutter, “Learning to walk in minutes using massively parallel deep reinforcement learning,” in 
+
+Proceedings of the 5th Conference on Robot Learning , ser. Proceedings of Machine Learning Research, vol. 164. PMLR, 2022, pp. 91–100. [19] R. P. Singh, Z. Xie, P. Gergondet, and F. Kanehiro, “Learning bipedal walking for humanoids with current feedback,” IEEE Access , vol. 11, pp. 82 013–82 023, 2023. [20] Z. Zhao, H. Dong, Z. He et al. , “Closing the reality gap: Zero-shot sim-to-real deployment for dexterous force-based grasping and manipulation,” arXiv preprint arXiv:2601.02778 , 2026. [21] B. Katz, “Motor dyno updates, first tests,” Robot Daycare, Oct. 2016, accessed: Sep. 18, 2026. [Online]. Available: https://robot-daycare.com/ posts/2016-10-09-motor-dyno-updates-first-tests/ [22] E. Lee, J. Choi, T. Kim, C. Nam, and S. Jeong, “Learning blind grasping with uniaxial fingertip force sensors,” in Proceedings of the IEEE/ASME International Conference on Advanced Intelligent Mechatronics (AIM) ,2026. [23] J. Schulman, F. Wolski, P. Dhariwal, A. Radford, and O. Klimov, “Prox-imal policy optimization algorithms,” arXiv preprint arXiv:1707.06347 ,2017. 
+
+8
