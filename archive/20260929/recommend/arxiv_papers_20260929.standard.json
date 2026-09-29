@@ -1,16 +1,57 @@
 {
   "mode": "standard",
-  "generated_at": "2026-09-29T00:14:47.284081+00:00",
+  "generated_at": "2026-09-29T22:50:14.916048+00:00",
   "stats": {
     "mode": "standard",
     "tag_count": 1,
     "deep_divecandidates": 0,
     "deep_cap": 6,
     "deep_selected": 0,
-    "quick_candidates": 0,
+    "quick_candidates": 1,
     "quick_skim_target": 11,
-    "quick_selected": 0
+    "quick_selected": 1
   },
   "deep_dive": [],
-  "quick_skim": []
+  "quick_skim": [
+    {
+      "id": "2609.30873v1",
+      "title": "A Second Torque Port for Series Elastic Actuators: Parallel-Integrated Design and Time-Scale Torque Allocation",
+      "abstract": "A series elastic actuator has a single torque port and pays for it twice: the geared motor must swing its own reflected inertia through the spring, so the amplitude it delivers collapses as $ω^{-2}$ in the command frequency $ω$ once it saturates, while commands below the transmission's breakaway friction never arrive at all. This letter opens a second torque port on the load side, placing a frameless direct-drive micro motor in parallel with a fixed-stiffness spring -- a parallel-integrated SEA, or Pi-SEA, whose delivered torque is read from spring deflection and micro current without a sensor -- and dividing the commanded torque between the two channels by time scale rather than by filter design. The micro torque loop is the fast subsystem, which makes the closed loop singularly perturbed and turns the separation the channels need into a bound to check rather than a crossover to tune; a leaky mid-ranging integrator returns the steady load to the spring; and the amplitude ceiling, read backwards, becomes a closed-form sizing rule that matches spring, geared motor and micro motor to the amplitudes and frequencies an application asks for. Against SEAs, the Pi-SEA widens the tracked band at small amplitudes and lowers the residual the joint imposes on its environment, each by an order of magnitude.",
+      "authors": [
+        "Donghao Jia",
+        "Xiubo Xia",
+        "Junhang Liu",
+        "Zeyu Zhu",
+        "Xiaoyu Geng",
+        "Jian Sun"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "eess.SY"
+      ],
+      "published": "2026-09-25T06:30:31+00:00",
+      "link": "https://arxiv.org/pdf/2609.30873v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "direct-drive micro motor in actuator design",
+      "llm_evidence_cn": "执行器设计中的直驱微电机",
+      "llm_evidence": "执行器设计中的直驱微电机",
+      "canonical_evidence": "执行器设计中的直驱微电机",
+      "llm_tldr_en": "A parallel-integrated series elastic actuator design using a direct-drive micro motor for torque allocation.",
+      "llm_tldr_cn": "一种利用直驱微电机进行转矩分配的并行集成串联弹性执行器设计。",
+      "llm_tldr": "一种利用直驱微电机进行转矩分配的并行集成串联弹性执行器设计。",
+      "llm_tags": [
+        "query:pmsm"
+      ],
+      "matched_query_tag": "query:pmsm",
+      "matched_query_text": "Permanent Magnet Synchronous Motor research",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
 }

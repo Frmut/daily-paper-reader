@@ -1,0 +1,445 @@
+Title: A Second Torque Port for Series Elastic Actuators: Parallel-Integrated Design and Time-Scale Torque Allocation
+
+URL Source: https://arxiv.org/pdf/2609.30873v1
+
+Published Time: Mon, 28 Sep 2026 00:50:29 GMT
+
+Number of Pages: 8
+
+Markdown Content:
+# A Second Torque Port for Series Elastic Actuators: Parallel-Integrated Design and Time-Scale Torque Allocation 
+
+Donghao Jia 1, Xiubo Xia 1, Junhang Liu 1, Zeyu Zhu 1, Xiaoyu Geng 1 and Jian Sun 1,∗
+
+Abstract — A series elastic actuator has a single torque port and pays for it twice: the geared motor must swing its own reflected inertia through the spring, so the amplitude it delivers collapses as ω−2 in the command frequency ω once it saturates, while commands below the transmission’s breakaway friction never arrive at all. This letter opens a second torque port on the load side, placing a frameless direct-drive micro motor in parallel with a fixed-stiffness spring—a parallel-integrated SEA, or Pi-SEA, whose delivered torque is read from spring deflection and micro current without a sensor—and dividing the commanded torque between the two channels by time scale rather than by filter design. The micro torque loop is the fast subsystem, which makes the closed loop singularly perturbed and turns the separation the channels need into a bound to check rather than a crossover to tune; a leaky mid-ranging integrator returns the steady load to the spring; and the amplitude ceiling, read backwards, becomes a closed-form sizing rule that matches spring, geared motor and micro motor to the amplitudes and frequencies an application asks for. Against SEAs, the Pi-SEA widens the tracked band at small amplitudes and lowers the residual the joint imposes on its environment, each by an order of magnitude. 
+
+I. INTRODUCTION Series elastic actuators (SEAs) buy force control with a spring: a calibrated deflection replaces the torque sensor, the spring bounds what a collision transmits, and disturbance-observer designs have made the torque loop accurate [1], [2]. The motor’s own inertia sends the bill. Torque reaching the load is first stored in the spring, so the geared motor must swing its reflected inertia through the deflection the command asks for; the amplitude it can still deliver therefore falls as ω−2 in the command frequency ω once its torque saturates. We call this the amplitude ceiling : the large-torque bandwidth limit derived in Sec. III-A, of which maximum-torque-transmissibility analysis gives a closed-loop counter-part [3], and one that controller gain does not lift. The prototype below, held to 100 N m on the macro channel by the software clamp under which the bandwidth campaign was run, delivers a measured 3.21 N m at 20 Hz under that clamp. Softening the spring lowers the ceiling; stiffening it recovers bandwidth by removing the compliance the spring exists for [4]. At the other end of the amplitude range the transmission that reflects the inertia breaks away at 9.03 N m,               
+
+> 1The authors are with the School of Mechanical Engineering and Automation, Beihang University, Beijing 100191, China (
+
+donghaojia@buaa.edu.cn ; ∗corresponding author, 
+
+buaasunjian@buaa.edu.cn ). This work received no institutional funding. This work has been submitted to the IEEE for possible publication. Copyright may be transferred without notice, after which this version may no longer be accessible. 
+
+and commands well below that are not delivered at all. One spring, one motor, one port—the two failures have one cause, and both grow with the reduction ratio. The most developed response makes the compliance adjustable: variable-stiffness actuators reshape the torque– deflection characteristic with a second motor and a dedi-cated transmission [5], [6], adjustable-equilibrium designs take that freedom in discrete steps [7], and parallel designs place the spring alongside a direct-drive motor rather than behind it [8]. That literature names the cost: existing designs generally do not let both motors contribute to output power at once [9], so the second motor’s torque never reaches the load, while the mechanism adds mass and volume and rate-limits the stiffness itself [6]. Damping, the other mechanical knob [10], [11], suppresses the resonance the ceiling leaves but cannot supply the torque it denies. In all of them the load torque still crosses one elastic port: the ceiling moves with 
+
+Ks but stays. The control side is equally bounded. Elastic-structure-preserving control and its robust extension [12], [13] and adaptive-robust torque control [14] enlarge what one motor renders, and the same family bounds it by the actuator behind the spring [15]. Singular perturbation has reached compliant-robot control with the elastic mode as the fast subsystem [16], [17]—a reading of the same single-actuator plant, not a second source of torque. The remedy that acts on the cause is a second torque port bypassing the spring. Parallel-coupled micro–macro actua-tion [18] and the distributed macro–mini architecture [19]– [22] put a small motor at the load beside a large compliant one and let it render what the macro channel leaves of the command; the pairing has since been built with brakes [23], [24], a second geared motor [25] and an elastic aerial suspen-sion [26], with its stability under interaction studied [27]. In these designs one torque is known only indirectly, through a gear or cable, a transducer or a spring measured away from the load, and three things the designer needs never appear: a condition, rather than a filter corner, on how far apart in speed the two channels must be; a bound on the share the fast motor keeps at DC, which mid-ranging provides in process control [28] but redundancy resolution and predictive optimization do not; and a closed-form size for the small motor from the ceiling the geared macro’s own inertia sets, rather than a design procedure or an optimization over efficiency and mass [29]. This letter keeps one fixed-stiffness spring and adds a frameless direct-drive micro motor coaxial with the joint, stator on the housing and rotor on the link (Figs. 1 and 4), arXiv:2609.30873v1 [cs.RO] 25 Sep 2026 Fig. 1. Single-joint model of the parallel-integrated SEA. The slow subsystem is the compliant SEA–load interaction, the fast subsystem the torque loop of the load-side micro motor, whose torque reaches the load without passing through the spring or the reduction. 
+
+forming a parallel-integrated SEA (Pi-SEA). With no trans-mission the micro torque is read from its current and the spring torque from its deflection, so the delivered torque— and with it the torque the joint exerts on whatever holds the load—is known without a transducer, and the allocation acts on delivered rather than commanded torque. The micro torque loop is then the fast subsystem and the spring–load interaction the slow one, so how fast the second actuator must be is not a filter corner to tune but a bound to check, ϵ⋆ of Theorem 1. A leaky mid-ranging law returns the steady load to the spring with a proved floor, and the amplitude ceiling of the elastic channel, read backwards, sizes the micro motor in closed form. The scope is one joint, a regulation-scope bound that depends on the state scaling, and no bandwidth advantage claimed where the residual exceeds the micro motor’s short-term peak. Section II develops the allocation and its stability, Sec. III the sizing rule and the prototype, and Sec. IV the experi-ments. II. DUAL-TIME-SCALE TORQUE ALLOCATION 
+
+A. Dynamic Model and Time-Scale Separation 
+
+Fig. 1 shows the single-joint model. With θs = θm − q the spring deflection and Fs = Ksθs the torque it carries, flange and load obey 
+
+Jm ¨θm + Bm ˙θm = τm − Fs + dm,Jl ¨q = Fs + τμ + τext + dl, (1) with θm, q the flange and load positions, Jm, Bm the reflected motor inertia and damping, Jl the load inertia, τm,
+
+τμ the macro and micro torques, τext the external torque, and 
+
+dm, dl the lumped disturbances, dm dominantly friction. Un-like conventional SEA singular-perturbation analyses, which take the elastic mode as the fast dynamics [16], θs stays a slow state here. Write ωs and ωμ for the characteristic bandwidths of the SEA–load dynamics and of the micro motor’s inner torque loop. The micro motor carries no reduction and no spring, so ωμ ≫ ωs by construction, and their ratio 
+
+ϵ = ωs/ω μ ≪ 1 (2)     
+
+> Fig. 2. Dual-time-scale allocation: the macro channel is force-controlled on the spring deflection with a leaky mid-ranging integral, the micro channel renders the residual τd−Fs, and both act on the common load.
+
+is the small parameter of the analysis: the micro torque loop is the fast subsystem, the SEA–load interaction the slow one. Over the band of interest that inner loop is a first-order lag, 
+
+τμ(s)
+
+τ ⋆μ (s) = aμ
+
+ϵs + aμ
+
+, aμ > 0, (3) with τ ⋆μ the commanded micro torque and aμ the loop pole written in the slow time scale, so that aμ/ϵ = ωμ. We call the series-elastic channel the macro actuator and the second motor the micro actuator. 
+
+B. Force Controller 
+
+Let τd be the commanded load-side torque. The macro channel is force-controlled on the spring deflection (Fig. 2), 
+
+τ ⋆m = τff + Kps (θds − θs) + Kds ( ˙θds − ˙θs) + KI η − ˆdm, (4) with the deflection set-point θds = τd/K s, deflection gains 
+
+Kps , K ds > 0 and mid-ranging gain KI > 0. Of the remaining two terms, ˆdm is the output of the motor-side disturbance observer drawn in Fig. 2: following [1] it treats the measured spring torque as an external input, so its nominal inverse plant is P −1 
+
+> n
+
+(s) = Jms2 + Bms and the residual it leaves is ˜dm = dm − ˆdm. The feedforward τff is the command scaled by the share of the macro torque that reaches the load: unity when the load is held, and 
+
+τff =
+
+
+
+1 + Jm
+
+Jl
+
+
+
+τd (5) for a free inertial load, since below the SEA–load resonance the spring is quasi-rigid and only Jl/(Jm + Jl) of the macro torque arrives. A gravity term restores the load about its own equilibrium, so (5) applies only well above the pendulum frequency pmgl/J l. The mid-ranging state is the leaky integral of the micro torque, 
+
+˙η = τμ − λη, λ > 0, (6) implemented with anti-windup saturation. Through KI η it transfers whatever the micro motor carries at low frequency to the macro channel, and the leak bounds it, ∥η∥∞ ≤∥η(0) ∥e−λt + ∥τμ∥∞/λ , whether or not the loop reaches a constant equilibrium. The micro channel renders the residual between the com-mand and what the spring delivers, 
+
+τ ⋆μ = h(x, τ d) := τd − Ksθs. (7) The joint’s output torque is Tid = Fs + τμ, so 
+
+Tid − τd = τμ − h(x, τ d) =: y, (8) the output torque error equals the tracking error of the fast channel : the macro loop and the mid-ranging integral decide how the delivered torque is split , not whether it is delivered. Define the slow and fast states 
+
+x = q ˙q θs ˙θs ηT ∈ R5, z = τμ ∈ R. (9) The closed loop is then in standard singularly perturbed form, 
+
+˙x = f (x, z, τ d), (10) 
+
+ϵ ˙z = −aμz + aμh(x, τ d), (11) which separates the slow SEA–load interaction from the fast micro torque tracking. 
+
+C. Singular-Perturbation Stability 
+
+The analysis is for the nominal closed loop with constant 
+
+τd = τ ⋆d , ˜dm = 0 and dl = 0 ; bounded residual disturbances and slowly varying commands enter as inputs and give local practical stability. 
+
+1) Reduced and boundary-layer subsystems: Setting ϵ =0 in (11) gives the slow manifold z = h(x, τ d), on which 
+
+τμ = τ ⋆μ and, by (8), Tid = τd. Substituting into (10) yields the reduced system 
+
+Σ0 : ˙x = fr (x, τ d) := f (x, h (x, τ d), τ d), (12) the SEA–load loop under an ideal micro torque source. With the fast error y = z−h(x, τ d) and the stretched time σ = t/ϵ ,the boundary-layer system for frozen x is 
+
+Σb : dy dσ = −aμy, (13) exponentially stable for aμ > 0; q stays with the slow dynamics, and only the convergence of τμ to its command is fast. 
+
+2) Composite stability: Throughout, f and h are contin-uously differentiable and locally Lipschitz near the equilib-rium, with both actuators away from their torque limits. The one condition that is not automatic is the stability of the reduced loop. 
+
+Assumption 1 (Reduced slow-subsystem stability): For constant τ ⋆d , the reduced system (12) has an equilibrium 
+
+x⋆ with h(x⋆, τ ⋆d ) = λη ⋆, and admits a Lyapunov function Vs(x) satisfying the quadratic sandwich and decay conditions (18)–(19) with constants c1, c 2, α s > 0.For the linearized macro loop this holds whenever the Routh–Hurwitz condition (20) on (Kps , K ds , K I , λ ) is met, which also upper-bounds KI (Remark 1). 
+
+Theorem 1 (Local exponential stability): Under Assump-tion 1 there exists ϵ⋆ > 0, given explicitly by (24), such that the equilibrium (x, y ) = ( x⋆, 0) of (10)–(11) is locally exponentially stable for all 0 < ϵ < ϵ ⋆.For time-varying commands the fast error picks up 
+
+−ϵ(∂h/∂τ d) ˙ τd, so by (8) the output torque error is propor-tional to the command rate. 
+
+3) Steady-state allocation: At any constant equilibrium (6) gives ˙η = 0 , hence 
+
+lim  
+
+> t→∞
+
+τμ(t) = λη ⋆, (14) and, since y → 0, h(x⋆, τ ⋆d ) = λη ⋆: the micro motor renders the transient and sheds the steady load to the spring channel up to a floor proportional to the leak. Since η⋆ is set by the macro channel’s stick–slip equilibrium and its integral gain, not by λ, (14) predicts a τ ⋆μ linear in λ. Whether that floor can be driven to zero by λ → 0 is a separate question this letter does not settle. 
+
+D. Frequency-Domain Reading of the Allocation 
+
+Previous designs specify their split in the frequency do-main [18], [19]; here it is a closed-loop property. Lineariz-ing about the equilibrium of Theorem 1, with Hm(s) = 
+
+Fs(s)/τ d(s) the transfer from command to spring torque, 
+
+τμ
+
+τd
+
+= aμ
+
+ϵs + aμ
+
+ 1 − Hm(s), Tid 
+
+τd
+
+= Hm + τμ
+
+τd
+
+, (15) so the micro channel is the exact complement of what the spring channel fails to deliver, low-passed by the micro loop, with DC content O(λ)—the frequency-domain face of (14). A filter divides the command , (7) the delivered torque, so this crossover migrates to wherever the spring channel stops delivering. III. DESIGN RULE AND PROTOTYPE 
+
+A. Design Rule: Spring, Macro and Micro Actuator 
+
+The three hardware quantities of the joint—the spring stiffness Ks, the macro motor’s output-side acceleration 
+
+τ max  
+
+> m
+
+/J m, and the micro torque Tμ—are tied together by the large-torque envelope of the two channels, without tuning weights. To deliver a load torque of amplitude A at frequency 
+
+ω through the spring, the macro motor must swing its own reflected inertia by A/K s, which costs AJ mω2/K s of motor torque; bounded by τ max  
+
+> m
+
+, the macro channel can supply at most Amacro (ω) = τ max  
+
+> m
+
+Ks/(Jmω2), a −40 dB/dec ceiling that no controller gain moves, since it is the torque the command asks of the motor whatever the control law. This is why a modest output specification buys a large joint: at 20 Hz the ω2 factor is 1.6 × 10 4, so a few N m at the load consumes a 100:1 joint’s whole peak torque, nearly all of it turning the reflected inertia round. The micro channel drives the load directly and contributes a flat Tμ. Requiring their sum to cover the specification gives 
+
+Tμ ≥ A − Ks
+
+ω2
+
+τ max 
+
+> m
+
+Jm
+
+, (16) in which the figure of merit τ max  
+
+> m
+
+/J m degrades as 1/N in the reduction ratio ( τ max  
+
+> m
+
+∝ N , Jm ∝ N 2), the penalty that motivates quasi-direct-drive actuation [30]. Only the ω2 term Fig. 3. The sizing rule (16) as a design surface for the 10 N m at 20 Hz specification. Height and colour are the micro torque Tμ the rule requires at each (Ks, τ max    
+
+> m/J m), falling to zero where the macro channel already covers the specification alone; a motor serves everything below its own magenta iso-line. The orange curves section the surface at the as-built joint; the shortfall they show is a prediction at the joint’s peak torque, quantified in the text.
+
+is kept, so (16) is the asymptote above the coupled spring– load resonance ωres =
+
+q
+
+Ks(J−1 
+
+> m
+
++ J−1 
+
+> l
+
+); past ωres /√2 it overstates what the command asks of the macro motor, and so sizes Tμ conservatively. Read the other way, (16) is the force bandwidth a given hardware set reaches at amplitude 
+
+A,
+
+fmax (A) = 12π
+
+s
+
+τ max  
+
+> m
+
+Ks
+
+Jm (A − Tμ) for A > T μ, (17) while for A ≤ Tμ the micro loop bandwidth ωμ sets the reach. The regimes meet at ωcross = pτ max  
+
+> m
+
+Ks/(JmTμ):below it (16) sizes the micro motor, above it the largest command the micro motor carries alone does. 
+
+B. Specification, Selection and Prototype 
+
+Voluntary motion in daily activities lies below 2 Hz and pathological tremor concentrates in 3–12 Hz, with compo-nents reported up to 17.3 Hz [31]. The joint’s own design target is A = 10 N m at 20 Hz, above that band. The macro joint is a rigid integrated unit, harmonic drive 100:1, rated 52 N m continuous and 170 N m peak, data-sheet reflected inertia 1.47 kg m 2, with a spring designed for 750 N m/rad. (16) is a large-torque envelope held for the duration of a command, so it is evaluated at the peak throughout this letter, and it asks for Tμ ≥ 4.51 N m; a frameless torque motor, MOSRAC U9424DJA01 rated 2.10/6.30 N m continu-ous/peak at kt = 0 .127 N m/A, meets it with a 1.40 × margin. Over the (Ks, τ max  
+
+> m
+
+/J m) plane, (16) becomes the design surface of Fig. 3, which makes the same selection for any joint. The prototype (Fig. 4) mounts the parallel module on the joint flange: a torsion spring connects the flange to the link, and the frameless motor, stator on the housing and rotor on the link, injects τμ without a transmission.                                       
+
+> TABLE I PARAMETERS IDENTIFIED ON THE ASSEMBLED PROTOTYPE AND THE GAINS AND LOAD CONDITIONS USED .Symbol Value Symbol Value
+> Jm[kg m 2]1.56 Kps [N m/rad] 8000
+> Bm[N m s/rad] 12.2 Kds [N m s/rad] 160
+> τb[N m] 9.0 KI,λ[1/s] 10, 0.1
+> Ks[N m/rad] 780 Nd,ωQ[rad/s] 300, 50
+> kt(meas.) [N m/A] 0.105 Jlbar / link [kg m 2]0.071 / 0.30
+> ωμ/2π[Hz] 745 aμ[rad/s] 112
+> Tμcont./peak [N m] 1.7/3.0
+
+θm and q come from the joint and micro-rotor encoders. Identified parameters are listed in Table I; the micro drive’s 
+
+I2t protection holds the usable micro torque to 1.70/3 N m continuous/peak. The as-built point of Fig. 3 therefore sits above the delivered iso-line, missing the specification by a factor 1.30 on τ max  
+
+> m
+
+/J m: at the joint’s 170 N m peak the rule predicts 8.38 N m at 20 Hz, or 10 N m up to 17.5 Hz, while the campaign below runs under a 100 N m clamp. Its crossover ωcross /2π = 20 .5 Hz lies beyond the 15–16 Hz at which the closed macro loop runs out of phase, so the micro motor works in the small-amplitude regime. IV. EXPERIMENTAL VALIDATION 
+
+A. Setup, Baseline and Metrics 
+
+All experiments use Table I and the 100 N m macro clamp unless another is named. The macro-only baseline is the same controller with the micro motor disabled and the gains unchanged, so the two differ in nothing but the second channel: with τμ ≡ 0 the allocation degenerates to a feed-forward, deflection-PD and disturbance-observer force loop of the family benchmarked in [1], [2]. A second baseline replaces (7) by a fixed first-order split of the command ,cornered at 2 Hz or at 18.1 Hz. The feed-forward (5) is used on the free bar and at 4 Hz on the gravity link, τff = τd below the link’s 0.790 Hz pendulum. No external torque sensor is used: the delivered torque is Tid = Ksθs + τμ, with τμ the measured current times the measured kt of Table I, read back 3.99 ms after the command over EtherCAT, from the readback phase at 20 Hz; the 1 kHz bus schedule puts about two cycles of that before the torque acts and two after it, so the logged Tid trails the physical torque by about 2 ms, 7◦
+
+at 10 Hz. A command is tracked where |1 − Tid /τ d| ≤ 0.5, a 
+
+29 ◦ phase lag at unity gain. The accompanying video shows the hand-push and gravity-link runs. 
+
+B. Time-Scale Separation: ϵ against ϵ⋆
+
+The two time scales are ωμ/2π = 745 Hz for the mi-cro torque loop, its −45 ◦ point measured on a jig, and 
+
+ωs/2π = 17 .8 Hz for the SEA–load resonance, read from the free-bar chirp of Sec. IV-E against 17.1 Hz from the identified parameters, so ϵ = 0.024 ; the clamped loop’s dominant poles, at 11.8 Hz, give a smaller ϵ = 0 .016 , so this choice is conservative. The EtherCAT lag of Sec. IV-A is a transport delay outside the first-order model (3) and does not enter ϵ. Evaluated for the clamped load—the case in which Assumption 1 holds without an added load (a) (b) Fig. 4. The prototype as built. (a) Cross-section: the torsion spring ( Ks) and the frameless micro motor ( τμ) act in parallel on the load, and an absolute encoder across the spring measures θs. (b) The assembled joint and its bench. One EtherCAT master closes both loops at 1000 Hz over three slaves; the spring doubles as the torque sensor, so no external transducer is in the loop. -24 -18 -12 -6 06                                    
+
+> |T id /=d| [dB]
+> 0.5 12510 frequency [Hz] (a) chirp, A = 0.5 N·m -180 -90 090 180
+> phase [deg]
+> 0.5 12510 frequency [Hz] (b) chirp, A = 2 N·m -9 -6 -3 030.5 12510 20 frequency [Hz] (c) stepped sine, A = 5 N·m -135 -90 -45 0-3 0360.5 12510 frequency [Hz] (d) stepped sine, A = 15 N·m -90 -45 0
+> macro-only (SEA) Pi-SEA Fs(macro) =7(micro)
+> =7, no friction split 2 Hz split 18.1 Hz tripped
+> Fig. 5. Closed-loop Tid /τ d, load clamped, identical gains. (a) 0.5 N m and (b) 2 N m chirps, 0.3–20 Hz, drawn where the coherence exceeds 0.5; (a) adds the fixed command split at 2 and 18.1 Hz, (b) the Pi-SEA split into Fsand τμ, with τμunder the frictionless model dashed and both −3dB points dotted—the gap is the allocation responding to delivered torque, which no fixed filter of τddoes. (c) 5 N m, with the splits at 10 Hz, and (d) 15 N m stepped sines; hollow markers were cut short by the spring-energy guard.
+
+damping term (Remark 1)—in the torque-equivalent state 
+
+(Ksθs, K s ˙θs/ω s, K I η), the appendix expression (24) gives 
+
+ϵ⋆ = 0 .093 . The prototype therefore runs at ϵ/ϵ ⋆ = 0 .257 ,inside Theorem 1 in these coordinates. 
+
+C. Force Bandwidth and Allocation with the Load Clamped 
+
+Three regimes appear (Figs. 5 and 6), divided by the macro loop’s linear window A = τbKs/K ps = 0 .880 N m, below which its proportional term cannot reach the breakaway torque. Above the window, at 2 and 5 N m, both loops hold unity gain and what the second port buys is phase : at 10 Hz from -53.4 ◦ to -4.81 ◦ and from -37.2 ◦ to -15.4 ◦, widening the tracked band from 3.66 to 14.2 Hz and from 5 to 10 Hz. That phase is lost accelerating Jm through the spring and no gain returns it. By the −3 dB criterion the loops are alike there, neither falling 3 dB within the chirp’s coherent band at 2 N m and both holding to 15 Hz at 5 N m; the tracked band differs by phase alone. Below the window the second port buys 
+
+authority instead, and buys the most there: at 0.5 N m the tracked edge moves from 1.22 Hz to between 17.5 and 20 Hz, and the −3 dB point from 3.91 Hz to beyond that band, limited by the micro path’s 3.99 ms lag, which Tid , built from the current readback, cannot separate from a reporting delay. At 15 N m it buys nothing, and none is claimed: both controllers stop at 7 Hz on the rig’s spring-energy guard. Two comparisons close the section. Against a fixed com-mand split at identical gains, Pi-SEA tracks the whole 0.5 N m chirp where the 2 and 18.1 Hz splits track 78.9 and 28.9 % of it—a filter divides the command and loses wherever the macro channel does not deliver its share, which is also why the micro channel here is loaded from 5.13 Hz against 12.3 Hz for the frictionless model of (15). Repeating the large-amplitude points with the macro clamp at 50 and 75 N m confirms the ceiling law itself: the delivered spring torque scales with the clamp and falls as ω−2, and (16) with its spring term restored fits all 9 points within −4.01 to 
+
++1 .84 %. 
+
+D. Mid-Ranging 
+
+Mid-ranging shortens the hand-over of a 1 N m step from the micro motor to the spring from 99.9 to 50.9 ms (to 10 % of peak) and leaves it a steady load of 0.00017 N m (Fig. 7), 0.5 1 2 5 10 20 
+
+frequency [Hz] 
+
+0.5 12510 20                    
+
+> =d amplitude [N·m]
+> macro-only (SEA) tracks added by the micro motor macro ceiling =mmax Ks/(J m!2)macro ceiling + T 7
+> spring-energy guard Fig. 6. Where each controller tracks the command ( |1−Tid /τ d| ≤ 0.5)with the load clamped, under the τmax
+> m= 100 N m software clamp of this campaign, not the joint’s 170 N m peak. Orange, the region the macro-only loop already tracks; blue, the band the micro motor adds; white, neither. Markers are the four measured amplitudes, the 0.5 N m Pi-SEA edge from stepped sines past the chirp; the boundaries between them are interpolated. Dotted, the macro amplitude ceiling τmax
+> mKs/(Jmω2)of (16); dashed, that ceiling plus Tμ; dash–dot, the spring-energy guard of the test rig, which is what stops the 15 N m row at 7 Hz. 00.2 0.4 0.6 0.8 1
+
+time [s] (a)       
+
+> 00.5 11.5
+> torque [N·m]
+> 6= 0.1
+> 6= 0.2
+> 6= 0.5 DOB on
+> 010 20 30
+
+time [s] (b)                 
+
+> 00.1 0.2
+> =7 [N·m]
+> =dTid Fs(macro) =7(micro)
+> Fig. 7. Leaky mid-ranging, load clamped. (a) 1 N m step with KI= 10 : the micro motor carries the edge and the spring channel takes the load over. (b) Micro torque after the same step with the DOB off for λ= 0 .1,0.2,0.5s−1
+> (purple) and with the DOB on for λ= 0 .1(grey).
+
+the disturbance observer having removed the friction the integral would otherwise carry. Switching the observer off exposes the floor (14) itself: the micro torque then settles at 0.021, 0.063 and 0.129 N m for λ = 0 .1, 0.2 and 0.5 s −1, against the predicted λη ⋆ of 0.03, 0.066 and 0.130 N m. The three η⋆ agree to 0.260– 0.332 N m s: the floor is linear in λ at a slope set by the stick torque and KI .
+
+E. Free Bar: Authority on a Light Load 
+
+On a free bar only r = Jl/(Jm +Jl) = 0 .044 of the macro torque reaches the load, so the macro-only loop delivers just 0.261 of a 2 N m command over 2–10 Hz. The feed-forward (5) recovers most of that deficit and the micro motor, acting on the bar directly, closes the rest: Pi-SEA delivers 0.943 over 3–10 Hz (Fig. 8(a)). 
+
+F. Zero-Torque Command and Torque Tracking on a Gravity Link 
+
+Under τd = 0 the residual Tid is what the joint imposes on a hand that moves it. The second port cuts it 10.4-fold on slow pushes, from 0.456–0.617 to 0.046–0.059 N m rms, and by a larger factor on fast ones (Fig. 8(b),(c)). What remains sits at the stroke reversals, where the macro channel turns its inertia round against its own friction. On the gravity link the second port cuts the rms torque error 7.92-fold on a 1 N m sine at 0.3 Hz and 12.0-fold on a 
+
+±5 N m triangle at 0.25 Hz—the waveform whose constant-slew zero crossing exposes the macro dead band (Fig. 9). On a 12 N m sine at 4 Hz, where (5) is active and the macro channel already carries its share, the remaining gain is 3.18-fold. V. CONCLUSION This letter has presented a complete design and control treatment of a joint that places a direct-drive micro motor in parallel with a series-elastic macro channel. Allocating by time scale rather than by filter turns the separation the two channels need into a bound that can be checked against the hardware; a leaky mid-ranging law returns the steady load to the spring and leaves the fast channel its range; and the amplitude ceiling of the elastic channel, read backwards, sizes the micro motor in closed form. Experiments on a single joint support all three: against a macro-only baseline at identical gains the second port restores the phase the spring path loses, opens a tracked band below the breakaway window where the macro channel delivers nothing, and cuts the zero-torque interaction residual by an order of magnitude. What differs from earlier macro–mini pairings is that the crossover is a closed-loop property rather than a filter to be designed, and that the micro motor bypasses the elastic path variable-stiffness designs instead reshape, and that both torques are read where they act, the spring’s from its deflection and the micro’s from its current, so the joint carries no torque sensor. The cost is a second drive and its thermal budget, the micro rotor itself adding negligible inertia; that budget is also what bounds the gains at large amplitude. The limits are one joint and a regulation-scope bound that depends on the state scaling; the coupled multi-DoF case, stability in contact with an environment, and a thermal model in place of the fixed clamp are left as future work. APPENDIX 
+
+The Lyapunov conditions of Assumption 1 are: there exist a continuously differentiable Vs(x) and constants 
+
+c1, c 2, α s > 0 with 
+
+c1∥x − x⋆∥2 ≤ Vs(x) ≤ c2∥x − x⋆∥2, (18) 
+
+∂V s
+
+∂x fr (x, τ ⋆d ) ≤ − αs∥x − x⋆∥2. (19) 
+
+Remark 1 (Practical tuning condition): Neglecting ˜dm
+
+and treating the load-side motion as a bounded slow signal (exactly so when clamped), the deflection loop with the 2 5 10 frequency [Hz] (chirp, A = 2 N·m) (a) -24 -18 -12 -6 06
+
+> |T id /=d| [dB]
+
+-50 0 50 bar rate [deg/s], slow push (b) -1 -0.5 00.5 1
+
+> residual T id  [N·m] ( =d = 0)
+
+-150 -100 -50 0 50 100 150 bar rate [deg/s], fast push (c) -2 02            
+
+> macro-only (SEA) Pi-SEA low-freq. share, =ff ==d
+> macro-only (SEA), =ff ==dPi-SEA, =ff ==d
+
+Fig. 8. Free symmetric bar ( Jl = 0 .071 kg m 2). (a) Closed-loop gain |Tid /τ d| of the 2 N m chirp with (5) (dark) and with τff = τd (light); dotted, the low-frequency share of the latter. (b), (c) Residual output torque under τd = 0 while the bar is pushed by hand, slow and fast, against the bar rate: raw samples faint, fitted loops dark (median torque in equal-count rate bins on each branch of the stroke). -1 -0.5 00.5 1
+
+> torque [N·m]
+
+-5 05-10 -5 0510 -0.5 00.5 
+
+> error [N·m]
+
+-2 -1 012-2 -1 0120 1 2 3 4 5 6time [s] (a) sine 1 N·m, 0.3 Hz -2 -1 012
+
+> Pi-SEA split [N·m]
+
+0 2 4 6 8time [s] (b) triangle ±5 N·m, 0.25 Hz -5 055 5.2 5.4 5.6 5.8 time [s] (c) sine 12 N·m, 4 Hz -10 -5 0510        
+
+> =dmacro-only (SEA) Pi-SEA Pi-SEA F s(macro) Pi-SEA =7(micro)
+
+Fig. 9. Torque tracking on the gravity link (bar with 2.5 kg at 0.3 m, hanging start): (a) sine 1 N m at 0.3 Hz, (b) triangle ±5 N m at 0.25 Hz, (c) sine 12 N m at 4 Hz with (5). Rows: command and delivered torque; error τd − Tid (raw faint, filtered dark); Pi-SEA split into Fs and τμ. One run of each controller is shown. 
+
+mid-ranging integral has the cubic characteristic polynomial 
+
+Jms3 + ( Bm + Kds + Jmλ)s2 +  Ks + Kps + λ(Bm +
+
+Kds )s + KI Ks + λ(Kps + Ks), whose coefficients are all positive for λ, K I > 0, so Routh–Hurwitz reduces to 
+
+KI < (Bm + Kds )Kps + Ks + λ(Bm + Kds ) + λ2Jm
+
+
+
+JmKs
+
+,
+
+(20) The leak relaxes the bound and keeps η bounded. For a free load the reduced system has the micro motor supplying τd −
+
+Fs exactly, so the macro loop no longer damps q and the assumption requires a damped or gravity-restored load; the bound is evaluated for the clamped load in Sec. IV-B. 
+
+Proof: The construction is the standard composite-Lyapunov one [32, Thm. 11.4]. With ˜x = x − x⋆, y = z − h(x, τ ⋆d )
+
+and ∆f = f (x, y + h, τ ⋆d ) − f (x, h, τ ⋆d ), Lipschitz continuity gives L1 > 0 with 
+
+∂V s
+
+∂x ∆f (x, y ) ≤ L1∥˜x∥| y|. (21) In the original time scale the fast error obeys ϵ ˙y = −aμy −
+
+ϵ(∂h/∂x )f (x, y + h, τ ⋆d ), and local boundedness provides 
+
+L2, L 3 > 0 with 
+
+−y ∂h ∂x f (x, y + h, τ ⋆d ) ≤ L2∥˜x∥| y| + L3y2. (22) L1, L 2 measure how the micro torque error feeds back into the SEA–load motion through h, L3 its self-coupling. With 
+
+h = τd − Ksθs, ∂h/∂x is the constant row [0 0 −Ks 0 0] ;since τμ drives only η, on which h does not depend, L3 =(∂h/∂x )B = 0 exactly. Normalising Vs by ATr P + P A r =
+
+−I fixes αs = 1 , and aμ = ωs makes aμ/ϵ = ωμ; the torque-equivalent scaling gives L1 = 10 .8, L2 = 112 . Taking 
+
+Vc = (1 − d)Vs(x) + d 
+
+> 2
+
+y2, d ∈ (0 , 1) , and using (19), (21) and (22), 
+
+˙Vc ≤ − 
+
+∥˜x∥|y|
+
+T (1 − d)αs − 12 β
+
+− 12 β d   aμ 
+
+> ϵ
+
+− γ  ∥˜x∥|y|
+
+
+
+, (23) with β = (1 −d)L1 +dL 2 and γ = L3. The matrix is positive definite precisely when (1 − d)αs d (aμ/ϵ − γ) > 14 β2, that is, for 
+
+0 < ϵ < ϵ ⋆ = aμ
+
+γ + β2
+
+4d(1 − d)αs
+
+. (24) so ˙Vc is locally negative definite and (x⋆, 0) locally exponen-tially stable. The best weight d is 1/2 only if L1 = L2 (d =0.09 here). The bound depends on the state scaling through 
+
+Vs, L 1, L 2: the torque-equivalent coordinates of Sec. IV-B put every slow state in the unit of the fast error, N m, so ϵ⋆
+
+is a sufficient bound in those coordinates, not an invariant of the plant, and carries its coordinates with it. □
+
+REFERENCES [1] S. Oh and K. Kong, “High-precision robust force control of a series elastic actuator,” IEEE/ASME Trans. Mechatron. , vol. 22, no. 1, pp. 71–80, 2017. [2] B. Ugurlu, E. Sariyildiz, A. T. Kansizoglu, E. Ozcinar, and S. Coruk, “Benchmarking torque control strategies for a torsion-based series elastic actuator,” IEEE Robot. Autom. Mag. , vol. 29, no. 2, pp. 85–96, 2022. [3] C. Lee and S. Oh, “Performance analysis of series elastic actuator based on maximum torque transmissibility,” IEEE Trans. Control Syst. Technol. , vol. 30, no. 1, pp. 392–399, 2022. [4] H. J. Lee, K. H. Lee, S. H. Lee, H. Moon, H. R. Choi, and J. C. Koo, “Coaxial damping series elastic actuator for improved performance of transmissibility,” Mechatronics , vol. 80, p. 102666, 2021. [5] Z. Li, X. Chu, X. Hu, Z. Zhang, N. Li, and J. Li, “Variable stiffness methods for robots: A review,” Smart Mater. Struct. , vol. 33, no. 6, p. 063002, 2024. [6] L. Yu, H. Zhao, S. Qin, G. Jin, and Y. Chen, “A compact variable stiffness actuator for agile legged locomotion,” IEEE/ASME Trans. Mechatron. , vol. 30, no. 2, pp. 1131–1142, 2025. [7] Y. Chen, E. Chatziandreou, C. W. Mathews, B. P. Johnson, and D. J. Braun, “Design and control of a parallel elastic actuator with adjustable equilibrium position,” IEEE Robot. Autom. Lett. , pp. 1–8, 2026, early access. [8] C. W. Mathews and D. J. Braun, “Design of parallel variable stiffness actuators,” IEEE Trans. Robot. , vol. 39, no. 1, pp. 768–782, 2023. [9] M. Zhang, H. Li, K. Shi, and A. Song, “Design, modeling, and control of a variable stiffness actuator with dual-motor load sharing for elbow exoskeletons,” IEEE/ASME Trans. Mechatron. , vol. 30, no. 6, pp. 5190–5200, 2025. [10] S. Monteleone, F. Negrello, M. G. Catalano, M. Garabini, and G. Gri-oli, “Damping in compliant actuation: A review,” IEEE Robot. Autom. Mag. , vol. 29, no. 3, pp. 47–66, 2022. [11] F. C. Loeffl, F. Beck, J. Lee, M. Kim, and M. Keppler, “A visco-elastic actuator with linear gas spring and variable damping,” Mechatronics ,vol. 109, p. 103334, 2025. [12] M. Keppler, D. Lakatos, C. Ott, and A. Albu-Sch¨ affer, “Elastic structure preserving impedance (ES π) control for compliantly actuated robots,” in Proc. IEEE/RSJ Int. Conf. Intell. Robots Syst. (IROS) , 2018, pp. 5861–5868. [13] H. Lee, J. Lee, M. Keppler, and S. Oh, “Robust elastic structure preserving control for high impedance rendering of series elastic actuator,” IEEE Robot. Autom. Lett. , vol. 9, no. 4, pp. 3601–3608, 2024. [14] J. Dai, C.-Y. Chen, Y. Zhong, H. Guo, G. Yang, and C. Zhang, “Sensor-based adaptive robust torque control for flexible joints,” IEEE Robot. Autom. Lett. , vol. 10, no. 4, pp. 3628–3635, 2025. [15] M. Keppler, F. Loeffl, D. Wandinger, C. Raschel, and C. Ott, “Ana-lyzing the performance limits of articulated soft robots based on the ESPi framework: Applications to damping and impedance control,” 
+
+IEEE Robot. Autom. Lett. , vol. 6, no. 4, pp. 7121–7128, 2021. [16] D. Kim, K. Koh, G.-R. Cho, and L.-Q. Zhang, “A robust impedance controller design for series elastic actuators using the singular per-turbation theory,” IEEE/ASME Trans. Mechatron. , vol. 25, no. 1, pp. 164–174, 2020. [17] T. Shi, Y. Pan, and C. Wen, “Modern compliant robot control: Exploring benefits from singular perturbation synthesis,” IEEE Trans. Ind. Electron. , vol. 72, no. 3, pp. 2758–2768, 2025. [18] J. B. Morrell and J. K. Salisbury, “Parallel-coupled micro-macro actuators,” Int. J. Robot. Res. , vol. 17, no. 7, pp. 773–791, 1998. [19] M. Zinn, B. Roth, O. Khatib, and J. K. Salisbury, “A new actuation approach for human friendly robot design,” Int. J. Robot. Res. , vol. 23, no. 4-5, pp. 379–398, 2004. [20] I. Sardellitti, J. Park, D. Shin, and O. Khatib, “Air muscle controller design in the distributed macro-mini (DM 2) actuation approach,” in 
+
+Proc. IEEE/RSJ Int. Conf. Intell. Robots Syst. (IROS) , 2007, pp. 1822– 1827. [21] D. Shin, F. Seitz, O. Khatib, and M. Cutkosky, “Analysis of torque capacities in hybrid actuation for human-friendly robot design,” in 
+
+Proc. IEEE Int. Conf. Robot. Autom. (ICRA) , 2010, pp. 799–804. [22] N. Kim, J. Kim, O. Khatib, and D. Shin, “Design optimization of hybrid actuation combining macro-mini actuators,” Int. J. Precis. Eng. Manuf. , vol. 18, no. 4, pp. 519–527, 2017. [23] P. Dills, A. Dawson-Elli, K. Gruben, P. Adamczyk, and M. Zinn, “An investigation of a balanced hybrid active-passive actuator for physical human-robot interaction,” IEEE Robot. Autom. Lett. , vol. 6, no. 3, pp. 5849–5856, 2021. [24] R. Chaichaowarat, S. Nishimura, and H. I. Krebs, “Macro-mini linear actuator using electrorheological-fluid brake for impedance modulation in physical human–robot interaction,” IEEE Robot. Autom. Lett. , vol. 7, no. 2, pp. 2945–2952, 2022. [25] K. Yasuda, S. Takahashi, Y. Kusakabe, R. Ikeura, S. Hayakawa, and H. Sawai, “Impedance control of a series elastic drive system added with another actuator,” in Proc. IEEE Int. Conf. Robot. Biomim. (ROBIO) , 2014, pp. 2304–2309. [26] A. Yi˘ git, L. Cuvillon, M. A. Perozo, S. Durand, and J. Gangloff, “Dynamic control of a macro–mini aerial manipulator with elastic suspension,” IEEE Trans. Robot. , vol. 39, no. 6, pp. 4820–4836, 2023. [27] C. Gosselin and T.-S. Nguyen, “On the stability of macro–mini robotic systems for physical human–robot interaction,” Mech. Mach. Theory ,vol. 185, p. 105304, 2023. [28] P. Nowak, P. Grelewicz, M. Fratczak, R. Mado´ nski, and J. Czeczot, “Practical approach to mid-ranging control of double-unit actuating systems,” ISA Trans. , vol. 154, pp. 432–444, 2024. [29] A. Khorasani, R. Furnemont, M. Usman, T. Hubert, B. Vanderborght, D. Lefeber, G. Van de Perre, and T. Verstraten, “A methodology for designing a lightweight and energy-efficient kinematically redundant actuator,” IEEE Robot. Autom. Lett. , vol. 7, no. 4, pp. 10 786–10 793, 2022. [30] P. M. Wensing, A. Wang, S. Seok, D. Otten, J. Lang, and S. Kim, “Proprioceptive actuator design in the MIT cheetah: Impact mitigation and high-bandwidth physical interaction for dynamic legged robots,” 
+
+IEEE Trans. Robot. , vol. 33, no. 3, pp. 509–522, 2017. [31] H. S. Nguyen and T. P. Luu, “Tremor-suppression orthoses for the upper limb: Current developments and future challenges,” Front. Hum. Neurosci. , vol. 15, p. 622535, 2021. [32] H. K. Khalil, Nonlinear Systems , 3rd ed. Upper Saddle River, NJ, USA: Prentice Hall, 2002.

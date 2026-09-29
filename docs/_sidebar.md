@@ -1,6 +1,9 @@
 * <a class="dpr-sidebar-root-link" href="#/">首页</a>
 * <a class="dpr-sidebar-root-link dpr-sidebar-noactive-link" href="javascript:void(0)" data-dpr-hash="#/tutorial/README">使用教程</a>
 * Daily Papers
+  * 2026-09-29 <!--dpr-date:20260929-->
+    * 速读区
+      * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202609/29/2609.30873v1-a-second-torque-port-for-series-elastic-actuators-parallel-integrated-design-and-time-scale-torque-allocation" data-sidebar-item="{&quot;title&quot;: &quot;A Second Torque Port for Series Elastic Actuators: Parallel-Integrated Design and Time-Scale Torque Allocation&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2609.30873v1-a-second-torque-port-for-series-elastic-actuators-parallel-integrated-design-and-time-scale-torque-allocation&quot;, &quot;score&quot;: &quot;6.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;pmsm&quot;}], &quot;evidence&quot;: &quot;执行器设计中的直驱微电机&quot;}">A Second Torque Port for Series Elastic Actuators: Parallel-Integrated Design and Time-Scale Torque Allocation</a>
   * 2026-09-27 <!--dpr-date:20260927-->
     * 速读区
       * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202609/27/2609.29031v1-simple-torque-observation-alignment-for-zero-shot-sim-to-real-grasping-with-a-direct-drive-gripper" data-sidebar-item="{&quot;title&quot;: &quot;Simple Torque-Observation Alignment for Zero-Shot Sim-to-Real Grasping with a Direct-Drive Gripper&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2609.29031v1-simple-torque-observation-alignment-for-zero-shot-sim-to-real-grasping-with-a-direct-drive-gripper&quot;, &quot;score&quot;: &quot;6.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;pmsm&quot;}], &quot;evidence&quot;: &quot;电机电流通过转矩常数K_tau线性映射到关节转矩&quot;}">Simple Torque-Observation Alignment for Zero-Shot Sim-to-Real Grasping with a Direct-Drive Gripper</a>

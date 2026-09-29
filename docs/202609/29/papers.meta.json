@@ -1,8 +1,23 @@
 {
   "label": "2026-09-29",
   "date": "2026-09-29",
-  "generated_at": "2026-09-29T00:14:47",
-  "count": 0,
-  "papers": [],
+  "generated_at": "2026-09-29T22:50:25",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202609/29/2609.30873v1-a-second-torque-port-for-series-elastic-actuators-parallel-integrated-design-and-time-scale-torque-allocation",
+      "section": "quick",
+      "title_en": "A Second Torque Port for Series Elastic Actuators: Parallel-Integrated Design and Time-Scale Torque Allocation",
+      "authors": "Donghao Jia, Xiubo Xia, Junhang Liu, Zeyu Zhu, Xiaoyu Geng, Jian Sun",
+      "date": "2026-09-25",
+      "pdf": "https://arxiv.org/pdf/2609.30873v1",
+      "score": "6.0",
+      "evidence": "执行器设计中的直驱微电机",
+      "tldr": "针对串联弹性驱动器（SEA）在惯性负载和摩擦力限制下的带宽与精度瓶颈，本文提出了一种并行集成SEA（Pi-SEA）设计。通过在负载端增加一个直驱微型电机作为第二扭矩端口，利用时间尺度分离策略分配扭矩，实现了高频响应与低频负载的解耦。该方法无需额外传感器即可通过电流与弹簧形变获取扭矩，显著提升了小振幅下的跟踪带宽并降低了环境干扰，为高性能机器人驱动提供了新的设计准则。",
+      "tags": "query:pmsm",
+      "abstract_en": "A series elastic actuator has a single torque port and pays for it twice: the geared motor must swing its own reflected inertia through the spring, so the amplitude it delivers collapses as $ω^{-2}$ in the command frequency $ω$ once it saturates, while commands below the transmission's breakaway friction never arrive at all. This letter opens a second torque port on the load side, placing a frameless direct-drive micro motor in parallel with a fixed-stiffness spring -- a parallel-integrated SEA, or Pi-SEA, whose delivered torque is read from spring deflection and micro current without a sensor -- and dividing the commanded torque between the two channels by time scale rather than by filter design. The micro torque loop is the fast subsystem, which makes the closed loop singularly perturbed and turns the separation the channels need into a bound to check rather than a crossover to tune; a leaky mid-ranging integrator returns the steady load to the spring; and the amplitude ceiling, read backwards, becomes a closed-form sizing rule that matches spring, geared motor and micro motor to the amplitudes and frequencies an application asks for. Against SEAs, the Pi-SEA widens the tracked band at small amplitudes and lowers the residual the joint imposes on its environment, each by an order of magnitude.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
   "errors": []
 }
