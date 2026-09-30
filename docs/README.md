@@ -6,26 +6,22 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-09-29
-- 运行时间：2026-09-29 22:50:23 UTC
+- 最新运行日期：2026-09-30
+- 运行时间：2026-09-30 22:57:54 UTC
 - 运行状态：成功
-- 本次总论文数：1
+- 本次总论文数：0
 - 精读区：0
-- 速读区：1
+- 速读区：0
 
 ### 今日简报（AI）
-探索串联弹性驱动器（SEA）的扭矩分配新方案，通过并行集成设计提升系统性能。
-该研究提出了一种双扭矩端口架构，通过时间尺度分配策略有效优化了驱动器的动态响应。
-建议关注机器人关节控制领域的硬件创新，了解如何通过结构优化解决传统驱动器的力矩限制问题。
-- 详情：[/202609/29/README](/202609/29/README)
+> 今日无新推荐，系统未产出可展示论文。
+- 详情：[/202609/30/README](/202609/30/README)
 
 ### 精读区论文标签
 - 本次无精读推荐。
 
 ### 速读区论文标签
-1. [A Second Torque Port for Series Elastic Actuators: Parallel-Integrated Design and Time-Scale Torque Allocation](/202609/29/2609.30873v1-a-second-torque-port-for-series-elastic-actuators-parallel-integrated-design-and-time-scale-torque-allocation)  
-   标签：评分：6.0/10、query:pmsm
-   evidence：执行器设计中的直驱微电机
+- 本次无速读推荐。
 
 
 <div class="dpr-home-promo-card">
