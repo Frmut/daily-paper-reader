@@ -1,6 +1,9 @@
 * <a class="dpr-sidebar-root-link" href="#/">首页</a>
 * <a class="dpr-sidebar-root-link dpr-sidebar-noactive-link" href="javascript:void(0)" data-dpr-hash="#/tutorial/README">使用教程</a>
 * Daily Papers
+  * 2026-10-01 <!--dpr-date:20261001-->
+    * 速读区
+      * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202610/01/2609.33542v1-a-disk-shaped-magnetoelastic-torque-sensor-for-robotic-joints-using-permanent-magnetization" data-sidebar-item="{&quot;title&quot;: &quot;A Disk-Shaped Magnetoelastic Torque Sensor for Robotic Joints Using Permanent Magnetization&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2609.33542v1-a-disk-shaped-magnetoelastic-torque-sensor-for-robotic-joints-using-permanent-magnetization&quot;, &quot;score&quot;: &quot;6.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;pmsm&quot;}], &quot;evidence&quot;: &quot;用于机器人关节的永磁磁弹性转矩传感器&quot;}">A Disk-Shaped Magnetoelastic Torque Sensor for Robotic Joints Using Permanent Magnetization</a>
   * 2026-09-29 <!--dpr-date:20260929-->
     * 速读区
       * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202609/29/2609.30873v1-a-second-torque-port-for-series-elastic-actuators-parallel-integrated-design-and-time-scale-torque-allocation" data-sidebar-item="{&quot;title&quot;: &quot;A Second Torque Port for Series Elastic Actuators: Parallel-Integrated Design and Time-Scale Torque Allocation&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2609.30873v1-a-second-torque-port-for-series-elastic-actuators-parallel-integrated-design-and-time-scale-torque-allocation&quot;, &quot;score&quot;: &quot;6.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;pmsm&quot;}], &quot;evidence&quot;: &quot;执行器设计中的直驱微电机&quot;}">A Second Torque Port for Series Elastic Actuators: Parallel-Integrated Design and Time-Scale Torque Allocation</a>
