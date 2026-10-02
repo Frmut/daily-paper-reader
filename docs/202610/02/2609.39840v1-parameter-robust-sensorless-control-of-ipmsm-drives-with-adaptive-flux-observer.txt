@@ -1,0 +1,690 @@
+Title: Parameter-Robust Sensorless Control of IPMSM Drives With Adaptive Flux Observer
+
+URL Source: https://arxiv.org/pdf/2609.39840v1
+
+Published Time: Thu, 01 Oct 2026 01:53:16 GMT
+
+Number of Pages: 9
+
+Markdown Content:
+> JOURNAL OF L ATEX CLASS FILES, VOL. XX, NO. XX, 2026 1
+
+# Parameter-Robust Sensorless Control of IPMSM Drives With Adaptive Flux Observer 
+
+Fobao Zhou, Student Member, IEEE , Zhenxiao Yin, Student Member, IEEE , Xueyan Wang, Yang Shen, Student Member, IEEE , Yuanfeng Qu, and Hang Zhao ∗ ˙ID , Member, IEEE 
+
+Abstract —To address parameter sensitivity commonly in inte-rior permanent magnet synchronous motor (IPMSM) sensorless control, this paper proposes a parameter-robust control frame-work by extending the adaptive flux observer from surface-mounted PMSM to salient-pole machines. First, parameter mis-matches are interpreted as an equivalent flux vector with d-axis and q-axis components. Permanent magnet flux, d-axis induc-tance, and resistance mismatches are mapped to the d-axis flux component, whereas q-axis inductance mismatch is mapped to the 
+
+q-axis component. Then, a scalar adaptive flux update is designed to compensate the d-axis flux variation by tracking the equivalent flux magnitude. Since the q-axis component rotates the observed flux direction and cannot be eliminated by scalar adaptation, a high-frequency q-axis voltage injection method is introduced to identify the q-axis inductance. Meanwhile, stability analysis proves bounded equivalent flux magnitude tracking and identifies the residual tangential flux responsible for position error. Finally, experimental results show that the proposed method does not require precise resistance, d-axis inductance, or flux, while the 
+
+q-axis inductance is provided by online identification. 
+
+Index Terms —interior permanent magnet synchronous motor (IPMSM), nonlinear flux observer, sensorless control. 
+
+I. I NTRODUCTION 
+
+# INTERIOR permanent magnet synchronous motor (IPMSM) drives are widely used in transportation, servo systems, robotics, and actuators because of their high torque density, efficiency, and fast current response. In field-oriented control, rotor electrical position is required to align stator current with the rotor magnetic field. Replacing a mechanical position sensor with a sensorless algorithm reduces cost and improves compactness and reliability, but makes the controller dependent on the electromagnetic model reconstructed from voltage and current measurements. IPMSM sensorless techniques are generally divided into high-frequency signal injection (HFI) and fundamental fre-quency model-based methods [1]. HFI exploits rotor saliency and is mainly used in zero- and low-speed. Fundamental fre-quency methods estimate the back electromotive force (EMF) or flux from measured voltages and currents, and are therefore preferred in the medium- and high-speed regions. Representa-tive implementations include Kalman filter [2], extended state          
+
+> This work is supported by the National Natural Science Foundation of China (No. 52407066), Guangdong Science and Technology Program (2025A0505020029), and Youth S&T Talent Support Program of Guangdong Provincial Association for Science and Technology (SKXRC2025464). ( Cor-responding author: Hang Zhao.)
+> The authors are with the Robotics and Autonomous Systems Thrust, The Hong Kong University of Science and Technology (Guangzhou), Guangzhou 511453, China (e-mail: hangzhao@hkust-gz.edu.cn).
+
+observer (ESO) [3], sliding-mode observer (SMO) [4], and nonlinear flux observer [5]. The accuracy of a fundamental frequency observer usually depends on the motor parameters used in its model. The resistance varies with winding temperature, the permanent magnet flux changes with temperature and aging, and the 
+
+d- and q-axis inductances vary with magnetic saturation, cross-saturation, and load current. These variations distort the estimated back-EMF or flux vector and consequently produce position error [6]–[8]. Online parameter identification can reduce this sensitivity, but simultaneous estimation of multiple electrical parameters is constrained by identifiability and generally requires additional estimators and excitation conditions [7], [9]. Therefore, improving robustness through the observer structure remains an important solution. Recently, several model-free and parameter-robust sensor-less studies have been reported for surface-mounted PMSM (SPMSM), reducing commissioning dependence by recon-structing the electrical behavior from online data or an ultralo-cal model [10], [11]. However, parameter-robust sensorless control for IPMSMs remains more difficult, because saliency introduces unequal d- and q-axis inductances whose mis-matches affect the position-dependent flux vector in different directions rather than as a single scalar inductance error. Existing parameter-robust IPMSM designs still mainly rely on SMO and ESO. SMO-based controllers improve robustness by using switching correction to suppress bounded model uncertainties and disturbances. In [12], a full-order SMO with a variable gain was used to reduce chattering and harmonic position errors. A super-twisting flux SMO was proposed in [13] to improve finite-time convergence, and adaptive or high-order SMO structures were further combined with phase-locked loop or quadrature-signal generators in [4], [14]. However, SMO methods still face the usual tradeoff between chattering suppression, phase delay, and gain tuning. ESO-based methods take another route by treating unknown model terms and load disturbances as extended states for online estimation and compensation. A linear ESO was used in [15] to estimate the back EMF and internal disturbances, while generalized-integrator and third-order ESOs were combined in [3] for back-EMF and position-disturbance estimation. An adaptive harmonic-filtering ESO was also introduced in an improved ADRC framework to suppress parameter mismatch and current harmonics [16]. Related ESO-based active-flux compensation and SMO–ESO schemes further improved ro-bustness against parameter and load disturbances [8], [17]. Nevertheless, these methods usually introduce several observer arXiv:2609.39840v1 [eess.SY] 30 Sep 2026 JOURNAL OF L ATEX CLASS FILES, VOL. XX, NO. XX, 2026 2
+
+bandwidths, filter parameters, or compensation gains. More importantly, parameter errors are commonly lumped into a disturbance state, rather than separated according to their physical effects on flux magnitude and direction. To address the parameter sensitivity of IPMSM sensorless control, this paper aims to develop a structurally simple and easily tuned sensorless algorithm. The starting point of this work is the nonlinear flux observer for SPMSM [5], which estimates rotor position through a geometric flux circle constraint. A related flux observer was extended to IPMSM using a position-dependent inductance matrix [18]. In our previous SPMSM work, the parameter mismatch problem was addressed by mapping resistance, inductance, and flux errors to the flux side and compensating them through an adaptive equivalent flux update [19]. This method removed the steady-state effects of resistance and flux mismatches, but remained sensitive to inductance mismatch. Since resistance and flux mismatch had been handled in the SPMSM case, a natural question is whether this adaptive flux idea can be extended to IPMSMs for broader parameter mismatch compensation and simultaneous inductance mismatch mitigation. This paper answers this question by extending the adap-tive flux principle to IPMSM and establishing a parameter mismatch decomposition specific to salient-pole machines. The equivalent flux is separated into a normal component along the rotor d-axis and a tangential component along the 
+
+q-axis. Permanent magnet flux, d-axis inductance, and the dominant resistance mismatches enter the normal component and can therefore be compensated by the scalar adaptive flux update. In contrast, q-axis inductance mismatch, together with a smaller resistance-induced term when id̸ = 0 , enters the tangential component and rotates the estimated flux direction. A simple high-frequency q-axis voltage injection method is consequently used to identify Lq . The identified value is updated at no or light load and frozen under load, prevent-ing saturation-induced inductance drift from being introduced into the observer. The main contributions of this paper are summarized as follows.  
+
+> •
+
+A unified normal–tangential equivalent flux decomposi-tion is derived for IPMSM parameter mismatch. It shows that flux, Ld, and the dominant resistance mismatches mainly change the normal flux component, whereas Lq
+
+mismatch directly produces a tangential position error.  
+
+> •
+
+An adaptive flux observer is developed to compensate the normal mismatch component, while high-frequency 
+
+q-axis voltage injection is used to identify the remaining sensitive parameter Lq . Together, the two mechanisms yield parameter-robust sensorless operation without pre-cise offline motor parameters.  
+
+> •
+
+A uniformly ultimately bounded analysis proves equiv-alent flux magnitude tracking and separates the scalar tracking error from the residual tangential flux. This result explains both the compensation capability of adaptive flux and the necessity of Lq identification.  
+
+> •
+
+Experiments under load transitions, sudden and time-varying parameter mismatches, and a wide speed range verify the estimation accuracy, parameter robustness, and convergence of the proposed method. II. IPMSM M ODEL AND NONLINEAR FLUX OBSERVER 
+
+The IPMSM model is established and analyzed in the stationary αβ frame. Let i = [ iα, i β ]T and v = [ vα, v β ]T
+
+denote the stator current and voltage vectors, respectively. The rotor electrical position is denoted by θ, and two unit vectors are introduced as: 
+
+n(θ) = 
+
+cos θ
+
+sin θ
+
+
+
+, q(θ) = 
+
+− sin θ
+
+cos θ
+
+
+
+(1) where n(θ) and q(θ) are the rotor d- and q-axis unit vectors. From (1), it follows that nTn = qTq = 1 , nTq = 0 , ˙n = ωq ,and ˙q = −ωn , where ω = ˙θ is the electrical angular speed. The current can be decomposed as: 
+
+i = idn + iq q, id = nTi, iq = qTi (2) where id and iq are the d- and q-axis currents, respectively. For an IPMSM, the stator flux vector is: 
+
+x = λαβ = ( ψf + Ldid) n + Lq iq q (3) where x = λαβ = [ λα, λ β ]T is the flux vector in the stationary frame, Ld and Lq are the real d- and q-axis inductances, and 
+
+ψf is the real flux linkage. Equivalently, 
+
+x = L(θ)i + ψf n (4) where L(θ) is the position-dependent inductance matrix de-fined by L(θ) = Ldnn T + Lq qq T.Expanding this inductance matrix yields: 
+
+L(θ) = 
+
+L0 + L1 cos 2 θ L1 sin 2 θL1 sin 2 θ L0 − L1 cos 2 θ
+
+
+
+(5) where L0 = ( Ld + Lq )/2 is the average inductance and L1 =(Ld − Lq )/2 is the saliency dependent inductance amplitude. The voltage equation yields the flux model: 
+
+˙x = v − Rsi (6) where Rs is the stator resistance. If the motor parameters are known, an IPMSM nonlinear flux observer can be written as: 
+
+˙ˆx = v − Rsi + Γˆ η
+
+
+
+ψ2 
+
+> f
+
+− ∥ ˆη∥2
+
+(7) where ˆx is the estimate of x and Γ is the observer gain. The auxiliary flux vector ˆη is defined as: 
+
+ˆη = ˆ x − L(ˆθ)i (8) where ˆθ is the estimated rotor electrical position. The position is obtained from the auxiliary flux direction: 
+
+ˆθ = atan2(ˆ ηβ , ˆηα) (9) where ˆηα and ˆηβ are the two components of ˆη, and atan2( ·, ·)
+
+is the four-quadrant inverse tangent. Compared with the SPMSM observer, the essential difference is that the inductive current term is no longer Lsi, where Ls is the scalar SPMSM stator inductance, but L(ˆθ)i. Therefore, the observer couples the estimated position with both Ld and Lq .JOURNAL OF L ATEX CLASS FILES, VOL. XX, NO. XX, 2026 3
+
+III. A DAPTIVE FLUX NONLINEAR OBSERVER 
+
+A. Unified Equivalent Flux Decomposition 
+
+The first step is to derive the equivalent flux vector observed under parameter mismatch. Let ˆRs, ˆLd, ˆLq , and ˆψf denote the nominal resistance, d-axis inductance, q-axis inductance, and flux used in the controller. The mismatches are defined as the real values minus their nominal counterparts: 
+
+∆Rs = Rs − ˆRs, ∆Ld = Ld − ˆLd
+
+∆Lq = Lq − ˆLq , ∆ψf = ψf − ˆψf
+
+(10) where ∆Rs, ∆Ld, ∆Lq , and ∆ψf denote the stator resistance, 
+
+d-axis inductance, q-axis inductance, and flux mismatches, respectively. Resistance mismatch enters the flux integrator when the nominal resistance is used: 
+
+v − ˆRsi = ˙ x + ∆ Rsi (11) To obtain a quasi-steady decomposition, the fast nonlinear correction is neglected and the flux bias caused by resistance mismatch is written as: 
+
+∆xR =
+
+Z
+
+∆Rsi dt (12) where ∆xR is an equivalent flux bias rather than a new physical motor flux. Using i = idn + iq q, R n dt = −q/ω ,and R q dt = n/ω , one obtains: 
+
+∆xR = ∆Rs
+
+ω iq n − ∆Rs
+
+ω idq (13) The equivalent flux vector ηeq generated by parameter mismatch is defined as: 
+
+ηeq = x + ∆ xR − ˆL(θ)i (14) where ˆL(θ) = ˆLdnn T + ˆLq qq T is the nominal inductance matrix evaluated at θ for the local mismatch decomposition. Substituting (3) and (13) into (14) yields: 
+
+ηeq = ψeq ,n n + ψeq ,q q (15) where the normal equivalent flux ψeq ,n component is: 
+
+ψeq ,n = ˆψf + ∆ ψf + ∆ Ldid + ∆Rs
+
+ω iq (16) and the tangential equivalent flux ψeq ,q component is: 
+
+ψeq ,q = ∆ Lq iq − ∆Rs
+
+ω id (17) Equation (15) gives the equivalent flux vector under param-eter mismatch, while (16) and (17) are its projections onto the rotor d- and q-axis unit vectors: 
+
+ψeq ,n = nTηeq , ψeq ,q = qTηeq (18) Equivalently, these two projections can be collected as the equivalent flux coordinate vector: 
+
+ψeq = ψeq ,n ψeq ,q 
+
+T
+
+Ψ = ∥ψeq ∥ =
+
+q
+
+ψ2eq ,n + ψ2eq ,q 
+
+(19) where ψeq is the nq -coordinate representation of ηeq , and Ψ
+
+is its equivalent flux magnitude. The subscripts n and q denote the normal and tangential projections along n(θ) and q(θ), respectively. Thus, flux, Ld,and resistance mismatches affect the equivalent flux length through ψeq ,n , whereas Lq mismatch and the id-dependent part of resistance mismatch rotate its direction through ψeq ,q . This resistance-induced rotation appears under MTPA operation with id̸ = 0 , but disappears under id = 0 control. 
+
+B. Adaptive Flux Observer Design 
+
+The baseline observer in (7) constrains ∥ˆη∥ to a fixed flux radius. The above analysis shows that parameter mismatch pro-duces the theoretical equivalent vector ηeq in (15). However, 
+
+ηeq cannot be evaluated online because the real parameters and their mismatches are unknown. It is therefore used only to analyze the mismatch mechanism, not as an observer input. Instead, let ˆxpm denote the parameter-robust observer state and let ηpm denote its online computable auxiliary flux: 
+
+ηpm = ˆ xpm − ˆL(ˆθpm )i
+
+ˆθpm = atan2( ηpm ,β , η pm ,α ) (20) where ˆθpm is the estimated rotor position, ηpm ,α and ηpm ,β 
+
+are the stationary frame components of ηpm , and ˆL(ˆθpm ) has the form of (5) with ˆLd and ˆLq .Let Ψ > 0 denote the adaptive equivalent flux magnitude. To match both the direction and magnitude of the online auxiliary flux, define the loss function: 
+
+T = 12 (∥ηpm ∥ − Ψ) 2 (21) where T ≥ 0 is the equivalent flux estimation loss. Gradient descent on (21) gives: 
+
+˙Ψ = −kψ
+
+∂T
+
+∂Ψ = kψ (∥ηpm ∥ − Ψ) (22) where kψ > 0 is the update gain and ˙Ψ denotes the gradient update rate. To bound the update rate during large transients, (22) is implemented in the nonlinear form: 
+
+˙Ψ = kψ tanh[ kψ (∥ηpm ∥ − Ψ)] (23) The same gain is used outside and inside tanh( ·) to reduce the number of tuning parameters. The update uses only the computable magnitude ∥ηpm ∥, so the unknown theoretical vector ηeq is not required by the implementation. The adaptive equivalent flux magnitude is embedded in the nonlinear observer as: 
+
+˙ˆxpm = v − ˆRsi + Γ pm ηpm 
+
+
+
+Ψ2 − ∥ ηpm ∥2
+
+(24) where Γpm > 0 is the observer gain. The two vectors have different roles. The vector ηeq is the unknown quasi-steady mismatch equivalent derived in the decomposition above, whereas ηpm is calculated at every sampling instant. Their difference, using (14) and (20), is: 
+
+ηpm − ηeq = (ˆ xpm − x − ∆xR) −
+
+h ˆL(ˆθpm ) − ˆL(θ)
+
+i
+
+i (25) The objective of (20)-(24) is therefore to make the com-putable vector ηpm track the unknown equivalent flux ηeq 
+
+as closely as possible. As indicated by (25), this tracking is JOURNAL OF L ATEX CLASS FILES, VOL. XX, NO. XX, 2026 4
+
+achieved by adjusting ˆxpm so that the mismatch effects of flux, stator resistance, and d- and q-axis inductances are absorbed on the flux side. 
+
+C. Compensation Mechanism for Parameter Mismatches 
+
+The update law changes only the scalar radius associated with ηpm . It can therefore compensate mismatch terms that appear as equivalent flux radius variations, but it cannot independently cancel a tangential component. This distinction gives the four compensation mechanisms below. 
+
+1) Flux mismatch: When only ∆ψf exists, (16) and (17) reduce to ψeq ,n = ˆψf + ∆ ψf = ψf and ψeq ,q = 0 . The mismatch only changes the radius of the equivalent flux circle. Therefore, Ψ follows ∥ηpm ∥ = ψf without creating a steady angular bias. 
+
+2) Resistance mismatch: When only ∆Rs exists, the normal and tangential parts become: 
+
+ψeq ,n = ψf + ∆Rs
+
+ω iq , ψeq ,q = − ∆Rs
+
+ω id (26) The normal term (∆ Rs/ω )iq changes the equivalent flux radius and is therefore represented in the adaptive radius. A tangential resistance projection remains when id̸ = 0 , but this residual is proportional to id and inversely proportional to the electrical speed ω. Therefore, in the medium- and high-speed region, resistance mismatch is largely compensated. The dominant tangential error source is still the Lq term ∆Lq iq ,whereas the tangential resistance projection depends jointly on speed and d-axis current. 
+
+3) d-axis inductance mismatch: When only ∆Ld exists, 
+
+ψeq ,n = ψf + ∆ Ldid and ψeq ,q = 0. The Ld error is collinear with the d-axis unit vector n, so it appears as a radius variation rather than a direction error. This radial error can be compensated by the adaptive law (23). 
+
+4) q-axis inductance mismatch: When only ∆Lq exists, the theoretical mismatch vector is ηeq = ψf n + ∆ Lq iq q, which determines the direction approached by ηpm . The term ∆Lq iq q
+
+is tangential and tilts the observed vector away from the true rotor d axis. The resulting position error satisfies: 
+
+∆θLq = atan 
+
+ ∆Lq iq
+
+ψf
+
+
+
+≈ ∆Lq iq
+
+ψf
+
+(27) where ∆θLq is the additional position bias produced by 
+
+Lq mismatch, and the approximation holds for small errors. The adaptive law can only make Ψ approach ∥ηpm ∥, whose quasi-steady value is 
+
+q
+
+ψ2 
+
+> f
+
++ (∆ Lq iq )2; it cannot remove the orthogonal component ∆Lq iq q. Therefore, the effect of Lq
+
+mismatch grows with load current and directly produces a error that cannot be removed by the scalar flux update alone. IV. I NDUCTANCE IDENTIFICATION STRATEGY 
+
+The previous section shows that the adaptive flux observer does not require precise ψf , Ld, or Rs, but it remains sensitive to Lq mismatch. This section identifies Lq using a small high-frequency voltage injected into the q axis. 
+
+A. High-Frequency Small Signal Model 
+
+Let ωh = 2 πf h denote the injection frequency. When ωh is much higher than the fundamental electrical frequency and the bandwidth of the current controller, the fundamental current, speed, and saturation operating point can be treated as slow variables within one injection period. The high-frequency q-axis voltage and current satisfy the local small signal model: 
+
+uqh = Vqh sin( ωht) = Rhf iqh + Lq
+
+diqh 
+
+dt (28) where uqh and iqh are the high-frequency q-axis voltage and current components, Vqh is the injected voltage amplitude, 
+
+Rhf is the effective resistance at the injection frequency, and 
+
+Lq denotes the local effective q-axis inductance used by the observer. After synchronous demodulation, write: 
+
+uqh = Vs sin ωht + Vc cos ωht (29) 
+
+iqh = Is sin ωht + Ic cos ωht (30) where Vs and Vc are the sine and cosine coefficients of 
+
+uqh , and Is and Ic are the sine and cosine coefficients of 
+
+iqh . Substituting (30) into (28) and matching sine and cosine coefficients gives: 
+
+Vs = Rhf Is − ωhLq Ic, Vc = Rhf Ic + ωhLq Is (31) The antisymmetric combination cancels Rhf :
+
+IsVc − IcVs = ωhLq
+
+ I2 
+
+> s
+
++ I2
+
+> c
+
+ (32) Therefore, the raw q-axis inductance estimate Lq, raw is: 
+
+Lq, raw = IsVc − IcVs
+
+ωh (I2 
+
+> s
+
++ I2 
+
+> c
+
+) (33) 
+
+B. Synchronous Demodulation and Filtering 
+
+For the m-th identification window Wm containing an inte-ger number of injection periods, the demodulated coefficients are computed in the hardware system as: 
+
+Is(m) = 2
+
+Nm
+
+X
+
+> k∈W m
+
+iq [k] sin h[k]
+
+Ic(m) = 2
+
+Nm
+
+X
+
+> k∈W m
+
+iq [k] cos h[k]
+
+Vs(m) = 2
+
+Nm
+
+X
+
+> k∈W m
+
+uqh [k] sin h[k]
+
+Vc(m) = 2
+
+Nm
+
+X
+
+> k∈W m
+
+uqh [k] cos h[k]
+
+(34) where m is the window index, Nm is the number of samples in Wm, and sin h[k] and cos h[k] are the sampled synchronous references at the injection frequency. The raw estimate is then processed by a three-point median filter and a low-pass filter: 
+
+ˆLq, id (m) = LPF {MED[ Lq, raw (m)] }. (35) where MED[ ·] denotes a median operation, LPF {·} denotes a low-pass filter, and ˆLq, id is the filtered q-axis inductance sent to the controller once per demodulation window. Noted that the experiments in [18] show that a decrease in Lq can significantly degrade the accuracy of the estimated JOURNAL OF L ATEX CLASS FILES, VOL. XX, NO. XX, 2026 5PI      
+
+> PI
+> Adaptive Flux
+> Observer
+> SVPWM Inverter
+> Speed
+> Estimation
+> Speed
+> Loop
+> PMSM
+> MTPA
+> Adaptive Flux Observer
+> Identification
+> (a) PI
+> PI
+> Adaptive Flux
+> Observer
+> SVPWM Inverter
+> Speed
+> Estimation
+> Speed
+> Loop
+> PMSM
+> MTPA
+> Adaptive Flux Observer
+> Identification (b) Fig. 1. Proposed sensorless control framework for the IPMSM. (a) Overall block diagram. (b) Proposed adaptive flux observer and Lqidentification algorithms.
+
+position. For an IPMSM, magnetic saturation under load may also make the identified incremental inductance decrease. If this load-dependent value is directly sent to the observer, the tangential flux error may increase instead of being reduced. Therefore, only the inductance identified near no load or light load is used for observer calibration, which is implemented by a current threshold. With k is the sampling instant and Ith > 0
+
+denoting the current threshold, the actual input ˆLq, ctrl is: 
+
+ˆLq, ctrl [k] = 
+
+( ˆLq, id [k], i2
+
+> α
+
+[k] + i2 
+
+> β
+
+[k] < I th 
+
+ˆLq, ctrl [k − 1] , i2
+
+> α
+
+[k] + i2 
+
+> β
+
+[k] ≥ Ith 
+
+(36) This gate freezes the observer input under load and prevents saturation-induced inductance drift from being injected contin-uously into the tangential flux channel. With this identification loop, the dominant tangential mismatch becomes: 
+
+∆Lq iq =
+
+
+
+Lq − ˆLq, ctrl 
+
+
+
+iq (37) where Lq − ˆLq, ctrl is the difference between the real and identified q-axis inductances. If the current-gated identification reduces this difference compared with the fixed nominal value, the tangential flux and position-error bounds are reduced. The overall IPMSM control framework is shown in Fig. 1. V. S TABILITY ANALYSIS 
+
+The nonlinear update law (23) is driven by the online auxiliary flux ηpm . Define its magnitude as: 
+
+s(t) = ∥ηpm (t)∥ (38) where s(t) is the equivalent flux magnitude available to the adaptive law. This definition does not require the unknown theoretical vector ηeq in (15). The analysis is carried out on a compact operating set where the online flux magnitude and its rate are bounded, namely 
+
+0 < s min ≤ s(t) ≤ smax and | ˙s(t)| ≤ Φ, where smin , smax ,and Φ are positive constants. 
+
+A. Equivalent Flux Magnitude Tracking 
+
+Define the equivalent flux magnitude tracking error as: 
+
+˜Ψ = Ψ − s(t) = Ψ − ∥ ηpm ∥ (39) 
+
+Theorem 1: For the IPMSM system described by (3) and (11), with the observer (20), (24) and the equivalent flux update law (23) under parameter mismatches, the magnitude Ψ
+
+is uniformly bounded. The tracking error ˜Ψ in (39) converges to the compact set ΩΨ, defined as follows: 
+
+ΩΨ =
+
+n ˜Ψ ∈ R | ˜Ψ| ≤ ϵeq 
+
+o
+
+, ϵ eq = Φ
+
+kψ (kψ − Φ) (40) 
+
+Proof: From (23) and (39), we have: 
+
+˙˜Ψ = −kψ tanh( kψ ˜Ψ) − ˙s (41) Choose the Lyapunov function VΨ as follows: 
+
+VΨ = 12 ˜Ψ2 (42) Its derivative satisfies: 
+
+˙VΨ = ˜Ψ ˙˜Ψ ≤ − kψ | ˜Ψ|| tanh( kψ ˜Ψ) | + | ˜Ψ|Φ (43) Using |tanh a| ≥ | a| /(1 + |a|), define γψ = | ˜Ψ|. For γψ >
+
+0, (43) gives: 
+
+˙γψ ≤ − k2 
+
+> ψ
+
+γψ
+
+1 + kψ γψ
+
++ Φ (44) The right-hand side of (44) is strictly decreasing and has the unique positive equilibrium ϵeq defined in (40). The comparison principle implies that γψ ultimately enters and remains in [0 , ϵ eq ]. Therefore, (40) holds. Theorem 1 proves that the update law makes Ψ track the online equivalent flux magnitude ∥ηpm ∥. For a constant operating point, Φ = 0 , and ˜Ψ converges to zero. 
+
+B. Normal and Tangential Tracking Error Bounds 
+
+The scalar result above does not imply that the tangential flux has been eliminated. To project the result without iden-tifying ηpm with the theoretical ηeq , decompose the online auxiliary flux in the true rotor frame as: 
+
+ηpm = ψpm ,n n + ψpm ,q qψpm ,n = nTηpm , ψpm ,q = qTηpm 
+
+(45) where ψpm ,n and ψpm ,q are the online normal and tangential flux components. Consequently, 
+
+s =
+
+q
+
+ψ2pm ,n + ψ2pm ,q , npm = ψpm ,n 
+
+s n + ψpm ,q 
+
+s q (46) JOURNAL OF L ATEX CLASS FILES, VOL. XX, NO. XX, 2026 6 
+
+> Fig. 2. Experimental platform of IPMSM.
+
+where npm = ηpm / ∥ηpm ∥ is the unit vector along the online auxiliary flux. On the same compact operating set, define the bounded projection ratios: 
+
+ρn = sup 
+
+> t
+
+|ψpm ,n (t)|
+
+s(t) , ρq = sup 
+
+> t
+
+|ψpm ,q (t)|
+
+s(t) (47) where ρn and ρq denote the maximum fractions of the on-line auxiliary flux magnitude projected onto the normal and tangential directions, respectively. Define the reconstructed equivalent flux vector as ηad =Ψnpm . Relative to the d-axis component ψpm ,n n, define the 
+
+d-axis and tangential residuals as εd = nT(ηad − ψpm ,n n) and 
+
+εq = qT(ηad − ψpm ,n n).
+
+Theorem 2: Under the conditions of Theorem 1 and with the definitions in (45)–(47), the d-axis and tangential residuals converge to the compact sets Ωd and Ωq , defined as follows: 
+
+Ωd = εd ∈ R |εd| ≤ ϵeq ρn
+
+Ωq =
+
+
+
+εq ∈ R |εq | ≤ ϵeq ρq + sup 
+
+> t
+
+|ψpm ,q (t)|
+
+ (48) 
+
+Proof: Substituting (46) into ηad = Ψ npm gives: 
+
+ηad = Ψ ψpm ,n 
+
+s n + Ψ ψpm ,q 
+
+s q (49) Because s2 = ψ2pm ,n + ψ2pm ,q , subtracting the d-axis component ψpm ,n n yields: 
+
+ηad − ψpm ,n n =
+
+
+
+Ψ ψpm ,n 
+
+s − ψpm ,n 
+
+
+
+n + Ψ ψpm ,q 
+
+s q
+
+= ˜Ψ ψpm ,n 
+
+s n +
+
+
+
+ψpm ,q + ˜Ψ ψpm ,q 
+
+s
+
+
+
+q
+
+(50) Projecting (50) onto the true basis vectors n and q gives: 
+
+εd = ˜Ψ ψpm ,n 
+
+s , εq = ψpm ,q + ˜Ψ ψpm ,q 
+
+s (51) Combining (51), (40), and (47) proves (48). Theorem 2 follows by projecting the online vector ηpm .When ˜Ψ → 0, the d-axis residual tends to zero, whereas the tangential residual tends to ψpm ,q . From (17), the cor-responding tangential channel is ∆Lq iq − (∆ Rs/ω )id. Thus, scalar equivalent flux adaptation removes the magnitude error but cannot independently cancel the tangential component dominated by Lq mismatch. Therefore, Lq identification in Section IV is needed to reduce this remaining error.  
+
+> TABLE I PARAMETERS OF THE IPMSM S YSTEM
+
+Description Parameter Value Pole pairs Np 5DC voltage (V) Udc 300 Rated power (kW) Pr 1.5 Rated torque (N ·m) Tr 7Rated current (A) Ir 6
+
+d-axis inductance (mH) Ld 7.9 
+
+q-axis inductance (mH) Lq 11.2 Stator resistance ( Ω) Rs 0.495 Flux linkage (Wb) ψf 0.117 Observer gain Γpm 5000 Update gain kψ 10     
+
+> Fig. 3. Experimental results of q-axis inductance identification ˆLq, ctrl under no-load, half-load, and full-load conditions.
+
+VI. E XPERIMENTAL RESULTS AND ANALYSIS 
+
+To validate the proposed parameter-robust IPMSM sen-sorless control scheme, an experimental platform is built as shown in Fig. 2. The setup consists of two coupled PMSMs, a dSPACE DS1202 controller, a power driver, and a host computer, allowing the adaptive flux observer and the Lq
+
+identification loop to be tested under controlled load con-ditions. The speed loop is executed at 2 kHz, whereas the current loop and PWM switching frequency are both set to 10 kHz. The main IPMSM parameters are listed in Table I. For comparison, three sensorless controllers are used: Method 1 is the flux observer in [18], Method 2 is the active-flux ESO-based controller in [6], and Method 3 is the ADRC-based controller in [16]. The proposed controller contains only two independent tuning gains Γpm and kψ , which can be selected after a few practical tuning iterations. All parameter mismatch comparison tests are carried out under full-load operation. 
+
+A. Performance of Inductance Identification 
+
+The previous analysis has shown that the Lq mismatch cannot be eliminated by the adaptive flux update because it acts on the tangential equivalent flux component. To achieve parameter-robust operation, a q-axis rotating voltage injection is used to identify Lq , and the value obtained under no-load or light-load conditions is then used in the proposed observer. In the experiment, the injected voltage is uqh = 3 sin(800 πt ),the sample number Nm in (34) is set to 20, and the current threshold Ith in (36) is set to 0.5. The identification result is JOURNAL OF L ATEX CLASS FILES, VOL. XX, NO. XX, 2026 7                       
+
+> (a) (b)
+> (c) (d) Fig. 4. Experimental results under no-load, half-load, and full-load conditions at 500 rpm. (a) Method 1. (b) Method 2. (c) Method 3. (d) Our method.
+> (a) (b) Fig. 5. Experimental results under resistance mismatch at 500 rpm, showing the adaptive flux Ψupdate. (a) Rs→0.5Rs. (b) Rs→1.5Rs.
+> (a) (b) Fig. 6. Experimental results under d-axis inductance mismatch at 500 rpm, showing the adaptive flux Ψupdate. (a) Ld→0.8Ld. (b) Ld→1.2Ld.
+
+shown in Fig. 3. It can be observed that the identified ˆLq, ctrl 
+
+fluctuates around the real Lq value under no-load operation, which indicates accurate inductance identification. When a larger load is applied, the identified value is frozen. 
+
+B. Performance of Load Transition 
+
+Fig. 4 compares the estimation performance of the four methods at 500 rpm when the operating condition is suddenly changed from no load to half load and then to full load. Overall, as the load increases, the estimation errors of all methods first decrease and then increase. Method 1 and Method 2 produce large transient errors during load switching, with peak values of approximately 0.3-0.35 rad. Method 3 reduces the transient error to some extent, but its error fluctuation becomes clearly larger under full-load operation. In contrast, the proposed method limits the transient error within approximately 0.2 rad during both load transitions and quickly recovers to the steady-state error range. 
+
+C. Performance of Rs and Ld Mismatch 
+
+Fig. 5 shows the experimental results when Rs is sud-denly changed to 0.5 Rs and 1.5 Rs, respectively. Method 1            
+
+> TABLE II ROOT MEAN SQUARE ERROR (RMSE) OF ESTIMATION ERRORS UNDER
+> DIFFERENT PARAMETER MISMATCH CONDITIONS . U NIT :RAD
+
+Method 1 Method 2 Method 3 Our Method 
+
+Nominal 0.136 0.121 0.118 0.103 
+
+0.5Rs 0.202 0.194 0.118 0.106 
+
+1.5Rs 0.076 0.039 0.119 0.101 
+
+0.8Ld 0.121 0.096 0.144 0.104 
+
+1.2Ld 0.154 0.144 0.109 0.103 
+
+0.9Lq 0.223 0.205 0.012 0.186 
+
+1.1Lq 0.045 0.028 0.250 0.104 
+
+0.9ψf 0.194 0.206 − 0.103 
+
+1.1ψf 0.071 0.025 − 0.103                            
+
+> (a) (b) Fig. 7. Experimental results under q-axis inductance mismatch at 500 rpm, showing the adaptive flux Ψupdate. (a) Lq→0.9Lq. (b) Lq→1.1Lq.
+> (a) (b)
+> (c) (d) Fig. 8. Experimental results under flux mismatch at 500 rpm. (a) ψf→
+> 0.9ψf. (b) ψf→1.1ψf. (c) Our method with initial 0.9ψf. (d) Our method with initial 1.1ψf. Method 3 does not require the flux parameter.
+
+and Method 2 show clear steady-state shifts in the position estimation error, whereas Method 3 always exhibits large periodic error oscillations. In contrast, the proposed method only produces a short transient disturbance at the switching instant and then rapidly returns to the steady-state error range of approximately −0.1 rad. The results under Ld mismatch are shown in Fig. 6. When 
+
+Ld is changed to 0.8 Ld and 1.2 Ld, Method 1 and Method 2 exhibit small steady-state error shifts, while Method 3 shows a larger error oscillation under 0.8 Ld. The proposed method maintains a small and stable error range in both cases and recovers quickly after the parameter changes. These results confirm that the adaptive flux update can adjust the equivalent flux according to the Rs and Ld mismatches, thereby improv-ing steady-state robustness and transient recovery. JOURNAL OF L ATEX CLASS FILES, VOL. XX, NO. XX, 2026 8       
+
+> (a)
+> (b) Fig. 9. Experimental results of the adaptive flux observer under resistance mismatch at 500 rpm. (a) Rs→0.2Rs. (b) Rs→1.8Rs.
+
+D. Performance of Lq and ψf Mismatch 
+
+Fig. 7 shows the results when Lq is changed to 0.9Lq
+
+and 1.1Lq . The position estimation errors of all four methods change noticeably: reducing Lq shifts the error in the negative direction, whereas increasing Lq shifts it in the positive direc-tion. This result confirms that the adaptive flux update cannot fully compensate Lq mismatch, so accurate Lq acquisition or online identification is necessary. Fig. 8 further gives the results under flux mismatch. When the flux is changed to 0.9ψf and 1.1ψf , Method 1 and Method 2 show clear transient errors and steady-state shifts, indicating their sensitivity to the flux parameter. Method 3 is almost unaffected because its observer model does not require 
+
+ψf . For the proposed method, the adaptive flux converges to approximately 0.124 Wb from both initial values, and the estimation error returns to a similar steady-state range, verifying its compensation capability under flux mismatch. Table II summarizes the error variations of the four methods under four parameter mismatches. 
+
+E. Performance of Large Range Parameter Mismatch 
+
+To further evaluate robustness under large parameter uncer-tainties, Figs. 9 and 10 show the experimental results under larger Rs and Ld mismatches, respectively. When Rs or Ld
+
+is suddenly changed to 0.2 and 1.8 times the rated value, the adaptive flux is adjusted accordingly. The position estimation error only exhibits a limited transient deviation and rapidly returns to a stable range, while the system remains stable throughout the whole test. Fig. 11 further examines the performance under time-varying parameters, where Rs and Ld vary sinusoidally with an amplitude of 80% of their nominal values. Under sinusoidal 
+
+Ld variation, the error fluctuation remains almost unchanged. Under sinusoidal Rs variation, the error shows a small slow fluctuation because, as analyzed above, part of the resistance error is projected onto the tangential flux when id̸ = 0 . These results confirm that the proposed observer can handle both sudden and time-varying parameter mismatches. 
+
+F. Performance of Flux and Identified Inductance Update 
+
+Fig. 12 shows the results with larger initial flux mismatches. When the initial values are set to 0.5ψf and 1.5ψf , the adap-tive flux in both cases converges to approximately 0.124 Wb ,                           
+
+> (a)
+> (b) Fig. 10. Experimental results of the adaptive flux observer under d-axis inductance mismatch at 500 rpm. (a) Ld→0.2Ld. (b) Ld→1.8Ld.
+> (a) (b) Fig. 11. Experimental results of the adaptive flux observer under sinu-soidal parameter variations at 500 rpm. (a) Rs+ 0 .8Rssin(2 πt ).(b)
+> Ld+ 0 .8Ldsin(2 πt ).
+> (a)
+> (b) Fig. 12. Experimental results of the adaptive flux observer with different initial flux values at 500 rpm. (a) Initial flux 0.5ψf. (b) Initial flux 1.5ψf.
+
+and the position estimation error returns to a similar steady-state range. This indicates good convergence of the adaptive update under large initial flux mismatch. Fig. 13 verifies the effectiveness of the identified Lq . After the controller parameter is switched from 0.8Lq or 1.2Lq to 
+
+ˆLq, ctrl , the original estimation bias is rapidly reduced and returns to the stable range of approximately −0.1 rad. Thus, the identified Lq effectively corrects the inductance mismatch and improves the position estimation accuracy. 
+
+G. Performance of Acceleration 
+
+Fig. 14 shows the experimental results when the motor accelerates from 200 rpm to 1000 rpm. The speed smoothly follows the acceleration command, and the estimated posi-tion continuously tracks the measured position. The position estimation error decreases from approximately −0.15 rad at low speed and settles within a small range near 1000 r/min. JOURNAL OF L ATEX CLASS FILES, VOL. XX, NO. XX, 2026 9
+
+(a) 
+
+(b) Fig. 13. Experimental results when different q-axis inductances are switched to the identified value at 500 rpm. (a) 0.8Lq → ˆLq, ctrl . (b) 1.2Lq → ˆLq, ctrl .
+
+Fig. 14. Experimental results during acceleration from 200 rpm to 1000 rpm. 
+
+Meanwhile, the adaptive flux changes smoothly and finally converges, verifying the dynamic tracking capability and stable sensorless operation over a wide speed range. VII. C ONCLUSION 
+
+This paper has presented a parameter-robust IPMSM sen-sorless control method based on an adaptive flux observer and high-frequency q-axis inductance identification. By mapping parameter mismatches into the equivalent flux domain, the adaptive flux update compensates the normal flux variations caused by flux, Ld, and the dominant resistance errors, while 
+
+Lq identification reduces the remaining tangential sensitivity. The stability analysis proves bounded equivalent flux magni-tude tracking and clarifies the remaining tangential residual. Compared with the benchmark methods, experiments show that the proposed controller restores the estimation error to its nominal level under resistance, d-axis inductance, q-axis inductance, and flux mismatches. REFERENCES [1] G. Wang, M. Valla, and J. Solsona, “Position sensorless permanent magnet synchronous machine drives: A review,” IEEE Transactions on Industrial Electronics , vol. 67, no. 7, pp. 5830–5842, 2020. [2] Y. Wang, Z. Li, J. Qiu, S. Zhou, H. Li, and Z. Zhang, “Robust encoderless control for pmsm drives via a revised unscented kalman filter,” IEEE Transactions on Industrial Electronics , vol. 73, no. 2, pp. 1837–1848, 2026. [3] Y. Zuo, X. Ge, S. Zhang, H. Cao, H. Wang, Y. Wang, and C. H. T. Lee, “Sensorless control of IPMSM drives based on extended state observer with enhanced position estimation accuracy,” IEEE Transactions on Power Electronics , vol. 40, no. 1, pp. 787–800, 2025. [4] X. Wu, C. Li, Y. Zhang, S. Chen, Z. Ma, Y. Han, X. Zhang, and G. Tan, “Sensorless control of IPMSM equipped with LC sinusoidal filter based on full-order sliding mode observer and feedforward QPLL,” 
+
+IEEE Transactions on Power Electronics , vol. 39, no. 7, pp. 8072–8085, 2024. [5] J. Lee, J. Hong, K. Nam, R. Ortega, L. Praly, and A. Astolfi, “Sensorless control of surface-mount permanent-magnet synchronous motors based on a nonlinear observer,” IEEE Transactions on Power Electronics ,vol. 25, no. 2, pp. 290–297, 2010. [6] S. Zhou, Z. Zhang, H. Li, Z. Li, Q. Xing, X. Liu, F. Wang, and J. Rodriguez, “A robust encoderless control for PMSM drives: Arevised hybrid active flux-based technique,” IEEE Transactions on Power Electronics , vol. 38, no. 11, pp. 14 438–14 449, 2023. [7] A. T. Woldegiorgis, X. Ge, Y. Zuo, H. Wang, and M. Hassan, “Sensorless control of interior permanent magnet synchronous motor drives consid-ering resistance and permanent magnet flux linkage variation,” IEEE Transactions on Industrial Electronics , vol. 70, no. 8, pp. 7716–7730, 2023. [8] K. Wang, G. Wang, G. Zhang, Q. Wang, B. Li, and D. Xu, “ESO-based robust hybrid flux observer with active flux error estimation for position sensorless PMa-SynRM drives,” IEEE Transactions on Transportation Electrification , vol. 11, no. 1, pp. 2049–2060, 2025. [9] Z.-H. Liu, J. Nie, H.-L. Wei, L. Chen, F.-M. Wu, and M.-Y. Lv, “Second-order ESO-based current sensor fault-tolerant strategy for sensorless control of PMSM with B-phase current,” IEEE/ASME Transactions on Mechatronics , vol. 27, no. 6, pp. 5427–5438, 2022. [10] S. A. Davari, M. S. Mousavi, B. Nikmaram, F. Flores-Bahamonde, F. Wang, P. Wheeler, and J. Rodriguez, “Sensorless model-free predictive control of permanent magnet synchronous motor,” IEEE Transactions on Industrial Electronics , vol. 73, no. 2, pp. 1570–1581, 2026. [11] Z. Chen, Z. Chen, Y. Chen, and Y. Zhong, “A parameter-free sensorless control strategy for PMSM drive based on ultralocal model,” Electrical Engineering , vol. 107, no. 12, pp. 15 305–15 315, 2025. [12] Z. Yin, Y. Zhang, X. Cao, D. Yuan, and J. Liu, “Estimated position error suppression using novel PLL for IPMSM sensorless drives based on full-order SMO,” IEEE Transactions on Power Electronics , vol. 37, no. 4, pp. 4463–4474, 2022. [13] X. Wu, X. Hu, X. Yu, Y. Feng, T. Wu, and S. Huang, “Improved super-twisting flux sliding-mode observer for sensorless IPMSM drives with FFPS-PLL,” IEEE Transactions on Transportation Electrification ,vol. 11, no. 1, pp. 1949–1960, 2025. [14] D. Wang and X. Liu, “Sensorless control of PMSM with improved adaptive super-twisting sliding mode observer and IST-QSG,” IEEE Transactions on Transportation Electrification , vol. 11, no. 1, pp. 721– 731, 2025. [15] L. Qu, W. Qiao, and L. Qu, “An enhanced linear active disturbance rejec-tion rotor position sensorless control for permanent magnet synchronous motors,” IEEE Transactions on Power Electronics , vol. 35, no. 6, pp. 6175–6184, 2020. [16] D. Yang, S. Huang, W. Liao, X. Wu, X. Yu, T. Wu, D. Luo, and S. Huang, “ILADRC-based sensorless IPMSM strategy with adaptive harmonic filtering-extended state observer for current quality improve-ment,” IEEE Transactions on Power Electronics , vol. 41, no. 2, pp. 1752–1763, 2026. [17] H. Sun, X. Zhang, X. Liu, and H. Su, “Adaptive robust sensorless control for PMSM based on improved back EMF observer and extended state observer,” IEEE Transactions on Industrial Electronics , vol. 71, no. 12, pp. 16 635–16 643, 2024. [18] A. Khlaief, M. Bendjedia, M. Boussak, and M. Gossa, “A nonlinear observer for high-performance sensorless speed control of IPMSM drive,” IEEE Transactions on Power Electronics , vol. 27, no. 6, pp. 3028–3040, 2012. [19] F. Zhou, J. Liang, Z. Yin, X. Wang, Y. Shen, Z. Shi, and H. Zhao, “Equivalent flux compensation for spmsm sensorless control under parameter mismatch,” arXiv preprint arXiv:2609.29313 , 2026.

@@ -1,0 +1,133 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-10-02T23:12:59.700389+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 1,
+    "deep_cap": 6,
+    "deep_selected": 1,
+    "quick_candidates": 2,
+    "quick_skim_target": 11,
+    "quick_selected": 2
+  },
+  "deep_dive": [
+    {
+      "id": "2609.39840v1",
+      "title": "Parameter-Robust Sensorless Control of IPMSM Drives With Adaptive Flux Observer",
+      "abstract": "To address parameter sensitivity commonly in interior permanent magnet synchronous motor (IPMSM) sensorless control, this paper proposes a parameter-robust control framework by extending the adaptive flux observer from surface-mounted PMSM to salient-pole machines. First, parameter mismatches are interpreted as an equivalent flux vector with $d$-axis and $q$-axis components. Permanent magnet flux, $d$-axis inductance, and resistance mismatches are mapped to the $d$-axis flux component, whereas $q$-axis inductance mismatch is mapped to the $q$-axis component. Then, a scalar adaptive flux update is designed to compensate the $d$-axis flux variation by tracking the equivalent flux magnitude. Since the $q$-axis component rotates the observed flux direction and cannot be eliminated by scalar adaptation, a high-frequency $q$-axis voltage injection method is introduced to identify the $q$-axis inductance. Meanwhile, stability analysis proves bounded equivalent flux magnitude tracking and identifies the residual tangential flux responsible for position error. Finally, experimental results show that the proposed method does not require precise resistance, $d$-axis inductance, or flux, while the $q$-axis inductance is provided by online identification.",
+      "authors": [
+        "Fobao Zhou",
+        "Zhenxiao Yin",
+        "Xueyan Wang",
+        "Yang Shen",
+        "Yuanfeng Qu",
+        "Hang Zhao"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY"
+      ],
+      "published": "2026-09-30T14:35:24+00:00",
+      "link": "https://arxiv.org/pdf/2609.39840v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 10.0,
+      "llm_evidence_en": "sensorless control of IPMSM drives with adaptive flux observer",
+      "llm_evidence_cn": "基于自适应磁链观测器的IPMSM无传感器控制",
+      "llm_evidence": "基于自适应磁链观测器的IPMSM无传感器控制",
+      "canonical_evidence": "基于自适应磁链观测器的IPMSM无传感器控制",
+      "llm_tldr_en": "Proposes a parameter-robust sensorless control framework for IPMSM using an adaptive flux observer.",
+      "llm_tldr_cn": "提出了一种基于自适应磁链观测器的IPMSM参数鲁棒无传感器控制框架。",
+      "llm_tldr": "提出了一种基于自适应磁链观测器的IPMSM参数鲁棒无传感器控制框架。",
+      "llm_tags": [
+        "query:pmsm"
+      ],
+      "matched_query_tag": "query:pmsm",
+      "matched_query_text": "Permanent Magnet Synchronous Motor research",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2609.36182v1",
+      "title": "Test-Time Adaptation of Manipulation Policies Under Actuator Degradation",
+      "abstract": "Robot manipulation policies are usually trained under the assumption that a commanded action produces the same motion as it did during training even after hours of operation. Real hardware violates this assumption as the motors gradually heat up, current saturates near contact, voltage sags under load, thus the same policy action can produce a weaker, delayed, or noisier motion. These conditions are already measured by onboard telemetry, such as joint temperature, motor current, and supply voltage, yet this signal is typically used only for logging or safety checks rather than policy adaptation. We introduce Telemetry-Aware Action Rectification (TeAR), a policy-agnostic method that turns a frozen manipulation policy into a telemetry-conditioned policy by rectifying its outgoing action before it reaches the low-level controller. TeAR learns a lightweight Transformer that combines the proposed action with live actuator telemetry and amplifies, damps, or biases individual action components. We evaluate TeAR across 18 policy-task pairs spanning 8 policy families and 5 manipulation tasks. In an additional paired evaluation with degradation-model mismatch, TeAR achieves 31.8% success, compared with 25.6% for the base policy and 30.6% for an assumed-model inverse. On a physical arm, TeAR improves success under heating by 10-15% without on-robot fine-tuning.",
+      "authors": [
+        "Som Sagar",
+        "Ransalu Senanayake"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-09-28T19:49:27+00:00",
+      "link": "https://arxiv.org/pdf/2609.36182v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "adaptation under actuator degradation and motor heating",
+      "llm_evidence_cn": "执行器退化及电机发热下的自适应控制",
+      "llm_evidence": "执行器退化及电机发热下的自适应控制",
+      "canonical_evidence": "执行器退化及电机发热下的自适应控制",
+      "llm_tldr_en": "Introduces TeAR to adapt manipulation policies to hardware changes like motor heating and voltage sags.",
+      "llm_tldr_cn": "引入TeAR方法，使操作策略能够适应电机发热和电压下降等硬件变化。",
+      "llm_tldr": "引入TeAR方法，使操作策略能够适应电机发热和电压下降等硬件变化。",
+      "llm_tags": [
+        "query:pmsm"
+      ],
+      "matched_query_tag": "query:pmsm",
+      "matched_query_text": "fault-tolerant control of multi-phase motors",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.33542v2",
+      "title": "A Disk-Shaped Magnetoelastic Torque Sensor for Robotic Joints Using Permanent Magnetization",
+      "abstract": "Direct torque sensing is a growing need in the robotics community to enable precise control and interactions where torque estimation from motor current is not sufficient. This paper presents a novel disk-shaped magnetoelastic torque sensor with a compact axial envelope of about 1 cm, suitable for integration in robotic joints. A four-magnetometer architecture is used to measure the field modulated by the stress affecting a narrow magnetized region while rejecting the effects of parasitic cross forces. A custom-designed magnetic shield enhances the torque sensitivity while reducing the external stray fields by a factor 7x. The device measures the torque with an accuracy of 1.34 %FS relative to the 50 Nm full scale (FS). The paper details the development of the sensor through the mechanical design, the magnetization procedure, and the experimental validation. The results demonstrate the potential of the proposed sensor for robotic applications.",
+      "authors": [
+        "Bruno Brajon",
+        "Enrico Gasparin",
+        "Nicole Yazigy",
+        "Lisa Salamin",
+        "Florian Copt",
+        "Guzmán Borque Gallego",
+        "Elias Klauser",
+        "Gaël Close"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "eess.SY"
+      ],
+      "published": "2026-09-27T13:08:48+00:00",
+      "link": "https://arxiv.org/pdf/2609.33542v2",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "torque sensor using permanent magnetization for robotic joints",
+      "llm_evidence_cn": "用于机器人关节的永磁式扭矩传感器",
+      "llm_evidence": "用于机器人关节的永磁式扭矩传感器",
+      "canonical_evidence": "用于机器人关节的永磁式扭矩传感器",
+      "llm_tldr_en": "Develops a compact magnetoelastic torque sensor using permanent magnetization for precise robotic control.",
+      "llm_tldr_cn": "开发了一种利用永磁特性的紧凑型磁致弹性扭矩传感器，用于机器人精确控制。",
+      "llm_tldr": "开发了一种利用永磁特性的紧凑型磁致弹性扭矩传感器，用于机器人精确控制。",
+      "llm_tags": [
+        "query:pmsm"
+      ],
+      "matched_query_tag": "query:pmsm",
+      "matched_query_text": "Permanent Magnet Synchronous Motor research",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

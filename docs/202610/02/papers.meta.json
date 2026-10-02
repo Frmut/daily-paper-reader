@@ -1,0 +1,51 @@
+{
+  "label": "2026-10-02",
+  "date": "2026-10-02",
+  "generated_at": "2026-10-02T23:13:29",
+  "count": 3,
+  "papers": [
+    {
+      "paper_id": "202610/02/2609.39840v1-parameter-robust-sensorless-control-of-ipmsm-drives-with-adaptive-flux-observer",
+      "section": "deep",
+      "title_en": "Parameter-Robust Sensorless Control of IPMSM Drives With Adaptive Flux Observer",
+      "authors": "Fobao Zhou, Zhenxiao Yin, Xueyan Wang, Yang Shen, Yuanfeng Qu, Hang Zhao",
+      "date": "2026-09-30",
+      "pdf": "https://arxiv.org/pdf/2609.39840v1",
+      "score": "10.0",
+      "evidence": "基于自适应磁链观测器的IPMSM无传感器控制",
+      "tldr": "本文针对内置式永磁同步电机（IPMSM）无传感器控制中的参数敏感性问题，提出了一种参数鲁棒控制框架。通过将参数失配映射为等效磁链矢量，结合标量自适应磁链观测器补偿d轴磁链偏差，并引入高频电压注入法在线辨识q轴电感，有效提升了系统在参数不确定性下的鲁棒性与位置估计精度。",
+      "tags": "query:pmsm",
+      "abstract_en": "To address parameter sensitivity commonly in interior permanent magnet synchronous motor (IPMSM) sensorless control, this paper proposes a parameter-robust control framework by extending the adaptive flux observer from surface-mounted PMSM to salient-pole machines. First, parameter mismatches are interpreted as an equivalent flux vector with $d$-axis and $q$-axis components. Permanent magnet flux, $d$-axis inductance, and resistance mismatches are mapped to the $d$-axis flux component, whereas $q$-axis inductance mismatch is mapped to the $q$-axis component. Then, a scalar adaptive flux update is designed to compensate the $d$-axis flux variation by tracking the equivalent flux magnitude. Since the $q$-axis component rotates the observed flux direction and cannot be eliminated by scalar adaptation, a high-frequency $q$-axis voltage injection method is introduced to identify the $q$-axis inductance. Meanwhile, stability analysis proves bounded equivalent flux magnitude tracking and identifies the residual tangential flux responsible for position error. Finally, experimental results show that the proposed method does not require precise resistance, $d$-axis inductance, or flux, while the $q$-axis inductance is provided by online identification.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202610/02/2609.36182v1-test-time-adaptation-of-manipulation-policies-under-actuator-degradation",
+      "section": "quick",
+      "title_en": "Test-Time Adaptation of Manipulation Policies Under Actuator Degradation",
+      "authors": "Som Sagar, Ransalu Senanayake",
+      "date": "2026-09-28",
+      "pdf": "https://arxiv.org/pdf/2609.36182v1",
+      "score": "7.0",
+      "evidence": "执行器退化及电机发热下的自适应控制",
+      "tldr": "针对机器人执行器随运行时间产生性能退化（如发热、电压波动）导致策略失效的问题，本文提出了Telemetry-Aware Action Rectification (TeAR)方法。该方法通过轻量级Transformer实时处理执行器遥测数据，对原始策略输出的动作进行动态修正，从而在无需重新训练或微调的情况下，显著提升了机器人操作策略在硬件退化环境下的鲁棒性与成功率。",
+      "tags": "query:pmsm",
+      "abstract_en": "Robot manipulation policies are usually trained under the assumption that a commanded action produces the same motion as it did during training even after hours of operation. Real hardware violates this assumption as the motors gradually heat up, current saturates near contact, voltage sags under load, thus the same policy action can produce a weaker, delayed, or noisier motion. These conditions are already measured by onboard telemetry, such as joint temperature, motor current, and supply voltage, yet this signal is typically used only for logging or safety checks rather than policy adaptation. We introduce Telemetry-Aware Action Rectification (TeAR), a policy-agnostic method that turns a frozen manipulation policy into a telemetry-conditioned policy by rectifying its outgoing action before it reaches the low-level controller. TeAR learns a lightweight Transformer that combines the proposed action with live actuator telemetry and amplifies, damps, or biases individual action components. We evaluate TeAR across 18 policy-task pairs spanning 8 policy families and 5 manipulation tasks. In an additional paired evaluation with degradation-model mismatch, TeAR achieves 31.8% success, compared with 25.6% for the base policy and 30.6% for an assumed-model inverse. On a physical arm, TeAR improves success under heating by 10-15% without on-robot fine-tuning.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202610/02/2609.33542v2-a-disk-shaped-magnetoelastic-torque-sensor-for-robotic-joints-using-permanent-magnetization",
+      "section": "quick",
+      "title_en": "A Disk-Shaped Magnetoelastic Torque Sensor for Robotic Joints Using Permanent Magnetization",
+      "authors": "Bruno Brajon, Enrico Gasparin, Nicole Yazigy, Lisa Salamin, Florian Copt, Guzmán Borque Gallego, Elias Klauser, Gaël Close",
+      "date": "2026-09-27",
+      "pdf": "https://arxiv.org/pdf/2609.33542v2",
+      "score": "6.0",
+      "evidence": "用于机器人关节的永磁式扭矩传感器",
+      "tldr": "本文提出了一种新型盘状磁弹性扭矩传感器，专为机器人关节设计，厚度仅约1厘米。该传感器利用四磁力计架构测量受应力调制的磁场，并通过定制磁屏蔽技术显著提升灵敏度并降低杂散场干扰。实验表明，该传感器在50 Nm量程下精度达1.34% FS，为机器人关节提供了一种紧凑且高精度的扭矩感知解决方案。",
+      "tags": "query:pmsm",
+      "abstract_en": "Direct torque sensing is a growing need in the robotics community to enable precise control and interactions where torque estimation from motor current is not sufficient. This paper presents a novel disk-shaped magnetoelastic torque sensor with a compact axial envelope of about 1 cm, suitable for integration in robotic joints. A four-magnetometer architecture is used to measure the field modulated by the stress affecting a narrow magnetized region while rejecting the effects of parasitic cross forces. A custom-designed magnetic shield enhances the torque sensitivity while reducing the external stray fields by a factor 7x. The device measures the torque with an accuracy of 1.34 %FS relative to the 50 Nm full scale (FS). The paper details the development of the sensor through the mechanical design, the magnetization procedure, and the experimental validation. The results demonstrate the potential of the proposed sensor for robotic applications.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
