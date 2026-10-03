@@ -1,0 +1,51 @@
+{
+  "label": "2026-10-03",
+  "date": "2026-10-03",
+  "generated_at": "2026-10-03T22:40:23",
+  "count": 3,
+  "papers": [
+    {
+      "paper_id": "202610/03/2609.30723v1-concurrent-parameter-learning-and-current-control-for-large-scale-grid-following-inverter-based-resources",
+      "section": "quick",
+      "title_en": "Concurrent Parameter Learning and Current Control for Large-scale Grid-following Inverter-based Resources",
+      "authors": "Satish Vedula",
+      "date": "2026-09-25",
+      "pdf": "https://arxiv.org/pdf/2609.30723v1",
+      "score": "7.0",
+      "evidence": "逆变器资源的电流控制与参数学习",
+      "tldr": "针对大规模并网逆变器资源（IBR）在电力系统中面临的优化发电与稳定性挑战，本文提出了一种并发的传输参数学习与最优电流控制框架。该方法通过在线估计传输参数，使逆变器能自适应调整控制策略，并结合优化算法确定功率设定点，从而显著提升了电网事件下的动态响应能力与系统稳定性。",
+      "tags": "query:pmsm",
+      "abstract_en": "The integration of large-scale inverter-based resources (IBRs) into the grid presents two key challenges in terms of optimal power generation and transmission system stability. This work proposes concurrent transmission parameter learning and optimal power generation and current control for the grid-following IBRs. The proposed approach estimates transmission parameters online using the current measurements, enabling the IBRs to adapt their control actions to evolving grid conditions. The learned parameter estimates are incorporated into an optimization-based power distribution strategy to determine the optimal power setpoints. In parallel, a current control scheme is designed to regulate the grid-following (GFL) IBRs current output based on the estimates and received active and reactive power references from the high-level optimizer, thereby improving the dynamic response to the grid events. The effectiveness of the proposed framework is validated through a simulation in a MATLAB-Simulink environment. From the results, the impact of the concurrent estimator and current controller during the grid events can be seen.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202610/03/2609.35758v1-statistical-learning-of-contractive-dynamical-representations-for-composite-adaptive-control",
+      "section": "quick",
+      "title_en": "Statistical Learning of Contractive Dynamical Representations for Composite Adaptive Control",
+      "authors": "Min Kim, José Leonardo Brenes, Fred Hadaegh, Soon-Jo Chung",
+      "date": "2026-09-28",
+      "pdf": "https://arxiv.org/pdf/2609.35758v1",
+      "score": "6.0",
+      "evidence": "耦合扰动下的自适应跟踪控制",
+      "tldr": "本文提出了一种用于复合自适应跟踪控制的表征学习框架，旨在解决动态耦合干扰下的控制难题。该方法结合了经典干扰调节控制（DAC）与现代自适应干扰抑制技术，通过硬期望最大化（hard-EM）算法学习具有一致收缩性的干扰动力学表征。结合贝叶斯滤波，该框架实现了具有预测能力的复合自适应控制器，在复杂动态系统实验中展现出优于传统基准的跟踪性能与鲁棒性。",
+      "tags": "query:pmsm",
+      "abstract_en": "We present a representation-learning framework for composite adaptive tracking control under dynamically coupled disturbances. The framework connects classical disturbance-accommodating control (DAC) to recent last-layer adaptive disturbance-rejection methods. Specifically, we introduce a statistically principled hard expectation-maximization (hard-EM) procedure, with a Kalman smoother in the hard E-step, to identify dynamical representations of disturbance whose latent evolution is uniformly contractive. The learned representation evolves a latent disturbance-excitation state from measured plant features and control inputs and decodes that state into the time-varying disturbance acting on the nominal plant, thereby extending prior \"fixed-decay\" last-layer adaptive methods to a learned, predictive DAC-style formulation. Combined with Bayesian filtering of the learned latent state, this representation yields a composite adaptive tracking controller with predictive capability and provable exponential convergence to a bounded neighborhood. We validate our approach experimentally on a slippery ground vehicle carrying a liquid-sloshing tank and a pendulum load, and we further assess its robustness on a system of coupled Duffing oscillators. Across both settings, the method achieves accurate disturbance prediction and improved overall tracking performance relative to fixed-decay representation-learning ablations, LTI disturbance-accommodating baselines, and model-based PD baselines.",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202610/03/2610.00802v1-distributed-adaptive-neural-interval-observers-for-unknown-nonlinear-systems",
+      "section": "quick",
+      "title_en": "Distributed Adaptive Neural Interval Observers for Unknown Nonlinear Systems",
+      "authors": "Tien Dat Vu, My Nguyen Bach, Phuoc Vinh Nguyen, Minh Doan",
+      "date": "2026-09-30",
+      "pdf": "https://arxiv.org/pdf/2610.00802v1",
+      "score": "6.0",
+      "evidence": "未知非线性系统的自适应神经网络观测器",
+      "tldr": "本文针对局部测量不全的未知非线性系统，提出了一种分布式自适应神经网络区间观测器。通过结合神经网络逼近未知动力学与分布式协同机制，实现了状态的上下界估计。引入有限经验回放的积分并发学习机制以提升权重收敛性，并利用Sylvester坐标变换处理非Metzler误差动力学，确保了估计误差的有界性与区间属性。",
+      "tags": "query:pmsm",
+      "abstract_en": "This paper develops a distributed adaptive neural interval observer for unknown nonlinear systems with locally incomplete measurements. Each sensor node constructs lower and upper state estimates using its local output and neighboring observer information, while unknown nonlinear dynamics are approximated by adaptive neural models. A distributed adaptation mechanism guarantees bounded estimation and weight errors, whereas a cooperative realization preserves the componentwise interval property. To enhance neural-weight convergence without requiring persistent excitation, a finite experience-replay integral concurrent-learning mechanism is incorporated into the adaptation law. For non-Metzler error dynamics, a Sylvester-based coordinate transformation is introduced to recover a Hurwitz--Metzler distributed realization. The theoretical developments are validated through a nonlinear distributed estimation example.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

@@ -6,31 +6,32 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-10-02
-- 运行时间：2026-10-02 23:13:27 UTC
+- 最新运行日期：2026-10-03
+- 运行时间：2026-10-03 22:40:21 UTC
 - 运行状态：成功
 - 本次总论文数：3
-- 精读区：1
-- 速读区：2
+- 精读区：0
+- 速读区：3
 
 ### 今日简报（AI）
-今日聚焦电机驱动与机器人感知前沿，深度解析 IPMSM 无传感器控制技术。
-重点推荐自适应磁链观测器在参数鲁棒性上的突破，以及执行器退化下的策略自适应方案。
-建议关注电机控制算法的抗干扰能力，并结合机器人关节传感器的最新设计思路进行实践。
-- 详情：[/202610/02/README](/202610/02/README)
+今日聚焦电力电子与控制理论，探讨大规模并网逆变器参数学习及非线性系统自适应控制的前沿进展。
+重点关注大规模并网逆变器的并发参数学习与控制策略，其在提升电网稳定性方面具有显著参考价值。
+建议优先阅读逆变器参数学习相关论文，以掌握复杂电力系统动态控制的核心优化思路。
+- 详情：[/202610/03/README](/202610/03/README)
 
 ### 精读区论文标签
-1. [Parameter-Robust Sensorless Control of IPMSM Drives With Adaptive Flux Observer](/202610/02/2609.39840v1-parameter-robust-sensorless-control-of-ipmsm-drives-with-adaptive-flux-observer)  
-   标签：评分：10.0/10、query:pmsm
-   evidence：基于自适应磁链观测器的IPMSM无传感器控制
+- 本次无精读推荐。
 
 ### 速读区论文标签
-1. [Test-Time Adaptation of Manipulation Policies Under Actuator Degradation](/202610/02/2609.36182v1-test-time-adaptation-of-manipulation-policies-under-actuator-degradation)  
+1. [Concurrent Parameter Learning and Current Control for Large-scale Grid-following Inverter-based Resources](/202610/03/2609.30723v1-concurrent-parameter-learning-and-current-control-for-large-scale-grid-following-inverter-based-resources)  
    标签：评分：7.0/10、query:pmsm
-   evidence：执行器退化及电机发热下的自适应控制
-2. [A Disk-Shaped Magnetoelastic Torque Sensor for Robotic Joints Using Permanent Magnetization](/202610/02/2609.33542v2-a-disk-shaped-magnetoelastic-torque-sensor-for-robotic-joints-using-permanent-magnetization)  
+   evidence：逆变器资源的电流控制与参数学习
+2. [Statistical Learning of Contractive Dynamical Representations for Composite Adaptive Control](/202610/03/2609.35758v1-statistical-learning-of-contractive-dynamical-representations-for-composite-adaptive-control)  
    标签：评分：6.0/10、query:pmsm
-   evidence：用于机器人关节的永磁式扭矩传感器
+   evidence：耦合扰动下的自适应跟踪控制
+3. [Distributed Adaptive Neural Interval Observers for Unknown Nonlinear Systems](/202610/03/2610.00802v1-distributed-adaptive-neural-interval-observers-for-unknown-nonlinear-systems)  
+   标签：评分：6.0/10、query:pmsm
+   evidence：未知非线性系统的自适应神经网络观测器
 
 
 <div class="dpr-home-promo-card">

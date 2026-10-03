@@ -1,0 +1,2928 @@
+Title: Distributed Adaptive Neural Interval Observers for Unknown Nonlinear Systems
+
+URL Source: https://arxiv.org/pdf/2610.00802v1
+
+Published Time: Fri, 02 Oct 2026 00:39:05 GMT
+
+Number of Pages: 8
+
+Markdown Content:
+> 1
+
+# Distributed Adaptive Neural Interval Observers for Unknown Nonlinear Systems 
+
+Tien Dat Vu, My Nguyen Bach, Phuoc Vinh Nguyen and Minh Doan 
+
+Abstract —This paper develops a distributed adaptive neural interval observer for unknown nonlinear systems with locally incomplete measurements. Each sensor node constructs lower and upper state estimates using its local output and neighboring observer information, while unknown nonlinear dynamics are ap-proximated by adaptive neural models. A distributed adaptation mechanism guarantees bounded estimation and weight errors, whereas a cooperative realization preserves the componentwise interval property. To enhance neural-weight convergence without requiring persistent excitation, a finite experience-replay integral concurrent-learning mechanism is incorporated into the adap-tation law. For non-Metzler error dynamics, a Sylvester-based coordinate transformation is introduced to recover a Hurwitz– Metzler distributed realization. The theoretical developments are validated through a nonlinear distributed estimation example. 
+
+Index Terms —Distributed observer, interval observer, neural networks, nonlinear systems, adaptive estimation, positive sys-tems. 
+
+I. I NTRODUCTION 
+
+Reliable state estimation becomes difficult when a nonlinear plant is observed through spatially distributed sensors, each having access only to partial output information. A con-ventional distributed observer may recover the state through local innovations and inter-node information exchange, but it generally provides a point estimate rather than a guaran-teed state enclosure. Conversely, interval observers construct 
+
+x(t) ≤ x(t) ≤ ¯x(t) under bounded uncertainty, with the enclosure typically obtained from cooperative error dynamics [1]–[3]. The problem considered here is therefore to preserve such an interval simultaneously at every sensor node when the nonlinear dynamics are unknown and no individual sensor is required to be detectable. Distributed state estimation has been extensively studied for linear systems with partial sensing and network communica-tion [4], [5]. More recently, distributed interval observers have been developed for uncertain LTI and descriptor systems under joint or collective sensing conditions [6], [7]. In parallel, neural networks have been incorporated into interval observers to approximate unknown nonlinear functions [8]. These develop-ments, however, leave a gap between distributed interval esti-mation and adaptive learning of unknown nonlinear dynamics: existing distributed interval constructions remain essentially model-based, whereas neural interval observers are primarily centralized and their adaptation is not derived from the dis-tributed Lyapunov structure. Moreover, parameter convergence in conventional adaptive schemes typically requires persistent excitation, which can be restrictive in practical online esti-mation. Concurrent-learning methods alleviate this require-ment by repeatedly exploiting sufficiently informative recorded data, while integral concurrent learning further replaces the persistent-excitation condition by an online-verifiable finite-data richness condition [9], [10]. This paper addresses this gap by constructing a distributed adaptive neural interval observer under collective detectability. The main contributions are summarized as follows. First ,
+
+> T. D. Vu, P. V. Nguyen and M. Doan are with the Faculty of Mechanical Engineering, Ho Chi Minh City University of Technology (HCMUT), Vietnam National University Ho Chi Minh City (VNU-HCM), Ho Chi Minh City, Vietnam (e-mails: dat.vuv@hcmut.edu.vn; minh.doan@hcmut.edu.vn). M. N. Bach is with the Department of Mathematics and Statistics, Uni-versity of New Mexico, Albuquerque, NM, USA (e-mail: ngocmynguyen-bach@gmail.com). Corresponding author: Minh Doan (e-mail: minh.doan@hcmut.edu.vn).
+
+upper and lower neural observers are coupled over the sens-ing graph so that each node uses only yi and neighboring estimates, while local detectability of every (A, C i) is not required. Second , the neural weight-update laws are derived directly from a network Lyapunov function, yielding uniform ultimate boundedness of both estimation and weight errors without introducing an independent training loss; a finite experience-replay integral concurrent-learning mechanism is further incorporated to strengthen neural-weight convergence without requiring persistent excitation of the online regres-sors. Third , interval preservation is treated separately from stability through a cooperative network realization; when the direct distributed error dynamics are non-Metzler, a Sylvester-based coordinate transformation is used to recover a Hurwitz– Metzler realization and hence the componentwise enclosure 
+
+xi(t) ≤ x(t) ≤ ¯xi(t) for all nodes. II. P ROBLEM FORMULATION AND PRELIMINARIES 
+
+A. Graph-Theoretic Preliminaries 
+
+The communication among the N sensing nodes is described by a weighted directed graph G = ( V, E, A), where V := 
+
+{1, . . . , N } is the node set, E ⊆ V × V is the directed edge set, and A = [ aij ] ∈ RN ×N is the weighted adjacency matrix. An edge (j, i ) ∈ E means that node i receives information from node j, in which case aij > 0; otherwise aij = 0 ,and aii = 0 . The in-neighbor set of node i is Ni := {j ∈V : ( j, i ) ∈ E} = {j ∈ V : aij > 0}, and its weighted in-degree is di := PNj=1 aij . The corresponding degree matrix is 
+
+D := diag {d1, . . . , d N }, and the graph Laplacian is defined as L := D − A . Hence, Lii = di and Lij = −aij for i̸ = j,so that L1N = 0 . Throughout the paper, information available to node i consists of its local measurement together with the signals received from nodes in Ni.
+
+B. Networked Nonlinear System 
+
+Consider an unknown nonlinear plant monitored by N dis-tributed sensing nodes, 
+
+˙x = Ax + Bf (x, u ) + Ed, yi = Cix, i ∈ V , (1) where x ∈ Rn, u ∈ Rm, d ∈ Rq , yi ∈ Rpi , and V := 
+
+{1, . . . , N }. The matrices A ∈ Rn×n, B ∈ Rn×r , E ∈ Rn×q ,and Ci ∈ Rpi×n are known, whereas f : Rn × Rm → Rr is an unknown nonlinear mapping. In observer-based control, the plant is typically operated un-der a feedback policy. In the state-feedback case u = π(x), the unknown nonlinearity becomes the composite state-dependent mapping fc(x) := f (x, π (x)) . Hence, instead of approximat-ing a general two-argument map f (x, u ), the neural model may approximate fc(x) directly as fc(x) = W ∗⊤ ϕ(x) + ε(x).Accordingly, the subsequent neural basis functions may be chosen as functions of the state argument only. All vector inequalities are understood componentwise. For any matrix M = [ mjk ], define M + := [max {mjk , 0}] and 
+
+M − := [max {− mjk , 0}], such that M = M + − M − with 
+
+M +, M − ≥ 0.
+
+Lemma 1: For any z ≤ z ≤ ¯z and any compatible matrix M ,
+
+M +z − M − ¯z ≤ M z ≤ M + ¯z − M −z.
+
+Proof: Since M = M + − M − and M +, M − ≥ 0,the result follows directly from M +z ≤ M +z ≤ M + ¯z and arXiv:2610.00802v1 [eess.SY] 30 Sep 2026 2
+
+M −z ≤ M −z ≤ M − ¯z.
+
+Assumption 1: The disturbance is unknown but satisfies 
+
+d(t) ≤ d(t) ≤ ¯d(t), where d, ¯d ∈ Rq are known and locally bounded. From Lemma 1, define ψd := E+d − E− ¯d and ¯ψd := 
+
+E+ ¯d − E−d. Then ψd ≤ Ed ≤ ¯ψd, so the actual value of 
+
+d(t) is not required online. 
+
+Assumption 2: The trajectories satisfy x(t) ∈ Ωx ⊂ Rn
+
+and u(t) ∈ Ωu ⊂ Rm, where Ωx and Ωu are compact. The mapping f (x, u ) is continuous on Ωx × Ωu and locally Lipschitz in x, uniformly in u (In observer-based control, the observer is typically operated together with a stabilizing controller, whose role is also to keep the closed-loop state trajectory inside the prescribed compact set Ωx). For node i, let xi, ¯xi ∈ Rn denote the lower and upper state estimates. The unknown nonlinear term is represented through two adaptive neural models. 
+
+Assumption 3: For each i ∈ V , there exist bounded basis vectors ϕi = ϕi(xi, ¯xi, u ) ∈ RNi , ¯ϕi = ¯ϕi(xi, ¯xi, u ) ∈ RNi ,finite ideal weights W ∗ 
+
+> i
+
+, ¯W ∗ 
+
+> i
+
+∈ RNi×r , and εf i ∈ Rr 
+
+> ≥0
+
+such that 
+
+W ∗⊤  
+
+> i
+
+ϕi − εf i ≤ f (x, u ) ≤ ¯W ∗⊤  
+
+> i
+
+¯ϕi + εf i , (2) whenever xi ≤ x ≤ ¯xi and (x, u ) ∈ Ωx × Ωu. Moreover, 
+
+∥ϕi∥ ≤ ¯ϕℓi and ∥ ¯ϕi∥ ≤ ¯ϕui for some finite ¯ϕℓi , ¯ϕui > 0.The ideal weights in Assumption 3 are used only for analysis and are unavailable online. Their estimates W i(t) and 
+
+¯Wi(t) will be updated through the Lyapunov-derived adaptive laws developed in Section III. Since B may be sign-indefinite, the bounds in (2) will later be propagated through B using Lemma 1. 
+
+C. Distributed Sensing and Communication 
+
+Node i measures only yi = Cix; hence, the individual pair (A, C i) is not required to be detectable. Define the aggregate output matrix CV := col {C1, . . . , C N } and yV := col {y1, . . . , y N } = CV x. The aggregate quantity yV is intro-duced only for analysis and is not available at any individual node. 
+
+Definition 1 (Collective detectability) : The sensing network is collectively detectable if (A, C V ) is detectable, i.e., for every 
+
+λ ∈ σ(A) with Re( λ) ≥ 0, rank col {λI n − A, C V } = n.Thus, an unstable mode may be unobservable from some 
+
+Ci, but it must be detectable from the sensing network as a whole. 
+
+Assumption 4: The graph G is fixed and strongly connected, with aij > 0 for every (j, i ) ∈ E .
+
+Assumption 5: The pair (A, C V ) is collectively detectable according to Definition 1. At node i, the admissible online information is 
+
+{yi, u, d, ¯d, x i, ¯xi, W i, ¯Wi, x j , ¯xj : j ∈ Ni}. Thus, no node requires the full output yV or the true state x.
+
+Assumption 6: Neighboring information is transmitted con-tinuously without delay or packet loss. The communication topology is fixed during the interval of operation. Collective detectability and interval preservation are distinct but complementary requirements in the distributed interval observer design. The former ensures that the sensing network as a whole contains sufficient information to detect the relevant plant modes through the pair (A, C V ), whereas the latter guarantees that the upper and lower estimates preserve the required componentwise ordering over the entire network. In particular, the cooperative error matrix in (7) must be Metzler, i.e., all of its off-diagonal entries are nonnegative [1]–[3], in order for the distributed interval observer to preserve the interval enclosure. 
+
+D. Problem Statement 
+
+For each i ∈ V , define the upper and lower estimation errors as 
+
+¯ei := ¯ xi −x and ei := x−xi. Hence, xi ≤ x ≤ ¯xi is equivalent to ei, ¯ei ≥ 0. At the network level, let ¯e := col {¯e1, . . . , ¯eN }
+
+and e := col {e1, . . . , e N }.Define the neural-weight errors by ˜¯Wi := ¯Wi − ¯W ∗ 
+
+> i
+
+and 
+
+˜W i := W i −W ∗ 
+
+> i
+
+. The observer is initialized such that xi(0) ≤
+
+x(0) ≤ ¯xi(0) , or equivalently ei(0) , ¯ei(0) ≥ 0, for all i ∈ V .
+
+Problem 1: For system (1) under Assumptions 1–6, construct at each i ∈ V distributed upper and lower adaptive neural observers, together with online laws for W i and ¯Wi, such that all estimation and weight errors are uniformly ultimately bounded and 
+
+xi(t) ≤ x(t) ≤ ¯xi(t), ∀i ∈ V , t ≥ 0. (3) The design must use only the admissible local and neighboring information. Problem 1 therefore contains two independent requirements: bounded adaptive estimation dynamics and preservation of the order e, ¯e ≥ 0. The first will be established by a network Lya-punov analysis, whereas the second follows from a cooperative realization of the distributed error dynamics (See Section III, Eq. 7 and Section III-B). 
+
+Remark 1: Hurwitz stability alone does not imply interval preservation. A non-Metzler error matrix may yield bounded or convergent estimation errors while allowing some compo-nents of e or ¯e to become negative. Consequently, stability and cooperativity must be established separately. 
+
+Remark 2: Local detectability of every (A, C i) is not re-quired. The design instead exploits collective detectability together with graph connectivity, so that information unavail-able from yi can be supplied through neighboring observer interactions. III. D ISTRIBUTED ADAPTIVE NEURAL INTERVAL 
+
+OBSERVER 
+
+A. Observer Architecture 
+
+As discussed in Remark 1, the direct realization in the original coordinates does not necessarily possess the Metzler structure required for interval preservation. Therefore, a suitable coor-dinate transformation is introduced to construct a Hurwitz– Metzler realization whenever such a structure is not directly available. For each node i ∈ V, introduce a nonsingular coordinate transformation Ti ∈ Rn×n and define zi := Tix.Let Ai := TiAT −1 
+
+> i
+
+, Bi := TiB, Ei := TiE, Czi := CiT −1 
+
+> i
+
+,and Rij := TiT −1 
+
+> j
+
+. Hence, the plant expressed in the coor-dinates of node i satisfies ˙zi = Aizi + Bif (x, u ) + Eid and 
+
+yi = Czi zi. If the direct realization in the original coordinates already satisfies the required Metzler and Hurwitz properties, no coordinate transformation is necessary and one simply sets 
+
+Ti = In. Otherwise, Ti is selected to recover the required Hurwitz–Metzler realization, as developed in Subsection III-B. Let the online upper and lower neural models be ¯fi := ¯W ⊤ 
+
+> i
+
+¯ϕi + ¯δi and f i := W ⊤ 
+
+> i
+
+ϕi − δi, where ¯δi, δ i ∈ Rr
+
+> ≥0
+
+satisfy ¯δi ≥ εf i and δi ≥ εf i . Using the ideal weights of Assumption 3, define ¯∆f i := ¯W ∗⊤  
+
+> i
+
+¯ϕi + ¯δi − f (x, u ) and 
+
+∆f i := f (x, u ) − W ∗⊤  
+
+> i
+
+ϕi + δi. Then ¯∆f i ≥ 0 and ∆f i ≥ 0.Since Bi may be sign-indefinite, define ¯ψi := B+ 
+
+> i
+
+¯fi −B− 
+
+> i
+
+f i
+
+and ψi := B+ 
+
+> i
+
+f i − B− 
+
+> i
+
+¯fi. Similarly, using Assumption 1, define ¯qi := E+ 
+
+> i
+
+¯d − E− 
+
+> i
+
+d and qi := E+ 
+
+> i
+
+d − E− 
+
+> i
+
+¯d. Lemma 1 gives qi ≤ Eid ≤ ¯qi.3
+
+The proposed distributed upper and lower observers are 
+
+˙¯zi = Ai ¯zi + ¯ψi + Ki(yi − Czi ¯zi) + ¯ qi
+
++ κ X
+
+> j∈N i
+
+aij (Rij ¯zj − ¯zi) ,
+
+˙zi = Aizi + ψi + Ki(yi − Czi zi) + qi
+
++ κ X
+
+> j∈N i
+
+aij 
+
+ Rij zj − zi
+
+ ,
+
+(4) where Ki ∈ Rn×pi is the output-injection gain and κ > 0 is the distributed coupling gain. The term Rij ¯zj is expressed in the coordinates of node i,since Rij zj = TiT −1 
+
+> j
+
+Tj x = Tix = zi. Thus, the coupling term vanishes when neighboring estimates coincide with the true transformed state. Define the transformed upper and lower errors by ¯ϵi := ¯zi − zi and ϵi := zi − zi. The measurable output residuals are 
+
+¯ri := Czi ¯zi − yi = Czi ¯ϵi and ri := yi − Czi zi = Czi ϵi.Using ˜¯Wi := ¯Wi − ¯W ∗ 
+
+> i
+
+and ˜W i := W i − W ∗ 
+
+> i
+
+, one has 
+
+¯fi − f = ˜¯W ⊤ 
+
+> i
+
+¯ϕi + ¯∆f i and f − f i = − ˜W ⊤ 
+
+> i
+
+ϕi + ∆ f i .Define the nonnegative disturbance residuals ¯∆di := ¯ qi −
+
+Eid ≥ 0 and ∆di := Eid − qi ≥ 0, and let ¯∆i := B+ 
+
+> i
+
+¯∆f i +
+
+B− 
+
+> i
+
+∆f i + ¯∆di and ∆i := B+ 
+
+> i
+
+∆f i + B− 
+
+> i
+
+¯∆f i + ∆ di . Hence, 
+
+¯∆i ≥ 0 and ∆i ≥ 0.Let Mi := Ai −KiCzi and di := PNj=1 aij . Subtracting the transformed plant dynamics from (4) gives the upper interval-error dynamics 
+
+˙¯ϵi = ( Mi − κd iIn)¯ ϵi + κ X
+
+> j∈N i
+
+aij Rij ¯ϵj
+
++ B+ 
+
+> i
+
+˜¯W ⊤ 
+
+> i
+
+¯ϕi − B− 
+
+> i
+
+˜W ⊤ 
+
+> i
+
+ϕi + ¯∆i,
+
+(5) whereas the lower interval-error dynamics are 
+
+˙ϵi = ( Mi − κd iIn)ϵi + κ X
+
+> j∈N i
+
+aij Rij ϵj
+
++ B− 
+
+> i
+
+˜¯W ⊤ 
+
+> i
+
+¯ϕi − B+ 
+
+> i
+
+˜W ⊤ 
+
+> i
+
+ϕi + ∆ i.
+
+(6) Define ¯ϵ := col {¯ϵ1, . . . , ¯ϵN }, ϵ := col {ϵ1, . . . , ϵ N },
+
+¯η := col { ˜¯W ⊤ 
+
+> 1
+
+¯ϕ1, . . . , ˜¯W ⊤ 
+
+> N
+
+¯ϕN }, and η := col { ˜W ⊤ 
+
+> 1
+
+ϕ1, . . . , ˜W ⊤ 
+
+> N
+
+ϕN }. Moreover, let B+ := blkdiag {B+1 , . . . , B + 
+
+> N
+
+}, B− := blkdiag {B− 
+
+> 1
+
+, . . . , B − 
+
+> N
+
+},
+
+¯∆ := col { ¯∆1, . . . , ¯∆N }, and ∆ := col {∆1, . . . , ∆N }.Define RA ∈ RN n ×N n by [RA]ii := 0 and [RA]ij := 
+
+aij Rij for i̸ = j, where Rij := TiT −1 
+
+> j
+
+. The network error matrix is therefore 
+
+MD := 
+
+
+
+M1 − κd 1In κa 12 R12 · · · κa 1N R1N
+
+κa 21 R21 M2 − κd 2In · · · κa 2N R2N
+
+... ... . . . ...
+
+κa N 1RN 1 κa N 2RN 2 · · · MN − κd N In
+
+ ,
+
+(7) Equivalently, its blocks satisfy [MD ]ii = Mi − κd iIn and 
+
+[MD ]ij = κa ij Rij for i̸ = j, with [MD ]ij = 0 whenever 
+
+aij = 0 . Thus, this compact representation is exactly equiva-lent to the full block matrix representation. The complete error dynamics are therefore 
+
+˙¯ϵ = MD ¯ϵ+B+ ¯η−B −η+ ¯∆, ˙ϵ = MD ϵ+B− ¯η−B +η+∆ .
+
+(8) 
+
+B. Cooperative Realization 
+
+The interval property requires MD to be Metzler in addition to being Hurwitz. The distributed coupling itself is order preserving whenever Rij ≥ 0, since its off-diagonal blocks satisfy κa ij Rij ≥ 0. The remaining issue is therefore the local diagonal realization Mi.If Ti = In and gains Ki can be selected such that MD =blkdiag {A − KiCi}Ni=1 − κL ⊗ In is Hurwitz and Metzler, no coordinate transformation is required. Otherwise, the following Sylvester realization is used. From (5)–(6), The target local error dynamics are thus characterized by Ai − KiCzi = Mi. Using the previously defined transformed matrices Ai = TiAT −1 
+
+> i
+
+and Czi =
+
+CiT −1 
+
+> i
+
+, this condition becomes TiAT −1 
+
+> i
+
+− KiCiT −1 
+
+> i
+
+= Mi.Right multiplication by Ti gives TiA − KiCi = MiTi, and hence TiA − MiTi = KiCi. Therefore, for each node i, one prescribes a Metzler matrix Mi ∈ Rn×n and an injection matrix Ki ∈ Rn×pi , and obtains the coordinate transformation 
+
+Ti by solving the Sylvester relation TiA − MiTi = KiCi.
+
+Lemma 2: For fixed Mi and Ki, if σ(A) ∩ σ(Mi) = ∅, then the Sylvester relation above admits a unique solution Ti. If 
+
+Ti is nonsingular, then with Li := T −1 
+
+> i
+
+Ki, one has Ti(A −
+
+LiCi)T −1 
+
+> i
+
+= Mi.
+
+Proof: Consider the Sylvester equation TiA − MiTi =
+
+KiCi. Using the vectorization identity vec( AXB ) = ( B⊤ ⊗
+
+A) vec( X), one has vec( TiA) = (A⊤ ⊗ In) vec( Ti) and 
+
+vec( MiTi) = (In ⊗ Mi) vec( Ti). Hence, the Sylvester equation can be written as  A⊤ ⊗ In − In ⊗ Mi
+
+ vec( Ti) = vec( KiCi). The eigenvalues of A⊤ ⊗In −In ⊗Mi are λj (A)−
+
+λk(Mi), j, k = 1 , . . . , n . Therefore, the condition σ(A) ∩
+
+σ(Mi) = ∅ implies λj (A)−λk(Mi)̸ = 0 for all j, k , and con-sequently 0 /∈ σ(A⊤ ⊗In −In ⊗Mi). Thus, A⊤ ⊗In −In ⊗Mi
+
+is nonsingular, and the Sylvester equation admits the unique solution vec( Ti) =  A⊤ ⊗ In − In ⊗ Mi
+
+−1 vec( KiCi). If Ti
+
+is nonsingular, define Li := T −1 
+
+> i
+
+Ki, so that Ki = TiLi. From 
+
+TiA − MiTi = KiCi, it follows that TiA − KiCi = MiTi.Substituting Ki = TiLi gives TiA − TiLiCi = MiTi, or equivalently Ti(A − LiCi) = MiTi. Right multiplication by 
+
+T −1 
+
+> i
+
+then yields Ti(A − LiCi)T −1 
+
+> i
+
+= Mi.
+
+Assumption 7: There exist κ > 0, matrices Mi, Ki, and nonsingular Sylvester solutions Ti such that Mi is Metzler, 
+
+σ(A) ∩ σ(Mi) = ∅, TiT −1 
+
+> j
+
+≥ 0 for every (j, i ) ∈ E , and the distributed network matrix MD is Hurwitz. 
+
+Remark 3 (Practical selection of the cooperative realization) :
+
+Lemma 2 and Assumption 7 provide a practical offline guide-line for selecting the realization. A convenient choice is to prescribe each Mi as a Hurwitz–Metzler matrix with stability margin αi := − max μ∈σ(Mi) Re( μ) > 0, while enforcing the spectral-separation margin δi := min λ∈σ(A), μ ∈σ(Mi) |λ−μ| >
+
+0. For a selected Ki, Lemma 2 then guarantees a unique solution Ti of TiA−MiTi = KiCi. The resulting realization is admissible only if σmin (Ti) > 0, Rij = TiT −1 
+
+> j
+
+≥ 0 for every 
+
+(j, i ) ∈ E , and the assembled distributed matrix satisfies the network stability margin αD := − max λ∈σ(MD ) Re( λ) > 0,as required by Assumption 7. Hence, Mi, Ki, and κ may be tuned offline until δi > 0, σmin (Ti) > 0, Rij ≥ 0,and αD > 0 hold simultaneously; choosing each Mi Hur-witz is a convenient sufficient design preference, although Assumption 7 ultimately requires Hurwitz stability only of the complete matrix MD .Notice that the individual matrix Mi is not required to be Hurwitz. Stability is imposed on the complete matrix MD ,so local sensing deficiencies may be compensated by the communication coupling. This is consistent with the collective detectability requirement of Assumption 5. Once the transformed interval satisfies zi ≤ zi ≤ ¯zi,the physical-state interval is reconstructed according to xi =(T −1 
+
+> i
+
+)+zi − (T −1 
+
+> i
+
+)− ¯zi and ¯xi = ( T −1 
+
+> i
+
+)+ ¯zi − (T −1 
+
+> i
+
+)−zi.Indeed, since x = T −1 
+
+> i
+
+zi, application of Lemma 1 directly 4
+
+gives (T −1 
+
+> i
+
+)+zi − (T −1 
+
+> i
+
+)− ¯zi ≤ x ≤ (T −1 
+
+> i
+
+)+ ¯zi − (T −1 
+
+> i
+
+)−zi.
+
+C. Distributed Neural Adaptation 
+
+The adaptive laws are obtained directly from the Lyapunov derivative. No instantaneous neural loss or backpropaga-tion criterion is introduced. For the cooperative realiza-tion constructed in Subsection III-B, let MD be Hurwitz and Metzler. Then there exists a diagonal matrix P =blkdiag {P1, . . . , P N } > 0 and a matrix Q = Q⊤ > 0
+
+satisfying M⊤ 
+
+> D
+
+P + PM D = −Q .
+
+Assumption 8: For each i ∈ V, there exist matrices 
+
+Hi+, H i− ∈ Rpi×r such that PiB+ 
+
+> i
+
+= C⊤
+
+> zi
+
+Hi+ and PiB− 
+
+> i
+
+=
+
+C⊤
+
+> zi
+
+Hi−.
+
+Remark 4: For s ∈ {+, −} , Assumption 8 is equiv-alent to im( PiBsi ) ⊆ im( C⊤
+
+> zi
+
+), or, equivalently, I −
+
+C⊤
+
+> zi
+
+(C⊤
+
+> zi
+
+)†PiBsi = 0 . Whenever this condition holds, one admissible choice is His = ( C⊤
+
+> zi
+
+)†PiBsi . Since Pi > 0, one further has rank( Bsi ) = rank( PiBsi ) ≤ rank( Czi ) ≤ pi.Hence, Assumption 8 imposes a structural compatibility con-dition between the uncertainty channels B± 
+
+> i
+
+and the local output subspace im( C⊤
+
+> zi
+
+), and is independent of collective detectability. Since ¯ri = Czi ¯ϵi and ri = Czi ϵi, the matching rela-tion above gives ¯ϵ⊤ 
+
+> i
+
+PiB+ 
+
+> i
+
+= ¯r⊤ 
+
+> i
+
+Hi+, ¯ϵ⊤ 
+
+> i
+
+PiB− 
+
+> i
+
+= ¯ r⊤ 
+
+> i
+
+Hi−,
+
+ϵ⊤ 
+
+> i
+
+PiB+ 
+
+> i
+
+= r⊤ 
+
+> i
+
+Hi+, and ϵ⊤ 
+
+> i
+
+PiB− 
+
+> i
+
+= r⊤ 
+
+> i
+
+Hi−.Define the measurable adaptive signals ξi+ := H⊤ 
+
+> i+
+
+¯ri +
+
+H⊤
+
+> i−
+
+ri and ξi− := −H⊤ 
+
+> i−
+
+¯ri − H⊤
+
+> i+
+
+ri.Consider the composite Lyapunov function V := 12 ¯ϵ⊤P¯ϵ + 
+
+> 12
+
+ϵ⊤Pϵ+ 12
+
+PNi=1 tr 
+
+ ˜¯W ⊤ 
+
+> i
+
+Γ−1 
+
+> i+
+
+˜¯Wi
+
+
+
++ 12
+
+PNi=1 tr 
+
+ ˜W ⊤ 
+
+> i
+
+Γ−1 
+
+> i−
+
+˜W i
+
+
+
+,where Γi+ = Γ⊤ 
+
+> i+
+
+> 0 and Γi− = Γ⊤ 
+
+> i−
+
+> 0. Since the ideal weights are constant, ˙˜¯Wi = ˙¯Wi and ˙˜W i = ˙W i.Hence, ˙V = ¯ϵ⊤P ˙¯ϵ + ϵ⊤P ˙ϵ + PNi=1 tr 
+
+ ˜¯W ⊤ 
+
+> i
+
+Γ−1 
+
+> i+
+
+˙¯Wi
+
+
+
++
+
+PNi=1 tr 
+
+ ˜W ⊤ 
+
+> i
+
+Γ−1 
+
+> i−
+
+˙W i
+
+
+
+.Using the stacked interval-error dynamics in (6), ˙¯ϵ =
+
+MD ¯ϵ + B+ ¯η − B −η + ¯∆ and ˙ϵ = MD ϵ + B− ¯η −B+η + ∆ , we obtain ˙V = ¯ ϵ⊤P  MD ¯ϵ + B+ ¯η − B −η + ¯∆ +
+
+ϵ⊤P  MD ϵ + B− ¯η − B +η + ∆  + PNi=1 tr 
+
+ ˜¯W ⊤ 
+
+> i
+
+Γ−1 
+
+> i+
+
+˙¯Wi
+
+
+
++
+
+PNi=1 tr 
+
+ ˜W ⊤ 
+
+> i
+
+Γ−1 
+
+> i−
+
+˙W i
+
+
+
+.Expanding the preceding expression gives 
+
+˙V = ¯ ϵ⊤PM D ¯ϵ + ϵ⊤PM D ϵ + ¯ ϵ⊤P ¯∆ + ϵ⊤P∆ + ¯ ϵ⊤PB + ¯η +
+
+ϵ⊤PB − ¯η − ¯ϵ⊤PB −η − ϵ⊤PB +η + PNi=1 tr 
+
+ ˜¯W ⊤ 
+
+> i
+
+Γ−1 
+
+> i+
+
+˙¯Wi
+
+
+
++
+
+PNi=1 tr 
+
+ ˜W ⊤ 
+
+> i
+
+Γ−1 
+
+> i−
+
+˙W i
+
+
+
+. Since M⊤ 
+
+> D
+
+P + PM D = −Q,the first two terms satisfy ¯ϵ⊤PM D ¯ϵ = − 12 ¯ϵ⊤Q¯ϵ and 
+
+ϵ⊤PM D ϵ = − 12 ϵ⊤Qϵ .Moreover, using the block structures of P, B±, ¯η,and η, the neural terms become ¯ϵ⊤PB + ¯η + ϵ⊤PB − ¯η =
+
+PNi=1 
+
+
+
+¯ϵ⊤ 
+
+> i
+
+PiB+ 
+
+> i
+
+˜¯W ⊤ 
+
+> i
+
+¯ϕi + ϵ⊤ 
+
+> i
+
+PiB− 
+
+> i
+
+˜¯W ⊤ 
+
+> i
+
+¯ϕi
+
+
+
+, and −¯ϵ⊤PB −η −
+
+ϵ⊤PB +η = − PNi=1 
+
+
+
+¯ϵ⊤ 
+
+> i
+
+PiB− 
+
+> i
+
+˜W ⊤ 
+
+> i
+
+ϕi + ϵ⊤ 
+
+> i
+
+PiB+ 
+
+> i
+
+˜W ⊤ 
+
+> i
+
+ϕi
+
+
+
+.For the terms associated with ˜¯Wi, use PiB+ 
+
+> i
+
+=
+
+C⊤
+
+> zi
+
+Hi+ and PiB− 
+
+> i
+
+= C⊤
+
+> zi
+
+Hi− to obtain ¯ϵ⊤ 
+
+> i
+
+PiB+ 
+
+> i
+
+˜¯W ⊤ 
+
+> i
+
+¯ϕi +
+
+ϵ⊤ 
+
+> i
+
+PiB− 
+
+> i
+
+˜¯W ⊤ 
+
+> i
+
+¯ϕi = ¯ϵ⊤ 
+
+> i
+
+C⊤
+
+> zi
+
+Hi+ ˜¯W ⊤ 
+
+> i
+
+¯ϕi + ϵ⊤ 
+
+> i
+
+C⊤
+
+> zi
+
+Hi− ˜¯W ⊤ 
+
+> i
+
+¯ϕi.Since ¯ri = Czi ¯ϵi and ri = Czi ϵi, ¯ϵ⊤ 
+
+> i
+
+C⊤
+
+> zi
+
+Hi+ ˜¯W ⊤ 
+
+> i
+
+¯ϕi +
+
+ϵ⊤ 
+
+> i
+
+C⊤
+
+> zi
+
+Hi− ˜¯W ⊤ 
+
+> i
+
+¯ϕi = ¯r⊤ 
+
+> i
+
+Hi+ ˜¯W ⊤ 
+
+> i
+
+¯ϕi + r⊤ 
+
+> i
+
+Hi− ˜¯W ⊤ 
+
+> i
+
+¯ϕi =
+
+ ¯r⊤ 
+
+> i
+
+Hi+ + r⊤ 
+
+> i
+
+Hi−
+
+ ˜¯W ⊤ 
+
+> i
+
+¯ϕi =  H⊤ 
+
+> i+
+
+¯ri + H⊤
+
+> i−
+
+ri
+
+⊤ ˜¯W ⊤ 
+
+> i
+
+¯ϕi. De-fine ξi+ := H⊤ 
+
+> i+
+
+¯ri + H⊤
+
+> i−
+
+ri. Then ¯ϵ⊤ 
+
+> i
+
+PiB+ 
+
+> i
+
+˜¯W ⊤ 
+
+> i
+
+¯ϕi +
+
+ϵ⊤ 
+
+> i
+
+PiB− 
+
+> i
+
+˜¯W ⊤ 
+
+> i
+
+¯ϕi = ξ⊤ 
+
+> i+
+
+˜¯W ⊤ 
+
+> i
+
+¯ϕi = tr 
+
+ ˜¯W ⊤ 
+
+> i
+
+¯ϕiξ⊤
+
+> i+
+
+
+
+.Cancellation of this term requires tr 
+
+ ˜¯W ⊤ 
+
+> i
+
+Γ−1 
+
+> i+
+
+˙¯W ci
+
+
+
+=
+
+− tr 
+
+ ˜¯W ⊤ 
+
+> i
+
+¯ϕiξ⊤
+
+> i+
+
+
+
+, which is achieved by ˙¯W ci = −Γi+ ¯ϕiξ⊤
+
+> i+
+
+. To suppress parameter drift, add the leakage term −σi+Γi+ ¯Wi,with σi+ > 0, and obtain 
+
+˙¯Wi = −Γi+ ¯ϕiξ⊤ 
+
+> i+
+
+− σi+Γi+ ¯Wi. (9) Substitution gives tr 
+
+ ˜¯W ⊤ 
+
+> i
+
+Γ−1 
+
+> i+
+
+˙¯Wi
+
+
+
+= − tr 
+
+ ˜¯W ⊤ 
+
+> i
+
+¯ϕiξ⊤
+
+> i+
+
+
+
+−
+
+σi+ tr 
+
+ ˜¯W ⊤ 
+
+> i
+
+¯Wi
+
+
+
+.For the terms associated with ˜W i, −¯ϵ⊤ 
+
+> i
+
+PiB− 
+
+> i
+
+˜W ⊤ 
+
+> i
+
+ϕi −
+
+ϵ⊤ 
+
+> i
+
+PiB+ 
+
+> i
+
+˜W ⊤ 
+
+> i
+
+ϕi = −¯ϵ⊤ 
+
+> i
+
+C⊤
+
+> zi
+
+Hi− ˜W ⊤ 
+
+> i
+
+ϕi −
+
+ϵ⊤ 
+
+> i
+
+C⊤
+
+> zi
+
+Hi+ ˜W ⊤ 
+
+> i
+
+ϕi = −¯r⊤ 
+
+> i
+
+Hi− ˜W ⊤ 
+
+> i
+
+ϕi − r⊤ 
+
+> i
+
+Hi+ ˜W ⊤ 
+
+> i
+
+ϕi =
+
+ −¯r⊤ 
+
+> i
+
+Hi− − r⊤ 
+
+> i
+
+Hi+
+
+ ˜W ⊤ 
+
+> i
+
+ϕi =  −H⊤ 
+
+> i−
+
+¯ri − H⊤
+
+> i+
+
+ri
+
+⊤ ˜W ⊤ 
+
+> i
+
+ϕi.Define ξi− := −H⊤ 
+
+> i−
+
+¯ri − H⊤
+
+> i+
+
+ri. Therefore, 
+
+−¯ϵ⊤ 
+
+> i
+
+PiB− 
+
+> i
+
+˜W ⊤ 
+
+> i
+
+ϕi − ϵ⊤ 
+
+> i
+
+PiB+ 
+
+> i
+
+˜W ⊤ 
+
+> i
+
+ϕi = ξ⊤ 
+
+> i−
+
+˜W ⊤ 
+
+> i
+
+ϕi =tr 
+
+ ˜W ⊤ 
+
+> i
+
+ϕiξ⊤
+
+> i−
+
+
+
+.Thus, ˙W ci = −Γi−ϕiξ⊤
+
+> i−
+
+. Adding −σi−Γi−W i, with 
+
+σi− > 0, gives 
+
+˙W i = −Γi−ϕiξ⊤ 
+
+> i−
+
+− σi−Γi−W i. (10) To remove the persistent-excitation requirement from the online regressor, we augment the instantaneous adaptation with a finite experience-replay stack. For each node i, let 
+
+Hi = {(Θ i,k , Y i,k )}Mi 
+
+> k=1
+
+denote a set of previously recorded informative data, where Θi,k := R tk  
+
+> tk−TI
+
+ϕi(τ ) dτ and Yi,k := 
+
+zi(tk) − zi(tk − TI ) − R tk  
+
+> tk−TI
+
+Fi(τ ) dτ , with Fi collecting all known terms of the transformed dynamics. Under the neural representation, Yi,k = W ∗⊤  
+
+> i
+
+Θi,k + εi,k , where εi,k denotes the integral approximation residual. Define the replay information matrix Gi := 1
+
+> Mi
+
+PMi 
+
+> k=1
+
+Θi,k Θ⊤
+
+> i,k
+
+. Instead of requiring persis-tent excitation of ϕi(t) for all t, it is sufficient that the stored data satisfy the finite-rank condition λmin (Gi) ≥ gi > 0. Once such a stack has been collected, the informative samples are retained and repeatedly reused in the adaptive law. For the lower-weight estimate, define the replay residual 
+
+ϵi,k := Θ ⊤
+
+> i,k
+
+W i − Yi,k , and for the upper-weight estimate define ¯ϵi,k := Θ ⊤ 
+
+> i,k
+
+¯Wi − Yi,k . The corresponding composite experience-replay corrections are Ci := 1
+
+> Mi
+
+PMi 
+
+> k=1
+
+Θi,k ϵ⊤ 
+
+> i,k
+
+and 
+
+¯Ci := 1
+
+> Mi
+
+PMi 
+
+> k=1
+
+Θi,k ¯ϵ⊤
+
+> i,k
+
+. Therefore, the pure online laws in (9)–(10) are replaced by 
+
+˙¯Wi = −Γi+ϕiξ⊤ 
+
+> i+
+
+− Γi+kr,i ¯Ci, (11) and ˙W i = −Γi−ϕiξ⊤ 
+
+> i−
+
+− Γi−kr,i Ci, (12) where kr,i > 0 is the replay gain. Since Yi,k = W ∗⊤  
+
+> i
+
+Θi,k 
+
+in the ideal approximation case, ¯ϵi,k = Θ ⊤
+
+> i,k
+
+¯˜Wi and ϵi,k =Θ⊤ 
+
+> i,k
+
+˜W i, so that ¯Ci = Gi ¯˜Wi and Ci = Gi ˜W i. Consequently, the replay terms generate the negative-definite contributions 
+
+−kr,i tr 
+
+ ¯˜W ⊤ 
+
+> i
+
+Gi ¯˜Wi
+
+
+
+and −kr,i tr 
+
+ ˜W ⊤ 
+
+> i
+
+Gi ˜W i
+
+
+
+, respectively, with tr 
+
+ ˜W ⊤ 
+
+> i
+
+Gi ˜Wi
+
+
+
+≥ gi∥ ˜Wi∥2 
+
+> F
+
+. Hence, parameter conver-gence is enforced by a finite informative replay stack rather than by persistent excitation of the online trajectory. In the presence of bounded approximation residuals εi,k , the same mechanism yields convergence of the neural-weight errors to a residual neighborhood whose size is determined by the replay-data approximation error. 5
+
+IV. S TABILITY AND INTERVAL -E NCLOSURE ANALYSIS 
+
+A. Boundedness Analysis 
+
+We first establish boundedness independently of interval preservation. Let ¯fΩ := sup (x,u )∈Ωx×Ωu ∥f (x, u )∥ < ∞
+
+and ¯dΩ := sup t≥0 max {∥ d(t)∥, ∥ ¯d(t)∥} < ∞. By Assump-tions 1–3, all quantities entering the ideal neural and dis-turbance residuals are bounded on the prescribed operating region. For each i ∈ V , define ∆Mf i := max {∥ ¯W ∗ 
+
+> i
+
+∥F ¯ϕui +
+
+∥¯δi∥ + ¯fΩ, ∥W ∗ 
+
+> i
+
+∥F ¯ϕℓi + ∥δi∥ + ¯fΩ}. Further, let ∆Mdi := sup t≥0 max {∥ ¯qi − Eid∥, ∥Eid − qi∥} . Assumption 1 and Lemma 1 imply 0 ≤ ∆Mdi < ∞. Define ∆Mi := ( ∥B+ 
+
+> i
+
+∥ +
+
+∥B− 
+
+> i
+
+∥)∆ Mf i + ∆ Mdi and ∆D := ( PNi=1 (∆ Mi )2)1/2.
+
+Lemma 3: Under Assumptions 1–3, the residuals in (8) satisfy ∥ ¯∆i(t)∥ ≤ ∆Mi , ∥∆i(t)∥ ≤ ∆Mi , and consequently 
+
+∥ ¯∆( t)∥ ≤ ∆D and ∥∆( t)∥ ≤ ∆D .
+
+Proof: From ¯∆f i = ¯W ∗⊤  
+
+> i
+
+¯ϕi + ¯δi − f (x, u ) and ∆f i =
+
+f (x, u ) − W ∗⊤  
+
+> i
+
+ϕi + δi, one obtains ∥ ¯∆f i ∥, ∥∆f i ∥ ≤ ∆Mf i .Using ¯∆i = B+ 
+
+> i
+
+¯∆f i + B− 
+
+> i
+
+∆f i + ¯∆di and ∆i = B+ 
+
+> i
+
+∆f i +
+
+B− 
+
+> i
+
+¯∆f i + ∆ di gives ∥ ¯∆i∥, ∥∆i∥ ≤ ∆Mi . Stacking the local bounds yields ∥ ¯∆∥ ≤ ∆D and ∥∆∥ ≤ ∆D .For the composite integral concurrent-learning terms, define the stored integral regressors ¯Θi,k := R tk 
+
+> tk−TI
+
+¯ϕi(τ ) dτ and 
+
+Θi,k := R tk  
+
+> tk−TI
+
+ϕi(τ ) dτ , together with the integral regression outputs ¯Yi,k := ¯W ∗⊤  
+
+> i
+
+¯Θi,k + ¯ εi,k and Y i,k := W ∗⊤  
+
+> i
+
+Θi,k +
+
+εi,k , where ¯εi,k and εi,k collect the bounded integral ap-proximation residuals. Define ¯ei,k := ¯W ⊤ 
+
+> i
+
+¯Θi,k − ¯Yi,k and 
+
+ei,k := W ⊤ 
+
+> i
+
+Θi,k − Y i,k , and let ¯Ci := M −1
+
+> i
+
+PMi 
+
+> k=1
+
+¯Θi,k ¯e⊤
+
+> i,k
+
+and Ci := M −1
+
+> i
+
+PMi 
+
+> k=1
+
+Θi,k e⊤
+
+> i,k
+
+. Further define the finite-data information matrices ¯Gi := M −1
+
+> i
+
+PMi 
+
+> k=1
+
+¯Θi,k ¯Θ⊤ 
+
+> i,k
+
+and 
+
+Gi := M −1
+
+> i
+
+PMi 
+
+> k=1
+
+Θi,k Θ⊤
+
+> i,k
+
+. The finite-data richness condition requires only λmin ( ¯Gi) ≥ gi+ > 0 and λmin (Gi) ≥ gi− > 0
+
+after a finite collection interval and therefore does not require persistent excitation of the online trajectory. Since ¯Wi =¯W ∗ 
+
+> i
+
++ ¯˜Wi and W i = W ∗ 
+
+> i
+
++ ˜W i, one has ¯ei,k = ¯˜W ⊤ 
+
+> i
+
+¯Θi,k − ¯εi,k 
+
+and ei,k = ˜W ⊤ 
+
+> i
+
+Θi,k − εi,k , and hence ¯Ci = ¯Gi ¯˜Wi − ¯Ei
+
+and Ci = Gi ˜W i − E i, where ¯Ei := M −1
+
+> i
+
+PMi 
+
+> k=1
+
+¯Θi,k ¯ε⊤ 
+
+> i,k
+
+and 
+
+Ei := M −1
+
+> i
+
+PMi 
+
+> k=1
+
+Θi,k ε⊤
+
+> i,k
+
+. Let ∥ ¯Ei∥F ≤ ¯ρi and ∥E i∥F ≤ ρi.
+
+Theorem 1: Suppose Assumptions 1–6, 8, and 7 hold, and suppose the finite replay stacks satisfy ¯Gi ⪰ gi+I and 
+
+Gi ⪰ gi−I for all i ∈ V. Under the observer (4) and the composite ICL adaptive laws (9)–(10), the transformed estimation errors ¯ϵ, ϵ and all neural weight errors ¯˜Wi, ˜W i are uniformly ultimately bounded. Consequently, the transformed interval widths, the physical estimation errors, and the physical interval widths are bounded. Moreover, in the ideal residual-free case with ¯∆ = ∆ = 0 , ¯Ei = Ei = 0 , and σi+ = σi− = 0 ,the finite replay richness condition is sufficient to drive the neural weight errors to zero without persistent excitation of the online regressors. 
+
+Proof: 
+
+Consider the composite Lyapunov function introduced in the adaptation analysis, V := 12 ¯ϵ⊤P¯ϵ + 12 ϵ⊤Pϵ +
+
+> 12
+
+PNi=1 tr 
+
+ ¯˜W ⊤ 
+
+> i
+
+Γ−1
+
+> i+
+
+¯˜Wi
+
+
+
++ 12
+
+PNi=1 tr 
+
+ ˜W ⊤ 
+
+> i
+
+Γ−1 
+
+> i−
+
+˜W i
+
+
+
+. Since the ideal weights are constant, ˙¯˜Wi = ˙¯Wi and ˙˜Wi = ˙W i.Hence, ˙V = ¯ϵ⊤P ˙¯ϵ + ϵ⊤P ˙ϵ + PNi=1 tr 
+
+ ¯˜W ⊤ 
+
+> i
+
+Γ−1 
+
+> i+
+
+˙¯Wi
+
+
+
++
+
+PNi=1 tr 
+
+ ˜W ⊤ 
+
+> i
+
+Γ−1 
+
+> i−
+
+˙W i
+
+
+
+.Using the stacked interval-error dynamics (8), ˙¯ϵ = MD ¯ϵ +
+
+B+ ¯η − B −η + ¯∆ and ˙ϵ = MD ϵ + B− ¯η − B +η + ∆ , we obtain 
+
+˙V = ¯ ϵ⊤PM D ¯ϵ + ϵ⊤PM D ϵ + ¯ ϵ⊤P ¯∆ + ϵ⊤P∆ + ¯ ϵ⊤PB + ¯η +
+
+ϵ⊤PB − ¯η − ¯ϵ⊤PB −η − ϵ⊤PB +η + PNi=1 tr 
+
+ ¯˜W ⊤ 
+
+> i
+
+Γ−1 
+
+> i+
+
+˙¯Wi
+
+
+
++
+
+PNi=1 tr 
+
+ ˜W ⊤ 
+
+> i
+
+Γ−1 
+
+> i−
+
+˙W i
+
+
+
+.By M⊤ 
+
+> D
+
+P + PM D = −Q , the linear-error terms satisfy 
+
+¯ϵ⊤PM D ¯ϵ = − 12 ¯ϵ⊤Q¯ϵ and ϵ⊤PM D ϵ = − 12 ϵ⊤Qϵ.From the adaptive-law construction, ¯ϵ⊤PB + ¯η +ϵ⊤PB − ¯η =
+
+PNi=1 tr 
+
+ ¯˜W ⊤ 
+
+> i
+
+¯ϕiξ⊤
+
+> i+
+
+
+
+, whereas −¯ϵ⊤PB −η − ϵ⊤PB +η =
+
+PNi=1 tr 
+
+ ˜W ⊤ 
+
+> i
+
+ϕiξ⊤
+
+> i−
+
+
+
+.The composite ICL adaptive laws give tr 
+
+ ¯˜W ⊤ 
+
+> i
+
+Γ−1 
+
+> i+
+
+˙¯Wi
+
+
+
+=
+
+− tr 
+
+ ¯˜W ⊤ 
+
+> i
+
+¯ϕiξ⊤
+
+> i+
+
+
+
+− kr,i + tr 
+
+ ¯˜W ⊤ 
+
+> i
+
+¯Ci
+
+
+
+− σi+ tr 
+
+ ¯˜W ⊤ 
+
+> i
+
+¯Wi
+
+
+
+and 
+
+tr 
+
+ ˜W ⊤ 
+
+> i
+
+Γ−1 
+
+> i−
+
+˙W i
+
+
+
+= − tr 
+
+ ˜W ⊤ 
+
+> i
+
+ϕiξ⊤
+
+> i−
+
+
+
+− kr,i − tr 
+
+ ˜W ⊤ 
+
+> i
+
+Ci
+
+
+
+−
+
+σi− tr 
+
+ ˜W ⊤ 
+
+> i
+
+W i
+
+
+
+. Thus, all neural state–weight cross terms cancel exactly, while the ICL terms remain as additional negative finite-data corrections, yielding 
+
+˙V = − 12 ¯ϵ⊤Q¯ϵ − 12 ϵ⊤Qϵ + ¯ ϵ⊤P ¯∆ + ϵ⊤P∆
+
+−
+
+> N
+
+X
+
+> i=1
+
+kr,i + tr 
+
+ ¯˜W ⊤ 
+
+> i
+
+¯Ci
+
+
+
+−
+
+> N
+
+X
+
+> i=1
+
+kr,i − tr 
+
+ ˜W ⊤ 
+
+> i
+
+Ci
+
+
+
+−
+
+> N
+
+X
+
+> i=1
+
+σi+ tr 
+
+ ¯˜W ⊤ 
+
+> i
+
+¯Wi
+
+
+
+−
+
+> N
+
+X
+
+> i=1
+
+σi− tr 
+
+ ˜W ⊤ 
+
+> i
+
+W i
+
+
+
+.
+
+(13) For the upper ICL contribution, ¯Ci = ¯Gi ¯˜Wi −
+
+¯Ei gives −kr,i + tr 
+
+ ¯˜W ⊤ 
+
+> i
+
+¯Ci
+
+
+
+= −kr,i + tr 
+
+ ¯˜W ⊤ 
+
+> i
+
+¯Gi ¯˜Wi
+
+
+
++
+
+kr,i + tr 
+
+ ¯˜W ⊤ 
+
+> i
+
+¯Ei
+
+
+
+. Since ¯Gi ⪰ gi+I, tr 
+
+ ¯˜W ⊤ 
+
+> i
+
+¯Gi ¯˜Wi
+
+
+
+≥
+
+gi+∥ ¯˜Wi∥2 
+
+> F
+
+, whereas the Frobenius Cauchy–Schwarz inequal-ity yields tr 
+
+ ¯˜W ⊤ 
+
+> i
+
+¯Ei
+
+
+
+≤ ∥ ¯˜Wi∥F ∥ ¯Ei∥F ≤ ¯ρi∥ ¯˜Wi∥F . Using 
+
+2ab ≤ a2 + b2 with a = pgi+∥ ¯˜Wi∥F and b = ¯ ρi/pgi+
+
+gives −kr,i + tr 
+
+ ¯˜W ⊤ 
+
+> i
+
+¯Ci
+
+
+
+≤ − kr,i +gi+ 
+
+> 2
+
+∥ ¯˜Wi∥2 
+
+> F
+
++ kr,i +
+
+> 2gi+
+
+¯ρ2 
+
+> i
+
+.Similarly, Ci = Gi ˜W i − E i, Gi ⪰ gi−I, and ∥E i∥F ≤ ρi
+
+imply −kr,i − tr 
+
+ ˜W ⊤ 
+
+> i
+
+Ci
+
+
+
+≤ − kr,i −gi− 
+
+> 2
+
+∥ ˜W i∥2 
+
+> F
+
++ kr,i −
+
+> 2gi−
+
+ρ2 
+
+> i
+
+.For the upper-weight leakage term, using ¯Wi =¯˜Wi + ¯W ∗ 
+
+> i
+
+gives −σi+ tr 
+
+ ¯˜W ⊤ 
+
+> i
+
+¯Wi
+
+
+
+= −σi+∥ ¯˜Wi∥2 
+
+> F
+
+−
+
+σi+ tr 
+
+ ¯˜W ⊤ 
+
+> i
+
+¯W ∗
+
+> i
+
+
+
+. The Frobenius Cauchy–Schwarz inequal-ity gives tr 
+
+ ¯˜W ⊤ 
+
+> i
+
+¯W ∗
+
+> i
+
+
+
+≤ ∥ ¯˜Wi∥F ∥ ¯W ∗ 
+
+> i
+
+∥F , and hence 
+
+−σi+ tr 
+
+ ¯˜W ⊤ 
+
+> i
+
+¯Wi
+
+
+
+≤ − σi+∥ ¯˜Wi∥2 
+
+> F
+
++ σi+∥ ¯˜Wi∥F ∥ ¯W ∗ 
+
+> i
+
+∥F . Us-ing 2ab ≤ a2 + b2, one obtains −σi+ tr 
+
+ ¯˜W ⊤ 
+
+> i
+
+¯Wi
+
+
+
+≤− σi+ 
+
+> 2
+
+∥ ¯˜Wi∥2 
+
+> F
+
++ σi+ 
+
+> 2
+
+∥ ¯W ∗ 
+
+> i
+
+∥2 
+
+> F
+
+.Similarly, W i = ˜W i + W ∗ 
+
+> i
+
+gives −σi− tr 
+
+ ˜W ⊤ 
+
+> i
+
+W i
+
+
+
+=
+
+−σi−∥ ˜W i∥2 
+
+> F
+
+− σi− tr 
+
+ ˜W ⊤ 
+
+> i
+
+W ∗
+
+> i
+
+
+
+, with tr 
+
+ ˜W ⊤ 
+
+> i
+
+W ∗
+
+> i
+
+
+
+≤∥ ˜W i∥F ∥W ∗ 
+
+> i
+
+∥F . Therefore, −σi− tr 
+
+ ˜W ⊤ 
+
+> i
+
+W i
+
+
+
+≤− σi− 
+
+> 2
+
+∥ ˜W i∥2 
+
+> F
+
++ σi− 
+
+> 2
+
+∥W ∗ 
+
+> i
+
+∥2 
+
+> F
+
+.Let qD := λmin (Q) > 0 and pD := λmax (P) > 0. By Lemma 3, ¯ϵ⊤P ¯∆ ≤ pD ∥¯ϵ∥∆D and ϵ⊤P∆ ≤ pD ∥ϵ∥∆D .6
+
+Young’s inequality gives pD ∥¯ϵ∥∆D ≤ (qD /4) ∥¯ϵ∥2 +(p2 
+
+> D
+
+/q D )∆ 2 
+
+> D
+
+and pD ∥ϵ∥∆D ≤ (qD /4) ∥ϵ∥2 + ( p2 
+
+> D
+
+/q D )∆ 2 
+
+> D
+
+.Moreover, ¯ϵ⊤Q¯ϵ ≥ qD ∥¯ϵ∥2 and ϵ⊤Qϵ ≥ qD ∥ϵ∥2. Substitution of the preceding bounds into (13) gives 
+
+˙V ≤ − qD
+
+4
+
+ ∥¯ϵ∥2 + ∥ϵ∥2
+
+− 12
+
+> N
+
+X
+
+> i=1
+
+
+
+σi+ + kr,i +gi+
+
+
+
+∥ ¯˜Wi∥2
+
+> F
+
+− 12
+
+> N
+
+X
+
+> i=1
+
+
+
+σi− + kr,i −gi−
+
+
+
+∥ ˜W i∥2 
+
+> F
+
++ ∆ V ,
+
+(14) where ∆V := 2p2 
+
+> D
+
+∆2 
+
+> D
+
+/q D +
+
+> 12
+
+PNi=1 
+
+
+
+σi+∥ ¯W ∗ 
+
+> i
+
+∥2 
+
+> F
+
++ σi−∥W ∗ 
+
+> i
+
+∥2 
+
+> F
+
++ kr,i +
+
+> gi+
+
+¯ρ2 
+
+> i
+
++ kr,i −
+
+> gi−
+
+ρ2
+
+> i
+
+
+
+.Define cD, 0 := qD 
+
+> 2pD
+
+, cD, + := min iσi++kr,i +gi+  
+
+> λmax (Γ −1
+> i+)
+
+,and cD, − := min iσi−+kr,i −gi−  
+
+> λmax (Γ −1
+> i−)
+
+. Then cD := min {cD, 0, c D, +, c D, −}.. Since 12 ¯ϵ⊤P¯ϵ + 12 ϵ⊤Pϵ ≤ 
+
+> pD
+> 2
+
+(∥¯ϵ∥2 + ∥ϵ∥2), and 12 tr 
+
+ ¯˜W ⊤ 
+
+> i
+
+Γ−1
+
+> i+
+
+¯˜Wi
+
+
+
+≤ λmax (Γ −1  
+
+> i+)2
+
+∥ ¯˜Wi∥2 
+
+> F
+
+,with the analogous relation for ˜W i, one has cD > 0, and (14) implies 
+
+˙V ≤ − cD V + ∆ V . (15) Multiplying (15) by ecD t gives ddt (ecD tV (t)) ≤ ∆V ecD t.Integration from 0 to t yields ecD tV (t) − V (0) ≤ ∆V 
+
+> cD
+
+(ecD t −
+
+1) , and therefore V (t) ≤ e−cD tV (0) + ∆V 
+
+> cD
+
+(1 − e−cD t).Consequently, lim sup t→∞ V (t) ≤ ∆V /c D .Since V ≥ λmin (P)2 (∥¯ϵ∥2 + ∥ϵ∥2), it follows that 
+
+lim sup t→∞ ∥¯ϵ(t)∥ ≤ 
+
+q 2∆ V  
+
+> cDλmin (P)
+
+and lim sup t→∞ ∥ϵ(t)∥ ≤ 
+
+q 2∆ V  
+
+> cDλmin (P)
+
+. Moreover, V ≥ λmin (Γ −1  
+
+> i+)2
+
+∥ ¯˜Wi∥2 
+
+> F
+
+and 
+
+V ≥ λmin (Γ −1  
+
+> i−)2
+
+∥ ˜W i∥2 
+
+> F
+
+, so that lim sup t→∞ ∥ ¯˜Wi(t)∥F ≤q 2∆ V   
+
+> cDλmin (Γ −1
+> i+)
+
+and lim sup t→∞ ∥ ˜W i(t)∥F ≤ q 2∆ V   
+
+> cDλmin (Γ −1
+> i−)
+
+.Hence the transformed estimation errors and all neural weight errors are uniformly ultimately bounded. The role of ICL is explicit in (14): the quantities kr,i +gi+
+
+and kr,i −gi− provide additional coercive decay of the neural-weight errors using only a finite informative data stack. Therefore, persistent excitation of ¯ϕi(t) and ϕi(t) for all t ≥ 0
+
+is not required. In the ideal replay case ¯Ei = Ei = 0,and with σi+ = σi− = 0 , the replay contributions reduce exactly to −kr,i + tr 
+
+ ¯˜W ⊤ 
+
+> i
+
+¯Gi ¯˜Wi
+
+
+
+≤ −kr,i +gi+∥ ¯˜Wi∥2 
+
+> F
+
+and 
+
+−kr,i − tr 
+
+ ˜W ⊤ 
+
+> i
+
+Gi ˜W i
+
+
+
+≤ − kr,i −gi−∥ ˜W i∥2 
+
+> F
+
+. If, additionally, 
+
+¯∆ = ∆ = 0 , then ∆V = 0 , so (15) becomes ˙V ≤ − cD V ,from which V (t) ≤ e−cD tV (0) . Consequently, ¯˜Wi(t) → 0
+
+and ˜W i(t) → 0 exponentially as t → ∞ , thereby establishing exact neural-weight convergence under finite-data richness without persistent excitation. The transformed interval width at node i is ωzi := ¯ zi − zi =¯ϵi + ϵi. Therefore, ∥ωzi ∥ ≤ ∥ ¯ϵi∥ + ∥ϵi∥, so the transformed interval width is also bounded. For the physical-state reconstruction, ¯xi = ( T −1 
+
+> i
+
+)+ ¯zi −
+
+(T −1 
+
+> i
+
+)−zi and xi = (T −1 
+
+> i
+
+)+zi − (T −1 
+
+> i
+
+)− ¯zi. Since x =
+
+T −1 
+
+> i
+
+zi, ¯xi − x = (T −1 
+
+> i
+
+)+¯ϵi + ( T −1 
+
+> i
+
+)−ϵi and x − xi =(T −1 
+
+> i
+
+)+ϵi + ( T −1 
+
+> i
+
+)−¯ϵi. Thus, boundedness of the transformed errors implies boundedness of the physical estimation errors. In particular, defining τi := ∥(T −1 
+
+> i
+
+)+∥ + ∥(T −1 
+
+> i
+
+)−∥, gives 
+
+lim sup t→∞ max {∥ ¯xi − x∥, ∥x − xi∥} ≤ τi
+
+q 2∆ V  
+
+> cDλmin (P)
+
+.Finally, ¯xi −xi = [( T −1 
+
+> i
+
+)+ +( T −1 
+
+> i
+
+)−](¯ zi −zi) = |T −1 
+
+> i
+
+|(¯ zi −
+
+zi), where |T −1 
+
+> i
+
+| := ( T −1 
+
+> i
+
+)+ + ( T −1 
+
+> i
+
+)−. Hence the condition-ing and sign structure of T −1 
+
+> i
+
+determine the amplification of the transformed interval width. 
+
+B. Distributed Interval Preservation 
+
+Theorem 1 establishes boundedness but does not imply com-ponentwise state enclosure. The latter requires the online neural models themselves to preserve the nonlinear ordering. 
+
+Assumption 9: For every i ∈ V , whenever zi(t) ≤ zi(t) ≤
+
+¯zi(t), the online neural models satisfy f i(t) ≤ f (x(t), u (t)) ≤
+
+¯fi(t).Assumption 9 is an interval-validity condition and is inde-pendent of weight convergence. In particular, boundedness of 
+
+˜¯Wi and ˜W i does not by itself imply this ordering. Define q+ 
+
+> i
+
+:= B+ 
+
+> i
+
+( ¯fi − f ) + B− 
+
+> i
+
+(f − f i) + ¯ qi − Eid and 
+
+q− 
+
+> i
+
+:= B+ 
+
+> i
+
+(f −f i)+ B− 
+
+> i
+
+( ¯fi −f )+ Eid−qi. By Assumptions 1 and 9, q+ 
+
+> i
+
+≥ 0 and q− 
+
+> i
+
+≥ 0. Let q+ := col {q+1 , . . . , q + 
+
+> N
+
+} and 
+
+q− := col {q− 
+
+> 1
+
+, . . . , q − 
+
+> N
+
+}. The complete upper and lower error systems can then be written as 
+
+˙¯ϵ = MD ¯ϵ + q+, ˙ϵ = MD ϵ + q−. (16) 
+
+Theorem 2: Suppose Assumptions 1, 4, 5, 6, 7, and 9 hold. If ¯ϵ(0) ≥ 0 and ϵ(0) ≥ 0, then ¯ϵ(t) ≥ 0 and ϵ(t) ≥ 0 for all 
+
+t ≥ 0.
+
+Proof: By Assumption 7, MD is Metzler; hence eMD t ≥
+
+0 for all t ≥ 0. The solutions of (16) are ¯ϵ(t) =
+
+eMD t¯ϵ(0) + R t 
+
+> 0
+
+eMD (t−τ )q+(τ ) dτ and ϵ(t) = eMD tϵ(0) + 
+
+R t 
+
+> 0
+
+eMD (t−τ )q−(τ ) dτ . Every term on the right-hand side is componentwise nonnegative. Therefore ¯ϵ(t), ϵ (t) ≥ 0 for all 
+
+t ≥ 0.For the direct realization Ti = In, one has zi = x, ¯ϵi =¯xi − x, and ϵi = x − xi. Theorem 2 therefore gives 
+
+xi(t) ≤ x(t) ≤ ¯xi(t), ∀i ∈ V , t ≥ 0. (17) The interval width ωz := col {ωz 
+
+> 1
+
+, . . . , ω zN } = ¯ ϵ + ϵ satisfies 
+
+˙ωz = MD ωz + q+ + q−. Since MD is Metzler, q+ + q− ≥ 0,and ωz (0) ≥ 0, one also has ωz (t) ≥ 0. Thus the upper and lower trajectories cannot cross. 
+
+Remark 5: Theorem 1 does not require Assumption 9; The-orem 2 does. Hence neural-weight boundedness and interval preservation are distinct properties. Temporary violation of 
+
+f i ≤ f ≤ ¯fi does not invalidate the UUB result but removes the positive-system guarantee in (16). V. N UMERICAL RESULTS 
+
+A. Simulation Setup 
+
+Consider the nonlinear control-affine system 
+
+˙x = F (x) + G(x)u + Ed, x = col {x1, x 2, x 3, x 4}. (18) The drift F (x) = col {F1, F 2, F 3, F 4} is given by F1 =0.2x1 + 0 .8x2 + 0 .35 sin x1 + 0 .12 x2x3 + 0 .08 x1x24, F2 =0.3x1 − 0.4x2 + 0 .25 tanh( x1x3) + 0 .16 x32 + 0 .10 sin( x2x4),
+
+F3 = −0.2x3 + 0 .7x4 + 0 .28 x1x2 + 0 .18 sin x3 + 0 .07 x21x4,and F4 = 0 .4x3 − 0.5x4 + 0 .22[cos( x1x4) − 1] + 0 .12 x2x23 +0.06 tanh( x1 + x2).The input vector is G(x) = col {0.8 + 0 .15 cos x2, 0.5 + 0.10 x21, 0.6 + 0.12 sin x3, 0.35 + 0.08 x22}, and E =col {0.15 , −0.10 , 0.08 , 0.12 }.To obtain the form in (1), choose A = blkdiag {A1, A 2},with A1 =  0.2 0.80.3 −0.4
+
+, A2 =  −0.2 0.70.4 −0.5
+
+, and B = I4.Defining f (x, u ) := F (x) − Ax + G(x)u gives ˙x = Ax +
+
+Bf (x, u ) + Ed .7
+
+The nonlinear residual f (x, u ) = col {f1, f 2, f 3, f 4} has components f1 = 0.35 sin x1 + 0 .12 x2x3 + 0 .08 x1x24 +(0 .8 + 0 .15 cos x2)u, f2 = 0.25 tanh( x1x3) + 0 .16 x32 +0.10 sin( x2x4) + (0 .5 + 0 .10 x21)u, f3 = 0.28 x1x2 +0.18 sin x3 + 0 .07 x21x4 + (0 .6 + 0 .12 sin x3)u, and f4 =0.22[cos( x1x4)−1]+0 .12 x2x23 +0 .06 tanh( x1 +x2)+(0 .35+ 0.08 x22)u.The known input is u(t) = 0 .6 sin(0 .7t) + 0 .25 sin(1 .6t),while the disturbance is d(t) = 0 .15 sin(0 .8t)+0 .05 sin(2 .1t),with only the bounds d = −0.2 and ¯d = 0 .2 available to the observers. The plant is monitored by N = 5 scalar-output nodes. Let 
+
+ek denote the k-th canonical basis vector of R4. The sensing matrices are C1 = C5 = e⊤
+
+1 , C2 = e⊤
+
+2 , C3 = e⊤
+
+3 , and C4 =
+
+e⊤
+
+4 . Hence, each local pair (A, C i) is nondetectable, whereas 
+
+CV = col {C1, . . . , C 5} yields an observable aggregate pair 
+
+(A, C V ), and thus collective detectability holds. The communication topology is the directed ring 1 → 2 →
+
+3 → 4 → 5 → 1, with unit edge weights, and is strongly connected. 
+
+12345
+
+Fig. 1: Directed communication network with N = 5 observer nodes. For the direct cooperative realization, choose Ti = I4, Ki =4C⊤
+
+i , and κ = 1 .5, for all i ∈ V . Since A is Metzler and each KiCi is diagonal and nonnegative, the network matrix 
+
+MD = I5 ⊗ A − blkdiag {KiCi}5
+
+i=1 − κL ⊗ I4 is Metzler. For the selected topology and gains, max λ∈σ(MD ) Re( λ) = 
+
+−0.2026 < 0; hence, MD is Hurwitz. Each node employs Nϕ = 15 Gaussian radial basis func-tions ϕik (ζ) = exp[ −∥ ζ − cik ∥2/1.22], where ζ = col {x, u }.The centers cik are distributed over the prescribed operating region. The adaptation parameters are Γi+ = Γ i− = 8 INϕ and 
+
+σi+ = σi− = 0 .03 , with ¯Wi(0) = W i(0) = 0 .The initial state is x(0) = col {0.6, −0.4, 0.5, −0.3}. The initial intervals are xi(0) = x(0) − δi14 and ¯xi(0) = x(0) + 
+
+δi14, where δi = 0.25 + 0 .03( i − 1) , i = 1, . . . , 5. The simulation is conducted over t ∈ [0 , 25] s. 
+
+B. Simulation Results t [s]           
+
+> 0100 200 300 400 500 600
+> x1
+> -2 -1 012
+> Neural interval Lower bound Upper bound True state
+> 338.3 340.3 -0.07 0.07
+
+Fig. 2: Neural interval estimate for state x1 at Node 3. t [s]           
+
+> 0100 200 300 400 500 600
+> x2
+> -2 -1 012
+> Neural interval Lower bound Upper bound True state
+> 337.0 339.0 -0.07 0.07
+
+Fig. 3: Neural interval estimate for state x2 at Node 3. t [s]           
+
+> 0100 200 300 400 500 600
+> x3
+> -2 -1 012
+> Neural interval Lower bound Upper bound True state
+> 297.2 299.2 -0.14 0.13
+
+Fig. 4: Neural interval estimate for state x3 at Node 3. t [s]           
+
+> 0100 200 300 400 500 600
+> x4
+> -1.5 -1 -0.5 00.5 11.5
+> Neural interval Lower bound Upper bound True state
+> 261.9 263.9 -0.039 0.053
+
+Fig. 5: Neural interval estimate for state x4 at Node 3. t [s]          
+
+> 0100 200 300 400 500 600
+> x1
+> -4 -2 024
+> No-neural interval Lower bound Upper bound True state
+
+Fig. 6: Nominal interval estimate without neural compensation for state x1 at Node 3. t [s]          
+
+> 0100 200 300 400 500 600
+> x2
+> -6 -4 -2 024
+> No-neural interval Lower bound Upper bound True state
+
+Fig. 7: Nominal interval estimate without neural compensation for state x2 at Node 3. t [s]          
+
+> 0100 200 300 400 500 600
+> x3
+> -4 -3 -2 -1 01234
+> No-neural interval Lower bound Upper bound True state
+
+Fig. 8: Nominal interval estimate without neural compensation for state x3 at Node 3. 8t [s]          
+
+> 0100 200 300 400 500 600
+> x4
+> -6 -4 -2 024
+> No-neural interval Lower bound Upper bound True state
+
+Fig. 9: Nominal interval estimate without neural compensation for state x4 at Node 3. t [s]               
+
+> 0100 200 300 400 500 600
+> ^W
+> -0.1 -0.05 00.05 0.1
+> ^W1;1
+> ^W2;1
+> ^W3;1
+> ^W4;1
+> ^W5;1
+> ^W6;1
+> ^W7;1
+> ^W8;1
+> W$
+> 1;1
+> W$
+> 2;1
+> W$
+> 3;1
+> W$
+> 4;1
+> W$
+> 5;1
+> W$
+> 6;1
+> W$
+> 7;1
+> W$
+> 8;1
+
+Fig. 10: Adaptive neural-weight trajectories associated with f1
+
+at Node 3. t [s]               
+
+> 0100 200 300 400 500 600
+> ^W
+> -0.1 -0.05 00.05 0.1
+> ^W1;2
+> ^W2;2
+> ^W3;2
+> ^W4;2
+> ^W5;2
+> ^W6;2
+> ^W7;2
+> ^W8;2
+> W$
+> 1;2
+> W$
+> 2;2
+> W$
+> 3;2
+> W$
+> 4;2
+> W$
+> 5;2
+> W$
+> 6;2
+> W$
+> 7;2
+> W$
+> 8;2
+
+Fig. 11: Adaptive neural-weight trajectories associated with f2
+
+at Node 3. t [s]               
+
+> 0100 200 300 400 500 600
+> ^W
+> -0.05 00.05 0.1
+> ^W1;3
+> ^W2;3
+> ^W3;3
+> ^W4;3
+> ^W5;3
+> ^W6;3
+> ^W7;3
+> ^W8;3
+> W$
+> 1;3
+> W$
+> 2;3
+> W$
+> 3;3
+> W$
+> 4;3
+> W$
+> 5;3
+> W$
+> 6;3
+> W$
+> 7;3
+> W$
+> 8;3
+
+Fig. 12: Adaptive neural-weight trajectories associated with f3
+
+at Node 3. t [s]               
+
+> 0100 200 300 400 500 600
+> ^W
+> -0.05 00.05
+> ^W1;4
+> ^W2;4
+> ^W3;4
+> ^W4;4
+> ^W5;4
+> ^W6;4
+> ^W7;4
+> ^W8;4
+> W$
+> 1;4
+> W$
+> 2;4
+> W$
+> 3;4
+> W$
+> 4;4
+> W$
+> 5;4
+> W$
+> 6;4
+> W$
+> 7;4
+> W$
+> 8;4
+
+Fig. 13: Adaptive neural-weight trajectories associated with f4
+
+at Node 3. t [s]       
+
+> 0100 200 300 400 500 600
+> Interval width
+> 0510 15
+> Neural width, node 3 Neural width, node 4 Neural width, node 5 No-neural width, node 1 No-neural width, node 2 No-neural width, node 3 No-neural width, node 4 No-neural width, node 5
+
+Fig. 14: Interval-width comparison for all nodes with and without neural compensation. The neural interval estimates in Figs. 2–5 show that the initial enclosures contract rapidly within approximately the first 30 − 50 s and subsequently remain very tight for all four states. In contrast, the nominal interval observer with-out neural compensation in Figs. 6–9 converges only to a considerably wider nonzero tube because the nominal model does not compensate for the unknown nonlinear dynamics. The adaptive-weight trajectories in Figs. 10–13 become nearly stationary after approximately 100 −200 s , while the network-wide comparison in Fig. 14 shows that the neural-compensated interval widths are reduced by more than one order of mag-nitude relative to the nominal case after the initial transient. These tighter distributed intervals are directly relevant to fault-detection and isolation applications, since they provide less conservative residual thresholds for detecting sensor, actuator, or communication faults in networked systems. VI. C ONCLUSION 
+
+This paper developed a distributed adaptive neural interval observer for unknown nonlinear systems. The proposed de-sign guarantees bounded transformed and physical-state inter-val estimation errors together with bounded adaptive neural weights, while the stored-data learning mechanism improves parameter convergence without requiring persistent excitation of the online regressors. The simulation results verify that the neural-compensated intervals contract to significantly tighter bounds than the nominal interval observer and that the adaptive weights approach steady values under finite excitation. These results support the effectiveness of the proposed framework for distributed state estimation and fault-detection applications in networked nonlinear systems. ACKNOWLEDGMENT 
+
+The authors would like to thank Ho Chi Minh City University of Technology (HCMUT) and Vietnam National University Ho Chi Minh City (VNU-HCM) for supporting this research. REFERENCES [1] J.-L. Gouz´ e, A. Rapaport, and M. Z. Hadj-Sadok, “Interval observers for uncertain biological systems,” Ecological Modelling , vol. 133, nos. 1–2, pp. 45–56, 2000, doi: 10.1016/S0304-3800(00)00279-9. [2] D. Efimov, T. Ra¨ ıssi, S. Chebotarev, and A. Zolghadri, “Interval state observer for nonlinear time varying systems,” Automatica , vol. 49, no. 1, pp. 200–205, 2013, doi: 10.1016/j.automatica.2012.07.004. [3] Z. Zhang and J. Shen, “A survey on interval observer design using positive system approach,” Franklin Open , vol. 4, Art. no. 100031, 2023, doi: 10.1016/j.fraope.2023.100031. [4] A. Mitra and S. Sundaram, “Distributed observers for LTI systems,” 
+
+IEEE Trans. Autom. Control , vol. 63, no. 11, pp. 3689–3704, Nov. 2018, doi: 10.1109/TAC.2018.2798998. [5] W. Han, H. L. Trentelman, Z. Wang, and Y. Shen, “A simple approach to distributed observer design for linear systems,” IEEE Trans. Autom. Control , vol. 64, no. 1, pp. 329–336, Jan. 2019, doi: 10.1109/TAC.2018.2828103. [6] X. Wang, W. Xu, H. Su, Z. Gao, and G. Chen, “Designing a com-pletely distributed interval observer for the LTI system,” IEEE Trans. Autom. Control , vol. 70, no. 3, pp. 1793–1808, Mar. 2025, doi: 10.1109/TAC.2024.3471332. [7] X. Wang, F. Li, and Y. Zhou, “Distributed interval observer design for descriptor systems,” J. Franklin Inst. , vol. 363, no. 8, Art. no. 108677, 2026, doi: 10.1016/j.jfranklin.2026.108677. [8] Z. Yi, W. Xie, L. Liu, and B. Xu, “A neural network adaptive interval observer design for nonlinear systems,” IET Control Theory Appl. ,vol. 16, no. 6, pp. 615–624, 2022, doi: 10.1049/cth2.12258. [9] G. Chowdhary and E. N. Johnson, “Concurrent learning for convergence in adaptive control without persistency of excitation,” in Proc. 49th IEEE Conf. Decision and Control , 2010, pp. 3674–3679. [10] A. Parikh, R. Kamalapurkar, and W. E. Dixon, “Integral concurrent learning: Adaptive control with parameter convergence using finite excitation,” International Journal of Adaptive Control and Signal Pro-cessing , vol. 33, no. 12, pp. 1775–1787, 2019.

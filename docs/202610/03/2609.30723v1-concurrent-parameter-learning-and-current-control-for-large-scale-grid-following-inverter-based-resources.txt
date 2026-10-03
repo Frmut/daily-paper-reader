@@ -1,0 +1,612 @@
+Title: Concurrent Parameter Learning and Current Control for Large-scale Grid-following Inverter-based Resources
+
+URL Source: https://arxiv.org/pdf/2609.30723v1
+
+Published Time: Mon, 28 Sep 2026 00:28:37 GMT
+
+Number of Pages: 15
+
+Markdown Content:
+# Concurrent Parameter Learning and Current Control for Large-scale Grid-following Inverter-based Resources 
+
+Satish Vedula September 2026 
+
+COPYRIGHTED: UNDER REVIEW FOR IEEE TEXAS POWER AND ENERGY CONFERENCE, COLLEGE STATION, TX, USA, 2027 
+
+The integration of large-scale inverter-based resources (IBRs) into the grid presents two key challenges in terms of optimal power generation and transmis-sion system stability. This work proposes concurrent transmission parameter learning and optimal power generation and current control for the grid-following IBRs. The proposed approach estimates transmission parameters online using the current measurements, enabling the IBRs to adapt their control actions to evolving grid conditions. The learned parameter estimates are incorporated into an optimization-based power distribution strategy to determine the optimal power setpoints. In parallel, a current control scheme is designed to regulate the grid-following (GFL) IBRs current output based on the estimates and received active and reactive power references from the high-level optimizer, thereby im-proving the dynamic response to the grid events. The effectiveness of the pro-posed framework is validated through a simulation in a MATLAB-Simulink environment. From the results, the impact of the concurrent estimator and current controller during the grid events can be seen. 
+
+# 1 Introduction 
+
+Rapid growth of renewable energy resources such as solar and wind generation which are inverter-based, and their integration into the existing power grids have led to substantial structural and operational transformations in the existing electrical power systems (EPS). Existing power grids consisting of synchronous machines (SMs) are being replaced by or additionally compounded by large-scale inverter-based resources (IBRs) accounting for the addition of more distributed energy resources (DERs) to the grid. Moreover, inherently IBRs exhibit low inertia due to a lack of rotating mechanical components, in contrast to the SMs, thus responding swiftly to stochastic events. Another control challenge is to incorporate the fast-switching properties of the IBRs for controlling the IBR 1arXiv:2609.30723v1 [math.OC] 25 Sep 2026 current. The lack of inertia and fast switching gives rise to control challenges in terms of stabilizing the EPSs in the presence of the IBRs and the overall robustness of the EPSs [1]. In the existing literature, numerous researchers have proposed a virtual inertia based approach to tackle the control issues arising due to lack of inertia [2–4]. Nevertheless of the inertial properties of the SMs and the IBRs, the indu-bitable objective remains identical in managing the active and the reactive power sharing in the power grid. An effective control method employed to address ef-fective power sharing is droop control [5]. Numerous control techniques derived from droop control have been proposed in the existing literature, such as the PD-like discrete-time consensus control and distributed droop control [6], [7]. However, the lack of robustness in these methods due to exogenous distur-bances is addressed by means of the sliding mode approach [8]. However, sliding mode controllers induce the phenomenon of chattering, which can be reduced by means of an estimator and chattering attenuation designs [9]. Consensus-based algorithms provide efficient frequency regulation; nonetheless, they suffer from communication costs and reliability of communication links [10]. A decentral-ized transmission-line health-based active power tracking is proposed in [11] to address the problem of power tracking under transmission faults. Traditional power grid control is multilayered and hierarchical in structure, often comprising a droop-based primary layer, power and frequency deviation mitigation in the secondary layer, and power flow management in the tertiary layer [5]. The goal of an optimal power flow (OPF) problem is to minimize the generation losses or generation costs, thus optimally managing the power supplied by the SMs or IBRs. In [12], a centralized two-layered (schedule layer and dispatch layer) energy management approach for two modes of power grid operation, namely grid connected , and islanded , was proposed. While existing approaches focus dominantly on the optimal power flow problem holistically, the core idea for this work is co-designing optimal power distribution alongside the current controller. The key contributions of the work are: 1. A concurrent current control and parameter estimation strategy relaxing the requirement for persistent excitation is presented. 2. A parameter-estimate-informed optimal optimization framework is pre-sented for optimal and grid event-aware power setpoint distribution The effectiveness of the proposed framework is validated using MATLAB/Simulink. The results show that the proposed approach can accurately track the param-eters and accordingly drive the optimal power generation and current control actions. 
+
+# 2 Notations 
+
+N, R, C, and R+ denote the set of natural, real, complex, and positive real num-bers. L2 and L∞ denote the square-integrable (measurable) and bounded signal 2Figure 1: (a) Depiction of microgrids with IBRs, (b) Electrical equivalent mod-eling of the distributed energy resources. spaces. A real matrix with n rows and m columns is denoted as X ∈ Rn×m.The identity matrix is denoted as I. X⊤ denotes the transpose of a matrix X.
+
+trace (X) denotes sum of all the diagonal elements of X. det (X) denotes the determinant of X. Natural and Real scalars are denoted by lowercase letters 3(for example, x ∈ N and y ∈ R). The real vectors are represented by the low-ercase bold letters (i.e., x ∈ Rn). The vector of ones and zeros is denoted as 1
+
+and 0. For any vector x ∈ Rn, ∥x∥2 ≜ √x⊤x and ∥x∥1 ≜ Pni=1 |xi|, represent-ing the 2-norm and the 1-norm, respectively (where |.| denotes absolute value). The dot product/inner product of the two vectors x and y ∈ Rn is denoted as 
+
+x⊤y. If n = 2, the cross product/outer product is denoted as x⊤Jy, where 
+
+J ≜
+
+ 0 1
+
+−1 0
+
+
+
+. {.}X denotes the projection onto set X .
+
+# 3 Inverter Modeling and State of Charge Dy-namics 
+
+The dynamics of the grid following IBRs connected to the grid via a transmission line is given, in dq coordinates [13], as follows : 
+
+lgj
+
+dij
+
+dt = −(rgj I − lgj ωg J)ij (t) + vj (t) − vg , j = 1 , 2, . . . N, (1) where ij (t) ∈ R2, vj (t) ∈ R2, and vg ∈ L 2 are the jth inverter current, voltage (control input) and measured grid voltage, respectively. rgj ∈ R+ and lgj ∈ R+
+
+are the resistance and the inductance of the transmission line connecting to the grid in Ohm and Henry . ωg ∈ R+ is the grid frequency in rad/s .From the dynamics in (1) it can be observed that, given a grid voltage vg ,the set of all equilibrium points 
+
+S(vg ) ≜
+
+
+
+(i∗ 
+
+> j
+
+, v∗ 
+
+> j
+
+) ∈ R2 v∗ 
+
+> j
+
+− (rgj I − lgj ωg J)i∗ 
+
+> j
+
+= vg
+
+
+
+is nonempty. 
+
+Assumption 1. Since the IBRs are designed in a grid-following mode, the grid frequency at the steady-state ωg is considered to be fixed. Also, the switching dynamics of the inverter are neglected. This is reasonable for this work since practical switching typically has a DC-gain of around 1 [4]. Assumption 2. At the steady-state the grid voltage vg is regulated to a fixed known nominal value vg0 , since the IBRs are designed in a grid-following mode. 
+
+# 4 Concurrent Estimation and Control Develop-ment 
+
+Since the voltage is assumed to be regulated to a known nominal value given that the IBRs are operated in grid-following mode, the power tracking problem is converted to a current tracking problem. Namely, given the admissible active 4and reactive power pair from the power input shaping filter ( pref j , qref j ), the desired reference current is given by 
+
+iref jd 
+
+iref jq 
+
+
+
+≜ iref j = vg0
+
+∥vg0 ∥22
+
+pref j + J vg0
+
+∥vg0 ∥22
+
+qref j , (2) Next, consider the current tracking error between the system dynamics in (1) and the reference current as 
+
+ej = ij − iref j , j = 1 , 2, ..., N. (3) The open-loop error dynamics is obtained by taking the first-time derivative 
+
+lgj ˙ej = −(rgj I − lgj ωg J)ij + vj − vg
+
+| {z }
+
+> uj
+
+. (4) Substituting ij = ej + iref j yields 
+
+lgj ˙ej = −(rgj I − lgj ωg J)ej − (rgj I − lgj ωg J)iref j + uj . (5) The open-loop error dynamics in (5) can be linearly parameterized [14] into a known matrix of measurements, also known as the regressor matrix, and a vector of unknown parameters 
+
+lgj ˙ej = −(rgj I − lgj ωg J)ej + Y1θ + uj , (6) where 
+
+Y1 = −iref j ωg Jiref j
+
+ , θ =
+
+rgj
+
+lgj
+
+
+
+. (7) Consider the control law 
+
+uj = −k1ej − Y1 ˆθ, (8) where k1 is a tunable control gain, ˆθ is the estimate of the unknown parameters. Substituting the control law (8) in (5) yields the following closed-loop error dynamics 
+
+lgj ˙ej = −(rgj I − lgj ωg J)ej − k1ej + Y1 (θ − ˆθ)
+
+| {z }
+
+> ˜θ
+
+. (9) Consequently, the parameter update law is designed as follows 
+
+˙ˆθ = γ1Y ⊤ 
+
+> 1
+
+ej + γ1
+
+ Z t+Tt
+
+Y2(τ )dτ 
+
+⊤
+
+×
+
+Z t+Tt
+
+
+
+uj (τ ) − Y2(τ )
+
+
+
+ˆθ(t)dτ, ∀t ≥ 0, T > 0, (10) 5where Y2 = ij ˙ej − ωg Jij
+
+ is obtained by from rearranging the open-loop error dynamics in (4) as follows 
+
+lgj ˙ej = −(rgj I − lgj ωg J)ij + uj ,
+
+uj = ij ˙ej − ωg Jij
+
+| {z }
+
+> Y2
+
+rgj
+
+lgj
+
+| {z } 
+
+> θ
+
+.
+
+Integrating uj yields, 
+
+Z t+Tt
+
+uj (τ )dτ =
+
+Z t+Tt
+
+Y2(τ )θdτ. (11) Since the regressor matrix Y2 depends on the derivative of the error sig-nal, we assume that the derivative of the error signal is measurable. More-over, at the steady-state the matrix Y2 translates to ij −ωg Jij
+
+. Express-ing Y2 in terms of the error signal and the reference current translates to 
+
+Y2 = (ej + iref j ) −ωg J(ej + iref j ).
+
+Remark 1. In applications/situations where the derivative of the error signal is not readily measurable, an approximation in terms of designing a derivative filter captures the behavior of the derivative of the error signal and is given as follows 
+
+˙sfj = −σsfj − σ2ej , efj = sfj + σej .
+
+For a choice of sufficiently high gain σ, the developed filter provides efj ≈ ˙ej .
+
+Theorem 1. Consider the closed loop error dynamics in (9) together with the update law in (10) . If the reference input signals are persistently exciting ac-cording to 
+
+Z t+Tt
+
+i2  
+
+> ref jd
+
+(τ )dτ > γ, and 
+
+Z t+Tt
+
+i2  
+
+> ref jq
+
+(τ )dτ > γ, (12) 
+
+for some T > 0 and γ > 0, then the error dynamics in (9) is exponentially stable in the sense that 
+
+ej (t)
+
+˜θ(t)
+
+
+
+≤ ζ1
+
+ej (0) 
+
+˜θ(0) 
+
+
+
+e− ζ22 t
+
+where, 
+
+ζ1 =
+
+s
+
+max {lgj , 1/γ 1}
+
+min {lgj , 1/γ 1} , ζ2 = min {(rgj + k1), γ }
+
+max {lgj , 1/γ 1} ,k1 is a tunable control gain and γ1 is the parameter adaptation rate tuner. 
+
+6Proof. Consider the following Lyapunov candidate function 
+
+V (ej , ˜θ) = lgj
+
+2 e⊤ 
+
+> j
+
+ej + 12γ1
+
+˜θ⊤ ˜θ,
+
+taking the first time-derivative along the variables and substituting (9) yields ˙V = ej ⊤lgj ˙ej − 1
+
+γ1
+
+˜θ⊤ ˙ˆθ,
+
+= −(rgj + k1)e⊤ 
+
+> j
+
+ej + lgj ωg e⊤ 
+
+> j
+
+Jej + e⊤ 
+
+> j
+
+Y1 ˜θ − 1
+
+γ1
+
+˜θ⊤ ˙ˆθ,
+
+from the observation e⊤ 
+
+> j
+
+Jej = 0, and substituting the parameter update law in (10) yields, ˙V = −(rgj + k1)e⊤ 
+
+> j
+
+ej + e⊤ 
+
+> j
+
+Y ˜θ − ˜θ⊤Y ⊤ej −
+
+˜θ⊤ Z t+Tt
+
+Y2(τ )dτ 
+
+!⊤ Z t+Tt
+
+
+
+uj (τ ) − Y2(τ )
+
+
+
+ˆθ(t)dτ. 
+
+Substituting R t+Tt uj (τ )dτ from (11) yields, ˙V = −(rgj + k1)e⊤ 
+
+> j
+
+ej − ˜θ
+
+ Z t+Tt
+
+Y (τ )dτ 
+
+⊤
+
+×
+
+Z t+Tt
+
+
+
+Y2(τ )θ − Y2(τ ) ˆθ
+
+
+
+dτ, 
+
+≤ − (rgj + k1)e⊤ 
+
+> j
+
+ej − ˜θ⊤ Z t+Tt
+
+Y2(τ )⊤Y2(τ )dτ ˜θ. (13) If there exists T > 0 and γ > 0 such that R t+Tt Y2(τ )⊤Y2(τ )dτ ≥ γI ,˙V ≤ − (rgj + k1) ∥ej ∥2 − γ ˜θ 2
+
+ddt 
+
+ ej
+
+˜θ
+
+ 2 
+
+≤ − min {(rgj + k1), γ }
+
+max {lgj , 1/γ 1}
+
+| {z }
+
+> ζ2
+
+ej
+
+˜θ
+
+ 2
+
+.
+
+Integrating and using comparison lemma yields, 
+
+ej (t)
+
+˜θ(t)
+
+
+
+≤
+
+s
+
+max {lgj , 1/γ 1}
+
+min {lgj , 1/γ 1}
+
+| {z }
+
+> ζ1
+
+ej (0) 
+
+˜θ(0) 
+
+
+
+e− ζ22 t.
+
+7Now, to show that R t+Tt Y2(τ )⊤Y2(τ )dτ > 0, it is sufficient to show that both its trace and determinant are positive: 
+
+trace 
+
+ Z t+Tt
+
+Y2(τ )⊤Y2(τ )dτ 
+
+
+
+= (1 + ω2 
+
+> g
+
+)
+
+Z t+Tt
+
+(ejd (τ ) + iref jd (τ )) 2dτ 
+
++ (1 + ω2 
+
+> g
+
+)
+
+Z t+Tt
+
+(ejq (τ ) + iref jq (τ )) 2dτ, 
+
+and 
+
+det 
+
+ Z t+Tt
+
+Y2(τ )⊤Y2(τ )dτ 
+
+
+
+= ω2
+
+> g
+
+ Z t+Tt
+
+(ejd (τ ) + iref jd (τ )) 2dτ 
+
++
+
+Z t+Tt
+
+(ejq (τ ) + iref jq (τ )) 2dτ 
+
+2
+
+− ω2
+
+> g
+
+ Z t+Tt
+
+(ejq (τ ) + iref jq (τ )) 2dτ 
+
+−
+
+Z t+Tt
+
+(ejd (τ ) + iref jd (τ )) 2dτ 
+
+2
+
+= 4 ω2
+
+> g
+
+ Z t+Tt
+
+(ejd (τ ) + iref jd (τ )) 2dτ 
+
+
+
+×
+
+ Z t+Tt
+
+(ejq (τ ) + iref jq (τ )) 2dτ 
+
+
+
+.
+
+Claim: The trace and determinant are strictly positive if there exists T < ∞
+
+such that R t+Tt (ejd (τ ) + iref jd (τ )) 2dτ > 0 and R t+Tt (ejq (τ ) + iref jq (τ )) 2dτ > 0. 
+
+Proof of Claim: Suppose that R t+Tt (ejd (τ ) + iref jd (τ )) 2dτ = 0 for some 
+
+T > 0, then from (13), it follows that ˙V ≤ − (rgj + k1) ∥ej ∥2 ,
+
+which implies that ˙V is negative semi-definite. Thus, V ∈ L ∞ which implies 
+
+ej ∈ L ∞. Since iref j is assumed to be bounded, it implies that ij ∈ L ∞.Consequently, the control input vj ∈ L ∞. Integrating ˙V yields, 
+
+V (∞) − V (0) ≤ − (rgj + k1)
+
+Z ∞
+
+> 0
+
+∥ej ∥2 dt. 
+
+It follows that ej ∈ L 2. From the implications, ej is uniformly continuous. Thus, invoking Barbalat’s lemma it follows that ej −→ 0. Consequently, for suffi-ciently large t1, R t1+Tt1 (∥ej (τ )∥2)2dτ = 0, which implies that R t1+Tt1 e2
+
+> jd
+
+(τ )dτ = 0, 8which implies that R t1+Tt1 i2  
+
+> ref jd
+
+(τ )dτ = 0. This contradicts the hypothesis in (12). 
+
+Figure 2: Structure of the proposed concurrent controller and estimator Moreover, similar arguments could be made with the assumption R t+Tt (ejq (τ )+ 
+
+iref jq (τ )) 2dτ = 0 leading to the contradiction R t1+Tt1 i2  
+
+> ref jq
+
+(τ )dτ = 0. This con-cludes the proof of the claim and also concludes the proof of the theorem. The result in Theorem 1 provides the conditions for the global exponential stability of the dynamics in (9) and convergence of the current tracking error to zero exponentially. Moreover, the parameter estimation error ˜θ is shown to be bounded and exponentially convergent under the condition that the system is persistently excited. However, recent developments in [15], [16] have proposed the use of concurrent learning adaptive control to guarantee exponential con-vergence of both tracking error and the parameter estimation error. Pivotal in 9Figure 3: Parameter Estimator Performance establishing the exponential convergence relied upon their assumption on the availability of the portion of the regressor matrix data beforehand, thus relax-ing the requirement of persistent excitation to finite excitation. However, this approach cannot be applied to the work in this paper since the current reference 
+
+iref j is generated from a high-level optimizer and cannot be known prior. There-fore, we demonstrate the positive definiteness of the matrix R t 
+
+> 0
+
+Y2(τ )Y2(τ )⊤dτ 
+
+to establish the convergence of the parameter estimation error through persis-tent excitation, as shown in Fig. 3. Fig. 3 shows the response of the parameter estimator. 
+
+# 5 Reference Shaping and Estimate-based Power Distribution 
+
+Next, we present the high-level controller, which consists of reference shap-ing and optimal estimate-based power distribution. Assuming a higher-level HMI/SCADA operator sets the active and reactive power setpoints, the reference-shaping filter ensures the setpoints adhere to the IBRs apparent power limits. 
+
+Remark 2. The feasible operating active and reactive power setpoints generated from the HMI/SCADA are characterized by a closed Euclidean ball given as: 
+
+B(s) = {x = [ p, q ]⊤ ∈ R2 : ∥x∥2 ≤ s}, (14) 
+
+that is, the set of references (pref , q ref ) always lies inside the ball or at most on the boundary, where s ∈ R is the total apparent power. 
+
+10 Figure 4: Power Circle Consider the optimization problem: Minimize: 
+
+> p,q
+
+12
+
+pq
+
+ 22
+
+Subject to: 
+
+g(ˆ rgj ) 0⊤
+
+0⊤ g(ˆ rgj )
+
+  pq
+
+
+
+=
+
+pref 
+
+qref 
+
+
+
+,
+
+(15) where p ≜  p1, p 2, . . . , p N
+
+⊤ ∈ RN , ( pref , q ref ) ∈ R, are the reference shaped active and power references, q ≜  q1, q 2, . . . , q N
+
+⊤ ∈ RN .
+
+g(ˆ rgj ) ≜  g(ˆ rg1 ), . . . , g (ˆ rgN )  ∈ R1×N and, 
+
+g(ˆ rg ) = 
+
+(
+
+0, if |rg0 − ˆrg | ≥ ϵ
+
+1, if |rg0 − ˆrg | < ϵ 
+
+11 If the parameter estimate deviates from the nominal known value, then that IBR is excluded from the power distribution. 
+
+Figure 5: Power sharing between the three IBRs (top) and the power measure-ments (bottom) at the IBR terminals for each IBR 
+
+# 6 Simulation 
+
+A three-IBR system/plant in an active power priority mode with a rated ap-parent power of 1000 VA is considered to assess the performance of the devel-oped/proposed controller. The nominal grid voltage is vg = 392 V (LN rms), and the grid frequency wg = 60 Hz . The nominal line resistance and induc-tance are chosen as follows: 0.027Ω, 0.037 H. A fault is injected at Inverter-1 at t = 2 secs . The setpoints from the HMI, psetpoint , and qsetpoint are set at 1000 W, and 1000 VAR respectively. Figure-6 shows the reference shaping algo-rithm enforcing the active power priority by setting the active power reference (pref ) to 1000 W, while forcing the reactive power reference ( qref ) to 0 VAR to meet the total plant rated apparent power of 1000 VA .Since the reactive power reference is zero, Figure-5 shows the active power reference split between the three IBRs and the consequent active power mea-surements at the terminals of the IBRs. It can be seen that at t = 2 secs , when the fault occurs, the power is split between the remaining two active IBRs, and the IBR with the fault is excluded from the power sharing contribution. 12 Figure 6: Reference shaping based on the apparent power of the plant. 
+
+Figure 7: Current sharing between the three IBRs. The plots to the left show the current reference generated for each IBR to track. The plots on the right show the current measurement at the IBR terminal. It can be seen that the IBR currents are readjusted within 0 .1secs of the event occurrence. In Figure-7, the plots of the left show the current references for each IBR in three-phase generated based on the active and reactive power setpoints for each IBR. It can be seen that for IBR-1, the current goes to zero at t = 2 secs ,while simultaneously the other two IBRs increase their current references to 13 maintain the active power reference. The plots to the right show the current measurement at the IBR terminals. It can be seen that the current is split and the steady state is attained within 0.1 secs of the fault occurrence. 
+
+# 7 Conclusion 
+
+The proposed framework integrates an online parameter estimator, optimal power allocation, and current control for GFL IBRs. The online estimator enables the IBRs to track grid variations and accordingly adjust their current contribution. The estimated parameters are incorporated into the optimization framework to obtain the grid-aware active and reactive power setpoints, which are further converted to current references. The numerical simulations show the improved response of the GFL IBRs during dynamic grid events. Overall, the results validate the effectiveness of the concurrent estimation and current control framework for effective IBR operation. Future studies leave scope for the impact of measurement noise and parameter estimation errors resulting in false-positive errors. 
+
+# References 
+
+[1] F. Milano, F. D¨ orfler, G. Hug, D. J. Hill, and G. Verbiˇ c, “Foundations and challenges of low-inertia systems (invited paper),” in 2018 Power Systems Computation Conference (PSCC) , 2018, pp. 1–25. [2] J. Driesen and K. Visscher, “Virtual synchronous generators,” in 2008 IEEE Power and Energy Society General Meeting - Conversion and De-livery of Electrical Energy in the 21st Century , 2008, pp. 1–3. [3] J. Alipoor, Y. Miura, and T. Ise, “Power system stabilization using virtual synchronous generator with alternating moment of inertia,” IEEE Journal of Emerging and Selected Topics in Power Electronics , vol. 3, no. 2, pp. 451–458, 2015. [4] O. M. Anubi and S. Ameli, “Robust stabilization of inverter-based re-sources using virtual resistance-based control,” IEEE Control Systems Let-ters , vol. 6, pp. 3295–3300, 2022. [5] J. M. Guerrero, J. C. Vasquez, J. Matas, L. G. de Vicuna, and M. Castilla, “Hierarchical control of droop-controlled ac and dc microgrids—a general approach toward standardization,” IEEE Transactions on Industrial Elec-tronics , vol. 58, no. 1, pp. 158–172, 2011. [6] J. Chen, D. Yue, C. Dou, Y. Li, G. P. Hancke, S. Weng, J. M. Guerrero, and X. Ding, “Distributed control of multi-functional grid-tied inverters for power quality improvement,” IEEE Transactions on Circuits and Systems I: Regular Papers , vol. 68, no. 2, pp. 918–928, 2020. 14 [7] J. Schiffer, T. Seel, J. Raisch, and T. Sezi, “Voltage stability and reac-tive power sharing in inverter-based microgrids with consensus-based dis-tributed voltage control,” IEEE Transactions on Control Systems Technol-ogy , vol. 24, no. 1, pp. 96–109, 2015. [8] C. Alfaro, R. Guzman, L. G. de Vicu˜ na, H. Komurcugil, and H. Mart´ ın, “Distributed direct power sliding-mode control for islanded ac microgrids,” 
+
+IEEE Transactions on Industrial Electronics , vol. 69, no. 10, pp. 9700–9710, 2021. [9] J. Yim, S. You, Y. Lee, and W. Kim, “Chattering attenuation disturbance observer for sliding mode control: Application to permanent magnet syn-chronous motors,” IEEE Transactions on Industrial Electronics , vol. 70, no. 5, pp. 5161–5170, 2023. [10] Y. Han, H. Li, P. Shen, E. A. A. Coelho, and J. M. Guerrero, “Review of active and reactive power sharing strategies in hierarchical controlled microgrids,” IEEE Transactions on Power Electronics , vol. 32, no. 3, pp. 2427–2451, 2017. [11] S. Vedula, A. Olajube, and O. Anubi, “Fault-tolerant decentralized control for large-scale inverter-based resources for active power tracking,” 2024. [12] Q. Jiang, M. Xue, and G. Geng, “Energy management of microgrid in grid-connected and stand-alone modes,” IEEE Transactions on Power Systems ,vol. 28, no. 3, pp. 3380–3389, 2013. [13] Y. Levron, J. Belikov, and D. Baimel, “A tutorial on dynamics and control of power systems with distributed and renewable energy sources based on the dq0 transformation,” Applied Sciences , vol. 8, no. 9, 2018. [14] W. E. Dixon, A. Behal, D. M. Dawson, and S. P. Nagarkatti, Nonlinear control of engineering systems: a Lyapunov-based approach . Springer Sci-ence & Business Media, 2003. [15] G. Chowdhary and E. Johnson, “Concurrent learning for convergence in adaptive control without persistency of excitation,” in 49th IEEE Confer-ence on Decision and Control (CDC) , 2010, pp. 3674–3679. [16] A. Parikh, R. Kamalapurkar, and W. E. Dixon, “Integral concurrent learn-ing: Adaptive control with parameter convergence using finite excitation,” 
+
+International Journal of Adaptive Control and Signal Processing , vol. 33, no. 12, pp. 1775–1787, 2019. 15

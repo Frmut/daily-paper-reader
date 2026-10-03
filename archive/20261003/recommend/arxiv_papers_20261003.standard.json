@@ -1,0 +1,127 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-10-03T22:40:13.280602+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 3,
+    "quick_skim_target": 11,
+    "quick_selected": 3
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2609.30723v1",
+      "title": "Concurrent Parameter Learning and Current Control for Large-scale Grid-following Inverter-based Resources",
+      "abstract": "The integration of large-scale inverter-based resources (IBRs) into the grid presents two key challenges in terms of optimal power generation and transmission system stability. This work proposes concurrent transmission parameter learning and optimal power generation and current control for the grid-following IBRs. The proposed approach estimates transmission parameters online using the current measurements, enabling the IBRs to adapt their control actions to evolving grid conditions. The learned parameter estimates are incorporated into an optimization-based power distribution strategy to determine the optimal power setpoints. In parallel, a current control scheme is designed to regulate the grid-following (GFL) IBRs current output based on the estimates and received active and reactive power references from the high-level optimizer, thereby improving the dynamic response to the grid events. The effectiveness of the proposed framework is validated through a simulation in a MATLAB-Simulink environment. From the results, the impact of the concurrent estimator and current controller during the grid events can be seen.",
+      "authors": [
+        "Satish Vedula"
+      ],
+      "primary_category": "math.OC",
+      "categories": [
+        "math.OC"
+      ],
+      "published": "2026-09-25T02:49:29+00:00",
+      "link": "https://arxiv.org/pdf/2609.30723v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Current control and parameter learning for inverter-based resources",
+      "llm_evidence_cn": "逆变器资源的电流控制与参数学习",
+      "llm_evidence": "逆变器资源的电流控制与参数学习",
+      "canonical_evidence": "逆变器资源的电流控制与参数学习",
+      "llm_tldr_en": "Concurrent parameter learning and current control for inverters, highly relevant to PMSM drive systems.",
+      "llm_tldr_cn": "逆变器的并行参数学习与电流控制，与永磁同步电机驱动系统高度相关。",
+      "llm_tldr": "逆变器的并行参数学习与电流控制，与永磁同步电机驱动系统高度相关。",
+      "llm_tags": [
+        "query:pmsm:composite"
+      ],
+      "matched_query_tag": "query:pmsm:composite",
+      "matched_query_text": "Papers central to 三相及双三相永磁同步电机相关研究检索, especially work that connects or combines: m; s; f; Permanent Magnet Synchronous Motor research; dual three-phase permanent magnet synchronous motor control and design; fault-tolerant control of multi-phase motors; recent advances in dual three phase permanent magnet synchronous motor control; fault tolerant strategies for multi phase permanent magnet synchronous motors.",
+      "matched_requirement_id": "req-composite-pmsm",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.35758v1",
+      "title": "Statistical Learning of Contractive Dynamical Representations for Composite Adaptive Control",
+      "abstract": "We present a representation-learning framework for composite adaptive tracking control under dynamically coupled disturbances. The framework connects classical disturbance-accommodating control (DAC) to recent last-layer adaptive disturbance-rejection methods. Specifically, we introduce a statistically principled hard expectation-maximization (hard-EM) procedure, with a Kalman smoother in the hard E-step, to identify dynamical representations of disturbance whose latent evolution is uniformly contractive. The learned representation evolves a latent disturbance-excitation state from measured plant features and control inputs and decodes that state into the time-varying disturbance acting on the nominal plant, thereby extending prior \"fixed-decay\" last-layer adaptive methods to a learned, predictive DAC-style formulation. Combined with Bayesian filtering of the learned latent state, this representation yields a composite adaptive tracking controller with predictive capability and provable exponential convergence to a bounded neighborhood. We validate our approach experimentally on a slippery ground vehicle carrying a liquid-sloshing tank and a pendulum load, and we further assess its robustness on a system of coupled Duffing oscillators. Across both settings, the method achieves accurate disturbance prediction and improved overall tracking performance relative to fixed-decay representation-learning ablations, LTI disturbance-accommodating baselines, and model-based PD baselines.",
+      "authors": [
+        "Min Kim",
+        "José Leonardo Brenes",
+        "Fred Hadaegh",
+        "Soon-Jo Chung"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY",
+        "cs.LG",
+        "cs.RO"
+      ],
+      "published": "2026-09-28T17:59:07+00:00",
+      "link": "https://arxiv.org/pdf/2609.35758v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Adaptive tracking control under coupled disturbances",
+      "llm_evidence_cn": "耦合扰动下的自适应跟踪控制",
+      "llm_evidence": "耦合扰动下的自适应跟踪控制",
+      "canonical_evidence": "耦合扰动下的自适应跟踪控制",
+      "llm_tldr_en": "A representation-learning framework for adaptive tracking control under dynamically coupled disturbances.",
+      "llm_tldr_cn": "一种用于动态耦合扰动下自适应跟踪控制的表示学习框架。",
+      "llm_tldr": "一种用于动态耦合扰动下自适应跟踪控制的表示学习框架。",
+      "llm_tags": [
+        "query:pmsm:composite"
+      ],
+      "matched_query_tag": "query:pmsm:composite",
+      "matched_query_text": "Papers central to 三相及双三相永磁同步电机相关研究检索, especially work that connects or combines: m; s; f; Permanent Magnet Synchronous Motor research; dual three-phase permanent magnet synchronous motor control and design; fault-tolerant control of multi-phase motors; recent advances in dual three phase permanent magnet synchronous motor control; fault tolerant strategies for multi phase permanent magnet synchronous motors.",
+      "matched_requirement_id": "req-composite-pmsm",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2610.00802v1",
+      "title": "Distributed Adaptive Neural Interval Observers for Unknown Nonlinear Systems",
+      "abstract": "This paper develops a distributed adaptive neural interval observer for unknown nonlinear systems with locally incomplete measurements. Each sensor node constructs lower and upper state estimates using its local output and neighboring observer information, while unknown nonlinear dynamics are approximated by adaptive neural models. A distributed adaptation mechanism guarantees bounded estimation and weight errors, whereas a cooperative realization preserves the componentwise interval property. To enhance neural-weight convergence without requiring persistent excitation, a finite experience-replay integral concurrent-learning mechanism is incorporated into the adaptation law. For non-Metzler error dynamics, a Sylvester-based coordinate transformation is introduced to recover a Hurwitz--Metzler distributed realization. The theoretical developments are validated through a nonlinear distributed estimation example.",
+      "authors": [
+        "Tien Dat Vu",
+        "My Nguyen Bach",
+        "Phuoc Vinh Nguyen",
+        "Minh Doan"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY"
+      ],
+      "published": "2026-09-30T22:55:10+00:00",
+      "link": "https://arxiv.org/pdf/2610.00802v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Adaptive neural observers for unknown nonlinear systems",
+      "llm_evidence_cn": "未知非线性系统的自适应神经网络观测器",
+      "llm_evidence": "未知非线性系统的自适应神经网络观测器",
+      "canonical_evidence": "未知非线性系统的自适应神经网络观测器",
+      "llm_tldr_en": "Develops neural observers for nonlinear systems, useful for sensorless or fault-tolerant motor control.",
+      "llm_tldr_cn": "开发了非线性系统的神经观测器，可用于无传感器或容错电机控制。",
+      "llm_tldr": "开发了非线性系统的神经观测器，可用于无传感器或容错电机控制。",
+      "llm_tags": [
+        "query:pmsm:composite"
+      ],
+      "matched_query_tag": "query:pmsm:composite",
+      "matched_query_text": "Papers central to 三相及双三相永磁同步电机相关研究检索, especially work that connects or combines: m; s; f; Permanent Magnet Synchronous Motor research; dual three-phase permanent magnet synchronous motor control and design; fault-tolerant control of multi-phase motors; recent advances in dual three phase permanent magnet synchronous motor control; fault tolerant strategies for multi phase permanent magnet synchronous motors.",
+      "matched_requirement_id": "req-composite-pmsm",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
