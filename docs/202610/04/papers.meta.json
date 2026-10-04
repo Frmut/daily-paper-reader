@@ -1,0 +1,23 @@
+{
+  "label": "2026-10-04",
+  "date": "2026-10-04",
+  "generated_at": "2026-10-04T22:11:29",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202610/04/2609.37211v1-explainable-machine-learning-for-multilayer-planar-winding-inductance-estimation",
+      "section": "quick",
+      "title_en": "Explainable Machine Learning for Multilayer Planar Winding Inductance Estimation",
+      "authors": "Spyros Rigas, Theofilos Papadopoulos, Georgios Alexandridis, Antonios Antonopoulos",
+      "date": "2026-09-29",
+      "pdf": "https://arxiv.org/pdf/2609.37211v1",
+      "score": "6.0",
+      "evidence": "功率变换器平面绕组的电感估计",
+      "tldr": "针对多层平面绕组电感估计，传统方法依赖复杂公式或不可解释的黑盒模型，泛化能力差。本文提出一种基于SR-KAN的可解释机器学习框架，通过符号回归自动发现闭式解析方程。该方法在1万组FEA仿真数据及55个物理原型上验证，显著提升了分布外（OOD）预测的鲁棒性与准确性，并开源了数据集以支持研究。",
+      "tags": "query:pmsm",
+      "abstract_en": "Rapid and accurate self-inductance estimation for multilayer rectangle-shaped planar windings is essential for modern high-frequency power converters, yet traditional workflows rely on complex mathematical equations, rigid monomial formulas or unexplainable black-box machine learning (ML) models that degrade severely outside their training domain. This paper introduces an explainable ML framework unifying post-hoc feature attribution (SHAP and permutation importance) with Kolmogorov-Arnold Network-guided symbolic regression via the SR-KAN framework to discover closed-form analytical equations without prior structural assumptions. Evaluated on a new open-source dataset of over 10,000 Finite Element Analysis (FEA) simulations across seven out-of-distribution (OOD) classes, standard tree-based ensembles exhibit severe extrapolation errors (> 36%), whereas the unconstrained SR-KAN expression achieves a robust OOD relative error of 8.22%. Experimental verification across 55 physical printed circuit board prototypes (up to 8 layers, with inductances from 4.11 μH to 559.27 μH) confirms that the KAN-discovered expression translates effectively to real-world hardware, predicting inductance with a mean absolute relative error of 6.26%. To support reproducible research, the complete FEA simulation dataset and prototype measurements are released open-source.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

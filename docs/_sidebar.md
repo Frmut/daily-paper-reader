@@ -1,6 +1,9 @@
 * <a class="dpr-sidebar-root-link" href="#/">首页</a>
 * <a class="dpr-sidebar-root-link dpr-sidebar-noactive-link" href="javascript:void(0)" data-dpr-hash="#/tutorial/README">使用教程</a>
 * Daily Papers
+  * 2026-10-04 <!--dpr-date:20261004-->
+    * 速读区
+      * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202610/04/2609.37211v1-explainable-machine-learning-for-multilayer-planar-winding-inductance-estimation" data-sidebar-item="{&quot;title&quot;: &quot;Explainable Machine Learning for Multilayer Planar Winding Inductance Estimation&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2609.37211v1-explainable-machine-learning-for-multilayer-planar-winding-inductance-estimation&quot;, &quot;score&quot;: &quot;6.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;pmsm&quot;}], &quot;evidence&quot;: &quot;功率变换器平面绕组的电感估计&quot;}">Explainable Machine Learning for Multilayer Planar Winding Inductance Estimation</a>
   * 2026-10-03 <!--dpr-date:20261003-->
     * 速读区
       * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202610/03/2609.30723v1-concurrent-parameter-learning-and-current-control-for-large-scale-grid-following-inverter-based-resources" data-sidebar-item="{&quot;title&quot;: &quot;Concurrent Parameter Learning and Current Control for Large-scale Grid-following Inverter-based Resources&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2609.30723v1-concurrent-parameter-learning-and-current-control-for-large-scale-grid-following-inverter-based-resources&quot;, &quot;score&quot;: &quot;7.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;pmsm&quot;}], &quot;evidence&quot;: &quot;逆变器资源的电流控制与参数学习&quot;}">Concurrent Parameter Learning and Current Control for Large-scale Grid-following Inverter-based Resources</a>

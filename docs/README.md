@@ -6,32 +6,26 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-10-03
-- 运行时间：2026-10-03 22:40:21 UTC
+- 最新运行日期：2026-10-04
+- 运行时间：2026-10-04 22:11:27 UTC
 - 运行状态：成功
-- 本次总论文数：3
+- 本次总论文数：1
 - 精读区：0
-- 速读区：3
+- 速读区：1
 
 ### 今日简报（AI）
-今日聚焦电力电子与控制理论，探讨大规模并网逆变器参数学习及非线性系统自适应控制的前沿进展。
-重点关注大规模并网逆变器的并发参数学习与控制策略，其在提升电网稳定性方面具有显著参考价值。
-建议优先阅读逆变器参数学习相关论文，以掌握复杂电力系统动态控制的核心优化思路。
-- 详情：[/202610/03/README](/202610/03/README)
+今日速读一篇关于多层平面绕组电感估计的可解释机器学习研究。
+该研究通过可解释性模型提升了电感参数预测的透明度与可靠性。
+建议关注机器学习在电力电子元器件设计中的应用，以优化复杂电磁结构的建模效率。
+- 详情：[/202610/04/README](/202610/04/README)
 
 ### 精读区论文标签
 - 本次无精读推荐。
 
 ### 速读区论文标签
-1. [Concurrent Parameter Learning and Current Control for Large-scale Grid-following Inverter-based Resources](/202610/03/2609.30723v1-concurrent-parameter-learning-and-current-control-for-large-scale-grid-following-inverter-based-resources)  
-   标签：评分：7.0/10、query:pmsm
-   evidence：逆变器资源的电流控制与参数学习
-2. [Statistical Learning of Contractive Dynamical Representations for Composite Adaptive Control](/202610/03/2609.35758v1-statistical-learning-of-contractive-dynamical-representations-for-composite-adaptive-control)  
+1. [Explainable Machine Learning for Multilayer Planar Winding Inductance Estimation](/202610/04/2609.37211v1-explainable-machine-learning-for-multilayer-planar-winding-inductance-estimation)  
    标签：评分：6.0/10、query:pmsm
-   evidence：耦合扰动下的自适应跟踪控制
-3. [Distributed Adaptive Neural Interval Observers for Unknown Nonlinear Systems](/202610/03/2610.00802v1-distributed-adaptive-neural-interval-observers-for-unknown-nonlinear-systems)  
-   标签：评分：6.0/10、query:pmsm
-   evidence：未知非线性系统的自适应神经网络观测器
+   evidence：功率变换器平面绕组的电感估计
 
 
 <div class="dpr-home-promo-card">
