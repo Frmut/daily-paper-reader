@@ -1,0 +1,23 @@
+{
+  "label": "2026-10-06",
+  "date": "2026-10-06",
+  "generated_at": "2026-10-06T00:49:29",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202610/06/2610.03504v1-maglearn-2-high-fidelity-saturation-aware-and-history-efficient-sequence-to-sequence-modeling-of-transient-b-h-behaviour-under-pwm-excitation",
+      "section": "quick",
+      "title_en": "MagLearn 2: High-Fidelity, Saturation-Aware, and History-Efficient Sequence-to-sequence Modeling of Transient B-H Behaviour Under PWM Excitation",
+      "authors": "Jingrong Yang, Binyu Cui, Yuming Huo, Lizhong Zhang, Alfonso Martinez, Song Liu, Jun Wang",
+      "date": "2026-10-02",
+      "pdf": "https://arxiv.org/pdf/2610.03504v1",
+      "score": "7.0",
+      "evidence": "PWM励磁下磁性材料的B-H建模",
+      "tldr": "针对PWM激励下磁性材料瞬态B-H行为建模难题，本文提出了MagLearn 2框架。该方法利用短窗口LSTM结合饱和感知辅助模块，实现了高保真度的磁场响应预测。研究通过灵敏度分析揭示了磁滞历史对预测的关键影响，并在MagNet Challenge II中以2.2%的平均RMSE刷新了序列预测任务的性能记录。",
+      "tags": "query:pmsm",
+      "abstract_en": "Accurate transient B-H modeling under pulsewidth-modulated (PWM) excitation is challenging since the magnetic-field response depends on both the instantaneous flux density and the preceding magnetisation trajectory. Although sequence-to-sequence models enable waveform prediction, existing studies have not jointly addressed how much magnetic history is required, how saturation region should be handled, and how trained models can be adapted to unseen materials. To address these gaps, this paper presents MagLearn 2, a condition-aware, short-window LSTM-based sequence-to-sequence framework for reconstructing the future H(t) response from the historical B(t) and H(t) trajectories. A saturation-aware auxiliary module selectively replaces saturation-dominated predictions within the complete waveform forecast. In a representative saturated 3C90 case, the auxiliary module reduces the sequence-level relative RMSE from 67.84% to 9.19%. To understand how much the history samples contributes to the predictions, an occlusion-based sensitivity analysis is conducted to quantifies the contribution of magnetic history and reveals that that the information most relevant to prediction is concentrated near the forecast boundary. In the independent evaluation for MagNet Challenge II, the proposed framework's best-performing model achieved the lowest reported average RMSE to date on the sequence-prediction task at 2.2%.",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

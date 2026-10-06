@@ -6,26 +6,26 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-10-04
-- 运行时间：2026-10-04 22:11:27 UTC
+- 最新运行日期：2026-10-06
+- 运行时间：2026-10-06 00:49:26 UTC
 - 运行状态：成功
 - 本次总论文数：1
 - 精读区：0
 - 速读区：1
 
 ### 今日简报（AI）
-今日速读一篇关于多层平面绕组电感估计的可解释机器学习研究。
-该研究通过可解释性模型提升了电感参数预测的透明度与可靠性。
-建议关注机器学习在电力电子元器件设计中的应用，以优化复杂电磁结构的建模效率。
-- 详情：[/202610/04/README](/202610/04/README)
+1) 本期聚焦 MagLearn 2 模型，解析其在 PWM 激励下对磁滞行为的高保真序列建模能力。
+2) 该研究重点解决了饱和感知与历史信息高效利用问题，显著提升了瞬态 B-H 曲线的预测精度。
+3) 建议电力电子与磁性材料领域的研究者关注该模型在复杂工况下的仿真应用潜力。
+- 详情：[/202610/06/README](/202610/06/README)
 
 ### 精读区论文标签
 - 本次无精读推荐。
 
 ### 速读区论文标签
-1. [Explainable Machine Learning for Multilayer Planar Winding Inductance Estimation](/202610/04/2609.37211v1-explainable-machine-learning-for-multilayer-planar-winding-inductance-estimation)  
-   标签：评分：6.0/10、query:pmsm
-   evidence：功率变换器平面绕组的电感估计
+1. [MagLearn 2: High-Fidelity, Saturation-Aware, and History-Efficient Sequence-to-sequence Modeling of Transient B-H Behaviour Under PWM Excitation](/202610/06/2610.03504v1-maglearn-2-high-fidelity-saturation-aware-and-history-efficient-sequence-to-sequence-modeling-of-transient-b-h-behaviour-under-pwm-excitation)  
+   标签：评分：7.0/10、query:pmsm
+   evidence：PWM励磁下磁性材料的B-H建模
 
 
 <div class="dpr-home-promo-card">

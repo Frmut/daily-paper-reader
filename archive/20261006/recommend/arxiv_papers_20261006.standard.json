@@ -1,0 +1,57 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-10-06T00:49:01.796419+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 1,
+    "quick_skim_target": 11,
+    "quick_selected": 1
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2610.03504v1",
+      "title": "MagLearn 2: High-Fidelity, Saturation-Aware, and History-Efficient Sequence-to-sequence Modeling of Transient B-H Behaviour Under PWM Excitation",
+      "abstract": "Accurate transient B-H modeling under pulsewidth-modulated (PWM) excitation is challenging since the magnetic-field response depends on both the instantaneous flux density and the preceding magnetisation trajectory. Although sequence-to-sequence models enable waveform prediction, existing studies have not jointly addressed how much magnetic history is required, how saturation region should be handled, and how trained models can be adapted to unseen materials. To address these gaps, this paper presents MagLearn 2, a condition-aware, short-window LSTM-based sequence-to-sequence framework for reconstructing the future H(t) response from the historical B(t) and H(t) trajectories. A saturation-aware auxiliary module selectively replaces saturation-dominated predictions within the complete waveform forecast. In a representative saturated 3C90 case, the auxiliary module reduces the sequence-level relative RMSE from 67.84% to 9.19%. To understand how much the history samples contributes to the predictions, an occlusion-based sensitivity analysis is conducted to quantifies the contribution of magnetic history and reveals that that the information most relevant to prediction is concentrated near the forecast boundary. In the independent evaluation for MagNet Challenge II, the proposed framework's best-performing model achieved the lowest reported average RMSE to date on the sequence-prediction task at 2.2%.",
+      "authors": [
+        "Jingrong Yang",
+        "Binyu Cui",
+        "Yuming Huo",
+        "Lizhong Zhang",
+        "Alfonso Martinez",
+        "Song Liu",
+        "Jun Wang"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY"
+      ],
+      "published": "2026-10-02T16:02:15+00:00",
+      "link": "https://arxiv.org/pdf/2610.03504v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "B-H modeling under PWM excitation for magnetic materials",
+      "llm_evidence_cn": "PWM励磁下磁性材料的B-H建模",
+      "llm_evidence": "PWM励磁下磁性材料的B-H建模",
+      "canonical_evidence": "PWM励磁下磁性材料的B-H建模",
+      "llm_tldr_en": "Presents a sequence-to-sequence framework for modeling transient magnetic behavior under PWM excitation.",
+      "llm_tldr_cn": "提出了一种用于模拟PWM励磁下瞬态磁行为的序列到序列框架。",
+      "llm_tldr": "提出了一种用于模拟PWM励磁下瞬态磁行为的序列到序列框架。",
+      "llm_tags": [
+        "query:pmsm"
+      ],
+      "matched_query_tag": "query:pmsm",
+      "matched_query_text": "Permanent Magnet Synchronous Motor research",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}
