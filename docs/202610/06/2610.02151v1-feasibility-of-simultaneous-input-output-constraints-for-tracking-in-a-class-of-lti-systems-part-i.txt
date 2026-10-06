@@ -1,0 +1,2795 @@
+Title: Feasibility of Simultaneous Input-Output Constraints for Tracking in a Class of LTI Systems: Part I
+
+URL Source: https://arxiv.org/pdf/2610.02151v1
+
+Published Time: Fri, 02 Oct 2026 02:16:28 GMT
+
+Number of Pages: 14
+
+Markdown Content:
+# Feasibility of Simultaneous Input-Output Constraints for Tracking in a Class of LTI Systems: Part I 
+
+Junhyeok Yoon 1, Heather Hussain 2, and Anuradha M. Annaswamy 1
+
+Abstract — This paper addresses the problem of simultaneous satisfaction of input and output constraints for LTI systems with multiple inputs with state feedback and integral action using a Control Barrier Function based governor. Necessary and sufficient conditions for the CBF-based governor to have a feasible solution and for the closed-loop solutions to be bounded and forward-invariant are derived. A systematic design procedure for choosing the free parameters of the CBF-governor is also provided. These free parameters are associated with high-order CBFs, bounds on feasible command signals, and control input magnitude. A companion paper provides several numerical examples to illustrate the results of this paper, especially the feasibility (or infeasibility) of the CBF governor when the conditions are satisfied (or not satisfied). 
+
+Index Terms — Constrained control, control barrier functions, feasibility conditions, safety, set invariance. 
+
+I. I NTRODUCTION 
+
+Control Barrier Functions (CBF) have been shown to be powerful tools in dynamic systems and their control for ensuring safety concerns in real-time through the evaluation of a function h(x) and its change in time as the state variable 
+
+x(t) changes (e.g., [1], [2], and a huge literature in control journals and conferences). The safety concerns are often modeled as constraints on key outputs of the dynamic system. Simultaneous satisfaction of output constraints as well as input constraints has been explored in much fewer papers [3]–[12]. The authors of [4], [8] certify forward invariance of an inner subset of the safe set, obtained by bounding the worst-case effect of the input limits, while the authors of [3] obtain such a subset from a backup controller, and the authors of [7] verify the feasibility of multiple CBFs by a sum-of-squares search. All of these conditions, however, are shown to be sufficient. In addition, these methods can be computationally demanding. In [5] the CBF is constructed from a Hamilton–Jacobi reachability value function, which recovers the maximal safe set under input limits but suf-fers from the curse of dimensionality. The authors of [6] introduce an additional CBF that steers the state away from conflicts between the output and input constraints, but it is unclear whether this additional CBF can itself introduce barriers to constraint satisfaction. In [9], [10] it is shown that the CBF constraints admit a feasible input at each state of a set, but that set is not shown to be forward invariant. The paper [12] handles both constraints, but the class of 
+
+> 1J. Yoon and A. M. Annaswamy are with the Massachusetts Institute of Technology, Cambridge, MA 02139, USA (e-mail: yjunh01@mit.edu; aanna@mit.edu).
+> 2H. Hussain is with The Boeing Company, Engineering & Technology Innovation, USA (e-mail: heather.s.hussain@boeing.com). This work was supported by the Boeing Strategic University Initiative.
+
+dynamic systems is limited to a chain of integrators. The authors of [11] consider a general LTI system, include inte-gral action, consider both input and output constraints, and propose a specific augmentation-based control architecture for stability and constraint satisfaction. The feasibility of the latter, however, is not established. Distinct from these papers, input constraints and output constraints have been addressed in a combined manner using a Reference Governor approach which consists of modifying the reference input into the system so as to have the system variables belong to an admissible set where all constraints are met [13]. In this paper, we provide necessary and sufficient condi-tions for when input and output (I-O) constraints have to be satisfied simultaneously and a command signal is to be tracked using a CBF-based Governor for a general class of LTI systems with multiple inputs and integral action, and state feedback. Under these conditions, it is shown that the CBF Governor generates a modified command signal that satisfies I-O constraints with all closed-loop solutions remaining bounded in a given set that is forward invariant. The main contributions of this paper are guarantees that I-O constraints are satisfied, with closed-loop stability, and forward invariance in a given set for a tracking task in a class of LTI systems. We also show how free design parameters of the proposed I-O CBF Governor can be chosen so that the necessary and sufficient conditions can always be satisfied by the underlying closed-loop system with forward invariance of a given set, which corresponds to a relaxation of the input constraints. Finally we delineate as to how an efficient design of the CBF governor can be carried out so as to ensure that this relaxation is minimal. The problem is posed in Section II. The I-O CBF Gov-ernor is described in Section III. Necessary and sufficient conditions for the I-O constraints to be met with closed-loop boundedness are established in Section IV. A design procedure for ensuring that the conditions are always met is described in Section V. A companion paper [14] provides a number of examples to support the theoretical conditions and counter-examples to show when that these conditions can be violated, and how a well-designed I-O CBF Governor can convert these counter-examples into examples. II. P ROBLEM SETTING 
+
+We consider a class of LTI plants with integral action: 
+
+˙xp = Apxp + Bpu, y = Creg xp + Dreg u, (1) 
+
+˙eI = y − yg ,arXiv:2610.02151v1 [eess.SY] 1 Oct 2026 TABLE I NOTATION .Symbol Meaning Symbol Meaning 
+
+Key conditions 
+
+ker Q = O finiteness condition (§IV-B) min k νk (S) ≥ 0 SIOCF condition on S (13) 
+
+Plant and loop ( (1) –(5) , Assumption 1) 
+
+xp ∈ Rnp plant state u, z ∈ Rm plant input, constrained output 
+
+Ap, B p, C lim plant matrices ycmd , y g ∈ Rm external command, modified command 
+
+eI ∈ Rm integrator state KP , K I PI gains, Kfull := [ KP KI ]¯x ∈ Rnp+m augmented state [x⊤ 
+
+> p
+
+e⊤ 
+
+> I
+
+]⊤ ¯A, B y augmented loop matrices 
+
+y := Creg xp+Dreg u tracked output u = −Kfull ¯x PI control law (4) 
+
+Hu := Clim Bp high-frequency gain 
+
+Cz := [ Clim 0m×m] z = Cz ¯x C := [ C⊤ 
+
+> z
+
+K⊤
+
+> full
+
+]⊤ C ¯x = [ z⊤ −u⊤]⊤ (§IV-B) 
+
+Constraints, CBFs, and feasible set ( (2) , §III) 
+
+zmin , z max , u min , u max ∈ Rm lower and upper limits of z and u Z, U output box, input box 
+
+wz width of Z: zmax − zmin α1, α 2, α u > 0 CBF gains 
+
+h± 
+
+> 1
+
+, h± 
+
+> u
+
+output, input first-order CBFs ψ± 
+
+> 1
+
+, ψ ± 
+
+> 2
+
+, ψ ± 
+
+> u
+
+higher-order CBFs 
+
+αg > 0 yg bound Aζ ∈ R6m×m constraint matrix (constant) 
+
+b(¯ x) = Bζ ¯x + b0 constraint offset F (¯ x) feasible set of (6) 
+
+Ω operating set (10) 
+
+Solution to Problem 2 (§IV) 
+
+S a nonempty closed subset of Ω (Definition 1) α1 design parameter [ α1 α2 αu αg ]⊤
+
+Λ, λ1, . . . , λ N Farkas cone of Aζ , its extreme rays νk (S) ray values over SQ := [ C⊤ 
+
+> z
+
+(Cz ¯A)⊤ K⊤
+
+> full
+
+]⊤ coefficient matrix of Ω (16) O unobservable subspace of ( ¯A, C )
+
+V2 := ker[ C⊤ 
+
+> lim
+
+(Clim Ap)⊤]⊤ plant part of ker Q, d := dim V2 W set containing ˙z on Ω (19) 
+
+˜η, η internal, deviation coordinates Aη , Bd η dynamics, ˙η = Aη η + Bd ˙z (18) 
+
+E, Emin an RPI set, the minimal one (21) SE operating set induced by E (Theorem 1) 
+
+Solution to Problem 3 (§V) 
+
+ϱ ≥ 1 input scaling, relaxed input box ϱ U α2 design parameter [ α1 α2 αu αg ϱ ]⊤
+
+¯Θ( α1, ϱ ) supremum of min k νk over the second class (33) ˆΘ( αmin 1 , ϱ ) bound on ¯Θ for α1 ≥ αmin 1
+
+σk , μ k coefficients of αg and αuϱ in λk⊤b (23) α⋆g , ϱ ⋆ thresholds of Theorem 2 (24) 
+
+X0, αmin 1 set of initial values, lower bound on α1 (30) ϱ1 ϱ1 := 1 (§V-B) 
+
+¯α1, α⋆ 
+
+> 1
+
+upper limit and choice of α1 (34), (37) α2, αg lower bounds of Step 2 (50), (51) 
+
+where xp ∈ Rnp is the plant state, u ∈ Rm is the control input, y ∈ Rm is the output required to track a desired signal ycmd ∈ Rm, and eI ∈ Rm is the integrator state. 
+
+yg in (1) represents a modified command to be chosen so that constraints on the input u and relevant outputs of the system z are satisfied at all times. The latter is specified as 
+
+u(t) ∈ U := {u ∈ Rm : umin ≤ u ≤ umax } ∀t ≥ t0, (2a) 
+
+z(t) ∈ Z := {z ∈ Rm : zmin ≤ z ≤ zmax } ∀t ≥ t0, (2b) where 
+
+z = Clim xp, (3) with Clim ∈ Rm×np . In (2), zmin , z max , u min , u max ∈ Rm,and the inequalities are imposed component-wise, where 
+
+umin < 0 < u max and zmin < 0 < z max . The overall objective of this paper is that all states remain bounded, y
+
+tracks ycmd as closely as possible, and that constraints on u
+
+and z be satisfied at all times. In order to achieve the first objective, we propose a PI controller of the form 
+
+u = −KP xp − KI eI , (4) where KP ∈ Rm×np and KI ∈ Rm×m. In order to achieve the latter two objectives, we propose a CBF-based governor, which is the focus of this paper. We rewrite the closed-loop system using (1) and (4) as 
+
+˙¯x = ¯A¯x + By yg , ¯x := 
+
+xp
+
+eI
+
+
+
+∈ Rnp+m, (5) 
+
+¯A := 
+
+ Ap−BpKP −BpKI
+
+Creg −Dreg KP −Dreg KI
+
+
+
+, By := 
+
+0np×m
+
+−Im
+
+
+
+.
+
+We formally state the focus of the paper in Problem 1. 
+
+Problem 1. Given the closed-loop system (5) and the constraint requirement (2), find a modified command yg
+
+such that, for all bounded piecewise continuous ycmd , every solution of (5) remains bounded and (2) is satisfied. The following assumptions are made regarding the under-lying LTI system, where Hu := Clim Bp.
+
+Assumption 1. 
+
+(A1) Hu is nonsingular; (A2) the invariant zeros of (Ap,B p,C lim ,0m×m) lie in C−;(A3) ¯A is Hurwitz. Assumptions (A1) and (A2) pertain only to the constrained output z and impose no restriction on the tracked output y.Assumption (A3) can be easily satisfied by the choice of 
+
+(KP , K I ) whenever (1) is stabilizable. III. I-O CBF G OVERNOR 
+
+The CBF Governor we propose, denoted as the I-O (Input and Output) CBF Governor, will generate yg using the CBF method (see [1], [2] and references therein). We begin with two CBF pairs h± 
+
+> 1
+
+, h± 
+
+> u
+
+as 
+
+h+1 (¯ x) := zmax − Cz ¯x, h− 
+
+> 1
+
+(¯ x) := Cz ¯x − zmin ,h+ 
+
+> u
+
+(¯ x) := umax + Kfull ¯x, h− 
+
+> u
+
+(¯ x) := −Kfull ¯x − umin ,
+
+where Cz := [ Clim 0m×m] and Kfull := [ KP KI ]. Due to the presence of two integrators in (1), two high-order CBFs (HOCBFs) are constructed pertaining to the state, and due to the integral controller in (4), a first-order CBF is constructed pertaining to the input. These are defined as 
+
+ψ± 
+
+> 1
+
+:= ˙h± 
+
+> 1
+
++ α1h± 
+
+> 1
+
+, ψ± 
+
+> 2
+
+:= ˙ψ± 
+
+> 1
+
++ α2ψ± 
+
+> 1
+
+,ψ± 
+
+> u
+
+:= ˙h± 
+
+> u
+
++ αuh± 
+
+> u
+
+,
+
+where α1, α 2, α u > 0. With these definitions, the I-O CBF Governor will be constructed using the inequalities ψ± 
+
+> 2
+
+≥
+
+0 and ψ± 
+
+> u
+
+≥ 0 for all t ≥ t0, much like the approaches adopted in [2], [12], but with an additional constraint on 
+
+yg to provide a feasible solution. Notation-wise, ψ± ≥ 0
+
+represents a combined set of inequalities ψ+ ≥ 0 and ψ− ≥
+
+0. The complete I-O CBF Governor is proposed as 
+
+yg (¯ x, y cmd ) := arg min 
+
+> ζ∈Rm
+
+∥ζ − ycmd ∥2 (6a) s.t. ψ± 
+
+> 2
+
+(¯ x, ζ ) ≥ 0, ψ ± 
+
+> u
+
+(¯ x, ζ ) ≥ 0, ∥ζ∥∞ ≤ αg , (6b) where αg > 0, ∥·∥ denotes the Euclidean norm, and matrix norms are induced. We rewrite the inequalities (6b) as ζ ∈
+
+F (¯ x), where the pointwise feasible set [15] is 
+
+F (¯ x) := ζ ∈ Rm : Aζ ζ ≤ b(¯ x) , (7) with b(¯ x) := Bζ ¯x + b0 and the constant matrices 
+
+Aζ := 
+
+
+
+HuKI
+
+−HuKI
+
+KI
+
+−KI
+
+Im
+
+−Im
+
+
+
+, b0 := 
+
+
+
+α1α2 zmax 
+
+−α1α2 zmin 
+
+αu umax 
+
+−αu umin 
+
+αg 1m
+
+αg 1m
+
+
+
+,Bζ := 
+
+
+
+− Cz ¯A2 + ( α1+α2)Cz ¯A + α1α2Cz
+
+
+
++ Cz ¯A2 + ( α1+α2)Cz ¯A + α1α2Cz
+
+
+
+Kfull ( ¯A + αuI)
+
+−Kfull ( ¯A + αuI)00
+
+
+
+. (8) Using (7), we rewrite the I-O CBF Governor in (6a)–(6b) as 
+
+yg (¯ x, y cmd ) = arg min  
+
+> ζ∈F(¯ x)
+
+∥ζ − ycmd ∥2. (9) It is clear that if (9) is feasible, i.e. F (¯ x(t)) ̸ = ∅, ∀t ≥ t0,then all I-O constraints (2) are satisfied. We note that (9) is a strictly convex quadratic program with F (¯ x) defining a compact convex polytope. Feasibility of (9) also implies that the solution yg is continuous and piecewise affine, hence Lipschitz in ¯x and ycmd , and unique [16, Thm. 4]. 
+
+A. Restatement of Problem 1 
+
+Before we restate Problem 1, we introduce two sets, Ω
+
+and S, and a definition. The set Ω is defined as 
+
+Ω := {¯x ∈ Rnp+m : h± 
+
+> 1
+
+(¯ x) ≥ 0, ψ ± 
+
+> 1
+
+(¯ x) ≥ 0, h ± 
+
+> u
+
+(¯ x) ≥ 0},
+
+(10) which will be used to establish forward invariance of the closed-loop system (5), i.e. if ¯x(t0) ∈ Ω, then ¯x(t) ∈ Ω
+
+∀t ≥ t0. The design parameter α1 ∈ R4++ of the I-O CBF Governor, where R++ denotes the positive reals, is given by 
+
+α1 := [ α1 α2 αu αg ]⊤.
+
+We now introduce a definition, SIOCF, that formalizes the property of feasibility: 
+
+Definition 1. Let S ⊆ Ω be nonempty and closed. The I-O CBF Governor (9) satisfies simultaneous input and output constraint feasibility (SIOCF) on S if, for all bounded piecewise continuous ycmd and ∀¯x(t0) ∈ S, the solutions of (5) satisfy the following: (P1) existence and uniqueness of yg on [t0, ∞);(P2) ¯x(t) ∈ S ∀t ≥ t0;(P3) z(t) ∈ Z and u(t) ∈ U ∀t ≥ t0;(P4) ∥yg (t)∥∞ ≤ αg ∀t ≥ t0.We now restate Problem 1: 
+
+Problem 2. Given the closed-loop system (5), the con-straint requirement (2), and the I-O CBF Governor (9), find a nonempty S ⊆ Ω such that the I-O CBF Governor satisfies SIOCF on S for a given α1.IV. S OLUTION TO PROBLEM 2
+
+A. Simplification of the Feasibility Condition 
+
+The first step in providing a solution to Problem 2 is a sim-plification of the feasibility requirement, i.e. the requirement that F (¯ x) is nonempty. The following definition is useful. Define a polyhedral cone Λ as 
+
+Λ := {λ ∈ R6m : A⊤ 
+
+> ζ
+
+λ = 0 , λ ≥ 0}. (11) By the Minkowski–Weyl theorem [17], (11) can be rewritten using N λ k, k = 1 , . . . , N , denoted as extreme rays , as 
+
+Λ = 
+
+n PNk=1 ckλk : ck ≥ 0, ∥λk∥2 = 1 
+
+o
+
+. (12) The set {λ1, . . . , λ N } is unique. With this definition of the cone Λ, we provide a simpler necessary and sufficient condition of feasibility of (9) in Proposition 1. 
+
+Proposition 1. For nonempty S ⊆ Rnp+m let 
+
+νk(S) := inf  
+
+> ¯x∈S
+
+λk⊤b(¯ x), k = 1 , . . . , N. 
+
+Then F (¯ x)̸ = ∅ ∀¯x ∈ S if and only if 
+
+min  
+
+> k
+
+νk(S) ≥ 0. (13) 
+
+If in addition Hu satisfies (A1) and ¯A in (5) satisfies (A3) ,then 
+
+9m ≤ N ≤ 3m + 2 
+
+ 3mm + 1 
+
+
+
+. (14) We shall denote (13) as the SIOCF condition on S. Proofs of the results are given in the Appendix. 
+
+B. A Sufficient Condition for Feasibility 
+
+To ensure that νk in Proposition 1 is non-negative, we introduce a sufficient condition that requires νk to be finite. For this purpose, we substitute (5) into ψ± 
+
+> 1
+
+to obtain 
+
+ψ± 
+
+> 1
+
+(¯ x) = α1h± 
+
+> 1
+
+(¯ x) ∓ Cz ¯A¯x, (15) and rewrite Ω as 
+
+Ω = {¯x ∈ Rnp+m : TQQ ¯x + c− 
+
+> 0
+
+≥ 0,
+
+− TQQ ¯x + c+0 ≥ 0}, (16) where 
+
+Q := 
+
+ Cz
+
+Cz ¯AKfull 
+
+ , TQ := 
+
+
+
+Im 0 0
+
+α1Im Im 00 0 −Im
+
+ ,c− 
+
+> 0
+
+:= −[z⊤ 
+
+> min
+
+α1z⊤ 
+
+> min
+
+u⊤
+
+> min
+
+]⊤, c +0 := [ z⊤ 
+
+> max
+
+α1z⊤ 
+
+> max
+
+u⊤
+
+> max
+
+]⊤.
+
+It is clear from (16) that Ω is unbounded whenever 
+
+dim ker Q ≥ 1, since TQ is nonsingular and therefore 
+
+ker( TQQ) = ker Q.We also introduce the set O defined as 
+
+O := \
+
+> k≥0
+
+ker( C ¯Ak), (17) where C := [ C⊤ 
+
+> z
+
+K⊤
+
+> full
+
+]⊤. Since C ¯x = [ z⊤ −u⊤]⊤, O
+
+corresponds to the unobservable subspace of ( ¯A, C ). Noting that any v ∈ ker Q cannot be sensed by the barrier functions in (10), requiring that ker Q = O allows such states v to be unobservable in z and u. We shall denote ker Q = O as the 
+
+finiteness condition . Proposition 2 formalizes this property. 
+
+Proposition 2. Assume ker Q ⊋ O. ∀M > 0 and ∀¯τ > 0,
+
+∃ (t∗, v, r ∗) ∈ (0 , ¯τ ] × ker Q × (0 , ∞) such that ∀r > r ∗
+
+and for all piecewise continuous ζ with ∥ζ(t)∥∞ ≤ M , the solution of ˙¯x = ¯A¯x + By ζ(t) satisfies 
+
+¯x(t0) = r v ∈ Ω, ¯x(t0 + t∗) /∈ Ω.
+
+Proposition 2 underscores the need for the finiteness condition: if it is violated, trajectories can leave Ω for every bounded ycmd . In Proposition 3, we show that requiring every 
+
+νk(Ω) to be finite is equivalent to the finiteness condition. 
+
+Proposition 3. ∀α1 ∈ R4++ ,
+
+νk
+
+ Ω > −∞ ∀k = 1 , . . . , N ⇐⇒ ker Q = O.
+
+Proposition 4 simplifies the finiteness condition to a single zero test of a 2m × d matrix, where 
+
+V2 := ker 
+
+ Clim 
+
+Clim Ap
+
+
+
+⊆ Rnp ,d := dim V2, and V ∈ Rnp×d is a basis matrix of V2.
+
+Proposition 4. If ¯A satisfies (A3) ,
+
+ker Q = O ⇐⇒ 
+
+ Clim A2
+
+> p
+
+KP Ap + KI Creg 
+
+
+
+V = 0 .
+
+An important point to note is that rank Q ≤ 3m. Since this implies that dim ker Q ≥ np − 2m, it follows that the finiteness condition is violated for any plant of order np >
+
+2m whose pair ( ¯A, C ) is observable. That is, for all such high-order plants one can never guarantee that Ω remains a compact set. In §IV-C we show how, when d > 0,1 one can construct a compact set S ⊆ Ω that can be made forward invariant using the I-O CBF Governor. 
+
+C. Construction of a Compact Set S
+
+In order to find a compact subset S in Ω that is forward invariant, we transform the state ¯x as ξ = Tξ ¯x, where 
+
+ξ = [ z⊤ ˙z⊤ η⊤ ]⊤. We will determine the compact set 
+
+S by determining a region E where the unconstrained state 
+
+η will remain forward invariant. In Lemma 1, we describe the construction of η. Let Wp ∈ R(np−m)×np have rows spanning ker( B⊤ 
+
+> p
+
+), and define ˜η := Wpxp ∈ Rnp−m.
+
+Lemma 1. Under (A1) –(A3) , the following hold. (a) T := [ C⊤ 
+
+> lim
+
+W ⊤ 
+
+> p
+
+]⊤ is nonsingular; (b) ˙˜η = Aη ˜η + Bη z,where Aη := WpApR2 and Bη := WpApR1 with the partition T −1 =: [ R1 R2], R1 ∈ Rnp×m and 
+
+R2 ∈ Rnp×(np−m);(c) Aη is Hurwitz; (d) ˙η = Aη η + Bd ˙z, (18) 
+
+where η := ˜ η + Bd z = fW x p with Bd := A−1 
+
+> η
+
+Bη and 
+
+fW := Wp + BdClim ;(e) ξ := Tξ ¯x, where Tξ := C⊤ 
+
+> z
+
+(Cz ¯A)⊤ [ fW 0 ] ⊤⊤
+
+is nonsingular. 
+
+It should be noted that Lemma 1(c) follows from (A2), since the eigenvalues of Aη are the invariant zeros of 
+
+(Ap, B p, C lim ) [18]. Lemma 1 in turn is utilized to prove Theorem 1. The input ˙z in (18) satisfies 
+
+˙z(¯ x) ∈ W ∀¯x ∈ Ω, (19) where W := {w ∈ Rm : −α1wz ≤ w ≤ α1wz } and 
+
+wz := zmax − zmin . This follows from the inequalities in Ω
+
+related to h± 
+
+> 1
+
+and ψ± 
+
+> 1
+
+. The property (19) in turn is used to establish positive invariance of η in (18), and therefore in solving Problem 2. The following definition is needed: 
+
+Definition 2 (Robust positive invariance [19]) . A compact convex E ⊂ Rnp−m with 0 ∈ E is robustly positively invariant (RPI) if every solution of 
+
+˙η = Aη η + Bd w, w(t) ∈ W ,
+
+is such that η(t0) ∈ E ⇒ η(t) ∈ E ∀t ≥ t0.       
+
+> 1When d= 0 , e.g. when np=m, (16) implies that Ωis compact.
+
+We now provide a complete solution to Problem 2 in Theorem 1, which corresponds to the first main contribution of the paper. 
+
+Theorem 1. Let E be any RPI set of (18) with η(t0) ∈ E,and define the compact set 
+
+SE := Ω ∩ { ¯x : η(¯ x) ∈ E}. (20) 
+
+Then the following hold: (a) Let the finiteness condition hold. Then, the I-O CBF Governor satisfies SIOCF on Ω if and only if 
+
+min k νk(Ω) ≥ 0;(b) the I-O CBF Governor satisfies SIOCF on SE if and only if min k νk(SE ) ≥ 0.Proof of (a). (⇒) From Definition 1, (P1) requires that (9) have a solution for every ¯x(t0) ∈ Ω, that is, F (¯ x)̸ = ∅
+
+∀¯x ∈ Ω, which implies, by Proposition 1, that the SIOCF condition is satisfied on Ω.(⇐) By Proposition 1, the SIOCF condition on Ω implies that F (¯ x)̸ = ∅ ∀¯x ∈ Ω. By [16, Thm. 4], yg is unique and piecewise affine, hence Lipschitz, in (¯ x, y cmd ), and the closed-loop solutions of (5) are unique for every ¯x(t0) ∈ Ω
+
+on a maximal interval [t0, τ ) [20]. Since yg (t) ∈ F (¯ x(t)) ,all constraints in (6b) are satisfied on [t0, τ ), including 
+
+∥yg (t)∥∞ ≤ αg , which is (P4). The comparison lemma [21, Lemma 3.4], applied successively to ˙ψ± 
+
+> 1
+
+≥ − α2ψ± 
+
+> 1
+
+,
+
+˙h± 
+
+> 1
+
+≥ − α1h± 
+
+> 1
+
+and ˙h± 
+
+> u
+
+≥ − αuh± 
+
+> u
+
+, yields ψ± 
+
+> 1
+
+, h ± 
+
+> 1
+
+, h ± 
+
+> u
+
+≥ 0
+
+on [t0, τ ), since ¯x(t0) ∈ Ω. That is, ¯x(t) ∈ Ω, z(t) ∈ Z 
+
+and u(t) ∈ U , which are (P2) and (P3). Since ¯A is Hurwitz by (A3) and ∥yg ∥∞ ≤ αg , ¯x(t) is bounded on [t0, τ ). This allows [t0, τ ) to be extended to [t0, ∞) [20], proving (P1). 
+
+Proof of (b). On Ω, h± 
+
+> 1
+
+≥ 0 and ψ± 
+
+> 1
+
+≥ 0 imply z ∈ Z 
+
+and ˙z ∈ W by (19). For ¯x ∈ SE , in addition, η(¯ x) ∈ E
+
+with E compact by Definition 2; hence ξ = Tξ ¯x is bounded, and ¯x is bounded since Tξ is nonsingular by Lemma 1(e). 
+
+SE is closed as the intersection of the closed set Ω with the preimage of the closed set E under ¯x 7 → η(¯ x), and therefore compact. Since the solutions remain in Ω by the proof of (a), η(t) remains in E by (18) and Definition 2, which yields 
+
+¯x(t) ∈ SE for all t ≥ t0. Replacing Ω by SE in the proof of (a) yields (b). Theorem 1(a) implies that under the finiteness condition, Problem 2 is solved on S = Ω if and only if the SIOCF condition is satisfied. Theorem 1(b) implies that Problem 2 is solved on S = SE , independent of the finiteness condition, if and only if the SIOCF condition is satisfied. It can be shown that SE always exists, through the construction of a set Emin given by 
+
+Emin := cl 
+
+n Z t
+
+> 0
+
+eAη τ Bd w(τ ) dτ : t ≥ 0, w (τ ) ∈ W 
+
+o
+
+,
+
+(21) where cl( ·) denotes the closure operator. From (21), the integral is bounded, since Aη is Hurwitz by Lemma 1(c) and W is bounded. Given η(t0) ∈ Πη , using reachability properties, one can show that an RPI set E exists [22] and can be constructed as 
+
+E := cl 
+
+n
+
+conv 
+
+n
+
+eAη (t−t0)η(t0) + 
+
+Z tt0
+
+eAη (t−τ )Bd w(τ ) dτ :
+
+t ≥ t0, w (τ ) ∈ W 
+
+oo 
+
+,
+
+(22) where conv( ·) denotes the convex hull and Πη := {η(¯ x) : ¯x ∈ Ω}. We also note that, since E ⊇ Emin , E can be enlarged by increasing α1.Theorem 1 requires that the SIOCF condition be satisfied. This in turn reduces to finding the sign of min k νk(SE ),which has a minimal computational burden, as the underlying problem is a linear program for a polyhedral approximation of E or a second-order cone program for an ellipsoidal ap-proximation [19], [23]. We also note that Theorem 1 assures a solution to Problem 2 for a given α1. It is quite possible that no such α1 exists for which the SIOCF condition is satisfied, as Proposition 5 shows. 
+
+Remark 1. The I-O CBF Governor is designed in a modular manner, tasked only with modifying the command signal so as to ensure I-O constraint satisfaction, and places no restrictions on the closed-loop control gains KP and KI .The difference between the modified command yg and 
+
+ycmd can be attributed to an implicit anti-windup action necessitated by the integral action in the closed loop. Such a modular architecture of the I-O CBF Governor also represents a contribution of this paper. 
+
+Proposition 5. Let ˙x = ax + u with a > 0, z = x, np =
+
+m = 1 , and let Z = [ −zmax , z max ], U = [ −umax , u max ]
+
+with umax < a z max . Then the following hold: (a) ∀z(t0) ∈ (umax /a, zmax ] and for all piecewise continuous u(t) ∈ U ,
+
+z(t) ≥ umax  
+
+> a
+
++  z(t0) − umax 
+
+> a
+
+ea(t−t0),
+
+and the output box is violated in finite time; (b) if ¯A in (5) satisfies (A3) , then 
+
+min  
+
+> k
+
+νk(SE ) ≤ α1√2 (umax −a z max ) < 0 ∀α1 ∈ R4++ .
+
+The main reason for νk to become negative and for the output constraint to be violated is the conflict between input and output constraints, since keeping z at zmax requires u =
+
+−az max , and therefore a violation of the input constraint. It is easy to show that such a violation occurs for some plants in (1) with any control policy, and for any α1. We fix this conflict in the next section, where we provide a solution by expanding the design space from α1 to a vector α2.V. SIOCF D ESIGN PROCEDURE 
+
+We define a new design parameter α2 ∈ R5++ as 
+
+α2 := [ α1 α2 αu αg ϱ ]⊤,where ϱ is a scaling parameter, with ϱ ≥ 1, that modifies the input constraint in (2) as 
+
+u(t) ∈ ϱ U := {u ∈ Rm : ϱ u min ≤ u ≤ ϱ u max } ∀t ≥ t0,
+
+(2a ′)where ϱ u min < 0 < ϱ u max . We now introduce Problem 3. 
+
+Problem 3. Given the closed-loop system (5) and the constraint requirement (2a ′) and (2b), find an α2 and a corresponding RPI set E such that the I-O CBF Governor (9) satisfies SIOCF on SE , with U in (P3) replaced by ϱ U.Problem 3 is solved in the following sections, where α2
+
+is grouped into two classes, [ α1 α2 αu ]⊤ and [ αg ϱ ]⊤.We will show in §V-A that for arbitrary positive values of the constants in the first class, constants α⋆g and ϱ⋆ always exist in the second class. In §V-B, we provide an efficient design for choosing the constants in the first class so as to achieve the largest possible SE for a ϱ that is near unity. 
+
+A. Finding an α2
+
+Since ϱ enters the rows h± 
+
+> u
+
+of (10), the set SE varies with 
+
+ϱ and is denoted as SE (ϱ). We now show that Problem 3 is always solvable, which corresponds to the second main contribution of the paper. 
+
+Theorem 2. ∀(α1, α 2, α u) ∈ R3++ , ∃ α⋆g , ϱ ⋆ such that the I-O CBF Governor satisfies SIOCF on SE (ϱ)
+
+∀(αg , ϱ ) ∈ (α⋆g , ∞) × [ϱ⋆, ∞).Proof. Choose any α1, α 2, α u > 0 and an RPI set E as in §IV, and define (v1; . . . ; v6) := [ v⊤ 
+
+> 1
+
+· · · v⊤ 
+
+> 6
+
+]⊤ for vj ∈ Rm.By Theorem 1(b), it suffices to construct α⋆g and ϱ⋆ such that, for some ε ≥ 0, νk(SE (ϱ)) ≥ ε for all k whenever 
+
+αg > α ⋆g and ϱ ≥ ϱ⋆. To this end, we classify the extreme rays by partitioning {1, . . . , N } into three sets Iμ, Iσ and 
+
+I0 as follows. With (12) partitioned as 
+
+λk = ( λkz+; λkz−; λku+; λku−; λkM +; λkM −),
+
+we then define the three sets 
+
+Iμ := {k : μk > 0}, Iσ := {k : μk = 0 , σ k > 0},
+
+I0 := {k : μk = σk = 0 },
+
+where 
+
+σk := λk⊤eM ≥ 0, μ k := λk⊤
+
+> u+
+
+umax − λk⊤
+
+> u−
+
+umin ≥ 0, (23) and eM := (0; 0; 0; 0; 1m; 1m). Both σk and μk are nonneg-ative, since λk ≥ 0 and umax > 0 > u min componentwise. Choose 
+
+α⋆g := max 
+
+> k∈I σ
+
+ε − β∞
+
+> k
+
+σk
+
+, ϱ⋆ := max 
+
+n
+
+1, max 
+
+> k∈I μ
+
+ε − β∞
+
+> k
+
+αu μk
+
+o
+
+,
+
+(24) and ε ∈ [0 , ¯ν], where ¯ν := min i α1α2√2 (wz )i > 0. We then define a set SE (∞) and a parameter β∞ 
+
+> k
+
+as 
+
+SE (∞) := {¯x : h± 
+
+> 1
+
+(¯ x) ≥ 0, ψ ± 
+
+> 1
+
+(¯ x) ≥ 0, η (¯ x) ∈ E},β∞ 
+
+> k
+
+:= inf   
+
+> ¯x∈SE(∞)
+
+λk⊤ Bζ ¯x + bz
+
+> 0
+
+,
+
+where bz 
+
+> 0
+
+:= ( α1α2zmax ; −α1α2zmin ; 0; 0; 0; 0) . It can be noted that SE (∞) coincides with SE (ϱ) with the input constraint removed. By definition, the first two inequalities in 
+
+SE (∞) imply that z ∈ Z and ˙z ∈ W by (19), and the third implies that η ∈ E. Hence ξ = Tξ ¯x is bounded, and SE (∞)
+
+is compact by Lemma 1(e). Moreover, SE (ϱ) ⊆ SE (∞) for all ϱ ≥ 1, since SE (ϱ) is obtained from SE (∞) by adding the inequalities h± 
+
+> u
+
+≥ 0. Therefore β∞ 
+
+> k
+
+is finite for all k, and the thresholds in (24) are finite. We now show that the SIOCF condition holds on SE (ϱ)
+
+by examining νk in each of the three sets. For this purpose, we decompose λk⊤b(¯ x) using (8). With U replaced by ϱ U,
+
+b0 = bz 
+
+> 0
+
++ (0; 0; αuϱu max ; −αuϱu min ; αg 1m; αg 1m), so that 
+
+λk⊤b(¯ x) decomposes as 
+
+λk⊤b(¯ x) = λk⊤ Bζ ¯x + bz
+
+> 0
+
+ + αuϱ μ k + σkαg . (25) Taking the infimum of (25) over SE (ϱ), and noting that 
+
+αuϱ μ k and σkαg do not depend on ¯x, we obtain 
+
+νk
+
+ SE (ϱ) = βk + αuϱ μ k + σkαg ,
+
+where βk := inf ¯x∈SE (ϱ) λk⊤(Bζ ¯x+bz
+
+> 0
+
+) ≥ β∞ 
+
+> k
+
+, the inequality following from SE (ϱ) ⊆ SE (∞). Hence 
+
+νk
+
+ SE (ϱ) ≥ νk
+
+ SE (∞) = β∞ 
+
+> k
+
++ αuϱ μ k + σkαg (26) 
+
+∀ϱ ≥ 1 and ∀αg > 0. We now show that νk(SE (ϱ)) ≥ ε for every k whenever αg > α ⋆g and ϱ ≥ ϱ⋆, by considering the three sets separately. 
+
+Case (i): k ∈ I μ. By (24), αuϱ⋆μk ≥ ε − β∞ 
+
+> k
+
+, and (26) yields, for all ϱ ≥ ϱ⋆ and all αg > 0,
+
+νk
+
+ SE (ϱ) ≥ β∞ 
+
+> k
+
++αuϱ μ k +σkαg ≥ β∞ 
+
+> k
+
++αuϱ⋆μk ≥ ε, 
+
+since σkαg ≥ 0.
+
+Case (ii): k ∈ I σ . By (24), σkα⋆g ≥ ε − β∞ 
+
+> k
+
+, and (26) yields, for all αg > α ⋆g and all ϱ ≥ 1,
+
+νk
+
+ SE (ϱ) ≥ β∞ 
+
+> k
+
++ σkαg ≥ β∞ 
+
+> k
+
++ σkα⋆g ≥ ε. 
+
+Cases (i) and (ii) thus give 
+
+νk
+
+ SE (ϱ) ≥ ε ∀k ∈ I μ ∪ I σ (27) whenever αg > α ⋆g and ϱ ≥ ϱ⋆.
+
+Case (iii): k ∈ I 0. We first show that λk = χz,i for some 
+
+i, where 
+
+χz,i := 1√2 (ei; ei; 0; 0; 0; 0) (28) and ei ∈ Rm is the i-th standard basis vector. Since λk ≥ 0,
+
+σk = λk⊤eM = 0 implies λkM + = λkM − = 0 . Likewise, since umax > 0 > u min componentwise, μk = 0 implies 
+
+λku+ = λku− = 0 . The condition A⊤ 
+
+> ζ
+
+λk = 0 in (11) then reduces, by (8), to 
+
+(HuKI )⊤ λkz+ − λkz−
+
+ = 0 .
+
+Since HuKI is nonsingular by (A1) and (A3), λkz+ =
+
+λkz− =: w ≥ 0, so that 
+
+λk = ( w; w; 0; 0; 0; 0) = √2
+
+> m
+
+X
+
+> i=1
+
+wi χz,i .Each χz,i belongs to Λ, since χz,i ≥ 0 and A⊤ 
+
+> ζ
+
+χz,i = 
+
+> 1√2
+
+(HuKI )⊤(ei − ei) = 0 . An extreme ray is not the sum of two elements of Λ that are not its multiples; therefore exactly one wi is nonzero, and ∥λk∥2 = 1 yields λk = χz,i .By (8), χz,i ⊤b(¯ x) = 1√2
+
+ bz+(¯ x) + bz−(¯ x) 
+
+> i
+
+= α1α2√2 (wz )i
+
+for every ¯x, and hence 
+
+νk = χz,i ⊤b(¯ x) = α1α2√2 (wz )i ≥ ¯ν ≥ ε ∀k ∈ I 0. (29) Since (27) and (29) imply that the SIOCF condition is satisfied on SE (ϱ), Theorem 1(b) proves Theorem 2. 
+
+Remark 2. By (26), the design parameters act on the extreme rays through μk and σk: the corresponding νk
+
+increases with ϱ when the ray weights an input con-straint ( k ∈ I μ), and otherwise with αg when it weights 
+
+∥ζ∥∞ ≤ αg (k ∈ I σ ). The remaining rays, those in I0, are the output pairs (28), whose νk are positive constants. The input relaxation ϱ is needed because Iμ also contains rays that weight output constraints against an input constraint with σk = 0 , such as 
+
+χ×,i := (pi
+
+> +
+
+; pi
+
+> −
+
+; 0; ei; 0; 0) 
+
+p1 + ∥pi∥22
+
+, pi := ( H⊤ 
+
+> u
+
+)−1ei.
+
+Where both constraints are active, λk⊤b is independent of 
+
+(α2, α u, α g ); this coupling produces counterexamples such as Proposition 5, and, for all (α1, α 2, α u), the relaxation 
+
+ϱ ≥ ϱ⋆ of Theorem 2 renders these νk nonnegative. In Theorem 2, we chose αg and ϱ by design but the remaining parameters arbitrarily. The latter may be such that either ϱ⋆ may be unnecessarily large, or SE (ϱ) may be small, or both. We reduce this inefficiency in §V-B. 
+
+B. Efficient design of an α2
+
+The design algorithm we propose is summarized in Algo-rithm 1. The main idea behind this design is to explore three steps, Steps 1 through 3, with ϱ held at ϱ1 := 1 in Steps 1 and 2. In Step 1, we determine α1, which sets Ω and SE (ϱ).In Step 2, we determine (α2, α u, α g ), which only alter the quadratic program (6) but do not affect Ω or SE (ϱ). If the SIOCF condition cannot be satisfied in Steps 1 and 2, we proceed to Step 3, where we relax the input constraint by increasing ϱ, thereby enlarging SE (ϱ). We now describe the details of these three steps starting with an initialization step. 
+
+Initialization. We choose 
+
+αmin 1 := max 
+
+> ¯x∈X0
+
+max  
+
+> j
+
+max 
+
+n (Cz ¯A¯x)j
+
+h+1j (¯ x) , −(Cz ¯A¯x)j
+
+h− 
+
+> 1j
+
+(¯ x)
+
+o
+
+(30) and restrict α1 to [αmin 1 , ∞), where X0 is the set of all initial values ¯x(t0). Such a choice ensures that X0 ⊆ Ω. We then construct an RPI set E using reachability properties of (18) and a polyhedral or an ellipsoidal approximation [19], [23], and the corresponding SE (ϱ1).We set up a few preliminaries and a Proposition before proceeding to the steps. Let ˆb, Ψ, H be the blocks of the decomposition 
+
+b(¯ x) = ˆb(¯ x) + α2 Ψ(¯ x) + αu H(¯ x) + αg eM , (31) 
+
+Algorithm 1 α2 design procedure, ϱ1 := 1 
+
+Compute the extreme rays of Λ and αmin 1 as in (30). Construct an RPI set E and SE (ϱ1).
+
+(Step 1) Compute ˆΘ( αmin 1 , ϱ 1) as in (32); if ˆΘ ≥ 0, compute 
+
+¯Θ( α1, ϱ 1) as in (33) over [αmin 1 , ¯α1].
+
+if ˆΘ ≥ 0 and ¯Θ( α1, ϱ 1) > 0 for some α1 ∈ [αmin 1 , ¯α1] then 
+
+(Step 2) Set α1 = α⋆ 
+
+> 1
+
+as defined in (37), choose ε ∈
+
+(0 , ¯Θ) ∩ R and c > 0.Set α2 ≥ α2 with αu = c α 2, and αg ≥ αg (α2) defined in (50) and (51). 
+
+else 
+
+(Step 3) Choose ε ∈ [0 , ¯ν], and set αg > α ⋆g and ϱ ≥ ϱ⋆
+
+defined in (24). 
+
+end if 
+
+given by 
+
+ˆb(¯ x) :=   ∓ Cz ( ¯A + α1I) ¯A¯x; ±Kfull ¯A¯x; 0 m; 0 m
+
+,
+
+Ψ(¯ x) :=  ψ+1 (¯ x); ψ− 
+
+> 1
+
+(¯ x); 0; 0; 0; 0 ,H(¯ x) :=  0; 0; h+ 
+
+> u
+
+(¯ x); h− 
+
+> u
+
+(¯ x); 0; 0 .
+
+Let 
+
+Zk := ¯x ∈ SE (ϱ) : λk⊤Ψ(¯ x) = 0 , λ k⊤H(¯ x) = 0 ,
+
+and Hk := {¯x ∈ Zk : Cz ¯A¯x = 0 }. Compute 
+
+ˆΘ( αmin 1 , ϱ ) := min 
+
+> k∈K 0
+
+inf 
+
+> ¯x∈Hk
+
+λk⊤ˆb(¯ x) (32) with Zk and ˆb evaluated on SE (ϱ) with α1 = αmin 1 , and 
+
+K0 := {k : σk = 0 } with σk as in (23). Define 
+
+¯Θ( α1, ϱ ) := min 
+
+> k∈K 0
+
+inf 
+
+> ¯x∈Zk
+
+λk⊤ˆb(¯ x). (33) Also define ¯α1 as 
+
+¯α1 := sup {α1 ≥ αmin 1 : α1 /∈ A or q(α1) ≥ 0} (34) where 
+
+q(α1) := q2α21 + q1α1 + q0 (35) with q2 < 0, and a set A ⊆ R++ such that 
+
+¯Θ( α1, ϱ ) ≤ q(α1) ∀α1 ∈ A. (36) We then have the following proposition. 
+
+Proposition 6. For ϱ, αmin 1 , and an RPI set E,
+
+(a) sup  
+
+> α2,α u,α g>0
+
+min  
+
+> k
+
+νk(SE (ϱ)) = ¯Θ( α1, ϱ ) ∀α1 > 0; 
+
+(b) ¯Θ( α1, ϱ ) ≤ ˆΘ( αmin 1 , ϱ ) ∀α1 ∈ [αmin 1 , ∞); 
+
+(c) a quadratic function q(α1) as in (35) and a set A as in (36) exist; 
+
+(d) if ¯Θ( α1, ϱ ) > 0, then ∀c > 0, ∃ α2 ∈ [0 , ∞) and a nonincreasing function αg such that the SIOCF condition is satisfied on SE (ϱ) with αu = c α 2 if and only if α2 ≥ α2 and αg ≥ αg (α2).Proposition 6 guides the choice of α1 as well as 
+
+(α2, α u, α g ). Proposition 6(a) implies that (α2, α u, α g ) exist that satisfy the SIOCF condition for a given α1 if ¯Θ( α1, ϱ ) >
+
+0 and do not exist if ¯Θ( α1, ϱ ) < 0. (b) implies that such an α1 ≥ αmin 1 cannot exist when ˆΘ < 0, and (c) implies that such an α1 cannot exceed ¯α1. (d) finally says that for the chosen α1, thresholds for (α2, α u, α g ) can be suitably determined so that the SIOCF condition holds. We now proceed with the description of the three steps. 
+
+Step 1. If ˆΘ < 0, proceed to Step 3. Otherwise compute 
+
+¯Θ( α1, ϱ 1) over α1 ∈ [αmin 1 , ¯α1], recomputing E and SE (ϱ1).If ¯Θ( α1, ϱ 1) > 0 for some α1, set α1 = α⋆
+
+> 1
+
+, where 
+
+α⋆ 
+
+> 1
+
+:= max {α1 ∈ [αmin 1 , ¯α1] : ¯Θ( α1, ϱ 1) > 0}; (37) and proceed to Step 2; otherwise, proceed to Step 3. If ¯α1 =
+
+∞, the maximum in (37) need not exist, in which case, any 
+
+α1 with ¯Θ( α1, ϱ 1) > 0 is chosen. 
+
+Step 2. Choose ε ∈ (0 , ¯Θ) ∩ R and c > 0, and set α2 ≥ α2
+
+with αu = c α 2 and αg ≥ αg (α2), with α2 and αg defined as in (50) and (51). 
+
+Step 3. With any α1 ≥ αmin 1 and (α2, α u), followed by the construction of E, choose ε ∈ [0 , ¯ν], and set αg > α ⋆g and 
+
+ϱ ≥ ϱ⋆, where the lower bounds are as in (24). If Step 2 is reached, Proposition 6(d) yields the SIOCF condition on SE (ϱ1); if Step 3 is reached, Theorem 2 yields it on SE (ϱ). The computational burden in checking the SIOCF condition, for a polyhedral approximation of E, is of 
+
+O(N ), and therefore Algorithm 1 can be easily implemented. VI. C ONCLUSIONS 
+
+This paper provides necessary and sufficient conditions for I-O constraints to be satisfied simultaneously in a class of closed-loop LTI systems with integral action, for command tracking, using a CBF-based governor that provides a suit-ably modified command. These conditions also imply that for some MIMO plants with state feedback and integral action, it may be impossible to ensure I-O constraint satisfaction. It is also shown in this paper that the SIOCF condition can always be satisfied by expanding the design space where the input constraints are relaxed. A systematic design of the governor parameters is proposed that determines a close to minimal relaxation of the input constraints. Overall, this paper provides an I-O CBF Governor for modifying the command for a class of LTI plants that guarantees that nec-essary and sufficient conditions are always met in ensuring a simultaneous satisfaction of I-O constraints. REFERENCES [1] A. D. Ames, S. Coogan, M. Egerstedt, G. Notomista, K. Sreenath, and P. Tabuada, “Control barrier functions: Theory and applications,” in 18th European Control Conference (ECC) , 2019, pp. 3420–3431. [2] W. Xiao and C. Belta, “High-order control barrier functions,” IEEE Transactions on Automatic Control , vol. 67, no. 7, pp. 3655–3662, 2022. [3] Y. Chen, M. Jankovic, M. Santillo, and A. D. Ames, “Backup control barrier functions: Formulation and comparative study,” in 60th IEEE Conference on Decision and Control (CDC) , 2021, pp. 6835–6841. [4] D. R. Agrawal and D. Panagou, “Safe control synthesis via input constrained control barrier functions,” in 60th IEEE Conference on Decision and Control (CDC) , 2021, pp. 6113–6118. [5] J. J. Choi, D. Lee, K. Sreenath, C. J. Tomlin, and S. L. Herbert, “Robust control barrier–value functions for safety-critical control,” in 
+
+60th IEEE Conference on Decision and Control (CDC) , 2021, pp. 6814–6821. [6] W. Xiao, C. A. Belta, and C. G. Cassandras, “Sufficient conditions for feasibility of optimal control problems using control barrier functions,” 
+
+Automatica , vol. 135, p. 109960, 2022. [7] A. Isaly, M. Ghanbarpour, R. G. Sanfelice, and W. E. Dixon, “On the feasibility and continuity of feedback controllers defined by multiple control barrier functions,” IEEE Transactions on Automatic Control ,vol. 69, no. 11, pp. 7326–7339, 2024. [8] J. Breeden and D. Panagou, “Robust control barrier functions under high relative degree and input constraints for satellite trajectories,” 
+
+Automatica , vol. 155, p. 111109, 2023. [9] S. S. Mousavi, X. Tan, and A. D. Ames, “From vertices to convex hulls: Certifying set-wise compatibility for CBF constraints,” IEEE Control Systems Letters , vol. 9, pp. 3011–3016, 2025. [10] S. S. Mousavi, M. H. Cohen, P. Mestres, and A. D. Ames, “Structure, feasibility, and explicit safety filters for linear systems,” arXiv:2604.04235, 2026. [11] E. Lavretsky and M. Menner, “Servo-controllers for linear time-invariant systems with operational constraints,” in 2025 American Control Conference (ACC) , 2025, pp. 4909–4916. [12] P. A. Fisher and A. M. Annaswamy, “Analytical construction of CBF-based safety filters for simultaneous state and input constraints,” in 
+
+IEEE 64th Conference on Decision and Control (CDC) , 2025, pp. 6006–6012. [13] E. Garone, S. Di Cairano, and I. Kolmanovsky, “Reference and command governors for systems with constraints: A survey on theory and applications,” Automatica , vol. 75, pp. 306–328, 2017. [14] J. Yoon, A. Cao, H. Hussain, and A. M. Annaswamy, “Feasibility of simultaneous input-output constraints for tracking in a class of LTI systems: Part II,” submitted to the 2027 American Control Conference (ACC), arXiv:XXXX.XXXXX. [15] S. Boyd and L. Vandenberghe, Convex Optimization . Cambridge, U.K.: Cambridge University Press, 2004. [16] A. Bemporad, M. Morari, V. Dua, and E. N. Pistikopoulos, “The ex-plicit linear quadratic regulator for constrained systems,” Automatica ,vol. 38, no. 1, pp. 3–20, 2002. [17] A. Schrijver, Theory of Linear and Integer Programming . Chichester, U.K.: Wiley, 1986. [18] A. Isidori, Nonlinear Control Systems . London, U.K.: Springer, 1995. [19] F. Blanchini and S. Miani, Set-Theoretic Methods in Control , 2nd ed. Basel, Switzerland: Birkh¨ auser, 2015. [20] J. K. Hale, Ordinary Differential Equations . Malabar, FL, USA: Krieger, 1980. [21] H. K. Khalil, Nonlinear Systems , 3rd ed. Upper Saddle River, NJ, USA: Prentice Hall, 2002. [22] S. V. Rakovi´ c and K. I. Kouramas, “Invariant approximations of the minimal robust positively invariant set via finite time Aumann integrals,” in 46th IEEE Conference on Decision and Control (CDC) ,2007. [23] M. Althoff, G. Frehse, and A. Girard, “Set propagation techniques for reachability analysis,” Annual Review of Control, Robotics, and Autonomous Systems , vol. 4, pp. 369–395, 2021. 
+
+APPENDIX 
+
+Throughout the Appendix, b(¯ x) =(bz+; bz−; bu+; bu−; bM +; bM −) is partitioned conformally with the six blocks of Aζ in (8). For a ∈ Rm, a+ and 
+
+a− denote its componentwise positive and negative parts, 
+
+(a+)i := max {ai, 0} and (a−)i := max {− ai, 0}, so that 
+
+a = a+ −a−, and |a| is taken componentwise. For λ ∈ R6m,
+
+supp λ denotes the set of indices of its nonzero entries, and for a set S of such indices, AS denotes the submatrix of Aζ formed by the rows with indices in S and λ|S the corresponding entries of λ.A. Proof of Proposition 1 Proof. We use Farkas’ lemma [17]: for A ∈ Rp×n and b ∈
+
+Rp,
+
+{ζ ∈ Rn : Aζ ≤ b}̸ = ∅
+
+⇐⇒ λ⊤b ≥ 0 ∀λ ∈ { λ ∈ Rp : λ ≥ 0, A ⊤λ = 0 }.
+
+With A = Aζ and b = b(¯ x), the set on the left is F (¯ x) by (7) and the set on the right is Λ by (11), and the lemma directly yields 
+
+F (¯ x)̸ = ∅ ⇐⇒ λ⊤b(¯ x) ≥ 0 ∀λ ∈ Λ.
+
+(⇒) Let ¯x ∈ S and ζ ∈ F (¯ x), that is, Aζ ζ ≤ b(¯ x) by (7). For every k, since λk ≥ 0 and A⊤ 
+
+> ζ
+
+λk = 0 by (11), 
+
+λk⊤b(¯ x) ≥ λk⊤Aζ ζ = (A⊤ 
+
+> ζ
+
+λk)⊤ζ = 0.
+
+Since ¯x ∈ S is arbitrary, taking the infimum over S yields 
+
+νk(S) = inf  
+
+> ¯x∈S
+
+λk⊤b(¯ x) ≥ 0 ∀k = 1 , . . . , N, 
+
+that is, (13). 
+
+(⇐) By contraposition. Suppose F (¯ x) = ∅ for some ¯x ∈
+
+S. By Farkas’ lemma, there exists λ ∈ Λ with λ⊤b(¯ x) < 0.By (12), λ = PNk=1 ckλk with ck ≥ 0, and hence 
+
+0 > λ⊤b(¯ x) =
+
+> N
+
+X
+
+> k=1
+
+ck λk⊤b(¯ x),
+
+which implies λk⊤b(¯ x) < 0 for some k with ck > 0.Therefore 
+
+νk(S) = inf  
+
+> ¯x′∈S
+
+λk⊤b(¯ x′) ≤ λk⊤b(¯ x) < 0,
+
+which violates (13). 
+
+B. Proof of the bound on N in Proposition 1 Proof. For λ ∈ Λ let S := supp λ, so that λ|S > 0. Since 
+
+λ vanishes outside S, 0 = A⊤ 
+
+> ζ
+
+λ = A⊤ 
+
+> S
+
+(λ|S ), that is, λ|S ∈
+
+ker( A⊤ 
+
+> S
+
+).
+
+Step 1. We show that, for a nonzero λ ∈ Λ,
+
+λ spans an extreme ray of Λ ⇐⇒ dim ker( A⊤ 
+
+> S
+
+) = 1 .
+
+(38) If dim ker( A⊤ 
+
+> S
+
+) ≥ 2, choose w ∈ ker( A⊤ 
+
+> S
+
+) independent of λ|S ; since λ|S > 0, for small ϵ > 0 the vectors supported on S with values λ|S ± ϵw lie in Λ, and λ is their midpoint. Conversely, if dim ker( A⊤ 
+
+> S
+
+) = 1 and λ = λ′ + λ′′ 
+
+with λ′, λ ′′ ∈ Λ, both summands vanish off S, and their restrictions lie in ker( A⊤ 
+
+> S
+
+) and are multiples of λ. Hence 
+
+rank AS = |S| − 1 ≤ m, and by (A1) and (A3) HuKI
+
+and KI are nonsingular, which excludes |S| = 1 . Therefore 
+
+2 ≤ | S| ≤ m + 1 .
+
+Step 2. The 6m columns of A⊤ 
+
+> ζ
+
+form 3m antipodal pairs 
+
+{aℓ, −aℓ}, ℓ = 1 , . . . , 3m, where aℓ ranges over the columns of (HuKI )⊤, K⊤ 
+
+> I
+
+and Im. By (38), each pair supports an extreme ray, its kernel being spanned by [1 1] ⊤, and a support containing both indices of a pair is exactly that pair, since otherwise λ|S and the vector equal to [1 1] ⊤
+
+on the pair and 0 elsewhere are two independent elements of ker( A⊤ 
+
+> S
+
+). With ∥λk∥2 = 1 fixing the scalar, the pairs contribute exactly 3m extreme rays. Six more families are available for every plant and gain, two for each of the block pairs (HuKI , K I ), (HuKI , I m) and (KI , I m), obtained by expanding one column of the second block of A⊤ 
+
+> ζ
+
+in the columns of the first. For i = 1 , . . . , m let 
+
+pi := ( H⊤ 
+
+> u
+
+)−1ei, qi :=  (HuKI )⊤−1ei,ri := ( K⊤ 
+
+> I
+
+)−1ei,
+
+with pi
+
+> ±
+
+, qi
+
+> ±
+
+, ri 
+
+> ±
+
+their componentwise positive and negative parts, and take the nonnegative vectors supported as 
+
+(pi
+
+> +
+
+; pi
+
+> −
+
+; 0; ei; 0; 0) , (qi
+
+> +
+
+; qi
+
+> −
+
+; 0; 0; 0; ei),
+
+(0; 0; ri
+
+> +
+
+; ri
+
+> −
+
+; 0; ei),
+
+together with their mirror images (pi
+
+> −
+
+; pi
+
+> +
+
+; ei; 0; 0; 0) ,
+
+(qi
+
+> −
+
+; qi
+
+> +
+
+; 0; 0; ei; 0) and (0; 0; ri
+
+> −
+
+; ri
+
+> +
+
+; ei; 0) . By the blocks of 
+
+Aζ in (8) all six lie in Λ, since (HuKI )⊤pi = K⊤ 
+
+> I
+
+ei,
+
+(HuKI )⊤qi = ei and K⊤ 
+
+> I
+
+ri = ei; each identity is the only dependence among the columns of A⊤ 
+
+> ζ
+
+that the vector selects, since the columns of each block form a basis of Rm and the expansion of a vector in a basis is unique; hence all of them are extreme by (38). Each support meets exactly two of the three blocks of (8), the second of them at the single index 
+
+i with one sign. The six families are therefore distinct from the pairs, from one another, and within each family across i
+
+and across the mirror; hence N ≥ 3m + 6 m = 9 m.
+
+Step 3. Every other support S meets each pair at most once and is therefore of the form S = {(ℓ, ς ℓ)}ℓ∈L for some 
+
+L ⊆ { 1, . . . , 3m} with 2 ≤ | L| ≤ m + 1 and some ς : L →{+, −} . By (38), rank {aℓ}ℓ∈L = |L| − 1, a condition on L
+
+alone, and the dependence P 
+
+> ℓ∈L
+
+cℓaℓ = 0 is then unique up to a nonzero scalar, with every cℓ̸ = 0 ; hence at most two signings, ± sign( c), admit a positive kernel vector. No such L contains another, since a dependence supported on a proper subset would be independent of the one supported on L. Counting the pairs (π, L ) with π a permutation of 
+
+{1, . . . , 3m} whose first |L| entries enumerate L, each L
+
+occurs in |L|! (3 m − | L|)! pairs and each π at most once, which yields P
+
+> L
+
+ 3m
+
+> |L|
+
+−1 ≤ 1. Since 2 ≤ | L| ≤ m+1 ≤ 3m
+
+> 2
+
+for m ≥ 2, and |L| = m + 1 is forced when m = 1 , each binomial coefficient is at most   3mm+1 
+
+; hence there are at most   3mm+1 
+
+ such sets L, each giving at most two extreme rays, and N ≤ 3m + 2   3mm+1 
+
+.
+
+C. Proof of Proposition 2 Proof. We first show that the condition 
+
+Cz ¯A2v = 0 and Kfull ¯Av = 0 ∀v ∈ ker Q (39) is equivalent to ker Q = O. Every v ∈ ker Q satisfies Cz v =
+
+Cz ¯Av = Kfull v = 0 by the definition of Q in (16). (⇒) Assume (39) and let v ∈ ker Q. Then Cz ( ¯Av ) = 0 ,
+
+Cz ¯A( ¯Av ) = 0 and Kfull ( ¯Av ) = 0 , that is, ¯Av ∈ ker Q. By induction, ¯Akv ∈ ker Q for all k ≥ 0. Since w ∈ ker Q
+
+implies w ∈ ker C, C ¯Akv = 0 for all k ≥ 0, that is, v ∈O by (17), and ker Q ⊆ O . Conversely, let v ∈ O . The conditions Cv = 0 and C ¯Av = 0 contain Cz v = 0 , Kfull v =0 and Cz ¯Av = 0 , that is, v ∈ ker Q. Hence O ⊆ ker Q, and therefore ker Q = O.(⇐) Assume ker Q = O and let v ∈ ker Q. Then v ∈O, and the conditions C ¯A2v = 0 and C ¯Av = 0 contain 
+
+Cz ¯A2v = 0 and Kfull ¯Av = 0 , which is (39). Suppose ker Q̸ = O. Then Cz ¯A2v̸ = 0 or Kfull ¯Av ̸ = 0 
+
+for some v ∈ ker Q.
+
+Case (i): Cz ¯A2v̸ = 0 .Step 1. Define R := Cz ¯A, g := Cz ¯A2v, and 
+
+β(¯ x) := g⊤R ¯x, γ := g⊤R ¯Av = ∥Cz ¯A2v∥2 > 0.
+
+Since v ∈ ker Q, Rv = Cz ¯Av = 0 . On Ω, the inequalities 
+
+ψ± 
+
+> 1
+
+≥ 0 and h± 
+
+> 1
+
+≥ 0 in (10) imply, by (15), 
+
+|R¯x| ≤ ρ := α1(zmax − zmin ), (40) Define B := |g|⊤ρ. Then, for every ¯x ∈ Ω,
+
+|β(¯ x)| = |g⊤R¯x| ≤ | g|⊤|R¯x| ≤ B. (41) 
+
+Step 2. Without loss of generality t0 = 0 . Let ¯x0 := rv 
+
+with r > 0. Since v ∈ ker Q, ¯x0 ∈ Ω. Every solution exists globally and is given by 
+
+¯x(t) = e ¯At rv +
+
+Z t
+
+> 0
+
+e ¯A(t−τ )By ζ(τ ) dτ. 
+
+Substituting it into β splits β(¯ x(t)) = r f (t) + φ(t) into the response to ¯x0 and to ζ, where 
+
+f (t) := g⊤Re ¯At v, φ(t) := g⊤R
+
+Z t
+
+> 0
+
+e ¯A(t−τ )By ζ(τ ) dτ. 
+
+Define 
+
+c := √m ∥R⊤g∥ ∥ By ∥ max  
+
+> t∈[0 ,¯τ]
+
+∥e ¯At ∥.
+
+From ∥ζ∥∞ ≤ M and ∥ζ∥ ≤ √m ∥ζ∥∞,
+
+|φ(t)| ≤ t cM ∀t ∈ [0 , ¯τ ].
+
+From Rv = 0, f (0) = 0 and f ′(0) = g⊤R ¯Av = γ.Moreover, f ′′ (t) = g⊤R ¯A2e ¯At v is bounded on [0 , ¯τ ] by 
+
+κ := max t∈[0 ,¯τ ]|g⊤R ¯A2e ¯At v|. Taylor’s theorem then yields 
+
+f (t) ≥ γt − κ 
+
+> 2
+
+t2 ∀t ∈ [0 , ¯τ ]. (42) 
+
+Step 3. Define t∗ := min {¯τ , γ/κ }, with γ/κ := ∞ if 
+
+κ = 0 , and r∗ := 2( B + cM t ∗)/(γt ∗). Since t∗ ≤ γ/κ , (42) yields 
+
+f (t∗) ≥ γt ∗ − κ 
+
+> 2
+
+t∗2 ≥ γ 
+
+> 2
+
+t∗.
+
+For every r > r ∗ and every piecewise continuous ζ with 
+
+∥ζ∥∞ ≤ M , it follows that 
+
+β(¯ x(t∗)) ≥ r γ 
+
+> 2
+
+t∗ − cM t ∗ > B, 
+
+and therefore ¯x(t∗) /∈ Ω by (41). 
+
+Case (ii): Kfull ¯Av ̸ = 0 . The proof is the same, with Cz ¯A
+
+replaced by Kfull and ρ in (40) by umax − umin .
+
+D. Proof of Proposition 3 Proof. Define 
+
+p := λz+ − λz−, q := λu+ − λu−, s := λM + − λM −,
+
+so that, by (8), 
+
+A⊤ 
+
+> ζ
+
+λ = ( HuKI )⊤p + K⊤ 
+
+> I
+
+q + s. (43) The map λ 7 → (p, q ) is a surjection of Λ onto R2m. Given 
+
+(p, q ) ∈ R2m, define 
+
+s := − (HuKI )⊤p + K⊤ 
+
+> I
+
+q, λ := ( p+; p−; q+; q−; s+; s−).
+
+Then λ ≥ 0 and A⊤ 
+
+> ζ
+
+λ = 0 by (43), that is, λ ∈ Λ.Decompose ¯x = xr +v with xr ∈ (ker Q)⊥ = row( Q) and 
+
+v ∈ ker Q, so that λk⊤b(¯ x) = λk⊤(Bζ xr + b0) + λk⊤Bζ v.Then 
+
+νk
+
+ Ω > −∞ ⇐⇒ λk⊤Bζ v = 0 ∀ v ∈ ker Q. (44) By (44), it suffices to show that λk⊤Bζ v = 0 for every k and every v ∈ ker Q if and only if ker Q = O. Let v ∈ ker Q.By (8), for every (α1, α 2, α u, α g ),
+
+Bζ v = ( −Cz ¯A2v; Cz ¯A2v; Kfull ¯Av ; −Kfull ¯Av ; 0; 0) ,
+
+so that, by the definitions of p and q,
+
+λ⊤Bζ v = −p⊤Cz ¯A2v + q⊤Kfull ¯Av. (45) 
+
+(⇒) Suppose νk(Ω) > −∞ for every k. By (44), 
+
+λk⊤Bζ v = 0 for every k and every v ∈ ker Q. Since every 
+
+λ ∈ Λ is a nonnegative combination of the extreme rays by (12), 
+
+λ⊤Bζ v = 0 ∀λ ∈ Λ, ∀v ∈ ker Q. 
+
+By (45) and the surjectivity of λ 7 → (p, q ),
+
+−p⊤Cz ¯A2v + q⊤Kfull ¯Av = 0 ∀(p, q ) ∈ R2m.
+
+Taking q = 0 and p = Cz ¯A2v yields Cz ¯A2v = 0 , and taking 
+
+p = 0 and q = Kfull ¯Av yields Kfull ¯Av = 0 . Since v ∈ ker Q
+
+is arbitrary, (39) is satisfied, that is, ker Q = O.
+
+(⇐) Suppose ker Q = O. Then (39) is satisfied, and (45) yields λk⊤Bζ v = 0 for every k and every v ∈ ker Q. By (44), νk(Ω) > −∞ for every k.
+
+E. Proof of Proposition 4 Proof. Split v = [ vp 
+
+> ve
+
+] with vp ∈ Rnp , ve ∈ Rm, and let 
+
+ϕ(w) := 
+
+h w  
+
+> −K−1
+> IKPw
+
+i
+
+for w ∈ Rnp , a linear injection. 
+
+Step 1. First, we will show that 
+
+ker Q = ϕ(V2). (46) From (5), Cz ¯A + HuKfull = [ Clim Ap 0 ] . With the nonsingular TH := 
+
+h I 0 00 I H u 
+
+> 0 0 I
+
+i
+
+, this identity yields 
+
+TH Q =
+
+ Clim 0
+
+Clim Ap 0
+
+KP KI
+
+ , ker Q = ker( TH Q),
+
+and v ∈ ker Q if and only if 
+
+Clim vp = 0 , Clim Apvp = 0 , KP vp + KI ve = 0 .The first two conditions are equivalent to vp ∈ V2. Under (A3), KI is nonsingular: if KI w = 0 with w̸ = 0 , then 
+
+¯A[ 0 
+
+> w
+
+] = 0 by (5), which contradicts ¯A being Hurwitz. The third condition is equivalent to ve = −K−1 
+
+> I
+
+KP vp, which proves (46). 
+
+Step 2. Next, we will show that 
+
+O = ϕ( eN ), (47) where eN := {w ∈ Rnp : CN Akp w = 0 ∀k ≥ 0} with 
+
+CN := 
+
+h Clim   
+
+> KPAp+KICreg
+
+i
+
+, which is the unobservable subspace of the pair (Ap, C N ). To prove (47), we first show that, for 
+
+k ≥ 0,
+
+Kfull ¯Aiv = 0 , i = 0 , . . . , k =⇒
+
+¯Aj v =
+
+ Ajpvp
+
+Creg Aj−1 
+
+> p
+
+vp
+
+
+
+, j = 1 , . . . , k + 1 . (48) Assume that Kfull ¯Aiv = 0 for i = 0 , . . . , k . Then (5) and 
+
+Kfull v = 0 yield 
+
+¯Av =
+
+ Apvp
+
+Creg vp
+
+
+
+−
+
+ Bp
+
+Dreg 
+
+
+
+Kfull v =
+
+ Apvp
+
+Creg vp
+
+
+
+,
+
+which is the claim for j = 1 . If ¯Aj v =
+
+ Ajpvp  
+
+> Creg Aj−1
+> pvp
+
+
+
+for some j ∈ { 1, . . . , k }, then (5) and Kfull ¯Aj v = 0 yield 
+
+¯Aj+1 v =
+
+ Aj+1  
+
+> p
+
+vp
+
+Creg Ajpvp
+
+
+
+−
+
+ Bp
+
+Dreg 
+
+
+
+Kfull ¯Aj v =
+
+ Aj+1  
+
+> p
+
+vp
+
+Creg Ajpvp
+
+
+
+,
+
+which is the claim for j + 1 . By induction on j, this proves (48). We now prove the inclusions O ⊆ ϕ( eN ) and ϕ( eN ) ⊆O.(⊆) Let v ∈ O , that is, Cz ¯Akv = 0 and Kfull ¯Akv = 0 for every k ≥ 0. At k = 0 these are Clim vp = 0 and KP vp +
+
+KI ve = 0 , the latter being v = ϕ(vp). Since Kfull ¯Akv = 0 
+
+for every k ≥ 0, (48) applies for every k and yields, for 
+
+k ≥ 1,
+
+Cz ¯Akv = Clim Akp vp = 0 ,Kfull ¯Akv = ( KP Ap+KI Creg )Ak−1 
+
+> p
+
+vp = 0 .
+
+Together with Clim vp = 0 , these yield CN Akp vp = 0 for every k ≥ 0, that is, vp ∈ eN . Hence O ⊆ ϕ( eN ).(⊇) Let w ∈ eN and v = ϕ(w), that is, vp = w
+
+and ve = −K−1 
+
+> I
+
+KP w. We show by induction on k that 
+
+Kfull ¯Akv = 0 for every k ≥ 0. For k = 0 , Kfull v =
+
+KP w − KI K−1 
+
+> I
+
+KP w = 0 . If Kfull ¯Aiv = 0 for i = 0 , . . . , k ,then (48) with j = k + 1 yields 
+
+¯Ak+1 v =
+
+ Ak+1  
+
+> p
+
+wCreg Akp w
+
+
+
+,Kfull ¯Ak+1 v = ( KP Ap+KI Creg )Akp w = 0 ,
+
+the last equality by w ∈ eN . Then (48) and w ∈ eN yield 
+
+Cz ¯Akv = Clim Akp w = 0 for every k ≥ 0. Hence C ¯Akv = 0 
+
+for every k ≥ 0, that is, v ∈ O , and ϕ( eN ) ⊆ O .
+
+Step 3. By (46), (47) and the injectivity of ϕ, ker Q = O
+
+if and only if V2 = eN . Every w ∈ eN satisfies Clim w = 0 
+
+and Clim Apw = 0 by the definition of CN , that is, eN ⊆ V2,and V2 = eN reduces to V2 ⊆ eN . We will show that V2 ⊆ eN
+
+is equivalent to 
+
+ApV2 ⊆ V2 and (KP Ap+KI Creg )w = 0 ∀w ∈ V2.
+
+(⇒) Let V2 ⊆ eN and w ∈ V2, which implies w ∈ eN .The condition defining eN at the index k = 0 yields 
+
+(KP Ap+KI Creg )w = 0. At the index k + 1 , it yields 
+
+CN Akp (Apw) = 0 for every k ≥ 0, that is, Apw ∈ eN ⊆ V2.(⇐) Suppose that ApV2 ⊆ V2 and (KP Ap+KI Creg )w =0 for every w ∈ V2. Then Akp w ∈ V2 for every w ∈ V2 and every k ≥ 0; hence CN Akp w = 0 , that is, w ∈ eN .Since range V = V2 and Clim ApV = 0 ,
+
+ApV2 ⊆ V2 ⇔
+
+ Clim 
+
+Clim Ap
+
+
+
+ApV = 0 ⇔ Clim A2
+
+> p
+
+V = 0 ,
+
+(KP Ap+KI Creg )w = 0 ∀w ∈ V2
+
+⇐⇒ (KP Ap+KI Creg )V = 0 ,
+
+which together prove Proposition 4. 
+
+F. Proof of Lemma 1 Proof. (a) By (A1), Hu = Clim Bp is nonsingular, which implies rank Bp = m. Since range W ⊤ 
+
+> p
+
+= ker( B⊤ 
+
+> p
+
+) has dimension np − m, W ⊤ 
+
+> p
+
+has full column rank, and therefore 
+
+WpBp = 0 and WpW ⊤ 
+
+> p
+
+is nonsingular. Moreover, M := [Bp W ⊤ 
+
+> p
+
+] is nonsingular, since range Bp and range W ⊤ 
+
+> p
+
+=ker( B⊤ 
+
+> p
+
+) are orthogonal complements in Rnp . Stacking Clim 
+
+and Wp in T yields 
+
+T M =
+
+Clim Bp Clim W ⊤
+
+> p
+
+WpBp WpW ⊤
+
+> p
+
+
+
+=
+
+Hu Clim W ⊤
+
+> p
+
+0 WpW ⊤
+
+> p
+
+
+
+,
+
+which is block upper triangular with nonsingular diagonal blocks. Hence T M , and therefore T , is nonsingular. 
+
+(b) By the partition T −1 =: [ R1 R2] as in (b), 
+
+T T −1 =
+
+Clim 
+
+Wp
+
+
+
+[R1 R2] = 
+
+Clim R1 Clim R2
+
+WpR1 WpR2
+
+
+
+= Inp .
+
+Differentiating ˜η = Wpxp along (1) and using WpBp = 0 ,
+
+˙˜η = Wp(Apxp + Bpu) = WpApxp.
+
+Since T x p = ( z, ˜η) and T −1 = [ R1 R2], xp = R1z + R2 ˜η,and substituting it yields ˙˜η = WpApR1z + WpApR2 ˜η =
+
+Bη z + Aη ˜η.
+
+(c) By (A2), the invariant zeros of (Ap, B p, C lim ) [18] lie in C−. They are the roots of det P (λ), where 
+
+P (λ) := 
+
+Ap − λI Bp
+
+Clim 0
+
+
+
+.
+
+Since det diag( T, I m) · det diag( T −1, I m) = 1 , the matrix 
+
+˜P (λ) := diag( T, I m) P (λ) diag( T −1, I m), which is P (λ)
+
+written in the coordinates (z, ˜η) of (b), satisfies det ˜P (λ) = det P (λ), and substituting (b) yields 
+
+˜P (λ) = 
+
+
+
+∗ ∗ Hu
+
+Bη Aη − λI 0
+
+Im 0 0
+
+ ,
+
+whose determinant is ± det( Hu) det( Aη −λI ). The invariant zeros are therefore the eigenvalues of Aη , and Aη is Hurwitz. (d) Aη is nonsingular by (c), and Bd is well defined. Differentiating η = ˜ η + Bdz and using (b) with Aη Bd = Bη
+
+yields (18). 
+
+(e) Since Tξ ∈ R(np+m)×(np+m) is square, it is nonsin-gular if and only if ker Tξ = {0}; as 0 ∈ ker Tξ always, it suffices to show that Tξ v = 0 implies v = 0 . Let v = [ vp 
+
+> ve
+
+]
+
+with vp ∈ Rnp and ve ∈ Rm, and suppose that Tξ v = 0 .Then 
+
+Cz v = 0 , Cz ¯Av = 0 , [ fW 0 ] v = 0 .
+
+The first and third equations yield Clim vp = 0 and fW v p = 0 ,and hence Wpvp = 0 , that is, T v p = 0 , which implies vp = 0 
+
+by (a). The second equation then yields 0 = Cz ¯A 0
+
+> ve
+
+ =
+
+−HuKI ve, which implies ve = 0 by (A1) and (A3). 
+
+G. Proof that E of Section IV-C is RPI Proof. For s ≥ 0 and piecewise continuous w : [0 , s ] → W ,let Φws : Rnp−m → Rnp−m denote the solution map of (18) over [0 , s ] under the input w,
+
+Φws (η) := eAη sη +
+
+Z s
+
+> 0
+
+eAη (s−τ )Bd w(τ ) dτ. 
+
+By the construction of E in (22), E = cl {conv {R}} , where 
+
+R := {Φwr (η(t0)) : r ≥ 0, w : [0 , r ] → W} ,
+
+with w piecewise continuous, is the set of states that (18) reaches from η(t0).
+
+Step 1. Since Aη is Hurwitz by Lemma 1(c), ∥eAη t∥ ≤ 
+
+c e −σt for some c, σ > 0 and ∥eAη tη(t0)∥ ≤ c∥η(t0)∥;the integral is bounded because W is bounded. Hence R
+
+is bounded, as are conv {R} and its closure, which is closed by construction and convex as the closure of a convex set. Thus E is compact and convex. Taking w ≡ 0 shows that 
+
+eAη r η(t0) ∈ R for every r ≥ 0; since this point tends to 0
+
+and E is closed, 0 ∈ E.
+
+Step 2. We show that, for every s ≥ 0 and piecewise continuous w2 : [0 , s ] → W ,
+
+Φw2 
+
+> s
+
+(R) ⊆ R. (49) Let η ∈ R, that is, η = Φ w1 
+
+> r
+
+(η(t0)) for some r ≥ 0 and piecewise continuous w1 : [0 , r ] → W . Define w3 : [0 , r +
+
+s] → W by w3(τ ) := w1(τ ) for τ ∈ [0 , r ] and w3(τ ) := 
+
+w2(τ − r) for τ ∈ (r, r + s], which is piecewise continuous. Splitting the integral in Φw3 
+
+> r+s
+
+at τ = r yields 
+
+Φw3
+
+> r+s
+
+(η(t0)) = Φ w2
+
+> s
+
+ Φw1 
+
+> r
+
+(η(t0))  = Φ w2 
+
+> s
+
+(η),
+
+and hence Φw2 
+
+> s
+
+(η) ∈ R.
+
+Step 3. From the property of the convex hull, every p ∈
+
+conv {R} is of the form p = PJj=1 θj ηj with J ≥ 1, ηj ∈ R,
+
+θj ≥ 0 and PJj=1 θj = 1 . Since Φw2 
+
+> s
+
+(η) = eAη sη + Φ w2 
+
+> s
+
+(0) 
+
+is affine in η and PJj=1 θj = 1 ,
+
+Φw2
+
+> s
+
+ JX
+
+> j=1
+
+θj ηj
+
+
+
+=
+
+> J
+
+X
+
+> j=1
+
+θj eAη sηj +Φ w2 
+
+> s
+
+(0) = 
+
+> J
+
+X
+
+> j=1
+
+θj Φw2 
+
+> s
+
+(ηj ),
+
+which belongs to conv {R} by (49). Since Φw2 
+
+> s
+
+is continuous, 
+
+Φw2 
+
+> s
+
+(E) ⊆ cl {Φw2 
+
+> s
+
+(conv {R})} ⊆ E, which, together with Step 1, proves that E satisfies Definition 2. 
+
+Step 4. Each integral in (21), written with an input 
+
+w1 : [0 , t ] → W , equals Φw2 
+
+> t
+
+(0) with w2(τ ) := w1(t −
+
+τ ). For every T ≥ 0, eAη T η(t0) ∈ R and (49) yield 
+
+Φw2 
+
+> t
+
+(eAη T η(t0)) = eAη (t+T )η(t0) + Φ w2 
+
+> t
+
+(0) ∈ R, which tends to Φw2 
+
+> t
+
+(0) as T → ∞ . Since E is closed, Emin ⊆
+
+E.
+
+H. Proof of Proposition 5 Proof. (a) For all u ∈ U , ˙z = az + u ≥ az − umax , that is, 
+
+˙y ≥ ay with y := z − umax /a . The comparison lemma [21, Lemma 3.4] applied to this inequality yields 
+
+z(t) − umax 
+
+a ≥
+
+
+
+z(t0) − umax 
+
+a
+
+
+
+ea(t−t0),
+
+which is the bound in (a). Since a > 0 and z(t0)−umax /a > 
+
+0, the lower bound equals zmax at 
+
+t1 := t0 + 1
+
+a ln zmax − umax /a z(t0) − umax /a ≥ t0
+
+and exceeds zmax for t > t 1; hence z(t) > z max for t > t 1,and the output box is violated in finite time. 
+
+(b) (A1) is satisfied with Hu = 1 , (A2) is vacuous ( np =
+
+m, no internal dynamics), and (A3) implies KI̸ = 0 ; V2 =ker[ 1 
+
+> a
+
+] = {0}, which implies d = 0 and SE = Ω . In this setting, ˙z = az + u, and h± 
+
+> 1
+
+, ψ± 
+
+> 1
+
+and h± 
+
+> u
+
+depend on ¯x only through z = Cz ¯x and u = −Kfull ¯x.
+
+Step 1. Let 
+
+z∗ := α1zmax + umax 
+
+a + α1
+
+,
+
+and let ¯x∗ be the unique solution of Cz ¯x∗ = z∗ and 
+
+−Kfull ¯x∗ = −umax , which exists since  Cz
+
+> Kfull
+
+ =  1 0 
+
+> KPKI
+
+
+
+is nonsingular for KI̸ = 0 . At ¯x∗, ˙z = az ∗ − umax =
+
+α1(zmax − z∗), which yields ψ+1 (¯ x∗) = h− 
+
+> u
+
+(¯ x∗) = 0 , while 
+
+h+1 (¯ x∗) = ( az max −umax )/(a+α1) > 0 and h− 
+
+> 1
+
+, ψ − 
+
+> 1
+
+, h + 
+
+> u
+
+> 0
+
+at ¯x∗. Therefore ¯x∗ ∈ Ω = SE for every α1 > 0.
+
+Step 2. Let λ := (1; 0; 0; 1; 0; 0) ∈ R6, that is, λz+ =
+
+λu− = 1 and all other blocks of λ vanish. Since Hu = 1 ,(8) yields A⊤ 
+
+> ζ
+
+λ = KI − KI = 0 , and λ/ √2 is an extreme ray of Λ by (38), since dim ker( A⊤ 
+
+> S
+
+) = 1 for its support S.Hence λ/ √2 = λk for some k ∈ { 1, . . . , N }, and σk =
+
+λk⊤eM = 0 .
+
+Step 3. At ¯x∗, λ⊤Ψ = ψ+1 = 0 and λ⊤H = h− 
+
+> u
+
+= 0 ,and therefore λ⊤b = λ⊤ˆb for every (α2, α u, α g ). By (31), 
+
+λ⊤ˆb(¯ x) = −Cz ( ¯A + α1I) ¯A¯x − Kfull ¯A¯x. Since ˙z = az + u
+
+with u = −Kfull ¯x and Cz By = 0 , Cz ¯A = aC z − Kfull , and hence Cz ¯A2 ¯x = a C z ¯A¯x − Kfull ¯A¯x. Substituting it yields 
+
+λ⊤ˆb(¯ x) = −(a + α1) Cz ¯A¯x, 
+
+which at ¯x∗ equals −(a + α1) α1(zmax − z∗) = α1(umax −
+
+az max ) by Step 1. Hence, for every α1 ∈ R4++ ,
+
+min  
+
+> k
+
+νk(SE ) ≤ νk = 1
+
+√2 inf 
+
+> SE
+
+λ⊤b ≤ 1
+
+√2λ⊤b(¯ x∗)= α1
+
+√2(umax − az max ) < 0,which proves (b). 
+
+I. Proof of Proposition 6 Proof. Fix c > 0 and set αu = c α 2. Let sk := λk⊤(Ψ+ cH ),
+
+K+ := {k : σk > 0} and ¯Θk := inf ¯x∈Zk λk⊤ˆb(¯ x) with 
+
+inf ∅ := + ∞, so that ¯Θ = min k∈K 0
+
+¯Θk by (33). The set 
+
+SE (ϱ) is compact by Theorem 1, and none of SE (ϱ), ˆb, Ψ
+
+and H depends on (α2, α u, α g ), since SE (ϱ) is built from 
+
+h± 
+
+> 1
+
+, ψ± 
+
+> 1
+
+, h± 
+
+> u
+
+and η (see (10) and Definition 2). Since Ψ, H ≥
+
+0 on SE (ϱ) ⊆ Ω and λk ≥ 0, sk ≥ 0 on SE (ϱ). Each Zk is a closed subset of SE (ϱ) and λk⊤ˆb is continuous, so ¯Θk is attained whenever Zk̸ = ∅, and ¯Θ ∈ R∪{ +∞} . Substituting (31) into the definition of νk yields 
+
+νk(SE (ϱ)) = inf  
+
+> ¯x∈SE(ϱ)
+
+ λk⊤ˆb(¯ x) + α2 sk(¯ x) + σk αg .
+
+We first show that, for every real ε < ¯Θ,
+
+min k νk(SE (ϱ)) ≥ ε if and only if α2 ≥ α2 and αg ≥
+
+αg (α2), with 
+
+α2 := max 
+
+> k∈K 0
+
+sup  
+
+> ¯x∈SE(ϱ)
+> λk⊤ˆb(¯ x)<ε
+
+ε − λk⊤ˆb(¯ x)
+
+sk(¯ x) , (50) 
+
+αg (α2) := max 
+
+> k∈K +
+
+σ−1
+
+> k
+
+ ε − inf  
+
+> SE(ϱ)
+
+(λk⊤ˆb + α2sk), (51) where sup ∅ := 0 . The function αg is nonincreasing, since 
+
+sk ≥ 0 makes the infimum in (51) nondecreasing in α2.
+
+Rays in K0. Here σk = 0 . Let Dk := {¯x ∈ SE (ϱ) : 
+
+λk⊤ˆb(¯ x) ≤ ε}. If sk(¯ x) = 0 for some ¯x ∈ SE (ϱ), then 
+
+λk⊤Ψ(¯ x) = λk⊤H(¯ x) = 0 , since both terms of sk are nonnegative and c > 0; hence ¯x ∈ Zk and λk⊤ˆb(¯ x) ≥
+
+¯Θk ≥ ¯Θ > ε , that is, ¯x / ∈ Dk. Therefore sk > 0 on Dk.If Dk̸ = ∅, then Dk is compact, sk := min Dk sk > 0, and every quotient in (50) is at most (ε − min SE (ϱ) λk⊤ˆb)/s k;hence α2 is finite. Since α2 > 0 and sk ≥ 0, the inequality λk⊤ˆb(¯ x) + α2sk(¯ x) ≥ ε is satisfied at every ¯x
+
+with λk⊤ˆb(¯ x) ≥ ε, and at every ¯x with λk⊤ˆb(¯ x) < ε
+
+it is equivalent to α2 ≥ (ε − λk⊤ˆb(¯ x)) /s k(¯ x). Therefore 
+
+νk(SE (ϱ)) ≥ ε if and only if α2 is at least the inner supremum in (50), and min k∈K 0 νk(SE (ϱ)) ≥ ε if and only if α2 ≥ α2. The strict inequality ε < ¯Θ is required, since otherwise sk may vanish on Dk and α2 may be infinite. 
+
+Rays in K+. Here σk > 0, and the infimum in (51) is finite, since λk⊤ˆb + α2sk is continuous on the compact set SE (ϱ). Hence νk(SE (ϱ)) ≥ ε if and only if αg ≥ ε − inf SE (ϱ)(λk⊤ˆb + α2sk)/σ k, and the maximum over 
+
+k ∈ K + yields αg ≥ αg (α2). Since min k νk(SE (ϱ)) = min {min k∈K 0 νk(SE (ϱ)) , min k∈K + νk(SE (ϱ)) }, the two cases prove the equivalence. 
+
+(a) We show the two inequalities between the supremum in (a) and ¯Θ. Let α2, α u, α g > 0 be arbitrary; here αu need not equal c α 2. For k ∈ K 0 and ¯x ∈ Zk, (31) and σk = 0 yield 
+
+λk⊤b(¯ x) = λk⊤ˆb(¯ x), and therefore νk(SE (ϱ)) ≤ λk⊤ˆb(¯ x).Taking the infimum over ¯x ∈ Zk yields νk(SE (ϱ)) ≤ ¯Θk,which is trivial if Zk = ∅. Hence min k νk(SE (ϱ)) ≤
+
+min k∈K 0
+
+¯Θk = ¯Θ for every (α2, α u, α g ), and the supremum in (a) is at most ¯Θ.Conversely, let ε be a real number with ε < ¯Θ. Choose 
+
+α2 > 0 with α2 ≥ α2 and αg > 0 with αg ≥ αg (α2),both finite by the equivalence, and αu = c α 2 > 0. By the equivalence, min k νk(SE (ϱ)) ≥ ε at this point of the orthant, so the supremum in (a) is at least ε. Since ε < ¯Θ is arbitrary, the supremum is at least ¯Θ, and it equals +∞ if ¯Θ = + ∞.The two inequalities prove (a). 
+
+(b) Let α1 ≥ αmin 1 , and let Zk(α1) and E(α1) denote 
+
+Zk and E at α1, with E(α1) computed by (22). We first show that Hk ⊆ Zk(α1) for every k ∈ K 0. Let ¯x ∈ Hk.Since Cz ¯A¯x = 0, (15) yields ψ± 
+
+> 1
+
+(¯ x) = α1h± 
+
+> 1
+
+(¯ x), and the conditions ψ± 
+
+> 1
+
+(¯ x) ≥ 0 and λk⊤Ψ(¯ x) = 0 become 
+
+h± 
+
+> 1
+
+(¯ x) ≥ 0 and λk⊤ 
+
+> z+
+
+h+1 (¯ x)+ λk⊤ 
+
+> z−
+
+h− 
+
+> 1
+
+(¯ x) = 0 . These, together with h± 
+
+> u
+
+(¯ x) ≥ 0 and λk⊤H(¯ x) = 0 , are independent of α1.Since W grows with α1, (22) yields E(αmin 1 ) ⊆ E(α1),which contains η(¯ x). Thus ¯x ∈ Zk(α1). Next, by (31), 
+
+ˆb depends on α1 only through ∓α1Cz ¯A¯x, which vanishes on Hk. Therefore, by (33) and the inclusion, ¯Θ( α1, ϱ ) ≤
+
+min k∈K 0 inf ¯x∈Hk λk⊤ˆb(¯ x) = ˆΘ( αmin 1 , ϱ ).
+
+(c) For k ∈ K 0 let I± 
+
+> k
+
+:= {i : ( λkz±)i > 0} and J± 
+
+> k
+
+:= {j :(λku±)j > 0}, and let k satisfy I+ 
+
+> k
+
+∪ I−
+
+> k
+
+̸ = ∅, J+ 
+
+> k
+
+∪ J−
+
+> k
+
+̸ = ∅,
+
+I+ 
+
+> k
+
+∩I− 
+
+> k
+
+= ∅ and J+ 
+
+> k
+
+∩J− 
+
+> k
+
+= ∅ (otherwise Zk = ∅). Define 
+
+z◦ 
+
+> i
+
+=
+
+
+
+(zmin )i i ∈ I+
+
+> k
+
+(zmax )i i ∈ I− 
+
+> k
+> 12
+
+(( zmax )i + ( zmin )i) else 
+
+,
+
+˙z◦ 
+
+> i
+
+=
+
+
+
+(wz )i i ∈ I+
+
+> k
+
+−(wz )i i ∈ I−
+
+> k
+
+0 else 
+
+,u◦ 
+
+> j
+
+=
+
+(
+
+ϱ(umax )j j ∈ J+
+
+> k
+
+ϱ(umin )j j ∈ J−
+
+> k
+
+,
+
+(52) let Mk := C⊤ 
+
+> z
+
+(Cz ¯A)⊤ −(Kfull )⊤
+
+> Jk
+
+⊤ and let x0, x 1 be minimum-norm solutions of 
+
+Mkx0 = ( z◦; 0; u◦), Mkx1 = (0; ˙ z◦; 0) , (53) where (Kfull )Jk collects the rows j ∈ J+ 
+
+> k
+
+∪J− 
+
+> k
+
+of Kfull , and, with dz := λkz− − λkz+ and du := λku+ − λku−, set 
+
+q2 := d⊤ 
+
+> z
+
+˙z◦, ql := d⊤ 
+
+> z
+
+Cz ¯A2xl + d⊤ 
+
+> u
+
+Kfull ¯A x l, (54) for l ∈ { 0, 1}, and 
+
+A := {α1 > 0 : x0 + α1x1 ∈ SE (ϱ)}. (55) Solutions of (53) exist generically when |J+ 
+
+> k
+
+∪J− 
+
+> k
+
+| ≤ np −m,the input equations being that many affine conditions on the coordinate η of Lemma 1(e); A is an interval, each constraint of SE (ϱ) being affine in α1 along x0 +α1x1; any admissible 
+
+k may be used in (34), and the smallest resulting ¯α1 is taken. Let k ∈ K 0, α1 > 0 and ¯x ∈ Zk(α1). On SE (ϱ) every summand of λk⊤Ψ is nonnegative, so λk⊤Ψ(¯ x) = 0 gives 
+
+ψ+1,i (¯ x) = 0 ∀i ∈ I+ 
+
+> k
+
+and ψ−
+
+> 1,i
+
+(¯ x) = 0 ∀i ∈ I− 
+
+> k
+
+, that is, 
+
+˙zi = α1h+1,i (¯ x) ∀i ∈ I+ 
+
+> k
+
+and ˙zi = −α1h−
+
+> 1,i
+
+(¯ x) ∀i ∈ I− 
+
+> k
+
+.Substituting these into (31), 
+
+λk⊤ˆb(¯ x) = − α21
+
+h
+
+(λkz+)⊤h+1 (¯ x) + ( λkz−)⊤h− 
+
+> 1
+
+(¯ x)
+
+i
+
++ ( λkz− − λkz+)⊤Cz ¯A2 ¯x
+
++ ( λku+ − λku−)⊤Kfull ¯A¯x
+
+(56) 
+
+∀¯x ∈ Zk(α1), and by (33), ¯Θ( α1, ϱ ) ≤ λk⊤ˆb(¯ x) ∀k ∈K0, ∀¯x ∈ Zk(α1). Let k be admissible in (52)–(53), let 
+
+α1 ∈ A, and set ¯x := x0 + α1x1. By (53), Cz ¯x = z◦,
+
+Cz ¯A¯x = α1 ˙z◦ and uj (¯ x) = u◦ 
+
+> j
+
+∀j ∈ J+ 
+
+> k
+
+∪ J− 
+
+> k
+
+, so ψ±
+
+> 1,i
+
+(¯ x) = 0 ∀i ∈ I± 
+
+> k
+
+and h± 
+
+> u,j
+
+(¯ x) = 0 ∀j ∈ J± 
+
+> k
+
+; with ¯x ∈ SE (ϱ)
+
+by (55), ¯x ∈ Zk(α1). In (56), h+1,i (¯ x) = ( wz )i ∀i ∈ I+ 
+
+> k
+
+,
+
+h−
+
+> 1,i
+
+(¯ x) = ( wz )i ∀i ∈ I− 
+
+> k
+
+and ¯x = x0 + α1x1, so the right-hand side equals q2α21 + q1α1 + q0 of (54), with q2 =
+
+− P
+
+> i∈I+
+> k
+
+(λkz+)i(wz )i − P
+
+> i∈I−
+> k
+
+(λkz−)i(wz )i < 0. Therefore, for each admissible k, the quadratic q with the coefficients (54) and the set A in (55) satisfy (36) with q2 < 0; hence q
+
+and A of (35) and (36) exist. 
+
+(d) Since ¯Θ > 0 by hypothesis, ε = 0 satisfies ε < ¯Θ, and 
+
+min k νk(SE (ϱ)) ≥ 0 is the SIOCF condition (13) on SE (ϱ).The equivalence with ε = 0 proves (d).
