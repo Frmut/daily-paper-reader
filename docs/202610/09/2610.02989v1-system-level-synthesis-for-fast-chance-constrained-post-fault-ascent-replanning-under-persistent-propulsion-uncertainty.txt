@@ -1,0 +1,2070 @@
+Title: System Level Synthesis for Fast Chance-Constrained Post-Fault Ascent Replanning under Persistent Propulsion Uncertainty
+
+URL Source: https://arxiv.org/pdf/2610.02989v1
+
+Published Time: Mon, 05 Oct 2026 01:05:05 GMT
+
+Number of Pages: 27
+
+Markdown Content:
+# System Level Synthesis for Fast Chance-Constrained Post-Fault Ascent Replanning under Persistent Propulsion Uncertainty 
+
+Dai Shen ∗1 , Chen Yang †1,2 , Lin Cheng ‡1,2 , Hongbo Zhang 3, Hongtao Zheng 4, and Shengping Gong §1,2 1School of Astronautics, Beihang University, Beijing 102206, China 
+
+> 2
+
+State Key Laboratory of High-Efficiency Reusable Aerospace Transportation Technology, Beijing 102206, China 
+
+> 3
+
+National University of Defense Technology, 1 Fuyuan Road, Kaifu District, Changsha, Hunan 410072, China 
+
+> 4
+
+Changsha Aerospace Technology Innovation Institute, 273 Xuetangyuan Road, Kaifu District, Changsha, Hunan 410000, China 
+
+A nonfatal propulsion fault can invalidate the nominal ascent trajectory while leaving suf-ficient vehicle capability to reach the original orbit or a degraded target. Deterministic re-planning can restore nominal feasibility, but residual uncertainty in the identified propulsion capability may still lead to path-constraint violations and terminal injection dispersion. This paper develops a fast chance-constrained stochastic ascent trajectory replanner that explicitly accounts for persistent propulsion uncertainty. The uncertainty model combines persistent random uncertainties shared across the prediction horizon with interval-wise independent dis-turbances. For a fixed nominal trajectory, system level synthesis is used to parameterize the closed-loop responses. A Cholesky-based transformation of the system responses converts the resulting cross-time correlated feedback design problem into column-wise affine recursions that share a common Riccati recursion. A task-oriented terminal weight is further derived from the minimum-energy post-injection orbital correction in phase-free modified equinoctial elements, thereby relating terminal covariance shaping directly to correction demand. The stochastic replanning problem is solved by alternating deterministic trajectory replanning and feedback controller design, with covariance-based chance-constraint backoffs coupling the two updates. Nonlinear Monte Carlo simulations demonstrate reduced equivalent correction de-mand, effective chance-constraint satisfaction, and fast online replanning over a range of un-certainty levels and fault conditions. 
+
+> ∗Graduate Student, School of Astronautics, Beihang University.
+> †Associate Professor, School of Astronautics, Beihang University.
+> ‡Associate Professor, School of Astronautics, Beihang University.
+> §Professor, School of Astronautics, Beihang University. Corresponding author: gongsp@buaa.edu.cn.
+
+1arXiv:2610.02989v1 [math.OC] 2 Oct 2026 Nomenclature 
+
+𝐴 𝑘 , 𝐵 ± 
+
+> 𝑘
+
+, 𝐷 𝑘 FOH-discrete perturbation matrices 
+
+˜𝐴 𝑘 , ˜𝐵 𝑘 , ˜𝐷 𝑘 augmented FOH perturbation matrices 
+
+𝐵 𝑞 e RTN-impulse-to-MEE Jacobian 
+
+𝐶 D,𝑖 , 𝜒 D,𝑖 drag coefficient and aerodynamic switch in phase 𝑖 
+
+𝑪 𝛼 , 𝐶 𝑘, 𝑗 chronological covariance factor and its (𝑘, 𝑗 ) block 
+
+𝑑 𝑘 , 𝒅 abstract additive disturbance and its stacked vector 
+
+𝐺 𝑞 e Cartesian-to-MEE Jacobian 
+
+𝐻 orb stacked candidate-impulse map in phase-free MEE 
+
+𝐽 corr ,1, 𝐽 corr ,2 minimum total impulse and correction energy 
+
+𝑲 causal augmented-state history-feedback operator 
+
+𝐿 0, 𝑇 0, 𝑀 0 reference length, time, and mass scales 
+
+𝐿 (𝑖 ) 
+
+> b
+
+, 𝐿 (𝑖 ) 
+
+> 𝜂
+
+persistent and interval-wise uncertainty loading matrices 
+
+𝑴 phys , 𝑴 𝛼 physical and regularized disturbance covariances 
+
+𝑁, 𝑛 b number of intervals and persistent-coordinate dimension 
+
+𝑛 𝜒 , 𝑛 𝜈 augmented-state and increment-input dimensions 
+
+𝑃 𝜒,𝑘 , 𝑃 𝜁 ,𝑘 augmented-state and state-control covariances 
+
+𝑄 c, 𝑅 c continuous-time state and control weights 
+
+𝑄 f , 𝜆 f terminal feedback weight and its scale factor 
+
+𝑄 orb f,𝑥 orbit-correction-based physical-state terminal matrix 
+
+𝑞 e phase-free MEE vector 
+
+𝑞 dynamic pressure in 𝑞𝛼 𝑅 IL launch-inertial-to-ECI rotation matrix 
+
+¯𝑇 𝑖 , ¯𝐼 sp ,𝑖 identified mean thrust and specific impulse in phase 𝑖 𝑢 = [𝜙, 𝜓 ]T launch-inertial pitch/yaw thrust-direction command 
+
+𝑊 𝑘 , 𝑾 discrete stage and full-horizon quadratic weights 
+
+𝑥 = [𝒓 T, 𝒗 T, 𝑚 ]T physical ascent state 
+
+𝜒 𝑘 , 𝜈 𝑘 FOH-augmented perturbation state and increment input 
+
+𝜉 b, 𝜉 𝑘 shared persistent and interval-wise random coordinates 
+
+𝚽 𝑥 , 𝚽 𝑢 causal system-level state and input responses 
+
+𝛽 𝑟 , 𝜋 𝑟 chance-constraint backoff and allowable violation probability 
+
+𝜌 atmospheric density 
+
+𝝎 E Earth angular-velocity vector 
+
+Δ𝑉 stacked candidate post-injection correction impulses 
+
+## I. Introduction 
+
+# MODERN launch vehicles often employ multi-engine propulsion systems. As the number of engines increases, the possibility of an engine fault must be explicitly considered in ascent guidance design, motivating guidance meth-ods that can complete the mission after a nonfatal propulsion failure. When the remaining capability is sufficient, a reduction in thrust or specific impulse may still permit injection into the original orbit or a degraded rescue orbit, but the ascent trajectory must be recomputed to match the changed propulsion capability. Engine-out guidance has therefore long been part of ascent guidance and mission retargeting [1, 2]. Sequential convex programming has recently received considerable attention for computationally efficient trajectory optimization [3, 4], and has consequently been adopted for online ascent trajectory replanning [5–8]. Existing post-fault replanning methods, however, are predominantly deterministic: once a fault has been diagnosed, the identified propulsion capability is generally treated as exactly known during trajectory replanning. In practice, the reconstructed post-fault dynamics remain subject to both epistemic and aleatory uncertainties. Epistemic uncertainty arises from incomplete knowledge of physical quantities and model parameters, including residual errors in the iden-tified fault magnitude, whereas aleatory uncertainty represents intrinsic variability in the physical system and environ-ment [9, 10]. This issue is particularly relevant to propulsion faults because existing studies indicate that the residual uncertainty in identified thrust can remain appreciably larger than that associated with reconstructed kinematic states [11–14]. Consequently, nonnegligible uncertainty may remain in the identified propulsion capability even after the 2fault has been successfully diagnosed. In particular, a residual error in the identified mean thrust can persist throughout the remaining burn, producing a sustained effect whose influence on the trajectory can accumulate over time. Neglect-ing such residual uncertainty may therefore lead to path-constraint violations or excessive terminal injection dispersion when the vehicle tracks a trajectory obtained from deterministic replanning. Accounting for residual uncertainty during replanning requires predicting how it propagates into trajectory disper-sion. Nonlinear uncertainty propagation can be performed using Monte Carlo simulation [15, 16], polynomial chaos expansions [17–19], the unscented transform [20, 21], or higher-order state transition tensors [22, 23]. These methods can retain nonlinear effects beyond a first-order local covariance approximation, but generally require greater computa-tional cost. For time-critical onboard replanning, linear covariance propagation provides a computationally attractive alternative by propagating covariance through locally linearized closed-loop dynamics and has been widely used in guidance, navigation, and mission analysis [24–26]. A practical strategy for real-time stochastic trajectory planning is therefore to use linear covariance propagation within the onboard optimization, while reserving nonlinear Monte Carlo simulation for offline validation and performance assessment. Representative computational strategies based on linear covariance models include the following. One strategy uses a horizon-wide causal affine feedback parameterization, in which the block-lower-triangular feedback map over the pre-diction horizon is optimized explicitly [27–30]. A second strategy takes nodal covariance matrices as the primary stochastic variables and convexifies the covariance dynamics by relaxing the nonlinear propagation equality into linear matrix inequalities [31, 32]. The third separates nominal trajectory optimization from feedback design and alternates between the two updates, allowing the feedback step to retain a Riccati recursion [33–36]. This separation is attrac-tive for real-time replanning because it avoids introducing the complete feedback design into the nominal trajectory optimization. To extend this computationally efficient alternating framework to stochastic post-fault ascent replanning, two limi-tations must still be addressed. First, existing fast Riccati-based formulations typically model uncertainty as temporally independent process noise and therefore do not capture the cross-time dependence induced by a persistent bias [33–36]. A covariance steering method proposed by Knaup and Tsiotras explicitly accounts for unknown constant parameters but requires sequential convex programming [37]. Another approach is to include the persistent uncertain quantity in an augmented state [38, 39]. This restores a Markov representation but requires sufficiently accurate online es-timation of the augmented quantity for feedback implementation, which is difficult to obtain for residual post-fault thrust uncertainty. Thus, retaining persistent uncertainty while preserving Riccati-structured computation and avoid-ing dependence on high-accuracy online parameter estimation remains challenging. Second, simply reducing terminal covariance does not determine which combinations of terminal errors require the greatest post-injection correction effort. Minimum-maneuver and control-distance metrics have been used in orbital maneuver analysis to quantify the physical consequence of orbital state differences [40–43]. Such metrics are well suited for performance evaluation, but they are generally formulated as optimization problems and do not directly provide the quadratic terminal weight required for covariance-based feedback design. A remaining challenge is therefore to translate the required maneuver effort into a terminal covariance penalty that can directly guide feedback synthesis. The contributions of this work are as follows. First, we formulate the stochastic feedback problem using system level synthesis (SLS) [44–47], which parameterizes the closed-loop responses from exogenous disturbances to states and inputs. For systems subject to both persistent uncertainty and interval-wise independent disturbances, a Cholesky-based transformation of the system responses decomposes the resulting cross-time correlated feedback design problem into column-wise affine recursions that share a common Riccati recursion. Second, we derive a task-oriented terminal weight from the orbital correction required after injection. A phase-free modified equinoctial element mapping relates terminal state errors to candidate correction impulses and yields an analytic quadratic weight for feedback design. Finally, the two developments are integrated into an online stochastic ascent replanner that alternates deterministic trajectory replanning and feedback controller design, with each deterministic update implemented as one real-time iteration and the two steps coupled through covariance-based chance-constraint backoffs. The complete replanner is demonstrated through nonlinear Monte Carlo simulations. The remainder of the paper is organized as follows. Section II defines the stochastic ascent trajectory-replanning problem and its local chance-constraint approximation. Section III develops the fast system level synthesis formulation for persistent uncertainty. Section IV derives the Task-Oriented terminal weight. Section V describes the alternating online replanning procedure. Section VI presents the nonlinear numerical results, followed by conclusions. 3II. Stochastic Ascent Trajectory Replanning Problem 
+
+A. Nominal ascent dynamics 
+
+The Earth-centered inertial (ECI) frame XI-YI-ZI and the launch inertial frame XL-YL-ZL used in this paper are shown in Fig. 1. The YL axis is directed radially outward from the Earth at the launch site. The XL axis lies in the local horizontal plane and points along the prescribed launch direction. The ZL axis is determined by the right-handed convention. After a propulsion system fault has been diagnosed, the deterministic replan uses the identified mean propulsion capability. The physical state and thrust-direction command are 
+
+𝑥 = [𝒓 T 𝒗 T 𝑚 ]T , 𝑢 = [𝜙 𝜓 ]T , (1) where 𝒓 and 𝒗 are the position and velocity expressed in the ECI frame, 𝑚 is vehicle mass, and 𝜙 and 𝜓 are, respectively, the commanded pitch and yaw angles defined in the launch inertial frame. In the post-fault scenarios considered here, the remaining propulsion capability is assumed to be fully utilized. The thrust magnitude is therefore not treated as a control variable, and its mean value is determined by the identified post-fault propulsion capability. The mean post-fault dynamics in phase 𝑖 are 
+
+§𝒓 = 𝒗 , (2a) 
+
+§𝒗 = − 𝜇 𝒓 
+
+‖ 𝒓 ‖3 − 𝜒 D,𝑖 
+
+𝜌 ¯𝐶 D,𝑖 𝑆 
+
+2𝑚 ‖𝒗 rel ‖𝒗 rel + ¯𝑇 𝑖 
+
+𝑚 𝒆 T (𝑢 ), (2b) 
+
+§𝑚 = §¯𝑚 𝑖 , (2c) where 
+
+𝒆 T (𝑢 ) = 𝑅 IL [cos 𝜙 cos 𝜓 sin 𝜙 cos 𝜓 − sin 𝜓 ]T , 𝜌 (𝒓 ) = 𝜌 0 exp 
+
+[
+
+− ‖ 𝒓 ‖ − 𝑅 E
+
+𝐻 
+
+]
+
+, (3) where 𝑅 IL is the constant rotation matrix that maps vector components from the launch inertial frame to the ECI frame and 𝒆 T (𝑢 ) is the thrust direction unit vector; 𝒗 rel = 𝒗 − 𝝎 E × 𝒓 is the atmosphere-relative velocity; 𝝎 E, 𝜇 , and 𝑅 E denote the Earth’s angular velocity vector, gravitational parameter, and radius, respectively; 𝜌 0 is the reference atmospheric density; 𝐻 is the atmospheric scale height; 𝜒 D,𝑖 switches the aerodynamic model by phase; 𝑆 is the reference area; and 
+
+¯𝐶 D,𝑖 is the mean drag coefficient. For a powered phase, ¯𝑇 𝑖 and ¯𝐼 sp ,𝑖 are the identified mean propulsion parameters and 
+
+§¯𝑚 𝑖 = − ¯𝑇 𝑖 
+
+¯𝐼 sp ,𝑖 𝑔 0
+
+. (4) The stochastic replanner changes thrust direction without thrust-magnitude control. Its deterministic boundary condition is 
+
+𝑥 (𝑡 0) = 𝑥 0, 𝜓 f (𝑥 (𝑡 f )) = 0. (5) where 𝑡 0 and 𝑡 f are the initial and terminal times, respectively, and 𝜓 f collects the prescribed terminal orbital conditions following the auxiliary phase construction in Ref. [7]. The applicable deterministic path conditions include 
+
+|𝑞𝛼 | ≤ ( 𝑞𝛼 )max , | § 𝑢 | ≤ § 𝑢 max , 𝑚 ≥ 𝑚 min , (6) where 𝑞 is dynamic pressure, 𝛼 is the angle of attack, (𝑞𝛼 )max is the prescribed upper bound on |𝑞𝛼 |, §𝑢 max is the maximum allowable thrust direction rate, and 𝑚 min is the minimum allowable vehicle mass. 
+
+B. Chance-constrained nominal replan 
+
+Let 𝑔 𝑟 (𝜁 (𝑡 )) ≤ 0 denote a scalar path constraint, where 𝜁 (𝑡 ) = col (𝑥 (𝑡 ), 𝑢 (𝑡 )) . The corresponding marginal chance constraint is 
+
+Pr {𝑔 𝑟 (𝜁 (𝑡 )) ≤ 0} ≥ 1 − 𝜋 𝑟 , 𝑡 ∈ [ 𝑡 0, 𝑡 f ], (7) where Pr denotes probability and 𝜋 𝑟 is the allowable violation probability. Linearizing the constraint about the nominal trajectory gives 𝐺 𝑟 (𝑡 ) = ∇𝑔 𝑟 (𝜁 (𝑡 )) T. Under the local Gaussian approximation, Eq. (7) is enforced by 
+
+𝑔 𝑟 (𝜁 (𝑡 )) + 𝛽 𝑟 (𝑡 ) ≤ 0, 𝛽 𝑟 (𝑡 ) = 𝜅 𝑟 
+
+√
+
+𝐺 𝑟 (𝑡 )𝑃 𝜁 (𝑡 )𝐺 𝑟 (𝑡 )T, (8) 4veT(u)
+
+rLaunch site 
+
+eT(u)-ψ
+
+vrel 
+
+α
+
+ϕFig. 1 Coordinate frames and angle definitions used in the ascent trajectory replanning model. 
+
+with 
+
+𝜅 𝑟 = Φ −1N (1 − 𝜋 𝑟 ), (9) where ΦN is the standard normal cumulative distribution function and 𝑃 𝜁 (𝑡 ) is the state-control covariance supplied by the feedback design in Sec. III. The mass lower bound in Eq. (6) is handled separately. Because thrust direction is the only feedback command, the mass state has no direct feedback authority. Its uncertainty margin is therefore propagated from the disturbance model in Sec. II.C and imposed as a deterministic reserve on the nominal mass constraint. For a currently accepted set of stochastic margins, the nominal replanning problem is 
+
+P1 : min   
+
+> 𝑥 (·) ,𝑢 (·)
+
+𝐽 traj [𝑥 (·) , 𝑢 (·)] (10a) 
+
+s.t. dynamics in Eq. (2) , (10b) boundary conditions in Eq. (5) , (10c) tightened path constraints in Eq. (8) , (10d) where the trajectory objective 𝐽 traj follows the design in Ref. [7]. The resulting nonlinear optimal control problem is solved using sequential convex programming. Its standard implementation details are omitted here. 
+
+C. Uncertainty model and scaling 
+
+Let 𝑘 = 0, . . . , 𝑁 − 1 index the global discretization intervals. Uncertainty is introduced around the identified mean trajectory in terms of residual propulsion and aerodynamic quantities. For an interval 𝑘 belonging to phase 𝑖 , the physical propulsion and aerodynamic quantities are represented as 
+
+𝑇 𝑘 = ¯𝑇 𝑖 + 𝛿𝑇 (𝑖 ) 
+
+> b
+
++ 𝛿𝑇 𝜂,𝑘 , (11a) 
+
+𝐶 D,𝑘 = ¯𝐶 D,𝑖 + 𝛿𝐶 (𝑖 ) 
+
+> D,b
+
++ 𝛿𝐶 D, 𝜂,𝑘 , (11b) 
+
+§𝑚 𝑘 = §¯𝑚 𝑖 + 𝛿 §𝑚 (𝑖 ) 
+
+> b
+
++ 𝛿 §𝑚 𝜂,𝑘 , (11c) where the subscript b denotes a residual that is persistent over the affected burn, whereas the subscript 𝜂 denotes interval-wise variability. Collect the corresponding residuals in 
+
+𝜔 𝑘 =
+
+
+
+𝛿𝑇 (𝑖 ) 
+
+> b
+
++ 𝛿𝑇 𝜂,𝑘 
+
+𝛿 §𝑚 (𝑖 ) 
+
+> b
+
++ 𝛿 §𝑚 𝜂,𝑘 
+
+𝛿𝐶 (𝑖 ) 
+
+> D,b
+
++ 𝛿𝐶 D, 𝜂,𝑘 
+
+
+
+= 𝐿 (𝑖 ) 
+
+> b
+
+𝜉 b + 𝐿 (𝑖 ) 
+
+> 𝜂
+
+𝜉 𝑘 , (12) 5where 
+
+𝜉 b ∼ N ( 0, 𝐼 𝑛 b ), 𝜉 𝑘 i.i.d.
+
+∼ N ( 0, 𝐼 3), 𝜉 b ⊥ 𝜉 𝑘 . (13) Here ⊥ denotes statistical independence. The same 𝜉 b appears at every node of phase 𝑖 , whereas 𝜉 𝑘 is redrawn inde-pendently from interval to interval. Thus the persistent source produces cross-time covariance without requiring its particular realization to be known by the planner. 
+
+𝜉 b contains the persistent standardized coordinates shared across all applicable intervals, whereas 𝜉 𝑘 is indepen-dently redrawn at each interval. The phase-dependent matrix 𝐿 (𝑖 ) 
+
+> b
+
+∈ R3×𝑛 b maps the global persistent coordinates to the physical uncertainty vector active in phase 𝑖 , while 𝐿 (𝑖 ) 
+
+> 𝜂
+
+∈ R3×3 maps the interval-wise independent uncertainty. For either source class ◦ ∈ { b, 𝜂 }, let the covariance matrix satisfy 
+
+Σ(𝑖 )◦ = 𝐿 (𝑖 )◦ (𝐿 (𝑖 )◦ )T = blkdiag 
+
+( [ (𝜎 (𝑖 )◦,𝑇 )2 𝜌 (𝑖 )◦,𝑇 §𝑚 𝜎 (𝑖 )◦,𝑇 𝜎 (𝑖 )◦, §𝑚 
+
+𝜌 (𝑖 )◦,𝑇 §𝑚 𝜎 (𝑖 )◦,𝑇 𝜎 (𝑖 )◦, §𝑚 (𝜎 (𝑖 )◦, §𝑚 )2
+
+]
+
+, (𝜎 (𝑖 )◦,𝐶 D )2
+
+)
+
+, 𝜎 (𝑖 )◦, §𝑚 = 𝜎 (𝑖 )◦,𝑇 
+
+¯𝐼 sp ,𝑖 𝑔 0
+
+, (14) where the 𝜎 terms denote the corresponding standard deviations, and 𝜌 (𝑖 )◦,𝑇 §𝑚 is the correlation coefficient between the thrust and mass flow rate uncertainties. The state error at replanning activation is modeled as 𝛿𝑥 0 ∼ N ( 0, 𝑃 0) and is independent of the propulsion and aerodynamic uncertainty sources. The initial uncertainty can also account for a finite replanning delay 𝑡 delay between fault diagnosis and activation of the replanned trajectory. In this case, the uncertainty at fault diagnosis is propagated through the pre-replan closed-loop dynamics over the delay interval, including the disturbance accumulated during this period. All equations used by the optimizer are nondimensionalized from three base scales in the International System of Units (SI): 𝐿 0, 𝑇 0, and 𝑀 0, representing length, time, and mass, respectively. For any physical quantity 𝑞 with dimension [𝑞 ] = 𝐿 𝑎 𝑇 𝑏 𝑀 𝑐 , define 
+
+𝑞 nd = 𝐿 −𝑎  
+
+> 0
+
+𝑇 −𝑏  
+
+> 0
+
+𝑀 −𝑐  
+
+> 0
+
+𝑞. (15) This scaling gives mutually consistent nondimensional forms for position, velocity, acceleration, thrust, and covari-ance entries. The subscript “nd” is omitted below for readability. 
+
+## III. Fast System Level Synthesis for Persistent Uncertainty 
+
+For a fixed nominal trajectory from P1, this section computes a local feedback law and the covariance required by Eq. (8). 
+
+A. FOH discrete perturbation model 
+
+Following the standard FOH discretization in Refs. [48, 49], linearization and exact variational integration over one control interval give 
+
+𝛿𝑥 𝑘 +1 = 𝐴 𝑘 𝛿𝑥 𝑘 + 𝐵 − 
+
+> 𝑘
+
+𝛿𝑢 𝑘 + 𝐵 + 
+
+> 𝑘
+
+𝛿𝑢 𝑘 +1 + 𝐷 𝑘 𝜔 𝑘 , (16) Define 
+
+𝜒 𝑘 = [𝛿𝑥 T 
+
+> 𝑘
+
+𝛿𝑢 T
+
+> 𝑘
+
+]T , 𝜈 𝑘 = 𝛿𝑢 𝑘 +1 − 𝛿𝑢 𝑘 . (17) The initial augmented covariance is factored as 
+
+𝑃 𝜒, 0 = 𝐿 −1 𝐿 T
+
+> −1
+
+, 𝜒 0 = 𝐿 −1𝜉 −1, 𝜉 −1 ∼ N ( 0, 𝐼 7), (18) where the index −1 is used only to place the random initial condition in the same causal disturbance sequence as the process disturbances beginning at 𝑘 = 0. Since each global interval 𝑘 belongs to a unique phase, the phase-dependent loading matrices 𝐿 (𝑖 ) 
+
+> b
+
+and 𝐿 (𝑖 ) 
+
+> 𝜂
+
+are denoted by 𝐿 b,𝑘 and 𝐿 𝜂,𝑘 , respectively, according to the phase active on interval 𝑘 .The augmented dynamics are then 
+
+𝜒 𝑘 +1 = ˜𝐴 𝑘 𝜒 𝑘 + ˜𝐵 𝑘 𝜈 𝑘 + ˜𝐷 𝑘 𝐿 b,𝑘 𝜉 b + ˜𝐷 𝑘 𝐿 𝜂,𝑘 𝜉 𝑘 , (19) with 
+
+˜𝐴 𝑘 =
+
+[𝐴 𝑘 𝐵 − 
+
+> 𝑘
+
++ 𝐵 +
+
+> 𝑘
+
+0 𝐼 
+
+]
+
+, ˜𝐵 𝑘 =
+
+[𝐵 +
+
+> 𝑘
+
+𝐼 
+
+]
+
+, ˜𝐷 𝑘 =
+
+[𝐷 𝑘 
+
+0
+
+]
+
+. (20) 6Remark 1 (FOH state augmentation) The extra component of 𝜒 𝑘 stores the current control deviation 𝛿𝑢 𝑘 . Because 
+
+𝛿𝑢 𝑘 +1 = 𝛿𝑢 𝑘 + 𝜈 𝑘 , the original endpoint sequence is recovered recursively from 𝛿𝑢 0 and {𝜈 𝑘 }. The augmentation therefore converts the FOH perturbation dynamics into a Markov system without changing the physical control param-eterization. 
+
+B. Feedback objective and process weighting 
+
+The local feedback objective is 
+
+𝐽 c = E
+
+[
+
+𝛿𝑥 T 
+
+> f
+
+𝑄 f 𝛿𝑥 f +
+
+π 𝑡 f
+
+> 𝑡 0
+
+(
+
+𝛿𝑥 T𝑄 c𝛿𝑥 + 𝛿𝑢 T 𝑅 c𝛿𝑢 
+
+)
+
+𝑑𝑡 
+
+]
+
+, (21) where 𝑄 c  0 and 𝑅 c  0 are the continuous-time process weights on the state and control deviations, respectively, and 
+
+𝑄 f  0 is the terminal penalty matrix. Applying the FOH discretization to the running cost in Eq. (21), together with the augmented variables in Eq. (17), gives the interval quadratic form 
+
+[𝜒 𝑘 
+
+𝜈 𝑘 
+
+]T
+
+𝑊 FOH 
+
+> 𝑘
+
+[𝜒 𝑘 
+
+𝜈 𝑘 
+
+]
+
+, 𝑊 FOH  
+
+> 𝑘
+
+=
+
+[ 𝑄 FOH  
+
+> 𝑘
+
+𝑆 FOH 
+
+> 𝑘
+
+(𝑆 FOH  
+
+> 𝑘
+
+)T 𝑅 FOH 
+
+> 𝑘
+
+]
+
+. (22) Because Eq. (22) is the FOH representation of the nonnegative quadratic integral in Eq. (21), 
+
+𝑊 FOH  
+
+> 𝑘
+
+ 0, 𝑅 FOH  
+
+> 𝑘
+
+ 0, 𝑘 = 0, . . . , 𝑁 − 1. (23) To focus feedback authority near active path constraints, the stage weight is augmented in the spirit of Riccati-ZORO [34]. Consider a normalized scalar nodal constraint 𝑔 𝑟 ,𝑘 (𝜁 𝑘 ) < 0, where 𝜁 𝑘 = col (𝑥 𝑘 , 𝑢 𝑘 ) and ¯𝜁 𝑘 denotes the corresponding reference state-control vector. Define 
+
+𝑊 𝑘 = 𝑊 FOH  
+
+> 𝑘
+
++
+
+’ 
+
+> 𝑟 ∈ I 𝑘
+
+𝜏 𝑟 ,𝑘 𝜑 ′′ (min {𝑔 𝑟 ,𝑘 ( ¯𝜁 𝑘 ), −𝜀 𝑟 
+
+}) [ ∇𝜁 𝑔 𝑟 ,𝑘 ( ¯𝜁 𝑘 )T 0]T [∇𝜁 𝑔 𝑟 ,𝑘 ( ¯𝜁 𝑘 )T 0] ,𝜑 (𝑠 ) = − log (− 𝑠 ), 0 < 𝜀 𝑟 < 1.
+
+(24) with 𝜏 𝑟 ,𝑘 ≥ 0, and partition 
+
+𝑊 𝑘 =
+
+[𝑄 𝑘 𝑆 𝑘 
+
+𝑆 T 
+
+> 𝑘
+
+𝑅 𝑘 
+
+]
+
+. (25) Since 𝜑 ′′ (𝑠 ) > 0 for 𝑠 < 0, every added term in Eq. (24) is positive semidefinite. Hence 
+
+𝑊 𝑘  0, 𝑅 𝑘  0, 𝑘 = 0, . . . , 𝑁 − 1. (26) The augmented terminal weight ˜𝑄 f := blkdiag (𝑄 f , 02×2)  0 (27) embeds the physical-state terminal penalty in the FOH-augmented state. The discrete feedback objective used below is therefore 
+
+𝐽 phys := E
+
+[
+
+𝜒 T 
+
+> 𝑁
+
+˜𝑄 f 𝜒 𝑁 + 
+
+> 𝑁 −1
+
+’
+
+> 𝑘 =0
+
+[𝜒 𝑘 
+
+𝜈 𝑘 
+
+]T
+
+𝑊 𝑘 
+
+[𝜒 𝑘 
+
+𝜈 𝑘 
+
+] ]
+
+. (28) 
+
+C. System Level Parameterization 
+
+Introduce 
+
+𝑑 𝑘 = ˜𝐷 𝑘 𝜔 𝑘 , 𝑑 −1 = 𝜒 0, (29) so that 
+
+𝜒 𝑘 +1 = ˜𝐴 𝑘 𝜒 𝑘 + ˜𝐵 𝑘 𝜈 𝑘 + 𝑑 𝑘 . (30) 7Let 𝑛 𝜒 = dim ( 𝜒 𝑘 ) and 𝑛 𝜈 = dim (𝜈 𝑘 ). For a causal response, let Φ𝑥 𝑘, 𝑗 ∈ R𝑛 𝜒 ×𝑛 𝜒 and Φ𝑢 𝑘, 𝑗 ∈ R𝑛 𝜈 ×𝑛 𝜒 denote the state- and input-response matrices from the disturbance block 𝑑 𝑗 , respectively. Then 
+
+𝜒 𝑘 = Φ 𝑥 𝑘, −1 𝑑 −1 +
+
+> 𝑘 −1
+
+’
+
+> 𝑗 =0
+
+Φ𝑥 𝑘, 𝑗 𝑑 𝑗 , (31a) 
+
+𝜈 𝑘 = Φ 𝑢 𝑘, −1 𝑑 −1 +
+
+> 𝑘 −1
+
+’
+
+> 𝑗 =0
+
+Φ𝑢 𝑘, 𝑗 𝑑 𝑗 . (31b) Define 
+
+𝝌 = col ( 𝜒 0, . . . , 𝜒 𝑁 ), 𝝂 = col (𝜈 0, . . . , 𝜈 𝑁 −1), 𝒅 = col (𝑑 −1, 𝑑 0, . . . , 𝑑 𝑁 −1), (32) and let 𝚽 𝑥 and 𝚽 𝑢 be the corresponding block-lower-triangular response matrices. For example, 
+
+𝚽 𝑥 =
+
+
+
+𝐼 0 · · · 0
+
+Φ𝑥  
+
+> 1,−1
+
+𝐼 . . . ...... . . . . . . 0
+
+Φ𝑥 𝑁 , −1 · · · Φ𝑥 𝑁 , 𝑁 −2 𝐼 
+
+
+
+. (33) Let 𝑍 be the block down-shift operator and define 𝑨 = blkdiag ( ˜𝐴 0, . . . , ˜𝐴 𝑁 −1, 0) and 𝑩 = blkdiag ( ˜𝐵 0, . . . , ˜𝐵 𝑁 −1, 0)
+
+with compatible terminal padding. We recall the finite-horizon System Level Parameterization of Ref. [50, Theo-rem 2.1]. 
+
+Lemma 1 (Finite-horizon System Level Parameterization) Block lower triangular matrices (𝚽 𝑥 , 𝚽 𝑢 ) are achiev-able closed-loop responses of Eq. (30) if and only if 
+
+[𝐼 − 𝑍 𝑨 − 𝑍 𝑩 ]
+
+[𝚽 𝑥 
+
+𝚽 𝑢 
+
+]
+
+= 𝐼. (34) 
+
+For every feasible pair, the causal feedback law 𝝂 = 𝑲 𝝌 is recovered from 
+
+𝑲 𝚽 𝑥 = 𝚽 𝑢 , 𝑲 = 𝚽 𝑢 (𝚽 𝑥 )−1. (35) Substituting the physical standardized coordinates into the abstract responses, define 
+
+Ψ𝑥 𝑘, −1 = Φ 𝑥 𝑘, −1 𝐿 −1, Ψ𝑥 𝑘, b =
+
+> 𝑘 −1
+
+’
+
+> 𝑗 =0
+
+Φ𝑥 𝑘, 𝑗 ˜𝐷 𝑗 𝐿 b, 𝑗 , Ψ𝑥 𝑘, 𝑗 = Φ 𝑥 𝑘, 𝑗 ˜𝐷 𝑗 𝐿 𝜂, 𝑗 . (36) Then 
+
+𝜒 𝑘 = Ψ 𝑥 𝑘, −1𝜉 −1 + Ψ𝑥 𝑘, b𝜉 b +
+
+> 𝑘 −1
+
+’
+
+> 𝑗 =0
+
+Ψ𝑥 𝑘, 𝑗 𝜉 𝑗 , (37) and 
+
+𝑃 𝜒,𝑘 = E[ 𝜒 𝑘 𝜒 T 
+
+> 𝑘
+
+] = Ψ 𝑥 𝑘, −1 (Ψ𝑥 𝑘, −1)T + Ψ𝑥 𝑘, b (Ψ𝑥 𝑘, b)T +
+
+> 𝑘 −1
+
+’
+
+> 𝑗 =0
+
+Ψ𝑥 𝑘, 𝑗 (Ψ𝑥 𝑘, 𝑗 )T. (38) Because 𝜒 𝑘 = col (𝛿𝑥 𝑘 , 𝛿𝑢 𝑘 ), Eq. (38) directly supplies the covariance 𝑃 𝜁 ,𝑘 required in Sec. II.B. 
+
+Remark 2 (Cross-time structure of persistent uncertainty) For the independent sources, statistical independence permits covariance to be accumulated after squaring each response factor, as in Õ 𝑗 Ψ𝑥 𝑘, 𝑗 (Ψ𝑥 𝑘, 𝑗 )T. For the persistent source, the same 𝜉 b acts at every node, so its responses must first be summed and only then squared: 
+
+Ψ𝑥 𝑘, b (Ψ𝑥 𝑘, b)T =
+
+(’
+
+> 𝑗
+
+Φ𝑥 𝑘, 𝑗 ˜𝐷 𝑗 𝐿 b, 𝑗 
+
+) ( ’
+
+> ℓ
+
+Φ𝑥 𝑘,ℓ ˜𝐷 ℓ 𝐿 b,ℓ 
+
+)T
+
+. (39) 
+
+Consequently, Eq. (38) retains the cross-time covariance induced by the persistent source without treating its realization as known. 
+
+8D. Persistent-correlation response optimization 
+
+Define the full-horizon response variable 
+
+𝒛 := col ( 𝝌 , 𝝂 ) = 𝚽 𝒅 , 𝚽 :=
+
+[𝚽 𝑥 
+
+𝚽 𝑢 
+
+]
+
+, (40) and let 𝑾 be the symmetric full-horizon representation of the stage and terminal weights, defined by 
+
+𝒛 T𝑾 𝒛 = 𝜒 T 
+
+> 𝑁
+
+˜𝑄 f 𝜒 𝑁 + 
+
+> 𝑁 −1
+
+’
+
+> 𝑘 =0
+
+[𝜒 𝑘 
+
+𝜈 𝑘 
+
+]T [𝑄 𝑘 𝑆 𝑘 
+
+𝑆 T 
+
+> 𝑘
+
+𝑅 𝑘 
+
+] [ 𝜒 𝑘 
+
+𝜈 𝑘 
+
+]
+
+. (41) The abstract disturbance is generated by the physical random coordinates as 
+
+𝒅 = 𝑫 𝜂 𝝃 𝜂 + 𝑮 b𝜉 b, 𝝃 𝜂 = col (𝜉 −1, 𝜉 0, . . . , 𝜉 𝑁 −1), (42) where the blocks of 𝝃 𝜂 are mutually independent and 
+
+𝑫 𝜂 = blkdiag 
+
+(
+
+𝐿 −1, ˜𝐷 0 𝐿 𝜂, 0, . . . , ˜𝐷 𝑁 −1 𝐿 𝜂, 𝑁 −1
+
+)
+
+, 𝑮 b = col 
+
+(
+
+0, ˜𝐷 0 𝐿 b,0, . . . , ˜𝐷 𝑁 −1 𝐿 b, 𝑁 −1
+
+)
+
+. (43) Using Eq. (40), the physical objective in Eq. (28) becomes 
+
+𝐽 phys = E[𝒛 T𝑾 𝒛 ] = tr 
+
+(
+
+𝚽 T𝑾 𝚽 E[𝒅𝒅 T]
+
+)
+
+= tr 
+
+(
+
+𝚽 T𝑾 𝚽 𝑴 phys 
+
+)
+
+,
+
+where 
+
+𝑴 phys := E[𝒅𝒅 T] = 𝑫 𝜂 𝑫 T 
+
+> 𝜂
+
++ 𝑮 b𝑮 T 
+
+> b
+
+. (44) The first term in Eq. (44) is block diagonal across the disturbance blocks, whereas 𝑮 b𝑮 T 
+
+> b
+
+introduces the cross-time off-diagonal blocks associated with the shared persistent coordinate, consistent with Remark 2. Let 
+
+Z𝐴𝐵 := [𝐼 − 𝑍 𝑨 − 𝑍 𝑩 ] , (45) and define the causal response set 
+
+C :=
+
+{
+
+𝚽 =
+
+[𝚽 𝑥 
+
+𝚽 𝑢 
+
+]
+
+: 𝚽 𝑥 , 𝚽 𝑢 are causal block-lower-triangular responses 
+
+}
+
+. (46) The physical response-synthesis problem is 
+
+P2a : min  
+
+> 𝚽 ∈ C
+
+𝐽 phys (𝚽 ) (47a) 
+
+s.t. Z𝐴𝐵 𝚽 = 𝐼. (47b) 
+
+Lemma 2 (Structure of the physical disturbance covariance) Let 𝑛 𝑑 = dim ( 𝒅 ). The covariance matrix 𝑴 phys de-fined in Eq. (44) satisfies 
+
+𝑴 phys  0, rank ( 𝑴 phys ) < 𝑛 𝑑 . (48) 
+
+Proof. Positive semidefiniteness follows directly from Eq. (44). Partition 𝒒 = col (𝑞 −1, 𝑞 0, . . . , 𝑞 𝑁 −1) conformably with 𝒅 . For any 𝑘 ∈ { 0, . . . , 𝑁 − 1}, Eq. (20) gives 
+
+˜𝐷 𝑘 = [𝐷 T 
+
+> 𝑘
+
+0]T.
+
+Choose 𝑞 𝑗 = 0 for 𝑗 ≠ 𝑘 and 
+
+𝑞 𝑘 = [0T 𝑣 T]T, 𝑣 ≠ 0,
+
+where 𝑣 has the dimension of the augmented control component. Then ˜𝐷 T 
+
+> 𝑘
+
+𝑞 𝑘 = 0, which gives 
+
+𝐿 T 
+
+> 𝜂,𝑘
+
+˜𝐷 T 
+
+> 𝑘
+
+𝑞 𝑘 = 0, 𝐿 T 
+
+> b,𝑘
+
+˜𝐷 T 
+
+> 𝑘
+
+𝑞 𝑘 = 0.
+
+9Since 𝑞 −1 = 0, Eq. (43) therefore yields 𝑫 T 
+
+> 𝜂
+
+𝒒 = 0 and 𝑮 T 
+
+> b
+
+𝒒 = 0. Equation (44) then gives 𝑴 phys 𝒒 = 0 for a nonzero 𝒒 ,which implies rank ( 𝑴 phys ) < 𝑛 𝑑 . □
+
+By Lemma 2, 𝑴 phys is positive semidefinite but singular. The persistent contribution additionally satisfies 
+
+rank (𝑮 b𝑮 T 
+
+> b
+
+) ≤ rank (𝑮 b) ≤ dim (𝜉 b). (49) For 𝛼 > 0, define 
+
+𝑴 𝛼 = 𝑴 phys + 𝛼𝐼  0 (50) and 
+
+𝐽 𝛼 (𝚽 ) := tr 
+
+(
+
+𝚽 T𝑾 𝚽 𝑴 𝛼 
+
+)
+
+= 𝐽 phys (𝚽 ) + 𝛼𝐽 reg (𝚽 ), 𝐽 reg (𝚽 ) := tr 
+
+(
+
+𝚽 T𝑾 𝚽 
+
+)
+
+. (51) The corresponding regularized auxiliary problem is 
+
+P2b : min  
+
+> 𝚽 ∈ C
+
+𝐽 𝛼 (𝚽 ) (52a) 
+
+s.t. Z𝐴𝐵 𝚽 = 𝐼. (52b) Since 𝑴 𝛼  0, let 
+
+𝑴 𝛼 = 𝑪 𝛼 𝑪 T 
+
+> 𝛼
+
+(53) be its Cholesky factorization and define ̂
+
+𝚽 := 𝚽 𝑪 𝛼 . (54) The transformed auxiliary problem is 
+
+P2c : min ̂
+
+> 𝚽 ∈ C
+
+tr 
+
+(̂ 
+
+𝚽 T𝑾 ̂ 𝚽 
+
+)
+
+(55a) 
+
+s.t. Z𝐴𝐵 ̂ 𝚽 = 𝑪 𝛼 . (55b) 
+
+Theorem 1 (Fast regularized solution under persistent correlation) Let 𝚽 ★ be an optimal solution of P2a and let ̂
+
+𝚽 ★𝛼 be an optimal solution of P2c . Define 
+
+𝚽 ★𝛼 :=̂ 𝚽 ★𝛼 𝑪 −1 
+
+> 𝛼
+
+. (56) 
+
+Suppose the stage and terminal weighting matrices satisfy 
+
+𝑊 𝑘  0, 𝑅 𝑘  0, 𝑘 = 0, . . . , 𝑁 − 1, ˜𝑄 f  0. (57) 
+
+Then 𝚽 ★𝛼 is feasible for P2a and satisfies 
+
+0 ≤ 𝐽 phys (𝚽 ★𝛼 ) − 𝐽 phys (𝚽 ★) ≤ 𝛼𝐽 reg (𝚽 ★). (58) 
+
+Moreover, ̂ 𝚽 ★𝛼 can be obtained from one common Riccati backward recursion together with mutually independent affine recursions for the 𝑁 + 1 transformed disturbance columns. Proof. Since 𝑴 𝛼  0, its Cholesky factor 𝑪 𝛼 is nonsingular. Both 𝑪 𝛼 and 𝑪 −1 
+
+> 𝛼
+
+are block lower triangular. Therefore, right multiplication by 𝑪 𝛼 defines a bijection on C. In addition, 
+
+tr 
+
+(
+
+𝚽 T𝑾 𝚽 𝑴 𝛼 
+
+)
+
+= tr 
+
+(̂ 
+
+𝚽 T𝑾 ̂ 𝚽 
+
+)
+
+, (59) and right multiplication of Z𝐴𝐵 𝚽 = 𝐼 by 𝑪 𝛼 gives Z𝐴𝐵 ̂ 𝚽 = 𝑪 𝛼 . Hence P2b and P2c are equivalent, and the inverse image 𝚽 ★𝛼 =̂ 𝚽 ★𝛼 𝑪 −1 
+
+> 𝛼
+
+is an optimal solution of P2b .Problems P2a and P2b have the same feasible set because they share the decision set C and the constraint Z𝐴𝐵 𝚽 = 𝐼 .Therefore, 𝚽 ★𝛼 is also feasible for P2a . Moreover, Eq. (57) implies 𝑾  0, and hence 𝐽 reg (𝚽 ) ≥ 0. Optimality of 𝚽 ★
+
+for P2a gives 
+
+𝐽 phys (𝚽 ★) ≤ 𝐽 phys (𝚽 ★𝛼 ), (60) 10 whereas optimality of 𝚽 ★𝛼 for P2b gives 
+
+𝐽 phys (𝚽 ★𝛼 ) + 𝛼𝐽 reg (𝚽 ★𝛼 ) ≤ 𝐽 phys (𝚽 ★) + 𝛼𝐽 reg (𝚽 ★). (61) Combining Eqs. (60) and (61) yields Eq. (58). It remains to derive the solution structure of P2c . Let 
+
+J := {− 1, 0, . . . , 𝑁 − 1}, 𝑟 𝑗 = 𝑗 + 1, 𝑗 ∈ J . (62) For each 𝑗 ∈ J , let 𝐶 𝑘, 𝑗 ∈ R𝑛 𝜒 ×𝑛 𝜒 denote the (𝑘, 𝑗 ) block of 𝑪 𝛼 , and let ̂ Φ𝑥 𝑘, 𝑗 ∈ R𝑛 𝜒 ×𝑛 𝜒 and ̂ Φ𝑢 𝑘, 𝑗 ∈ R𝑛 𝜈 ×𝑛 𝜒 denote the corresponding transformed state- and input-response blocks, respectively. Because 𝑪 𝛼 is block lower triangular, 
+
+𝐶 𝑘, 𝑗 = 0 for 𝑘 < 𝑟 𝑗 . For each 𝑗 ∈ J , the 𝑗 th block column of the constraint in P2c satisfies ̂
+
+Φ𝑥 𝑟 𝑗 , 𝑗 = 𝐶 𝑟 𝑗 , 𝑗 ,̂ Φ𝑥 𝑘 +1, 𝑗 = ˜𝐴 𝑘 ̂ Φ𝑥 𝑘, 𝑗 + ˜𝐵 𝑘 ̂ Φ𝑢 𝑘, 𝑗 + 𝐶 𝑘 +1, 𝑗 , 𝑘 = 𝑟 𝑗 , . . . , 𝑁 − 1. (63) If 𝑟 𝑗 = 𝑁 , the recursion over 𝑘 = 𝑟 𝑗 , . . . , 𝑁 − 1 is vacuous and column 𝑗 contributes only a terminal cost. Since the objective of P2c is the sum of the quadratic costs of its block columns, each 𝑗 ∈ J defines a finite-horizon affine linear-quadratic (LQ) problem with common quadratic data and the column-specific affine terms 𝐶 𝑘, 𝑗 .The standard finite-horizon LQ dynamic-programming argument [51, 52] extends directly to these matrix response blocks because both the trace cost and Eq. (63) decompose columnwise. Thus, for each 𝑗 ∈ J , the cost-to-go can be written as 
+
+V𝑘 +1, 𝑗 
+
+(̂ 
+
+Φ𝑥 𝑘 +1, 𝑗 
+
+)
+
+= tr 
+
+[
+
+(̂ Φ𝑥 𝑘 +1, 𝑗 )T P𝑘 +1̂ Φ𝑥 𝑘 +1, 𝑗 
+
+]
+
++ 2 tr 
+
+[
+
+ΠT
+
+> 𝑘 +1, 𝑗
+
+̂ Φ𝑥 𝑘 +1, 𝑗 
+
+]
+
++ 𝑠 𝑘 +1, 𝑗 , (64) where P𝑘 +1 ∈ R𝑛 𝜒 ×𝑛 𝜒 , Π𝑘 +1, 𝑗 ∈ R𝑛 𝜒 ×𝑛 𝜒 , and 𝑠 𝑘 +1, 𝑗 ∈ R is independent of ̂ Φ𝑥 𝑘 +1, 𝑗 . Substituting Eq. (63) into the corresponding Bellman recursion and minimizing with respect to ̂ Φ𝑢 𝑘, 𝑗 gives the common Riccati recursion 
+
+P𝑁 = ˜𝑄 f , (65a) 
+
+H𝑘 = 𝑅 𝑘 + ˜𝐵 T 
+
+> 𝑘
+
+P𝑘 +1 ˜𝐵 𝑘 , (65b) 
+
+G𝑘 = 𝑆 T 
+
+> 𝑘
+
++ ˜𝐵 T 
+
+> 𝑘
+
+P𝑘 +1 ˜𝐴 𝑘 , (65c) 
+
+L𝑘 = −H −1 
+
+> 𝑘
+
+G𝑘 , (65d) 
+
+P𝑘 = 𝑄 𝑘 + ˜𝐴 T 
+
+> 𝑘
+
+P𝑘 +1 ˜𝐴 𝑘 − G T 
+
+> 𝑘
+
+H −1 
+
+> 𝑘
+
+G𝑘 , 𝑘 = 𝑁 − 1, . . . , 0. (65e) Here H𝑘 ∈ R𝑛 𝜈 ×𝑛 𝜈 and G𝑘 , L𝑘 ∈ R𝑛 𝜈 ×𝑛 𝜒 . The conditions in Eq. (57) imply P𝑘  0 and H𝑘  0 throughout the backward recursion. For each 𝑗 ∈ J , matching the terminal cost gives Π𝑁 , 𝑗 = 0. If 𝑟 𝑗 ≤ 𝑁 − 1, define Γ𝑘, 𝑗 , Π𝑘, 𝑗 ∈ R𝑛 𝜒 ×𝑛 𝜒 and 
+
+Λ𝑘, 𝑗 ∈ R𝑛 𝜈 ×𝑛 𝜒 by 
+
+Γ𝑘, 𝑗 = P𝑘 +1𝐶 𝑘 +1, 𝑗 + Π𝑘 +1, 𝑗 , (66a) 
+
+Λ𝑘, 𝑗 = −H −1 
+
+> 𝑘
+
+˜𝐵 T 
+
+> 𝑘
+
+Γ𝑘, 𝑗 , (66b) 
+
+Π𝑘, 𝑗 = ˜𝐴 T 
+
+> 𝑘
+
+Γ𝑘, 𝑗 + G T 
+
+> 𝑘
+
+Λ𝑘, 𝑗 , 𝑘 = 𝑁 − 1, . . . , 𝑟 𝑗 , (66c) The minimizing transformed control-response block is ̂
+
+Φ𝑢 𝑘, 𝑗 = L𝑘 ̂ Φ𝑥 𝑘, 𝑗 + Λ𝑘, 𝑗 , 𝑘 = 𝑟 𝑗 , . . . , 𝑁 − 1, (67) and ̂ Φ𝑥 𝑘, 𝑗 is propagated forward by Eq. (63) over the same index range. The detailed algebra is given in Appendix A. Equation (65) is independent of 𝑗 and therefore requires one backward Riccati sweep. Once P𝑘 and L𝑘 are available, Eqs. (66)–(67) are independent across the transformed disturbance columns. □
+
+The decomposition above also reduces to the standard Riccati state-feedback law, which depends only on the current state, when the persistent uncertainty component is removed. 
+
+Corollary 1 (Reduction under independent disturbances) If 𝑮 b = 0, the optimal regularized response reduces to the current augmented-state feedback law 
+
+𝜈 𝑘 = L𝑘 𝜒 𝑘 , 𝑘 = 0, . . . , 𝑁 − 1. (68) 11 Table 1 Computational complexity of the principal feedback design operations. 
+
+Operation Single-thread work Ideal parallel depth Common Riccati sweep, Eq. (65) 𝑂 (𝑁𝑛 3
+
+> 𝜒
+
+) 𝑂 (𝑁𝑛 3
+
+> 𝜒
+
+)
+
+Transformed response recursion, Eqs. (63), (66) and (67) 𝑂 (𝑁 2𝑛 3
+
+> 𝜒
+
+) 𝑂 (𝑁𝑛 3
+
+> 𝜒
+
+)
+
+Structured Cholesky factorization, Eq. (53) 𝑂 (𝑁𝑛 3 
+
+> 𝜒
+
++ 𝑁 2𝑛 2
+
+> 𝜒
+
+) 𝑂 (𝑛 3 
+
+> 𝜒
+
++ 𝑁 2𝑛 2
+
+> 𝜒
+
+)
+
+Recovery of 𝚽 , Eq. (56) 𝑂 (𝑁 3𝑛 3
+
+> 𝜒
+
+) 𝑂 (𝑁 2𝑛 3
+
+> 𝜒
+
+)
+
+Physical covariance and backoff evaluation, Eqs. (8), (36) and (38) 𝑂 (𝑁 2𝑛 2
+
+> 𝜒
+
+) 𝑂 (𝑁𝑛 2
+
+> 𝜒
+
+)
+
+Proof. When 𝑮 b = 0, 𝑴 𝛼 = 𝑫 𝜂 𝑫 T 
+
+> 𝜂
+
++ 𝛼𝐼 is block diagonal, and so is 𝑪 𝛼 . Hence 𝐶 𝑘, 𝑗 = 0 for 𝑘 > 𝑟 𝑗 , which gives Π𝑘, 𝑗 = Λ 𝑘, 𝑗 = 0 over every active column range. Therefore, 𝚽 𝑢 = 𝑳 𝚽 𝑥 , where 𝑳 = blkdiag (L 0, . . . , L𝑁 −1).Lemma 1 then gives 𝑲 = 𝑳 , yielding Eq. (68). □
+
+Persistent uncertainty changes this limit through the cross-time blocks of 𝑮 b𝑮 T 
+
+> b
+
+. In this case 𝑪 𝛼 is generally not block diagonal, so 𝐶 𝑘, 𝑗 can remain nonzero after the arrival of column 𝑗 . The resulting Π𝑘, 𝑗 and Λ𝑘, 𝑗 are generally nonzero, and the recovered responses need not satisfy 𝚽 𝑢 = 𝑳 𝚽 𝑥 . By Lemma 1, they nevertheless admit a causal feedback operator 𝑲 satisfying 𝑲 𝚽 𝑥 = 𝚽 𝑢 , which may contain strictly historical blocks: 
+
+𝜈 𝑘 =
+
+> 𝑘
+
+’
+
+> ℓ=0
+
+𝐾 𝑘,ℓ 𝜒 ℓ . (69) The synthesis uses the cross-time statistical structure of the persistent uncertainty without estimating the realization of 
+
+𝜉 b, thereby avoiding dependence on high-accuracy online identification of the residual propulsion uncertainty. 
+
+E. Computational complexity and parallel structure 
+
+Let 𝑁 denote the horizon length. In the present ascent application, 𝑛 𝜈  𝑛 𝜒 , while the dimensions of the persistent and independent uncertainty coordinates and the number of scalar path constraints per node are fixed. Accordingly, only the dominant dependence on 𝑁 and 𝑛 𝜒 is retained below. Table 1 summarizes the principal feedback computations. The common Riccati recursion in Eq. (65) requires 𝑂 (𝑁𝑛 3
+
+> 𝜒
+
+) work. The column-dependent affine backward recur-sions and forward response propagations in Eqs. (63), (66), and (67) require 𝑂 (𝑁 2𝑛 3
+
+> 𝜒
+
+) serial work. Once the common Riccati matrices and 𝑪 𝛼 are available, different transformed columns are independent, giving an ideal parallel depth of 𝑂 (𝑁𝑛 3
+
+> 𝜒
+
+). The structured construction of the factorization in Eq. (53) exploits the low-rank persistent contribution in Eq. (49) together with the block-diagonal independent component, and details are given in Appendix B.A. Its serial work is 𝑂 (𝑁𝑛 3 
+
+> 𝜒
+
++ 𝑁 2𝑛 2
+
+> 𝜒
+
+). The system responses 𝚽 are then recovered from Eq. (54) by right block-triangular substi-tution without explicitly forming 𝑪 −1 
+
+> 𝛼
+
+. The corresponding block recursion is given in Appendix B.B. Recovering all causal response blocks requires 𝑂 (𝑁 3𝑛 3
+
+> 𝜒
+
+) serial work. Different output block rows can be processed independently, reducing the ideal parallel depth to 𝑂 (𝑁 2𝑛 3
+
+> 𝜒
+
+). The recovered responses are used in Eq. (36) to construct the correspond-ing Ψ matrices. Equation (38) then provides the covariance used to evaluate the chance-constraint backoff in Eq. (8). These operations require 𝑂 (𝑁 2𝑛 2
+
+> 𝜒
+
+) serial work and admit parallel evaluation across nodes and constraint rows. 
+
+## IV. Task-Oriented Terminal Weight for Orbital Injection 
+
+Section III uses a generic terminal matrix 𝑄 f . This section derives that matrix from the post-injection correction effort associated with a terminal orbital error. 
+
+A. Phase-free orbital error 
+
+For a mission that does not prescribe injection phase along the target orbit, use the phase-free modified equinoctial element (MEE) vector 
+
+𝑞 e = [ 𝑝 e 𝑓 e 𝑔 e ℎe 𝑘 e]T . (70) Here 𝑝 e is the semi-latus rectum, 𝑓 e and 𝑔 e are the eccentricity-vector components, and ℎe and 𝑘 e describe the orbital plane. If a future mission requires a specified injection phase, true longitude can be restored as an additional terminal 12 Injection point Auxiliary phase Perigee 
+
+Apogee R NT
+
+Δv0
+
+Δv1Δvj 
+
+δxf δqe {Δvj }
+
+3σ
+
+Injection dispersion Fig. 2 Construction of the post-injection correction metric. 
+
+coordinate. Linearization about the nominal injection state gives 
+
+𝛿𝑞 e = 𝐺 𝑞 e 𝛿𝑥 f , (71) where 𝐺 𝑞 e is the Cartesian-to-MEE Jacobian and its mass column is zero. 
+
+B. Candidate correction impulses and post-injection correction metric 
+
+Let 𝐿 𝑗 denote the true longitude of candidate correction location 𝑗 . Define 
+
+𝑤 𝐿 = 1 + 𝑓 e cos 𝐿 + 𝑔 e sin 𝐿, 𝑠 2 
+
+> 𝐿
+
+= 1 + ℎ2e + 𝑘 2e , 𝜒 𝐿 = ℎe sin 𝐿 − 𝑘 e cos 𝐿. (72) At each candidate correction location, a local radial-transverse-normal (RTN) frame is defined, where the 𝑅 direc-tion is radial, the 𝑇 direction is transverse in the orbital plane, and the 𝑁 direction is normal to the orbital plane, as illustrated in Fig. 2. The phase-free Gauss variational mapping from RTN acceleration 𝑎 RTN = col (𝑎 R, 𝑎 T, 𝑎 N) to MEE rate is 
+
+§𝑞 e = 𝐵 𝑞 e (𝑞 e, 𝐿 )𝑎 RTN , (73) where 
+
+𝐵 𝑞 e (𝑞 e, 𝐿 ) =
+
+√ 𝑝 e
+
+𝜇 
+
+
+
+0 2𝑝 e/𝑤 𝐿 0sin 𝐿 (( 𝑤 𝐿 + 1) cos 𝐿 + 𝑓 e)/ 𝑤 𝐿 −𝑔 e 𝜒 𝐿 /𝑤 𝐿 
+
+− cos 𝐿 (( 𝑤 𝐿 + 1) sin 𝐿 + 𝑔 e)/ 𝑤 𝐿 𝑓 e 𝜒 𝐿 /𝑤 𝐿 
+
+0 0 𝑠 2 
+
+> 𝐿
+
+cos 𝐿 /( 2𝑤 𝐿 )
+
+0 0 𝑠 2 
+
+> 𝐿
+
+sin 𝐿 /( 2𝑤 𝐿 )
+
+
+
+. (74) A small impulse Δ𝑣 𝑗 ∈ R3 at 𝐿 𝑗 produces 𝐵 𝑞 e (𝑞 ★ 
+
+> e
+
+, 𝐿 𝑗 )Δ𝑣 𝑗 . Stack 
+
+𝐻 orb = [𝐵 𝑞 e (𝑞 ★ 
+
+> e
+
+, 𝐿 1) · · · 𝐵 𝑞 e (𝑞 ★ 
+
+> e
+
+, 𝐿 𝑁 𝐿 )] , Δ𝑉 = col (Δ𝑣 1, . . . , Δ𝑣 𝑁 𝐿 ). (75) The number and longitudes of the candidate correction locations can be selected according to mission requirements. Since 𝐻 orb ∈ R5×3𝑁 𝐿 , at least two candidate locations are required for full row rank. However, if their true longitudes differ by 𝜋 , as for perigee and apogee, the columns associated with the N-direction impulses become linearly dependent. In this case, 𝐻 orb cannot have full row rank, and at least one additional non-antipodal candidate location is required. 13 The equivalent correction effort is defined by the minimum total impulse magnitude 
+
+P3a : 𝐽 ★ 
+
+> corr ,1
+
+= min  
+
+> {Δ𝑣 𝑗 }
+> 𝑁 𝐿
+
+’
+
+> 𝑗 =1
+
+‖Δ𝑣 𝑗 ‖2 (76a) 
+
+s.t. 𝐻 orb Δ𝑉 = −𝐺 𝑞 e 𝛿𝑥 f . (76b) Because 𝐽 ★ 
+
+> corr ,1
+
+has units of velocity, it provides an equivalent Δ𝑣 measure of injection error: physically, it is the min-imum post-injection velocity increment required, within the selected correction locations and local orbital model, to remove the terminal orbital deviation. 
+
+C. Task-oriented terminal weight from correction energy 
+
+The preceding subsection provides a physical metric for evaluating injection accuracy. The feedback design addi-tionally requires a quadratic terminal weight, which is obtained from the minimum-energy counterpart of that correction problem: 
+
+P3b : 𝐽 ★ 
+
+> corr ,2
+
+= min  
+
+> {Δ𝑣 𝑗 }
+> 𝑁 𝐿
+
+’
+
+> 𝑗 =1
+
+‖Δ𝑣 𝑗 ‖22 (77a) 
+
+s.t. 𝐻 orb Δ𝑉 = −𝐺 𝑞 e 𝛿𝑥 f . (77b) 
+
+Theorem 2 (Orbit-correction terminal weight) Assume 𝐻 orb has full row rank and define 
+
+𝑄 orb f,𝑥 = 𝐺 T 
+
+> 𝑞 e
+
+(𝐻 orb 𝐻 T
+
+> orb
+
+)−1𝐺 𝑞 e . (78) 
+
+Then every sufficiently small terminal perturbation represented by Eq. (71) satisfies 
+
+𝛿𝑥 T 
+
+> f
+
+𝑄 orb f,𝑥 𝛿𝑥 f = 𝐽 ★
+
+> corr ,2
+
+. (79) 
+
+Proof. The Lagrangian of P3b is 
+
+L = Δ 𝑉 TΔ𝑉 + 2𝜆 T (𝐻 orb Δ𝑉 + 𝐺 𝑞 e 𝛿𝑥 f ). (80) Stationarity with respect to Δ𝑉 gives 
+
+𝜕 L
+
+𝜕 Δ𝑉 = 2Δ𝑉 + 2𝐻 T
+
+> orb
+
+𝜆 = 0, (81) so Δ𝑉 = −𝐻 T
+
+> orb
+
+𝜆 . Substitution into the equality constraint yields 
+
+−𝐻 orb 𝐻 T
+
+> orb
+
+𝜆 = −𝐺 𝑞 e 𝛿𝑥 f . (82) Because 𝐻 orb has full row rank, 𝐻 orb 𝐻 T 
+
+> orb
+
+is nonsingular and 
+
+𝜆 ★ = (𝐻 orb 𝐻 T
+
+> orb
+
+)−1𝐺 𝑞 e 𝛿𝑥 f , Δ𝑉 ★ = −𝐻 T 
+
+> orb
+
+(𝐻 orb 𝐻 T
+
+> orb
+
+)−1𝐺 𝑞 e 𝛿𝑥 f . (83) Therefore 
+
+𝐽 ★ 
+
+> corr ,2
+
+= (Δ𝑉 ★)TΔ𝑉 ★ = 𝛿𝑥 T 
+
+> f
+
+𝐺 T 
+
+> 𝑞 e
+
+(𝐻 orb 𝐻 T
+
+> orb
+
+)−1𝐺 𝑞 e 𝛿𝑥 f = 𝛿𝑥 T 
+
+> f
+
+𝑄 orb f,𝑥 𝛿𝑥 f ,
+
+which proves Eq. (79). □
+
+For a zero-mean terminal error with covariance 𝑃 f , Eq. (79) gives 
+
+E[𝐽 ★
+
+> corr ,2
+
+] = tr (𝑄 orb f,𝑥 𝑃 f ). (84) Hence the quadratic terminal penalty associated with 𝑄 orb f,𝑥 has the direct interpretation of expected minimum post-injection correction energy. The terminal matrix in Eq. (21) is therefore chosen as 
+
+𝑄 f = 𝜆 f 𝑄 orb f,𝑥 , 𝜆 f > 0, (85) so that 
+
+𝛿𝑥 T 
+
+> f
+
+𝑄 f 𝛿𝑥 f = 𝜆 f 𝐽 ★
+
+> corr ,2
+
+. (86) The augmented terminal matrix in Sec. III is then formed from 𝑄 f through Eq. (27). 14 Fault diagnosis and replanning state estimate Identified propulsion capability and uncertainty statistics 
+
+Deterministic trajectory replanning      
+
+> Linearization and FOH discretization about the reference trajectory , Eq. (19) Nominal RTI for 𝒫 1Update of the reference trajectory Construct Mα=Mphys +αI
+> Cholesky factorization Mα=CαCαT
+> Task-oriented terminal weight Transformed response synthesis 𝒫 2c Common Riccati and affine recursions, Eqs. (65) - (67) Recover System Responses Φ, Eq. (56) Construct Physical Response Matrices, Eq. (36)
+
+Feedback controller design   
+
+> Physical covariance Pχ,kand chance-constraint backoff update, Eqs. (38), (8)
+
+Converged? 
+
+> Final ascent trajectory and innovation feedback, Eq. (89)
+
+Yes No Fig. 3 Alternating architecture for stochastic post-fault ascent trajectory replanning. 
+
+## V. Real-Time Stochastic Replanning 
+
+A. Alternating replanning and mission logic 
+
+The overall replanning workflow is shown in Fig. 3. At each stochastic outer iteration, the nominal problem P1
+
+is alternated with the transformed feedback problem P2c , from which the regularized physical response is recovered according to Theorem 1. To meet the real-time requirement, the nominal update uses a real-time iteration (RTI), defined here as one warm-started convex SCP subproblem rather than a fully converged deterministic trajectory solve at every outer iteration. Given the current chance-constraint backoffs, the nominal RTI updates P1. For an accepted nominal trajectory, the local dynamics are relinearized, the process weights in Eq. (24) are refreshed, and P2c is solved to update the closed-loop responses. The resulting covariance from Eq. (38) is then used to recompute the chance-constraint backoffs for the next nominal update. The outer iteration terminates when both the scaled nominal-trajectory change and the normalized change in the backoff vector satisfy their prescribed tolerances, or when the maximum number of outer iterations, 𝑁 max ,is reached. Related local convergence and stationary-point analyses of alternating backoff updates are available for Riccati-ZORO [34]. The present algorithm is evaluated without assuming global convergence of the complete nonlinear al-ternating iteration. Failure of the stochastic outer iteration to converge does not invalidate the last accepted nominal trajectory. That trajectory may remain dynamically feasible and satisfy the deterministic constraints, while the newly evaluated stochastic backoffs are not satisfied and the corresponding chance-constraint requirements therefore remain unmet. For engineering robustness, a deterministic replanning branch without stochastic backoffs can also be solved in parallel and retained as a fallback if the stochastic outer iteration does not converge. A three-level homotopy on the 𝑞𝛼 bound is used in cases where the post-fault warm start lies far from the final aerodynamic-load limit. The homotopy proceeds from a relaxed 𝑞𝛼 bound to the final bound, with each tighter level warm-started from the last accepted trajectory. If a nominal RTI update fails or is rejected, the most recently accepted trajectory and backoffs are retained, the homotopy level is relaxed by one step subject to its lowest level, and the SCP penalty weights are adjusted for the next outer iteration. For the elliptical-orbit mission considered here, the original target and degraded target nominal problems corre-spond to Problems 1 and 3 of Ref. [7], respectively. The two branches can be computed speculatively in parallel from 15 the same flight state and identified post-fault propulsion model. Mission selection nevertheless remains priority-gated: the original target is retained whenever it satisfies the prescribed acceptance conditions within its outer-iteration budget, and the degraded-target solution is authorized only otherwise. The method is intended for the residual uncertainty remaining after a useful propulsion diagnosis. If subsequent measurements materially change the estimated propulsion capability or its uncertainty, the replanning procedure can be repeated from the updated flight state. 
+
+B. Feedback realization 
+
+The optimized system response admits two algebraically equivalent feedback realizations. In innovation form, after the next augmented state is measured, define ̂
+
+𝑑 𝑘 = 𝜒 𝑘 +1 − ˜𝐴 𝑘 𝜒 𝑘 − ˜𝐵 𝑘 𝜈 𝑘 ,̂ 𝑑 −1 = 𝜒 0. (87) The control increment is then 
+
+𝜈 𝑘 = Φ 𝑢 𝑘, −1̂ 𝑑 −1 +
+
+> 𝑘 −1
+
+’
+
+> 𝑗 =0
+
+Φ𝑢 𝑘, 𝑗 ̂ 𝑑 𝑗 . (88) Equivalently, the same closed-loop response can be realized through the causal state-history feedback law 
+
+𝝂 = 𝑲 𝝌 , 𝜈 𝑘 =
+
+> 𝑘
+
+’
+
+> ℓ=0
+
+𝐾 𝑘,ℓ 𝜒 ℓ . (89) The state-history realization requires the additional recovery of the full causal gain matrix 𝑲 and is therefore more expensive to construct online. The implementation used in this paper consequently adopts the innovation realization in Eq. (88). 
+
+## VI. Numerical Results 
+
+The numerical study consists of four sets of experiments. First, the influence of the number of candidate correction opportunities on the equivalent correction demand is examined, followed by direct verification of the resulting orbital correction. A representative post-fault case then illustrates the trajectory and terminal dispersion behavior and examines the covariance reshaping associated with the reduction in equivalent Δ𝑣 . Disturbance levels are subsequently varied to compare the Δ𝑣 reduction achieved by different feedback designs and to quantify the contributions of different uncertainty sources. Different fault conditions are considered to examine original target and degraded target outcomes together with computational performance. The common vehicle, environmental, uncertainty, and algorithm parameters are summarized in Table 2. Standard terrestrial constants such as 𝜇 , 𝑅 E, 𝝎 E, and 𝑔 0 take their conventional values and are not repeated in the table. The identified mean propulsion parameters and residual propulsion uncertainty vary among the numerical experiments and are therefore specified separately in the corresponding subsections. Here Δ𝑡 𝑘 denotes the nondimensional duration of interval 𝑘 . The reported 𝑄 c and 𝑅 c apply to the nondimensionalized state and control variables defined in Sec. II.C. The launch vehicle model is based on the Falcon 9 Full Thrust configuration and consists of two powered phases followed by one unpowered auxiliary phase. Let 𝑚 min ,𝑖 and 𝑚 prop ,𝑖 denote the dry and propellant masses of stage 𝑖 ,respectively, and let 𝑇 nom  
+
+> 𝑖
+
+and 𝐼 nom sp ,𝑖 denote the corresponding pre-fault nominal thrust and specific impulse. The three entries of (𝑞𝛼 ) (1:3 ) 
+
+> max
+
+denote the successive homotopy bounds, with the third corresponding to the prescribed physical limit. The original mission targets an elliptical orbit with perigee and apogee altitudes of 212 and 386 km , respectively. Aerodynamic effects are considered in the two powered phases, with 𝜒 D,1 = 𝜒 D,2 = 1 and 𝜒 D,3 = 0, while ¯𝑇 3 = §¯𝑚 3 = 0.Propulsion uncertainty is considered only in the first powered phase. The second powered phase includes aerodynamic uncertainty only, and no stochastic parameter uncertainty is considered in the auxiliary phase. For the numerical cases, the initial-state covariance is parameterized as 𝑃 0 = diag 
+
+(
+
+𝜎 2 
+
+> 𝑟 , 0
+
+𝐼 3, 𝜎 2 
+
+> 𝑣, 0
+
+𝐼 3, 𝜎 2
+
+> 𝑚, 0
+
+)
+
+.
+
+The implementation is primarily in Python, and the convex subproblems are solved using Clarabel. All timing tests are performed on a desktop equipped with an Intel Core Ultra 9 285K processor and 64 GB RAM using a single CPU thread. Several implementation measures are used to reduce online overhead. The nominal SCP reuses a parameterized convex model whose fixed structure is compiled in advance, so each RTI updates only the numerical parameters. The nominal and feedback updates share the FOH discretization matrices and path-constraint gradients associated with 16 Table 2 Common numerical parameters. 
+
+Parameter Value Unit Parameter Value Unit 
+
+𝑚 min ,1 49120.5 kg 𝑚 min ,2 4000 kg 
+
+𝑚 prop ,1 417267.9 kg 𝑚 prop ,2 105388.3 kg 
+
+𝑇 nom 1 7.92 MN 𝑇 nom 2 980 kN 
+
+𝐼 nom sp ,1 300 s 𝐼 nom sp ,2 348 s 
+
+𝑆 10.5209 m2 ¯𝐶 D,1 0.3 – 
+
+¯𝐶 D,2 0.3 – 𝜌 0 1.225 kg /m3
+
+𝐻 7.2 km 𝜎 𝑟 , 0 20 m 
+
+𝜎 𝑣, 0 0.5 m/s 𝜎 𝑚, 0 20 kg 
+
+𝜎 (1) 
+
+> b,𝐶 D
+
+/ ¯𝐶 D,1 20 % 𝜎 (1) 
+
+> 𝜂,𝐶 D
+
+/ ¯𝐶 D,1 10 % 
+
+𝜎 (2) 
+
+> b,𝐶 D
+
+/ ¯𝐶 D,2 20 % 𝜎 (2) 
+
+> 𝜂,𝐶 D
+
+/ ¯𝐶 D,2 10 % 
+
+𝜎 (2) 
+
+> b,𝑇
+
+0 – 𝜎 (2) 
+
+> 𝜂,𝑇
+
+0 – 
+
+𝜌 (1)  
+
+> b,𝑇 §𝑚
+
+−1 – 𝜌 (1)  
+
+> 𝜂,𝑇 §𝑚
+
+−1 –
+
+𝑁 38 – 𝑛 𝜒 9 – 
+
+𝑛 𝜈 2 – 𝑛 b 4 – 
+
+1 − 𝜋 𝑟 0.99865 – (𝑞𝛼 ) (1:3 ) 
+
+> max
+
+4000/3500/3000 Pa rad 
+
+§𝑢 max 0.1 rad /s 𝑁 max 12 – 
+
+𝑄 c diag (10 −3 𝐼 3, 100 𝐼 3, 0) – 𝑅 c 230000 𝐼 2 –
+
+𝜆 f 10000 – 𝜏 𝑟 ,𝑘 80 Δ𝑡 𝑘 –
+
+𝛼 10 −6 𝑠 𝑀 – 𝐿 0 6378145 m 
+
+𝑇 0 806.8119 s 𝑀 0 565000 kg 
+
+𝜀 𝑟 0.15 – 
+
+each reference trajectory, while selected performance-critical loops are implemented as compiled C kernels to reduce Python overhead. 
+
+A. Validation of the post-injection correction metric 
+
+The sensitivity of the post-injection correction metric to the number of candidate correction locations is first ex-amined. A deterministic trajectory is replanned for a fault occurring at 20 s , with a 20% thrust loss and unchanged mean specific impulse. The persistent and interval-wise thrust uncertainty levels in the first powered phase are set to 
+
+𝜎 (1) 
+
+> b,𝑇
+
+/𝑇 nom 1 = 𝜎 (1) 
+
+> 𝜂,𝑇
+
+/𝑇 nom 1 = 0.2% , and all other uncertainty parameters are those listed in Table 2. The replanned de-terministic trajectory is then subjected to 1000 open-loop nonlinear Monte Carlo propagations, yielding 1000 terminal state errors. 
+
+Table 3 Sensitivity of correction demand to the number of candidate correction locations. 
+
+𝑁 𝐿 Mean [m/s] P95 [m/s] Mean rel. to 16 [%] P95 rel. to 16 [%] 4 11.61551 28.86539 24.478529 24.637797 8 9.34880 23.17577 0.187219 0.070627 16 9.33133 23.15942 0.000000 0.000000 32 9.32535 23.14565 -0.064098 -0.059443 
+
+For each terminal state error, 𝐽 ★ 
+
+> corr ,1
+
+in Eq. (76) is evaluated for 𝑁 𝐿 = 4, 8, 16, and 32. The locations are uniformly distributed in true longitude over one revolution according to 
+
+𝐿 𝑗 = atan2 (𝑔 ★ 
+
+> e
+
+, 𝑓 ★ 
+
+> e
+
+) + 2𝜋 ( 𝑗 − 1)
+
+𝑁 𝐿 
+
+, 𝑗 = 1, . . . , 𝑁 𝐿 , (90) 17 where 𝑓 ★ 
+
+> e
+
+and 𝑔 ★ 
+
+> e
+
+are the modified equinoctial eccentricity components of the target orbit. The first location therefore coincides with the perigee of the target orbit, while location 𝑁 𝐿 /2 + 1 coincides with the apogee. Table 3 summarizes the resulting correction demand. P95 denotes the 95th percentile over the Monte Carlo sam-ples. With four candidate correction locations, the mean and P95 correction demands are 24 .48% and 24 .64% larger, respectively, than those obtained with 𝑁 𝐿 = 16 . Increasing 𝑁 𝐿 from 8 to 16 changes the mean correction demand by only 0.187% , while a further increase from 16 to 32 reduces it by only 0.064% . The number and placement of candidate correction locations should in general be selected according to the mission and the available post-injection propulsion capability. In the subsequent experiments, the target spacecraft is assumed to support repeated propulsion-system restarts and multiple post-injection correction maneuvers over one revolution. Accordingly, 𝑁 𝐿 = 16 is adopted throughout the remaining numerical analysis. 0 90 180 270 True longitude relative to perigee of the target orbit [deg] 0246810 Mean impulse component [m/s]  (a) NL = 4                                    
+
+> RTN
+> 045 90 135 180 225 270 315 True longitude relative to perigee of the target orbit [deg] 0246810 Mean impulse component [m/s]  (b) NL= 8
+> RTN
+> 045 90 135 180 225 270 315 True longitude relative to perigee of the target orbit [deg] 0246810 Mean impulse component [m/s]  (c) NL= 16
+> RTN
+> 045 90 135 180 225 270 315 True longitude relative to perigee of the target orbit [deg] 0246810 Mean impulse component [m/s]  (d) NL= 32
+> RTN
+
+Fig. 4 Nodewise RTN correction impulse allocation for 𝑁 𝐿 = 4, 8, 16 , and 32 .
+
+Figure 4 further shows the distribution of the computed correction impulses among the candidate locations. The transverse component dominates in all four cases. This is consistent with the considered propulsion uncertainty, which primarily perturbs the in-plane orbital motion and consequently produces much smaller normal correction demand. Finally, the accuracy of the correction metric constructed from the local MEE mapping is verified through nonlinear replay. For each of the Monte Carlo samples, the correction impulses obtained from Eq. (76) are applied chronologically in the nonlinear Cartesian orbital dynamics, with the state propagated between consecutive impulses. Table 4 reports the absolute residuals relative to the target orbit before and after nonlinear replay in semimajor axis 𝑎 , eccentricity 𝑒 ,inclination 𝑖 , right ascension of the ascending node Ω, and argument of periapsis 𝜔 . The mean residuals are reduced from 15386.326 to 11.392 m in semimajor axis, from 1.694 × 10 −3 to 1.635 × 10 −6 in eccentricity, from 3.946 × 10 −3
+
+to 2.704 × 10 −6 deg in inclination, from 1.728 × 10 −3 to 2.531 × 10 −6 deg in right ascension of the ascending node, and from 7.330 to 6.153 × 10 −3 deg in argument of periapsis. Similar reductions are observed in the corresponding P95 residuals. These results verify the numerical consistency of the post-injection correction metric with nonlinear orbital propagation over the tested terminal error range. 18 Table 4 Nonlinear replay validation of the 𝑁 𝐿 = 16 correction metric.                                                                   
+
+> Residual Before mean Before P95 After mean After P95 Mean drop [%] P95 drop [%]
+> |𝛿𝑎 |[m] 15386.326 38192.978 11.392 45.117 99.926 99.882
+> |𝛿𝑒 |1.694 ×10 −34.002 ×10 −31.635 ×10 −66.370 ×10 −699.903 99.841
+> |𝛿𝑖 |[deg] 3.946 ×10 −39.706 ×10 −32.704 ×10 −61.061 ×10 −599.931 99.891
+> |𝛿 Ω|[deg] 1.728 ×10 −34.284 ×10 −32.531 ×10 −61.039 ×10 −599.854 99.758
+> |𝛿𝜔 |[deg] 7.330 19.651 6.153 ×10 −30.025 99.916 99.875
+
+B. Representative replanning 
+
+Four methods are considered to distinguish the effects of feedback, the task-oriented terminal weight, and the treat-ment of persistent uncertainty. Corollary 1 shows that, when the persistent uncertainty component is omitted from the feedback synthesis, the optimal law reduces to 𝜈 𝑘 = L𝑘 𝜒 𝑘 and therefore depends only on the current augmented state. This feedback structure is referred to below as current-state feedback. When persistent correlation is retained, Eq. (69) generally contains feedback blocks associated with previous augmented states. The resulting controller is referred to as full-history SLS feedback. Based on these two feedback structures, M0 denotes deterministic replanning executed without feedback. M1 uses current-state feedback with a diagonal Cartesian terminal weight 𝑄 diag f = diag (𝛾𝐼 6, 0). Because the optimization variables are nondimensionalized, the six Cartesian position and velocity components are assigned the same diagonal coefficient 𝛾 . For a fair comparison, 𝛾 is selected such that tr (𝑄 diag f ) = tr (𝑄 f ), where 𝑄 f is the task-oriented terminal weight defined in Eq. (85). M2 retains the same current-state feedback but replaces 𝑄 diag f with 𝑄 f . M3 combines the task-oriented terminal weight with the full-history SLS feedback developed in Sec. III, and is the complete method proposed in this paper. Thus, the comparison from M1 to M2 isolates the effect of the task-oriented terminal weight, while the comparison from M2 to M3 shows the additional effect of retaining persistent correlation in the feedback design. The representative case considers a fault occurring at 20 s , with a 20% thrust loss and unchanged mean specific impulse. As in Sec. VI.A, the persistent and interval-wise thrust uncertainty levels in the first powered phase are set to 𝜎 (1) 
+
+> b,𝑇
+
+/𝑇 nom 1 = 𝜎 (1) 
+
+> 𝜂,𝑇
+
+/𝑇 nom 1 = 0.2% , and all other uncertainty parameters are those listed in Table 2. Each method recomputes its nominal trajectory and feedback design at every value of 𝑠 𝜎 . The same random seed is used for the 1000 Monte Carlo samples of all methods. For compactness, 𝐽 ★ 
+
+> corr ,1
+
+in Eq. (76) is reported as Δ𝑣 throughout the following numerical results. 
+
+Table 5 Method definitions and nonlinear results for the representative fault. 
+
+Method Feedback structure Terminal weight Outer iter. Mean Δ𝑣 [m/s] P95 Δ𝑣 [m/s] Any viol. [%] M0 No feedback – – 9.331 23.159 82.20 M1 Current-state Diagonal 6 5.533 13.660 0.50 M2 Current-state Task-oriented 5 2.568 6.327 1.40 M3 Full-history SLS Task-oriented 5 1.950 4.825 0.30 Figure 5 compares the nonlinear executions of M0 and M3. Only the powered-flight histories are shown, while the terminal scatter is evaluated after the auxiliary coast. The nonlinear Monte Carlo samples are also compared with the analytical covariance predictions shown by the three-standard-deviation bands and ellipses. The terminal insets are expressed in a common RTN frame associated with the target orbit. Here 𝛿𝑟 R and 𝛿𝑟 T denote the radial and transverse components of the terminal position error, while 𝛿𝑣 R and 𝛿𝑣 T denote the corresponding components of the terminal velocity error. The feedback changes not only the magnitude of the terminal dispersion but also its orientation. In particular, both the 𝛿𝑟 R–𝛿𝑣 T and 𝛿𝑟 T–𝛿𝑣 R distributions develop pronounced negative correlation. The negative correlation between 𝛿𝑟 R
+
+and 𝛿𝑣 T has a direct orbital interpretation. A positive radial position error tends to correspond to a larger orbital size and higher orbital energy, whereas a reduction in transverse velocity produces the opposite effect. The two deviations 19 0 500 1000 1500                                
+
+> Range [km]
+> 0250 500 750
+> vR [m/s]
+> (a) Radial velocity vs range
+> -5 05
+> δr T[km] 050
+> δv R [m/s]
+> 0100 200
+> Height [km]
+> 2000 4000 6000 8000
+> vT [m/s]
+> (b) Transverse velocity vs height
+> -20 020
+> δr R[km] 020
+> δv T [m/s]
+> 0200 400
+> Time [s]
+> 01000 2000 3000
+> qα  [Pa rad]
+> (c) Aerodynamic load
+> 0200 400
+> Time [s]
+> 025 50 75
+> Pitch [deg]
+> (d) Pitch and yaw
+> 0500 1000 1500
+> Range [km]
+> 0250 500 750
+> vR [m/s]
+> -5 05
+> δr T[km] 050
+> δv R [m/s]
+> 0100 200
+> Height [km]
+> 2000 4000 6000 8000
+> vT [m/s]
+> -20 020
+> δr R[km] 020
+> δv T [m/s]
+> 0200 400
+> Time [s]
+> 01000 2000 3000
+> qα  [Pa rad]
+> 0200 400
+> Time [s]
+> 025 50 75
+> Pitch [deg]
+> -4 -2 0
+> Yaw [deg]
+> -4 -2 0
+> Yaw [deg]
+> Open loop (M0) SLS feedback (M3)
+> M0 nonlinear MC paths M3 nonlinear MC paths Method nominal Analytic ±3 σband Analytic 3σellipse Pitch Yaw
+
+Fig. 5 Representative nonlinear responses and terminal dispersions for open-loop execution (M0) and full-history feedback (M3). 
+
+can therefore partially compensate each other in their effect on the resulting orbit. The 𝛿𝑟 T–𝛿𝑣 R correlation is mainly associated with orbital phase. Near perigee or apogee, an along-track position error is naturally accompanied by a radial velocity error. Their correlated variation can therefore represent mainly a shift along the target orbit rather than a substantial change in orbital geometry. Since true longitude is excluded from the phase-free MEE vector, such phase-like dispersion carries a relatively small correction penalty. This covariance reshaping is consistent with the construction of the task-oriented terminal weight. The terminal penalty is determined by the post-injection correction demand associated with a combination of state errors. The resulting feedback therefore favors terminal covariance directions that are less expensive to correct instead of simply compressing all state components separately. The quantitative comparison in Table 5 further shows the contributions of the two proposed developments. Any violation denotes the fraction of Monte Carlo samples in which at least one evaluated constraint is violated, with small engineering tolerances used in the numerical evaluation. Replacing the diagonal terminal weight in M1 with the task-oriented terminal weight in M2 reduces the mean Δ𝑣 from 5.533 to 2.568 m /s, a reduction of 53 .6% . Retaining the persistent cross-time correlation through the full-history SLS feedback further reduces the mean from 2.568 to 
+
+1.950 m /s, a further reduction of 24 .1% . Thus, both the task-oriented terminal weight and the persistent-correlation feedback design provide substantial reductions in post-injection correction demand for this case. Relative to M0, the complete M3 method reduces the mean and P95 correction demands by 79 .1% and 79 .2% , respectively. The observed any-constraint violation frequency is also reduced from 82 .2% for M0 to 0.3% for M3. 
+
+C. Propulsion uncertainty sweep 
+
+The sensitivity to propulsion uncertainty is examined using a fault occurring at 30 s , with a 15% thrust loss and unchanged mean specific impulse. The propulsion uncertainty scale 𝑠 𝜎 multiplies both thrust standard deviations in the first powered phase according to 𝜎 (1) 
+
+> b,𝑇
+
+/𝑇 nom 1 = 𝜎 (1) 
+
+> 𝜂,𝑇
+
+/𝑇 nom 1 = 0.2% 𝑠 𝜎 . While the initial state and aerodynamic uncertainty levels are held fixed as in Table 2. Each method recomputes its nominal trajectory and feedback design at every value of 𝑠 𝜎 , and the same 1000 physical disturbance realizations are used for the nonlinear Monte Carlo evaluation. For the analytical covariance results, let 𝑃 f, 𝑗 denote the contribution of uncertainty source 𝑗 to the terminal state co-variance. Under the linear covariance model, statistically independent uncertainty sources can be propagated separately, and their terminal covariance contributions add as 𝑃 f = Õ 𝑗 𝑃 f, 𝑗 . Consequently, the terminal quadratic objective can 20 0.5 1.0 1.5 2.0 2.5 3.0 3.5 4.0  
+
+> Thrust uncertainty scale sσ
+> 010 20 30 40 50 60 70
+> Δv [m/s]
+
+(a) Equivalent correction         
+
+> M0 M1 M2 M3 Mean P95
+> 0.5 1.0 1.5 2.0 2.5 3.0 3.5 4.0
+> Thrust uncertainty scale sσ
+> 10 1
+> 10 2
+> 10 3
+> 10 4
+> 10 5
+> 10 6
+> tr( QfPf,  j)
+
+(b) Terminal covariance contributions   
+
+> Initial state source Persistent thrust / mass-flow interval-wise thrust / mass-flow Persistent CD
+> interval-wise CD
+
+Fig. 6 Propulsion uncertainty sweep of correction demand and terminal covariance contributions. 
+
+also be decomposed as tr (𝑄 f 𝑃 f ) = Õ 𝑗 tr (𝑄 f 𝑃 f, 𝑗 ), where 𝑄 f is the task-oriented terminal weight. Therefore, tr (𝑄 f 𝑃 f, 𝑗 )
+
+measures the contribution of source 𝑗 to the analytical terminal quadratic objective. Figure 6(a) shows consistent improvements across the entire uncertainty range. Averaged over the eight values of 
+
+𝑠 𝜎 , M1 reduces the mean Δ𝑣 by 42 .8% relative to M0, M2 provides a further 51 .0% reduction relative to M1, and M3 provides an additional 24 .1% reduction relative to M2. Figure 6(b) further shows how the terminal quadratic objective is distributed among the uncertainty sources for M3. The persistent thrust and mass-flow uncertainty is the dominant contribution throughout the sweep and increases most rapidly as 𝑠 𝜎 grows. The contribution from interval-wise thrust and mass-flow uncertainty also increases substantially, but remains approximately one order of magnitude smaller. In contrast, the initial-state and aerodynamic contributions vary only slightly because their uncertainty levels are fixed. These results confirm that persistent propulsion uncertainty is the principal source of terminal correction demand in the considered cases and motivate its explicit treatment in the feedback design. 
+
+D. Fault envelope and computational performance Table 6 Representative fault recovery and computational results. 
+
+Case 
+
+𝑡 f
+
+[s] Thrust loss [%] 
+
+𝐼 sp 
+
+loss [%] Task Outer iter. 
+
+Δ𝑣 mean 
+
+[m/s] 
+
+Δ𝑣 95 
+
+[m/s] Time [s] Violation [%] F1 20 10 0 original 4 1.480 3.620 0.247 0.10 F2 20 20 0 original 5 1.950 4.825 0.314 0.30 F3 20 30 0 degraded 9 2.062 5.044 0.520 0.60 F4 40 10 0 original 3 1.509 3.726 0.184 0.00 F5 40 20 5 original 4 1.721 4.400 0.257 0.10 F6 40 25 10 degraded 6 1.870 4.511 0.337 0.10 F7 50 10 0 original 4 1.590 3.942 0.244 0.00 F8 50 20 5 original 4 1.682 4.178 0.250 0.00 F9 50 30 10 degraded 10 1.907 4.752 0.623 0.30 F10 70 10 0 original 3 1.497 3.553 0.181 0.00 F11 70 20 5 original 3 1.538 3.769 0.187 0.10 F12 70 30 10 original 11 1.610 4.127 0.521 0.30 
+
+21 The fault envelope study uses the same propulsion uncertainty level 𝜎 (1) 
+
+> b,𝑇
+
+/𝑇 nom 1 = 𝜎 (1) 
+
+> 𝜂,𝑇
+
+/𝑇 nom 1 = 0.2% . Table 6 reports 12 representative fault cases covering different fault times and combinations of thrust and specific-impulse loss. The cases include both recovery to the original target orbit and replanning to a degraded target orbit. For degraded-target cases, the reported outer iterations and computation times refer only to the degraded target branch. Across the 12 cases, the mean equivalent correction demand remains between 1.480 and 2.062 m /s, while the observed any-constraint violation frequency remains below 0.6% . The longest reported computation time is 0.623 s . The average computation time per outer iteration over these cases is 58 .92 ms . The nominal RTI accounts for 20 .34 ms (34 .5% ), while feedback design requires 24 .10 ms (40 .9% ). Representation and weight/constraint assembly contributes 6.68 ms 
+
+(11 .3% ), physical-response projection 3.06 ms (5.2% ), and chance-constraint backoff evaluation 2.41 ms (4.1% ). The remaining 2.33 ms (4.0% ) consists of convergence checks, bookkeeping, and other online overhead. 
+
+## VII. Conclusions 
+
+This paper developed a fast chance-constrained stochastic ascent trajectory replanner for nonfatal propulsion faults with residual uncertainty after diagnosis. The uncertainty model distinguishes a persistent component shared across the prediction horizon from interval-wise independent disturbances. For a fixed nominal trajectory, system level syn-thesis is used to parameterize the closed-loop responses. A Cholesky-based transformation of the system responses decomposes the resulting cross-time correlated feedback-design problem into column-wise affine recursions that share a common Riccati recursion, thereby retaining the persistent uncertainty structure while preserving fast Riccati-based computation. In addition, a task-oriented terminal weight is derived from the minimum-energy post-injection orbital correction in phase-free modified equinoctial elements, relating terminal covariance shaping directly to subsequent correction demand. These developments are integrated into an online stochastic ascent replanner that alternates deter-ministic trajectory replanning and feedback controller design, with the two updates coupled through covariance-based chance-constraint backoffs. The numerical results first verify the effectiveness of the proposed post-injection correction metric. The correction demand becomes nearly insensitive to further increases in the number of candidate correction locations beyond the adopted setting, while nonlinear replay confirms that the computed correction impulses effectively remove the corre-sponding orbital errors. For the representative fault case, introducing the task-oriented terminal weight reduces the mean post-injection correction demand by 53 .6% relative to the diagonal terminal weight. Explicitly retaining persis-tent cross-time correlation through the full-history SLS feedback provides a further average reduction of 24 .1% over the tested propulsion-uncertainty range. Across the fault cases covering different fault times and fault severities, the longest reported replanning time is 0.623 s , and the average computation time per outer iteration is 58 .92 ms . These results demonstrate that persistent uncertainty and task-oriented terminal covariance shaping can be incorporated into post-fault ascent replanning while retaining computational efficiency for online implementation. 
+
+## Appendix A: Affine Dynamic Programming Recursion 
+
+This appendix provides the Bellman recursion derivation of Eqs. (65)–(67). Consider transformed block column 𝑗 
+
+of P2c . For an active stage 𝑘 = 𝑟 𝑗 , . . . , 𝑁 − 1, let 
+
+𝑌 =̂ Φ𝑥 𝑘, 𝑗 , 𝑈 =̂ Φ𝑢 𝑘, 𝑗 , 𝐶 = 𝐶 𝑘 +1, 𝑗 . (91) The column dynamics in Eq. (63) can then be written as 
+
+𝑌 + = ˜𝐴 𝑘 𝑌 + ˜𝐵 𝑘 𝑈 + 𝐶. (92) The corresponding stage cost is 
+
+ℓ𝑘 (𝑌 , 𝑈 ) = tr 
+
+( [𝑌 𝑈 
+
+]T [𝑄 𝑘 𝑆 𝑘 
+
+𝑆 T 
+
+> 𝑘
+
+𝑅 𝑘 
+
+] [ 𝑌 𝑈 
+
+] )
+
+. (93) Hence the Bellman recursion for transformed column 𝑗 is 
+
+V𝑘, 𝑗 (𝑌 ) = min 
+
+> 𝑈
+
+{
+
+ℓ𝑘 (𝑌 , 𝑈 ) + V 𝑘 +1, 𝑗 
+
+( ˜𝐴 𝑘 𝑌 + ˜𝐵 𝑘 𝑈 + 𝐶 
+
+)} 
+
+. (94) 22 The terminal cost contains only the quadratic term, 
+
+V𝑁 , 𝑗 (𝑌 ) = tr 
+
+(
+
+𝑌 T ˜𝑄 f𝑌 
+
+)
+
+. (95) Accordingly, write the cost-to-go at node 𝑘 + 1 as 
+
+V𝑘 +1, 𝑗 (𝑌 +) = tr [(𝑌 +)T P𝑘 +1𝑌 +] + 2 tr 
+
+[
+
+ΠT
+
+> 𝑘 +1, 𝑗
+
+𝑌 +]
+
++ 𝑠 𝑘 +1, 𝑗 , (96) where P𝑘 +1 is the quadratic coefficient, Π𝑘 +1, 𝑗 is the column-dependent linear coefficient induced by the affine forcing, and 𝑠 𝑘 +1, 𝑗 is independent of 𝑌 +. Equation (95) gives 
+
+P𝑁 = ˜𝑄 f , Π𝑁 , 𝑗 = 0, 𝑠 𝑁 , 𝑗 = 0. (97) Define 
+
+Γ𝑘, 𝑗 = P𝑘 +1𝐶 𝑘 +1, 𝑗 + Π𝑘 +1, 𝑗 . (98) Substituting Eq. (92) into Eq. (96) and adding the stage cost in Eq. (93) gives 
+
+ℓ𝑘 (𝑌 , 𝑈 ) + V 𝑘 +1, 𝑗 (𝑌 +) = tr 
+
+(
+
+𝑈 TH𝑘 𝑈 
+
+)
+
++ 2 tr 
+
+[
+
+𝑈 T (
+
+G𝑘 𝑌 + ˜𝐵 T 
+
+> 𝑘
+
+Γ𝑘, 𝑗 
+
+)] 
+
++ tr 
+
+[
+
+𝑌 T (
+
+𝑄 𝑘 + ˜𝐴 T 
+
+> 𝑘
+
+P𝑘 +1 ˜𝐴 𝑘 
+
+)
+
+𝑌 
+
+]
+
++ 2 tr 
+
+[( ˜𝐴 T 
+
+> 𝑘
+
+Γ𝑘, 𝑗 
+
+)T
+
+𝑌 
+
+]
+
++ const ., (99) where H𝑘 and G𝑘 are defined in Eqs. (65) and const collects the terms independent of 𝑌 and 𝑈 .Since H𝑘  0, the quadratic expression in Eq. (99) has a unique optimum with respect to 𝑈 :
+
+𝑈 ★ = L𝑘 𝑌 + Λ𝑘, 𝑗 , (100) where 
+
+L𝑘 = −H −1 
+
+> 𝑘
+
+G𝑘 , Λ𝑘, 𝑗 = −H −1 
+
+> 𝑘
+
+˜𝐵 T 
+
+> 𝑘
+
+Γ𝑘, 𝑗 . (101) Substituting Eq. (100) into Eq. (99) and matching the quadratic term in 𝑌 with Eq. (96) gives 
+
+P𝑘 = 𝑄 𝑘 + ˜𝐴 T 
+
+> 𝑘
+
+P𝑘 +1 ˜𝐴 𝑘 − G T 
+
+> 𝑘
+
+H −1 
+
+> 𝑘
+
+G𝑘 . (102) Matching the linear term in 𝑌 gives 
+
+Π𝑘, 𝑗 = ˜𝐴 T 
+
+> 𝑘
+
+Γ𝑘, 𝑗 + G T 
+
+> 𝑘
+
+Λ𝑘, 𝑗 . (103) The remaining terms determine 𝑠 𝑘, 𝑗 but do not affect the optimal response and therefore need not be propagated. Finally, substituting the definitions in Eq. (91) into Eq. (100) gives the optimal transformed input-response block ̂
+
+Φ𝑢 𝑘, 𝑗 = L𝑘 ̂ Φ𝑥 𝑘, 𝑗 + Λ𝑘, 𝑗 , 𝑘 = 𝑟 𝑗 , . . . , 𝑁 − 1. (104) Equations (97) and (102) show that P𝑘 , and hence H𝑘 , G𝑘 , and L𝑘 , are independent of the transformed-column index 𝑗 . They can therefore be obtained from a single Riccati backward sweep. In contrast, Γ𝑘, 𝑗 , Π𝑘, 𝑗 , and Λ𝑘, 𝑗 depend on the column-specific term 𝐶 𝑘 +1, 𝑗 and are propagated separately for each transformed column. 
+
+## Appendix B: Implementation Details for the Response Transformation 
+
+A. Structured Factorization 
+
+The Cholesky factor 𝑪 𝛼 in Eq. (53) can be constructed by exploiting the block-diagonal independent contribution and the low-rank persistent contribution. From Eqs. (44) and (50), 
+
+𝑴 𝛼 = 𝑴 0 + 𝑮 b𝑮 T 
+
+> b
+
+, 𝑴 0 := 𝑫 𝜂 𝑫 T 
+
+> 𝜂
+
++ 𝛼𝐼. (105) 23 Since 𝑫 𝜂 is block diagonal, 𝑴 0 is block diagonal and positive definite. Its Cholesky factor can therefore be formed blockwise as 
+
+𝑴 0 = 𝑪 (0) (𝑪 (0) )T, 𝑪 (0) = blkdiag 
+
+(
+
+𝐶 (0)−1 , 𝐶 (0) 
+
+> 0
+
+, . . . , 𝐶 (0) 
+
+> 𝑁 −1
+
+)
+
+. (106) Writing 𝑮 b = [𝒈 1, . . . , 𝒈 𝑛 b ] gives 𝑮 b𝑮 T 
+
+> b
+
+= Õ𝑛 b 
+
+> 𝑖 =1
+
+𝒈 𝑖 𝒈 T 
+
+> 𝑖
+
+. Starting from 𝑪 (0) , successive rank-one Cholesky updates are therefore defined by 
+
+𝑪 (𝑖 ) (𝑪 (𝑖 ) )T = 𝑪 (𝑖 −1) (𝑪 (𝑖 −1) )T + 𝒈 𝑖 𝒈 T 
+
+> 𝑖
+
+, 𝑖 = 1, . . . , 𝑛 b, (107) with 
+
+𝑪 𝛼 = 𝑪 (𝑛 b ) . (108) Thus, the persistent contribution is incorporated through 𝑛 b rank-one updates to the block-diagonal factor. 
+
+B. Recovery of the System Responses 
+
+The system responses in Eq. (54) can be recovered by exploiting the block-lower-triangular structure of 𝑪 𝛼 . For each response row 𝑘 , the blocks are computed backward for 𝑗 = 𝑘 − 1, . . . , −1 as 
+
+Φ 
+
+> 𝑘, 𝑗
+
+𝐶 𝑗 +1, 𝑗 =̂ Φ 
+
+> 𝑘, 𝑗
+
+−
+
+> 𝑘 −1
+
+’ 
+
+> ℓ=𝑗 +1
+
+Φ 
+
+> 𝑘,ℓ
+
+𝐶 ℓ+1, 𝑗 ,  ∈ { 𝑥, 𝑢 }. (109) For 𝑗 = 𝑘 − 1, the summation vanishes, providing the starting block for the backward substitution. Since 𝑴 𝛼  0,its Cholesky factor 𝑪 𝛼 is lower triangular with strictly positive diagonal entries, hence each diagonal block 𝐶 𝑗 +1, 𝑗 is nonsingular. The right-side linear system 
+
+Φ 
+
+> 𝑘, 𝑗
+
+𝐶 𝑗 +1, 𝑗 = 𝑅 𝑘, 𝑗 (110) is solved equivalently as 
+
+𝐶 T
+
+> 𝑗 +1, 𝑗
+
+(Φ
+
+> 𝑘, 𝑗
+
+)T = 𝑅 T 
+
+> 𝑘, 𝑗
+
+(111) by triangular substitution, so the inverse of 𝐶 𝑗 +1, 𝑗 is never formed explicitly. 
+
+## Funding Sources 
+
+This work was supported by the Beijing Municipal Natural Science Foundation (L251014) and the National Natural Science Foundation of China (12525204). 
+
+## Acknowledgments 
+
+Generative AI tools were used to assist with English translation and language polishing. All technical content and the final manuscript were reviewed by the authors. 
+
+## References 
+
+[1] der Porten, P. V., Ahmad, N., Hawkins, M., and Fill, T., “Powered Explicit Guidance Modifications and Enhancements for Space Launch System Block-1 and Block-1B Vehicles,” Proceedings of the 41st Annual AAS Rocky Mountain Section Guidance and Control Conference , 2018. [2] Craig, A. S., Hawkins, M. J., Hauglie, J. E., and Hays, J. J., “Space Launch System Engine Out Capabilities,” Proceedings of the 2020 AAS/AIAA Astrodynamics Specialists Conference , 2020. [3] Pavanello, Z., Pirovano, L., Armellin, R., De Vittori, A., and Di Lizia, P., “Collision Avoidance Maneuver Optimization during Low-Thrust Propelled Trajectories,” Astrodynamics , Vol. 9, No. 2, 2025, pp. 247–271. https://doi.org/10.1007/s42064-024-0227-3. [4] Yarndley, J., Holt, H., and Armellin, R., “Multi-Target Spacecraft Mission Design Using Convex Optimization and Binary Integer Programming,” Astrodynamics , Vol. 10, No. 1, 2026, pp. 139–163. https://doi.org/10.1007/s42064-025-0274-4. [5] Li, Y., Pang, B., Wei, C., Cui, N., and Liu, Y., “Online trajectory optimization for power system fault of launch vehicles via convex programming,” Aerospace Science and Technology , Vol. 98, 2020, p. 105682. https://doi.org/10.1016/j.ast.2020. 105682. 
+
+24 [6] Miao, X., Song, Y., Zhang, Z., and Gong, S., “Successive Convexification for Ascent Trajectory Replanning of a Multistage Launch Vehicle Experiencing Nonfatal Dynamic Faults,” IEEE Transactions on Aerospace and Electronic Systems , Vol. 58, No. 3, 2022, pp. 2039–2052. https://doi.org/10.1109/TAES.2021.3133310. [7] Miao, X., Cheng, L., Zhang, Z., Li, J., and Gong, S., “Convex optimization for post-fault ascent trajectory replanning using auxiliary phases,” Aerospace Science and Technology , Vol. 138, 2023, p. 108336. https://doi.org/10.1016/j.ast.2023.108336. [8] Ma, Z., Wang, J., Liang, Y., Zhou, D., and Chen, H., “Real-time fault-tolerant guidance for launch vehicle ascending flight under thrust drop failure,” Acta Astronautica , Vol. 224, 2024, pp. 338–352. https://doi.org/10.1016/j.actaastro.2024.08.012. [9] Hacking, I., The Emergence of Probability: A Philosophical Study of Early Ideas about Probability, Induction and Statistical Inference , Cambridge University Press, Cambridge, United Kingdom, 1975. [10] Paté-Cornell, M. E., “Uncertainties in Risk Analysis: Six Levels of Treatment,” Reliability Engineering & System Safety ,Vol. 54, No. 2–3, 1996, pp. 95–111. https://doi.org/10.1016/S0951-8320(96)00067-1. [11] Cánepa, V., and Servidia, P., “Design and Evaluation of INS/GNSS Loose and Tight Coupling Applied to Launch Vehicle Integrated Navigation,” Metascience in Aerospace , Vol. 1, No. 1, 2024, pp. 66–109. https://doi.org/10.3934/mina.2024004. [12] Zhang, T., Zhao, X., Hu, R., and Fu, W., “A method for fault diagnosis of power system of carrier rocket engine based on linear-quadratic receding time-domain algorithm,” Proceedings of the Institution of Mechanical Engineers, Part G: Journal of Aerospace Engineering , Vol. 236, No. 4, 2022, pp. 739–752. https://doi.org/10.1177/09544100211021805. [13] Yu, H., Tan, S., Mao, Y., and Hu, L., “Thrust Drop Fault Diagnosis in Launch Vehicles Using Model–Data Approach,” Journal of Spacecraft and Rockets , Vol. 63, No. 4, 2026, pp. 1051–1062. https://doi.org/10.2514/1.A36506. [14] Ye, S., Chen, X., and Xiong, C., “Thrust Fault Diagnosis of Launch Vehicle Engine Based on Linear-Quadratic Receding Horizon Algorithm,” Astronautical Systems Engineering Technology , Vol. 4, No. 6, 2020, pp. 29–37. [15] Metropolis, N., and Ulam, S., “The Monte Carlo Method,” Journal of the American Statistical Association , Vol. 44, No. 247, 1949, pp. 335–341. https://doi.org/10.1080/01621459.1949.10483310. [16] Luo, Y.-z., and Yang, Z., “A Review of Uncertainty Propagation in Orbital Mechanics,” Progress in Aerospace Sciences ,Vol. 89, 2017, pp. 23–39. https://doi.org/10.1016/j.paerosci.2016.12.002. [17] Xiu, D., and Karniadakis, G. E., “The Wiener–Askey Polynomial Chaos for Stochastic Differential Equations,” SIAM Journal on Scientific Computing , Vol. 24, No. 2, 2002, pp. 619–644. https://doi.org/10.1137/S1064827501387826. [18] Wang, F., Yang, S., Xiong, F., Lin, Q., and Song, J., “Robust Trajectory Optimization Using Polynomial Chaos and Convex Optimization,” Aerospace Science and Technology , Vol. 92, 2019, pp. 314–325. https://doi.org/10.1016/j.ast.2019.06.011. [19] Vittaldev, V., Russell, R. P., and Linares, R., “Spacecraft Uncertainty Propagation Using Gaussian Mixture Models and Polynomial Chaos Expansions,” Journal of Guidance, Control, and Dynamics , Vol. 39, No. 12, 2016, pp. 2615–2626. https://doi.org/10.2514/1.G001571. [20] Marmo, N., Zavoli, A., and Ozaki, N., “Chance-Constraint Robust Trajectory Optimization with a Hybrid Multiple-Shooting Approach,” Journal of Guidance, Control, and Dynamics , Vol. 48, No. 11, 2025, pp. 2495–2511. https://doi.org/10.2514/1. G008275. [21] Martinelli, A., Buonagura, C., Giordano, C., and Topputo, F., “Stochastic Optimization Through Nonlinear Covariance Map-ping: Application to Weak Stability Boundary Transfers,” Journal of Guidance, Control, and Dynamics , Vol. 49, No. 6, 2026, pp. 1645–1661. https://doi.org/10.2514/1.G009049. [22] Qi, D. C., and Oguri, K., “Convex Bound of Nonlinear Dynamical Errors for Covariance Steering,” Journal of Guidance, Control, and Dynamics , 2026, pp. 1–11. https://doi.org/10.2514/1.G009692. [23] Zhou, X., Armellin, R., Qiao, D., and Li, X., “Time-Varying Directional State Transition Tensor for Orbit Uncertainty Propa-gation,” Journal of Guidance, Control, and Dynamics , Vol. 49, No. 3, 2026, pp. 656–672. https://doi.org/10.2514/1.G009000. [24] Geller, D. K., “Linear Covariance Techniques for Orbital Rendezvous Analysis and Autonomous Onboard Mission Planning,” 
+
+Journal of Guidance, Control, and Dynamics , Vol. 29, No. 6, 2006, pp. 1404–1414. https://doi.org/10.2514/1.19447. [25] Jin, K., Geller, D., and Luo, J., “Development and Validation of Linear Covariance Analysis Tool for Atmospheric Entry,” 
+
+Journal of Spacecraft and Rockets , Vol. 56, No. 3, 2019, pp. 854–864. https://doi.org/10.2514/1.A34297. 
+
+25 [26] Cui, P., Zhao, Z., Yu, Z., and Dai, J., “Terminal Altitude Maximization for Mars Entry Considering Uncertainties,” Acta Astronautica , Vol. 145, 2018, pp. 446–455. https://doi.org/10.1016/j.actaastro.2018.02.013. [27] Goldshtein, M., and Tsiotras, P., “Finite-horizon covariance control of linear time-varying systems,” 2017 IEEE 56th Annual Conference on Decision and Control (CDC) , IEEE, 2017, pp. 3606–3611. https://doi.org/10.1109/CDC.2017.8264189. [28] Okamoto, K., Goldshtein, M., and Tsiotras, P., “Optimal Covariance Control for Stochastic Systems Under Chance Constraints,” 
+
+IEEE Control Systems Letters , Vol. 2, No. 2, 2018, pp. 266–271. https://doi.org/10.1109/LCSYS.2018.2826038. [29] Okamoto, K., and Tsiotras, P., “Optimal Stochastic Vehicle Path Planning Using Covariance Steering,” IEEE Robotics and Automation Letters , Vol. 4, No. 3, 2019, pp. 2276–2281. https://doi.org/10.1109/LRA.2019.2901546. [30] Ridderhof, J., and Tsiotras, P., “Chance-Constrained Covariance Steering in a Gaussian Random Field via Successive Convex Programming,” Journal of Guidance, Control, and Dynamics , Vol. 45, No. 4, 2022, pp. 599–610. https://doi.org/10.2514/1. G005941. [31] Benedikter, B., Zavoli, A., Wang, Z., Pizzurro, S., and Cavallini, E., “Convex Approach to Covariance Control with Application to Stochastic Low-Thrust Trajectory Optimization,” Journal of Guidance, Control, and Dynamics , Vol. 45, No. 11, 2022, pp. 2061–2075. https://doi.org/10.2514/1.G006806. [32] Liu, F., Rapakoulias, G., and Tsiotras, P., “Optimal Covariance Steering for Discrete-Time Linear Stochastic Systems,” IEEE Transactions on Automatic Control , Vol. 70, No. 4, 2025, pp. 2289–2304. https://doi.org/10.1109/TAC.2024.3472788. [33] Messerer, F., and Diehl, M., “An Efficient Algorithm for Tube-Based Robust Nonlinear Optimal Control with Optimal Linear Feedback,” 2021 60th IEEE Conference on Decision and Control (CDC) , 2021, pp. 5810–5816. https://doi.org/10.1109/ CDC45484.2021.9683712. [34] Messerer, F., Gao, Y., Frey, J., and Diehl, M., “Riccati-ZORO: An efficient algorithm for heuristic online optimization of internal feedback laws in robust and stochastic model predictive control,” European Journal of Control , 2026, p. 101563. https://doi.org/10.1016/j.ejcon.2026.101563. [35] Shen, D., Cheng, L., and Gong, S., “Fast Stochastic Ascent Trajectory Replanning for Launch Vehicles via Alternating Op-timization,” Proceedings of the 77th International Astronautical Congress , Antalya, Turkiye, 2026. Paper IAC-26-D2-LBA-x117847. [36] Leeman, A. P., Kohler, J., Messerer, F., Lahr, A., Diehl, M., and Zeilinger, M. N., “Fast System Level Synthesis: Robust Model Predictive Control using Riccati Recursions,” IFAC-PapersOnLine , Vol. 58, No. 18, 2024, pp. 173–180. https://doi.org/ 10.1016/j.ifacol.2024.09.027. [37] Knaup, J. W., and Tsiotras, P., “Computationally Efficient Covariance Steering for Systems Subject to Parametric Disturbances and Chance Constraints,” 2023 62nd IEEE Conference on Decision and Control (CDC) , IEEE, 2023, pp. 1796–1801. https: //doi.org/10.1109/CDC49753.2023.10383671. [38] Johnson, C., “Optimal Control of the Linear Regulator with Constant Disturbances,” IEEE Transactions on Automatic Control ,Vol. 13, No. 4, 1968, pp. 416–421. https://doi.org/10.1109/TAC.1968.1098947. [39] Ridderhof, J., Tsiotras, P., and Johnson, B. J., “Stochastic Entry Guidance,” Journal of Guidance, Control, and Dynamics ,Vol. 45, No. 2, 2022, pp. 320–334. https://doi.org/10.2514/1.G005964. [40] Holzinger, M. J., Scheeres, D. J., and Alfriend, K. T., “Object Correlation, Maneuver Detection, and Characterization Using Control Distance Metrics,” Journal of Guidance, Control, and Dynamics , Vol. 35, No. 4, 2012, pp. 1312–1325. https://doi. org/10.2514/1.53245. [41] Singh, N., Horwood, J. T., and Poore, A. B., “Space Object Maneuver Detection via a Joint Optimal Control and Multiple Hypothesis Tracking Approach,” 22nd AAS/AIAA Space Flight Mechanics Meeting , 2012. AAS 12-159. [42] Gaias, G., and D’Amico, S., “Impulsive Maneuvers for Formation Reconfiguration Using Relative Orbital Elements,” Journal of Guidance, Control, and Dynamics , Vol. 38, No. 6, 2015, pp. 1036–1049. https://doi.org/10.2514/1.G000189. [43] Escribano, G., Sanjurjo-Rivo, M., Siminski, J. A., Pastor, A., and Escobar, D., “Automatic Maneuver Detection and Tracking of Space Objects in Optical Survey Scenarios Based on Stochastic Hybrid Systems Formulation,” Advances in Space Research ,Vol. 69, No. 9, 2022, pp. 3460–3477. https://doi.org/10.1016/j.asr.2022.02.034. [44] Anderson, J., Doyle, J. C., Low, S. H., and Matni, N., “System level synthesis,” Annual Reviews in Control , Vol. 47, 2019, pp. 364–393. https://doi.org/10.1016/j.arcontrol.2019.03.006. 
+
+26 [45] Chen, S., Preciado, V. M., Morari, M., and Matni, N., “Robust model predictive control with polytopic model uncertainty through System Level Synthesis,” Automatica , Vol. 162, 2024, p. 111431. https://doi.org/10.1016/j.automatica.2023.111431. [46] Bartos, M., Didier, A., Sieber, J., Köhler, J., and Zeilinger, M. N., “Stochastic MPC with Online-optimized Policies and Closed-loop Guarantees,” IEEE Transactions on Automatic Control , 2026, pp. 1–16. https://doi.org/10.1109/TAC.2026.3712693. [47] Leeman, A. P., Köhler, J., Zanelli, A., Bennani, S., and Zeilinger, M. N., “Robust Nonlinear Optimal Control via System Level Synthesis,” IEEE Transactions on Automatic Control , Vol. 70, No. 7, 2025, pp. 4780–4787. https://doi.org/10.1109/TAC.2025. 3552482. [48] Malyuta, D., Yu, Y., Elango, P., and Açıkmeşe, B., “Advances in Trajectory Optimization for Space Vehicle Control,” Annual Reviews in Control , Vol. 52, 2021, pp. 282–315. https://doi.org/10.1016/j.arcontrol.2021.04.013. [49] Malyuta, D., Reynolds, T. P., Szmuk, M., Lew, T., Bonalli, R., Pavone, M., and Açıkmeşe, B., “Convex Optimization for Trajectory Generation: A Tutorial on Generating Dynamically Feasible Trajectories Reliably and Efficiently,” IEEE Control Systems Magazine , Vol. 42, No. 5, 2022, pp. 40–113. https://doi.org/10.1109/MCS.2022.3187542. [50] Wang, Y.-S., Matni, N., and Doyle, J. C., “A System-Level Approach to Controller Synthesis,” IEEE Transactions on Automatic Control , Vol. 64, No. 10, 2019, pp. 4079–4093. https://doi.org/10.1109/TAC.2018.2890753. [51] Athans, M., and Falb, P., Optimal Control: An Introduction to the Theory and Its Applications , Lincoln Laboratory Publications, McGraw-Hill, 1966. [52] Kwakernaak, H., and Sivan, R., Linear Optimal Control Systems , Vol. 1, Wiley-interscience New York, 1972. 
+
+27

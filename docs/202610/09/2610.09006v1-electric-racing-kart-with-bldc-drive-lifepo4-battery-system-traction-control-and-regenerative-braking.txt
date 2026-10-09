@@ -1,0 +1,1097 @@
+Title: Electric Racing Kart with BLDC Drive, LiFePO4 Battery System, Traction Control and Regenerative Braking
+
+URL Source: https://arxiv.org/pdf/2610.09006v1
+
+Published Time: Thu, 08 Oct 2026 00:16:29 GMT
+
+Number of Pages: 69
+
+Markdown Content:
+Höhere Technische Bundeslehranstalt Braunau, Austria Diploma Thesis (Diplomarbeit) · 2015/16 
+
+# Electric Racing Kart with BLDC Drive, LiFePO 4 Battery System, Traction Control and Regenerative Braking 
+
+76.8 V HV system, 20 kW peak, 60 N ·m, DC/DC converter instead of an LV battery 
+
+# Johannes Stockhammer · Tom Rettenwander · Philipp Huber 
+
+As a team, we reached the national final of Jugend Innovativ 2016 and received a recognition prize in the special category Sustainability. 
+
+> jugendinnovativ.at/projekt/htl-elektro-kart
+
+Supervisors: Dipl.-Ing. Thomas Gruber (theory) · Anton Deschberger (practice) Submitted in Braunau, 4 April 2016 
+
+Third edition, 2026 arXiv:2610.09006v1 [eess.SY] 6 Oct 2026 Edition. This document is the third edition (2026, revised English edition) of the diploma thesis “Elektrokart der HTL Braunau”, submitted in April 2016 at the Höhere Technische Bundeslehranstalt (HTL) Braunau, Austria, as part of the Reife- und Diplomprüfung. 
+
+Citation. Stockhammer, J.; Rettenwander, T.; Huber, P.: Electric Racing Kart with BLDC Drive, LiFePO 4 Battery System, Traction Control and Regenerative Braking. Diploma thesis, HTL Braunau, 2016. Third edition, 2026. 
+
+Authors. Johannes Stockhammer, Tom Rettenwander and Philipp Huber. Each author was responsible for the sections of his own work package; the personal reflections in Chapter 6 are the individual views of the respective author. 
+
+Licence. This publication is licensed under the Creative Commons licence Attribution 4.0 International (CC BY 4.0): https://creativecommons.org/licenses/by/4.0/ Excluded from this licence are third-party contents, in particular data from manufacturer datasheets and standards, and the drawings and diagrams marked “not covered by the CC licence” in their captions. 
+
+Figures. Unless stated otherwise, all photographs, tables and original engineering documents are the authors’ own work. Some original engineering documents (circuit diagrams, CAD drawings and outputs of the calculation software KISSsoft) are reproduced unchanged and therefore contain German labels. 
+
+Data and code. Firmware, schematics, bills of material and calculations of the kart are published in the repository “Electric Race Kart” (https://github.com/josto-me/electric_race_kart, archived at https://doi.org/10.5281/zenodo.22990337) under the licences stated there. 
+
+Trademarks. Brand and product names are used for identification only and may be trademarks of their owners. 
+
+Tools. AI tools were used for the translation, for language editing and for preparing the schematic drawings and charts of this edition, based on the authors’ own data and specifications. 
+
+Disclaimer. This work documents a student project of 2015/16 and is not a construction manual. Work on the 76.8 V traction battery is only permissible for qualified persons in compliance with the applicable safety regulations. The operating manual in Chapter 4 applies only to the vehicle built in 2016, and statements on products and suppliers reflect the experience of 2015/16. 
+
+Keep science moving forward. Electric Racing Kart · HTL Braunau 
+
+# Preface 
+
+Electrical energy and ways of saving energy are a constant topic in the media. For this reason, we wanted to develop an electrical innovation of our own as our diploma project. When the diploma projects were chosen in the fourth year, we decided to build an electric go-kart. Our teachers, and Mr Gruber in particular, introduced us to the project. Our motivation was not only the joy of the finished vehicle, but also the chance to create something that hardly existed at the time. At the start of the project, the market for electric go-karts was still small. The aim was therefore an energy-efficient kart built from components that a student project can handle. We also discussed alternatives, such as an off-road kart or building and converting a petrol quad. In the end, the choice fell on a racing kart, because it looks the sportiest and is well suited as an exhibition piece. As a team, we reached the final of the Austrian youth innovation competition Jugend Innovativ 2015/16 in the special category Sustainability and received a recognition award. Thanks to the active support of our teachers, several companies and friends, we had the best possible conditions. This cooperation made it possible to develop and realise a well-thought-out project. iElectric Racing Kart · HTL Braunau 
+
+# Acknowledgements 
+
+First of all, we would like to thank everyone who actively supported our diploma project. Our sincere thanks go to our two supervisors, Dipl.-Ing. Thomas Gruber and Anton Deschberger. We are especially grateful to Dipl.-Ing. Thomas Gruber, who made this great project possible. He placed a great deal of trust in us and allowed us to take on this challenge despite the associated risks. We also thank our head of department, Dipl.-Ing. Paul Dirnberger, and our headmaster, Mag. Hans Blocher, who supported the project significantly. Special thanks go to all teachers involved, from both the practical and the theoretical side. Furthermore, we thank all participating companies. In particular, we thank Kartshop Ampfing for providing the racing kart chassis. We are particularly grateful to Dawo in Mattighofen for the powder coating of the aluminium parts. We thank Emicon Engineering, Salzburg, for creating a 3D model. We also thank Smartemotions GmbH and Faktor GmbH. Special mention goes to Harald Bartol. Thank you very much for your technical support and for putting us in contact with Kartshop Ampfing. Finally, we thank our parents, who actively supported us with questions about the project not only during term time but also during the holidays. ii Electric Racing Kart · HTL Braunau 
+
+# Abstract 
+
+The aim of this project was to convert a petrol-powered go-kart into an electric kart. The kart was to be efficient and at the same time simple in design. In addition, it should not become too heavy, since additional weight impairs the driving behaviour. Reaching these goals required attention to several aspects. The first challenge was the weight distribution. To solve it, the battery cells were divided into three groups, each housed in its own battery box. In this way, the boxes could be placed at suitable positions on the chassis. The weight of the motor and the electronics also had to be taken into account. For high overall efficiency, a motor with a high rated efficiency and battery cells with low self-discharge were installed. A regenerative brake feeds part of the kinetic energy back into the battery. Simple energy recovery was comparatively easy to implement, since the selected motor controller offers a recuperation function. The planned three-stage recuperation, however, required an additional microcontroller (μC). To increase the range further, the kart is equipped with a traction control system developed specifically for this vehicle. It prevents the rear wheels from spinning during acceleration by reducing the motor torque. Spinning wheels waste energy and do not contribute to acceleration, so the traction control saves energy and reduces tyre wear. Chapter 2 describes the design in detail. Chapter 3 evaluates the calculations and measurements. The main results are as follows. The calculated top speed is approx. 65 km ·h−1 . The target driving time of one hour is missed. With 80 % of the nominal battery energy, approx. 44 min result at 50 % motor load. With rated torque, the drive force at standstill exceeds the transmissible traction force by a factor of 1.7 to 2.0. The kart is therefore traction-limited up to approx. 27 km ·h−1 to 43 km ·h−1 , and traction control is essential. Regenerative braking reaches approx. 0 .45 g. On a winding track, it could cover up to about 30 % of the energy demand. The initial charging measurement quantifies the flat LiFePO 4 voltage plateau at approx. 0.7 mV to 1.8 mV per percent state of charge. During the first test runs, the cold cells showed a voltage sag under load that triggered the low-voltage alarm. The kart has no auxiliary 12 V battery. The entire low-voltage system is supplied from the traction battery through an isolated DC/DC converter. Validation of these results by driving tests is the main open point. iii Electric Racing Kart · HTL Braunau 
+
+# Kurzfassung 
+
+Elektro-Rennkart mit BLDC-Antrieb, LiFePO 4-Batteriesystem, Antischlupfregelung und Rekuperation 
+
+Im Rahmen dieses Projekts wurde ein Kart mit Benzinmotor zu einem Elektrokart umgebaut. Ziel war ein effizientes Fahrzeug mit einfachem Aufbau. Zudem sollte das Kart möglichst leicht bleiben, da ein höheres Gewicht das Fahrverhalten verschlechtert. Ein wesentlicher Faktor ist die Gewichtsverteilung. Diese wird durch eine gezielte Aufteilung der Akkus auf drei Akkukästen erreicht. Für eine hohe Effizienz wurden ein Motor mit hohem Wirkungsgrad und Akkus mit geringer Selbstentladung verbaut. Weiters verfügt das Kart über eine Nutzbremse und eine eigens entwickelte Antischlupfregelung (ASR). Die dreistufige Rekuperation erfordert einen zusätzlichen Mikrocontroller. Die ASR verhindert durchdrehende Räder, die unnötig Energie verbrauchen würden. Die Auswertung in Kapitel 3 zeigt: Die berechnete Höchstgeschwindigkeit liegt bei ca. 65 km ·h−1 .Die Zielfahrzeit von einer Stunde wird verfehlt. Bei Nennmoment übersteigt die Antriebskraft im Stand die übertragbare Reifenkraft um den Faktor 1,7 bis 2,0. Die ASR ist daher ein notwendiger Teil des Antriebskonzepts. Die Rekuperation könnte auf einer kurvenreichen Strecke bis zu etwa 30 % des Energiebedarfs decken. Bei kalten Zellen löste der Spannungseinbruch unter Last den Unterspannungsalarm aus, obwohl der Akku nicht leer war. Das Kart hat keine 12-V-Batterie. Das gesamte Niederspannungssystem wird über einen DC/DC-Wandler aus dem Traktionsakku versorgt. Die Bestätigung durch Messfahrten steht noch aus. Diese Veröffentlichung ist die dritte, überarbeitete englische Ausgabe der 2016 an der HTL Braunau eingereichten Diplomarbeit. iv Electric Racing Kart · HTL Braunau 
+
+# Table of Contents 
+
+Preface iAcknowledgements ii Abstract iii Kurzfassung iv 1 Introduction and Objectives 1
+
+1.1 Objectives . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 11.2 Innovation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 1
+
+2 Design and Implementation 3
+
+2.1 Chassis . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 32.2 Selection of the Electrical Components . . . . . . . . . . . . . . . . . . . . . . . 32.2.1 Selection of the Motor . . . . . . . . . . . . . . . . . . . . . . . . . . . . 42.2.2 The Asynchronous Machine . . . . . . . . . . . . . . . . . . . . . . . . . 52.2.3 The Synchronous Machine . . . . . . . . . . . . . . . . . . . . . . . . . . 52.2.4 The Brushless DC Motor . . . . . . . . . . . . . . . . . . . . . . . . . . 62.2.5 Selection of the Battery . . . . . . . . . . . . . . . . . . . . . . . . . . . 62.2.6 Lead-Acid Battery . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 72.2.7 LiFePO 4 Technology . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 72.2.8 Lithium Polymer Technology . . . . . . . . . . . . . . . . . . . . . . . . 72.2.9 Selection of Charger and Battery Management System . . . . . . . . . . 82.3 Energy Storage . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 92.3.1 Calculation of the Driving Time . . . . . . . . . . . . . . . . . . . . . . 10 2.3.2 Initial Charging . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 10 2.3.3 Battery Management System . . . . . . . . . . . . . . . . . . . . . . . . 11 2.4 Electric Drive . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 12 2.4.1 Calculation of the Required Motor Power . . . . . . . . . . . . . . . . . 12 2.4.2 Technical Data of the Motor Controller . . . . . . . . . . . . . . . . . . 13 2.5 Mechanical Drive . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 13 2.5.1 Dimensioning of the Rear Axle . . . . . . . . . . . . . . . . . . . . . . . 13 2.5.2 Dimensioning of the Chain . . . . . . . . . . . . . . . . . . . . . . . . . 15 2.5.3 Dimensioning of the Sprockets . . . . . . . . . . . . . . . . . . . . . . . 15 2.6 Traction Control . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 15 2.6.1 Implementation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 16 2.6.2 Electronic and Mechanical Components . . . . . . . . . . . . . . . . . . 16 2.6.3 Software . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 18 2.7 Braking System . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 19 2.7.1 Concept . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 19 2.7.2 Regenerative Braking . . . . . . . . . . . . . . . . . . . . . . . . . . . . 19 vElectric Racing Kart · HTL Braunau 
+
+2.7.3 Implementation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 20 2.7.4 Components . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 20 2.8 Safety Systems . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 20 2.9 Mechanical Add-on Parts . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 21 2.9.1 Battery Boxes . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 21 2.9.2 Plastic Fairings . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 21 2.9.3 Motor Mount . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 21 
+
+3 Results and Discussion 22 
+
+3.1 Verification against the Requirements . . . . . . . . . . . . . . . . . . . . . . . 22 3.2 Energy Demand and Driving Time . . . . . . . . . . . . . . . . . . . . . . . . . 23 3.3 Traction Limit and Need for Traction Control . . . . . . . . . . . . . . . . . . . 24 3.4 Braking and Energy Recovery Potential . . . . . . . . . . . . . . . . . . . . . . 25 3.5 Battery Behaviour during Initial Charging . . . . . . . . . . . . . . . . . . . . . 26 3.6 Cell Temperature and Voltage Sag under Load . . . . . . . . . . . . . . . . . . 27 3.7 Low-Voltage Supply without Auxiliary Battery . . . . . . . . . . . . . . . . . . 27 3.8 Parameters of the Traction Control . . . . . . . . . . . . . . . . . . . . . . . . . 28 3.9 Mechanical Reserves of the Drivetrain . . . . . . . . . . . . . . . . . . . . . . . 29 3.10 Limitations . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 30 
+
+4 Operating Manual 31 
+
+4.1 Safety Instructions . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 31 4.2 Handling of the Battery . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 31 4.3 Instructions for Electrical Accidents . . . . . . . . . . . . . . . . . . . . . . . . 32 4.3.1 Rescue and First Aid . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 32 4.4 Start-up . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 33 4.5 Parking . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 34 4.6 Charger and Charging . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 34 4.7 Storage . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 35 
+
+5 Conclusion and Outlook 36 6 Personal Reflections 39 
+
+6.1 Johannes Stockhammer . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 39 6.2 Tom Rettenwander . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 39 6.3 Philipp Huber . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 40 
+
+A Technical Data of the Components 41 B Project Diaries 43 C Work Breakdown Structure 50 D Block Diagrams and Circuit Diagrams 51 E Design Documentation 54 List of Figures 58 List of Abbreviations 59 References 60 
+
+vi Electric Racing Kart · HTL Braunau 
+
+# 1 Introduction and Objectives 
+
+This chapter presents the objectives of the project (Section 1.1) and describes its innovative aspects (Section 1.2). 
+
+# 1.1 Objectives 
+
+Electric mobility is currently the subject of broad discussion. In motor racing, electric boost systems have been used for some time to increase the torque for short periods. So far, however, the available battery capacity and the resulting short driving time severely limit their use in racing and in road traffic. Energy storage systems that considerably increase range and efficiency are already available. The objective of the project is to adapt these systems specifically to racing. Limited installation space and the lowest possible weight are the boundary conditions. Specifically, a multi-stage recuperation system (recovery of braking energy) is developed. The recovered energy extends the driving time. For short periods, it can also be used for a higher motor torque and thus for higher driving performance. In Formula 1, comparable systems are used under the name Energy Recovery System (ERS). Due to the high torque of the electric motor, large slip occurs at the drive axle during acceleration. To avoid this waste of energy, a traction control system with control algorithms tailored to this application is developed. As in road vehicles, the system is switched off in the event of a fault to ensure safety. 
+
+# 1.2 Innovation 
+
+The challenge of the project is to achieve a high drive efficiency and a long battery runtime in order to keep up with conventional karts powered by combustion engines. This is achieved by controlled feedback of kinetic energy into the battery and by a traction control system developed in-house. The division of the battery pack into 24 single cells allows an optimal weight distribution. Furthermore, a lightweight chassis from kart racing contributes significantly to weight reduction and permits high lateral accelerations. 
+
+Traction control: The system prevents the drive wheels from spinning under strong accel-eration. Large wheel slip consumes a lot of energy and does not contribute to acceleration. Traction control ensures maximum force transmission in the optimal slip range of the tyres. Speed sensors at the rear axle and at both front wheels measure the wheel speeds. Based 1Electric Racing Kart · HTL Braunau 
+
+on these signals, a control loop intervenes in the motor management. A protective function switches the system off in the event of a fault. 
+
+Battery and battery management system: The energy recovered during braking must be stored within a very short time. The selected LiFePO 4 battery technology permits very high charging currents. The use of 24 cells helps to absorb short charging current peaks. Each individual cell is monitored by a battery management system (BMS) tailored to the cell type. The BMS controls the charging and discharging process at the same time. Optionally, it allows visualisation on mobile phones and tablets. 
+
+Energy recovery by three-stage recuperation: During braking, part of the kinetic energy is converted into electrical energy and fed into the battery. To integrate the recuperation as efficiently as possible into normal driving, it is divided into three stages: • Stage 1: Recuperation when the throttle is released. Energy feedback starts without any action by the driver. • Stage 2: At the push of a button on the steering wheel, kinetic energy is recovered and the speed is reduced without using the mechanical brake. • Stage 3: If more braking force is required, the hydraulic brake acts on the rear axle in addition to the motor brake. This gives the maximum deceleration, while part of the energy is still recovered. The innovation of the project lies above all in the combination of traction control, battery management and energy recovery by three-stage recuperation. This combination is expected to result in an electric racing kart that can keep up well with conventional petrol karts. 2Electric Racing Kart · HTL Braunau 
+
+# 2 Design and Implementation 
+
+This chapter describes the topics the project team worked on during the project year 2015/16. Knowledge from mechatronics, electrical engineering, electronics and software development is presented where the respective topic requires it. Section 2.1 gives a short overview of the chassis. Section 2.2 explains the considerations behind the selection of the motor and the battery. Section 2.3 deals with the energy storage. Sections 2.4 and 2.5 describe the electric and the mechanical drive. Section 2.6 explains how an electronic traction control makes the kart more efficient during acceleration. Sections 2.7 and 2.8 cover the braking system and the safety systems. Finally, Section 2.9 describes the remaining mechanical add-on parts. 
+
+# 2.1 Chassis 
+
+Seat Front wheel Rear wheel Rear axle Frame tube Ø 30 mm (CrMo steel) Driving direction Wheelbase 1 040 mm 
+
+Figure 1: Top view of the kart frame (schematic) 
+
+Not covered by the CC licence 
+
+We bought the chassis from Kartshop Ampf-ing. It was built in 2012 by the Italian racing kart manufacturer CRG. Before delivery, the frame and the brake system were overhauled and checked for safety. The kart frame is made of a chromium-molybdenum alloyed steel. The exact com-position differs between manufacturers and is not disclosed. Molybdenum and chromium mainly increase the strength, toughness and hardenability of the steel. The frame tubes have a diameter of 30 mm, and the wheelbase of our kart is 1 040 mm (Figure 1). 
+
+# 2.2 Selection of the Electrical Components 
+
+The components have to be dimensioned to match each other, and no component may overload another electrically. Service life and quality are important to withstand the high demands of racing. Mechanical robustness and electromagnetic immunity are essential above all. Since the kart is operated outdoors, connectors and electrical components must be protected against moisture. For robust connections, the Superseal connectors common in the automotive sector are used. Outdoor use also requires a temperature resistance from −10 to 40 °C. Seals and housing parts must therefore be weatherproof. Contamination is a further problem, since it can quickly impair the cooling of air-cooled motors. All sensors must withstand dust and road dirt without loss of function. Not every component can meet all requirements equally, so 3Electric Racing Kart · HTL Braunau 
+
+compromises are often necessary. For this reason, various tests and calculations were carried out.                                               
+
+> Table 1: Comparison of the considered motor types [1–4]
+> Asynchronous machine Synchronous machine Brushless DC motor PM axial-flux motor
+> Manufacturer Loher AG VEM Golden Motor Enstroj Type ANGA-160MB-02 PE1R 132 M4 HPM-10kW EMRAX 208 Rated power in kW 11 11 10 20 Rated voltage in V 400 370 72 115 Supply frequency in Hz 50 100 DC (via controller) DC (via controller) Rated speed in min −1 2920 3000 4500 6000 Cooling air air air air Maintenance-free yes yes yes yes Weight in kg 104 70 17 9.1 Rotor inertia high very high low low Power density in kW ·kg −1
+> 0.11 0.16 0.59 2.20 Rated efficiency 0.885 0.92 0.91 0.93–0.98
+
+2.2.1 Selection of the Motor 
+
+The aim is a motor type with low weight and high efficiency. The research identified four possible motor types. Electric vehicles mainly use synchronous and asynchronous machines. Smaller vehicles, such as golf carts, more often use DC motors, which are almost exclusively permanent-magnet excited. Brushless DC motors are used when a long service life at moderate power is required. The highest power densities are achieved by permanent-magnet machines with liquid cooling. Initially, a liquid-cooled motor from Enstroj [4] was considered because of its impressive performance data. However, such a drive concept was beyond the scope of a student project. The additional effort and installation space of a liquid cooling system also spoke against this solution. With the revised power requirement of approx. 10 kW, several motor concepts are possible, since this power range can still be realised with air cooling. A far more important aspect is a high operating voltage to keep the currents low. At the beginning of the project, the team had hardly any experience with motors for electric mobility. Table 1 therefore compares the main data of the motor concepts considered. On the basis of this comparison and after technical discussions with the supervisors, the model HPM-10kW was selected. The operating principles of the machine types are summarised below. 4Electric Racing Kart · HTL Braunau 
+
+2.2.2 The Asynchronous Machine   
+
+> Rotating field ns
+> n < n s
+> Stator with three-phase winding Air gap Squirrel-cage rotor (short-circuited bars) Shaft
+> Figure 2: Operating principle of the asynchronous machine with squirrel-cage rotor (schematic)
+> Not covered by the CC licence
+
+Compared with the DC machine, the asyn-chronous motor, especially with a squirrel-cage rotor, has a considerably simpler and more robust design (Figure 2). It therefore requires little maintenance. A disadvantage is the close link between operating speed and stator frequency [5]. An asynchronous machine requires neither permanent magnets nor electromagnets in the rotor. In mains operation, no starting aid is required. A major disadvantage is the lower power density compared with other motor types. An advantage is the high efficiency at high rated power and the correspondingly low losses. 
+
+2.2.3 The Synchronous Machine 
+
+The synchronous machine exists in two basic designs, the external-pole and the internal-pole machine. Internal-pole machines are further built as salient-pole or cylindrical-rotor (non-salient pole) machines (Figure 3).     
+
+> NS
+> UVW
+> a) Cylindrical rotor, three-phase stator
+> NS
+> UVWSlip rings
+> b) Field on stator, three-phase rotor
+> NS
+> UVW
+> c) Salient-pole rotor, three-phase stator
+> Figure 3: Designs of the synchronous machine: a) internal-pole machine with cylindrical rotor, b) external-pole machine, c) internal-pole machine with salient-pole rotor (schematic)
+> Not covered by the CC licence
+
+External-pole machine: In its basic design, it corresponds to a DC machine without commutating poles. The field winding is located on poles in the stator, and the three-phase winding is in the rotor. Since the three-phase power has to be transmitted via slip rings, this design is problematic for high power. 
+
+Internal-pole machine: The three-phase winding is located in the stator and the field winding in the rotor. This design is therefore suitable for high power. High speeds require a low number of pole pairs. In salient-pole machines, the individual poles take up a lot of space on the circumference, so the rotors have a large diameter and are only suitable for low speeds. High speeds are realised with cylindrical rotors. Their outer diameter is relatively small, which limits the centrifugal forces. With permanent-magnet excitation in the rotor, these motors are 5Electric Racing Kart · HTL Braunau 
+
+suitable for high speeds and power levels in electric vehicles. A further advantage is the lower moment of inertia of the rotor compared with salient-pole machines. As an industrial drive, the synchronous machine has gained considerable importance through the development of frequency converters. It is now available as a variable-speed drive from servo motors up to the highest power ratings. Examples are a 30 MW blast-furnace blower with synchronous motor and starting converter, and drives for cement mills, conveyor systems and rolling stands up to the megawatt range [5]. 
+
+2.2.4 The Brushless DC Motor 
+
++
+
+− 
+
+> Ud
+> V1 V2 V3 V4 V5 V6 UVW
+> NS
+> Motor (PM rotor) Control electronics (motor controller) Gate drive Hall sensors
+> Figure 4: Basic circuit of a BLDC drive with B6 bridge and Hall position sensors (schematic)
+> Not covered by the CC licence
+
+The brushless DC (BLDC) motor is similar in design to a synchronous ma-chine with permanent-magnet excita-tion in the rotor. A three-phase wind-ing generates a rotating field that drives the rotor equipped with permanent magnets. In this respect, the motor does not work like a conventional DC machine. To obtain an operating be-haviour like that of a DC machine, con-trol and power electronics are required (Figure 4). In the kart, this task is performed by the motor controller. Permanent-magnet excitation allows high power, and the design, which is almost identical to that of a synchronous machine, allows simple production. Medium to high power densities are possible. A four-quadrant operation can be realised with relatively simple power electronics. An input rectifier is not required, since the battery voltage is applied directly to the DC link. A further advantage over conventional DC motors is freedom from maintenance, since brushes and commutator are omitted. 
+
+2.2.5 Selection of the Battery 
+
+The requirements for the battery are manifold. On the one hand, it should offer the highest possible energy density at low weight. On the other hand, it must be able to supply the required discharge current. Since the cells are located right next to the driver, safety had top priority. Specifically, the battery must not explode or catch fire when overcharged or short-circuited, and it must not overheat under overload. With proper use, overload should not occur, since the battery is operated within its specification. Under extreme conditions, such as racing, it can occur very quickly. A further aspect is the weight distribution on the kart. Large battery blocks are difficult to distribute, whereas many single cells allow the available space to be used optimally. With many single cells, however, a battery management system is required to balance unequal states of charge. The three technologies considered are compared below; their structure is shown in Figure 5. 6Electric Racing Kart · HTL Braunau 
+
+2.2.6 Lead-Acid Battery 
+
+Lead-acid batteries are robust and reliable (Figure 5a). A major disadvantage is the low energy density and the resulting high weight at large capacities. Very high currents can be drawn for short periods. Charging should be done with suitable chargers. With adequate care, high-quality batteries reach a service life of more than eight years. Due to its long use as a starter battery in vehicles, this technology is very mature. Overcharging is less critical than with other battery types. It does, however, cause the electrolyte to gas and produces oxyhydrogen, which can be ignited by a small spark. Fires or explosions caused by short circuits are nevertheless very rare. In unsealed batteries, electrolyte losses can be compensated easily by adding distilled water. A battery consists of several cells connected in series and usually has a voltage of 12 V. In the charged state, each cell has an open-circuit voltage of approx. 2.1 V. Deep discharge damages a lead-acid battery permanently. If a long service life is required, the cells should not be discharged below 25 % state of charge. The state of charge can be estimated relatively easily by measuring the cell voltage. 
+
+2.2.7 LiFePO 4 Technology 
+
+This technology is also known as the lithium iron phosphate battery (Figure 5b). Its main advantages are the high short-term load capacity of the cells and the high cycle life. Owing to the thermally and chemically very stable cathode material (iron phosphate), these batteries are comparatively safe against short circuit and overcharging. However, the cells contain flammable materials. With regard to explosions, lithium iron phosphate cells are safer than other lithium-ion cells. A single deep discharge or overcharge can permanently damage a cell, but does not lead to explosion or fire. A short circuit leads to gas release only after a long time. A sustained short circuit, however, can ignite the cell. A disadvantage is the relatively low cell voltage of approx. 3.2 V, which requires many cells to be connected in series. The use of a BMS is therefore essential. The energy density is lower than that of other lithium-ion technologies, but sufficient for this application. Using the full capacity reduces the service life. Due to the very flat discharge curve, estimating the state of charge from the terminal voltage is difficult. Precise values can only be obtained by measuring the discharge current with a current sensor and calculating the charge drawn. 
+
+2.2.8 Lithium Polymer Technology 
+
+LiPo batteries are mainly used in model making, where low weight is the top priority (Figure 5c). Lithium polymer cells react much more sensitively to overstress than most comparable battery types. Harmful influences are above all overcharging and deep discharge, as well as operation with excessive currents or outside the specified temperature range. Damage or excessive heating results in a considerable fire risk. Special chargers are required, and during discharge the current and the cell temperature must be monitored. An advantage is the slightly higher cell voltage compared with LiFePO 4 cells. With large capacities and high charging currents, however, the fire risk is considerable. In addition, ageing processes can unpredictably cause an internal short circuit. For safety reasons, this technology is not suitable for use in the kart. 7Electric Racing Kart · HTL Braunau 
+
+a) 
+
+− +
+
+12 V: 6 cells × approx. 2.1 V Cell connector Negative electrode (Pb) Positive electrode (PbO 2)Separator Electrolyte (dilute H 2SO 4)Housing (plastic) 
+
+b) 
+
+Separator Load / charger 
+
++ −
+
+e−
+
+Li +
+
+charging Li +
+
+discharging Cathode LiFePO 4
+
+Anode graphite (LiC 6)Al current collector Cu current collector Electrolyte: conducting salt (e.g. LiPF 6) in organic solvent 
+
+c) 
+
+Anode (graphite on Cu foil) Separator / polymer electrolyte Cathode (Li metal oxide on Al foil) Separator / polymer electrolyte Anode (graphite on Cu foil) 
+
+− +Tabs Laminated foil (pouch); layers shown exploded 
+
+Figure 5: Battery technologies: a) structure of a lead-acid battery, b) structure and operating principle of a LiFePO 4 cell, c) layer structure of a lithium polymer pouch cell (schematic) 
+
+Not covered by the CC licence 
+
+2.2.9 Selection of Charger and Battery Management System 
+
+The requirements for the battery management system result from the selected LiFePO 4 cells. These cells can very easily be overcharged or deeply discharged and must therefore be operated strictly within their specification. For a long service life, the operating parameters have to be monitored by a battery management system. Since several cells are connected in series to reach a higher voltage, charge balancing between the cells and monitoring of the cell voltages are also necessary. 8Electric Racing Kart · HTL Braunau  
+
+> Figure 6: Charger of the kart
+
+Many battery management systems are available with different configuration options. After thor-ough research, the 123\BMS system by 123elec-tric [6] was selected. The BMS is optimised for chargers of the TC/Elcon series. After technical advice from Faktor.de, the charger CL4Y-72V-16A, adapted to LiFePO 4 cells, was chosen (Fig-ure 6). The BMS releases or stops charging via an enable interface. A PC software shows all battery values at a glance. Gauges display the state of charge, cell voltage, charging or discharging current, total voltage and cell temperature. Three indicator LEDs show the active charging method. Red LEDs indicate a value outside the set limits: “E” stands for a communication error with the BMS boards, “H” for overvoltage or overtemperature, and “L” for a cell temperature below the set range or a cell voltage that is too low. Three charging methods can be selected in the software: • Emergency Charge is used to recharge a deeply discharged cell or when the BMS can no longer communicate with the individual cells. All protective functions are disabled. • Quick Charge charges the cells with maximum current until one cell reaches the maximum voltage or all cells reach the bypass voltage. Charge balancing does not take place. • Balanced Charge charges the cells with maximum current until one cell reaches the bypass voltage. The charging current is then reduced to the set minimum and the cell voltages are balanced. Charging ends when one cell reaches the maximum voltage or all cells reach the bypass voltage. 
+
+# 2.3 Energy Storage 
+
+A major disadvantage of electric vehicles is the limited range or, in racing, the limited driving time. This limitation can be reduced above all by modern battery systems and the corresponding know-how. The target is a driving time of at least one hour at 50 % motor load. LiFePO 4
+
+single cells were chosen, as they are well suited for this application (Section 2.2.5). Each cell has a nominal voltage of 3.2 V. A higher voltage is obtained by series connection. Due to the limited installation space, 24 cells can be mounted. This results in a nominal pack voltage of 24 × 3.2 V = 76 .8 V; the electrical components of the drive are designed for the 72 V voltage class. According to the manufacturer, only 80 % of the maximum capacity should be used in normal operation to achieve a long service life. A few full charging cycles to 90 % to 95 % of the maximum capacity reduce the service life only slightly. The kart is mainly intended as a demonstration vehicle and not for daily racing use. To ensure the greatest possible safety for the driver, the cells are operated strictly within the specification of the manufacturer (Table 8 in Appendix A). Remarkable is the high short-term discharge current of 1 200 A for 5 seconds per minute. 9Electric Racing Kart · HTL Braunau 
+
+2.3.1 Calculation of the Driving Time 
+
+As a first approximation, 50 % of full load is assumed in driving operation. The driving time follows from the stored energy and the average power (Table 2). The stored energy is 
+
+E = 24 × 3.2 V × 60 A ·h = 4 608 W ·h. At 50 % of the motor power of 10 kW, the average power is P = 5 kW, and the driving time is t = E/P ≈ 55 min.         
+
+> Table 2: Calculation of the driving time
+> Parameter Value
+> Nominal voltage of one cell in V 3.2 Number of cells 24 Capacity of one cell in A ·h60 Motor power in W 10 000 Total energy in W ·h4608 Driving time at 50 % motor load in min 55
+
+The driving time at 50 % motor load is 55 min. The target of one hour is therefore narrowly missed. This value refers to the full nominal energy; if only the recommended 80 % are used, approx. 44 min result (Sec-tion 3.2). How this translates into real racing or driving operation is not yet known. Expe-rience from the previous year’s electric kart project shows that this value is realistic for racing on an indoor kart track. For visitor rides at events of HTL Braunau, the possible driving time will roughly double. The driving times achievable in outdoor racing will only become apparent in test drives, as no empirical values are available for this purpose. 
+
+2.3.2 Initial Charging 
+
+The initialisation process, also called initial charging, is necessary to bring all cells of a system to a common state of charge before first use. For the cell type used (60 A ·h), the manufacturer specifies an initial charging current of 0.5 C, i.e. 30 A per cell. The end-of-charge voltage for this process is 4.0 V. For initial charging, all 24 cells are connected in parallel and charged together. After reaching the end-of-charge voltage, the cells should remain connected in parallel for a further 24 hours without the charger to reach a common voltage level. The charger available for this purpose delivered a total current of 25 A, i.e. approx. 1 A per cell. Charging was carried out on four consecutive days and only during the day, so that it could be supervised at all times; the pack rested overnight. During initialisation, the voltage was read every 2 h, and the charging curve was derived from these readings (Figure 7). The charging current was read from the display of the laboratory power supply and noted by hand. After 44 h of charging, the current had decreased to 4 A at the end-of-charge voltage of 4.0 V. In total, approx. 1 050 A ·hwere charged, i.e. approx. 44 A ·h per cell (Section 3.5). The small dips in Figure 7 after 14 h and 32 h of charging are not measurement errors. They are the points where charging was resumed after an overnight pause, and the cell voltage had relaxed towards its open-circuit value during the rest. The third pause, after 38 h, falls into the steep rise at the end of charging, where the effect is masked. The measured voltages follow the typical course of a LiFePO 4 charging curve, as sketched schematically in the BMS documentation [6]. The measurement also shows how difficult it is to determine the state of charge from the terminal voltage. The cell voltage remains almost constant over a wide range, so that small differences in terminal voltage correspond to large changes in the state of charge. The state of charge can therefore only be determined exactly by a current–time measurement. In this project, this task is performed by the battery management system. 10 Electric Racing Kart · HTL Braunau            
+
+> 04812 16 20 24 28 32 36 40 44 3.23.33.43.53.63.73.83.94.0
+
+pause pause pause Accumulated charging time in h (readings every 2 h) Cell voltage in V Cell voltage Charging current (total) State of charge (charge counting) 
+
+> 010 20 30 40
+> Charging current in A
+> 020 40 60 80 100
+> State of charge in %
+
+Figure 7: Measured cell voltage and total charging current during initial charging of the 24 parallel-connected cells, read every 2 h over four days, with the state of charge from charge counting; the dotted lines mark the overnight pauses 
+
+Not covered by the CC licence 
+
+2.3.3 Battery Management System 
+
++ to drive / charger 
+
+−
+
+Cell 1 IN module Cell 2 Cell module Cell n − 1 Cell module Cell n OUT module Bus BMS main controller USB (PC software) Enable to charger Relays Ry2 / Ry3 State-of-charge gauge Current sensor 
+
+Figure 8: Structure of the battery management system (schematic) 
+
+Not covered by the CC licence 
+
+The 123\BMS is designed for many cells connected in series. It is primarily opti-mised for LiFePO 4 cells, but can also be used with similar types such as Li-ion or LiPo. The system monitors the state of charge, the voltage and the charging and discharging process. Each cell is equipped with a cell module that monitors its electri-cal parameters. An IN module is mounted on the first cell and an OUT module on the last cell. If the charge difference be-tween the cells becomes too large, the sys-tem equalises the state of charge by balanc-ing. The BMS also monitors the maximum permissible discharge current and protects the cells against overcharging and deep dis-charge. Via a USB connection, the battery param-eters can be configured and the measured values read out and visualised. The cell modules transmit their data via a bus to the main controller (Figure 8). Communication with the charger takes place via an enable interface. Unlike comparable systems, no CAN interface is required on the charger. Two relay outputs are available for fault signalling: output Ry2 signals a connected charger, and output Ry3 signals a communication problem between the modules or the violation of certain limits. Further details are given in the datasheet [6], the main data in Table 9 (Appendix A). 11 Electric Racing Kart · HTL Braunau 
+
+# 2.4 Electric Drive 
+
+Electric drives are often dimensioned solely for the required acceleration and top speed. Due to the required feedback of braking energy, the maximum braking torque and the resulting deceleration are also of interest. As a first approximation, the rated torque of the motor can be assumed as the maximum braking torque. First, the motor data are calculated for the required top speed of approx. 60 km ·h−1 with sufficiently good acceleration. At the beginning, there were doubts as to whether the selected motor by Golden Motor could meet the quality and performance requirements. Experience from the previous year’s electric kart and extensive research, however, spoke in favour of the product. The only disadvantages are the sparse technical information on the product website and the often difficult communication with Golden Motor. Import into Europe is also difficult. The motor was therefore purchased from a German distributor. 
+
+2.4.1 Calculation of the Required Motor Power 
+
+Due to its favourable performance data and low weight, a brushless DC motor of the type HPM-10kW by Golden Motor [3] was selected (Figure 12b). The motor controller is the model VEC500, also by Golden Motor. Table 10 in Appendix A lists the technical data of the motor according to the manufacturer.            
+
+> 010 20 30 40 50 60 70 02 000 4 000 6 000 8 000 10 000
+> Vehicle speed in km ·h−1
+> Power in W, motor speed in min −1
+> Required drive power Available motor power Motor speed Motor torque Acceleration maximum speed approx. 65 km ·h−1
+> 010 20 30 40 50 60
+> Motor torque in N ·m
+> 0246810
+> Acceleration in m ·s−2
+> Figure 9: Required drive power, available motor power, motor speed, motor torque and calculated acceleration as a function of vehicle speed
+> Not covered by the CC licence
+
+The driving resistance was calculated from rolling and air resistance [7, 8] using the vehicle data in Table 12 (Appendix A). From this, the required drive power follows as a function of the vehicle speed. Figure 9 compares it with the available motor power. 12 Electric Racing Kart · HTL Braunau 
+
+The required and the available power intersect at approx. 65 km ·h−1 . The calculated top speed is therefore approx. 65 km ·h−1 , and the target of approx. 60 km ·h−1 is reached. The acceleration was calculated from the maximum wheel force and the drive force for a gear ratio of 3.2 (Figure 9). The maximum acceleration at standstill is 8.2 m ·s−2 . Note that this value assumes that the full wheel force can be transmitted; in practice, it is limited by the tyre grip and by the traction control. In addition, the calculation uses a rated speed of 4 000 min −1 and a gear ratio of 3.2, while the final design uses a rated speed of 4 500 min −1 (manufacturer data) and a ratio of 1:3.3. The results are therefore to be understood as an estimate. 
+
+2.4.2 Technical Data of the Motor Controller 
+
+Selecting the motor controller proved particularly difficult due to the requirements. Special attention was paid to the efficiency and to support for regenerative braking. The search for a BLDC motor controller with the desired properties was initially unsuccessful. Golden Motor, however, offers a controller matched to the motor that also supports regenerative braking. Like the motor, the controller is manufactured by Golden Motor and was also purchased from the German distributor Smartemotions. The controller operates the motor with field-oriented control, also known as vector control (Table 11 in Appendix A). 
+
+# 2.5 Mechanical Drive 
+
+Power is transmitted from the motor shaft to the rear axle via two sprockets and a chain. A chain was chosen, as is usual in kart racing. Since the kart is only driven on paved surfaces, little dirt is expected. The gear ratio of 1:3.3 reduces the speed, while the torque acting on the drive axle increases accordingly. With the selected motor, a starting torque that is too low is not to be expected. An excessive starting torque can be limited by the microcontroller. 
+
+2.5.1 Dimensioning of the Rear Axle 
+
+Kartshop Ampfing advised paying particular attention to the load on the rear axle caused by the motor torque. In racing, axles with a diameter of 50 mm are at their load limit at a motor torque of 100 N ·m. To ensure safety, the axle was recalculated with the calculation software KISSsoft [9]. The calculation model with bearings and load introduction is shown in Figure 11, the input data and main results are summarised in Table 3. The maximum deflection is 0.40 mm, and the torsion under load is 0.81°. The maximum equivalent stress (von Mises) of approx. 110 N ·mm −2 occurs at the load introduction of the sprocket (Figure 10). The static safety against yielding is approx. 2.8 (Section 3.9). For the intended use of the kart, this margin is sufficient. For racing, a fatigue assessment with measured load spectra would still be required, and a reinforced axle may be necessary. Note that the calculated nominal life of bearing B1 (4 290 h) is below the target of 20 000 h. For continuous racing use, this bearing position would have to be reviewed. 13 Electric Racing Kart · HTL Braunau 
+
+Table 3: Input data and results of the rear axle calculation with KISSsoft 
+
+Parameter Value 
+
+Material C45 Model length in mm 1500 Outer / inner diameter in mm 50 / 46 (tube) Speed in min −1 1000 Torque at the sprocket in N ·m 330 (100 N ·m × 3.3) Torque per wheel in N ·m 165 Bearings 3 × deep-groove ball bearing 50 × 90 mm Maximum deflection in mm 0.40 Torsion under torque in ° 0.81 Max. equivalent stress (von Mises) in N ·mm −2 approx. 110 Static safety factor of bearings S0 (B1 / B2 / B3) 4.22 / 9.85 / 33.16 Nominal bearing life (B1 / B2 / B3) in h 4290 / 54 460 / > 1 000 000 
+
+a)      
+
+> 0300 600 900 1 200 1 500
+> −0.2
+> −0.10.00.10.20.30.4
+
+Longitudinal axis y in mm Displacement in mm Component in an arbitrary plane 
+
+y component (axial) 
+
+b)      
+
+> 0300 600 900 1 200 1 500 020 40 60 80 100 120
+
+Longitudinal axis y in mm Equivalent stress in N ·mm −2 
+
+von Mises (distortion energy) Tresca (maximum shear stress) 
+
+Figure 10: Results of the rear axle calculation with KISSsoft: a) calculated deflection, b) calculated equivalent stress along the rear axle 
+
+Figure 11: Calculation model of the rear axle in KISSsoft with bearings and load introduction (software output) 
+
+14 Electric Racing Kart · HTL Braunau 
+
+2.5.2 Dimensioning of the Chain 
+
+The BLDC motor HPM-10kW is assumed to deliver a short-term peak torque of approx. 100 N ·mat the motor shaft. The chain has to be selected according to the resulting tensile load. With a pitch diameter of the motor sprocket of d = 55 mm, the chain force follows as: 
+
+F = Md/ 2 = 100 N ·m0.027 5 m ≈ 3 640 N The tensile load on the chain is approx. 3.6 kN. Note that the torque values used in the individual calculations differ: the drive calculation uses a rated torque of 30 N ·m and a starting torque of 60 N ·m, whereas chain and axle were dimensioned conservatively with 100 N ·m. To achieve the longest possible service life of the drive, a D.I.D 428HD chain was selected. In operation, the pinion on the motor shaft nevertheless failed under the torque steps of the electric motor and had to be replaced together with the chain by parts made of higher-grade materials (Section 3.9). 
+
+a) b)  
+
+> Figure 12: a) Motor mount and chain drive, b) BLDC motor HPM-10kW
+
+2.5.3 Dimensioning of the Sprockets 
+
+Weight saving is an important goal to realise a drive that is as energy-efficient as possible. According to practical experience from racing, a steel sprocket is required because of the torque load on the rear sprocket. For weight reasons, however, a steel sprocket was not to be used. After a technical discussion, Kartshop Ampfing finally recommended a sprocket made of a special aluminium alloy (Figure 12a). 
+
+# 2.6 Traction Control 
+
+Traction control (TC) prevents the drive wheels from spinning under strong acceleration. Large wheel slip consumes a lot of energy and does not contribute to acceleration. Traction control ensures maximum force transmission in the optimal slip range of the tyres [7]. Speed sensors at the rear axle and at both front wheels measure the wheel speeds. Based on these signals, a control loop intervenes in the motor management (Figure 13). The slip of the drive axle follows 15 Electric Racing Kart · HTL Braunau 
+
+from the speed of the rear axle vR and the speed of a front wheel vF as λ = ( vR − vF)/v R. A protective function switches the system off in the event of a fault. 
+
+2.6.1 Implementation    
+
+> Throttle TC controller (μC) Motor controller Motor Rear axle Front wheels Set
+> Chain
+> nFnR
+> Wheel speeds from Hall sensors
+> Figure 13: Control loop of the traction control (schematic)
+> Not covered by the CC licence
+
+Processing the wheel speeds and the de-veloped control algorithm require high computing power and low latency. Sim-ple 8-bit microcontrollers are only partly capable of this task. The choice there-fore fell on the 32-bit microcontroller SAM3X8E (ARM Cortex-M3) by At-mel, which is used on the Arduino Due platform. It offers sufficient computing power for this application, but requires sound programming skills. 
+
+2.6.2 Electronic and Mechanical Components 
+
+The following components were used to realise the traction control. Their properties were selected with particular care, and it was also important that the parts are robust and resistant to moisture. This is of course not the case for the installed μC, so it was mounted in a box made especially for the electronic components. For all parts mounted outside, moisture resistance was given particular attention.    
+
+> Magnetic field B
+> ⊗: field into the drawing plane
+> IUH
+> Figure 14: Hall effect (schematic)
+> Not covered by the CC licence
+
+Hall sensor: The Hall sensor uses the Hall effect to measure magnetic fields. If a current-carrying conductor is penetrated by a magnetic field, the Lorentz force deflects the charge carriers. As a re-sult, a voltage (Hall voltage) arises perpendicular to both the direction of current and the magnetic field (Figure 14). Three Hall sensors are mounted on the kart as speed sensors. They measure the speed of the rear axle and of the two front wheels. The Cherry GS100701 sensors stand out for their robust alu-minium housing and high accuracy. Since the sensor already contains a magnet, no additional magnetic field is required. Together with the self-made sensor rings and the μC, the sensor can thus measure the wheel speed (Figure 15). 
+
+Microcontroller: The μC is the heart of the traction control. Since all three Hall sensors have to be evaluated very quickly, a high clock frequency is required. The SAM3X8E runs at 84 MHz and has 512 KB of flash memory. This is large enough to store all data as well as the program. The flash memory keeps its content without power and needs little energy. 16 Electric Racing Kart · HTL Braunau 
+
+Since the μC does more than just control the traction, it needs enough inputs and outputs (I/O pins). The selected μC offers 54 digital I/O pins, 12 analogue inputs and 2 analogue outputs (DAC). The permissible total current of all I/O pins is 130 mA, which is sufficient for the connected signal lines. 
+
+Mechanical components: Some mechanical parts were developed and manufactured in the HTL workshops; others were produced by an external company. 
+
+a) b)   
+
+> Hall sensor Sensor ring with recesses
+> Figure 15: a) Speed measurement at the front axle with sensor ring and Hall sensor, b) principle of the speed measurement with Hall sensor and sensor ring (schematic)
+> b) not covered by the CC licence
+> Figure 16: Circuit boards of the traction control
+
+Sensor rings: The sensor rings were developed es-pecially for the kart (Figure 15a). They are located at the positions where the Hall sensors are mounted. Each ring has several identical recesses that are needed for the measurement. The Hall sensor detects every single recess and passes the signal on to the μC. From the number of pulses per unit of time and the known number of recesses, the speed can be calculated. So that the rings can be positioned exactly below the sensors, they can be moved along the axles and are fixed with four grub screws each after positioning. A ring shifting during the drive would lead to incorrect measurements and thus to a malfunction of the traction control. 
+
+Sensor holders: The sensor holders are a simple construction that positions the Hall sensors exactly above the sensor rings. The two holders at the front wheels are screwed to the brake mount. In this way, they always stay in the intended position above the sensor rings, even when steering. At the rear axle, the holder is screwed to one of the axle bearing brackets, so that here, too, the sensor cannot be moved out of position. 
+
+Circuit boards: The hardware of the traction control must meet special requirements for use in the kart. First, the electronics must be mechanically robust. Second, electromagnetic interference from the motor must not cause malfunctions. The traction control intervenes in the signal path between throttle pedal and motor controller and reduces the motor torque depending on the slip. A fault in the circuit could send wrong information to the motor controller. In the worst case, this could result in an unintended full-throttle position. Since a defect cannot 17 Electric Racing Kart · HTL Braunau 
+
+be ruled out even with interference-proof hardware, an emergency stop switch was mounted within reach of the driver. To ensure electromagnetic compatibility, only shielded cables were used, and ceramic suppression capacitors were provided at every I/O of the circuit boards. Each board has ground planes as large as possible. Vehicle ground and battery voltage are galvanically isolated by optocouplers (Figure 16). The block diagrams and circuit diagrams are given in Appendix D. Schematics, bills of material and the firmware are publicly available in the project repository [10]. 
+
+2.6.3 Software   
+
+> Program start Ignition on? Read requested motor power TC active? Slip on drive axle? Keep motor power Reduce motor power yes yes no no no yes
+> Figure 17: Flowchart of the traction control program
+> Not covered by the CC licence
+
+The program code, i.e. the control algorithm, can best be described with a flowchart (Fig-ure 17). Such a chart is often drawn before a program is written. It helps not only to explain the program code, but also during programming itself. In a way, the chart runs through the program like a common thread. The structure of the chart is comparable to the behaviour of a state machine. With such a program structure, the program, viewed from the outside, always runs through the same cycle. A certain state is queried and, after evaluation, a suitable action is taken. The program runs in an endless loop and repeats itself continuously. The chart shows, for example, that the program starts again and queries the ignition once more if the ignition is switched off. The individual steps are explained in more detail below: 
+
+Step 1: After the program start, the pro-gram checks whether the ignition is switched on. If it is switched off, the query is repeated. If it is switched on, the program continues. 
+
+Step 2: In the next step, the currently requested motor power is read and stored. The μC performs no further queries in this state and then executes the next part of the program. 
+
+Step 3: In the third step, the μC checks whether the traction control is already active, i.e. whether the corresponding variable is set, and whether it is to be activated or deactivated. For this purpose, the values relevant to the traction control are calculated. If the traction control is deactivated, the previously read motor power is kept unchanged. If the traction control is to be activated, the μC switches to the next state. 18 Electric Racing Kart · HTL Braunau 
+
+Step 4: In this, probably the most important state, the slip of the drive axle is calculated. The program then decides whether the motor power has to be reduced or, if the axle is not slipping, can be kept. 
+
+# 2.7 Braking System 
+
+The braking system is the most important safety device on the kart. In operation, it must always allow the kart to stop safely. In addition, the braking energy is to be converted back into electrical energy and fed into the battery. 
+
+2.7.1 Concept 
+
+The braking concept comprises not only the race-proven hydraulic brake, but also a regenerative brake. In regenerative braking, the kinetic energy of the kart is converted into electrical energy. For this purpose, the electric drive motor is operated as a generator. In this mode, it absorbs the mechanical power of the drive axle and converts it into electrical energy, which is fed back into the battery. The special feature of the regenerative brake is that it works without wear and that energy is recovered with good efficiency. In this way, the kart can be braked mostly with the motor brake, and the mechanical brake only has to be used for hard braking. A similar system is used in the automotive sector. In electric and hybrid vehicles with regenerative braking, the driver usually does not notice it, since it is applied automatically when the brake pedal is pressed. For light braking, only the regenerative brake is used. For harder braking, the hydraulic brake is applied in addition. This coupling was deliberately not implemented in the kart. The brakes are operated separately in order to demonstrate the effect of the regenerative brake more clearly. 
+
+2.7.2 Regenerative Braking 
+
+In a technical sense, recuperation simply means energy recovery. The regenerative brake was first used in rail vehicles, where the traction motors were switched to generator operation for braking. In the early days of this technology, only about 5 % of the energy used could be recovered, and the braking force was weak and uneven. Later, considerably higher recovery rates of up to 50 % with reliable braking force were achieved with asynchronous motors. The technology was continuously developed further. In the automotive sector, brake energy regeneration was introduced after 2000, for example under the name “EfficientDynamics” (BMW). Today, it is used above all in electric and hybrid vehicles. 19 Electric Racing Kart · HTL Braunau 
+
+2.7.3 Implementation 
+
+The regenerative brake of the kart works as described above and is divided into three recuperation levels: 
+
+Stage 1 – motor brake: The first recuperation stage starts as soon as the throttle is released. It brakes only slightly, comparable to the engine brake of a vehicle with a combustion engine. Despite the weak braking effect, energy is already recovered. 
+
+Stage 2 – light braking: In the second stage, the kart is actively decelerated by the regenerative brake. This stage is activated by pressing a button on the steering wheel. It is well suited for gentle deceleration, for example before a slight bend. 
+
+Stage 3 – hard braking: In the third stage, the hydraulic brake is used in addition to the regenerative brake. This achieves the maximum deceleration of the kart. With the hydraulic brake, however, braking is no longer wear-free, and only a small part of the energy is recovered. Most of the kinetic energy is converted into heat in the hydraulic brakes. The aim of the different stages is braking that is both safe and recovers energy. As described above, the button for the second stage is located next to the display on the steering wheel. Additional use of the hydraulic brake leads to the third stage. Of all stages, the second one is the most efficient. 
+
+2.7.4 Components 
+
+The most important components are the installed 10 kW BLDC motor and the matching motor controller. Energy recovery is realised by the motor controller, which switches the motor to generator operation at the push of a button and thus generates electrical energy. A further component of the recuperation is the μC. Only the μC makes it possible to start recuperation at the push of a button. 
+
+# 2.8 Safety Systems 
+
+The topic of safety systems was discussed intensively in the project team. There are many ways to protect the driver of a kart. The most important are a good brake, protective clothing, a helmet and a neck support. Initially, a stable headrest was to be designed and firmly attached to the kart. This plan could not be implemented, because under the given time pressure a working kart was defined as the main goal. In addition, the frame hardly offers any space to mount a support of the size originally planned. Because of this missing safety feature, other safety measures are used. A good brake and suitable protective clothing remain essential parts of the safety concept. In addition, a speed limiter was installed that can be set in several stages. For inexperienced drivers, the kart is limited to 15 km ·h−1 , for example. The central electrical safety device is the emergency stop switch within reach of the driver (Section 2.6.2). Pressing it switches off the drive, while the hydraulic brake remains fully 20 Electric Racing Kart · HTL Braunau 
+
+functional (Section 4.4). In addition, the motor switches off when the throttle and the brake pedal are pressed at the same time. 
+
+# 2.9 Mechanical Add-on Parts 
+
+The mechanical part of our project covers the design of housings and their mounting on the kart frame. The focus is on protecting the electrical components. The battery boxes were drawn in AutoCAD. The other parts designed in-house were modelled in the 3D CAD system PTC Pro/ENGINEER, and their drawings are given in Appendix E. 
+
+2.9.1 Battery Boxes 
+
+The battery boxes are meant to protect the cells and the BMS boards against mechanical loads and contamination. They are made of 2 mm aluminium sheet, which is lighter than steel and meets our requirements well. For an optimal weight distribution, the cells are divided among three boxes: 12 cells at the rear axle, 10 cells on the left of the driver and 2 cells on the right of the driver.  
+
+> Figure 18: Battery box with cells and BMS modules
+
+Our plan was to mount the cells lying down in the boxes, which would have made the kart look more aerodynamic. However, the cells have a safety vent on the top and must not be mounted on their side. In the event of a fault, gas escapes through this vent. We therefore had to design the boxes for upright cells (Figure 18). The boxes are lined with foam, which supports the upright cells. Since a cell expands when overcharged, the foam still leaves room for the expanding cell in such a fault. The boxes are fixed to the frame with specially made tube clamps, the same system that is also used for the motor. 
+
+2.9.2 Plastic Fairings 
+
+The plastic fairings give the kart its appearance. The front bumper and the steering column fairing provide good aerodynamics. At the same time, the fairing parts act as a crumple zone. Their high strength and hollow design protect important components such as the motor and the battery boxes in collisions. 
+
+2.9.3 Motor Mount 
+
+A reliable and rigid mounting of the motor on the frame is particularly important. The motor must not shift or wobble while driving. The motor mount is a special design for mounting electric motors on a kart frame (Figure 12a). 21 Electric Racing Kart · HTL Braunau 
+
+# 3 Results and Discussion 
+
+This chapter evaluates the calculations, bench measurements and design data of 2015/16 together. It was added for this edition. No new measurements were carried out. All values are either calculated or were measured during commissioning, and driving tests with recorded data are not available. Section 3.1 checks whether the requirements were met. Sections 3.2 to 3.9 show what the data reveal about energy balance, traction, battery, low-voltage supply and drivetrain of an electric kart of this class. Section 3.10 names the limits of these results. 
+
+# 3.1 Verification against the Requirements 
+
+The requirements were taken from the project objectives (Chapter 1) and from the project planning. Table 4 compares each requirement with the result achieved and names the basis of the assessment. Five of seven requirements are met. The target driving time is missed, and the planned headrest was not implemented. Two central functions, traction control and energy recovery, are implemented, but their effect has not yet been quantified by measurements. 
+
+Table 4: Verification of the project requirements 
+
+Requirement Target Result Basis Status 
+
+Top speed approx. 60 km ·h−1 
+
+approx. 65 km ·h−1 
+
+calculation met Driving time at 50 % motor load 
+
+≥ 60 min 55 min (100 % capacity); 44 min (80 % capacity) calculation not met Traction control functional prototype implemented in hardware and firmware implementation met; effect not measured Energy recovery three stages three stages implemented implementation met; energy not measured Limitation of speed and power adjustable multi-stage speed limiter; power demand limited to 86 % implementation met Rear axle strength 100 N ·m motor torque static safety against yield approx. 2.8 KISSsoft met for intended use Headrest and neck support integrated not implemented inspection not met 
+
+22 Electric Racing Kart · HTL Braunau                      
+
+> Table 5: Calculated energy demand at constant speed (vehicle data of the drive calculation, drive efficiency 0.9, driving time with 80 % of the nominal battery energy)
+> Speed in km ·h−1
+> Wheel power in W Battery power in W Energy in W·h·km −1
+> Driving time in min Share of rolling resistance
+> 30 1192 1324 44 167 86 % 40 1757 1952 49 113 78 % 50 2466 2741 55 81 70 % 60 3356 3728 62 59 61 %
+
+# 3.2 Energy Demand and Driving Time 
+
+Capacity actually usable. The driving time of 55 min (Section 2.3) is based on the full nominal energy of 4 608 W ·h. The cell manufacturer, however, recommends using only 80 % of the capacity in normal operation. With 3 686 W ·h, the driving time at 50 % motor load (5 kW) drops to approx. 44 min. 
+
+Steady-state demand. A second estimate uses the driving resistance model of Section 2.4 with the vehicle data of Table 12 (Appendix A) and a drive efficiency of 0.9. Table 5 shows the demand at constant speed. At a constant 60 km ·h−1 , the battery has to deliver approx. 3.7 kW, and the usable energy lasts approx. 59 min. The assumption of 5 kW average power is therefore about 1.3 times the steady-state demand at 60 km ·h−1 . This margin covers acceleration phases. Whether it is sufficient in racing can only be answered by measurements on the track. 
+
+Sensitivity. Up to 60 km ·h−1 , rolling resistance accounts for 61 % to 86 % of the driving resistance. The rolling resistance coefficient is therefore the most sensitive parameter of the model. The value μR = 0.07 used in the design is a conservative assumption and was not measured. Should the real value be only half as large, the demand at 60 km ·h−1 drops from 62 W ·h·km −1 to 43 W ·h·km −1 , i.e. by approx. 31 % (Figure 19). 
+
+Battery size and vehicle mass. The driving time target of one hour determined the battery size. With 24 cells of 2.3 kg each, the battery weighs approx. 55 kg, i.e. almost 30 % of the total mass of 187 kg, and the kart became noticeably heavy. In the actual use as a demonstration vehicle with short rides, this capacity was never needed. Since the number of cells in series is fixed by the 72 V voltage class of the drive, a lighter battery means cells of smaller capacity. Halving the capacity would save approx. 28 kg or 15 % of the total mass, reduce rolling resistance and inertia accordingly, and still allow approx. 30 min at a constant 60 km ·h−1 with 80 % of the energy. In retrospect, the battery should have been sized for the real duty cycle rather than for the one-hour target. 23 Electric Racing Kart · HTL Braunau                 
+
+> 10 20 30 40 50 60 020 40 60
+> Constant vehicle speed in km ·h−1
+> Energy demand in W ·h·km −1
+> Energy demand, μR= 0 .07 (design value) Energy demand, μR= 0 .035 (half) Driving time, μR= 0 .07 Driving time, μR= 0 .035
+> 0200 400 600
+> Driving time (80 % capacity) in min
+> Figure 19: Calculated battery energy demand and driving time at constant speed for two rolling resistance coefficients
+> Not covered by the CC licence
+
+# 3.3 Traction Limit and Need for Traction Control 
+
+The force that the rear tyres can transmit is limited by the static friction coefficient μH = 0.9, the vehicle mass and the share x of the weight that rests on the rear axle: 
+
+Fmax = μH m g x 
+
+The mass budget of the drive calculation gives m = 187 kg including a 75 kg driver. The rear axle load share was not measured. For a kart with rear-mounted motor and battery boxes, a range of 50 % to 60 % is assumed. The traction limit therefore lies between approx. 830 N and 990 N. With the rated torque curve of the motor (60 N ·m at standstill), a gear ratio of 3.3 and a wheel radius of 0.12 m, the drive force at standstill is approx. 1 650 N. This is 1.7 to 2.0 times the traction limit. The drive force remains above the limit up to approx. 27 km ·h−1 (60 % rear axle load) or approx. 43 km ·h−1 (50 % rear axle load), as Figure 20 shows. In this speed range, the acceleration of the kart is limited by traction and not by the motor. Driving practice confirmed this. With the traction control switched off, the rear axle could be made to slide with the throttle at any time, and the kart could be drifted without difficulty. Two consequences follow. First, the calculated acceleration of 8.2 m ·s−2 at standstill (Section 2.4) cannot be transmitted. Taking tyre grip and rolling resistance into account, the realistic launch acceleration is approx. 3.8 to 4.6 m ·s−2 . Second, a driver will inevitably spin the rear wheels at full throttle. Beyond the friction maximum, the transmitted force decreases with increasing slip, and the excess energy is converted into heat and tyre wear [11]. The traction control is therefore a necessary part of the drive concept. This agrees with the estimate made during planning that traction control becomes useful from a torque of approx. 100 N ·m at the rear axle. With 60 N ·m × 3.3 ≈ 200 N ·m, this value is clearly exceeded. 24 Electric Racing Kart · HTL Braunau        
+
+> 010 20 30 40 50 60 70 0500 1 000 1 500
+
+traction limit, 60 % rear axle load traction limit, 50 % rear axle load drive force above the traction limit: wheel spin without traction control Vehicle speed in km ·h−1 
+
+> Longitudinal force in N
+
+Drive force at the wheels (rated torque curve) 
+
+Figure 20: Drive force at the wheels compared with the traction limit of the rear axle (own calculation) 
+
+Not covered by the CC licence 
+
+# 3.4 Braking and Energy Recovery Potential 
+
+Regenerative braking force. If the motor brakes with its rated torque of 30 N ·m, the braking force at the rear wheels is approx. 825 N. This corresponds to a deceleration of 4.4 m ·s−2 (0 .45 g). Above approx. 44 km ·h−1 , the rated power of 10 kW limits the braking force further. At 60 km ·h−1 , only approx. 600 N (3.2 m ·s−2 ) remain. Hard braking therefore still requires the hydraulic brake. The data thus confirm the three-stage concept of Section 2.7, in which the hydraulic brake is added only in stage 3. 
+
+Recoverable energy. Table 6 shows the kinetic energy released in typical braking events. For the recoverable share, an overall efficiency of 0.7 is assumed for the chain from the wheel to the battery (drivetrain, motor in generator mode, controller and battery). This value was not measured. 
+
+Table 6: Kinetic energy and recoverable energy of typical braking events ( m = 187 kg, assumed overall efficiency 0.7) 
+
+Braking event Kinetic energy in W·hRecoverable energy in Wh ( η = 0 .7)Equivalent distance at 60 km ·h−1 in m 
+
+60 → 0 km ·h−1 7.2 5.1 81 60 → 30 km ·h−1 5.4 3.8 61 50 → 25 km ·h−1 3.8 2.6 42 40 → 20 km ·h−1 2.4 1.7 27 
+
+A single braking event from 60 km ·h−1 to 30 km ·h−1 returns approx. 4 W ·h. This seems small, but on a winding track the kinetic energy is turned over many times. For an illustrative track with eight such braking events per kilometre, approx. 43 W ·h·km −1 of kinetic energy are released and approx. 30 W ·h·km −1 can be recovered. The total demand in this scenario is approx. 100 W ·h·km −1 (driving resistance at an average of 45 km ·h−1 plus acceleration energy). Recuperation could therefore cover up to about 30 % of the consumption. This is an upper 25 Electric Racing Kart · HTL Braunau 
+
+estimate: rolling and air resistance during braking reduce the recoverable energy further. On fast tracks with few braking points, the effect is much smaller. 
+
+Brake wear. Beyond energy, regenerative braking reduces the use of the friction brake. Non-exhaust emissions from brake, tyre and road wear have become a relevant source of traffic-related particulate matter [12]. The kart addresses this with regenerative braking and traction control. For the kart itself, this effect is a hypothesis and has not been measured. 
+
+# 3.5 Battery Behaviour during Initial Charging 
+
+During initial charging, the 24 cells were connected in parallel and charged with a total current of 25 A, i.e. approx. 1 A per cell (0.017 C). Charging was spread over four days with overnight pauses, and the voltage was read every 2 h until, after 44 h of charging, the current had decreased to 4 A at the end-of-charge voltage of 4.0 V (Figure 7). In total, approx. 1 050 A ·h were charged, i.e. approx. 44 A ·h per cell. 
+
+State of charge and capacity. The voltage alone does not tell at which state of charge the cells started. The voltage curve in the BMS documentation [6] is a schematic illustration of a typical LiFePO 4 cell, not a measured curve of the cells used, and is therefore not suitable for reading off state-of-charge values. For LiFePO 4, the open-circuit voltage is almost constant between approx. 20 % and 90 % state of charge, and it shows a hysteresis between charging and discharging of the order of 10 mV that persists even after long rest periods [13, 14]. After storage, the cells rest on the lower branch of this hysteresis. The rest voltage of 3.27 V at the start is therefore compatible with a wide range of states of charge, roughly 20 % to 40 %. The evaluation is therefore reversed. In total, approx. 44 A ·h per cell were charged. With the rated capacity of 60 A ·h, the cells started at approx. 27 % state of charge. Charging losses shift this value slightly upwards, since not all of the charge is stored. New cells are usually delivered partially charged, so this starting point is plausible, and the measurement is consistent with the rated capacity. It does not, however, determine the capacity independently. An evaluation of the same readings by one of the authors at the time, integrating the current from 3.25 V to 3.5 V, likewise gave approx. 60 A ·h. The state-of-charge line in Figure 7 follows from this charge counting, anchored at 100 % at the end of charging and based on the rated capacity. It shows how the state of charge rises linearly while the voltage stays almost constant. Two further sources of uncertainty concern the measurement itself. The charging current was read from the built-in display of the laboratory power supply instead of a calibrated current clamp, and the readings were noted by hand, so the 2 h interval was kept only approximately. Together, these effects limit the integrated charge to an accuracy of roughly ±10 %. A capacity test by full discharge with calibrated instruments would remove these uncertainties. The measurement quantifies the flat voltage plateau of LiFePO 4. Between 4 h (3.36 V) and 36 h (3.46 V) of charging, i.e. between approx. 34 % and 90 % state of charge according to the charge counting, the cell voltage rose by only 100 mV. This is approx. 1.8 mV per percent state of charge. In the middle of the plateau, between 6 h and 30 h, the rise is only 28 mV for approx. 25 A ·h or 42 % of the capacity, i.e. approx. 0.7 mV per percent. The relaxation of the voltage during the overnight pauses, visible as dips of 7 mV and 12 mV after the first two pauses, is of the same order as this rise. It illustrates the slow open-circuit voltage recovery of LiFePO 4,which lasts for hours [13]. A voltage error of only 10 mV therefore corresponds to about 6 % to 15 % state of charge. In the plateau, a state-of-charge estimation based on the terminal voltage 26 Electric Racing Kart · HTL Braunau 
+
+is thus unusable, and the hysteresis adds a further uncertainty that depends on the history of the cell [14]. The charge has to be counted by current integration, as the BMS of the kart does [15]. This property of LiFePO 4, a very flat open-circuit voltage curve with pronounced hysteresis, had been described in the literature before the project [13]. In 2016, however, it was hardly reflected in the products available to a student project. 
+
+# 3.6 Cell Temperature and Voltage Sag under Load 
+
+A second observation concerns the behaviour of the cells under load. During the first test runs, the cells were cool, and high discharge currents were drawn during acceleration. The terminal voltage then dropped so far that the low-voltage alarm of the battery management system was triggered, although the state of charge was not low. After the cells had warmed up in operation, the alarm no longer occurred. No current or temperature data were recorded for these events, so the observation is qualitative. The behaviour is explained by the internal resistance of the cells. The voltage drop under load is the product of current and internal resistance, and the internal impedance of lithium-ion cells rises considerably at low temperature, while the available energy decreases [16]. That the charge-transfer resistance dominates this rise had already been shown in 2003 [17]. The datasheet range of −35 to 85 °C (Table 8, Appendix A) states where the cell may be operated. It does not state where the cell delivers its full performance. For a kart, this has three consequences. First, a low-voltage threshold based on the terminal voltage alone confuses a cold cell under load with an empty cell. The threshold has to be compensated for the load current or evaluated with a delay. Second, the cells should be warmed up with moderate load before full power is demanded. Third, the temperature has to be treated as a state variable of the battery and as more than a protection limit. A state-of-charge estimation that also uses an internal resistance model [15] would resolve both problems observed in this project, the flat plateau and the load-dependent voltage sag. 
+
+# 3.7 Low-Voltage Supply without Auxiliary Battery 
+
+The kart has no separate 12 V battery. The entire low-voltage system, i.e. microcontroller, sensors, display, throttle signal, relays and battery management, is supplied from the 76.8 V traction battery through the isolated DC/DC converter TEN 8-7212WI (72 V to 12 V) and a downstream 5 V linear regulator (Appendix D). This saves a second battery with its own charging and maintenance, reduces weight and installation space and avoids a discharged auxiliary battery as a source of failure. As a consequence, the low-voltage system is only live while the traction battery is connected. In the kart, this is acceptable, because the safety-relevant functions, the hydraulic brake and the emergency stop switch, are purely mechanical or electromechanical and do not depend on the low-voltage supply. During storage, however, the emergency stop switch must remain released, so that the battery management system stays supplied and protects the cells against deep discharge (Section 4.7). The galvanic isolation of the converter keeps the traction voltage away from the control electronics and the sensor cabling. 27 Electric Racing Kart · HTL Braunau 
+
+Voltage fluctuations. During commissioning, a consequence of the missing auxiliary battery was observed. The low-voltage rails showed voltage fluctuations. An auxiliary battery is a low-impedance buffer with a capacity of several ampere-hours. The DC/DC converter, by contrast, is rated at 8 W, i.e. approx. 0.7 A at 12 V, and its output is buffered only by a few microfarads (Appendix D). Every load step, for example the switching of a relay or the display, therefore appears as a dip on the rail. 
+
+Coupling of the sensor signals. The steep edges of the Hall sensor pulses could be measured on practically all lines of the low-voltage system. A fast edge contains spectral components far above the pulse frequency itself. Through the common ground return and the parasitic capacitance and mutual inductance between adjacent lines, such edges couple into every neighbouring line [18]. On the kart, the sensor cables run over the whole vehicle next to the motor and battery cables, and the boards are connected by screw terminals and discrete wiring. 
+
+Why smaller structures help. The interference produced and picked up by a circuit scales with its geometry. The radiated field of a current loop is proportional to the loop area and to the rate of change of the current, and as a common rule of thumb, the inductance of a trace or wire is roughly 1 nH per millimetre, so every long connection between converter, filter capacitor and load turns a current step into a voltage spike L di/ dt [18]. The hand-made boards of the kart use through-hole components, screw terminals with a pitch of 3.81 mm and generous trace lengths, which results in large loops. A compact layout with surface-mounted components, filter capacitors placed directly at the converter pins, a continuous ground plane and short, paired supply and return traces reduces loop area and inductance substantially and would have improved the electromagnetic compatibility of the low-voltage system. Measures with the same aim are bulk capacitance on the 12 V and 5 V rails, twisted or shielded sensor lines with their own return conductor, RC low-pass filters at the sensor inputs of the microcontroller and a common-mode choke at the DC/DC input. These observations were made with an oscilloscope during commissioning, but were not recorded. 
+
+# 3.8 Parameters of the Traction Control 
+
+Table 7 lists the parameters of the traction control as implemented in the archived firmware [10] and the resulting behaviour. The threshold controller with ramps is simple, robust and needs only a few parameters. Its weak point is the fixed slip threshold of 20 %. The slip at which the tyre transmits the highest force depends on tyre, surface and temperature [11]. The threshold was set as a design value and still has to be identified on the track. A second aspect concerns the reference speed. Three speed sensors are mounted on the kart (Section 2.6.2), but the archived firmware compares the rear axle with one front wheel only. In a corner, the front wheels turn at different speeds. For a track width of approx. 1 m and a corner radius of 10 m, the speed of one front wheel deviates by approx. ±5 % from the vehicle speed. The threshold of 20 % is large enough to tolerate this error. A kart has a rigid rear axle without differential, so the inner rear wheel slips in every corner anyway. An intervention in tight corners is therefore not necessarily a malfunction. 28 Electric Racing Kart · HTL Braunau               
+
+> Table 7: Parameters of the traction control firmware and their consequences
+> Parameter Value Consequence
+> Control cycle 1 ms (1 kHz) timer interrupt of the SAM3X8E Slip threshold (rear axle vs. front wheel) 20 % fixed design value Reduction ramp 2 PWM steps per ms full reduction within 110 ms Recovery ramp 1 PWM step per ms full recovery within 220 ms Maximum PWM value 220 of 255 power demand limited to 86 % Standstill detection 200 ms without pulse wheel is regarded as stationary Missing front wheel signal no intervention kart behaves like without traction control Ignition release only with released pedal no unintended start at power-up
+
+# 3.9 Mechanical Reserves of the Drivetrain 
+
+Rear axle. The rear axle was calculated with a motor torque of 100 N ·m, i.e. 330 N ·m at the sprocket. This load case is conservative: the rated torque of the motor is 30 N ·m, and the starting torque of the rated curve is 60 N ·m. The maximum equivalent stress of approx. 110 N ·mm −2 is well below the minimum yield strength of C45 in the normalised condition (305 N ·mm −2 for diameters from 16 mm to 100 mm [19]). The static safety factor is therefore approx. 2.8. A fatigue assessment was not carried out. 
+
+Grip as a torque limit. In traction, the torque at the rear axle is limited by tyre grip. With the traction limit of 830 N to 990 N, only approx. 100 N ·m to 120 N ·m can be supported at the wheels. The design load of 330 N ·m thus covers steady traction loads about three times over. Load peaks from kerbs, chain shocks or the acceleration of the drivetrain inertia are not covered by this estimate. 
+
+Chain drive under torque steps. The chain was dimensioned statically for a peak torque of 100 N ·m (Section 2.5.2). In operation, this proved insufficient for the pinion on the motor shaft. The torque step of the electric motor from standstill destroyed the original pinion completely, and a new pinion and chain had to be made from higher-grade materials. The pinion is the most highly stressed element of the chain drive because it has the smallest pitch diameter and the fewest teeth, so the full chain force of approx. 3.6 kN acts on very few teeth. An electric motor delivers its torque within milliseconds, and the play of the chain lets the drivetrain accelerate freely for a moment before the load is taken up. The pinion therefore sees an impact instead of a steady load. In chain design, such shock loads are covered by an application factor that is considerably higher for a drive with sudden torque steps than for uniform load. Two measures follow: a hardened steel pinion, and a limitation of the torque rate in the firmware. The ramp of the traction control, which raises the power demand by at most one PWM step per millisecond (Table 7), also acts as such a limitation. 
+
+Bearings. The most highly loaded bearing B1 next to the sprocket reaches a nominal life of 4 290 h in the design load case. This is below the target of 20 000 h. For a demonstration 29 Electric Racing Kart · HTL Braunau 
+
+vehicle with a few dozen operating hours per year, the value is sufficient. In continuous racing use, this bearing position would have to be reviewed. 
+
+# 3.10 Limitations 
+
+The results of this chapter are subject to the following limitations: • No driving tests with recorded data are available. Lap times, energy consumption on the track, wheel slip and recovered energy have not been measured. • Several model parameters are assumptions: rolling resistance coefficient, drag area, rear axle load share and efficiencies. • The individual calculations of 2015/16 use different values for torque (30 N ·m, 60 N ·m, 100 N ·m), gear ratio (3.2 and 3.3), rated speed (4 000 min −1 and 4 500 min −1 ) and vehicle mass (180 kg and 187 kg). The results are therefore to be understood as estimates. • The initial charging curve is a single measurement of the parallel-connected pack, read by hand every 2 h, with the current taken from the display of the power supply rather than from a calibrated instrument. The state of charge during charging is derived from the rated capacity, and the capacity itself was not measured. The voltage sag of the cold cells was observed, but not recorded. The effects on tyre wear and particulate emissions are hypotheses. 30 Electric Racing Kart · HTL Braunau 
+
+# 4 Operating Manual 
+
+This chapter contains the operating manual of the kart. It covers safety instructions (Section 4.1), the handling of the battery (Section 4.2), electrical accidents (Section 4.3) and the procedures for start-up, parking, charging and storage (Sections 4.4 to 4.7). 
+
+This operating manual refers exclusively to the vehicle built in 2016 and is reproduced for documentation purposes. It is not a general guide for the construction or operation of electric vehicles. 
+
+# 4.1 Safety Instructions 
+
+• The kart may only be driven with a helmet, protective clothing and sturdy footwear. • The kart must not be driven in poor visibility (dusk, darkness, fog). • The kart must not be driven in rain or snowfall. • The kart may only be driven on paved surfaces in closed-off areas. It is not approved for use on public roads. • The driver must not be under the influence of alcohol, drugs or medication. 
+
+# 4.2 Handling of the Battery 
+
+The LiFePO 4 cells must be handled with particular care. The cell voltage must not fall below 2.8 V, as the cells are otherwise deeply discharged and damaged. The cells are therefore a potential hazard even when the kart is not in use. The terminals are the greatest source of danger. The positive and negative terminals must never be connected to each other. Otherwise, a very high short-circuit current flows, discharges the cells within a very short time and damages them. In the event of a fault, a safety vent on the top of the cells releases a gas mixture. This gas must not be inhaled or get into the nose or eyes. Swelling, deformation, cracks in the surface and fire can also occur. The risk of explosion is low with this cell chemistry. A damaged cell must not be used any longer. Voltage measurements may only be carried out at the terminals of a cell. Care must be taken not to touch any components of the BMS. In summer, the kart should not be left standing in the sun for long. At temperatures above 85 °C, the cells must no longer be loaded. This temperature can be reached, because the battery boxes are powder-coated black and the heat cannot escape well. Any contact with water or 31 Electric Racing Kart · HTL Braunau 
+
+other liquids must be avoided. The battery boxes must not be left open unattended, since the cells could become dirty and a person could cause a short circuit. The cells contain toxic substances. They do not belong in household waste but must be disposed of properly. For transport or disposal, the terminals should be covered with insulating tape to avoid an accidental short circuit. 
+
+# 4.3 Instructions for Electrical Accidents 
+
+Special care is required when working with the battery, since each cell can deliver currents of up to 1 200 A for a short time. During maintenance work on the kart, the basic safety rules for work on electrical installations must be followed to avoid accidents: • Disconnect completely • Secure against reconnection • Verify absence of voltage • Cover adjacent live parts with insulating material if necessary The injuries caused by an electrical accident depend on several factors: • Current and voltage • Frequency • Current path through the body • Duration of the current flow • Point in time of the current flow (within the cardiac cycle) The hazard zones for alternating and direct current differ. Alternating current is dangerous at lower currents than direct current (Figure 21). Quantitative values are given in IEC TS 60479-1 [20]. 
+
+4.3.1 Rescue and First Aid 
+
+If an electrical accident occurs, first aid must be given. The danger has to be assessed correctly, and self-protection always has priority. If a person is caught in the circuit, he or she must be freed as quickly as possible. If possible, the circuit must be switched off. In order not to endanger oneself, the person should be pulled out of the circuit with an insulating object (e.g. a wooden broom or rubber gloves). To reduce the risk of an electric shock, the rescuer should stand on an insulating surface or wear insulating footwear. After the rescue, the general first-aid measures apply. An emergency call must be made (in Austria: ambulance 144, European emergency number 112). Consciousness and breathing must 32 Electric Racing Kart · HTL Braunau 
+
+a) 
+
+a b c1 c2 c3
+
+AC-1 AC-2 AC-3 AC-4 Body current I (logarithmic) Duration of current flow  t (logarithmic) 
+
+AC-1 perception possible, usually no startle reaction 
+
+AC-2 involuntary muscular contractions likely, usually no harmful physiological effects 
+
+AC-3 strong muscular contractions, difficulty in breathing, reversible disturbances of heart function 
+
+AC-4 ventricular fibrillation likely, cardiac and respiratory arrest, severe burns possible 
+
+b) 
+
+a b c1 c2 c3
+
+DC-1 DC-2 DC-3 DC-4 Body current I (logarithmic) Duration of current flow  t (logarithmic) 
+
+DC-1 slight pricking sensation possible when making or breaking current 
+
+DC-2 involuntary muscular reactions likely, usually no harmful effects 
+
+DC-3 strong involuntary muscular reactions, reversible disturbances of impulse for-mation and conduction in the heart 
+
+DC-4 ventricular fibrillation likely, severe burns possible c1: onset of probability of ventricular fibrillation; c 2, c 3: increasing probability. Qualitative representation based on IEC TS 60479-1 [20], not to scale. 
+
+Figure 21: Time–current zones of the effects of current on persons (qualitative): a) alternating current (15–100 Hz), b) direct current 
+
+Not covered by the CC licence 
+
+be checked. If the person is not breathing, cardiopulmonary resuscitation must be started immediately, and an automated external defibrillator must be used if available. If the person is breathing, he or she must be placed in the recovery position. Even without visible injuries, a medical examination is always required after an electrical accident, as cardiac arrhythmias can occur with a delay. Details can be found in the current first-aid guidelines of the European Resuscitation Council [21], on which the courses of the Austrian Red Cross are based. 
+
+# 4.4 Start-up 
+
+Before start-up, the following points must be checked: • Charger disconnected • Throttle pedal, brake pedal and brake lever not blocked • Tyre pressure between 100 kPa and 120 kPa • Brake fluid level between the upper and lower mark 33 Electric Racing Kart · HTL Braunau 
+
+• Motor ventilation slots free • Motor controller connected at the Anderson connector • Brake pads checked Once these points are fulfilled, the kart can be started: 1. Release the emergency stop switch. 2. A loud signal then sounds for 30 seconds. During this time, the battery management system is initialised. 3. When the signal stops, the ignition key can be turned. The direction of travel is selected with the forward/reverse switch. It is recommended to set the traction control switch to “on”. The kart is now ready to drive. The left pedal is the brake, and the throttle pedal is on the right. The state of charge can be read on the battery gauge. If the state of charge becomes too low, a signal sounds and the kart must be recharged. If the kart is nevertheless used further, it switches off automatically. If the throttle and the brake pedal are pressed at the same time while driving, the motor switches off. It can be used again once the throttle has been released for 2 seconds and the brake pedal is no longer pressed. If a fault occurs during operation, the emergency stop switch must be pressed immediately. The hydraulic brakes remain fully functional. The emergency stop switch may only be released again after the fault has been eliminated. 
+
+Note: Immediately after charging, the kart should be driven gently and frequent braking with the motor brake should be avoided. This prevents overcharging of the cells by recuperation. 
+
+# 4.5 Parking 
+
+The kart should only be parked on level ground. Parking consists of the following two steps: 1. Switch off the ignition. 2. Disconnect the motor controller. 
+
+# 4.6 Charger and Charging 
+
+The kart must not be in operation during charging. The following steps are required for charging with the charger of the kart (Figure 6): 1. Release the emergency stop switch. 2. Connect the Anderson connector. 3. Connect the control connector. 34 Electric Racing Kart · HTL Braunau 
+
+4. Connect the charger to the mains. A light on the charger shows the three possible states: • Red light: charging is in progress and the cells are not yet fully charged. • Flashing green light: balancing of the individual cells is not yet completed. • Green light: charging is completed. 
+
+# 4.7 Storage 
+
+The kart must be stored in a building or garage, as it is not weatherproof. During storage, the kart can remain connected to the charger. If it is not connected to the charger, the cells must be charged once a month. The emergency stop switch must be released, so that the battery management system protects the cells against deep discharge. 35 Electric Racing Kart · HTL Braunau 
+
+# 5 Conclusion and Outlook 
+
+Within one year, a petrol racing kart was converted into an electric kart with a 10 kW BLDC drive, a 76.8 V LiFePO 4 battery with cell-level monitoring, a three-stage energy recovery and a traction control developed in-house. The kart combines ecological and economic sustainability with use in racing. The evaluation in Chapter 3 condenses the calculations and measurements of the project into the following findings. 
+
+Key findings. 
+
+1. The kart meets five of seven requirements. The calculated top speed is approx. 65 km ·h−1 
+
+(Section 3.1). 2. The driving time target of one hour is missed. At 50 % motor load, 55 min result with the full nominal energy and approx. 44 min with the recommended 80 %. At a constant 60 km ·h−1 , approx. 59 min are possible (Section 3.2). 3. Up to 60 km ·h−1 , rolling resistance causes 61 % to 86 % of the driving resistance. The rolling resistance coefficient is therefore the most sensitive model parameter. Halving it lowers the demand at 60 km ·h−1 by approx. 31 %. 4. With rated torque, the drive force at standstill of approx. 1 650 N exceeds the transmissible traction force by a factor of 1.7 to 2.0. Up to approx. 27 km ·h−1 to 43 km ·h−1 , the kart is limited by traction and not by the motor. Traction control is therefore a necessary part of the drive concept (Section 3.3). 5. The realistic launch acceleration of approx. 3.8 to 4.6 m ·s−2 is set by tyre grip. 6. Regenerative braking alone reaches approx. 0 .45 g at rated torque. Hard braking still needs the hydraulic brake, which confirms the three-stage braking concept (Section 3.4). 7. One braking event from 60 km ·h−1 to 30 km ·h−1 returns approx. 4 W ·h. On a winding track, recuperation could cover up to about 30 % of the energy demand (upper estimate). 8. In the voltage plateau of LiFePO 4, the cell voltage changes by only approx. 0.7 mV to 1.8 mV per percent state of charge, and the voltage relaxes by about 10 mV during a pause. The state of charge can only be determined by current integration. Because of the flat plateau and the hysteresis, the starting state of charge cannot be read from the voltage. With the rated 60 A ·h, the charge of approx. 44 A ·h per cell corresponds to a start at approx. 27 %, which is plausible for new cells. The measurement is consistent with the rated capacity, but does not determine it (Section 3.5). 9. Tyre grip limits the torque at the rear axle in traction to approx. 100 N ·m to 120 N ·m. The axle design load of 330 N ·m is therefore conservative for traction loads. The static safety against yield is approx. 2.8 (Section 3.9). 36 Electric Racing Kart · HTL Braunau 
+
+10. With cool cells, high discharge currents caused a voltage sag that triggered the low-voltage alarm although the battery was not empty. The internal resistance of LiFePO 4 cells is strongly temperature-dependent, so a voltage-based low-voltage threshold has to be compensated for load and temperature (Section 3.6). 11. The kart has no auxiliary 12 V battery. The entire low-voltage system is supplied from the traction battery through an isolated DC/DC converter (Section 3.7). 12. The battery of approx. 55 kg, sized for the one-hour target, makes up almost 30 % of the vehicle mass. For the real duty cycle of a demonstration vehicle, a battery of half the capacity would have sufficed and would have saved approx. 15 % of the total mass. 13. The torque step of the electric motor from standstill destroyed the original pinion on the motor shaft. A static chain design with 100 N ·m does not cover such shock loads. A hardened pinion and a torque-rate limitation in the firmware are required. 14. Without the buffer of an auxiliary battery, the low-voltage rails showed voltage fluctuations, and the edges of the Hall sensor pulses coupled into the whole low-voltage system. Buffering and a compact, EMC-oriented layout of the DC/DC and filter stage are decisive, because smaller structures mean smaller loop areas and lower inductance. 
+
+Added value of the project. The kart is a fully documented reference design of an electric racing kart in the 10 kW class, from the requirements through calculation and component selection to the firmware. In 2016, it brought lithium iron phosphate cells into a vehicle at a time when this chemistry was still uncommon in European passenger cars. Only from about 2020 did LiFePO 4 gain a large share of the electric vehicle market, and by 2022 it reached just under 30 % [22]. The project encountered two weaknesses of a purely voltage-based battery monitoring, the flat voltage plateau and the load- and temperature-dependent voltage sag. State-of-charge estimation with cell models addresses these problems today [15]. The low-voltage supply without an auxiliary battery is a further simplification that is unusual in vehicle design. The hardware of the traction control can be built with standard components, and its know-how lies in the software. An implementation in other electric vehicles is therefore possible with comparatively little effort. Firmware, schematics, bills of material and calculations are publicly available [10], so that later student teams and other institutions can reproduce and extend the work. As a team, Johannes Stockhammer, Tom Rettenwander and Philipp Huber reached the final of the Austrian youth innovation competition Jugend Innovativ 2015/16 in the special category Sustainability and received a recognition award [23]. Approx. 1300 working hours are documented in the project diaries (Appendix B). The environmental aspect goes beyond energy consumption. Non-exhaust emissions from tyre and brake wear are a relevant source of particulate matter [12]. Regenerative braking reduces the use of the friction brake, and traction control limits wheel spin. Both measures therefore address non-exhaust emissions. For the kart, this effect remains a hypothesis until it is measured. 
+
+Outlook. The most important open point is the validation on the track. The following test programme is proposed: 1. Data logging of wheel speeds, throttle signal, motor current and battery voltage. The microcontroller already evaluates the wheel speeds at 1 kHz. 37 Electric Racing Kart · HTL Braunau 
+
+2. Launch tests from 0 to 40 km ·h−1 with and without traction control. 3. Lap tests at a kart track with measurement of lap time, energy per lap and recovered energy per lap from the current integration of the BMS. 4. A capacity test of the cells by a full discharge at a defined current, to verify the rated 60 A ·h and to obtain the open-circuit voltage curve of the cells actually used. 5. Identification of the model parameters: rolling resistance by a coast-down test, rear axle load by weighing the kart with driver. 6. Tuning of the slip threshold and the ramps of the traction control based on the recorded data. 7. Determination of tyre wear by weighing the tyres before and after a defined distance. 8. Oscilloscope measurements of the 12 V and 5 V rails and of the sensor lines, followed by a revised, compact DC/DC and filter board. 9. Measurement of the chain force during launches with a strain gauge on the motor mount. 10. A smaller and lighter battery sized for the measured duty cycle, combined with fast charging between sessions. LiFePO 4 cells tolerate high charging currents, so short breaks can be used to recharge instead of carrying the energy for a full hour. Since the cells accept charge better when warm, charging directly after driving is favourable. The charger and the BMS limits have to be matched to the higher currents. New technologies that are first used in motor racing often find their way into series production vehicles later on. With the proposed measurements, the kart can make a small but measurable contribution to this. 38 Electric Racing Kart · HTL Braunau 
+
+# 6 Personal Reflections 
+
+In this chapter, each of us describes his personal motivation for the diploma project and briefly reflects on his experiences and on the cooperation in the team. During the project year, the initially empty kart chassis was given a new appearance, and a working electric kart was created. With this project, we have contributed to a long-standing project of HTL Braunau. We hope that future classes of HTL Braunau will realise further innovative ideas on and with the kart. We are firmly convinced that our kart can inspire future students for technology. 
+
+# 6.1 Johannes Stockhammer 
+
+I was fascinated by the possibilities of electric mobility long before the diploma project. I had already tried many racing vehicles, but none of them was the perfect vehicle for me. Towards the end of the fourth year, our teacher in the subject AT1 asked me whether I would like to build an electric kart as the showcase project of HTL Braunau the following year. I could hardly believe my luck. Now I had the chance to design a kart that was “perfect” for me, together with my project partners. Working together with my project partners taught me above all to respect other points of view and to find compromises. I also learned that it is sometimes better to let a matter rest and start again later. Through my contacts in motor racing, I took on the role of contact person for companies right from the start. In technical discussions, I was often able to contribute my knowledge to the team. Our ambitious goals for motor power, torque and efficiency repeatedly led to problems that were not easy to solve. I also learned to keep proper records right from the beginning. This saves a lot of time and trouble later on. The time frame for completing the project is short anyway and requires careful planning. For me, project work therefore often did not end with the last lesson of the day, but continued long after. I never really got used to the stress towards the end, when everything has to be finished at once. I have many positive memories of our joint work on the final project, which I will not forget so soon. Suddenly, one realises how quickly five years at HTL can pass. 
+
+# 6.2 Tom Rettenwander 
+
+One of my hobbies is riding motorcycles, so this diploma project dealt with a familiar kind of transport for me. My motorcycle is powered by a combustion engine. The electric drive and the energy supply therefore changed the picture of a vehicle I was used to. The fact that I 39 Electric Racing Kart · HTL Braunau 
+
+could contribute to a technology of the future with this project was the main reason for me to choose it. Most of the time, the work in the project team was good teamwork. At the beginning, we had to discard many ideas and find compromises. Whenever mechanical problems occurred, they were solved quickly with the help of a project partner. The joint and independent work made the lessons much livelier than normal lessons. During the different tasks, it was important to me to stay up to date with my project partners. It often helped me to set a daily goal and to work towards it in a focused way. A big challenge for me was to find a suitable place for all components on the limited area of the kart frame. Thanks to the many different areas covered by our diploma project, I was able to learn a lot and gain new experience. We often stayed longer at HTL to finish the work we had started. The time pressure caused by the shortened final year and partly long delivery times, together with studying for the other subjects and the Matura alongside the project, made it a stressful time for me. I am already looking forward to the day when all work on our kart is finished. 
+
+# 6.3 Philipp Huber 
+
+When I first heard about the project, it was clear to me that I could identify with it well. I often feel more at home on wheels than on my own feet. Even before it was announced that such diploma projects would be offered, I had made plans to build my own kart. The biggest obstacle had always been the lack of a team, because I knew I would not manage it alone. The project team was fully committed right from the start, and work began immediately with great enthusiasm. When a new team comes together, however, small problems are the order of the day. After a few weeks, these problems were reduced to a minimum and soon stopped altogether. We all had to learn to respect the others’ opinions and ideas about the kart. Finding compromises was never a problem in the team. Keeping my team partners up to date the whole time was very easy for me. Thanks to a daily plan that we drew up at the beginning of our work, it was never a problem to bring the others up to date. I think a project like ours requires a lot of know-how and knowledge of the subject. Planning and dimensioning all components took a lot of time and nerves, all the more so as this was the first team project I had ever worked on. Thanks to the comprehensive education at HTL, however, almost all necessary areas of knowledge could be covered. I have to say that I learned a great deal from my team partners. Despite the rather short period in which the kart had to be completed, we never worked under stress. Instead, we invested many hours of our free time. Given all the hard work our team put into the project, I am sure that it can be completed in the remaining time. 40 Electric Racing Kart · HTL Braunau 
+
+# A Technical Data of the Components 
+
+The following tables list the data of the cells and the battery management system (Table 8 and Table 9), the data of the motor and the motor controller (Table 10 and Table 11), and the vehicle data used in the drive calculation of Section 2.4 (Table 12). Unless stated otherwise, the values are taken from the manufacturers’ datasheets. 
+
+Table 8: Technical data of the LiFePO 4 cells according to the manufacturer [24] 
+
+Parameter Value Parameter Value 
+
+Manufacturer Winston Maximum discharge current (max. 15 min) in A 180 Type WB-LYP60AHA (LiFePO 4)Short-term peak discharge current (5 s per minute) in A 1200 Nominal voltage in V 3.2 Temperature range during charging/discharging in °C 
+
+−35 to +85 Lower voltage limit in V 2.8 Housing temperature resistance in °C 200 Maximum voltage in V 4.0 Weight in kg 2.3 Nominal capacity in A ·h 60 Terminal thread M6 Cycles at 80 % DOD > 3000 Housing material plastic Cycles at 70 % DOD > 5000 Dimensions in mm 203 × 114 × 61 Optimal discharge current in A 30 Initial charging required yes 
+
+Table 9: Technical data of the battery management system [6] 
+
+Parameter Value Parameter Value 
+
+Manufacturer 123electric Quiescent current of one cell board in μA 
+
+< 100 Type 123\BMS Current sensor range in A 100, 200 or 400 Supply voltage of BMS controller in V 8 to 30 ADC resolution in bit 10 Controller quiescent current incl. current sensor in A 
+
+< 0.007 Adjustable cell voltage (0.01 V steps) in V 2 to 5 Number of cells 2 to 255 Adjustable cell temperature (1 °C steps) in °C 
+
+−40 to +99 Balancing current in A 1 Acquisition time per cell in s 0.015 
+
+41 Electric Racing Kart · HTL Braunau 
+
+Table 10: Technical data of the motor HPM-10kW [3] 
+
+Parameter Value 
+
+Manufacturer Golden Motor Type HPM-10kW Rated power in kW 10 Rated voltage in V 72 Rated current in A 140 Short-term peak power in kW 22 Short-term peak current in A 300 Rated speed in min −1 4500 Maximum speed in min −1 6000 Cooling air Maintenance-free yes Weight in kg 17 Stator housing material aluminium Winding inductance in μH 77 Winding resistance in mW 6Dimensions in mm Ø 206 × 217 Rotor inertia low Power density in kW ·kg −1 0.59 Rated efficiency 0.91 
+
+Table 11: Technical data of the motor controller VEC500-72 [25] 
+
+Parameter Value 
+
+Manufacturer Golden Motor Type VEC500-72 Rated power in kW 10 Rated voltage in V 72 Rated current in A 150 Short-term peak power in kW 20 Maximum phase current in A 500 Control method field-oriented (vector) control Cooling air Maintenance-free yes Weight in kg 3.2 Housing material plastic, aluminium Dimensions in mm 200 × 190 × 58 Rated efficiency > 0.90 
+
+Table 12: Vehicle data used for the drive calculation 
+
+Parameter Value 
+
+Drag coefficient cw 0.65 Frontal area in m 2 0.7 Vehicle mass incl. driver in kg 180 Rolling resistance coefficient μR 0.07 Static friction coefficient μH 0.9 Air density in kg ·m−3 1.23 Wheel diameter in m 0.24 Drive efficiency 0.9 Motor power in W 10 000 Rated speed in min −1 4000 Rated torque in N ·m 30 Gear ratio 3.2 Rolling resistance force in N 123.6 
+
+42 Electric Racing Kart · HTL Braunau 
+
+# B Project Diaries 
+
+Due to the shortened final year at HTL of just under seven months, the project time was limited. Nevertheless, many hours were invested in the diploma project. Since each team member worked on different tasks, each kept his own project diary. The diaries (Table 13 to Table 15) show the activities and the working time spent. They are reproduced as recorded in 2015/16; obvious typing errors in the dates have been corrected. 
+
+Johannes Stockhammer 
+
+Table 13: Project diary of Johannes Stockhammer 
+
+Date Activity Hours 
+
+2015-08-03 Reviewing products available on the market 32015-09-04 Overview of possible manufacturers and suppliers 12015-09-05 Checking which battery types are suitable for the project 32015-09-11 Technical support by Harald Bartol 22015-09-18 Introduction to project lessons / familiarisation with laboratories and workshops 02015-09-28 Defining the project goals 12015-09-29 Overview of available technologies 02015-10-02 Project planning 32015-10-05 Dimensioning the required motor power 02015-10-06 Determining the required drive components 02015-10-09 Selecting the frame (weight, stability, etc.) 32015-10-12 Trip to Ampfing / technical discussion at Kartshop Ampfing / selecting the frame 62015-10-13 Dimensioning the battery and the electrical drive components 62015-10-16 Requesting information on further components / chassis / meeting with Mr Dirnberger 22015-10-19 E-mail correspondence with companies / collecting the chassis in Ampfing / disassembly 22015-10-20 Revising the component list 12015-10-23 Searching for European Golden Motor distributors / comparing electrical components 22015-10-27 Internet research on the service life of electrical components and batteries 32015-10-30 Creating the project poster / discussing competition entries 22015-11-03 Contacting Faktor.de / selecting the battery management system 32015-11-06 Ordering the BMS, cells and accessories from Faktor.de 42015-11-09 Finding ways to charge the cells / providing a sufficiently powerful power supply 72015-11-10 Receiving the delivery from Faktor.de / checking for completeness 4
+
+43 Electric Racing Kart · HTL Braunau 
+
+Date Activity Hours 
+
+2015-11-13 Setting up the charging environment / documentation 22015-11-16 Charging the cells / dimensioning the mechanical drive 72015-11-20 Charging the cells / technical support by Kartshop Ampfing 42015-11-23 Charging the cells / trip to Ampfing / dimensioning the drive components / buying sprockets and chain 82015-11-24 Searching for a suitable seat for the frame 42015-11-27 Research on safety systems for racing karts 82015-11-30 Project meeting on implementing traction control 72015-12-01 Preparing for the open day 62015-12-04 Open day / project presentation 10 2015-12-14 Drawing the battery boxes / implementing the motor mount 92015-12-15 Comparing alternative suppliers to Smartemotions 52015-12-18 Order from Smartemotions Germany 42015-12-21 Planning the division of work for the thesis 62015-12-22 Setting up a shared working environment for the thesis document 42015-12-27 Writing the thesis 92015-12-28 Writing the thesis 12 2015-12-29 Writing the thesis 10 2015-12-30 Writing the thesis 72016-01-02 Writing the thesis 92016-01-03 Writing the thesis 82016-01-04 Writing the thesis 32016-01-05 Work on the kart frame 13 2016-01-08 Battery boxes / electrical planning 23 2016-01-11 Drawing the sensor ring 42016-01-12 Cleaning the kart frame 72016-01-15 Manufacturing the sensor ring / discussion with teacher 42016-01-18 Removing the rear axle / greasing the bearings / fitting the display holder to the steering wheel 82016-01-19 Component selection for the traction control 10 2016-01-22 Making the electronics housing / battery box lid 72016-01-24 Drawing the sensor rings in Pro/ENGINEER 15 2016-01-25 Project folder / sorting documents / selecting a cable supplier / correspondence with Faktor.de 32016-01-26 Project folder / derusting the kart frame 62016-01-29 Submitting the project folder / priming the kart frame / painting the sensor rings 25 2016-02-01 Painting and reassembling the kart frame 10 2016-02-02 Completing assembly of the kart frame / mounting the sensor rings / painting the rims 42016-02-05 Planning the traction control components / preparing the order list 38 2016-02-08 Mounting the rims / selecting the voltage regulator for the 12 V control voltage 62016-02-09 Revising the order list 12016-02-12 Information afternoon / drawing the traction control boards 10 2016-02-13 Developing the traction control boards 82016-02-14 Designing the traction control boards and revising them for EMC / ordering components 12 
+
+44 Electric Racing Kart · HTL Braunau 
+
+Date Activity Hours 
+
+2016-02-15 Project folder / documentation / display holder 82016-02-16 Work on the kart in the HTL workshop / removing the steering wheel / making the speed sensor holders 10 2016-02-17 Drawing the display cover and the speed sensor holders 52016-02-18 Exposing, developing and etching the boards / quality check 52016-02-19 Cutting and lacquering the boards / collecting ordered parts in Simbach 62016-02-20 Soldering components and mounting the boards / testing the boards / creating the program structure 82016-02-21 Writing the project report for Jugend Innovativ / work on the traction control 62016-02-22 Ordering the speed sensors / soldering the capacitors / mounting the boards 92016-02-27 Writing the project report for Jugend Innovativ 62016-02-28 Writing the project report for Jugend Innovativ / proofreading the partners’ sections 52016-03-02 Mounting the sensors, work on the project presentation 32016-03-07 Electrical test setup of the BMS / testing the motor 18 2016-03-08 Project presentations 42016-03-11 Programming the BMS and ordering 22016-03-12 Creating the circuit diagram of the control and power electronics 52016-03-13 Orders from Conrad and RS Components, alarm function for battery monitoring 52016-03-14 Control electronics, drive, ordering 92016-03-15 Mounting the boards, painting the hinges 32016-03-21 Mounting the throttle holder and the dashboard bracket 10 2016-03-22 Wiring, mounting the electronics 35 2016-03-23 Connecting the electronics / mounting the connectors and the motor controller 15 2016-03-24 Programming the microcontroller / wiring harness of the control electronics 13 2016-03-25 Completing the wiring / testing the motor / adjusting the BMS / writing the thesis 14 2016-03-26 Trip to Ampfing, mounting the chain, setting motor parameters 72016-03-27 Drawing the chain guard and dashboard / trip to Ampfing / electrical wiring 13 2016-03-28 Writing the thesis 92016-03-29 Work on the kart 12 2016-04-04 Writing the thesis 62016-04-05 Writing the thesis / project folder 4Total 669 
+
+Philipp Huber 
+
+Table 14: Project diary of Philipp Huber 
+
+Date Activity Hours 
+
+2015-09-21 Introduction to project lessons, familiarisation with laboratories and workshops 22015-09-21 General internet research 8
+
+45 Electric Racing Kart · HTL Braunau 
+
+Date Activity Hours 
+
+2015-09-22 Internet research on kart frames 62015-09-25 Internet research on motors 22015-09-28 Project definition, diploma project registration 72015-09-29 Internet research on motors 42015-10-02 Internet research on batteries 32015-10-05 Internet research on batteries, creating the schedule 62015-10-06 Component list, meeting 42015-10-09 Comparing components 22015-10-13 Second component list 42015-10-16 Project meeting 42015-10-19 Removing the kart fairing and seat 62015-10-20 Collecting the chassis, disassembly, cleaning 62015-10-23 Component layout on the kart 22015-10-30 Planning 62015-11-03 Creating the project poster 42015-11-06 Ordering the cells 42015-11-09 Setting up a way to charge the cells 62015-11-10 Battery delivery received 42015-11-13 Preparing battery charging and finding a place for it 22015-11-16 Charging the cells, kart floor panel 62015-11-17 Charging the cells, kart floor panel 42015-11-20 Moving the cells to the basement, charging 42015-11-23 Design work in AutoCAD, measuring the kart, trip to Ampfing, buying sprockets and chain 82015-11-24 Design work in AutoCAD 52015-11-27 Revising and printing the poster 42015-11-30 Design work in AutoCAD 62015-12-01 Preparing for the open day 42015-12-04 Open day 82015-12-14 Planning the voltage regulation 82015-12-15 Preparing the 123\BMS for mounting on the cells 42015-12-18 Making ground cables for the 123\BMS 22015-12-21 Soldering the BMS, final version for Jugend Innovativ 62016-01-02 Writing the thesis 22016-01-05 Planning the programming 82016-01-08 Making special screws for the 123\BMS 52016-01-11 Soldering bus connections of the 123\BMS 62016-01-15 Manufacturing the rear battery box 22016-01-18 Manufacturing a battery box 62016-01-19 Planning and drawing the display holder plate 42016-01-25 Making the display holder 72016-01-26 Manufacturing the electronics box 42016-01-29 Derusting and priming the kart frame 22016-02-01 Painting and reassembling the kart 62016-02-22 Mounting the sensor rings on the kart 62016-02-23 Drilling and tapping the tube clamps 42016-02-26 Drilling and tapping the tube clamps 4
+
+46 Electric Racing Kart · HTL Braunau 
+
+Date Activity Hours 
+
+2016-02-29 Trial assembly and fitting of tube clamps, mounting blocks and battery boxes 72016-03-02 Creating the project presentation 22016-03-04 Preparing the battery boxes, mounting blocks and electronics box for coating 22016-03-05 Revising the project presentation 22016-03-06 Writing the thesis 22016-03-07 Cleaning and coating the battery boxes, mounting blocks and electronics box 42016-03-08 Project presentation 42016-03-11 Coating the battery boxes, mounting blocks and electronics box 52016-03-14 Cutting foam and gluing it into the battery boxes 62016-03-15 Fitting the cells into the battery boxes 42016-03-18 Mounting the battery boxes and the electronics box 42016-03-23 Writing the thesis 52016-03-24 Writing the thesis 32016-03-29 Writing the thesis 42016-04-01 Writing the thesis 82016-04-02 Writing the thesis 22016-04-03 Writing the thesis 3Total 294 
+
+Tom Rettenwander 
+
+Table 15: Project diary of Tom Rettenwander 
+
+Date Activity Hours 
+
+2015-09-21 Introduction to project lessons, familiarisation with laboratories and workshops 22015-09-21 General internet research 62015-09-22 Internet research on kart frames 42015-09-25 Internet research on motors 22015-09-28 Project definition, diploma project registration 62015-09-29 Internet research on motors 42015-10-02 Internet research on batteries, viewing a kart in Markl 72015-10-05 Internet research on batteries, creating the schedule 62015-10-06 Component list 42015-10-09 Comparing components 32015-10-12 Viewing a kart in Ampfing 32015-10-13 Second component list 42015-10-16 Creating the work breakdown structure, project meeting 42015-10-19 Removing the kart fairing and seat 62015-10-20 Disassembly and cleaning 42015-10-23 Component layout on the kart 22015-10-30 Planning, creating the schedule 62015-11-03 Creating the project poster 42015-11-06 Ordering the cells 42015-11-09 Obtaining a power supply for charging the cells 62015-11-10 Battery delivery received 4
+
+47 Electric Racing Kart · HTL Braunau 
+
+Date Activity Hours 
+
+2015-11-13 Making a protective cover for the cells 22015-11-16 Charging the cells, painting the floor panel 62015-11-17 Charging the cells, maintenance of the power supply unit 42015-11-20 Moving the cells to the basement, charging 42015-11-23 Measuring the kart, design work in AutoCAD 62015-11-24 Design work in AutoCAD 52015-11-27 Revising and printing the poster 42015-11-30 Design work in AutoCAD 72015-12-01 Preparing for the open day 62015-12-04 Open day 92015-12-14 Comparing motor variants 62015-12-15 Revising the component layout on the kart 42015-12-18 Preparing the Jugend Innovativ entry 62015-12-20 Preparing the Jugend Innovativ entry 32015-12-21 Soldering the BMS, final version for Jugend Innovativ 82015-12-22 Special screws for the BMS 42015-12-29 Writing the thesis 22015-12-30 Writing the thesis 32016-01-04 Writing the thesis 22016-01-07 Design work in AutoCAD 22016-01-08 Design work in AutoCAD 52016-01-11 Bending and welding the right battery box 62016-01-12 Bending the left and rear battery boxes 42016-01-15 Welding the left and rear battery boxes 52016-01-18 Measuring the battery boxes, correcting AutoCAD drawings, bending battery box lids 62016-01-19 Bending the battery box lids, designing the electronics box 42016-01-22 Planning the headrest and battery box mounting 42016-01-25 Buying hinge and latch for the battery box, measuring, drilling the battery box 72016-01-26 Filing the battery box lids and fitting the latches 42016-01-29 Punching the latch hooks 22016-02-01 Bending and drilling the latch hooks, fitting the latches 62016-02-12 3D drawing for the CNC milling machine, milling the tube clamps 82016-02-22 3D drawing for the CNC milling machine, milling the tube clamps 62016-02-23 Cutting the mounting blocks to size and drilling 42016-02-26 Drilling and tapping the mounting blocks 42016-02-29 Trial assembly and fitting of tube clamps, mounting blocks and battery boxes 72016-03-01 Trial fitting of the boxes 42016-03-02 Creating the project presentation 22016-03-04 Preparing the battery boxes, mounting blocks and electronics box for coating 22016-03-05 Revising the project presentation 22016-03-06 Writing the thesis 22016-03-07 Cleaning and coating the battery boxes, mounting blocks and electronics box, cleaning the kart 72016-03-08 Project presentation 42016-03-11 Coating the battery boxes, mounting blocks and electronics box 52016-03-14 Cutting foam and gluing it into the battery boxes 6
+
+48 Electric Racing Kart · HTL Braunau 
+
+Date Activity Hours 
+
+2016-03-15 Fitting the cells into the battery boxes 42016-03-18 Mounting the battery boxes and the electronics box 42016-03-22 Writing the thesis 22016-03-23 Writing the thesis 32016-03-24 Writing the thesis 22016-03-29 Writing the thesis 42016-03-31 Writing the thesis 22016-04-01 Writing the thesis 72016-04-02 Writing the thesis 62016-04-03 Writing the thesis 62016-04-04 Writing the operating manual 82016-04-05 Adding missing documents to the thesis 5Total 353 
+
+49 Electric Racing Kart · HTL Braunau 
+
+# C Work Breakdown Structure 
+
+In the work breakdown structure, the diploma project was divided into phases and work packages (Figure 22). 
+
+HTL E-Kart 
+
+Phase 1 Project definition 
+
+1.1 Project brief 1.2 Project registration 1.3 WBS and schedule MS1 Definition completed 
+
+Phase 2 Rough planning 
+
+2.1 Mechanics 2.2 Electrical engineering 2.3 Software 2.4 Orders MS2 Rough planning completed 
+
+Phase 3 Detailed planning 
+
+3.1 Mechanics 3.2 Electrical engineering 3.3 Software 3.x Electronics MS3 Detailed planning completed 
+
+Phase 4 Manufacturing 
+
+4.1 Mechanics 4.2 Electrical engineering 4.x Software 4.x Electronics MS4 Manu-facturing completed 
+
+Phase 5 Assembly 
+
+5.1 Mechanics 5.2 Electrical engineering MS5 Assembly completed 
+
+Phase 6 Commissioning 
+
+6.1 Mechanics 6.2 Electrical engineering 6.3 Software MS6 Commis-sioning completed 
+
+Phase 7 Buffer 
+
+7.1 Trouble-shooting 7.2 Various rework 
+
+Phase 8 Ongoing documentation 
+
+8.1 Project diary 8.2 Project folder update MS7 Interim report completed MS8 Thesis completed MS = milestone (shaded) 
+
+Figure 22: Work breakdown structure of the project (status 16 October 2015) 
+
+Not covered by the CC licence 
+
+50 Electric Racing Kart · HTL Braunau 
+
+# D Block Diagrams and Circuit Diagrams 
+
+The circuits were designed for electromagnetic compatibility and low power consumption. Figure 23 gives an overview of the control electronics. The block diagrams of the power supply, the I/O board and the motor controller interface follow in Figures 24 to 26, the corresponding circuit diagrams in Figures 27 to 29. The block diagrams were redrawn in English. The circuit diagrams are reproduced unchanged and are also available in the project repository [10]. 
+
+Microcontroller board supply voltage 12 V 
+
+inputs with pull-up 
+
+Touch display 3.5” TFT, 480 × 320 pixels 4-bit touch control 8-bit data connection Display function Display function Power limitation Traction control off Throttle pedal (analogue 0–5 V) PWM/DC isolation E-lock (main switch) Motor controller Motor controller PWM signal (motor torque) 500 Hz < f < 1 000 Hz Speed sensors: 3 × Cherry GS100701, sensor rings with 20 pulses per wheel revolution 
+
+Figure 23: Block diagram of the control electronics (planning status; the final implementation uses an Arduino Due with SAM3X8E, see Section 2.6.1) 
+
+Not covered by the CC licence 
+
+DC DC TracoPower TEN 8-7212WI LM7805 TO-220 72 V 12 V 12 V output (min. 5 outputs): C, D 5 V output: A, B (display, sensors, throttle pedal, relays) Observe EMC: suppression capacitors, ground planes; inputs and outputs via screw terminals (pitch 3.81 mm) 
+
+Figure 24: Block diagram of the power supply 
+
+Not covered by the CC licence 
+
+51 Electric Racing Kart · HTL Braunau 
+
+To microcontroller AKZ602-V 5 V supply output terminal input terminal ground plane Speed sensor output terminal input terminal ground plane Speed sensor output terminal input terminal ground plane Speed sensor output terminal input terminal ground plane Switch 1 output terminal input terminal ground plane Switch 2 output terminal input terminal ground plane Switch 3 output terminal input terminal ground plane Switch 4 All terminals: AKZ602-V. Speed sensors require a pull-up resistor (value see datasheet). EMC: all inputs and outputs with 1 nF parallel 100 nF filter capacitors; supply: 10 nF ceramic parallel 10 μF low-ESR electrolytic 
+
+Figure 25: Block diagram of the I/O board 
+
+Not covered by the CC licence 
+
+AKZ602-V input Galvanic isolation (optocoupler) PWM to 0–5 V DC Op-amp output stage (rail-to-rail, single supply) AKZ602-V output input: +5 V, signal, GND to motor controller: signal, +5 V / GND optocoupler driven via a transistor stage, as the μC cannot drive it directly 
+
+Figure 26: Block diagram of the motor controller interface 
+
+Not covered by the CC licence 3.81mm 100nF 100nF 100nF 100nF 10μF 10μF 1nF 10nF 10μF 10nF 10nF 10nF 10nF 10nF LM7805 10nF 10nF 10nF 10nF 10nF 10μF 10μF 1N4007 100nF PINHD1        
+
+> 12345678910 11 12
+> PINHD2
+> 12345678910 11 12 PINHD3
+> 12
+> C1 C2 C3 C4 C5 C6 C7 C8 C10 PINHD4
+> 12
+> PINHD5
+> 12
+> PINHD6
+> 12
+> PINHD7
+> 12
+> PINHD8
+> 12
+> C11 C12 C13 C14 C15 IC1
+> 123
+> PINHD9
+> 12
+> PINHD10
+> 12
+> PINHD11
+> 12
+> PINHD12
+> 12
+> PINHD13
+> 12
+> C16 C17 C18 C19 C20 C21 C22 D1 C23
+> +++++
+> V+ V-
+
+Figure 27: Circuit diagram of the power supply (original) 
+
+52 Electric Racing Kart · HTL Braunau 10nF 100nF  1nF 10μF 10nF  1nF 1nF 10nF 10nF 1nF 1nF 10nF 10nF 1nF 10nF 1nF 1nF 10nF 10nF 1nF 10nF 1nF 10nF 1nF 10nF 10nF 1nF 1nF 1nF 10nF 1nF 10nF 10μF 10nF 
+
+600R 600R 600R 
+
+> PINHD1
+> 123
+> PINHD2
+> 123
+> PINHD3
+> 123
+> PINHD4
+> 123
+> PINHD5
+> 123
+> PINHD6
+> 123
+> PINHD7
+> 123
+> PINHD8
+> 123
+> PINHD9
+> 123
+> PINHD10
+> 123
+> PINHD11
+> 123
+> PINHD12
+> 123
+> PINHD13
+> 123
+> PINHD14
+> 123
+> C1 C2  C3 C4 C5  C6
+
+C7 C8 C9 C10 C11 C12 C14 C16 C17 C19 C21 C22 C23 C24 C26 C27 C29 C31 C32 C33 C34 C35 C37 C38 C39 C40 C13 C15 
+
+R1 R2 R3 ++
+
+> GND V+ SIGNAL V+ V+ V+ V+ V+ V+ V+ V+ V+ V+ GND GND GND GND GND GND GND GND GND GND SIGNAL SIGNAL SIGNAL SIGNAL SIGNAL SIGNAL SIGNAL SIGNAL SIGNAL SIGNAL
+
+Figure 28: Circuit diagram of the I/O board (original) BC547B ILD74 
+
+5k 
+
+1nF 10nF 10μF 100nF 10nF 1nF 
+
+> 100R 5K
+
+10K 
+
+100nF 100nF 10nF OPA2340 100nF 10nF 1nF 10μF 1nF 10nF 100nF BC547B 
+
+> 1K 200R
+
+PINHD1 
+
+123
+
+> IC1
+> 123
+
+IC2 
+
+1234 5678
+
+PINHD2 
+
+123
+
+R1 
+
+C1 C2 C3 C4 C5 C6 
+
+> R2 R3
+
+R4 
+
+C7 C8 C9 IC3 
+
+1234 5678
+
+C10 C11 C12 C13 C14 C15 C16 IC4 
+
+> 123
+> R5 R6 ++
+
++5V GND Signal 5V GND2 Signal_Out 
+
+Figure 29: Circuit diagram of the motor controller interface (original) 
+
+53 Electric Racing Kart · HTL Braunau 
+
+# E Design Documentation 
+
+The following 3D views and drawings document the parts designed in-house: the display holder and the chain guard (Figures 30 and 31), the sensor holders (Figures 32 and 33) and the display carrier (Figures 34 to 36). The drawings are reproduced unchanged and contain German labels. Datasheets of the purchased components are not reproduced for copyright reasons; they are available from the respective manufacturers. 
+
+a) b) 
+
+Figure 30: 3D views of the display holder: a) view 1, b) view 2 
+
+a) b) 
+
+Figure 31: 3D views of the chain guard: a) view 1, b) view 2 
+
+54 Electric Racing Kart · HTL Braunau 
+
+Figure 32: Drawing of the front sensor holder 
+
+Figure 33: Drawing of the rear sensor holder 
+
+55 Electric Racing Kart · HTL Braunau 
+
+Figure 34: Drawing of the display carrier housing 
+
+Figure 35: Drawing of the display carrier 
+
+56 Electric Racing Kart · HTL Braunau 
+
+Figure 36: Drawing of the display carrier cover 
+
+57 Electric Racing Kart · HTL Braunau 
+
+# List of Figures 
+
+1 Top view of the kart frame (schematic) . . . . . . . . . . . . . . . . . . . . . . . 32 Operating principle of the asynchronous machine with squirrel-cage rotor (schematic) . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 53 Designs of the synchronous machine: a) internal-pole machine with cylindrical rotor, b) external-pole machine, c) internal-pole machine with salient-pole rotor (schematic) . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 54 Basic circuit of a BLDC drive with B6 bridge and Hall position sensors (schematic) 65 Battery technologies: a) structure of a lead-acid battery, b) structure and operating principle of a LiFePO 4 cell, c) layer structure of a lithium polymer pouch cell (schematic) . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 86 Charger of the kart . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 97 Measured cell voltage and total charging current during initial charging of the 24 parallel-connected cells, read every 2 h over four days, with the state of charge from charge counting; the dotted lines mark the overnight pauses . . . . . . . . 11 8 Structure of the battery management system (schematic) . . . . . . . . . . . . 11 9 Required drive power, available motor power, motor speed, motor torque and calculated acceleration as a function of vehicle speed . . . . . . . . . . . . . . . 12 10 Results of the rear axle calculation with KISSsoft: a) calculated deflection, b) calculated equivalent stress along the rear axle . . . . . . . . . . . . . . . . . . 14 11 Calculation model of the rear axle in KISSsoft with bearings and load introduction (software output) . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 14 12 a) Motor mount and chain drive, b) BLDC motor HPM-10kW . . . . . . . . . . 15 13 Control loop of the traction control (schematic) . . . . . . . . . . . . . . . . . . 16 14 Hall effect (schematic) . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 16 15 a) Speed measurement at the front axle with sensor ring and Hall sensor, b) principle of the speed measurement with Hall sensor and sensor ring (schematic) 17 16 Circuit boards of the traction control . . . . . . . . . . . . . . . . . . . . . . . . 17 17 Flowchart of the traction control program . . . . . . . . . . . . . . . . . . . . . 18 18 Battery box with cells and BMS modules . . . . . . . . . . . . . . . . . . . . . 21 19 Calculated battery energy demand and driving time at constant speed for two rolling resistance coefficients . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 24 20 Drive force at the wheels compared with the traction limit of the rear axle (own calculation) . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 25 21 Time–current zones of the effects of current on persons (qualitative): a) alter-nating current (15–100 Hz), b) direct current . . . . . . . . . . . . . . . . . . . 33 22 Work breakdown structure of the project (status 16 October 2015) . . . . . . . 50 23 Block diagram of the control electronics (planning status; the final implementation uses an Arduino Due with SAM3X8E, see Section 2.6.1) . . . . . . . . . . . . . 51 24 Block diagram of the power supply . . . . . . . . . . . . . . . . . . . . . . . . . 51 25 Block diagram of the I/O board . . . . . . . . . . . . . . . . . . . . . . . . . . . 52 26 Block diagram of the motor controller interface . . . . . . . . . . . . . . . . . . 52 27 Circuit diagram of the power supply (original) . . . . . . . . . . . . . . . . . . 52 58 Electric Racing Kart · HTL Braunau 
+
+28 Circuit diagram of the I/O board (original) . . . . . . . . . . . . . . . . . . . . 53 29 Circuit diagram of the motor controller interface (original) . . . . . . . . . . . . 53 30 3D views of the display holder: a) view 1, b) view 2 . . . . . . . . . . . . . . . 54 31 3D views of the chain guard: a) view 1, b) view 2 . . . . . . . . . . . . . . . . . 54 32 Drawing of the front sensor holder . . . . . . . . . . . . . . . . . . . . . . . . . 55 33 Drawing of the rear sensor holder . . . . . . . . . . . . . . . . . . . . . . . . . . 55 34 Drawing of the display carrier housing . . . . . . . . . . . . . . . . . . . . . . . 56 35 Drawing of the display carrier . . . . . . . . . . . . . . . . . . . . . . . . . . . . 56 36 Drawing of the display carrier cover . . . . . . . . . . . . . . . . . . . . . . . . 57 
+
+# List of Abbreviations 
+
+ADC Analogue-to-digital converter BLDC Brushless DC motor BMS Battery management system CAD Computer-aided design DAC Digital-to-analogue converter DOD Depth of discharge EMC Electromagnetic compatibility ERS Energy Recovery System HV High voltage I/O Input/output LiFePO 4 Lithium iron phosphate (battery technology) LiPo Lithium polymer (battery technology) LV Low voltage MS Milestone PM Permanent magnet PWM Pulse-width modulation TC Traction control WBS Work breakdown structure μC Microcontroller 59 Electric Racing Kart · HTL Braunau 
+
+# References 
+
+[1] Loher GmbH: 2015, Drehstrommotoren mit Käfigläufer für Niederspannung (low-voltage three-phase squirrel-cage motors). Product catalogue. Ruhstorf an der Rott, Germany. [2] VEM motors GmbH: 2015, Permanentmagneterregte Synchronmotoren für Umrichterbe-trieb (permanent-magnet synchronous motors for converter operation). Product catalogue. Wernigerode, Germany. [3] Golden Motor Technology Co., Ltd.: HPM-10KW high-power BLDC/PMSM motor. 
+
+Product information. Online. Accessed: December 30, 2015. http://www.goldenmotor.co m/frame-bldcmotor.htm; archived: http://web.archive.org/web/20151230225156/http:// www.goldenmotor.com:80/frame-bldcmotor.htm [4] Enstroj d.o.o.: EMRAX 208 axial-flux synchronous motor, technical data. Online. Accessed: December 30, 2015. Archived: http://web.archive.org/web/20151205235721/http://enstro j.si:80/Electric-products/emrax-200.html [5] Fischer, R.: 2004, Elektrische Maschinen. 12th revised edition. Munich, Vienna: Carl Hanser Verlag. ISBN 978-3-446-22693-7. [6] 123electric: 2015, Battery Management System – User Manual (123\BMS) , revision 1.4. The Netherlands, August 2015. Archived website: http://web.archive.org/web/2015111702 0616/http://123electric.nl/ [7] Pischinger, S. and Seiffert, U. (eds.): 2016, Vieweg Handbuch Kraftfahrzeugtechnik. 8th revised and extended edition. Wiesbaden: Springer Vieweg. ISBN 978-3-658-09528-4. DOI: 10.1007/978-3-658-09528-4 [8] Schütz, T. (ed.): 2013, Hucho – Aerodynamik des Automobils: Strömungsmechanik, Wärme-technik, Fahrdynamik, Komfort. 6th revised and extended edition. Wiesbaden: Springer Vieweg. ISBN 978-3-8348-2316-8. DOI: 10.1007/978-3-8348-2316-8 [9] KISSsoft AG: 2015, KISSsoft Release 03/2015 – calculation software for machine elements, module shafts and bearings. Bubikon, Switzerland. [10] Stockhammer, J.: 2026, Electric Race Kart: firmware with traction control, electronics and drivetrain calculations. Software and hardware repository: https://github.com/josto-me/el ectric_race_kart; archived version with DOI: 10.5281/zenodo.22990337 [11] Pacejka, H. B. and Besselink, I. J. M.: 2012, Tire and Vehicle Dynamics. 3rd edition. Oxford: Butterworth-Heinemann (Elsevier). ISBN 978-0-08-097016-5. [12] OECD: 2020, Non-exhaust Particulate Emissions from Road Transport – An Ignored Environmental Policy Challenge. Paris: OECD Publishing. ISBN 978-92-64-88885-2. DOI: 10.1787/4a4dc6ca-en 60 Electric Racing Kart · HTL Braunau 
+
+[13] Roscher, M. A. and Sauer, D. U.: 2011, Dynamic electric behavior and open-circuit-voltage modeling of LiFePO 4-based lithium ion secondary batteries. Journal of Power Sources, 196(1), pp. 331–336. DOI: 10.1016/j.jpowsour.2010.06.098 [14] Dreyer, W., Jamnik, J., Guhlke, C., Huth, R., Moškon, J. and Gaberšček, M.: 2010, The thermodynamic origin of hysteresis in insertion batteries. Nature Materials, 9, pp. 448–453. DOI: 10.1038/nmat2730 [15] Plett, G. L.: 2015, Battery Management Systems, Volume I: Battery Modeling. Norwood, MA: Artech House. ISBN 978-1-63081-023-8. [16] Jaguemont, J., Boulon, L. and Dubé, Y.: 2016, A comprehensive review of lithium-ion batteries used in hybrid and electric vehicles at cold temperatures. Applied Energy, 164, pp. 99–114. DOI: 10.1016/j.apenergy.2015.11.034 [17] Zhang, S. S., Xu, K. and Jow, T. R.: 2003, The low temperature performance of Li-ion bat-teries. Journal of Power Sources, 115(1), pp. 137–140. DOI: 10.1016/S0378-7753(02)00618-3 [18] Ott, H. W.: 2009, Electromagnetic Compatibility Engineering. Hoboken, NJ: John Wiley & Sons. ISBN 978-0-470-18930-6. [19] DIN Deutsches Institut für Normung: 2006, DIN EN 10083-2:2006-10 – Steels for quenching and tempering – Part 2: Technical delivery conditions for non alloy steels. Berlin: Beuth Verlag. [20] International Electrotechnical Commission: 2005, IEC TS 60479-1:2005+AMD1:2016 – Effects of current on human beings and livestock – Part 1: General aspects. 4th edition, consolidated version 4.1 (2016). Geneva: IEC. [21] Zideman, D. A., Singletary, E. M., Borra, V., Cassan, P. et al.: 2021, European Re-suscitation Council Guidelines 2021: First aid. Resuscitation, 161, pp. 270–290. DOI: 10.1016/j.resuscitation.2021.02.013 [22] International Energy Agency (IEA): 2023, Global EV Outlook 2023 – Trends in batteries. 
+
+Paris: IEA. Online. Accessed: October 4, 2026. https://www.iea.org/reports/global-ev-o utlook-2023/trends-in-batteries; archived: http://web.archive.org/web/20230426052756/h ttps://www.iea.org/reports/global-ev-outlook-2023/trends-in-batteries [23] Jugend Innovativ: HTL Elektro-Kart (Johannes Stockhammer, Tom Rettenwander, Philipp Huber; HTL Braunau, 2015/16), Anerkennungspreis. Project page. Vienna: Austria Wirtschaftsservice. Online. Accessed: September 30, 2026. https://www.jugendinnovativ. at/projekt/htl-elektro-kart [24] Winston Battery (Thunder Sky Winston): 2015, Technical specification of the lithium iron phosphate cell WB-LYP60AHA (60 Ah). Distributed by GWL a.s., Prague, Czech Republic. [25] Golden Motor Technology Co., Ltd.: 2014, FOC Motor Controller Guide (VEC series), version 1.05. November 11, 2014. 61

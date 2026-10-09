@@ -1,0 +1,507 @@
+Title: Nested Power Models for Multirotor Propulsion: From Aerodynamic Drag to Electrical Losses
+
+URL Source: https://arxiv.org/pdf/2610.08177v1
+
+Published Time: Wed, 07 Oct 2026 01:20:49 GMT
+
+Number of Pages: 13
+
+Markdown Content:
+> 1
+
+# Nested Power Models for Multirotor Propulsion: From Aerodynamic Drag to Electrical Losses 
+
+Antonio Franchi 1,2, Aaron Saini 1, Ahmed Ali 1, and Chiara Gabellieri 1,
+
+Abstract —Speed-only aerodynamic power models for multirotor propulsion cannot represent acceleration-dependent effects. This work develops a nested sequence of propulsion-power models that starts from aerodynamic power dissipation and progressively introduces a reversible kinetic-energy rate, torque-dependent electromechanical dissipation, and lumped speed-proportional dissipation. The models are identified using one subset of experiments and validated using the other on a motor-drive– propeller unit. Independent estimates of rotational inertia and aerodynamic drag complement predictive validation by assessing whether the models correctly attribute the measured power to reversible kinetic-energy exchange and irreversible dissipation and, within the latter, to aerodynamic and electromechanical losses. The results show that the reversible kinetic-energy rate is necessary but insufficient for accurate dynamic power prediction. Dissipation proportional to the squared motor torque provides the main additional improvement, while speed-proportional dissipation further prevents irreversible losses from being attributed to reversible kinetic-energy exchange. The resulting methodology provides a reusable and experimentally verifiable basis for developing and selecting dynamic propulsion-power models for multirotor systems. 
+
+Index Terms —Aerial robotics, motor–propeller system, electrical power, dynamic identification, torque-dependent loss, rotor inertia, aerodynamic drag. 
+
+I. Introduction The limited onboard energy of multirotor aerial vehicles makes propulsion-power modeling important for endurance estimation, vehicle and propulsion-system design, mission plan-ning, trajectory generation, and control allocation. Flight-level models relate power consumption to vehicle velocity, thrust, climb rate, and flight direction to estimate consumption, range, endurance, and optimal flight speed [1]–[3]. Experimental and data-driven approaches have similarly identified the power or energy consumption associated with complete flight trajectories [4], while design-oriented methods support propulsion-system selection, sizing, and efficiency optimization [5]–[7]. Together, these approaches demonstrate that compact and physically grounded power models can influence both vehicle design and the way aerial tasks are planned and executed. However, their primary objective is generally to predict total power, energy consumption, or propulsion performance. At a finer level, propulsion models represent the battery, electronic speed controller, electric motor, and propeller 
+
+> 1
+
+Robotics and Mechatronics group, Faculty of Electrical Engineering, Mathematics and Computer Science, University of Twente, Enschede, The Netherlands. Email: schol@r-franchi.eu, c.gabellieri@utwente.nl 
+
+> 2
+
+Department of Computer, Control and Management Engineering, Sapienza University of Rome, Rome, Italy. Email: schol@r-franchi.eu This work was partially funded by the Horizon Europe research project AUTOASSESS grant agreement No. 101120732 and by NWO OTP AVIATOR 
+
+as interconnected electrical, mechanical, and aerodynamic subsystems [8], [9]. Such descriptions can predict thrust, rotor speed, current, or total electrical power and support component selection, diagnosis, simulation, and model-based control. They do not generally assess how the predicted power is attributed among reversible kinetic-energy exchange, aerodynamic dissipation, and electromechanical dissipation. Dynamic power prediction is especially relevant when rotor speeds vary rapidly. Trajectory shape and acceleration can have a substantial effect on quadrotor energy consumption [10], while multirotor control and experimental platforms increasingly support precise and agile motion [11], [12]. In these conditions, the power required to accelerate the motor–propeller assembly is not described by a steady-state speed-only relation. Rotor acceleration changes the rotational kinetic energy, but it also changes motor torque and current and may therefore affect irreversible electromechanical dissipation. Furthermore, rapid rotor-speed modulation is not limited to fast translational flight. It also arises in aerial physical interaction, where the vehicle may remain nearly stationary with respect to the surrounding air while producing rapidly varying forces and torques against the environment. Aerial manipulators and multidirectional-thrust platforms have been developed for contact inspection, manipulation, and other interaction tasks [13], [14]. Fully actuated and redundantly actuated multirotors can regulate interaction wrenches and vehicle attitude with limited or no translational motion, but doing so relies directly on coordinated and potentially rapid variations of individual rotor speeds [15]–[17]. Related systems employ reconfigurable propulsion or contact mechanisms to improve interaction accuracy [18], while recent omnidirectional aerial-interaction experiments further demonstrate the relevance of rotor-level actuation models during contact-rich operation [19]. More generally, the growing range of multirotor physical-interaction tasks makes actuator dynamics, limits, and energetic behavior increasingly important [20]. Despite these developments, accurate total-power prediction does not establish correct attribution among the underlying physical contributions. During accelerated rotor motion, re-versible kinetic-energy exchange, aerodynamic dissipation, and torque-dependent electromechanical losses may have correlated effects over a finite operating domain. A model may therefore reproduce the measured electrical power while assigning irreversible loss to the reversible kinetic-energy rate or compensating an inaccurate aerodynamic contribution through an electromechanical-loss term. Such confounding becomes problematic when the model must determine not only the energy required by a trajectory, but also how much is temporarily arXiv:2610.08177v1 [cs.RO] 6 Oct 2026 2
+
+stored, how much is irreversibly lost, and which propulsion component should be improved. This work addresses this gap by developing and experimen-tally assessing propulsion-power models with progressively richer energetic decompositions. The models are identified on one group of complete dynamic experiments and evaluated on separate experiments excluded from identification. Held-out predictive validation is complemented by independent estimates of rotational inertia and aerodynamic drag to assess whether the measured power is attributed consistently among reversible kinetic-energy exchange, aerodynamic dissipation, and electromechanical dissipation. The main contribution of this work is a physically moti-vated sequence of multirotor propulsion-power models that starts from aerodynamic power dissipation and progressively introduces the reversible kinetic-energy rate, torque-dependent electromechanical dissipation, and lumped speed-proportional dissipation. Experiments show that the kinetic-energy rate is necessary but insufficient during accelerated rotor motion, that torque-dependent dissipation provides the principal additional predictive improvement, and that speed-proportional dissipation further improves power attribution and the joint recovery of inertia and aerodynamic drag. This contribution is supported by: 1) a dynamic identification methodology based on realizable speed–acceleration trajectories and validation on complete experiments conducted at nominal acceleration rates ex-cluded from identification; and 2) a validation framework combining held-out predictive accuracy with independent inertia and aerodynamic-drag estimates to assess the attribution of measured power among reversible kinetic-energy exchange, aerodynamic dissipation, and electromechanical dissipation. The remainder of this article is organized as follows. Section II reviews power and energy models across aerial-vehicle configurations and modeling scales, and positions the contribution of this work. Section III develops the nested propulsion-power models. Section IV defines the criteria and methodology used to identify and assess them, while Section V presents the experimental realization and independent aeromechanical estimates. Section VI evaluates predictive accuracy and power attribution along the model sequence, and Section VII discusses the scope, implications, and conclusions. II. Related Work Power and energy models for aerial vehicles differ substan-tially in physical resolution and intended use. Component-level models describe propeller loads, motor torque, current, voltage, conversion losses, and battery behavior. Vehicle-level models aggregate propulsion, airframe aerodynamics, and flight dynamics to estimate range, endurance, or mission energy. Planning and control methods then use these models as objectives or constraints for trajectory generation, mission scheduling, and control allocation. Because rotary-wing, fixed-wing, flapping-wing, convertible, and physically interactive aircraft emphasize different energetic mechanisms, this section follows the modeling chain from propulsion fundamentals to vehicle- and mission-level optimization, then positions the rotor-level attribution problem addressed in this work. 
+
+A. Rotor aerodynamics and speed-only power models 
+
+The cubic dependence of rotor power on angular speed origi-nates from standard rotor and propeller aerodynamics. For fixed geometry and operating conditions, thrust and resisting torque are commonly approximated as quadratic functions of rotor speed, so mechanical power scales cubically. Low-Reynolds-number propeller measurements and blade-element–momentum models show, however, that thrust and power coefficients depend on propeller geometry, inflow, Reynolds number, and scale effects [21], [22]. Multirotor models consequently range from constant-coefficient quadratic thrust and drag-torque laws used in dynamics and control [23] to rotor-power-coefficient models embedded in flight simulation [24]. When the aerodynamic coefficients are treated as constant, these actuator laws induce the speed-only cubic power model. This representation has supported aerodynamic-power control at the propulsion-unit level [25], system-level power-consumption models [1], and efficiency analysis of morphing multirotors [26]. Such models compactly represent aerodynamic dissipation, but speed alone cannot express the reversible kinetic-energy exchange and the additional losses associated with rotor acceleration that are central to the present work. 
+
+B. Electric propulsion-chain modeling and design 
+
+A second line of work models the propulsion chain by interconnecting the power source, electronic speed controller, motor, shaft, and propeller. Analytical design methods combine propeller theory, motor constants, current and speed limits, battery capacity, and vehicle requirements to select components and estimate performance [27], [28]. Broader sizing correlations extend this reasoning across electric and fuel-powered UAV categories [29], while multicopter-specific optimization selects motor, propeller, and battery combinations for efficiency [5]. Experimental characterization and sizing studies further address large or heavy-lift multirotors whose propulsion components operate far from the small-quadrotor regime [6]. Component-resolved dynamic models have been developed for both fixed-wing and multirotor propulsion. Fixed-wing for-mulations separately represent the electrical source, controller, motor, and propeller to predict thrust, rotor speed, and current [8]; related dynamic models describe the coupled electric motor and propeller over transient operation [9]. More recent physics-informed approaches combine dimensional analysis, propeller data, test-rig measurements, and torque-based current prediction to improve cross-configuration endurance estimation [30]. These approaches increase propulsion-model fidelity, whereas the present study asks which compact acceleration-dependent terms are identifiable from source-side power and whether the resulting decomposition is physically consistent. 
+
+C. Battery, range, endurance, and vehicle-level power 
+
+Battery-aware aircraft models connect propulsion demand to stored electrical energy, voltage variation, discharge rate, and 3
+
+degradation. Classical electric-aircraft analyses derive range and endurance while accounting for battery-discharge behavior [31]; subsequent work examines how battery degradation changes optimal endurance and range over the aircraft life cycle [32]. For multirotors, practical endurance estimators combine hover and forward-flight requirements with battery and payload information [33], while integrated aerodynamic, motor, and gray-box battery models estimate range, endurance, and optimal speed across multicopter designs [2]. Alternative architectures seek endurance gains through hybrid power systems [7] or solar augmentation at MAV scale [34]. At vehicle level, empirical models fit power or energy directly from flight measurements and operating conditions. Examples include comprehensive battery-based energy models for UAV maneuvers [35], quadrotor energy models identified from exper-imental voltage data [4], and comparisons of drone and ground-vehicle delivery energy [36]. Analytical multirotor models instead express power as a function of thrust, forward velocity, climb rate, flight direction, and aerodynamic contributions [3]. Reviews of drone-energy factors and models show that the appropriate abstraction depends strongly on whether the objective is component design, flight-time estimation, mission planning, or energy management [37]. Across these approaches, accurate total-energy prediction does not by itself establish whether transient power is attributed correctly among stored energy and individual loss mechanisms. 
+
+D. Energy-aware trajectory, allocation, and mission planning 
+
+Power models become decision criteria when trajectories, actuator commands, or missions are optimized. Polynomial-trajectory studies show that kinematic choices can substantially change quadrotor energy consumption [10]. Integrated physical models can be embedded directly in trajectory optimization and feedback control, yielding experimentally verified reductions in consumed energy [38]. Coverage-planning methods use experimentally derived energy models together with sensing-resolution and return-safety constraints [39], while multi-UAV planners jointly optimize coverage assignment and flight speed under battery constraints [40]. Recent logistics planners further combine multirotor dynamics, obstacle avoidance, mission duration, payload, and energy-efficiency objectives [41]. Communication and deployment studies use rotary-wing propulsion models to optimize trajectory and service time jointly with communication energy [42]. Comparative mission simulators extend this perspective to both rotary-wing and fixed-wing vehicles [43]. Within redundant actuation, energy-optimal allocation selects among multiple actuator combinations that realize the same body wrench [17]. These applications make model attribution consequential: if a transient reversible term is treated as dissipation, or an irreversible loss is hidden in an inertial coefficient, the optimization may select a different trajectory, speed, or actuator evolution than a physically resolved model would. 
+
+E. Fixed-wing, flapping-wing, and convertible MAVs 
+
+Fixed-wing and flapping-wing MAVs emphasize energetic mechanisms that differ from hovering multirotors. Long-endurance fixed-wing MAV design couples aerodynamic effi-ciency, lightweight construction, propulsion selection, speed, and stored energy [44]. The program in [45] integrates aerodynamic, mechanical, sensing, and autonomy constraints in flapping-wing systems, while subsequent robotic-flapper experiments reveal unsteady aerodynamic coupling during rapid maneuvers [46]. These platforms reinforce the broader need to separate actuator-energy storage, aerodynamic force production, and irreversible conversion losses even though their actuation principles differ from those considered here. Convertible aircraft combine multirotor-like vertical flight with wing-borne cruise. Tailsitter control spans hover, transition, and forward flight despite strongly changing and imperfectly known aerodynamics [47]; tilt-rotor VTOL systems add con-figuration redundancy and dynamic allocation under actuator failures [48]. Reconfigurable and morphing multirotors likewise use additional actuation to change the relation between rotor thrust and body wrench [18]. At the vehicle-design level, a fully actuated tilting-propeller quadrotor demonstrates the modeling and control implications of redundant actuation [49]. These systems motivate energetic models that remain meaningful when rotor states change rapidly even if the vehicle motion changes comparatively little. 
+
+F. Aerodynamic interaction and physically interactive flight 
+
+The surrounding flow can change rotor thrust, resisting torque, and efficiency. Ground-effect experiments characterize both complete and partial ground interaction in multirotors [50], while obstacle-proximity studies map aerodynamic effects near surfaces and infrastructure [51]. Rotor–rotor interference, vehicle-body interaction, payload aerodynamics, and wake re-circulation create further deviations from isolated-rotor models. Such effects are especially relevant in aerial manipulation and inspection, where the vehicle operates close to the environment and may sustain interaction forces with limited translational motion. The aerial-manipulation literature ranges from early system [13] to broad assessments of the field’s development and open challenges [14], [20]. Fully actuated and redundantly actuated platforms support six-dimensional interaction and contact-force regulation [15], [16], while recent reconfigurable and omnidirectional systems extend these capabilities [19]. Control surveys and shared experimental infrastructures have helped standardize multirotor modeling, control, and reproducible deployment [11], [12]. In these interaction regimes, rotor acceleration and source power can vary substantially even when vehicle velocity is small, making rotor-level transient-power models particularly relevant. 
+
+G. Position of the present work 
+
+The reviewed literature provides models for propeller aero-dynamics, electric propulsion, battery discharge, vehicle-level consumption, endurance, trajectory optimization, convertible flight, redundant allocation, and physical interaction. These models have enabled increasingly accurate prediction and optimization across diverse aerial platforms. Their principal 4
+
+outputs are typically thrust, current, total power, range, en-durance, or mission energy. Comparatively less attention has been given to experimentally determining which acceleration-dependent terms are required to attribute source-side electrical power consistently among reversible kinetic-energy exchange, aerodynamic dissipation, and electromechanical dissipation. The present work addresses this attribution problem through a nested model sequence, held-out dynamic experiments, and independent aeromechanical reference estimates. III. Nested Propulsion-Power Models This section describes the nested sequence of propulsion-power models developed in this work to progressively represent aerodynamic, inertial, and electromechanical effects. The ordering follows the representational limitations of the models: each model introduces a contribution that its predecessor cannot represent, namely acceleration-dependent reversible power, acceleration-dependent dissipation, and finally distinct speed-proportional dissipation. Consider a motor with an electronic speed controller driving a rigidly connected propeller in one rotational direction. Let 𝑣 ≥
+
+0 denote the rotor angular speed and ¤𝑣 its angular acceleration. The total moment of inertia of the rotating assembly is the constant 𝐽 > 0. Under quasi-steady aerodynamics, the resisting torque associated with the so-called drag moment is 
+
+𝜏 d (𝑣 ) = 𝑐 𝜏 𝑣 2, 𝑐 𝜏 > 0. (1) The conventional one-parameter speed-only aerodynamic model , used for instance in the multirotor power analysis of [26], approximates the power required to spin a rotor as 
+
+𝑃 1 (𝑣 ) := 𝑐 𝜏 |𝑣 |3 = 𝑣𝜏 d (𝑣 ), 𝑣 ≥ 0. (2) The absolute value, although redundant over the investigated do-main, makes the dissipative and thus nonnegative aerodynamic power explicit. The model depends only on speed and is often motivated by aerodynamic dissipation being dominant at typical operating speeds. Its advantage is simplicity, whereas its limita-tions are that it cannot represent acceleration-dependent power and attributes all predicted power to irreversible aerodynamic dissipation. Consequently, when identified from accelerated-motion data, its aerodynamic term may absorb reversible kinetic-energy exchange, thereby conflating recoverable energy with irreversible loss. To represent the reversible contribution explicitly, consider the aeromechanical motor torque required to drive the propeller at a given (𝑣, ¤𝑣 ):
+
+𝜏 m := 𝐽 ¤𝑣 + 𝜏 d (𝑣 ) = 𝐽 ¤𝑣 + 𝑐 𝜏 𝑣 2. (3) The first term changes the rotational kinetic energy, whereas the second overcomes aerodynamic drag. The corresponding me-chanical power defines the two-parameter dynamic mechanical-power model :
+
+𝑃 2 (𝑣, ¤𝑣 ) := 𝑣𝜏 m = 𝐽𝑣 ¤𝑣 + 𝑐 𝜏 |𝑣 |3 = 𝑃 1 (𝑣 ) + 𝐽𝑣 ¤𝑣. (4) The inertial contribution satisfies 𝐽𝑣 ¤𝑣 = d(𝐽𝑣 2/2)/ d𝑡 and is reversible, whereas the aerodynamic contribution is nonnegative and irreversible. In bond-graph or power-port terminology, the                                                  
+
+> Electrical source port
+> (𝑉 dc , 𝐼 dc )
+> 𝑃 =𝑉 dc 𝐼 dc
+> Power-preserving interconnection
+> Dirac-structure layer
+> (𝑉 dc , 𝐼 dc )←→ (𝜏 m, 𝑣 )
+> power routing without storage or dissipation source power
+> 𝑃
+> Aerodynamic dissipation
+> 𝜏 d(𝑣 )=𝑐 𝜏 𝑣 2
+> 𝑃 aero =𝑐 𝜏 |𝑣 |3
+> Kinetic-energy storage
+> 𝐻 (𝑣 )=12𝐽𝑣 2
+> ¤𝐻 =𝐽𝑣 ¤𝑣
+> Torque-dependent electromechanical dissipation
+> 𝜏 m=𝐽 ¤𝑣 +𝑐 𝜏 𝑣 2
+> 𝑃 tl =𝑘 tl 𝜏 2m
+> Lumped speed-proportional dissipation
+> 𝑃 lin =𝑞 1|𝑣 |
+> aerodynamic irreversible power 𝑃 aero
+> reversible power ¤𝐻
+> electromech. irreversible power 𝑃 tl
+> lumped irreversible power 𝑃 lin
+> 𝑃 1,𝑃 2,𝑃 3,𝑃 4𝑃 2,𝑃 3,𝑃 4𝑃 3,𝑃 4𝑃 4
+> Fig. 1. Port-Hamiltonian-inspired representation of the energetic structure underlying the nested models. The electrical source supplies 𝑃 through a con-ceptual power-preserving interconnection. The kinetic-energy storage element exchanges reversible power, whereas the other branches represent aerodynamic, torque-dependent electromechanical, and lumped speed-proportional dissipation. Accordingly, each model combines the contributions indicated by its labels. The diagram provides an energetic interpretation rather than a complete bond graph of the motor-drive–propeller system.
+
+former exchanges power with a kinetic-energy storage element, while the latter represents an aerodynamic dissipation port. Model 𝑃 2 thus distinguishes acceleration-dependent power exchanged with kinetic-energy storage from aerodynamic dissi-pation. However, because its dissipative contribution depends only on speed, acceleration-dependent losses may be attributed to the reversible kinetic-energy-rate term, compromising the separation between stored and dissipated power. Because a speed-only dissipative correction would not address this missing acceleration dependence, the next extension introduces acceleration-dependent dissipation through the motor torque. Denote by 𝐼 m the motor current. Under the ideal torque-current relation 𝜏 m = 𝑘 𝜏 𝐼 m, where 𝑘 𝜏 > 0 is the motor torque constant, the winding copper loss is proportional to 𝐼 2m and, therefore, to 𝜏 2m. This motivates the following three-parameter torque-dependent-loss model :
+
+𝑃 3 (𝑣, ¤𝑣 ) := 𝑃 2 (𝑣, ¤𝑣 ) + 𝑘 tl 𝜏 2m = 𝐽𝑣 ¤𝑣 + 𝑐 𝜏 |𝑣 |3 + 𝑘 tl (𝐽 ¤𝑣 + 𝑐 𝜏 𝑣 2)2,
+
+(5) where 𝑘 tl > 0 is the torque-dependent loss coefficient. Model 𝑃 3 accounts for irreversible electromechanical losses in addition to aerodynamic dissipation and allows the acceleration-producing torque to contribute to them. Con-sequently, both 𝐽 and ¤𝑣 affect not only reversible kinetic-energy exchange but also irreversible dissipation, refining the attribution of the total power. The preceding models contain no distinct dissipative contri-bution proportional to 𝑣 . However, some effects may produce an approximately speed-proportional power loss over the investigated operating domain, as occurs with an approximately constant resisting torque. Because the reversible term 𝐽𝑣 ¤𝑣 
+
+provides the only contribution directly proportional to 𝑣 ,an unmodeled loss of this form may be partially attributed to reversible power, compromising the separation between stored and dissipated power. This motivates the following four-5                                                                                                        
+
+> TABLE I Nested electrical-power models and their energetic structure.
+> Nested model Model parameters and input variables Reversible power contribution Irreversible power loss Parameters and variables contributing to dissipation
+> 𝑃 1(𝑣 )=𝑐 𝜏 |𝑣 |3𝑐 𝜏 ;𝑣 Absent Aerodynamic: 𝑐 𝜏 |𝑣 |3𝑐 𝜏 ,𝑣 𝑃 2(𝑣, ¤𝑣 )=𝑃 1(𝑣 ) + 𝐽 𝑣 ¤𝑣 𝑐 𝜏 ,𝐽 ;𝑣 ,¤𝑣 Kinetic-energy rate: 𝐽 𝑣 ¤𝑣 Aerodynamic: 𝑐 𝜏 |𝑣 |3𝑐 𝜏 ,𝑣 𝑃 3(𝑣, ¤𝑣 )=𝑃 2(𝑣, ¤𝑣 ) + 𝑘 tl 𝜏 2m𝑐 𝜏 ,𝐽 ,𝑘 tl ;𝑣 ,¤𝑣 Kinetic-energy rate: 𝐽 𝑣 ¤𝑣 Aerodynamic and electromechanical: 𝑐 𝜏 |𝑣 |3+𝑘 tl 𝜏 2m
+> 𝑐 𝜏 ,𝐽 ,𝑘 tl ;𝑣 ,¤𝑣 𝑃 4(𝑣, ¤𝑣 )=𝑃 3(𝑣, ¤𝑣 ) + 𝑞 1|𝑣 |𝑐 𝜏 ,𝐽 ,𝑘 tl ,𝑞 1;𝑣 ,¤𝑣 Kinetic-energy rate: 𝐽 𝑣 ¤𝑣 Aerodynamic, electromechanical, and lumped:
+> 𝑐 𝜏 |𝑣 |3+𝑘 tl 𝜏 2m+𝑞 1|𝑣 |
+> 𝑐 𝜏 ,𝐽 ,𝑘 tl ,𝑞 1;𝑣 ,¤𝑣
+
+parameter speed-proportional-loss model :
+
+𝑃 4 (𝑣, ¤𝑣 ) := 𝑃 3 (𝑣, ¤𝑣 ) + 𝑞 1 |𝑣 |, 𝑞 1 ≥ 0. (6) Although numerically redundant under the assumption 𝑣 ≥
+
+0, the absolute value makes the nonnegativity of the added dissipative contribution explicit. The coefficient 𝑞 1 represents a lumped speed-proportional loss over the investigated operating domain. Model 𝑃 4 can therefore represent this dissipation without assigning it to reversible kinetic-energy exchange. The nested algebraic structure can be written compactly as 
+
+𝑃 4 (𝑣, ¤𝑣 ) =  
+
+> 𝑃 3(𝑣, ¤𝑣 )
+
+z }| {
+
+𝑐 𝜏 |𝑣 |3
+
+|{z}  
+
+> 𝑃 1(𝑣 )
+
++ 𝐽𝑣 ¤𝑣 
+
+| {z }  
+
+> 𝑃 2(𝑣, ¤𝑣 )
+
++ 𝑘 tl (𝐽 ¤𝑣 + 𝑐 𝜏 𝑣 2)2 + 𝑞 1 |𝑣 |. (7) Figure 1 summarizes the energetic structure of the nested models, while Table I reports their algebraic contributions, parameters, and variables. IV. Model-Adequacy Criteria and Methodology for Dynamic Identification and Validation The models introduced in Section III form a nested hierarchy, since each model adds one contribution to its predecessor. Because the preceding model is recovered by setting the additional coefficient to zero, the minimum fitting error cannot increase when the same data and criterion are used. The relevant question is therefore not whether a richer model fits better, but whether its additional complexity is justified by the requirements of the intended task. In addition to predictive accuracy, model adequacy depends on faithfully attributing the predicted power. This requires dis-tinguishing reversible kinetic-energy exchange from irreversible dissipation and, within the latter, aerodynamic from electrome-chanical losses. Separating reversible from dissipated power clarifies how much energy is temporarily stored in rotor motion and how much is irreversibly lost, supporting transient-energy, efficiency, and thermal assessments. Separating aerodynamic from electromechanical dissipation further indicates whether efficiency improvements should primarily target the propeller aerodynamics or the motor-drive system. With reference to the physically motivated models introduced in Section III and to a propeller representative of multirotor robotic platforms, this work addresses the following questions: 1) Is the speed-only aerodynamic model 𝑃 1 sufficiently accu-rate for estimating power during accelerated rotor motion? 2) If acceleration dependence is required, is the reversible kinetic-energy rate introduced by 𝑃 2 sufficient, must the acceleration-producing torque also enter the torque-dependent electromechanical loss represented by 𝑃 3, or is the speed-proportional dissipation represented by 𝑃 4 also required? 3) How well can the dynamic models 𝑃 2–𝑃 4 separate reversible from dissipated power and, for 𝑃 3 and 𝑃 4, aerodynamic from electromechanical dissipation? To address these questions, the models are evaluated in terms of both predictive accuracy and physical power attribution. Predictive accuracy is evaluated on complete experiments excluded from parameter identification. Physical attribution is assessed by comparing the identified values of 𝐽 and 𝑐 𝜏 
+
+with independent aeromechanical estimates. These comparisons indicate whether the models assign the measured power consis-tently to inertial energy exchange, aerodynamic dissipation, and electromechanical dissipation, rather than merely predicting their sum accurately. 
+
+A. Data acquisition methodology 
+
+Assume that the electrical input power 𝑃 delivered by the source to the motor-drive–propeller system can be determined at each time. Under a consistent sign convention, conservation of energy relates this input to the rate of stored energy and the irreversible power dissipated within the system. Identifying and evaluating the four models would ideally require sampling 
+
+𝑃 over the entire relevant (𝑣, ¤𝑣 ) domain. However, rotor speed and acceleration cannot be prescribed independently at arbitrary operating points, and the accessible domain is constrained by the experimental system. Assuming an internal speed controller, reference trajectories are therefore designed to sample the relevant domain through dynamically realizable experiments. 
+
+1) Realizable operating-domain sampling: The internal speed controller accepts a commanded rotor frequency 𝑓 cmd 
+
+[Hz], related to the commanded angular speed by 𝑣 cmd =
+
+2𝜋 𝑓 cmd [rad/s]. To sample positive and negative accelerations over the relevant speed range, the commanded frequency repeat-edly traverses [ 𝑓 low , 𝑓 high ] through increasing and decreasing constant-rate ramps. 6
+
+Let A = {𝑎 1, . . . , 𝑎 𝑀 } denote the positive nominal frequency-rate magnitudes. For each 𝑎 𝑗 ∈ A , the interior of ramp 𝑟 is defined by 
+
+𝑓 cmd (𝑡 ) = 𝑓 0 
+
+> 𝑟
+
++ 𝑠 𝑟 𝑎 𝑗 (𝑡 − 𝑡 − 
+
+> 𝑟
+
+), 𝑠 𝑟 ∈ {− 1, +1}, (8) where 𝑡 − 
+
+> 𝑟
+
+and 𝑓 0 
+
+> 𝑟
+
+are its initial time and commanded frequency, and 𝑠 𝑟 determines its direction. Each 𝑎 𝑗 defines one experi-mental condition comprising repeated ramps in both directions. The nominal rate 𝑠 𝑟 𝑎 𝑗 defines the reference trajectory but is not a model input. Instead, the measured rotor frequency 𝑓 
+
+and its reconstructed derivative ¤𝑓 determine 
+
+𝑣 = 2𝜋 𝑓 , ¤𝑣 = 2𝜋 ¤𝑓 . (9) Thus, the references determine the sampled operating condi-tions, while model identification and validation use the realized rotor motion. 
+
+2) Grouped identification and held-out validation: For each 
+
+𝑎 𝑗 ∈ A , let E 𝑗 denote the complete experiment conducted at that nominal rate. The rate set is partitioned as 
+
+A = Aid ⊔ A val , (10) with corresponding experiment sets 
+
+Eid := {E 𝑗 : 𝑎 𝑗 ∈ A id }, Eval := {E 𝑗 : 𝑎 𝑗 ∈ A val }. (11) Every complete experiment, including all increasing and decreasing ramps, therefore belongs to either Eid or Eval , and validation uses nominal rates excluded from identification. Let Did and Dval denote the processed sample datasets obtained from Eid and Eval . Each retained sample is (𝑣, ¤𝑣, 𝑃 ).Model parameters are estimated exclusively from Did , while predictions on Dval quantify held-out performance on complete experiments and nominal rates excluded from identification. 
+
+3) Signal synchronization and processing: Let 𝑉 dc and 𝐼 dc 
+
+denote the voltage and current measured at the electrical-source port, with current positive when delivered to the motor-drive– propeller system. The voltage, current, and rotor-frequency measurements are synchronized offline on a common time grid and processed using fixed noncausal zero-phase filters, identically for identification and validation. Denoting filtered signals by a tilde, the source-side electrical power is reconstructed as 
+
+𝑃 (𝑡 ) := e𝑉 dc (𝑡 )e𝐼 dc (𝑡 ). (12) The filtered frequency and its derivative determine 𝑣 and ¤𝑣 
+
+through (9). Zero-phase filtering avoids relative phase shifts among the reconstructed power, angular speed, and angular acceleration. Transition regions are excluded because the commanded frequency is not affine when its rate changes sign. The quality criteria specified in Section V-A3 are then applied to each complete ramp interior before model fitting. If a ramp fails, its entire interior is discarded, preventing model residuals from influencing data selection. 
+
+B. Parameter estimation and prediction metrics 1) Fitting algorithms: For each model 𝑃 𝑖 , 𝑖 ∈ { 1, 2, 3, 4},the parameters are estimated from the identification dataset 
+
+Did by minimizing the sum of squared differences between the measured source-side power 𝑃 and the corresponding model prediction. The parameter arrays are 
+
+(𝑐 𝜏 ), (𝑐 𝜏 , 𝐽 ), (𝑐 𝜏 , 𝐽, 𝑘 tl ), (𝑐 𝜏 , 𝐽, 𝑘 tl , 𝑞 1)
+
+for 𝑃 1, 𝑃 2, 𝑃 3, and 𝑃 4, respectively. The models 𝑃 1 and 𝑃 2 are linear in their parameters and are fitted by scaled nonnegative linear least squares. The models 𝑃 3
+
+and 𝑃 4 are nonlinear because 𝑐 𝜏 and 𝐽 also enter the squared motor-torque term; they are therefore fitted by constrained nonlinear least squares using a positive parameterization. The nonlinear optimization is initialized independently of the external estimates of 𝐽 and 𝑐 𝜏 described in Section IV-C. These estimates are neither included in the fitting objective nor imposed as parameter targets. The fitted parameters are subsequently held fixed when each model is evaluated on the validation dataset Dval .
+
+2) Prediction metrics: After identification, each model 
+
+𝑃 ℓ , ℓ ∈ { 1, 2, 3, 4}, is evaluated on Dval with its identified parameters. Let 𝑃 (𝑘 ) denote the measured source-side power at validation sample 𝑘 , and let b𝑃 (𝑘 ) 
+
+> ℓ
+
+denote the corresponding prediction of model 𝑃 ℓ . The prediction error is 
+
+𝑒 (𝑘 ) 
+
+> ℓ
+
+:= b𝑃 (𝑘 ) 
+
+> ℓ
+
+− 𝑃 (𝑘 ) . (13) For the 𝑁 samples in Dval , the global prediction metrics of model 𝑃 ℓ are RMSE ℓ :=
+
+vut 1
+
+𝑁 
+
+> 𝑁
+
+∑︁ 
+
+> 𝑘 =1
+
+
+
+𝑒 (𝑘 )
+
+> ℓ
+
+2
+
+, MAE ℓ := 1
+
+𝑁 
+
+> 𝑁
+
+∑︁ 
+
+> 𝑘 =1
+
+𝑒 (𝑘 ) 
+
+> ℓ
+
+, (14) and 
+
+𝑅 2 
+
+> ℓ
+
+:= 1 −
+
+> 𝑁
+
+∑︁ 
+
+> 𝑘 =1
+
+
+
+𝑒 (𝑘 )
+
+> ℓ
+
+2
+
+!  𝑁 ∑︁ 
+
+> 𝑘 =1
+
+
+
+𝑃 (𝑘 ) − 𝑃 
+
+2
+
+!
+
+. (15) where 𝑃 := 𝑁 −1 Í𝑁 𝑘 =1 𝑃 (𝑘 ) .Because relative errors become ill-conditioned when the measured power approaches zero, relative predictive accuracy is evaluated only for samples satisfying 𝑃 (𝑘 ) ≥ 𝑃 min , where 
+
+𝑃 min > 0 is a prescribed threshold. Let 𝑁 min denote the number of such samples. The corresponding mean absolute percentage error is MAPE ℓ,𝑃 ≥ 𝑃 min := 100 
+
+𝑁 min ∑︁ 𝑘 :𝑃 (𝑘 ) ≥ 𝑃 min 
+
+b𝑃 (𝑘 ) 
+
+> ℓ
+
+− 𝑃 (𝑘 ) 𝑃 (𝑘 ) . (16) This metric reports the average absolute relative prediction error over the selected positive-power region; it does not bound individual prediction errors. 
+
+3) Experiment-level statistical and local assessment: The sampling uncertainty associated with each predictive improve-ment is assessed by resampling the complete experiments in 
+
+Eval with replacement and recomputing the validation metrics on the resulting samples. Resampling complete experiments rather than individual samples preserves the dependence among measurements collected along the same trajectory. 7
+
+To determine where each model extension improves predic-tion, the sampled (𝑣, ¤𝑣 ) domain of Dval is partitioned into cells. For two consecutive models, with model 𝐵 denoting the richer model and model 𝐴 its predecessor, the local relative RMSE improvement is 
+
+I𝐵 /𝐴 := 1 − RMSE 𝐵 /RMSE 𝐴 , (17) where both RMSE values are computed from the validation samples within the same cell. The metric is evaluated only in sufficiently populated cells. A positive value of I𝐵 /𝐴 indicates that model 𝐵 has a lower local RMSE than model 𝐴 .
+
+C. Independent aeromechanical validation 
+
+Held-out prediction assesses how accurately each identified model estimates the measured electrical power, but it does not establish whether that power is correctly decomposed into reversible and dissipative contributions. In particular, different values of 𝐽 , 𝑐 𝜏 , and the electrical-loss coefficients may compensate for one another while producing similar total-power predictions. We therefore determine 𝐽 and 𝑐 𝜏 independently of the electrical-power measurements and use them as independent external references for evaluating the power attribution provided by each model. 
+
+1) Independent inertia determination: An independent es-timate 𝐽 ind is obtained from the inertias of the rotating components. For a segmented representation of the propeller, with segment mass 𝑚 𝑠 concentrated at radial distance 𝑟 𝑠 from the rotation axis, 
+
+𝐽 prop :=
+
+> 𝑆
+
+∑︁ 
+
+> 𝑠 =1
+
+𝑚 𝑠 𝑟 2 
+
+> 𝑠
+
+, 𝐽 ind := 𝐽 motor + 𝐽 prop + 𝐽 other , (18) where 𝐽 motor and 𝐽 other denote the inertias of the motor rotor and any other rotating components, respectively. This estimate is obtained independently of the electrical-power data used to identify 𝑃 1–𝑃 4.
+
+2) Independent aerodynamic-drag determination: An in-dependent torque measurement is used to identify the quasi-steady relation between aerodynamic resisting torque and rotor frequency, 
+
+𝜏 d ( 𝑓 ) = 𝑐 ind  
+
+> 𝜏, 𝑓
+
+𝑓 2. (19) Since 𝑣 = 2𝜋 𝑓 , comparison with (1) gives 
+
+𝑐 ind  
+
+> 𝜏
+
+:= 𝑐 ind  
+
+> 𝜏, 𝑓
+
+/( 2𝜋 )2. (20) This estimate is likewise obtained independently of the electrical-power data and provides an external reference for the aerodynamic contribution identified by each model. 
+
+3) Joint validation criterion: For an aeromechanical pa-rameter 𝜃 ∈ { 𝐽, 𝑐 𝜏 }, let b𝜃 denote its estimate obtained from electrical-power identification and 𝜃 ind its independent estimate. Their signed relative discrepancy is 
+
+𝛿 𝜃 := 100 (b𝜃 − 𝜃 ind )/( 𝜃 ind ). (21) Accordingly, 𝛿 𝜃 > 0 indicates overestimation and 𝛿 𝜃 < 0indicates underestimation relative to the independent value. The held-out prediction metrics and the parameter discrepan-cies assess complementary properties. RMSE, MAE, 𝑅 2, and  
+
+> Fig. 2. Propulsion and measurement components used in the experiments: motor-propeller unit, electronic speed controller, current sensor and acquisition electronics, voltage acquisition, and logging computer.
+
+MAPE quantify the accuracy of the predicted total electrical power, whereas 𝛿 𝐽 and 𝛿 𝑐 𝜏 assess whether the model attributes the inertial and aerodynamic contributions consistently with their independent estimates. Accurate total-power prediction does not imply physically accurate attribution, and neither validation criterion replaces the other. V. Experimental Realization and Dataset This section describes the experimental realization of the methodology in Section IV for the particular hardware setup used. It specifies the propulsion unit, instrumentation, trajectory family, signal-processing settings, and independent aeromechan-ical references used to obtain the reported results. 
+
+A. Propulsion unit and data acquisition 1) Hardware and instrumentation: The tested propulsion unit comprises an Xnova Lightning 2208 V2 1500KV motor, a Graupner 3D-Prop 8x4.5 propeller, and an Aikon AKC 70A 8S electronic speed controller. The principal hardware characteristics are reported in Table II. Figure 2 shows the propulsion and acquisition components. The source-side DC current was measured using a Mateksys 150A Hall current sensor and acquired through a D1 Mini. The battery voltage and rotor frequency were obtained from the low-level software log. The voltage and current acquisition systems were connected to the same Raspberry Pi, and their logs were synchronized offline using Unix timestamps. 
+
+2) Trajectory family and dataset: The commanded rotor-frequency interval was [35 , 220 ] Hz. The lower bound avoids the reduced accuracy of the sensorless rotor-speed estimate near its minimum reliable frequency, while the upper bound avoids current saturation. Identification and validation rates were interleaved across this interval, with the extreme rates included in identification, to evaluate prediction at unseen rates within the sampled dynamic domain. The nominal frequency-rate magnitudes assigned to identification were 
+
+Aid = {2, 10 , 50 , 100 , 150 , 200 , 250 ,
+
+350 , 450 , 700 , 900 , 1250 , 2000 } Hz /s,8             
+
+> TABLE II Experimental hardware and instrumentation.
+> Component Device Relevant characteristic
+> Motor Xnova Lightning 2208 V2 1500KV 1500 rpm/V; listed resistance 0.078 Ω; mass 36.5 g Propeller Graupner 3D-Prop 8x4.5 8-in diameter; 4.5-in pitch; measured mass 7.81 g Electronic speed controller Aikon AKC 70A 8S 8-in-1 BLHeli_32; 70-A continuous rating Current sensing Mateksys Hall Current Sensor 150A 20 mV/A sensitivity; 5% stated current-output error Acquisition and logging D1 Mini, Chimera board, and Raspberry Pi Timestamped current, voltage, and rotor-frequency acquisition
+
+whereas those assigned to held-out validation were 
+
+Aval = {25 , 75 , 125 , 175 , 225 , 300 ,
+
+400 , 500 , 600 , 800 , 1000 , 1500 } Hz /s.
+
+Thus, thirteen complete experiments were used for identification and thirteen distinct experiments for validation. After excluding the 25-Hz reversal margins and applying quality control, the 26 experiments yielded 278,627 retained samples. The measured rotor frequency ranged from 60.28 to 195.05 Hz, the reconstructed frequency rate from −1489 .83 to 2093.45 Hz/s, and the measured source-side power from 
+
+−16 .60 to 841.76 W. The validation dataset comprised 140,508 samples. 
+
+3) Signal processing and quality control: The rotor-frequency, voltage, and current signals were processed offline using third-order noncausal zero-phase Savitzky–Golay filters. The rotor-frequency filter used a window of 101 samples, while the voltage and current filters used windows of 31 samples. A 25-Hz margin from each commanded reversal excluded the transition regions in which the affine-ramp model (8) does not apply. Quality control was performed on complete ramp interiors before fitting any power model. A ramp interior was rejected when the discrepancy between the measured and filtered rotor frequencies exceeded 10 Hz or when the realized-rate quality criterion was not satisfied. The internal speed-controller gains remained fixed through-out the complete identification and validation campaign. Figure 3 illustrates the resulting exclusion, acceptance, and rejection of complete ramp interiors. 
+
+B. Independent references and validation settings 1) Rotational-inertia reference: The independent inertia was determined by destructively disassembling the propeller and motor rotor. One propeller blade was separated from the hub and divided into eight segments to account for its nonuniform radial mass distribution. The individual segment masses and lengths were measured and corrected for the approximately 2% mass and length lost during cutting. The motor rotor was separated from the stator and shaft; the outer rotor was approximated as an annular cylinder and the shaft as a solid cylinder. Figure 4 summarizes this procedure. For each corrected blade segment, the inertia was computed from its mass and inner and outer radial positions according to (18). The two blades and hub yielded 
+
+𝐽 prop = 1.8820 × 10 −5 kg m 2. 
+
+> Fig. 3. Ramp-level quality control. Transition regions around commanded frequency reversals are excluded, and complete ramp interiors are retained or rejected according to measured-motion and processing-consistency criteria established before fitting any power model.
+
+The motor rotor and shaft contributed 
+
+𝐽 motor = 1.921 × 10 −6 kg m 2, 𝐽 shaft = 1.04 × 10 −8 kg m 2,
+
+respectively. Their sum gave the independent total-inertia estimate 
+
+𝐽 ind = 2.075 × 10 −5 kg m 2. (22) 
+
+2) Aerodynamic-drag reference and validation threshold: 
+
+The independent force-torque measurement yielded 
+
+𝑐 ind  
+
+> 𝜏, 𝑓
+
+= 2.8220 × 10 −6 N m Hz −2.
+
+Using (20), the corresponding angular-speed coefficient is 
+
+𝑐 ind  
+
+> 𝜏
+
+= 7.14821 × 10 −8 N m /( rad /s)2. (23) 9                       
+
+> Fig. 4. Independent determination of the rotational inertia: (a) separation of one propeller blade from the hub; (b) division of the blade into eight segments for radial mass-distribution measurement; and (c) disassembly of the motor to characterize the outer rotor and shaft. TABLE III Held-out prediction metrics along the nested model hierarchy.
+> Model RMSE MAE 𝑹 2MAPE
+> [W] [W] [%]
+> 𝑃 1103.320 61.785 0.18044 53.945
+> 𝑃 242.457 26.602 0.86161 16.579
+> 𝑃 319.799 12.465 0.96991 14.687
+> 𝑃 417.388 9.651 0.97679 8.739
+
+For the relative prediction metric in (16), the threshold was set to 𝑃 min = 20 W. This condition retained 109,282 of the 140,508 validation samples. VI. Experimental Results This section evaluates the nested models according to the two complementary criteria introduced in Section IV: held-out predictive accuracy and recovery of the independently determined aeromechanical parameters. 
+
+A. Held-out prediction along the nested hierarchy 
+
+Table III reports the held-out prediction metrics. The transition from 𝑃 1 to 𝑃 2 reduces RMSE by 58.9%; the median experiment-level improvement is 58.9%, with a 95% bootstrap interval of 55.7–61.8%. Thus, speed alone is insufficient and the reversible kinetic-energy rate is necessary. The transition to 𝑃 3
+
+reduces RMSE by a further 53.4%, confirming that reversible power alone is insufficient and that the acceleration-producing torque must also contribute to electromechanical dissipation. Model 𝑃 4 provides the lowest errors, with a smaller final improvement through lumped speed-proportional dissipation. Figure 5 compares the measured source-side electrical power with the predictions of the four models over the sampled 
+
+(𝑣, ¤𝑣 ) domain. The common color scale shows the progressive recovery of the acceleration-dependent power variation. Figure 6 reports complementary held-out diagnostics, includ-ing prediction parity, cumulative absolute-error distributions, residual dependence on angular acceleration, and MAPE for 
+
+𝑃 ≥ 20 W. Figure 7 further shows that the large acceleration-organized residuals of 𝑃 1 are progressively reduced by the dynamic models. The main improvements occur from 𝑃 1 to 
+
+𝑃 2 and from 𝑃 2 to 𝑃 3, whereas the predictions of 𝑃 3 and 
+
+𝑃 4 largely overlap. The residual dispersion is smaller over                                                   
+
+> TABLE IV Identified coefficients and agreement with the independent aeromechanical estimates. Dashes: coefficients absent from a model. Model b𝐽 c𝑐 𝜏 c𝑘 tl c𝑞 1𝛿 𝐽 𝛿 𝑐 𝜏
+> [10 −5][10 −8][10 3][10 −2][%][%]
+> 𝑃 1–14.01 –––+96 .00
+> 𝑃 23.570 13.99 ––+72 .03 +95 .73
+> 𝑃 31.584 7.396 7.820 –−23 .68 +3.47
+> 𝑃 41.902 7.155 5.229 2.176 −8.36 +0.10 Independent reference 2.075 7.148 ––––Units: b𝐽 : kg m 2,c𝑐 𝜏 : N m /( rad /s)2,c𝑘 tl : W /( N m )2, and c𝑞 1: W /( rad /s).
+
+part of the negative-acceleration region than at corresponding positive accelerations. This asymmetry is already present in the measured-power distribution: negative acceleration is associated with a comparatively narrow power range, whereas positive acceleration produces a broader and more strongly acceleration-dependent response. The models consequently reproduce the former region more uniformly, while the latter retains greater residual variability. 
+
+B. Incremental improvement over the operating domain 
+
+The global metrics establish the overall benefit of each addi-tional contribution, while Fig. 8 shows where this benefit occurs within the sampled (𝑣, ¤𝑣 ) domain. The local improvement is evaluated according to (17) for each pair of consecutive models. The transition from 𝑃 1 to 𝑃 2 produces the dominant correction across the accelerated operating domain. The tran-sition from 𝑃 2 to 𝑃 3 provides a second broad improvement, particularly where the motor torque is large. The transition from 
+
+𝑃 3 to 𝑃 4 provides a smaller and more localized refinement. Positive values indicate a lower local RMSE for the richer model, while uncolored cells contain insufficient validation samples. 
+
+C. Identified coefficients and aeromechanical parameter recov-ery 
+
+Held-out prediction assesses the reconstructed total electrical power but does not establish whether the power contributions are physically attributed correctly. Table IV therefore reports the complete parameter array identified for each nested model and compares the power-identified values of 𝐽 and 𝑐 𝜏 with the independent point estimates reported in Section V. Model 𝑃 1 cannot estimate 𝐽 , while 𝑃 2 substantially improves prediction but does not recover either aeromechanical reference closely. Model 𝑃 3 closely recovers 𝑐 𝜏 but retains a substantial inertia discrepancy, whereas 𝑃 4 provides the closest joint recovery of the two independent point estimates. As shown in Table IV, the complete parameter array is jointly re-estimated at every level; 𝑃 4 is therefore not obtained by retaining the 𝑃 3
+
+coefficients and fitting only the added term. Figure 9 presents the two validation criteria separately. The predictive metrics improve along the complete hierarchy, but the parameter discrepancies reveal how the additional dissipative contributions change the physical attribution of the measured 10                   
+
+> Fig. 5. Measured source-side electrical power and held-out predictions of the nested models over the sampled angular-speed and acceleration domain. The common color scale shows the progressive recovery of acceleration-dependent power, with 𝑃 4providing the closest overall prediction among the nested models.
+> Fig. 6. Held-out prediction diagnostics for the nested models: prediction parity, cumulative absolute-error distributions, residual dependence on angular acceleration, and MAPE for measured source-side power satisfying 𝑃 ≥20 W. The principal improvements occur through 𝑃 3, while 𝑃 4provides a smaller refinement and therefore overlaps closely with 𝑃 3in some panels.
+> Fig. 7. Held-out prediction residuals, defined as predicted minus measured source-side power. The strong acceleration-organized structure observed for
+> 𝑃 1is progressively reduced by the dynamic models, with 𝑃 3providing the principal correction and 𝑃 4a smaller additional refinement. Each panel uses a separate symmetric color scale based on the 99th percentile of the corresponding absolute residuals; color magnitudes must therefore be interpreted using the panel-specific colorbar.
+
+power. The transition to 𝑃 3 provides the principal improvement in dynamic prediction and aerodynamic-drag recovery, whereas 
+
+𝑃 4 provides the closest joint recovery of 𝐽 and 𝑐 𝜏 .
+
+D. Decomposition of reversible and dissipative power 
+
+Figure 10 compares the power decompositions obtained with 𝑃 3 and 𝑃 4. Both models distinguish the reversible kinetic-energy rate 𝐽𝑣 ¤𝑣 from irreversible power dissipation and separate aerodynamic dissipation from torque-dependent electromechanical dissipation. Model 𝑃 4 additionally assigns speed-proportional dissipation to the term 𝑞 1 |𝑣 |, rather than allowing this contribution to be partially represented through the reversible kinetic-energy-rate term. As shown by the component-specific colorbar scales in Fig. 10, the speed-proportional contribution has a markedly smaller magnitude than the principal aerodynamic and torque-dependent contributions over the investigated domain. Nev-ertheless, its inclusion changes the identified values of both 
+
+𝐽 and 𝑐 𝜏 and brings them closer to their independent point estimates. This result supports the role of 𝑃 4 in separating re-versible kinetic-energy rate from unmodeled speed-proportional dissipation. VII. Discussion and Conclusions The experiments answer the three questions posed in Section IV. Model 𝑃 1 is inadequate during accelerated rotor motion, and the substantial improvement obtained with 𝑃 2
+
+confirms that the reversible kinetic-energy rate cannot be neglected. The remaining acceleration-organized errors show that this contribution alone is insufficient. Model 𝑃 3 supplies 11        
+
+> Fig. 8. Local held-out RMSE improvement across the nested hierarchy. The panels show the effects of introducing reversible kinetic-energy rate, torque-dependent electromechanical dissipation, and lumped speed-proportional dissipation. Positive values indicate a lower local RMSE for the richer model. Uncolored cells contain insufficient validation samples.
+> Fig. 9. Held-out prediction and aeromechanical parameter recovery along the nested hierarchy. Prediction metrics quantify total-power accuracy, whereas the signed parameter discrepancies quantify agreement with the independent inertia and aerodynamic-drag estimates.
+> Fig. 10. Power decomposition obtained with 𝑃 3and 𝑃 4. Both models separate reversible kinetic-energy rate from aerodynamic and torque-dependent electromechanical dissipation, while 𝑃 4additionally represents lumped speed-proportional dissipation. Component-specific robust color scales are used to reveal contributions of different magnitudes; quantitative color comparisons must therefore use the corresponding colorbars.
+
+the missing torque-dependent electromechanical dissipation, providing a second substantial predictive improvement and closely recovering the aerodynamic resisting-torque coefficient, although an inertia discrepancy remains. Model 𝑃 4 adds a distinct speed-proportional dissipative channel, yielding a smaller predictive refinement but the closest joint recovery of the independent aeromechanical point estimates. It therefore provides the best combined prediction and power attribution among the considered models. 
+
+A. Scope and limitations 
+
+The experiments cover positive rotor frequencies from 60.28 to 195.05 Hz and reconstructed frequency rates from 
+
+−1489 .83 to 2093.45 Hz/s. The conclusions therefore concern interpolation within this experimental domain and the particular motor-drive–propeller unit considered. The reported MAPE values apply only to measured source-side powers satisfying 
+
+𝑃 ≥ 20 W. The independent values of 𝐽 and 𝑐 𝜏 are point estimates obtained from segmented inertia determination and force– torque measurements, respectively. Consequently, the reported parameter discrepancies quantify agreement with these ref-erence values but do not establish statistical compatibility. The interpretation of parameter recovery is therefore limited to the relative proximity of the identified and independently determined point estimates. The remaining acceleration-organized residuals indicate that the four considered contributions do not describe all power variations. Possible unmodeled effects include braking and DC-bus energy return, temperature dependence, electronic-speed-12 
+
+controller switching and conduction losses, iron losses, voltage dependence, and residual synchronization or differentiation errors. Moreover, 𝑘 tl and 𝑞 1 are lumped coefficients over the investigated operating domain and should not be interpreted as isolated microscopic loss parameters. 
+
+B. Implications and conclusion 
+
+Speed-only models may remain adequate near steady oper-ation but can become strongly inaccurate during rapid rotor-speed modulation. Models 𝑃 3 and 𝑃 4 remain compact enough for energy-aware trajectory generation, control allocation, and propulsion-system analysis while representing both reversible kinetic-energy exchange and acceleration-dependent dissipation. This distinction clarifies how much energy is stored temporarily in rotor motion and how much is lost through aerodynamic and electromechanical dissipation, supporting transient-energy esti-mation, efficiency assessment, and interpretation of identified propulsion parameters. This work developed and experimentally evaluated a nested sequence of propulsion-power models progressing from aerody-namic power dissipation to reversible kinetic-energy exchange, torque-dependent electromechanical dissipation, and lumped speed-proportional dissipation. Held-out prediction establishes that the kinetic-energy rate is necessary but insufficient and that torque-dependent dissipation provides the principal additional improvement. The speed-proportional contribution further im-proves prediction and provides the closest joint recovery of the independently determined inertia and aerodynamic coefficient. Thus, held-out prediction and independent aeromechanical ref-erences assess complementary properties and together provide a physically grounded basis for selecting dynamic propulsion-power models. Acknowledgment The authors thank the technical staff supporting the experi-ments: Quentin Sablé and Artur Gąsienica. References 
+
+[1] Z. Liu, R. Sengupta, and A. Kurzhanskiy, “A power consumption model for multi-rotor small unmanned aircraft systems,” in 2017 International Conference on Unmanned Aircraft Systems (ICUAS) , 2017, pp. 310–315. [2] L. Bauersfeld and D. Scaramuzza, “Range, endurance, and optimal speed estimates for multicopters,” IEEE Robotics and Automation Letters , vol. 7, no. 2, pp. 2953–2960, 2022. [3] H. Gong, B. Huang, B. Jia, and H. Dai, “Modeling power consumptions for multirotor UAVs,” IEEE Transactions on Aerospace and Electronic Systems , vol. 59, no. 6, pp. 7409–7422, 2023. [4] J. M. Aguilar-López, R. A. García, C. Bordons, and E. F. Camacho, “Development of the energy consumption model of a quadrotor using voltage data from experimental flights,” in 2022 17th IEEE International Conference on Control & Automation (ICCA) , 2022, pp. 432–437. [5] X. Dai, Q. Quan, J. Ren, and K.-Y. Cai, “Efficiency optimization and component selection for propulsion systems of electric multicopters,” 
+
+IEEE Transactions on Industrial Electronics , vol. 66, no. 10, pp. 7800– 7809, 2019. [6] D. Kotarski, P. Piljek, and J. Kasač, “Heavy-lift multirotor unmanned aerial vehicles characterization and sizing,” IEEE Access , vol. 11, pp. 95 385–95 405, 2023. [7] S. Joo, H. Kim, and H. Son, “Multiobjective design optimization of hybrid-powered multirotors for enhanced endurance and payload capacity,” 
+
+IEEE/ASME Transactions on Mechatronics , vol. 30, no. 3, pp. 1959–1970, 2025. [8] E. M. Coates, A. Wenz, K. Gryte, and T. A. Johansen, “Propulsion system modeling for small fixed-wing UAVs,” in 2019 International Conference on Unmanned Aircraft Systems (ICUAS) , 2019, pp. 748–757. [9] M. M. Rivera and L. B. Gutierrez, “Dynamic model of an aircraft propulsion system with electric motor and propeller,” in 2021 IEEE 5th Colombian Conference on Automatic Control (CCAC) , 2021, pp. 157–162. [10] H. Alkomy and J. Shan, “Investigating the effects of polynomial trajecto-ries on energy consumption of quadrotors,” IEEE/ASME Transactions on Mechatronics , vol. 28, no. 3, pp. 1593–1604, 2023. [11] T. P. Nascimento and M. Saska, “Position and attitude control of multi-rotor aerial vehicles: A survey,” Annual Reviews in Control , vol. 48, pp. 129–146, 2019. [12] T. Baca, M. Petrlik, M. Vrba, V. Spurny, R. Penicka, D. Hert, and M. Saska, “The MRS UAV system: Pushing the frontiers of reproducible research, real-world deployment, and education with autonomous un-manned aerial vehicles,” Journal of Intelligent & Robotic Systems , vol. 102, no. 1, p. 26, 2021. [13] F. Ruggiero, V. Lippiello, and A. Ollero, “Aerial manipulation: A literature review,” IEEE Robotics and Automation Letters , vol. 3, no. 3, pp. 1957– 1964, 2018. [14] A. Ollero, M. Tognon, A. Suarez, D. Lee, and A. Franchi, “Past, present, and future of aerial robotic manipulators,” IEEE Transactions on Robotics ,vol. 38, no. 1, pp. 626–645, 2022. [15] M. Ryll, G. Muscio, F. Pierri, E. Cataldi, G. Antonelli, F. Caccavale, and A. Franchi, “6D physical interaction with a fully actuated aerial robot,” in 2017 IEEE International Conference on Robotics and Automation (ICRA) , 2017, pp. 5190–5195. [16] M. Tognon, H. A. T. Chavez, E. Gasparin, Q. Sablé, D. Bicego, A. Mallet, M. Lany, G. Santi, B. Revaz, J. Cortés, and A. Franchi, “A truly-redundant aerial manipulator system with application to push-and-slide inspection in industrial plants,” IEEE Robotics and Automation Letters , vol. 4, no. 2, pp. 1846–1851, 2019. [17] E. Dyer, S. Sirouspour, and M. Jafarinasab, “Energy optimal control allocation in a redundantly actuated omnidirectional UAV,” in 2019 International Conference on Robotics and Automation (ICRA) , 2019, pp. 5316–5322. [18] J. Taylor, N. Imanberdiyev, M. Y. M. Chuah, W.-Y. Yau, G. Sartoretti, and E. Camci, “Reconfigurable multi-rotor for high-precision physical interaction,” in 2024 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS) , 2024, pp. 8069–8074. [19] R. Veenstra, A. Ali, C. Gabellieri, and A. Franchi, “6D physical interaction with an omnidirectional aerial robot,” Drones , vol. 10, no. 2, p. 129, 2026. [20] J. Xu, “Multi-rotor aerial vehicles in physical interactions: A survey,” 
+
+arXiv preprint arXiv:2312.02635 , 2023. [21] J. B. Brandt and M. S. Selig, “Propeller performance data at low reynolds numbers,” in 49th AIAA Aerospace Sciences Meeting including the New Horizons Forum and Aerospace Exposition , 2011. [22] M. H. McCrink and J. W. Gregory, “Blade element momentum modeling of low-reynolds electric propulsion systems,” Journal of Aircraft , vol. 54, no. 1, pp. 163–176, 2017. [23] R. Mahony, V. Kumar, and P. Corke, “Multirotor aerial vehicles: Modeling, estimation, and control of quadrotor,” IEEE Robotics & Automation Magazine , vol. 19, no. 3, pp. 20–32, 2012. [24] B. Davoudi, E. Taheri, K. Duraisamy, B. Jayaraman, and I. Kolmanovsky, “Quad-rotor flight simulation in realistic atmospheric conditions,” AIAA Journal , vol. 58, no. 5, pp. 1992–2004, 2020. [25] M. Bangura, H. Lim, H. J. Kim, and R. Mahony, “Aerodynamic power control for multirotor aerial vehicles,” in 2014 IEEE International Conference on Robotics and Automation (ICRA) , 2014, pp. 529–536. [26] Y. Aboudorra, C. Gabellieri, R. Brantjes, Q. Sablé, and A. Franchi, “Modelling, analysis, and control of OmniMorph: An omnidirectional morphing multi-rotor UAV,” Journal of Intelligent & Robotic Systems ,vol. 110, no. 1, p. 21, 2024. [27] M. K. Mohamed, S. Patra, and A. Lanzon, “Designing electric propulsion systems for UAVs,” in Towards Autonomous Robotic Systems , ser. Lecture Notes in Computer Science. Springer, 2011, vol. 6856, pp. 388–389. [28] M. Gatti, “Complete preliminary design methodology for electric multi-rotor,” Journal of Aerospace Engineering , vol. 30, no. 5, p. 04017046, 2017. [29] V. Alulema, E. Valencia, E. Cando, V. Hidalgo, and D. Rodriguez, “Propulsion sizing correlations for electrical and fuel powered unmanned aerial vehicles,” Aerospace , vol. 8, no. 7, p. 171, 2021. [30] X. Dai, W. Liu, and Y. Chen, “High-precision modeling of UAV electric propulsion for improving endurance estimation,” Drones , vol. 10, no. 2, p. 80, 2026. 13 
+
+[31] L. W. Traub, “Range and endurance estimates for battery-powered aircraft,” 
+
+Journal of Aircraft , vol. 48, no. 2, pp. 703–707, 2011. [32] S. W. Paek, S. Kim, and R. Vinoth, “Optimal endurance and range of electric aircraft with battery degradation,” Transactions of the Japan Society for Aeronautical and Space Sciences , vol. 63, no. 2, pp. 62–65, 2020. [33] M.-H. Hwang, H.-R. Cha, and S. Y. Jung, “Practical endurance estimation for minimizing energy consumption of multirotor unmanned aerial vehicles,” Energies , vol. 11, no. 9, p. 2221, 2018. [34] M. Hassanalian, M. Radmanesh, and A. Sedaghat, “Increasing flight en-durance of MAVs using multiple quantum well solar cells,” International Journal of Aeronautical and Space Sciences , vol. 15, no. 2, pp. 212–217, 2014. [35] H. V. Abeywickrama, B. A. Jayawickrama, Y. He, and E. Dutkiewicz, “Comprehensive energy consumption model for unmanned aerial vehicles, based on empirical studies of battery performance,” IEEE Access , vol. 6, pp. 58 383–58 394, 2018. [36] T. Kirschstein, “Comparison of energy demands of drone-based and ground-based parcel delivery services,” Transportation Research Part D: Transport and Environment , vol. 78, p. 102209, 2020. [37] P. Beigi, M. S. Rajabi, and S. Aghakhani, “An overview of drone energy consumption factors and models.” Springer, 2022. [38] N. Michel, P. Wei, Z. Kong, and X. Lin, “Energy-optimal unmanned aerial vehicles motion planning and control based on integrated system physical dynamics,” Journal of Dynamic Systems, Measurement, and Control , vol. 145, no. 4, p. 041002, 2023. [39] C. D. Franco and G. Buttazzo, “Coverage path planning for UAVs photogrammetry with energy and resolution constraints,” Journal of Intelligent & Robotic Systems , vol. 83, pp. 445–462, 2016. [40] D. Datsko, F. Nekovar, R. Penicka, and M. Saska, “Energy-aware multi-UAV coverage mission planning with optimal speed of flight,” IEEE Robotics and Automation Letters , vol. 9, no. 3, pp. 2893–2900, 2024. [41] K. Wu, J. Lan, S. Lu, C. Wu, B. Liu, and Z. Lu, “Integrative path planning for multi-rotor logistics UAVs considering UAV dynamics, energy efficiency, and obstacle avoidance,” Drones , vol. 9, no. 2, p. 93, 2025. [42] Y. Zeng, J. Xu, and R. Zhang, “Energy minimization for wireless communication with rotary-wing UAV,” IEEE Transactions on Wireless Communications , vol. 18, no. 4, pp. 2329–2345, 2019. [43] P. Ribeiro, A. Coelho, and R. Campos, “On the energy consumption of rotary wing and fixed wing UAVs in flying networks,” arXiv preprint arXiv:2406.19009 , 2024. [44] M. Bronz, J.-M. Moschetta, P. Brisset, and M. Gorraz, “Towards a long endurance MAV,” International Journal of Micro Air Vehicles , vol. 1, no. 4, pp. 241–254, 2009. [45] G. C. H. E. de Croon, K. M. E. de Clercq, R. Ruijsink, B. D. W. Remes, and C. de Wagter, “Design, aerodynamics, and vision-based control of the DelFly,” International Journal of Micro Air Vehicles , vol. 1, no. 2, pp. 71–97, 2009. [46] M. Karásek, F. T. Muijres, C. de Wagter, B. D. W. Remes, and G. C. H. E. de Croon, “A tailless aerial robotic flapper reveals that flies use torque coupling in rapid banked turns,” Science , vol. 361, no. 6407, pp. 1089–1094, 2018. [47] E. J. J. Smeur, M. Bronz, and G. C. H. E. de Croon, “Incremental control and guidance of hybrid aircraft applied to a tailsitter unmanned air vehicle,” Journal of Guidance, Control, and Dynamics , vol. 43, no. 2, pp. 274–287, 2020. [48] M. Mousaei, J. Geng, A. Keipour, D. Bai, and S. Scherer, “Design, modeling and control for a tilt-rotor VTOL UAV in the presence of actuator failure,” in 2022 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS) , 2022, pp. 4310–4317. [49] M. Ryll, H. H. Bülthoff, and P. R. Giordano, “A novel overactuated quadrotor unmanned aerial vehicle: Modeling, control, and experimental validation,” IEEE Transactions on Control Systems Technology , vol. 23, no. 2, pp. 540–556, 2015. [50] P. J. Sanchez-Cuevas, G. Heredia, and A. Ollero, “Characterization of the aerodynamic ground effect and its influence in multirotor control,” 
+
+International Journal of Aerospace Engineering , vol. 2017, p. 1823056, 2017. [51] P. J. Sanchez-Cuevas, V. Martin, G. Heredia, and A. Ollero, “Aerodynamic effects in multirotors flying close to obstacles: Modelling and mapping,” in Robot 2019: Fourth Iberian Robotics Conference . Springer, 2020, pp. 63–74.

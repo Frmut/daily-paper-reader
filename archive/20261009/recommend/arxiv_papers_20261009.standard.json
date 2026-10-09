@@ -1,0 +1,205 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-10-09T00:08:03.892330+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 5,
+    "quick_skim_target": 11,
+    "quick_selected": 5
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2610.09006v1",
+      "title": "Electric Racing Kart with BLDC Drive, LiFePO4 Battery System, Traction Control and Regenerative Braking",
+      "abstract": "This diploma thesis documents the conversion of a petrol-powered go-kart into a battery-electric kart with a 10 kW BLDC drive, a LiFePO$_4$ traction battery with battery management system, a slip-based traction control and regenerative braking. The traction control estimates the slip of the driven rear axle from three Hall-effect wheel-speed sensors as $λ= (v_R - v_F)/v_R$ and reduces the torque command of the throttle pedal when the axle slips. It runs on a 32-bit ARM Cortex-M3 microcontroller (SAM3X8E) in the signal path between pedal and motor controller, with galvanic isolation and an emergency stop. Regenerative braking uses the generator mode of the motor controller in three stages: motor brake on throttle release, light braking via a steering-wheel button, and blended braking with the hydraulic brake. Drivetrain calculations show that the kart is traction-limited. At rated torque, the drive force at standstill exceeds the transmissible traction force by a factor of 1.7 to 2.0, up to approx. 27 to 43 km/h. Traction control is therefore a functional requirement of the drivetrain. The calculated top speed is approx. 65 km/h. Regenerative braking reaches approx. 0.45 g and could cover up to about 30 % of the energy demand on a winding track. With 80 % of the nominal battery energy, approx. 44 min of driving at 50 % motor load result, so the target of one hour is missed. The initial charging measurement quantifies the flat LiFePO$_4$ voltage plateau at 0.7 to 1.8 mV per percent state of charge, which makes voltage-based state-of-charge estimation unreliable. Cold cells showed a voltage sag under load that triggered the low-voltage alarm. Validation of the control functions by instrumented driving tests is the main open point.",
+      "authors": [
+        "Johannes Stockhammer",
+        "Tom Rettenwander",
+        "Philipp Huber"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY"
+      ],
+      "published": "2026-10-06T19:01:45+00:00",
+      "link": "https://arxiv.org/pdf/2610.09006v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Electric kart with BLDC drive and motor controller",
+      "llm_evidence_cn": "配备无刷直流电机驱动和电机控制器的电动卡丁车",
+      "llm_evidence": "配备无刷直流电机驱动和电机控制器的电动卡丁车",
+      "canonical_evidence": "配备无刷直流电机驱动和电机控制器的电动卡丁车",
+      "llm_tldr_en": "Documents the conversion of a kart to electric drive using a BLDC motor and custom traction control.",
+      "llm_tldr_cn": "记录了使用无刷直流电机和自定义牵引控制将卡丁车改装为电力驱动的过程。",
+      "llm_tldr": "记录了使用无刷直流电机和自定义牵引控制将卡丁车改装为电力驱动的过程。",
+      "llm_tags": [
+        "query:pmsm"
+      ],
+      "matched_query_tag": "query:pmsm",
+      "matched_query_text": "Permanent Magnet Synchronous Motor research",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2610.02989v1",
+      "title": "System Level Synthesis for Fast Chance-Constrained Post-Fault Ascent Replanning under Persistent Propulsion Uncertainty",
+      "abstract": "A nonfatal propulsion fault can invalidate the nominal ascent trajectory while leaving sufficient vehicle capability to reach the original orbit or a degraded target. Deterministic replanning can restore nominal feasibility, but residual uncertainty in the identified propulsion capability may still lead to path-constraint violations and terminal injection dispersion. This paper develops a fast chance-constrained stochastic ascent trajectory replanner that explicitly accounts for persistent propulsion uncertainty. The uncertainty model combines persistent random uncertainties shared across the prediction horizon with interval-wise independent disturbances. For a fixed nominal trajectory, system level synthesis is used to parameterize the closed-loop responses. A Cholesky-based transformation of the system responses converts the resulting cross-time correlated feedback design problem into column-wise affine recursions that share a common Riccati recursion. A task-oriented terminal weight is further derived from the minimum-energy post-injection orbital correction in phase-free modified equinoctial elements, thereby relating terminal covariance shaping directly to correction demand. The stochastic replanning problem is solved by alternating deterministic trajectory replanning and feedback controller design, with covariance-based chance-constraint backoffs coupling the two updates. Nonlinear Monte Carlo simulations demonstrate reduced equivalent correction demand, effective chance-constraint satisfaction, and fast online replanning over a range of uncertainty levels and fault conditions.",
+      "authors": [
+        "Dai Shen",
+        "Chen Yang",
+        "Lin Cheng",
+        "Hongbo Zhang",
+        "Hongtao Zheng",
+        "Shengping Gong"
+      ],
+      "primary_category": "math.OC",
+      "categories": [
+        "math.OC"
+      ],
+      "published": "2026-10-02T08:23:57+00:00",
+      "link": "https://arxiv.org/pdf/2610.02989v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Post-fault replanning under propulsion uncertainty",
+      "llm_evidence_cn": "推进系统不确定性下的故障后重新规划",
+      "llm_evidence": "推进系统不确定性下的故障后重新规划",
+      "canonical_evidence": "推进系统不确定性下的故障后重新规划",
+      "llm_tldr_en": "Develops a chance-constrained replanner for post-fault ascent under propulsion capability uncertainty.",
+      "llm_tldr_cn": "针对推进能力不确定性，开发了故障后上升轨迹的机遇约束重新规划器。",
+      "llm_tldr": "针对推进能力不确定性，开发了故障后上升轨迹的机遇约束重新规划器。",
+      "llm_tags": [
+        "query:pmsm"
+      ],
+      "matched_query_tag": "query:pmsm",
+      "matched_query_text": "fault-tolerant control of multi-phase motors",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2610.03616v1",
+      "title": "LLA-MPC on Embedded Hardware: Rapid Adaptive Control with Thousands of Parallel Models",
+      "abstract": "We present a generalized implementation of Look-Back and Look-Ahead Adaptive Model Predictive Control (LLA-MPC), a learning-free framework for real-time, rapid adaptive system identification and control. The original formulation was demonstrated only in simulation, for autonomous racing with a fixed model structure. Our implementation has modular dynamics and integrators, and we validate it on the F1TENTH platform under constrained computation and noisy state estimation. The system identifies tire parameters online by evaluating thousands of candidate models in real time on an embedded computer. Experiments with low-friction tires across changing surfaces show that LLA-MPC completes high-speed tracking tasks where a fixed nominal model fails. Code, videos, and our related work are available at: https://lla-control.github.io.",
+      "authors": [
+        "Henry Z. Liao",
+        "Maitham F. AL-Sunni",
+        "John M. Dolan"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "eess.SY"
+      ],
+      "published": "2026-10-02T17:13:34+00:00",
+      "link": "https://arxiv.org/pdf/2610.03616v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Adaptive Model Predictive Control for real-time system identification",
+      "llm_evidence_cn": "用于实时系统辨识的自适应模型预测控制",
+      "llm_evidence": "用于实时系统辨识的自适应模型预测控制",
+      "canonical_evidence": "用于实时系统辨识的自适应模型预测控制",
+      "llm_tldr_en": "Implements adaptive MPC on embedded hardware for rapid system identification and control.",
+      "llm_tldr_cn": "在嵌入式硬件上实现了用于快速系统辨识和控制的自适应模型预测控制。",
+      "llm_tldr": "在嵌入式硬件上实现了用于快速系统辨识和控制的自适应模型预测控制。",
+      "llm_tags": [
+        "query:pmsm:composite"
+      ],
+      "matched_query_tag": "query:pmsm:composite",
+      "matched_query_text": "Papers central to 三相及双三相永磁同步电机相关研究检索, especially work that connects or combines: m; s; f; Permanent Magnet Synchronous Motor research; dual three-phase permanent magnet synchronous motor control and design; fault-tolerant control of multi-phase motors; recent advances in dual three phase permanent magnet synchronous motor control; fault tolerant strategies for multi phase permanent magnet synchronous motors.",
+      "matched_requirement_id": "req-composite-pmsm",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2610.07299v1",
+      "title": "Model-Based Galerkin Lifting with Exact LTI Decomposition for Guaranteed $\\mathcal{H}_\\infty$ Output Feedback Control of Nonlinear Systems",
+      "abstract": "In this paper, we present a model-based Galerkin framework for output-feedback control of nonlinear systems with known dynamics. With a suitable actuator augmentation, the finite-dimensional realization preserves the actuator dynamics and the constant input matrix. We retain finite-order nonclosure as an explicit additive residual. The LTI part and this residual describe the lifted nonlinear dynamics exactly. The decomposition does not require an invariant subspace of observables and also applies to non-control-affine systems. We use regional bounds on the closure residual, actuator-realization defect, and output-reconstruction error in the standard $\\mathcal{H}_\\infty$ design. The proposed controller is a linear dynamic system driven only by the measured tracking error and requires no online lifting. Retaining the state coordinates gives direct bounds on the original state. We use these bounds to derive an a priori containment condition. Under this condition, the nonlinear closed loop is forward complete, and the state and tracking error satisfy explicit transient bounds and are uniformly ultimately bounded. The cart-pendulum example illustrates the nonlinear closed-loop guarantees and compares the controller with full-state backstepping. Although the output-feedback controller uses only the measured tracking error, it achieves almost the same nominal tracking RMSE as backstepping, with a lower peak tracking error.",
+      "authors": [
+        "Burak Kurkcu",
+        "Christopher Phan",
+        "Aleksandar Zecevic",
+        "Maryam Khanbaghi"
+      ],
+      "primary_category": "math.OC",
+      "categories": [
+        "math.OC",
+        "eess.SY"
+      ],
+      "published": "2026-10-05T19:36:59+00:00",
+      "link": "https://arxiv.org/pdf/2610.07299v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Output feedback control of nonlinear systems",
+      "llm_evidence_cn": "非线性系统的输出反馈控制",
+      "llm_evidence": "非线性系统的输出反馈控制",
+      "canonical_evidence": "非线性系统的输出反馈控制",
+      "llm_tldr_en": "Develops a Galerkin framework for H-infinity output feedback control of nonlinear systems.",
+      "llm_tldr_cn": "开发了一个用于非线性系统H无穷输出反馈控制的Galerkin框架。",
+      "llm_tldr": "开发了一个用于非线性系统H无穷输出反馈控制的Galerkin框架。",
+      "llm_tags": [
+        "query:pmsm:composite"
+      ],
+      "matched_query_tag": "query:pmsm:composite",
+      "matched_query_text": "Papers central to 三相及双三相永磁同步电机相关研究检索, especially work that connects or combines: m; s; f; Permanent Magnet Synchronous Motor research; dual three-phase permanent magnet synchronous motor control and design; fault-tolerant control of multi-phase motors; recent advances in dual three phase permanent magnet synchronous motor control; fault tolerant strategies for multi phase permanent magnet synchronous motors.",
+      "matched_requirement_id": "req-composite-pmsm",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2610.08177v1",
+      "title": "Nested Power Models for Multirotor Propulsion: From Aerodynamic Drag to Electrical Losses",
+      "abstract": "Speed-only aerodynamic power models for multirotor propulsion cannot represent acceleration-dependent effects. This work develops a nested sequence of propulsion-power models that starts from aerodynamic power dissipation and progressively introduces a reversible kinetic-energy rate, torque-dependent electromechanical dissipation, and lumped speed-proportional dissipation. The models are identified using one subset of experiments and validated using the other on a motor-drive-propeller unit. Independent estimates of rotational inertia and aerodynamic drag complement predictive validation by assessing whether the models correctly attribute the measured power to reversible kinetic-energy exchange and irreversible dissipation and, within the latter, to aerodynamic and electromechanical losses. The results show that the reversible kinetic-energy rate is necessary but insufficient for accurate dynamic power prediction. Dissipation proportional to the squared motor torque provides the main additional improvement, while speed-proportional dissipation further prevents irreversible losses from being attributed to reversible kinetic-energy exchange. The resulting methodology provides a reusable and experimentally verifiable basis for developing and selecting dynamic propulsion-power models for multirotor systems.",
+      "authors": [
+        "Antonio Franchi",
+        "Aaron Saini",
+        "Ahmed Ali",
+        "Chiara Gabellieri"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "eess.SY"
+      ],
+      "published": "2026-10-06T11:29:35+00:00",
+      "link": "https://arxiv.org/pdf/2610.08177v1",
+      "tags": [
+        "keyword:PMSM",
+        "query:PMSM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Electrical losses and electromechanical dissipation in motor-drive units",
+      "llm_evidence_cn": "电机驱动单元中的电损耗和机电损耗",
+      "llm_evidence": "电机驱动单元中的电损耗和机电损耗",
+      "canonical_evidence": "电机驱动单元中的电损耗和机电损耗",
+      "llm_tldr_en": "Develops nested power models for multirotor propulsion covering aerodynamic and electrical motor losses.",
+      "llm_tldr_cn": "开发了多旋翼推进系统的嵌套功率模型，涵盖了气动和电机的电损耗。",
+      "llm_tldr": "开发了多旋翼推进系统的嵌套功率模型，涵盖了气动和电机的电损耗。",
+      "llm_tags": [
+        "query:pmsm"
+      ],
+      "matched_query_tag": "query:pmsm",
+      "matched_query_text": "Permanent Magnet Synchronous Motor research",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
